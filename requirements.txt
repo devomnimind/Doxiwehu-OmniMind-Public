@@ -1,0 +1,38 @@
+# Dependências Python para OmniMind Agent System
+# Python 3.12.8 (compatível)
+
+# Testes e qualidade de código
+pytest>=9.0.0
+pytest-cov>=7.0.0
+pylint>=3.0.0
+mypy>=1.0.0
+black>=24.0.0
+
+# Framework de agentes
+langchain>=0.1.20
+langgraph>=0.0.30
+langchain-community>=0.0.45
+
+# LLM local
+llama-cpp-python>=0.2.80
+
+# Vector database para memória episódica
+qdrant-client>=1.16.0,<2.0.0
+
+# Modelos e dados
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+
+# Utilitários
+rich>=13.7.0
+psutil>=5.9.6
+PyYAML>=6.0.1
+
+# Sistema D-Bus (Linux)
+dbus-python>=1.3.0
+
+# Logs estruturados
+structlog>=24.0.0
+
+# Análise de performance
+memory-profiler>=0.61.0
