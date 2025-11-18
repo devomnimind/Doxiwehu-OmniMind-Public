@@ -30,6 +30,16 @@ from ..integrations.dbus_controller import (
     DBusSessionController,
     DBusSystemController,
 )
+from ..integrations.supabase_adapter import (
+    SupabaseAdapter,
+    SupabaseAdapterError,
+    SupabaseConfig,
+)
+from ..integrations.qdrant_adapter import (
+    QdrantAdapter,
+    QdrantAdapterError,
+    QdrantConfig,
+)
 from .orchestrator_metrics import OrchestratorMetricsCollector
 
 logger = logging.getLogger(__name__)
@@ -81,6 +91,8 @@ class OrchestratorAgent(ReactAgent):
         self.dbus_system_controller: Optional[DBusSystemController] = (
             self._init_dbus_system_controller()
         )
+        self.supabase_adapter: Optional[SupabaseAdapter] = self._init_supabase_adapter()
+        self.qdrant_adapter: Optional[QdrantAdapter] = self._init_qdrant_adapter()
         self.dashboard_snapshot: Dict[str, Any] = {}
         self.last_mcp_result: Dict[str, Any] = {}
         self.last_dbus_result: Dict[str, Any] = {}
@@ -111,6 +123,32 @@ class OrchestratorAgent(ReactAgent):
         except Exception as exc:
             logger.warning("DBus system controller unavailable: %s", exc)
             return None
+
+    def _init_supabase_adapter(self) -> Optional[SupabaseAdapter]:
+        try:
+            config = SupabaseConfig.load(self.mcp_client)
+            if not config:
+                logger.info("Supabase configuration not available")
+                return None
+            return SupabaseAdapter(config)
+        except SupabaseAdapterError as exc:
+            logger.warning("Supabase adapter initialization failed: %s", exc)
+        except Exception as exc:
+            logger.warning("Unexpected error initializing Supabase adapter: %s", exc)
+        return None
+
+    def _init_qdrant_adapter(self) -> Optional[QdrantAdapter]:
+        try:
+            config = QdrantConfig.load(self.mcp_client)
+            if not config:
+                logger.info("Qdrant configuration not available")
+                return None
+            return QdrantAdapter(config)
+        except QdrantAdapterError as exc:
+            logger.warning("Qdrant adapter initialization failed: %s", exc)
+        except Exception as exc:
+            logger.warning("Unexpected error initializing Qdrant adapter: %s", exc)
+        return None
 
     def _timestamp(self) -> str:
         """Retorna timestamp UTC em formato ISO"""
@@ -144,6 +182,25 @@ class OrchestratorAgent(ReactAgent):
                 context["media_players"] = self.dbus_session_controller.list_media_players()
             except Exception as exc:
                 logger.warning("D-Bus session lookup failed: %s", exc)
+
+        if self.supabase_adapter:
+            context["supabase_connected"] = True
+            if self.supabase_adapter.config.has_service_role_key:
+                try:
+                    context["supabase_tables"] = self.supabase_adapter.list_tables()
+                except SupabaseAdapterError as exc:
+                    logger.warning("Unable to list Supabase tables: %s", exc)
+                    context["supabase_error"] = str(exc)
+            else:
+                context["supabase_info"] = "Service role key not configured; only anon operations available"
+
+        if self.qdrant_adapter:
+            try:
+                context["qdrant_collections"] = self.qdrant_adapter.list_collections()
+                context["qdrant_enabled"] = True
+            except QdrantAdapterError as exc:
+                logger.warning("Qdrant list collections failed: %s", exc)
+                context["qdrant_error"] = str(exc)
 
         context["plan_summary"].update(self._plan_progress(plan))
         context["last_mcp_result"] = self.last_mcp_result

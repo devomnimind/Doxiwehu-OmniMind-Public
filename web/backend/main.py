@@ -18,10 +18,11 @@ from pydantic import BaseModel
 from secrets import compare_digest
 from starlette.status import HTTP_401_UNAUTHORIZED
 
+from DEVBRAIN_V23.autonomy.observability import autonomy_observability
 from src.agents.orchestrator_agent import OrchestratorAgent
 
 logger = logging.getLogger("omnimind.backend")
-_AUTH_FILE = Path("config/dashboard_auth.json")
+_AUTH_FILE = Path(os.environ.get("OMNIMIND_DASHBOARD_AUTH_FILE", "config/dashboard_auth.json"))
 
 
 def _load_dashboard_credentials() -> Optional[Dict[str, str]]:
@@ -102,6 +103,7 @@ security = HTTPBasic()
 
 _orchestrator_instance: Optional[OrchestratorAgent] = None
 _metrics_collect_interval = int(os.environ.get("OMNIMIND_METRICS_INTERVAL", "30"))
+_validation_log = Path(os.environ.get("OMNIMIND_SECURITY_VALIDATION_LOG", "logs/security_validation.jsonl"))
 _dashboard_user, _dashboard_pass = _ensure_dashboard_credentials()
 
 
@@ -211,6 +213,22 @@ async def _metrics_reporter() -> None:
         logger.info("Dashboard metrics heartbeat - requests=%s errors=%s orchestrator=%s", summary["requests"], summary["errors"], orch_metrics)
 
 
+def _load_last_validation_entry() -> Dict[str, Any]:
+    if not _validation_log.exists():
+        return {"latest": None, "log_path": str(_validation_log)}
+    entry = None
+    try:
+        with _validation_log.open("r", encoding="utf-8") as stream:
+            for line in stream:
+                line = line.strip()
+                if not line:
+                    continue
+                entry = json.loads(line)
+        return {"latest": entry, "log_path": str(_validation_log)}
+    except Exception:
+        return {"latest": None, "log_path": str(_validation_log), "error": "failed to parse"}
+
+
 @app.get("/health")
 def health() -> Dict[str, Any]:
     orch = None
@@ -255,6 +273,17 @@ def metrics(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
     return {
         "backend": metrics_collector.summary(),
         "orchestrator": orch.metrics_summary(),
+    }
+
+
+@app.get("/observability")
+def observability(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
+    return {
+        "self_healing": autonomy_observability.get_self_healing_snapshot(),
+        "atlas": autonomy_observability.get_atlas_snapshot(),
+        "alerts": autonomy_observability.alerts[-10:],
+        "security": autonomy_observability.get_security_snapshot(),
+        "validation": _load_last_validation_entry(),
     }
 
 

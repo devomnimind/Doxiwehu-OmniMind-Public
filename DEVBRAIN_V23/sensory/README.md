@@ -1,4 +1,11 @@
-# DEVBRAIN V23 Sensory Vision
+# Tier 1 Sensory Stack
+
+This package contains the Tier 1 sensory components for DEVBRAIN V23:
+
+- `VisualCortex`: Screen understanding + GUI interaction via OmniParser/YOLO fallback, with performance logging, error alerting, and click helpers.
+- `VoiceInterface`: Local voice I/O that wraps Whisper (STT) and the TTS module, exposing `listen`/`speak` flows plus instrumentation and alert hooks.
+
+Both modules expose async helpers, accept injection points (parser/yolo models, STT/TTS clients, audio handlers), and maintain small metric buffers to monitor responsiveness. Use this package for the visual+voice experience layer and surface its alerts back to Tier 0 orchestrators for telemetry.# DEVBRAIN V23 Sensory Vision
 
 Este módulo implementa o **Visual Cortex** descrito no Masterplan (Fase 9.2) e representa o "olho" do DevBrain V23. Ele combina o parser de UI da Microsoft (`OmniParser`) com o detector YOLOv8 para identificar elementos visuais na tela e agir sobre eles sem depender de coordenadas fixas.
 

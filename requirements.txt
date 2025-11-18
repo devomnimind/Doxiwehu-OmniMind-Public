@@ -28,6 +28,7 @@ python-dotenv>=1.0.0
 rich>=13.7.0
 psutil>=5.9.6
 PyYAML>=6.0.1
+requests>=2.31.0
 
 # Sistema D-Bus (Linux)
 dbus-python>=1.3.0
@@ -41,6 +42,7 @@ memory-profiler>=0.61.0
 # Web dashboard
 fastapi>=0.110.0
 uvicorn>=0.23.0
+supabase-py>=1.0.0
 
 # DEVBRAIN V23 senses and infrastructure
 redis>=5.4.0

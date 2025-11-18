@@ -64,6 +64,7 @@ Ensure `logs/.coverage` is removed or regenerated via `pytest --cov=src` and kee
 - Active logs live under `logs/`; coverage and audit traces now also stay here for easier rotation.
 - The dashboard auth file is `config/dashboard_auth.json` (600). Rotate credentials by editing this file securely and restarting the backend; the new creds are durable until the next rotation.
 - Use `scripts/start_dashboard.sh` or the Docker Compose asset to orchestrate the backend + frontend; it logs the credential location upon startup.
+- For the Supabase + Qdrant MCP adapters, credential handling, and tests, see `docs/devbrain_data_integration.md`.
 
 ## Maintenance Notes
 

@@ -1,0 +1,141 @@
+from __future__ import annotations
+
+import logging
+import os
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional
+
+from qdrant_client import QdrantClient
+from qdrant_client.http import models as qdrant_models
+
+from .mcp_client import MCPClient, MCPClientError
+
+logger = logging.getLogger(__name__)
+
+
+class QdrantAdapterError(Exception):
+    pass
+
+
+@dataclass(frozen=True)
+class QdrantConfig:
+    url: str
+    api_key: Optional[str] = None
+    collection: Optional[str] = None
+    vector_size: Optional[int] = None
+
+    @classmethod
+    def from_env(cls) -> Optional["QdrantConfig"]:
+        url = os.environ.get("OMNIMIND_QDRANT_URL")
+        if not url:
+            return None
+        return cls(
+            url=url,
+            api_key=os.environ.get("OMNIMIND_QDRANT_API_KEY"),
+            collection=os.environ.get("OMNIMIND_QDRANT_COLLECTION"),
+            vector_size=int(os.environ["OMNIMIND_QDRANT_VECTOR_SIZE"]) if os.environ.get("OMNIMIND_QDRANT_VECTOR_SIZE") else None,
+        )
+
+    @classmethod
+    def from_text(cls, text: str) -> Optional["QdrantConfig"]:
+        url_match = re.search(r"url\s*=\s*\"([^\"]+)\"", text)
+        api_match = re.search(r"api_key\s*=\s*\"([^\"]+)\"", text)
+        if not url_match:
+            return None
+        return cls(url=url_match.group(1), api_key=api_match.group(1) if api_match else None)
+
+    @classmethod
+    def load(cls, mcp_client: Optional[MCPClient] = None) -> Optional["QdrantConfig"]:
+        servers_path = Path("docs/servers.txt")
+        if mcp_client is not None:
+            try:
+                data = mcp_client.read_file(str(servers_path))
+            except MCPClientError as exc:
+                logger.debug("Unable to read servers via MCP: %s", exc)
+            else:
+                config = cls.from_text(data)
+                if config:
+                    return config
+        if servers_path.exists():
+            config = cls.from_text(servers_path.read_text(encoding="utf-8"))
+            if config:
+                return config
+        return cls.from_env()
+
+
+class QdrantAdapter:
+    def __init__(self, config: QdrantConfig):
+        self.config = config
+        self.client = QdrantClient(url=config.url, api_key=config.api_key)
+
+    def ensure_collection(
+        self,
+        collection: str,
+        vector_size: int,
+        distance: qdrant_models.Distance = qdrant_models.Distance.COSINE,
+    ) -> Dict[str, Any]:
+        logger.debug("Ensuring collection %s exists with vector_size %s", collection, vector_size)
+        try:
+            response = self.client.get_collection(collection_name=collection)
+            return response.dict()
+        except Exception:
+            logger.info("Creating missing collection %s", collection)
+            self.client.recreate_collection(
+                collection_name=collection,
+                vectors=qdrant_models.VectorParams(size=vector_size, distance=distance),
+            )
+            return {"collection": collection, "status": "created"}
+
+    def upsert_vectors(
+        self,
+        collection: str,
+        vectors: Iterable[List[float]],
+        ids: Iterable[int],
+        payloads: Optional[Iterable[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
+        ids_list = list(ids)
+        vectors_list = list(vectors)
+        if len(ids_list) != len(vectors_list):
+            raise QdrantAdapterError("ids and vectors length mismatch")
+        payloads_list = list(payloads) if payloads is not None else [{} for _ in ids_list]
+        if len(payloads_list) < len(ids_list):
+            payloads_list += [{} for _ in range(len(ids_list) - len(payloads_list))]
+        points = []
+        for idx, vector, payload in zip(ids_list, vectors_list, payloads_list):
+            points.append(
+                qdrant_models.PointStruct(id=int(idx), vector=vector, payload=payload)
+            )
+        result = self.client.upsert(collection_name=collection, points=points)
+        logger.info("Upserted %s vectors into %s", len(points), collection)
+        return result if isinstance(result, dict) else {"status": "upserted"}
+
+    def search_vectors(
+        self,
+        collection: str,
+        query_vector: List[float],
+        top: int = 5,
+        with_payload: bool = True,
+    ) -> List[Dict[str, Any]]:
+        logger.debug("Searching vectors in %s (top=%s)", collection, top)
+        response = self.client.search(
+            collection_name=collection,
+            query_vector=query_vector,
+            limit=top,
+            with_payload=with_payload,
+            with_vectors=False,
+        )
+        return [hit.dict() for hit in response]
+
+    def list_collections(self) -> List[str]:
+        collections = self.client.get_collections()
+        names = [info.name for info in collections.collections] if collections.collections else []
+        logger.debug("Available QB collections: %s", names)
+        return names
+
+    def delete_vectors(self, collection: str, ids: Iterable[int]) -> Dict[str, Any]:
+        ids_list = list(ids)
+        logger.debug("Deleting %s vectors from %s", len(ids_list), collection)
+        result = self.client.delete(collection_name=collection, points=ids_list)
+        return result.dict() if hasattr(result, "dict") else {}

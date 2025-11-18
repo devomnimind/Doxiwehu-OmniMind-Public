@@ -24,6 +24,8 @@ from .playbooks.malware_response import MalwarePlaybook
 from .playbooks.privilege_escalation_response import PrivilegeEscalationPlaybook
 from .playbooks.rootkit_response import RootkitPlaybook
 from .playbooks.utils import run_command
+from .dlp import DLPValidator, DLPViolationError
+from .firecracker_sandbox import FirecrackerSandbox
 
 logger = logging.getLogger(__name__)
 
@@ -119,6 +121,11 @@ class SecurityAgent(AuditedTool):
         self.incident_log: List[Dict[str, Any]] = []
         self._pending_events: List[SecurityEvent] = []
         self._monitoring_tasks: List[asyncio.Task[Any]] = []
+        kernel = os.environ.get("OMNIMIND_FIRECRACKER_KERNEL")
+        rootfs = os.environ.get("OMNIMIND_FIRECRACKER_ROOTFS")
+        policy_path = os.environ.get("OMNIMIND_DLP_POLICY_FILE")
+        self.sandbox = FirecrackerSandbox(kernel_path=kernel, rootfs_path=rootfs)
+        self.dlp_validator = DLPValidator(policy_path=policy_path)
 
     def _load_config(self) -> Dict[str, Any]:
         if not self.config_path.exists():
@@ -377,6 +384,16 @@ class SecurityAgent(AuditedTool):
         if not playbook:
             self.logger.warning("No playbook registered for %s", event.event_type)
             return
+        sandbox_result = self.sandbox.run(
+            {"event": event.event_type, "playbook": playbook_key},
+            sandbox_name="security_playbook",
+        )
+        if not sandbox_result.success:
+            self.logger.error(
+                "Sandbox execution failed for %s: %s",
+                event.event_type,
+                sandbox_result.output,
+            )
         try:
             result = await playbook.execute(self, event)
             entry = {
@@ -396,6 +413,23 @@ class SecurityAgent(AuditedTool):
             event.responded = True
 
     async def _handle_event(self, event: SecurityEvent) -> None:
+        try:
+            violation = self.dlp_validator.enforce(event.raw_data)
+        except DLPViolationError as violation_error:
+            self.logger.warning(
+                "DLP block for event %s: %s", event.event_type, violation_error.violation.rule
+            )
+            self._audit_action(
+                "dlp.block",
+                event.details,
+                violation_error.violation.__dict__,
+                "BLOCKED",
+            )
+            return
+        if violation:
+            self.logger.info(
+                "DLP alert for event %s: %s", event.event_type, violation.rule
+            )
         self.event_history.insert(0, event)
         self._pending_events.append(event)
         self.logger.warning(

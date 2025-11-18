@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import time
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple
@@ -85,32 +86,59 @@ class VisualCortex:
         self.screenshot_provider = screenshot_provider or _default_screenshot
         self._click_handler = click_handler or (lambda *_: None)
         self._last_capture: Optional[str] = None
+        self.performance_log: Dict[str, List[float]] = {"see_screen": [], "click_element": []}
+        self.error_alerts: List[str] = []
+
+    def get_performance_summary(self) -> Dict[str, float]:
+        summary: Dict[str, float] = {}
+        for key, values in self.performance_log.items():
+            summary[key] = float(sum(values) / len(values)) if values else 0.0
+        return summary
+
+    def record_alert(self, message: str) -> None:
+        self.error_alerts.append(message)
+        if len(self.error_alerts) > 30:
+            self.error_alerts.pop(0)
 
     async def see_screen(self) -> Dict[str, Any]:
         """Captura a tela, executa a visão e retorna o mapa extraído."""
-        screenshot = await self._capture_screenshot()
-        img_array = self._prepare_array(screenshot)
-        element_map = self._parse_elements(img_array)
-        detections = self._detect_objects(img_array)
-        record = {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
-            "screenshot_path": self._last_capture,
-            "elements": element_map,
-            "detections": [d.__dict__ for d in detections],
-        }
-        return record
+        start = time.perf_counter()
+        try:
+            screenshot = await self._capture_screenshot()
+            img_array = self._prepare_array(screenshot)
+            element_map = self._parse_elements(img_array)
+            detections = self._detect_objects(img_array)
+            record = {
+                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "screenshot_path": self._last_capture,
+                "elements": element_map,
+                "detections": [d.__dict__ for d in detections],
+            }
+            return record
+        except Exception as exc:
+            self.record_alert(f"see_screen failed: {exc}")
+            raise
+        finally:
+            self.performance_log["see_screen"].append(time.perf_counter() - start)
 
     async def click_element(self, element_name: str) -> Dict[str, str]:
         """Procura elemento pelo label e clica nos centros definidos."""
-        snapshot = await self.see_screen()
-        target = element_name.lower()
-        for element in snapshot["elements"]:
-            label = element.get("label", "")
-            if target in label.lower():
-                x, y = element.get("center", (0, 0))
-                await self._invoke_click(int(x), int(y))
-                return {"status": "clicked", "element": label}
-        return {"status": "not-found", "element": element_name}
+        start = time.perf_counter()
+        try:
+            snapshot = await self.see_screen()
+            target = element_name.lower()
+            for element in snapshot["elements"]:
+                label = element.get("label", "")
+                if target in label.lower():
+                    x, y = element.get("center", (0, 0))
+                    await self._invoke_click(int(x), int(y))
+                    return {"status": "clicked", "element": label}
+            return {"status": "not-found", "element": element_name}
+        except Exception as exc:
+            self.record_alert(f"click_element failed: {exc}")
+            return {"status": "error", "error": str(exc)}
+        finally:
+            self.performance_log["click_element"].append(time.perf_counter() - start)
 
     async def _capture_screenshot(self) -> Any:
         loop = asyncio.get_running_loop()

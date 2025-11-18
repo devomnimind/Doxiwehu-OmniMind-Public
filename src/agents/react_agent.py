@@ -3,16 +3,21 @@
 OmniMind ReactAgent - Fixed version with proper completion detection
 """
 
-import os
 import json
+import logging
+import os
 import yaml
-from typing import Dict, List, Any, TypedDict
 from datetime import datetime, timezone
+from typing import Dict, List, Any, TypedDict
 
 from langchain_ollama import OllamaLLM
 from langgraph.graph import StateGraph, END
 
+from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory import EpisodicMemory
+from ..onboarding import SupabaseMemoryOnboarding
+
+logger = logging.getLogger(__name__)
 from ..tools import FileOperations, ShellExecutor, SystemMonitor
 
 
@@ -62,6 +67,7 @@ class ReactAgent:
             qdrant_url=memory_config["qdrant_url"],
             collection_name=memory_config["collection_name"],
         )
+        self._run_supabase_memory_onboarding()
 
         # Initialize tools
         system_config = self.config["system"]
@@ -317,3 +323,20 @@ Your response:"""
 
         except Exception as e:
             return {"error": str(e), "completed": False, "final_result": None}
+
+    def _run_supabase_memory_onboarding(self) -> None:
+        config = SupabaseConfig.load()
+        if not config or not config.service_role_key:
+            logger.debug("Supabase memory onboarding skipped (service role key missing)")
+            return
+
+        onboarding = SupabaseMemoryOnboarding(config=config, memory=self.memory)
+        report = onboarding.seed_collection()
+        logger.info(
+            "Started Supabase onboarding: %s/%s nodes stored (cursor=%s)",
+            report.nodes_loaded,
+            report.nodes_processed,
+            report.last_cursor,
+        )
+        if report.errors:
+            logger.warning("Supabase memory onboarding reported errors: %s", report.errors)

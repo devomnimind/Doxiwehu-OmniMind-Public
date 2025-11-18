@@ -49,6 +49,56 @@ interface MetricsResponse {
   };
 }
 
+interface SelfHealingSnapshot {
+  latest?: {
+    timestamp?: string;
+    duration_ms?: number;
+    metrics?: {
+      cycles?: number;
+      issues_detected?: number;
+      remediations?: number;
+      remediation_failures?: number;
+    };
+    last_actions?: Array<Record<string, any>>;
+  };
+  history?: Array<Record<string, any>>;
+  alerts?: string[];
+}
+
+interface AtlasSnapshot {
+  insights?: Array<{
+    timestamp?: string;
+    metric?: string;
+    value?: number;
+    status?: string;
+    details?: Record<string, any>;
+  }>;
+}
+
+interface ObservabilityResponse {
+  self_healing?: SelfHealingSnapshot;
+  atlas?: AtlasSnapshot;
+  alerts?: string[];
+  security?: SecuritySnapshot;
+  validation?: ValidationSnapshot;
+}
+
+interface ValidationSnapshot {
+  latest?: {
+    timestamp?: string;
+    audit?: { valid?: boolean; message?: string; events_verified?: number };
+    dlp?: { policies?: string[] };
+    sandbox?: { kernel?: string; kernel_exists?: boolean; rootfs?: string; rootfs_exists?: boolean };
+  };
+  log_path?: string;
+  error?: string;
+}
+
+interface SecuritySnapshot {
+  sandbox_events?: Array<{timestamp?: string; sandbox?: string; result?: string; metadata?: Record<string, any>}>
+  dlp_alerts?: Array<{timestamp?: string; rule?: string; action?: string; snippet?: string; details?: Record<string, any>}>
+}
+
 function App() {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [plan, setPlan] = useState<PlanOverview | null>(null);
@@ -59,6 +109,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [taskInput, setTaskInput] = useState("");
   const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [observability, setObservability] = useState<ObservabilityResponse | null>(null);
 
   const authHeaders = useMemo(() => {
     if (!authToken) return {} as Record<string, string>;
@@ -87,23 +138,26 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      const [snapshotRes, metricsRes, planRes] = await Promise.all([
+      const [snapshotRes, metricsRes, planRes, observabilityRes] = await Promise.all([
         fetchWithAuth("/snapshot"),
         fetchWithAuth("/metrics"),
         fetchWithAuth("/plan"),
+        fetchWithAuth("/observability"),
       ]);
 
-      if (!snapshotRes.ok || !metricsRes.ok || !planRes.ok) {
+      if (!snapshotRes.ok || !metricsRes.ok || !planRes.ok || !observabilityRes.ok) {
         throw new Error("Falha ao carregar dados do dashboard");
       }
 
       const snapshotPayload = await snapshotRes.json();
       const metricsPayload = await metricsRes.json();
       const planPayload = await planRes.json();
+      const observabilityPayload = await observabilityRes.json();
 
       setSnapshot(snapshotPayload);
       setMetrics(metricsPayload);
       setPlan(planPayload);
+      setObservability(observabilityPayload);
       setStatusMessage("Dashboard atualizado");
     } catch (exc) {
       setError((exc as Error).message);
@@ -204,6 +258,16 @@ function App() {
     return rows;
   }, [metrics]);
 
+  const latestHealing = observability?.self_healing?.latest;
+  const healingHistory = observability?.self_healing?.history ?? [];
+  const healingAlerts = observability?.self_healing?.alerts ?? [];
+  const atlasInsights = observability?.atlas?.insights ?? [];
+  const observabilityAlerts = observability?.alerts ?? [];
+  const securitySnapshot = observability?.security;
+  const sandboxEvents = securitySnapshot?.sandbox_events ?? [];
+  const dlpAlerts = securitySnapshot?.dlp_alerts ?? [];
+  const validation = observability?.validation;
+
   return (
     <div className="page">
       <header>
@@ -285,6 +349,136 @@ function App() {
                 ))}
               </ul>
             </div>
+          </section>
+
+          <section className="panel observability-panel">
+            <div className="panel-header">
+              <h2>Self-Healing</h2>
+              <span className="badge">Cycles {latestHealing?.metrics?.cycles ?? 0}</span>
+            </div>
+            <div className="observability-grid">
+              <div>
+                <p className="label">Última execução</p>
+                <p className="value">{latestHealing?.timestamp ?? "aguardando"}</p>
+              </div>
+              <div>
+                <p className="label">Duração (ms)</p>
+                <p className="value">{latestHealing?.duration_ms?.toFixed(2) ?? "0.00"}</p>
+              </div>
+              <div>
+                <p className="label">Detecções</p>
+                <p className="value">{latestHealing?.metrics?.issues_detected ?? 0}</p>
+              </div>
+              <div>
+                <p className="label">Remediações</p>
+                <p className="value">{latestHealing?.metrics?.remediations ?? 0}</p>
+              </div>
+            </div>
+            <div className="table">
+              <p className="label">Histórico recente</p>
+              <ul>
+                {healingHistory.length === 0 && <li>Nenhum ciclo registrado ainda.</li>}
+                {healingHistory.map((entry, index) => (
+                  <li key={`${entry.timestamp ?? index}-${index}`}>
+                    {entry.timestamp ?? "sem timestamp"} · {entry.metrics?.issues_detected ?? 0} issues · {entry.metrics?.remediations ?? 0} remediações
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="table">
+              <p className="label">Alertas recentes</p>
+              <ul>
+                {healingAlerts.length === 0 && <li>Sem alertas registrados.</li>}
+                {healingAlerts.map((alert, index) => (
+                  <li key={`${alert}-${index}`}>{alert}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="panel observability-panel">
+            <div className="panel-header">
+              <h2>Atlas Insights</h2>
+              <span className="badge">Últimos {atlasInsights.length}</span>
+            </div>
+            <div className="insight-grid">
+              {atlasInsights.length === 0 && <p>Nenhum insight capturado ainda.</p>}
+              {atlasInsights.map((insight, index) => (
+                <article key={`${insight.timestamp ?? index}-${insight.metric ?? index}`}>
+                  <h3>{insight.metric ?? "insight"}</h3>
+                  <p className="label">Status: {insight.status ?? "ok"}</p>
+                  <p className="value">{insight.value?.toFixed?.(2) ?? insight.value ?? "--"}</p>
+                  {insight.details && <pre>{JSON.stringify(insight.details, null, 2)}</pre>}
+                </article>
+              ))}
+            </div>
+            <div className="table">
+              <p className="label">Alertas do sistema</p>
+              <ul>
+                {observabilityAlerts.length === 0 && <li>Sem alertas globais.</li>}
+                {observabilityAlerts.map((alert, index) => (
+                  <li key={`${alert}-${index}`}>{alert}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="panel observability-panel">
+            <div className="panel-header">
+              <h2>Segurança P0</h2>
+              <span className="badge">Sandbox: {sandboxEvents.length}</span>
+            </div>
+            <div className="table">
+              <p className="label">Eventos Firecracker</p>
+              <ul>
+                {sandboxEvents.length === 0 && <li>Sem execuções sandbox recentes.</li>}
+                {sandboxEvents.map((event, index) => (
+                  <li key={`${event.timestamp ?? index}-${index}`}>
+                    {event.timestamp ?? "sem timestamp"} · {event.sandbox ?? "firecracker"} · {event.result ?? "sem resultado"}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="table">
+              <p className="label">Alertas DLP</p>
+              <ul>
+                {dlpAlerts.length === 0 && <li>Sem violações.</li>}
+                {dlpAlerts.map((alert, index) => (
+                  <li key={`${alert.timestamp ?? index}-${alert.rule ?? index}`}>
+                    {alert.timestamp ?? "sem timestamp"} · {alert.rule ?? "política DLP"} · {alert.action ?? "ação desconhecida"}
+                    <pre>{alert.snippet ?? JSON.stringify(alert.details ?? {}, null, 2)}</pre>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="panel observability-panel">
+            <div className="panel-header">
+              <h2>Validação Automática</h2>
+              <span className="badge">{validation?.latest?.timestamp ?? "sem dados"}</span>
+            </div>
+            <div className="validation-grid">
+              <div>
+                <p className="label">Audit</p>
+                <p className="value">{validation?.latest?.audit?.valid ? "íntegro" : "falha"}</p>
+                <p className="note">{validation?.latest?.audit?.message ?? "sem dados"}</p>
+              </div>
+              <div>
+                <p className="label">Políticas DLP</p>
+                <p className="value">{(validation?.latest?.dlp?.policies ?? []).join(', ') || "nenhuma"}</p>
+              </div>
+              <div>
+                <p className="label">Sandbox ready</p>
+                <p className="value">
+                  {validation?.latest?.sandbox?.kernel_exists && validation?.latest?.sandbox?.rootfs_exists
+                    ? "ativo"
+                    : "pendente"}
+                </p>
+              </div>
+            </div>
+            <p className="note">Log: {validation?.log_path ?? "não disponível"}</p>
+            {validation?.error && <p className="error">Erro: {validation.error}</p>}
           </section>
 
           <section className="panel snapshot-panel">
