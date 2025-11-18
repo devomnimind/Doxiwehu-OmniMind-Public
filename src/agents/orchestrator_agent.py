@@ -11,12 +11,13 @@ Quando usar: Tarefas complexas multi-fase que exigem coordenação entre agentes
 Integração: Controla todos os modos (code, architect, debug, reviewer, ask)
 """
 
-import json
+from __future__ import annotations
+
 import logging
 import re
 import time
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional, List
 from enum import Enum
 
 from .react_agent import ReactAgent
@@ -24,7 +25,7 @@ from .code_agent import CodeAgent
 from .architect_agent import ArchitectAgent
 from .debug_agent import DebugAgent
 from .reviewer_agent import ReviewerAgent
-from ..tools.omnimind_tools import ToolsFramework, ToolCategory
+from ..tools.omnimind_tools import ToolsFramework
 from ..integrations.mcp_client import MCPClient, MCPClientError
 from ..integrations.dbus_controller import (
     DBusSessionController,
@@ -75,7 +76,7 @@ class OrchestratorAgent(ReactAgent):
         5. Orchestrator: Compila report final
     """
 
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str) -> None:
         super().__init__(config_path)
 
         self.tools_framework = ToolsFramework()
@@ -99,9 +100,9 @@ class OrchestratorAgent(ReactAgent):
         self.metrics = OrchestratorMetricsCollector()
 
         # Estado de orquestração
-        self.current_plan = None
-        self.delegated_tasks = []
-        self.completed_subtasks = []
+        self.current_plan: Optional[Dict[str, Any]] = None
+        self.delegated_tasks: List[Dict[str, Any]] = []
+        self.completed_subtasks: List[Dict[str, Any]] = []
 
     def _init_mcp_client(self) -> Optional[MCPClient]:
         try:
@@ -154,7 +155,9 @@ class OrchestratorAgent(ReactAgent):
         """Retorna timestamp UTC em formato ISO"""
         return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
-    def _build_dashboard_context(self, plan: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def _build_dashboard_context(
+        self, plan: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         """Collect MCP and D-Bus state to inform the upcoming dashboard."""
         context: Dict[str, Any] = {
             "timestamp": self._timestamp(),
@@ -172,14 +175,18 @@ class OrchestratorAgent(ReactAgent):
 
         if self.dbus_system_controller:
             try:
-                context["network_status"] = self.dbus_system_controller.get_network_status()
+                context["network_status"] = (
+                    self.dbus_system_controller.get_network_status()
+                )
                 context["power_status"] = self.dbus_system_controller.get_power_status()
             except Exception as exc:
                 logger.warning("D-Bus system lookup failed: %s", exc)
 
         if self.dbus_session_controller:
             try:
-                context["media_players"] = self.dbus_session_controller.list_media_players()
+                context["media_players"] = (
+                    self.dbus_session_controller.list_media_players()
+                )
             except Exception as exc:
                 logger.warning("D-Bus session lookup failed: %s", exc)
 
@@ -192,7 +199,9 @@ class OrchestratorAgent(ReactAgent):
                     logger.warning("Unable to list Supabase tables: %s", exc)
                     context["supabase_error"] = str(exc)
             else:
-                context["supabase_info"] = "Service role key not configured; only anon operations available"
+                context["supabase_info"] = (
+                    "Service role key not configured; only anon operations available"
+                )
 
         if self.qdrant_adapter:
             try:
@@ -209,11 +218,17 @@ class OrchestratorAgent(ReactAgent):
         self.dashboard_snapshot = context
         return context
 
-    def _record_operation(self, name: str, latency: float, success: bool = True) -> None:
+    def _record_operation(
+        self, name: str, latency: float, success: bool = True
+    ) -> None:
         self.metrics.record(name, latency, success)
 
-    def _finalize_operation(self, name: str, start: float, result: Dict[str, Any]) -> Dict[str, Any]:
-        self._record_operation(name, time.perf_counter() - start, result.get("completed", False))
+    def _finalize_operation(
+        self, name: str, start: float, result: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        self._record_operation(
+            name, time.perf_counter() - start, result.get("completed", False)
+        )
         return result
 
     def metrics_summary(self) -> Dict[str, Any]:
@@ -227,7 +242,10 @@ class OrchestratorAgent(ReactAgent):
         }
 
     def trigger_mcp_action(
-        self, action: str = "read", path: str = "config/agent_config.yaml", recursive: bool = False
+        self,
+        action: str = "read",
+        path: str = "config/agent_config.yaml",
+        recursive: bool = False,
     ) -> Dict[str, Any]:
         subtask = {
             "description": f"Manual MCP {action} on {path}",
@@ -235,7 +253,9 @@ class OrchestratorAgent(ReactAgent):
         }
         return self._execute_mcp_subtask(subtask, metric_name="mcp_manual")
 
-    def trigger_dbus_action(self, flow: str = "power", media_action: str = "playpause") -> Dict[str, Any]:
+    def trigger_dbus_action(
+        self, flow: str = "power", media_action: str = "playpause"
+    ) -> Dict[str, Any]:
         if flow == "media":
             description = f"Media control {media_action}"
         elif flow == "network":
@@ -255,7 +275,9 @@ class OrchestratorAgent(ReactAgent):
     def _plan_progress(self, plan: Optional[Dict[str, Any]]) -> Dict[str, int]:
         if not plan or not plan.get("subtasks"):
             return {"completed": 0, "failed": 0}
-        completed = sum(1 for sub in plan["subtasks"] if sub.get("status") == "completed")
+        completed = sum(
+            1 for sub in plan["subtasks"] if sub.get("status") == "completed"
+        )
         failed = sum(1 for sub in plan["subtasks"] if sub.get("status") == "failed")
         return {"completed": completed, "failed": failed}
 
@@ -282,7 +304,11 @@ class OrchestratorAgent(ReactAgent):
         action = metadata.get("mcp_action") or (
             "list" if "list" in description.lower() else "read"
         )
-        path = metadata.get("path") or self._infer_path_from_description(description) or "config/agent_config.yaml"
+        path = (
+            metadata.get("path")
+            or self._infer_path_from_description(description)
+            or "config/agent_config.yaml"
+        )
         payload: Any
         summary = ""
 
@@ -335,7 +361,9 @@ class OrchestratorAgent(ReactAgent):
         try:
             if any(keyword in description for keyword in ["media", "play", "pause"]):
                 if self.dbus_session_controller:
-                    details = self.dbus_session_controller.control_media_player("playpause")
+                    details = self.dbus_session_controller.control_media_player(
+                        "playpause"
+                    )
                     summary = f"Media action result: {details.get('action')}"
                 else:
                     summary = "Media controller unavailable"
@@ -348,7 +376,9 @@ class OrchestratorAgent(ReactAgent):
                     details = self.dbus_system_controller.get_power_status()
                     summary = "Power status collected"
                 elif self.dbus_session_controller:
-                    details = {"media": self.dbus_session_controller.list_media_players()}
+                    details = {
+                        "media": self.dbus_session_controller.list_media_players()
+                    }
                     summary = "Media players enumerated"
         except Exception as exc:
             result = {
@@ -457,7 +487,15 @@ Your decomposition plan:"""
                 # Extrair modo e descrição - flexível para [CODE], [CODE_MODE], (code), etc.
                 line_lower = line.lower()
                 matched = False
-                for mode in ["code", "architect", "debug", "reviewer", "security", "mcp", "dbus"]:
+                for mode in [
+                    "code",
+                    "architect",
+                    "debug",
+                    "reviewer",
+                    "security",
+                    "mcp",
+                    "dbus",
+                ]:
                     # Buscar variações: [code], [code_mode], (code), etc.
                     if (
                         f"[{mode}]" in line_lower
@@ -472,7 +510,7 @@ Your decomposition plan:"""
                         # Remover padrões como "- Plan Architecture:"
                         if ":" in task_desc:
                             task_desc = task_desc.split(":", 1)[-1].strip()
-                        plan["subtasks"].append(
+                        plan["subtasks"].append(  # type: ignore[attr-defined]
                             {
                                 "agent": mode,
                                 "description": task_desc,
@@ -541,11 +579,13 @@ Your decomposition plan:"""
                             "mcp",
                             "dbus",
                         ]:
-                            if any(keyword in line_lower for keyword in agent_names[mode]):
+                            if any(
+                                keyword in line_lower for keyword in agent_names[mode]
+                            ):
                                 task_desc = line.strip("0123456789.-) \t")
                                 if ":" in task_desc:
                                     task_desc = task_desc.split(":", 1)[-1].strip()
-                                plan["subtasks"].append(
+                                plan["subtasks"].append(  # type: ignore[attr-defined]
                                     {
                                         "agent": mode,
                                         "description": task_desc,
@@ -563,7 +603,7 @@ Your decomposition plan:"""
         return plan
 
     def execute_plan(
-        self, plan: Dict[str, Any] = None, max_iterations_per_task: int = 3
+        self, plan: Optional[Dict[str, Any]] = None, max_iterations_per_task: int = 3
     ) -> Dict[str, Any]:
         """Executa plano delegando para agentes especializados"""
         if plan is None:
@@ -572,7 +612,7 @@ Your decomposition plan:"""
         if not plan or not plan.get("subtasks"):
             return {"error": "No plan to execute"}
 
-        results = {
+        results: Dict[str, Any] = {
             "original_task": plan.get("original_task"),
             "subtask_results": [],
             "overall_success": True,
@@ -585,9 +625,11 @@ Your decomposition plan:"""
                 description = f"Untitled subtask {i+1}"
                 subtask["description"] = description
             safe_description = description[:80]
-            print(
-                f"\n🪃 [Orchestrator] Delegating subtask {i+1}/{len(plan['subtasks'])}: {safe_description}..."
+            delegation_msg = (
+                f"\n🪃 [Orchestrator] Delegating subtask {i+1}/"
+                f"{len(plan['subtasks'])}: {safe_description}..."
             )
+            print(delegation_msg)
 
             try:
                 agent_mode = AgentMode(subtask["agent"])
@@ -619,7 +661,7 @@ Your decomposition plan:"""
                 elif agent_mode == AgentMode.DBUS:
                     result = self._execute_dbus_subtask(subtask)
                 elif agent_mode == AgentMode.CODE:
-                    result = agent.run_code_task(
+                    result = agent.run_code_task(  # type: ignore[union-attr]
                         subtask["description"], max_iterations=max_iterations_per_task
                     )
                 elif agent_mode == AgentMode.REVIEWER:
@@ -629,7 +671,7 @@ Your decomposition plan:"""
                         "note": "Review would be performed on generated files",
                     }
                 else:
-                    result = agent.run(
+                    result = agent.run(  # type: ignore[union-attr]
                         subtask["description"], max_iterations=max_iterations_per_task
                     )
 
@@ -710,26 +752,29 @@ Your decomposition plan:"""
             print(f"  {i}. [{subtask['agent']}] {subtask['description'][:80]}")
 
         # 2. Executar
-        print(f"\n🚀 Executing plan...")
+        print("\n🚀 Executing plan...")
         execution_result = self.execute_plan(plan, max_iterations_per_subtask)
 
         # 3. Sintetizar
-        print(f"\n📝 Synthesizing results...")
+        print("\n📝 Synthesizing results...")
         synthesis = self._synthesize_results(execution_result)
 
         # 4. Capture MCP/D-Bus context for the dashboard
         dashboard_snapshot = self._build_dashboard_context(plan)
 
         # 4. Armazenar episódio completo
+        orchestrated_action = f"Orchestrated {len(plan['subtasks'])} subtasks"
         self.memory.store_episode(
             task=task,
-            action=f"Orchestrated {len(plan['subtasks'])} subtasks",
+            action=orchestrated_action,
             result=synthesis["summary"],
             reward=1.0 if execution_result["overall_success"] else 0.5,
         )
 
         duration = time.perf_counter() - execution_start
-        self._record_operation("orchestrate_task", duration, execution_result["overall_success"])
+        self._record_operation(
+            "orchestrate_task", duration, execution_result["overall_success"]
+        )
 
         return {
             "task": task,
@@ -764,7 +809,7 @@ Your decomposition plan:"""
             "iteration": 1,
         }
 
-    def _synthesize_results(self, execution_result: Dict) -> Dict[str, Any]:
+    def _synthesize_results(self, execution_result: Dict[str, Any]) -> Dict[str, Any]:
         """Sintetiza resultados de múltiplos agentes"""
         subtask_summaries = []
         for sr in execution_result["subtask_results"]:

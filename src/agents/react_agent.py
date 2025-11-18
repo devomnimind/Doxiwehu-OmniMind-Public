@@ -16,9 +16,9 @@ from langgraph.graph import StateGraph, END
 from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory import EpisodicMemory
 from ..onboarding import SupabaseMemoryOnboarding
+from ..tools import FileOperations, ShellExecutor, SystemMonitor
 
 logger = logging.getLogger(__name__)
-from ..tools import FileOperations, ShellExecutor, SystemMonitor
 
 
 class AgentState(TypedDict):
@@ -134,6 +134,8 @@ class ReactAgent:
             )
 
         # Build prompt
+        shell_whitelist = ", ".join(self.config["system"]["shell_whitelist"])
+
         prompt = f"""You are an autonomous agent executing tasks using available tools.
 
 TASK: {state['current_task']}
@@ -156,7 +158,8 @@ AVAILABLE TOOLS:
 1. read_file(path: str) - Read file contents
 2. write_file(path: str, content: str) - Write to file
 3. list_files(path: str) - List directory contents
-4. execute_shell(command: str) - Execute shell command (whitelist: {self.config['system']['shell_whitelist']})
+4. execute_shell(command: str) - Execute shell command
+    (whitelist: {shell_whitelist})
 5. system_info() - Get system status
 
 INSTRUCTIONS:
@@ -197,7 +200,7 @@ Your response:"""
                 args_str = line.split("ARGS:")[1].strip()
                 try:
                     args = json.loads(args_str)
-                except:
+                except json.JSONDecodeError:
                     args = {}
 
         # Execute action
@@ -215,7 +218,7 @@ Your response:"""
 
         return state
 
-    def _execute_action(self, action: str, args: dict) -> str:
+    def _execute_action(self, action: str, args: Dict[str, Any]) -> str:
         """Execute a tool action."""
         try:
             if action == "read_file":
@@ -247,7 +250,11 @@ Your response:"""
         """
         if state["actions_taken"]:
             last_action = state["actions_taken"][-1]
-            observation = f"Action '{last_action['action']}' completed. Result: {last_action['result'][:200]}"
+            action_name = last_action["action"]
+            result_snippet = str(last_action["result"])[:200]
+            observation = (
+                f"Action '{action_name}' completed. Result: {result_snippet}"
+            )
 
             state["observations"].append(observation)
             state["messages"].append(f"[OBSERVE] {observation}")
@@ -299,7 +306,7 @@ Your response:"""
             "iteration": 0,
             "max_iterations": max_iterations,
             "completed": False,
-            "final_result": None,
+            "final_result": "",
         }
 
         # Run state machine
@@ -327,7 +334,9 @@ Your response:"""
     def _run_supabase_memory_onboarding(self) -> None:
         config = SupabaseConfig.load()
         if not config or not config.service_role_key:
-            logger.debug("Supabase memory onboarding skipped (service role key missing)")
+            logger.debug(
+                "Supabase memory onboarding skipped (service role key missing)"
+            )
             return
 
         onboarding = SupabaseMemoryOnboarding(config=config, memory=self.memory)
@@ -339,4 +348,6 @@ Your response:"""
             report.last_cursor,
         )
         if report.errors:
-            logger.warning("Supabase memory onboarding reported errors: %s", report.errors)
+            logger.warning(
+                "Supabase memory onboarding reported errors: %s", report.errors
+            )

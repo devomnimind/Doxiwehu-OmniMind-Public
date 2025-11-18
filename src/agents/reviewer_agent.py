@@ -8,22 +8,25 @@ Critérios: correctness, readability, efficiency, security
 Gera feedback detalhado para refinamento (RLAIF loop)
 """
 
+from __future__ import annotations
+
 import json
-from typing import Dict, Any, Tuple
-from .react_agent import ReactAgent, AgentState
+from typing import Any, Dict
+from .react_agent import ReactAgent
+from .code_agent import CodeAgent
 from ..tools.omnimind_tools import ToolsFramework
 
 
 class ReviewerAgent(ReactAgent):
     """Agente revisor com RLAIF (Reinforcement Learning from AI Feedback)"""
 
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str) -> None:
         super().__init__(config_path)
         self.tools_framework = ToolsFramework()
         self.mode = "reviewer"
 
         # Critérios de avaliação
-        self.criteria = {
+        self.criteria: Dict[str, str] = {
             "correctness": "Does it work correctly?",
             "readability": "Is it clean and understandable?",
             "efficiency": "Is it performant?",
@@ -119,25 +122,25 @@ Your review:"""
 
     def _parse_scores(self, response: str) -> Dict[str, float]:
         """Extrai scores do texto"""
-        scores = {}
+        scores: Dict[str, float] = {}
         for line in response.split("\n"):
             for criterion in self.criteria.keys():
                 if criterion in line.lower() and ":" in line:
                     try:
                         score_str = line.split(":")[1].strip().split()[0]
                         scores[criterion] = float(score_str)
-                    except:
-                        pass
+                    except (ValueError, IndexError):
+                        continue
             if "OVERALL_SCORE:" in line or "overall:" in line.lower():
                 try:
                     score_str = line.split(":")[1].strip().split()[0]
                     scores["OVERALL_SCORE"] = float(score_str)
-                except:
-                    pass
+                except (ValueError, IndexError):
+                        continue
         return scores
 
     def run_review_cycle(
-        self, coder_agent, task: str, max_attempts: int = 3
+        self, coder_agent: CodeAgent, task: str, max_attempts: int = 3
     ) -> Dict[str, Any]:
         """Executa loop RLAIF: Code → Review → Refine"""
         attempt = 0

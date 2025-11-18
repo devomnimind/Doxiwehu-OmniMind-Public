@@ -9,27 +9,29 @@ Quando usar: Build quebrado, edge cases, race conditions
 """
 
 import json
-from typing import Dict, Any
+from typing import Any, Dict, List
+
 from .react_agent import ReactAgent, AgentState
+from ..memory.episodic_memory import SimilarEpisode
 from ..tools.omnimind_tools import ToolsFramework, ToolCategory
 
 
 class DebugAgent(ReactAgent):
     """Agente especializado em diagnóstico e debugging"""
 
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str) -> None:
         super().__init__(config_path)
         self.tools_framework = ToolsFramework()
         self.mode = "debug"
 
         # Ferramentas permitidas
-        self.allowed_tool_categories = [
+        self.allowed_tool_categories: List[ToolCategory] = [
             ToolCategory.PERCEPTION,
             ToolCategory.REASONING,  # analyze_code, diagnose_error
         ]
 
         # Comandos permitidos (read-only e diagnóstico)
-        self.allowed_commands = [
+        self.allowed_commands: List[str] = [
             "ls",
             "cat",
             "grep",
@@ -38,7 +40,7 @@ class DebugAgent(ReactAgent):
             "git status",
         ]
 
-    def _execute_action(self, action: str, args: dict) -> str:
+    def _execute_action(self, action: str, args: Dict[str, Any]) -> str:
         try:
             # Bloquear escrita
             if action in ["write_to_file", "update_file", "insert_content"]:
@@ -57,18 +59,29 @@ class DebugAgent(ReactAgent):
             if action not in self.tools_framework.tools:
                 return f"Unknown tool: {action}"
 
-            result = self.tools_framework.execute_tool(action, **args)
+            result: Any = self.tools_framework.execute_tool(action, **args)
             return (
                 json.dumps(result, indent=2)
                 if isinstance(result, (dict, list))
                 else str(result)
             )
-        except Exception as e:
-            return f"Error: {str(e)}"
+        except Exception as exc:
+            return f"Error: {str(exc)}"
 
     def _think_node(self, state: AgentState) -> AgentState:
-        similar_episodes = self.memory.search_similar(state["current_task"], top_k=3)
+        similar_episodes: List[SimilarEpisode] = self.memory.search_similar(state["current_task"], top_k=3)
         system_status = self.tools_framework.execute_tool("inspect_context")
+        system_status_str = (
+            json.dumps(system_status, indent=2)
+            if isinstance(system_status, dict)
+            else str(system_status)
+        )
+        memory_str = "\n".join(
+            [
+                f"- {ep['task']}: {ep['result'][:120]}..."
+                for ep in (similar_episodes or [])
+            ]
+        )
 
         prompt = f"""You are DebugAgent 🪲, an expert debugger and diagnostician.
 
@@ -96,6 +109,12 @@ AVAILABLE TOOLS:
 
 PREVIOUS OBSERVATIONS:
 {chr(10).join([f"- {o[:150]}" for o in state['observations']]) if state['observations'] else "None"}
+
+SIMILAR EPISODES:
+{memory_str or "No similar debug sessions recorded."}
+
+SYSTEM STATUS SNAPSHOT:
+{system_status_str or "Unavailable"}
 
 Focus on:
 1. Identifying root causes

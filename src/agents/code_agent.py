@@ -10,12 +10,11 @@ Quando usar: Implementar features, rodar testes, corrigir bugs, instalar depend�
 Integração: Recebe comandos do Orchestrator e resultados de Debug/Ask
 """
 
-import os
 import json
-from typing import Dict, List, Any
-from pathlib import Path
+from typing import Any, Dict, List
 
 from .react_agent import ReactAgent, AgentState
+from ..memory.episodic_memory import SimilarEpisode
 from ..tools.omnimind_tools import ToolsFramework, ToolCategory
 
 
@@ -30,7 +29,7 @@ class CodeAgent(ReactAgent):
     - Raciocínio: analyze_code
     """
 
-    def __init__(self, config_path: str):
+    def __init__(self, config_path: str) -> None:
         """Inicializa CodeAgent com framework de ferramentas expandido"""
         super().__init__(config_path)
 
@@ -41,7 +40,7 @@ class CodeAgent(ReactAgent):
         self.mode = "code"
 
         # Ferramentas permitidas para CodeAgent (todas)
-        self.allowed_tool_categories = [
+        self.allowed_tool_categories: List[ToolCategory] = [
             ToolCategory.PERCEPTION,
             ToolCategory.ACTION,
             ToolCategory.INTEGRATION,
@@ -49,11 +48,11 @@ class CodeAgent(ReactAgent):
         ]
 
         # Histórico de operações de código
-        self.code_history = []
+        self.code_history: List[Dict[str, Any]] = []
 
     def _get_available_tools_description(self) -> str:
         """Retorna descrição de ferramentas disponíveis"""
-        tools_by_category = {}
+        tools_by_category: Dict[str, List[str]] = {}
 
         for tool_name, category in self.tools_framework.get_available_tools().items():
             if category not in tools_by_category:
@@ -83,7 +82,7 @@ TOOL USAGE EXAMPLES:
 
         return description
 
-    def _execute_action(self, action: str, args: dict) -> str:
+    def _execute_action(self, action: str, args: Dict[str, Any]) -> str:
         """
         Executa ação usando ToolsFramework.
         Sobrescreve método da classe base para usar novas ferramentas.
@@ -91,7 +90,8 @@ TOOL USAGE EXAMPLES:
         try:
             # Verificar se ferramenta existe
             if action not in self.tools_framework.tools:
-                return f"Unknown tool: {action}. Available: {', '.join(self.tools_framework.tools.keys())}"
+                available = ", ".join(self.tools_framework.tools.keys())
+                return f"Unknown tool: {action}. Available: {available}"
 
             # Verificar categoria permitida
             tool = self.tools_framework.tools[action]
@@ -99,7 +99,7 @@ TOOL USAGE EXAMPLES:
                 return f"Tool '{action}' not allowed in {self.mode} mode"
 
             # Executar ferramenta
-            result = self.tools_framework.execute_tool(action, **args)
+            result: Any = self.tools_framework.execute_tool(action, **args)
 
             # Registrar operação
             self.code_history.append(
@@ -121,8 +121,8 @@ TOOL USAGE EXAMPLES:
             else:
                 return str(result)
 
-        except Exception as e:
-            return f"Error executing {action}: {str(e)}"
+        except Exception as exc:
+            return f"Error executing {action}: {str(exc)}"
 
     def _think_node(self, state: AgentState) -> AgentState:
         """
@@ -130,7 +130,7 @@ TOOL USAGE EXAMPLES:
         Sobrescreve para adicionar contexto de CodeAgent.
         """
         # Buscar experiências similares
-        similar_episodes = self.memory.search_similar(
+        similar_episodes: List[SimilarEpisode] = self.memory.search_similar(
             state["current_task"], top_k=3, min_reward=0.5
         )
 
@@ -222,7 +222,7 @@ Your response:"""
 
     def _count_actions(self) -> Dict[str, int]:
         """Conta ações por tipo"""
-        counts = {}
+        counts: Dict[str, int] = {}
         for op in self.code_history:
             action = op["action"]
             counts[action] = counts.get(action, 0) + 1
