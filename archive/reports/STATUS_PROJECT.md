@@ -287,10 +287,15 @@ print(f"Overall success: {results['success_rate']}")
 - [ ] RLAIF iteration convergence testing
 - [ ] Performance optimization (target: <30s decomposition)
 
+### Phase 7.5: Memory & Embedding Hardening
+- [ ] Document deterministic fallback TODO in `src/memory/episodic_memory.py` and plan a Phase 8 hybrid embedding pipeline
+- [ ] Align Qdrant cleanup with embedding resilience requirements before MCP isolation
+
 ### Phase 8: MCP Integration
 - [ ] Real MCP client implementation
 - [ ] Filesystem operations via MCP protocol
 - [ ] Security testing with MCP isolation
+- [ ] Orchestrator → MCP/D-Bus context snapshotting to feed upcoming FastAPI/React dashboard
 
 ### Phase 9: Production Deployment
 - [ ] Systemd services (omnimind-orchestrator.service)

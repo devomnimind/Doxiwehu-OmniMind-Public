@@ -1,15 +1,15 @@
-"""Playbooks for OmniMind SecurityAgent automated responses."""
+"""Playbook registry for OmniMind SecurityAgent."""
 
-from .rootkit_response import rootkit_response
-from .intrusion_response import intrusion_response
-from .malware_response import malware_response
-from .privilege_escalation_response import privilege_escalation_response
-from .data_exfiltration_response import data_exfiltration_response
+from .data_exfiltration_response import DataExfiltrationPlaybook
+from .intrusion_response import IntrusionPlaybook
+from .malware_response import MalwarePlaybook
+from .privilege_escalation_response import PrivilegeEscalationPlaybook
+from .rootkit_response import RootkitPlaybook
 
 __all__ = [
-    "rootkit_response",
-    "intrusion_response",
-    "malware_response",
-    "privilege_escalation_response",
-    "data_exfiltration_response",
+    "RootkitPlaybook",
+    "IntrusionPlaybook",
+    "MalwarePlaybook",
+    "PrivilegeEscalationPlaybook",
+    "DataExfiltrationPlaybook",
 ]

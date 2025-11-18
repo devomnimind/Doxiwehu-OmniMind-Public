@@ -1,49 +1,64 @@
-"""SecurityAgent implements Phase 7 security monitoring, detection, and response."""
+"""SecurityAgent implements Phase 7 monitoring, detection, and playbook response."""
+
+import atexit
 import asyncio
+import copy
 import json
 import logging
 import os
-import shutil
-import time
+import textwrap
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
+from enum import Enum
 from pathlib import Path
-from typing import Any, Collection, Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import psutil
 import yaml
 
 from ..tools.omnimind_tools import AuditedTool, ToolCategory
-from .playbooks import (
-    data_exfiltration_response,
-    intrusion_response,
-    malware_response,
-    privilege_escalation_response,
-    rootkit_response,
-)
+from .playbooks.data_exfiltration_response import DataExfiltrationPlaybook
+from .playbooks.intrusion_response import IntrusionPlaybook
+from .playbooks.malware_response import MalwarePlaybook
+from .playbooks.privilege_escalation_response import PrivilegeEscalationPlaybook
+from .playbooks.rootkit_response import RootkitPlaybook
+from .playbooks.utils import run_command
 
 logger = logging.getLogger(__name__)
 
+_security_log_handler: Optional[logging.Handler] = None
 
-class ThreatLevel(str):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
-    CRITICAL = "critical"
+
+def _close_security_log_handler() -> None:
+    global _security_log_handler
+    if _security_log_handler:
+        _security_log_handler.close()
+        _security_log_handler = None
+
+
+class ThreatLevel(Enum):
+    """Level of severity assigned to a security event."""
+
+    LOW = 1
+    MEDIUM = 2
+    HIGH = 3
+    CRITICAL = 4
 
 
 @dataclass
 class SecurityEvent:
+    """Represents a detected security signal."""
+
     timestamp: str
     event_type: str
     source: str
     description: str
     details: Dict[str, Any]
-    threat_level: str
+    threat_level: ThreatLevel
     raw_data: str
-    id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    processed: bool = False
+    responded: bool = False
+    id: str = field(default_factory=lambda: uuid.uuid4().hex)
 
 
 DEFAULT_CONFIG: Dict[str, Any] = {
@@ -51,83 +66,396 @@ DEFAULT_CONFIG: Dict[str, Any] = {
         "enabled": True,
         "monitoring_interval": 60,
         "auto_response": True,
-        "audit_log_path": "/opt/omnimind/security_logs/security_actions.log",
+        "report_interval": 300,
+        "audit_log_path": str(Path.home() / ".omnimind" / "security_actions.log"),
     },
     "monitoring": {
-        "processes": {"interval": 60, "enabled": True},
-        "files": {"interval": 300, "enabled": True},
-        "network": {"interval": 30, "enabled": True},
-        "logs": {"interval": 10, "enabled": True},
+        "processes": {
+            "interval": 60,
+            "suspicious_patterns": [
+                "nmap",
+                "nikto",
+                "sqlmap",
+                "nc",
+                "ncat",
+                "bash -i",
+                "sh -i",
+                "/dev/tcp",
+                "metasploit",
+                "msfconsole",
+            ],
+        },
+        "files": {"interval": 300, "paths": ["/etc", "/usr/bin", "/root"]},
+        "network": {
+            "interval": 30,
+            "suspicious_ports": [4444, 5555, 6666, 7777, 8888, 31337],
+        },
+        "logs": {
+            "interval": 10,
+            "files": ["/var/log/auth.log", "/var/log/syslog"],
+            "keywords": [
+                "Failed password",
+                "Invalid user",
+                "sudo: COMMAND=",
+                "Authentication failure",
+            ],
+        },
     },
 }
 
 
 class SecurityAgent(AuditedTool):
-    """OmniMind Security agent that monitors processes, files, network, and logs."""
+    """Autonomous security monitor that coordinates playbooks."""
 
     def __init__(self, config_path: str, llm: Optional[Any] = None):
         super().__init__("security_agent", ToolCategory.SECURITY)
         self.config_path = Path(config_path)
         self.config = self._load_config()
         self.llm = llm
+        self.logger = self._setup_logging()
+        self.tools_available = self._check_tools()
+        self.playbooks = self._load_playbooks()
         self.event_history: List[SecurityEvent] = []
         self.incident_log: List[Dict[str, Any]] = []
         self._pending_events: List[SecurityEvent] = []
-        self._file_baseline: Dict[str, float] = {}
-        self._log_positions: Dict[str, int] = {}
-        self.tools_available = self._check_tools()
-        self.playbooks = self._load_playbooks()
         self._monitoring_tasks: List[asyncio.Task[Any]] = []
 
     def _load_config(self) -> Dict[str, Any]:
         if not self.config_path.exists():
-            logger.warning("Security config %s not found, using defaults", self.config_path)
-            return DEFAULT_CONFIG
+            logger.warning(
+                "Config not found, falling back to defaults: %s", self.config_path
+            )
+            return self._deep_merge(DEFAULT_CONFIG, {})
         try:
             with open(self.config_path, "r", encoding="utf-8") as stream:
-                data = yaml.safe_load(stream)
-            merged = DEFAULT_CONFIG.copy()
-            merged.update(data or {})
-            return merged
-        except Exception as exc:
-            logger.error("Failed to load security config: %s", exc)
-            return DEFAULT_CONFIG
+                data = yaml.safe_load(stream) or {}
+            return self._deep_merge(DEFAULT_CONFIG, data)
+        except Exception as exc:  # pragma: no cover
+            logger.error("Failed to read config %s: %s", self.config_path, exc)
+            return self._deep_merge(DEFAULT_CONFIG, {})
+
+    def _deep_merge(
+        self, base: Dict[str, Any], override: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        merged: Dict[str, Any] = copy.deepcopy(base)
+        for key, value in override.items():
+            if (
+                key in merged
+                and isinstance(merged[key], dict)
+                and isinstance(value, dict)
+            ):
+                merged[key] = self._deep_merge(merged[key], value)
+            else:
+                merged[key] = value
+        return merged
 
     def _check_tools(self) -> Dict[str, bool]:
-        required = [
+        tools = [
             "auditctl",
+            "aide",
             "chkrootkit",
             "rkhunter",
             "lynis",
             "clamdscan",
             "ufw",
-            "fail2ban-client",
             "ps",
             "ss",
             "lsof",
-            "iftop",
-            "bpftrace",
         ]
-        availability = {}
-        for tool in required:
-            available = shutil.which(tool) is not None
-            availability[tool] = available
-            logger.debug("Tool %s available: %s", tool, available)
+        availability: Dict[str, bool] = {}
+        for tool in tools:
+            try:
+                subprocess.run([tool, "--version"], capture_output=True, timeout=3)
+                availability[tool] = True
+            except Exception:  # pragma: no cover
+                availability[tool] = False
+            logger.info("Tool %s available: %s", tool, availability[tool])
         return availability
+
+    def _setup_logging(self) -> logging.Logger:
+        log_path = Path.home() / ".omnimind" / "security.log"
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        global _security_log_handler
+
+        if _security_log_handler is None:
+            handler = logging.FileHandler(log_path)
+            formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+            handler.setFormatter(formatter)
+            _security_log_handler = handler
+            atexit.register(_close_security_log_handler)
+        else:
+            handler = _security_log_handler
+
+        logger_instance = logging.getLogger("security_agent")
+        if handler not in logger_instance.handlers:
+            logger_instance.addHandler(handler)
+        logger_instance.setLevel(logging.INFO)
+        return logger_instance
 
     def _load_playbooks(self) -> Dict[str, Any]:
         return {
-            "process": rootkit_response,
-            "network": intrusion_response,
-            "file": malware_response,
-            "log": privilege_escalation_response,
-            "exfiltration": data_exfiltration_response,
+            "rootkit": RootkitPlaybook(),
+            "intrusion": IntrusionPlaybook(),
+            "malware": MalwarePlaybook(),
+            "privilege_escalation": PrivilegeEscalationPlaybook(),
+            "data_exfiltration": DataExfiltrationPlaybook(),
         }
 
-    def _record_event(self, event: SecurityEvent) -> None:
+    @staticmethod
+    def _current_utc_iso() -> str:
+        return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+    async def start_continuous_monitoring(self) -> None:
+        if not self.config["security_agent"]["enabled"]:
+            self.logger.warning("SecurityAgent disabled via config")
+            return
+        if self._monitoring_tasks:
+            return
+        monitors = [
+            self._monitor_processes(),
+            self._monitor_files(),
+            self._monitor_network(),
+            self._monitor_logs(),
+            self._analyze_events(),
+            self._respond_to_threats(),
+        ]
+        self._monitoring_tasks = monitors
+        await asyncio.gather(*monitors)
+
+    async def _monitor_processes(self) -> None:
+        interval = self.config["monitoring"]["processes"]["interval"]
+        patterns = self.config["monitoring"]["processes"].get("suspicious_patterns", [])
+        while True:
+            try:
+                for proc in psutil.process_iter(["pid", "name", "cmdline"]):
+                    info = proc.info
+                    if self._is_suspicious_process(info, patterns):
+                        event = self._create_event(
+                            event_type="suspicious_process",
+                            source=f"process:{info.get('pid')}",
+                            description=f"Suspicious process {info.get('name')}",
+                            details=info,
+                            raw_data=str(info),
+                            level=ThreatLevel.HIGH,
+                        )
+                        await self._handle_event(event)
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+            await asyncio.sleep(interval)
+
+    async def _monitor_files(self) -> None:
+        interval = self.config["monitoring"]["files"]["interval"]
+        if not self.tools_available.get("aide"):
+            self.logger.warning("AIDE unavailable, skipping file monitoring")
+            await asyncio.sleep(interval)
+            return
+        while True:
+            try:
+                result = await asyncio.to_thread(
+                    run_command, ["sudo", "aide", "--check"]
+                )
+                changes = self._parse_aide_output(result.get("output", ""))
+                for change in changes:
+                    event = self._create_event(
+                        event_type="file_integrity",
+                        source="aide",
+                        description=f"File change detected: {change.get('path')}",
+                        details=change,
+                        raw_data=result.get("output", ""),
+                        level=ThreatLevel.MEDIUM,
+                    )
+                    await self._handle_event(event)
+            except Exception as exc:  # pragma: no cover
+                self.logger.error("File monitor failed: %s", exc)
+            await asyncio.sleep(interval)
+
+    async def _monitor_network(self) -> None:
+        interval = self.config["monitoring"]["network"]["interval"]
+        suspicious_ports = set(
+            self.config["monitoring"]["network"].get("suspicious_ports", [])
+        )
+        while True:
+            try:
+                connections = psutil.net_connections(kind="inet")
+                summaries: Dict[str, int] = {}
+                for conn in connections:
+                    remote = (
+                        f"{conn.raddr.ip}:{conn.raddr.port}"
+                        if conn.raddr
+                        else "unknown"
+                    )
+                    local = (
+                        f"{conn.laddr.ip}:{conn.laddr.port}"
+                        if conn.laddr
+                        else "unknown"
+                    )
+                    if self._is_suspicious_connection(remote, suspicious_ports):
+                        event = self._create_event(
+                            event_type="suspicious_network",
+                            source="network",
+                            description=f"Suspicious connection {local} -> {remote}",
+                            details={"local": local, "remote": remote},
+                            raw_data=str(conn),
+                            level=ThreatLevel.HIGH,
+                        )
+                        await self._handle_event(event)
+                    summaries[remote] = summaries.get(remote, 0) + 1
+                    if summaries[remote] > 5:
+                        event = self._create_event(
+                            event_type="data_exfiltration",
+                            source="network",
+                            description="Repeated outbound connection",
+                            details={"remote": remote, "count": summaries[remote]},
+                            raw_data=str(conn),
+                            level=ThreatLevel.HIGH,
+                        )
+                        await self._handle_event(event)
+            except Exception as exc:  # pragma: no cover
+                self.logger.error("Network monitor failed: %s", exc)
+            await asyncio.sleep(interval)
+
+    async def _monitor_logs(self) -> None:
+        interval = self.config["monitoring"]["logs"]["interval"]
+        files = self.config["monitoring"]["logs"].get("files", [])
+        keywords = self.config["monitoring"]["logs"].get("keywords", [])
+        while True:
+            for log_file in files:
+                if not os.path.exists(log_file):
+                    continue
+                try:
+                    with open(log_file, "r", encoding="utf-8", errors="ignore") as fp:
+                        fp.seek(0, os.SEEK_END)
+                        size = fp.tell()
+                        fp.seek(max(0, size - 4096))
+                        for line in fp:
+                            if self._is_suspicious_log_line(line, keywords):
+                                event = self._create_event(
+                                    event_type="log_anomaly",
+                                    source=log_file,
+                                    description="Suspicious log detected",
+                                    details={"line": line.strip()},
+                                    raw_data=line,
+                                    level=ThreatLevel.MEDIUM,
+                                )
+                                await self._handle_event(event)
+                except Exception as exc:  # pragma: no cover
+                    self.logger.warning("Log monitor error on %s: %s", log_file, exc)
+            await asyncio.sleep(interval)
+
+    async def _analyze_events(self) -> None:
+        while True:
+            try:
+                if self.event_history:
+                    recent = self.event_history[:10]
+                    analysis = await self._analyze_with_llm(recent)
+                    if analysis.get("is_incident"):
+                        incident = {
+                            "timestamp": self._current_utc_iso(),
+                            "events": [event.event_type for event in recent],
+                            "analysis": analysis,
+                        }
+                        self.incident_log.append(incident)
+                        self.logger.warning(
+                            "LLM incident detected: %s", analysis.get("description")
+                        )
+            except Exception as exc:  # pragma: no cover
+                self.logger.error("Analysis loop failed: %s", exc)
+            await asyncio.sleep(60)
+
+    async def _respond_to_threats(self) -> None:
+        while True:
+            to_process = [event for event in self.event_history if not event.responded]
+            for event in to_process:
+                if event.threat_level in {ThreatLevel.HIGH, ThreatLevel.CRITICAL}:
+                    await self._execute_response(event)
+            await asyncio.sleep(30)
+
+    async def _execute_response(self, event: SecurityEvent) -> None:
+        playbook_key = self._map_event_to_playbook(event.event_type)
+        playbook = self.playbooks.get(playbook_key)
+        self.logger.info("Executing playbook %s for %s", playbook_key, event.event_type)
+        if not playbook:
+            self.logger.warning("No playbook registered for %s", event.event_type)
+            return
+        try:
+            result = await playbook.execute(self, event)
+            entry = {
+                "event_id": event.id,
+                "type": event.event_type,
+                "threat_level": event.threat_level.name,
+                "playbook": playbook_key,
+                "result": result,
+                "timestamp": self._current_utc_iso(),
+            }
+            self.incident_log.append(entry)
+            self._audit_action("respond", event.details, entry, "SUCCESS")
+        except Exception as exc:  # pragma: no cover
+            self.logger.error("Playbook %s failed: %s", playbook_key, exc)
+            self._audit_action("respond", event.details, {}, "ERROR", str(exc))
+        finally:
+            event.responded = True
+
+    async def _handle_event(self, event: SecurityEvent) -> None:
         self.event_history.insert(0, event)
         self._pending_events.append(event)
-        logger.debug("Recorded security event %s", event.id)
+        self.logger.warning(
+            "New security event %s: %s", event.event_type, event.description
+        )
+        self._audit_action("event", event.details, event.__dict__, "SUCCESS")
+
+    async def _analyze_with_llm(self, events: List[SecurityEvent]) -> Dict[str, Any]:
+        if not self.llm:
+            summary = {
+                "is_incident": any(
+                    event.threat_level.value >= ThreatLevel.HIGH.value
+                    for event in events
+                ),
+                "description": "Threshold analysis",
+                "confidence": 0.65,
+            }
+            return summary
+        try:
+            events_text = "\n".join(
+                f"- {event.timestamp}: {event.event_type} -> {event.description}"
+                for event in events
+            )
+            prompt = f"""
+Analyze these security events and detect coordinated incidents:
+
+{events_text}
+
+Provide:
+- Is incident? (yes/no)
+- Threat level
+- Recommended response
+"""
+            response = await self.llm.invoke(prompt)
+            content = getattr(response, "content", "")
+            is_incident = "yes" in content.lower()
+            return {
+                "is_incident": is_incident,
+                "description": content.strip()[:500],
+                "confidence": 0.7,
+            }
+        except Exception as exc:  # pragma: no cover
+            self.logger.error("LLM analysis failed: %s", exc)
+            return {
+                "is_incident": False,
+                "description": "LLM failure",
+                "confidence": 0.5,
+            }
+
+    def _map_event_to_playbook(self, event_type: str) -> str:
+        mapping = {
+            "suspicious_process": "intrusion",
+            "rootkit_detected": "rootkit",
+            "suspicious_network": "intrusion",
+            "malware_detected": "malware",
+            "data_exfiltration": "data_exfiltration",
+            "log_anomaly": "privilege_escalation",
+            "file_integrity": "malware",
+        }
+        return mapping.get(event_type, "intrusion")
 
     def _create_event(
         self,
@@ -136,267 +464,91 @@ class SecurityAgent(AuditedTool):
         description: str,
         details: Dict[str, Any],
         raw_data: str,
-        level: str,
+        level: ThreatLevel,
     ) -> SecurityEvent:
         return SecurityEvent(
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=datetime.now(timezone.utc).isoformat(),
             event_type=event_type,
             source=source,
             description=description,
             details=details,
-            threat_level=level,
             raw_data=raw_data,
+            threat_level=level,
         )
 
-    async def start_continuous_monitoring(self) -> None:
-        if self._monitoring_tasks:
-            return
-        tasks = [
-            self._monitor_processes(),
-            self._monitor_files(),
-            self._monitor_network(),
-            self._monitor_logs(),
-            self._event_coordinator(),
-        ]
-        for coro in tasks:
-            task = asyncio.create_task(coro)
-            self._monitoring_tasks.append(task)
-
-    async def _monitor_processes(self) -> None:
-        interval = self.config.get("monitoring", {}).get("processes", {}).get("interval", 60)
-        while True:
-            try:
-                for proc in psutil.process_iter(["pid", "name", "cmdline"]):
-                    info = proc.info
-                    if self._is_suspicious_process(info):
-                        event = self._create_event(
-                            event_type="process",
-                            source=f"process:{info.get('pid')}",
-                            description=f"Suspicious process {info.get('name')}",
-                            details=info,
-                            raw_data=str(info),
-                            level=ThreatLevel.MEDIUM,
-                        )
-                        self._record_event(event)
-            except (psutil.NoSuchProcess, psutil.AccessDenied):
-                pass
-            await asyncio.sleep(interval)
-
-    async def _monitor_files(self) -> None:
-        interval = self.config.get("monitoring", {}).get("files", {}).get("interval", 300)
-        paths = self.config.get("monitoring", {}).get("files", {}).get("paths_to_monitor", [])
-        while True:
-            for base in paths:
-                for root, _, files in os.walk(base):
-                    for name in files:
-                        path = Path(root) / name
-                        try:
-                            stat = path.stat()
-                        except (FileNotFoundError, PermissionError):
-                            continue
-                        previous = self._file_baseline.get(str(path))
-                        current = stat.st_mtime
-                        if previous and current != previous:
-                            event = self._create_event(
-                                event_type="file",
-                                source=str(path),
-                                description="File integrity change detected",
-                                details={"path": str(path), "mtime": current},
-                                raw_data=str(stat),
-                                level=ThreatLevel.MEDIUM,
-                            )
-                            self._record_event(event)
-                        self._file_baseline[str(path)] = current
-            await asyncio.sleep(interval)
-
-    async def _monitor_network(self) -> None:
-        interval = self.config.get("monitoring", {}).get("network", {}).get("interval", 30)
-        while True:
-            try:
-                connections = psutil.net_connections(kind="inet")
-                seen: Dict[str, int] = {}
-                for conn in connections:
-                    laddr = f"{conn.laddr.ip}:{conn.laddr.port}" if conn.laddr else "unknown"
-                    if conn.raddr:
-                        remote = f"{conn.raddr.ip}:{conn.raddr.port}"
-                    else:
-                        remote = "unknown"
-                    if self._is_suspicious_connection(remote):
-                        event = self._create_event(
-                            event_type="network",
-                            source=remote,
-                            description=f"Suspicious connection {remote}",
-                            details={"local": laddr, "remote": remote},
-                            raw_data=str(conn),
-                            level=ThreatLevel.HIGH,
-                        )
-                        self._record_event(event)
-                    seen[remote] = seen.get(remote, 0) + 1
-                    if seen[remote] > 3:
-                        event = self._create_event(
-                            event_type="exfiltration",
-                            source=remote,
-                            description="Repeated connection detected",
-                            details={"count": seen[remote]},
-                            raw_data=str(conn),
-                            level=ThreatLevel.HIGH,
-                        )
-                        self._record_event(event)
-            except psutil.AccessDenied:
-                pass
-            await asyncio.sleep(interval)
-
-    async def _monitor_logs(self) -> None:
-        interval = self.config.get("monitoring", {}).get("logs", {}).get("interval", 10)
-        files = self.config.get("monitoring", {}).get("logs", {}).get("files", [])
-        while True:
-            for filename in files:
-                try:
-                    with open(filename, "r", encoding="utf-8", errors="ignore") as handle:
-                        handle.seek(self._log_positions.get(filename, 0))
-                        for line in handle:
-                            if self._is_suspicious_log_line(line):
-                                event = self._create_event(
-                                    event_type="log",
-                                    source=filename,
-                                    description="Suspicious log entry detected",
-                                    details={"line": line.strip()},
-                                    raw_data=line,
-                                    level=ThreatLevel.MEDIUM,
-                                )
-                                self._record_event(event)
-                        self._log_positions[filename] = handle.tell()
-                except FileNotFoundError:
-                    continue
-            await asyncio.sleep(interval)
-
-    async def _event_coordinator(self) -> None:
-        while True:
-            if self._pending_events:
-                to_process = list(self._pending_events)
-                for event in to_process:
-                    if event.processed:
-                        continue
-                    await self._analyze_events(event)
-                    await self._respond_to_threats(event)
-            await asyncio.sleep(5)
-
-    async def _analyze_events(self, event: SecurityEvent) -> None:
-        analysis = await self._analyze_with_llm(event)
-        event.details["analysis"] = analysis
-
-    async def _analyze_with_llm(self, event: SecurityEvent) -> Dict[str, Any]:
-        if not self.llm:
-            summary = {
-                "threat_level": event.threat_level,
-                "confidence": 0.65,
-                "reason": event.description,
-            }
-        else:
-            try:
-                payload = {
-                    "event": event.description,
-                    "threat_level": event.threat_level,
-                    "details": event.details,
-                }
-                response = await self.llm.generate(payload)
-                summary = {
-                    "threat_level": response.get("threat_level", event.threat_level),
-                    "confidence": response.get("confidence", 0.7),
-                    "reason": response.get("reason", event.description),
-                }
-            except Exception as exc:  # pragma: no cover - placeholder
-                logger.warning("LLM analysis failed: %s", exc)
-                summary = {
-                    "threat_level": event.threat_level,
-                    "confidence": 0.5,
-                    "reason": "LLM failed, using defaults",
-                }
-        return summary
-
-    async def _respond_to_threats(self, event: SecurityEvent) -> None:
-        event_details = event.details.copy()
-        threat_level = event.threat_level
-        if not self.config.get("security_agent", {}).get("auto_response", False):
-            return
-        await self._execute_response(event, threat_level)
-        event.processed = True
-        self._pending_events.remove(event)
-
-    async def _execute_response(self, event: SecurityEvent, threat_level: str) -> None:
-        playbook = self.playbooks.get(event.event_type)
-        if not playbook:
-            logger.warning("No playbook for event type %s", event.event_type)
-            return
-        result = playbook(event.details)
-        entry = {
-            "event_id": event.id,
-            "event": event.description,
-            "threat_level": threat_level,
-            "response": result,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
-        }
-        self.incident_log.append(entry)
-        self._audit_action(
-            action="respond",
-            input_data=event.details,
-            output_data=entry,
-            status="SUCCESS",
-        )
-
-    def _is_suspicious_process(self, proc: Dict[str, Any]) -> bool:
+    def _is_suspicious_process(self, proc: Dict[str, Any], patterns: List[str]) -> bool:
         name = (proc.get("name") or "").lower()
         cmdline = " ".join(proc.get("cmdline") or [])
-        suspicious_patterns = self.config.get("monitoring", {}).get("processes", {}).get(
-            "suspicious_patterns",
-            ["nmap", "nikto", "sqlmap", "nc", "ncat", "bash -i", "sh -i", "/dev/tcp", "metasploit"],
-        )
-        for pattern in suspicious_patterns:
+        for pattern in patterns:
             if pattern.lower() in name or pattern.lower() in cmdline.lower():
                 return True
         return False
 
-    def _is_suspicious_connection(self, connection: str) -> bool:
-        suspicious_ports = {4444, 5555, 6666, 7777, 8888, 31337}
-        if ":" not in connection:
+    def _is_suspicious_connection(self, conn: str, ports: set) -> bool:
+        if ":" not in conn:
             return False
-        _, port = connection.rsplit(":", 1)
         try:
-            if int(port) in suspicious_ports:
-                return True
+            _, port = conn.rsplit(":", 1)
+            return int(port) in ports
         except ValueError:
-            pass
-        return False
+            return False
 
-    def _is_suspicious_log_line(self, line: str) -> bool:
-        keywords = self.config.get("monitoring", {}).get("logs", {}).get("anomaly_keywords", [])
-        if not keywords:
-            keywords = ["Failed password", "Invalid user", "sudo: COMMAND=", "Authentication failure"]
-        return any(keyword in line for keyword in keywords)
+    def _is_suspicious_log_line(self, line: str, keywords: List[str]) -> bool:
+        return any(keyword.lower() in line.lower() for keyword in keywords)
+
+    def _parse_aide_output(self, output: str) -> List[Dict[str, Any]]:
+        events: List[Dict[str, Any]] = []
+        for line in output.splitlines():
+            lowered = line.lower()
+            if "added" in lowered or "changed" in lowered or "removed" in lowered:
+                parts = line.split()
+                events.append({"change": line, "path": parts[-1] if parts else line})
+        return events
 
     def generate_security_report(self) -> str:
-        payload = {
-            "events": [event.__dict__ for event in self.event_history[:10]],
-            "incidents": self.incident_log[-10:],
-            "tools": self.tools_available,
-        }
-        report = json.dumps(payload, indent=2)
-        self._audit_action(
-            action="report",
-            input_data=payload,
-            output_data=report,
-            status="SUCCESS",
+        total_events = len(self.event_history)
+        critical = sum(
+            1
+            for event in self.event_history
+            if event.threat_level == ThreatLevel.CRITICAL
         )
+        high = sum(
+            1 for event in self.event_history if event.threat_level == ThreatLevel.HIGH
+        )
+        recent_incidents = self.incident_log[-5:]
+        report = textwrap.dedent(
+            f"""
+                ╔══════════════════════════════════════════════════════════════════════╗
+                ║ SECURITY REPORT - OMNIMIND
+                ║ {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC
+                ╚══════════════════════════════════════════════════════════════════════╝
+
+                SUMMARY:
+                  Total Events: {total_events}
+                  Critical Threats: {critical}
+                  High Threats: {high}
+                  Incidents Logged: {len(self.incident_log)}
+
+                TOOLS AVAILABLE:
+            """
+        )
+        for tool, available in self.tools_available.items():
+            status = "✅" if available else "❌"
+            report += f"              {status} {tool}\n"
+        if recent_incidents:
+            report += "\n            RECENT INCIDENTS:\n"
+            for incident in recent_incidents:
+                report += f"              - {incident.get('timestamp')} - {incident.get('type')}\n"
+        self._audit_action("report", {}, report, "SUCCESS")
         return report
 
-    def execute(self, action: str, data: Optional[Dict[str, Any]] = None) -> Any:
+    def execute(self, action: str, payload: Optional[Dict[str, Any]] = None) -> Any:
         if action == "status":
             return {
                 "active": bool(self._monitoring_tasks),
                 "events": len(self.event_history),
                 "incidents": len(self.incident_log),
-                "tools": self.tools_available,
             }
         if action == "report":
             return self.generate_security_report()
-        raise ValueError(f"Unknown action {action}")
+        raise ValueError(f"Unsupported action: {action}")

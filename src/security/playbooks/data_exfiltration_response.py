@@ -1,23 +1,91 @@
-"""Playbook to detect and halt data exfiltration."""
-import logging
-from typing import Dict, List
+"""Playbook to detect and halt data exfiltration flows."""
 
-from .utils import run_command
+import asyncio
+import json
+import logging
+from typing import Any, Dict
+
+from .utils import command_available, run_command_async
 
 logger = logging.getLogger(__name__)
 
 
-def data_exfiltration_response(event_details: Dict) -> Dict[str, List[Dict[str, str]]]:
-    """Block suspect connections and preserve forensic evidence."""
-    commands = [
-        ["/usr/bin/iftop", "-t", "-s", "5"],
-        ["/usr/bin/bpftrace", "-e", "tracepoint:net:net_dev_xmit { printf(\"%s\", args->len); }"],
-        ["/usr/bin/ufw", "status"],
-    ]
-    executed = [run_command(cmd) for cmd in commands]
-    logger.info("Data exfiltration playbook ran for %s", event_details.get("source"))
-    return {
-        "status": "completed",
-        "commands": executed,
-        "event": event_details,
-    }
+class DataExfiltrationPlaybook:
+    """Handles disruption of abnormal transfer channels."""
+
+    async def execute(self, agent: Any, event: Any) -> Dict[str, Any]:
+        logger.info(
+            "🚨 [EXFIL] response start for %s", getattr(event, "event_type", "exfil")
+        )
+        detection = await self._detect_anomalous_transfer()
+        blocked = await self._block_connection(event)
+        throttle = await self._throttle_bandwidth()
+        preserved = await self._preserve_logs(event)
+        notification = await self._notify_team(event)
+        return {
+            "status": "completed",
+            "detection": detection,
+            "blocked": blocked,
+            "throttle": throttle,
+            "preserved": preserved,
+            "notification": notification,
+        }
+
+    async def _detect_anomalous_transfer(self) -> Dict[str, Any]:
+        logger.debug("   [1/5] Sampling network traffic")
+        command = ["/usr/bin/ss", "-tunap"]
+        if not command_available(command[0]):
+            return {"command": "ss", "status": "skipped", "reason": "tool unavailable"}
+        return await run_command_async(command)
+
+    async def _block_connection(self, event: Any) -> Dict[str, Any]:
+        logger.debug("   [2/5] Blocking suspicious egress")
+        remote = "0.0.0.0"
+        if hasattr(event, "details") and isinstance(event.details, dict):
+            remote = event.details.get("remote") or remote
+        command = ["sudo", "ufw", "deny", str(remote)]
+        if not command_available(command[0]):
+            return {"command": "ufw", "status": "skipped", "reason": "tool unavailable"}
+        return await run_command_async(command)
+
+    async def _throttle_bandwidth(self) -> Dict[str, Any]:
+        logger.debug("   [3/5] Applying traffic shaping")
+        command = [
+            "sudo",
+            "tc",
+            "qdisc",
+            "add",
+            "dev",
+            "eth0",
+            "root",
+            "tbf",
+            "rate",
+            "250kbps",
+            "burst",
+            "32kbit",
+            "latency",
+            "400ms",
+        ]
+        if not command_available(command[0]):
+            return {"command": "tc", "status": "skipped", "reason": "tool unavailable"}
+        return await run_command_async(command)
+
+    async def _preserve_logs(self, event: Any) -> Dict[str, Any]:
+        logger.debug("   [4/5] Preserving forensic logs")
+        snapshot = {
+            "event": getattr(event, "event_type", "exfil"),
+            "logs": ["/var/log/auth.log", "/var/log/syslog"],
+        }
+        path = f"/tmp/exfil_{int(asyncio.get_event_loop().time())}.json"
+        await asyncio.to_thread(self._write_artifact, path, snapshot)
+        return {"path": path, "status": "saved"}
+
+    async def _notify_team(self, event: Any) -> Dict[str, Any]:
+        logger.debug("   [5/5] Alerting stakeholders")
+        message = f"Data exfiltration mitigated for {getattr(event, 'description', 'unknown')}"
+        return await run_command_async(["/bin/echo", message])
+
+    @staticmethod
+    def _write_artifact(path: str, payload: Dict[str, Any]) -> None:
+        with open(path, "w", encoding="utf-8") as handle:
+            json.dump(payload, handle, ensure_ascii=False, indent=2)

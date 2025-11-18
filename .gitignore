@@ -15,3 +15,11 @@ __pycache__/
 build/
 dist/
 *.egg-info/
+*.coverage
+logs/.coverage
+.pytest_cache/
+.mypy_cache/
+tmp/
+archive/examples/cuda/tmp*
+config/dashboard_auth.json
+config/dashboard_auth.json

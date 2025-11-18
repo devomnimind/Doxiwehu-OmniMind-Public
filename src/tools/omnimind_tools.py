@@ -17,19 +17,27 @@ Camadas:
 11. Workflow - Coordination (switch_mode)
 """
 
-import os
+import asyncio
 import json
+import os
 import hashlib
 import subprocess
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional, Any, Callable
 from pathlib import Path
 from enum import Enum
 import logging
 from dataclasses import dataclass, asdict
 
+import threading
+
+
 logger = logging.getLogger(__name__)
+
+
+def _current_utc_timestamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
 
 class ToolCategory(Enum):
@@ -112,7 +120,7 @@ class AuditedTool:
 
         audit_entry = ToolAuditLog(
             tool_name=self.name,
-            timestamp=datetime.utcnow().isoformat() + "Z",
+            timestamp=_current_utc_timestamp(),
             user=os.getenv("USER", "unknown"),
             action=action,
             input_hash=input_hash,
@@ -269,7 +277,7 @@ class InspectContextTool(AuditedTool):
             import psutil
 
             context = {
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
                 "cpu_percent": psutil.cpu_percent(interval=1),
                 "memory_percent": psutil.virtual_memory().percent,
                 "memory_available_gb": round(
@@ -600,7 +608,7 @@ class PlanTaskTool(AuditedTool):
             "estimated_time": 0,
             "dependencies": [],
             "agents_required": [],
-            "created_at": datetime.utcnow().isoformat() + "Z",
+            "created_at": _current_utc_timestamp(),
         }
 
         self._audit_action("plan", task_description, plan, "SUCCESS")
@@ -629,7 +637,7 @@ class NewTaskTool(AuditedTool):
             "assigned_to": assigned_to,
             "priority": priority,
             "metadata": metadata or {},
-            "created_at": datetime.utcnow().isoformat() + "Z",
+            "created_at": _current_utc_timestamp(),
             "status": "CREATED",
         }
 
@@ -665,7 +673,7 @@ class SwitchModeTool(AuditedTool):
             "previous_mode": prev_mode,
             "current_mode": target_mode,
             "reason": reason,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": _current_utc_timestamp(),
         }
 
         self._audit_action(
@@ -686,7 +694,7 @@ class AttemptCompletionTool(AuditedTool):
             "task_id": task_id,
             "result": result,
             "success": success,
-            "completed_at": datetime.utcnow().isoformat() + "Z",
+            "completed_at": _current_utc_timestamp(),
         }
 
         status = "SUCCESS" if success else "FAILED"
@@ -714,7 +722,7 @@ class MCPToolTool(AuditedTool):
                 "tool": tool_name,
                 "args": args,
                 "result": f"MCP tool {tool_name} invoked",
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
             }
 
             self._audit_action(
@@ -743,7 +751,7 @@ class AccessMCPResourceTool(AuditedTool):
                 "server": mcp_server,
                 "resource": resource_uri,
                 "data": f"Resource {resource_uri} accessed",
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
             }
 
             self._audit_action("mcp_resource", resource_uri, result, "SUCCESS")
@@ -773,7 +781,7 @@ class EpisodicMemoryTool(AuditedTool):
         try:
             if action == "store":
                 entry = {
-                    "timestamp": datetime.utcnow().isoformat() + "Z",
+                    "timestamp": _current_utc_timestamp(),
                     "data": data,
                     "hash": self._compute_hash(data),
                 }
@@ -827,7 +835,7 @@ class AuditSecurityTool(AuditedTool):
         try:
             results = {
                 "check": check_type,
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
                 "passed": True,
                 "findings": [],
             }
@@ -865,6 +873,56 @@ class AuditSecurityTool(AuditedTool):
             return {"error": error, "passed": False}
 
 
+class SecurityAgentTool(AuditedTool):
+    """Wrapper around SecurityAgent with auditing."""
+
+    def __init__(self, config_path: str = "config/security.yaml"):
+        super().__init__("security_agent", ToolCategory.SECURITY)
+        self.config_path = config_path
+        from ..security.security_agent import SecurityAgent
+
+        self._agent = SecurityAgent(self.config_path)
+        self._monitor_thread: Optional[threading.Thread] = None
+
+    def execute(self, action: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+        try:
+            params = params or {}
+            result: Dict[str, Any]
+            if action == "start_monitoring":
+                result = self._start_monitoring()
+            elif action == "generate_report":
+                result = {"report": self._agent.generate_security_report()}
+            elif action == "check_threat":
+                result = {
+                    "threats": [
+                        event.__dict__ for event in self._agent.event_history[:10]
+                    ]
+                }
+            else:
+                raise ValueError(f"Unknown action {action}")
+            self._audit_action(action, params, result, "SUCCESS")
+            return result
+        except Exception as exc:
+            error = str(exc)
+            self._audit_action(action, params or {}, {}, "ERROR", error)
+            return {"error": error}
+
+    def _start_monitoring(self) -> Dict[str, str]:
+        if self._monitor_thread and self._monitor_thread.is_alive():
+            return {"status": "already running"}
+        self._monitor_thread = threading.Thread(
+            target=self._run_monitoring, daemon=True
+        )
+        self._monitor_thread.start()
+        return {"status": "monitoring_started"}
+
+    def _run_monitoring(self) -> None:
+        try:
+            asyncio.run(self._agent.start_continuous_monitoring())
+        except Exception as exc:
+            logger.error("Security monitoring loop failed: %s", exc)
+
+
 # ============================================================================
 # CAMADA 7: RACIOCÍNIO (REASONING LAYER)
 # ============================================================================
@@ -892,7 +950,7 @@ class AnalyzeCodeTool(AuditedTool):
                 "imports": content.count("import "),
                 "comments": content.count("#"),
                 "complexity": "medium",  # Placeholder
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
             }
 
             self._audit_action("analyze", filepath, analysis, "SUCCESS")
@@ -918,7 +976,7 @@ class DiagnoseErrorTool(AuditedTool):
                 "context": context or {},
                 "suggestions": [],
                 "severity": "medium",
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
             }
 
             # Análise simples de padrões comuns
@@ -960,7 +1018,7 @@ class AdaptStyleTool(AuditedTool):
             "style": style,
             "context": context,
             "applied": True,
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": _current_utc_timestamp(),
         }
 
         self._audit_action("adapt_style", style, result, "SUCCESS")
@@ -982,7 +1040,7 @@ class CollectFeedbackTool(AuditedTool):
             feedback_path.parent.mkdir(parents=True, exist_ok=True)
 
             entry = {
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
                 "type": feedback_type,
                 "data": data,
             }
@@ -1012,7 +1070,7 @@ class TrackMetricsTool(AuditedTool):
             metrics_path.parent.mkdir(parents=True, exist_ok=True)
 
             entry = {
-                "timestamp": datetime.utcnow().isoformat() + "Z",
+                "timestamp": _current_utc_timestamp(),
                 "metric": metric_name,
                 "value": value,
                 "labels": labels or {},
@@ -1076,6 +1134,7 @@ class ToolsFramework:
 
         # Camada 6: Segurança (1 ferramenta)
         self.tools["audit_security"] = AuditSecurityTool()
+        self.tools["security_agent"] = SecurityAgentTool()
 
         # Camada 7: Raciocínio (2 ferramentas)
         self.tools["analyze_code"] = AnalyzeCodeTool()
@@ -1192,4 +1251,5 @@ __all__ = [
     "EpisodicMemoryTool",
     # Security
     "AuditSecurityTool",
+    "SecurityAgentTool",
 ]

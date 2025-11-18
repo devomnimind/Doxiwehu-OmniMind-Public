@@ -7,7 +7,7 @@ import os
 import json
 import yaml
 from typing import Dict, List, Any, TypedDict
-from datetime import datetime
+from datetime import datetime, timezone
 
 from langchain_ollama import OllamaLLM
 from langgraph.graph import StateGraph, END
@@ -75,15 +75,11 @@ class ReactAgent:
             timeout=system_config["shell_timeout"],
         )
         self.monitor = SystemMonitor()
+        self.graph = self._build_graph()
 
     def _timestamp(self) -> str:
         """Generate ISO timestamp for logging"""
-        from datetime import datetime
-
-        return datetime.now().isoformat()
-
-        # Build state machine
-        self.graph = self._build_graph()
+        return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
     def _build_graph(self) -> StateGraph:
         """Build LangGraph state machine."""
@@ -206,7 +202,7 @@ Your response:"""
             "action": action,
             "args": args,
             "result": result,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         }
         state["actions_taken"].append(action_record)
         state["messages"].append(f"[ACT] {action}({args}) -> {result[:500]}...")

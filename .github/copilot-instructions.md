@@ -4,7 +4,7 @@
 **Status:** Phase 6 Complete → Phase 7/8 Planning  
 **Hardware:** Intel i5 10th + GTX 1650 4GB + 24GB RAM  
 **Target:** Psychoanalyst professional with autonomous AI needs
-
+**Project:** /home/fahbrain/projects/omnimind/
 ---
 
 ## 📋 CRITICAL: Read Security Module First

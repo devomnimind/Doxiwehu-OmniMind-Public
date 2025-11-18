@@ -4,9 +4,10 @@ Stores agent experiences in Qdrant vector database for learning and improvement.
 """
 
 from typing import Dict, List, Optional, Any
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 import json
+import logging
 
 from qdrant_client import QdrantClient
 from qdrant_client.models import (
@@ -17,6 +18,30 @@ from qdrant_client.models import (
     FieldCondition,
     MatchValue,
 )
+
+
+logger = logging.getLogger(__name__)
+
+
+def _load_embedding_model(model_name: str) -> Optional[Any]:
+    try:
+        from sentence_transformers import SentenceTransformer
+    except Exception as exc:
+        logger.warning(
+            "SentenceTransformer import failed: %s. Using deterministic embeddings.",
+            exc,
+        )
+        return None
+
+    try:
+        return SentenceTransformer(model_name)
+    except Exception as exc:
+        logger.warning(
+            "Failed to load SentenceTransformer %s: %s. Falling back to deterministic embeddings.",
+            model_name,
+            exc,
+        )
+        return None
 
 
 class EpisodicMemory:
@@ -34,6 +59,7 @@ class EpisodicMemory:
         self.client = QdrantClient(url=qdrant_url)
         self.collection_name = collection_name
         self.embedding_dim = embedding_dim
+        self._embedding_model = _load_embedding_model("all-MiniLM-L6-v2")
 
         # Initialize collection if doesn't exist
         self._ensure_collection()
@@ -53,21 +79,32 @@ class EpisodicMemory:
             print(f"✓ Created collection: {self.collection_name}")
 
     def _generate_embedding(self, text: str) -> List[float]:
-        """
-        Generate simple embedding from text.
-        TODO: Replace with sentence-transformers model.
-        """
-        # Temporary: simple hash-based embedding
-        # In production, use: sentence_transformers.SentenceTransformer('all-MiniLM-L6-v2')
+        """Generate embedding from text using SentenceTransformer with fallback."""
+        if self._embedding_model:
+            try:
+                encoded = self._embedding_model.encode(
+                    text, normalize_embeddings=True
+                )
+                return [float(x) for x in encoded]
+            except Exception as exc:
+                logger.warning(
+                    "Embedding model error for text snippet '%s': %s. Using deterministic fallback.",
+                    text[:32],
+                    exc,
+                )
+        # TODO: Phase 8 plan → replace deterministic hash fallback with a resilient hybrid embedding
+        # pipeline (e.g., lightweight local models plus verification cache) to avoid semantic drift and
+        # ensure consistent semantics when the primary model is unavailable.
+        return self._hash_based_embedding(text)
+
+    def _hash_based_embedding(self, text: str) -> List[float]:
         hash_obj = hashlib.sha256(text.encode())
         hash_bytes = hash_obj.digest()
 
-        # Expand to 384 dimensions
         embedding = []
         for i in range(self.embedding_dim):
             byte_val = hash_bytes[i % len(hash_bytes)]
-            embedding.append((byte_val / 255.0) * 2 - 1)  # Normalize to [-1, 1]
-
+            embedding.append((byte_val / 255.0) * 2 - 1)
         return embedding
 
     def store_episode(
@@ -91,7 +128,7 @@ class EpisodicMemory:
         Returns:
             episode_id: Unique identifier for this episode
         """
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(timezone.utc).isoformat()
 
         # Create episode text for embedding
         episode_text = f"Task: {task}\nAction: {action}\nResult: {result}"
@@ -198,16 +235,66 @@ class EpisodicMemory:
             "collection_name": self.collection_name,
         }
 
-    def consolidate_memory(self, min_episodes: int = 100):
-        """
-        Consolidate similar experiences (future feature).
-        Groups similar episodes to reduce memory footprint.
-        """
+    def consolidate_memory(self, min_episodes: int = 100) -> Dict[str, Any]:
+        """Consolidate similar experiences to reduce duplicates."""
         stats = self.get_stats()
+        total = stats["total_episodes"]
 
-        if stats["total_episodes"] < min_episodes:
-            return
+        if total == 0 or total < min_episodes:
+            return {
+                "status": "skipped",
+                "total_episodes": total,
+                "duplicates_removed": 0,
+                "remaining": total,
+            }
 
-        # TODO: Implement clustering and consolidation
-        print(f"⚠️  Memory consolidation not yet implemented")
-        print(f"   Current episodes: {stats['total_episodes']}")
+        seen = set()
+        duplicates = []
+        offset = 0
+        batch = 128
+
+        while True:
+            scroll_result = self.client.scroll(
+                collection_name=self.collection_name,
+                offset=offset,
+                limit=batch,
+                with_payload=True,
+                with_vectors=False,
+            )
+            points = getattr(scroll_result, "points", [])
+            if not points:
+                break
+
+            for point in points:
+                payload = point.payload
+                key = (
+                    payload.get("task"),
+                    payload.get("action"),
+                    payload.get("result"),
+                )
+                if key in seen:
+                    duplicates.append(point.id)
+                else:
+                    seen.add(key)
+
+            offset += len(points)
+            if len(points) < batch:
+                break
+
+        removed = 0
+        if duplicates:
+            self.client.delete(collection_name=self.collection_name, points=duplicates)
+            removed = len(duplicates)
+
+        remaining_stats = self.get_stats()
+        remaining = remaining_stats["total_episodes"]
+        print(
+            f"⚙️  Consolidated memory: removed {removed} duplicate(s), {remaining} entries remain"
+        )
+
+        return {
+            "status": "consolidated",
+            "total_episodes": total,
+            "duplicates_removed": removed,
+            "remaining": remaining,
+        }

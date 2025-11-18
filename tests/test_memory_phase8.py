@@ -1,0 +1,187 @@
+"""Targeted Phase 8 tests for the episodic memory subsystem."""
+
+import sys
+from pathlib import Path
+
+import pytest
+
+# Extend sys.path to import src modules
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+
+class DummyDistance:
+    COSINE = "cosine"
+
+
+class DummyVectorParams:
+    def __init__(self, size: int, distance: str):
+        self.size = size
+        self.distance = distance
+
+
+class DummyPointStruct:
+    def __init__(self, id: int, vector: list, payload: dict):
+        self.id = id
+        self.vector = vector
+        self.payload = payload
+
+
+class DummyFieldCondition:
+    def __init__(self, key: str, range: dict):
+        self.key = key
+        self.range = range
+
+
+class DummyFilter:
+    def __init__(self, must=None):
+        self.must = must or []
+
+
+class DummyQdrantClient:
+    def __init__(self, url: str):
+        self.store = {}
+        self._order = []
+
+    def get_collections(self):
+        return type("Collections", (), {"collections": []})()
+
+    def create_collection(self, **kwargs):
+        return None
+
+    def upsert(self, collection_name: str, points: list):
+        for point in points:
+            key = str(point.id)
+            self.store[key] = {"id": point.id, "payload": point.payload}
+            if key in self._order:
+                self._order.remove(key)
+            self._order.append(key)
+
+    def query_points(self, *args, **kwargs):
+        limit = kwargs.get("limit", 3)
+        hits = []
+        query_filter = kwargs.get("query_filter")
+        for record in self.store.values():
+            payload = record["payload"]
+            if query_filter and query_filter.must:
+                condition = query_filter.must[0]
+                if payload.get(condition.key, 0) < condition.range.get("gte", 0):
+                    continue
+            hits.append(type("Hit", (), {"score": 1.0, "payload": payload}))
+            if len(hits) >= limit:
+                break
+        return type("Result", (), {"points": hits})()
+
+    def retrieve(self, *args, **kwargs):
+        ids = kwargs.get("ids") or args[1]
+        if isinstance(ids, list):
+            ids_iter = ids
+        else:
+            ids_iter = [ids]
+        hits = []
+        for identifier in ids_iter:
+            record = self.store.get(str(identifier))
+            if record:
+                hits.append(type("Hit", (), {"payload": record["payload"]}))
+        return hits
+
+    def get_collection(self, name: str):
+        return type("Info", (), {"points_count": len(self.store)})()
+
+    def scroll(self, collection_name: str, offset: int = 0, limit: int = 10, **kwargs):
+        start = max(0, offset)
+        end = start + limit
+        points = []
+        for key in self._order[start:end]:
+            record = self.store.get(key)
+            if not record:
+                continue
+            payload = record["payload"]
+            point_id = record["id"]
+            points.append(type("Point", (), {"id": point_id, "payload": payload}))
+        return type("ScrollResult", (), {"points": points})()
+
+    def delete(self, collection_name: str, points: list | None = None, ids: list | None = None, **kwargs):
+        to_remove = points or ids or []
+        for point_id in to_remove:
+            key = str(point_id)
+            if key in self.store:
+                del self.store[key]
+            if key in self._order:
+                self._order.remove(key)
+
+
+def _patch_memory_module():
+    import src.memory.episodic_memory as episodic_module
+
+    episodic_module.QdrantClient = DummyQdrantClient
+    episodic_module.PointStruct = DummyPointStruct
+    episodic_module.Distance = DummyDistance
+    episodic_module.VectorParams = DummyVectorParams
+    episodic_module.Filter = DummyFilter
+    episodic_module.FieldCondition = DummyFieldCondition
+    episodic_module.MatchValue = lambda *args, **kwargs: None
+
+
+_patch_memory_module()
+
+from src.memory.episodic_memory import EpisodicMemory
+
+
+@pytest.fixture
+def episodic_memory() -> EpisodicMemory:
+    return EpisodicMemory(qdrant_url="http://localhost:6333", collection_name="test_memory",
+                          embedding_dim=4)
+
+
+def test_store_and_retrieve_episode(episodic_memory: EpisodicMemory) -> None:
+    episode_id = episodic_memory.store_episode(
+        task="test_task",
+        action="run_test",
+        result="success",
+        reward=0.5,
+        metadata={"context": "phase8"},
+    )
+
+    retrieved = episodic_memory.get_episode(episode_id)
+    assert retrieved is not None
+    assert retrieved["task"] == "test_task"
+    assert retrieved["reward"] == 0.5
+
+    search_results = episodic_memory.search_similar("test", top_k=2)
+    assert search_results
+    assert search_results[0]["task"] == "test_task"
+
+
+def test_consolidate_memory_noop(episodic_memory: EpisodicMemory) -> None:
+    # Force consolidation path to short-circuit gracefully
+    summary = episodic_memory.consolidate_memory(min_episodes=5)
+    assert summary["status"] == "skipped"
+    assert summary["duplicates_removed"] == 0
+
+    # Should not raise and stats reflect stored items
+    stats = episodic_memory.get_stats()
+    assert stats["total_episodes"] >= 0
+
+
+def test_consolidate_memory_deduplicates(episodic_memory: EpisodicMemory) -> None:
+    # Insert multiple experiences with identical metadata to trigger consolidation
+    for _ in range(3):
+        episodic_memory.store_episode(
+            task="dup_task",
+            action="document",
+            result="consolidate",
+            reward=0.0,
+        )
+
+    stats_before = episodic_memory.get_stats()
+    assert stats_before["total_episodes"] == 3
+
+    summary = episodic_memory.consolidate_memory(min_episodes=0)
+    assert summary["status"] == "consolidated"
+    assert summary["duplicates_removed"] == 2
+    assert summary["remaining"] == 1
+
+    stats_after = episodic_memory.get_stats()
+    assert stats_after["total_episodes"] == 1
