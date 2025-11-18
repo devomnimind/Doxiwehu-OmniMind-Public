@@ -34,7 +34,11 @@ class QdrantConfig:
             url=url,
             api_key=os.environ.get("OMNIMIND_QDRANT_API_KEY"),
             collection=os.environ.get("OMNIMIND_QDRANT_COLLECTION"),
-            vector_size=int(os.environ["OMNIMIND_QDRANT_VECTOR_SIZE"]) if os.environ.get("OMNIMIND_QDRANT_VECTOR_SIZE") else None,
+            vector_size=(
+                int(os.environ["OMNIMIND_QDRANT_VECTOR_SIZE"])
+                if os.environ.get("OMNIMIND_QDRANT_VECTOR_SIZE")
+                else None
+            ),
         )
 
     @classmethod
@@ -43,7 +47,9 @@ class QdrantConfig:
         api_match = re.search(r"api_key\s*=\s*\"([^\"]+)\"", text)
         if not url_match:
             return None
-        return cls(url=url_match.group(1), api_key=api_match.group(1) if api_match else None)
+        return cls(
+            url=url_match.group(1), api_key=api_match.group(1) if api_match else None
+        )
 
     @classmethod
     def load(cls, mcp_client: Optional[MCPClient] = None) -> Optional["QdrantConfig"]:
@@ -52,12 +58,14 @@ class QdrantConfig:
             return config
         if mcp_client is not None and hasattr(mcp_client, "read_env"):
             try:
-                data = mcp_client.read_env([
-                    "OMNIMIND_QDRANT_URL",
-                    "OMNIMIND_QDRANT_API_KEY",
-                    "OMNIMIND_QDRANT_COLLECTION",
-                    "OMNIMIND_QDRANT_VECTOR_SIZE",
-                ])  # type: ignore[attr-defined]
+                data = mcp_client.read_env(
+                    [
+                        "OMNIMIND_QDRANT_URL",
+                        "OMNIMIND_QDRANT_API_KEY",
+                        "OMNIMIND_QDRANT_COLLECTION",
+                        "OMNIMIND_QDRANT_VECTOR_SIZE",
+                    ]
+                )
             except MCPClientError as exc:
                 logger.debug("Unable to read Qdrant env via MCP: %s", exc)
             else:
@@ -72,7 +80,9 @@ class QdrantConfig:
                         collection=env_map.get("OMNIMIND_QDRANT_COLLECTION"),
                         vector_size=vector_size,
                     )
-        logger.warning("Qdrant configuration missing; set OMNIMIND_QDRANT_* environment variables")
+        logger.warning(
+            "Qdrant configuration missing; set OMNIMIND_QDRANT_* environment variables"
+        )
         return None
 
 
@@ -87,10 +97,12 @@ class QdrantAdapter:
         vector_size: int,
         distance: qdrant_models.Distance = qdrant_models.Distance.COSINE,
     ) -> Dict[str, Any]:
-        logger.debug("Ensuring collection %s exists with vector_size %s", collection, vector_size)
+        logger.debug(
+            "Ensuring collection %s exists with vector_size %s", collection, vector_size
+        )
         try:
             response = self.client.get_collection(collection_name=collection)
-            return response.dict()
+            return response.dict()  # type: ignore[no-any-return]
         except Exception:
             logger.info("Creating missing collection %s", collection)
             self.client.recreate_collection(
@@ -110,7 +122,9 @@ class QdrantAdapter:
         vectors_list = list(vectors)
         if len(ids_list) != len(vectors_list):
             raise QdrantAdapterError("ids and vectors length mismatch")
-        payloads_list = list(payloads) if payloads is not None else [{} for _ in ids_list]
+        payloads_list = (
+            list(payloads) if payloads is not None else [{} for _ in ids_list]
+        )
         if len(payloads_list) < len(ids_list):
             payloads_list += [{} for _ in range(len(ids_list) - len(payloads_list))]
         points = []
@@ -141,7 +155,11 @@ class QdrantAdapter:
 
     def list_collections(self) -> List[str]:
         collections = self.client.get_collections()
-        names = [info.name for info in collections.collections] if collections.collections else []
+        names = (
+            [info.name for info in collections.collections]
+            if collections.collections
+            else []
+        )
         logger.debug("Available QB collections: %s", names)
         return names
 

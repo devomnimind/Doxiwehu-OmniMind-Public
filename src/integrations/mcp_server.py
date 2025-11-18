@@ -107,7 +107,7 @@ class MCPServer:
         thread.start()
         self._thread = thread
         self.config = MCPConfig(
-            host=server.server_address[0],
+            host=server.server_address[0],  # type: ignore[arg-type]
             port=server.server_address[1],
             allowed_paths=self.config.allowed_paths,
             max_read_size=self.config.max_read_size,
@@ -212,7 +212,9 @@ class MCPServer:
         }
         if isinstance(result, Exception):
             details["error"] = str(result)
-        return self.audit_system.log_action(method, details, category=self.config.audit_category)
+        return self.audit_system.log_action(  # type: ignore[no-any-return]
+            method, details, category=self.config.audit_category
+        )
 
     def _success_response(self, request_id: Optional[Any], result: Any) -> str:
         return json.dumps({"jsonrpc": "2.0", "id": request_id, "result": result})
@@ -230,7 +232,7 @@ class MCPServer:
             "error": {"code": code, "message": message},
         }
         if data is not None:
-            payload["error"]["data"] = data
+            payload["error"]["data"] = data  # type: ignore[index]
         return json.dumps(payload)
 
     def _resolve_path(self, path: str) -> Path:
@@ -251,11 +253,16 @@ class MCPServer:
         resolved = self._resolve_path(path)
         if not resolved.is_file():
             raise MCPRequestError(-32602, f"File does not exist: {resolved}")
-        if self.config.max_read_size and resolved.stat().st_size > self.config.max_read_size:
+        if (
+            self.config.max_read_size
+            and resolved.stat().st_size > self.config.max_read_size
+        ):
             raise MCPRequestError(-32602, "File exceeds maximum read size")
         return resolved.read_text(encoding=encoding)
 
-    def write_file(self, path: str, content: str, encoding: str = "utf-8") -> Dict[str, Any]:
+    def write_file(
+        self, path: str, content: str, encoding: str = "utf-8"
+    ) -> Dict[str, Any]:
         resolved = self._resolve_path(path)
         resolved.parent.mkdir(parents=True, exist_ok=True)
         if self.config.allowed_extensions:
@@ -327,6 +334,6 @@ if __name__ == "__main__":
     try:
         server.start()
         logger.info("Press Ctrl+C to stop MCPServer")
-        server._thread.join()
+        server._thread.join()  # type: ignore[union-attr]
     except KeyboardInterrupt:
         server.stop()

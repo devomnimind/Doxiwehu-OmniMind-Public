@@ -46,7 +46,9 @@ class GraphQLSupabaseHelper:
         self.max_retries = max_retries
         self.backoff_factor = backoff_factor
 
-    def _post(self, query: str, variables: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def _post(
+        self, query: str, variables: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         payload = {"query": query, "variables": variables or {}}
         logger.debug("GraphQL request payload %s", payload)
         attempt = 0
@@ -77,7 +79,7 @@ class GraphQLSupabaseHelper:
         if errors := body.get("errors"):
             logger.warning("GraphQL errors: %s", errors)
             raise GraphQLSupabaseError(errors[0].get("message", "GraphQL error"))
-        return body.get("data", {})
+        return body.get("data", {})  # type: ignore[no-any-return]
 
     def fetch_page(
         self,
@@ -127,7 +129,9 @@ query CollectionPage($first: Int!, $after: String) {{
         page = 0
         while True:
             page += 1
-            page_data = self.fetch_page(collection, node_fields, first=page_size, after=after)
+            page_data = self.fetch_page(
+                collection, node_fields, first=page_size, after=after
+            )
             for node in page_data.nodes:
                 yield node
                 fetched += 1
@@ -145,4 +149,6 @@ query CollectionPage($first: Int!, $after: String) {{
         page_size: int = 50,
         max_pages: Optional[int] = None,
     ) -> List[Dict[str, Any]]:
-        return list(self.iterate_collection(collection, node_fields, page_size, max_pages))
+        return list(
+            self.iterate_collection(collection, node_fields, page_size, max_pages)
+        )

@@ -6,12 +6,13 @@ from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional
 
 try:
-    from supabase import Client, create_client
+    from supabase import Client, create_client  # type: ignore[import-not-found]
 except ImportError as exc:
-    Client = Any  # type: ignore[assignment]
+    Client = Any
 
     def create_client(*args: Any, **kwargs: Any) -> Any:
         raise ImportError("Install supabase-py to use SupabaseAdapter") from exc
+
 
 from .mcp_client import MCPClient, MCPClientError
 
@@ -68,7 +69,12 @@ class SupabaseConfig:
         if not service_key:
             service_key = matches.get("SERVICE_ROLE_KEY")
         project_ref = matches.get("OMNIMIND_SUPABASE_PROJECT")
-        return cls(url=url, anon_key=anon_key, service_role_key=service_key, project_ref=project_ref)
+        return cls(
+            url=url,
+            anon_key=anon_key,
+            service_role_key=service_key,
+            project_ref=project_ref,
+        )
 
     @classmethod
     def load(cls, mcp_client: Optional[MCPClient] = None) -> Optional["SupabaseConfig"]:
@@ -77,12 +83,14 @@ class SupabaseConfig:
             return config
         if mcp_client is not None and hasattr(mcp_client, "read_env"):
             try:
-                data = mcp_client.read_env([
-                    "OMNIMIND_SUPABASE_URL",
-                    "OMNIMIND_SUPABASE_ANON_KEY",
-                    "OMNIMIND_SUPABASE_SERVICE_ROLE_KEY",
-                    "OMNIMIND_SUPABASE_PROJECT",
-                ])  # type: ignore[attr-defined]
+                data = mcp_client.read_env(
+                    [
+                        "OMNIMIND_SUPABASE_URL",
+                        "OMNIMIND_SUPABASE_ANON_KEY",
+                        "OMNIMIND_SUPABASE_SERVICE_ROLE_KEY",
+                        "OMNIMIND_SUPABASE_PROJECT",
+                    ]
+                )
             except MCPClientError as exc:
                 logger.debug("Unable to read Supabase env via MCP: %s", exc)
             else:
@@ -93,10 +101,14 @@ class SupabaseConfig:
                     return cls(
                         url=url,
                         anon_key=anon_key,
-                        service_role_key=env_map.get("OMNIMIND_SUPABASE_SERVICE_ROLE_KEY"),
+                        service_role_key=env_map.get(
+                            "OMNIMIND_SUPABASE_SERVICE_ROLE_KEY"
+                        ),
                         project_ref=env_map.get("OMNIMIND_SUPABASE_PROJECT"),
                     )
-        logger.warning("Supabase configuration missing; export OMNIMIND_SUPABASE_* variables")
+        logger.warning(
+            "Supabase configuration missing; export OMNIMIND_SUPABASE_* variables"
+        )
         return None
 
 
@@ -122,7 +134,7 @@ class SupabaseAdapter:
         response = query.execute()
         if response.error:
             raise SupabaseAdapterError(response.error)
-        return response.data
+        return response.data  # type: ignore[no-any-return]
 
     def list_tables(self) -> List[str]:
         if not self.admin_client:
@@ -145,29 +157,33 @@ class SupabaseAdapter:
         offset: int = 0,
         columns: Optional[Iterable[str]] = None,
     ) -> List[Dict[str, Any]]:
-        query = self.client.table(table).select("*" if not columns else ",".join(columns))
+        query = self.client.table(table).select(
+            "*" if not columns else ",".join(columns)
+        )
         if filters:
             for key, value in filters.items():
                 query = query.eq(key, value)
         response = query.limit(limit).offset(offset).execute()
         if response.error:
             raise SupabaseAdapterError(response.error)
-        return response.data
+        return response.data  # type: ignore[no-any-return]
 
     def insert_record(self, table: str, record: Dict[str, Any]) -> Dict[str, Any]:
         response = self.client.table(table).insert(record).execute()
         if response.error:
             raise SupabaseAdapterError(response.error)
-        return response.data
+        return response.data  # type: ignore[no-any-return]
 
-    def update_record(self, table: str, record: Dict[str, Any], match: Dict[str, Any]) -> Dict[str, Any]:
+    def update_record(
+        self, table: str, record: Dict[str, Any], match: Dict[str, Any]
+    ) -> Dict[str, Any]:
         query = self.client.table(table)
         for key, value in match.items():
             query = query.eq(key, value)
         response = query.update(record).execute()
         if response.error:
             raise SupabaseAdapterError(response.error)
-        return response.data
+        return response.data  # type: ignore[no-any-return]
 
     def delete_records(self, table: str, match: Dict[str, Any]) -> Dict[str, Any]:
         query = self.client.table(table)
@@ -176,9 +192,11 @@ class SupabaseAdapter:
         response = query.delete().execute()
         if response.error:
             raise SupabaseAdapterError(response.error)
-        return response.data
+        return response.data  # type: ignore[no-any-return]
 
-    def log_operation(self, name: str, status: str, metadata: Optional[Dict[str, Any]] = None) -> None:
+    def log_operation(
+        self, name: str, status: str, metadata: Optional[Dict[str, Any]] = None
+    ) -> None:
         payload = {
             "name": name,
             "status": status,
@@ -186,5 +204,5 @@ class SupabaseAdapter:
             "timestamp": os.environ.get("OMNIMIND_TIMESTAMP") or "",
         }
         if metadata:
-            payload["metadata"] = metadata
+            payload["metadata"] = metadata  # type: ignore[assignment]
         logger.info("Supabase operation %s", payload)

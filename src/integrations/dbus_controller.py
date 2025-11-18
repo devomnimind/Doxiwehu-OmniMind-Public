@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List, Optional
 
-import dbus
+import dbus  # type: ignore[import-not-found]
 
 logger = logging.getLogger(__name__)
 
@@ -38,14 +38,18 @@ class DBusSessionController:
                 "action": action_key,
             }
         except dbus.DBusException as exc:
-            logger.warning("Failed to control media player %s: %s", player_bus_name, exc)
+            logger.warning(
+                "Failed to control media player %s: %s", player_bus_name, exc
+            )
             return {"success": False, "error": str(exc)}
         except AttributeError as exc:
             return {"success": False, "error": str(exc)}
 
     def list_media_players(self) -> List[str]:
         try:
-            proxy = self._bus.get_object("org.freedesktop.DBus", "/org/freedesktop/DBus")
+            proxy = self._bus.get_object(
+                "org.freedesktop.DBus", "/org/freedesktop/DBus"
+            )
             interface = dbus.Interface(proxy, "org.freedesktop.DBus")
             names = interface.ListNames()
             return [n for n in names if n.startswith("org.mpris.MediaPlayer2.")]
@@ -86,7 +90,9 @@ class DBusSystemController:
             connectivity = int(
                 props.Get("org.freedesktop.NetworkManager", "Connectivity")
             )
-            connections = props.Get("org.freedesktop.NetworkManager", "ActiveConnections")
+            connections = props.Get(
+                "org.freedesktop.NetworkManager", "ActiveConnections"
+            )
             return {
                 "state": self._NETWORK_STATES.get(state, "UNKNOWN"),
                 "connectivity": self._CONNECTIVITY.get(connectivity, "UNKNOWN"),
@@ -98,7 +104,9 @@ class DBusSystemController:
 
     def get_power_status(self) -> Dict[str, Any]:
         try:
-            proxy = self._bus.get_object("org.freedesktop.UPower", "/org/freedesktop/UPower")
+            proxy = self._bus.get_object(
+                "org.freedesktop.UPower", "/org/freedesktop/UPower"
+            )
             props = dbus.Interface(proxy, "org.freedesktop.DBus.Properties")
             on_battery = bool(props.Get("org.freedesktop.UPower", "OnBattery"))
             percentage = float(props.Get("org.freedesktop.UPower", "Percentage"))
