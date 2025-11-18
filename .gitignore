@@ -1,26 +1,85 @@
+# ------------------------------------------------------------------
+# Python cache/artifact noise
+# ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyd
+*.pyo
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# ------------------------------------------------------------------
+# Virtual environments & local tooling
+# ------------------------------------------------------------------
+.env
+.env.*
 .venv/
 venv/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-*.log
-.env
-.venv
+env/
+.python-version
+pip-wheel-metadata/
+
+# ------------------------------------------------------------------
+# Editors / OS junk
+# ------------------------------------------------------------------
 .DS_Store
 .idea/
 .vscode/
+*.code-workspace
+*.swp
+*.swo
+*.orig
+
+# ------------------------------------------------------------------
+# JavaScript / frontend outputs
+# ------------------------------------------------------------------
 node_modules/
 **/node_modules/
-*.sqlite3
-*.db
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
 build/
 dist/
 *.egg-info/
-*.coverage
-logs/.coverage
-.pytest_cache/
-.mypy_cache/
+.eggs/
+
+# ------------------------------------------------------------------
+# Databases & local state
+# ------------------------------------------------------------------
+*.sqlite3
+*.db
+*.db-*
+
+# ------------------------------------------------------------------
+# OmniMind runtime debris
+# ------------------------------------------------------------------
 tmp/
+tmp_*/
+tmp_agents/
+tmp_tools/
+data/hdd_snapshot/
+data/quarantine_snapshot/
+data/tmp/
 archive/examples/cuda/tmp*
+logs/*.tmp
+logs/*.log
+
+# ------------------------------------------------------------------
+# Backups / confidential configs
+# ------------------------------------------------------------------
 config/dashboard_auth.json
+**/backups_devbrain/
+**/guardian/backups/**/guardian/backups/
+**/*.bak
+**/*.old
+
+# ------------------------------------------------------------------
+# Mount points & external disks
+# ------------------------------------------------------------------
+mnt/
+/mnt/dev_brain_clean/lost+found
