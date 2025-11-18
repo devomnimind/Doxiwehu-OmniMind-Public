@@ -1,29 +1,58 @@
-"""
-Episodic Memory System for OmniMind
-Stores agent experiences in Qdrant vector database for learning and improvement.
-"""
+from __future__ import annotations
 
-from typing import Dict, List, Optional, Any
+"""Typed episodic memory manager backed by Qdrant."""
+
 from datetime import datetime, timezone
 import hashlib
-import json
 import logging
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    List,
+    Optional,
+    Sequence,
+    Set,
+    Tuple,
+    TypedDict,
+    cast,
+)
 
 from qdrant_client import QdrantClient
-from qdrant_client.models import (
-    Distance,
-    VectorParams,
-    PointStruct,
-    Filter,
-    FieldCondition,
-    MatchValue,
-)
+from qdrant_client.http import models as qmodels
+
+if TYPE_CHECKING:  # pragma: no cover - optional dependency typing only
+    from sentence_transformers import SentenceTransformer
 
 
 logger = logging.getLogger(__name__)
 
 
-def _load_embedding_model(model_name: str) -> Optional[Any]:
+class EpisodePayload(TypedDict):
+    """Canonical payload stored in Qdrant."""
+
+    episode_id: str
+    timestamp: str
+    task: str
+    action: str
+    result: str
+    reward: float
+    metadata: Dict[str, Any]
+
+
+class SimilarEpisode(TypedDict):
+    """Search result returned to agents."""
+
+    score: float
+    episode_id: str
+    task: str
+    action: str
+    result: str
+    reward: float
+    timestamp: str
+
+
+def _load_embedding_model(model_name: str) -> Optional["SentenceTransformer"]:
     try:
         from sentence_transformers import SentenceTransformer
     except Exception as exc:
@@ -37,7 +66,10 @@ def _load_embedding_model(model_name: str) -> Optional[Any]:
         return SentenceTransformer(model_name)
     except Exception as exc:
         logger.warning(
-            "Failed to load SentenceTransformer %s: %s. Falling back to deterministic embeddings.",
+            (
+                "Failed to load SentenceTransformer %s: %s. "
+                "Using deterministic embeddings."
+            ),
             model_name,
             exc,
         )
@@ -55,46 +87,49 @@ class EpisodicMemory:
         qdrant_url: str = "http://localhost:6333",
         collection_name: str = "omnimind_episodes",
         embedding_dim: int = 384,
-    ):
-        self.client = QdrantClient(url=qdrant_url)
+    ) -> None:
+        self.client: QdrantClient = QdrantClient(url=qdrant_url)
         self.collection_name = collection_name
         self.embedding_dim = embedding_dim
-        self._embedding_model = _load_embedding_model("all-MiniLM-L6-v2")
+        self._embedding_model: Optional["SentenceTransformer"] = _load_embedding_model(
+            "all-MiniLM-L6-v2"
+        )
 
-        # Initialize collection if doesn't exist
+        # Initialize collection if it does not exist.
         self._ensure_collection()
 
-    def _ensure_collection(self):
-        """Create collection if it doesn't exist."""
-        collections = self.client.get_collections().collections
-        collection_names = [c.name for c in collections]
+    def _ensure_collection(self) -> None:
+        """Create collection if it does not exist."""
+        collections = self.client.get_collections().collections or []
+        collection_names = [info.name for info in collections]
 
         if self.collection_name not in collection_names:
             self.client.create_collection(
                 collection_name=self.collection_name,
-                vectors_config=VectorParams(
-                    size=self.embedding_dim, distance=Distance.COSINE
+                vectors_config=qmodels.VectorParams(
+                    size=self.embedding_dim, distance=qmodels.Distance.COSINE
                 ),
             )
-            print(f"✓ Created collection: {self.collection_name}")
+            logger.info("Created Qdrant collection: %s", self.collection_name)
 
     def _generate_embedding(self, text: str) -> List[float]:
         """Generate embedding from text using SentenceTransformer with fallback."""
         if self._embedding_model:
             try:
-                encoded = self._embedding_model.encode(
-                    text, normalize_embeddings=True
-                )
+                encoded = self._embedding_model.encode(text, normalize_embeddings=True)
                 return [float(x) for x in encoded]
             except Exception as exc:
                 logger.warning(
-                    "Embedding model error for text snippet '%s': %s. Using deterministic fallback.",
+                    (
+                        "Embedding model error for text snippet '%s': %s. "
+                        "Using deterministic fallback."
+                    ),
                     text[:32],
                     exc,
                 )
-        # TODO: Phase 8 plan → replace deterministic hash fallback with a resilient hybrid embedding
-        # pipeline (e.g., lightweight local models plus verification cache) to avoid semantic drift and
-        # ensure consistent semantics when the primary model is unavailable.
+        # Phase 8: replace deterministic hash fallback with a resilient
+        # hybrid embedding pipeline to avoid semantic drift when primary
+        # models become unavailable.
         return self._hash_based_embedding(text)
 
     def _hash_based_embedding(self, text: str) -> List[float]:
@@ -135,27 +170,29 @@ class EpisodicMemory:
         embedding = self._generate_embedding(episode_text)
 
         # Generate unique ID (Qdrant requires UUID or int)
-        hash_int = int(
-            hashlib.sha256(f"{timestamp}{task}{action}".encode()).hexdigest()[:16], 16
-        )  # Convert hex to int
+        hash_source = f"{timestamp}{task}{action}".encode()
+        hash_hex = hashlib.sha256(hash_source).hexdigest()[:16]
+        hash_int = int(hash_hex, 16)
 
         # Prepare payload
-        payload = {
+        payload_metadata: Dict[str, Any] = dict(metadata) if metadata else {}
+        payload: EpisodePayload = {
             "episode_id": str(hash_int),
             "timestamp": timestamp,
             "task": task,
             "action": action,
             "result": result,
             "reward": reward,
-            "metadata": metadata or {},
+            "metadata": payload_metadata,
         }
 
         # Store in Qdrant
         self.client.upsert(
             collection_name=self.collection_name,
             points=[
-                PointStruct(
-                    id=hash_int, vector=embedding, payload=payload  # Use integer ID
+                # Use deterministic integer IDs for deduplication.
+                qmodels.PointStruct(
+                    id=hash_int, vector=embedding, payload=dict(payload)
                 )
             ],
         )
@@ -164,7 +201,7 @@ class EpisodicMemory:
 
     def search_similar(
         self, query: str, top_k: int = 3, min_reward: Optional[float] = None
-    ) -> List[Dict[str, Any]]:
+    ) -> List[SimilarEpisode]:
         """
         Search for similar past experiences.
 
@@ -179,10 +216,14 @@ class EpisodicMemory:
         query_embedding = self._generate_embedding(query)
 
         # Build filter
-        query_filter = None
+        query_filter: Optional[qmodels.Filter] = None
         if min_reward is not None:
-            query_filter = Filter(
-                must=[FieldCondition(key="reward", range={"gte": min_reward})]
+            query_filter = qmodels.Filter(
+                must=[
+                    qmodels.FieldCondition(
+                        key="reward", range=qmodels.Range(gte=min_reward)
+                    )
+                ]
             )
 
         # Search
@@ -191,26 +232,30 @@ class EpisodicMemory:
             query=query_embedding,
             query_filter=query_filter,
             limit=top_k,
+            with_payload=True,
+            with_vectors=False,
         ).points
 
         # Format results
-        results = []
-        for hit in search_result:
+        results: List[SimilarEpisode] = []
+        hits: Sequence[qmodels.ScoredPoint] = search_result or []
+        for hit in hits:
+            payload = hit.payload or {}
             results.append(
-                {
-                    "score": hit.score,
-                    "episode_id": hit.payload["episode_id"],
-                    "task": hit.payload["task"],
-                    "action": hit.payload["action"],
-                    "result": hit.payload["result"],
-                    "reward": hit.payload["reward"],
-                    "timestamp": hit.payload["timestamp"],
-                }
+                SimilarEpisode(
+                    score=float(hit.score),
+                    episode_id=str(payload.get("episode_id", "")),
+                    task=str(payload.get("task", "")),
+                    action=str(payload.get("action", "")),
+                    result=str(payload.get("result", "")),
+                    reward=float(payload.get("reward", 0.0)),
+                    timestamp=str(payload.get("timestamp", "")),
+                )
             )
 
         return results
 
-    def get_episode(self, episode_id: str) -> Optional[Dict[str, Any]]:
+    def get_episode(self, episode_id: str) -> Optional[EpisodePayload]:
         """Retrieve specific episode by ID."""
         try:
             points = self.client.retrieve(
@@ -218,11 +263,21 @@ class EpisodicMemory:
                 ids=[int(episode_id)],  # Convert string ID to int
             )
 
-            if points:
-                return points[0].payload
+            if points and points[0].payload is not None:
+                payload = points[0].payload
+                metadata = cast(Dict[str, Any], payload.get("metadata") or {})
+                return EpisodePayload(
+                    episode_id=str(payload.get("episode_id", "")),
+                    timestamp=str(payload.get("timestamp", "")),
+                    task=str(payload.get("task", "")),
+                    action=str(payload.get("action", "")),
+                    result=str(payload.get("result", "")),
+                    reward=float(payload.get("reward", 0.0)),
+                    metadata=dict(metadata),
+                )
             return None
-        except Exception as e:
-            print(f"Error retrieving episode {episode_id}: {e}")
+        except Exception as exc:  # pragma: no cover
+            logger.error("Error retrieving episode %s: %s", episode_id, exc)
             return None
 
     def get_stats(self) -> Dict[str, Any]:
@@ -248,42 +303,43 @@ class EpisodicMemory:
                 "remaining": total,
             }
 
-        seen = set()
-        duplicates = []
-        offset = 0
+        seen: Set[Tuple[Optional[str], Optional[str], Optional[str]]] = set()
+        duplicates: List[int] = []
+        offset: Optional[qmodels.ExtendedPointId] = None
         batch = 128
 
         while True:
-            scroll_result = self.client.scroll(
+            points, new_offset = self.client.scroll(
                 collection_name=self.collection_name,
                 offset=offset,
                 limit=batch,
                 with_payload=True,
                 with_vectors=False,
             )
-            points = getattr(scroll_result, "points", [])
             if not points:
                 break
 
             for point in points:
-                payload = point.payload
+                payload = point.payload or {}
                 key = (
                     payload.get("task"),
                     payload.get("action"),
                     payload.get("result"),
                 )
-                if key in seen:
+                if key in seen and isinstance(point.id, int):
                     duplicates.append(point.id)
                 else:
                     seen.add(key)
 
-            offset += len(points)
-            if len(points) < batch:
+            offset = new_offset
+            if offset is None:
                 break
 
         removed = 0
         if duplicates:
-            self.client.delete(collection_name=self.collection_name, points=duplicates)
+            self.client.delete(
+                collection_name=self.collection_name, points_selector=duplicates
+            )
             removed = len(duplicates)
 
         remaining_stats = self.get_stats()
