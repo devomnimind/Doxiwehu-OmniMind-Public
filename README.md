@@ -72,3 +72,17 @@ Ensure `logs/.coverage` is removed or regenerated via `pytest --cov=src` and kee
 - Temporary tool outputs must stay within `tmp/`; this directory is ignored and safe to wipe.
 
 With this organization, the root stays focused on keys (configs, requirements, Compose files), and the rest of the workspace aligns with our production readiness and CI/CD standards.
+
+## DEVBRAIN V23 Roadmap
+
+The `DEVBRAIN_V23/` directory now hosts the foundational work for the Masterplan (Protocolo Phoenix). Each folder mirrors a sense or infrastructure pillar:
+
+- `core/` → futura migração do `src/`, `tests/` e `config/` atuais.
+- `sensory/` → visão (Visual Cortex), audição/voz e propriocepção com `eBPF`.
+- `cognition/` → Graph of Thoughts + memória A-MEM com LangGraph e ChromaDB.
+- `immune/` → isolamento Firecracker, DLP e proteção P0.
+- `orchestration/` → LangGraph-driven agents e modos V23.
+- `infrastructure/` → Redis Streams, gateway FastAPI e ChromaDB vector store.
+- `atlas/` → self-healing, auto-training e ATLAS (futuro).
+
+O Masterplan guia cada nova implementação, começando pela visão multimodal (`sensory/visual_cortex.py`) e o Event Bus redis (`infrastructure/event_bus.py`). Consulte `DEVBRAIN_V23/README.md` e os documentos anexados (`docs/Masterplan/`) para manter o alinhamento estratégico antes de avançar nas fases seguintes.

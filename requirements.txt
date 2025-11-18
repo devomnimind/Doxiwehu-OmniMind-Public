@@ -41,3 +41,17 @@ memory-profiler>=0.61.0
 # Web dashboard
 fastapi>=0.110.0
 uvicorn>=0.23.0
+
+# DEVBRAIN V23 senses and infrastructure
+redis>=5.4.0
+fakeredis>=1.9.0
+chromadb>=0.4.1
+omniparser @ file:./third_party/omniparser
+ultralytics>=8.1.0
+pyautogui>=0.9.54
+numpy>=1.26.0
+pydub>=0.25.1
+whisper>=1.1.10
+falcon>=3.0.0
+sounddevice>=0.4.9
+TTS>=0.13.1
