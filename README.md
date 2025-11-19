@@ -124,6 +124,53 @@ scripts/start_dashboard.sh
 
 See **[INDEX.md](INDEX.md)** for complete project structure and documentation navigation.
 
+## 🧠 OmniMind Daemon (24/7 Autonomous Agent)
+
+Phase 9 introduces a 24/7 daemon that runs proactive tasks in the background.
+
+### Installation
+
+```bash
+# 1. Install the daemon service
+./scripts/install_daemon.sh
+
+# 2. Start the daemon
+sudo systemctl start omnimind-daemon
+
+# 3. Check status to ensure it's running
+sudo systemctl status omnimind-daemon
+```
+
+### Management
+
+```bash
+# View live logs
+sudo journalctl -u omnimind-daemon -f
+
+# Stop the daemon
+sudo systemctl stop omnimind-daemon
+
+# Restart the daemon
+sudo systemctl restart omnimind-daemon
+
+# Disable auto-start on boot
+sudo systemctl disable omnimind-daemon
+```
+
+### API Access
+
+The daemon is controlled via the main FastAPI backend.
+
+```bash
+# Get daemon status
+curl -u <user>:<pass> http://localhost:8000/daemon/status
+
+# List registered tasks
+curl -u <user>:<pass> http://localhost:8000/daemon/tasks
+```
+
+See the [Daemon User Guide](docs/DAEMON_USER_GUIDE.md) and [API Reference](docs/DAEMON_API_REFERENCE.md) for more details.
+
 ## Dependency Compatibility Notes
 
 - O pacote `supabase-py>=1.0.0` ainda não oferece wheel compatível com Python 3.13 em Linux x86_64, então `pip install -r requirements.txt` falha nesse ponto por ausência de `supabase-py`. Por ora mantemos `psutil`, `dbus-python` e os outros pacotes, mas a integração completa com Supabase exige Python **≤ 3.12**.

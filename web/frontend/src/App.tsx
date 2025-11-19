@@ -1,9 +1,11 @@
+import { useAuthStore } from './store/authStore';
+import { Login } from './components/Login';
+import { Dashboard } from './components/Dashboard';
+
 function App() {
-  return (
-    <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold">OmniMind Dashboard</h1>
-    </div>
-  )
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
+  return isAuthenticated ? <Dashboard /> : <Login />;
 }
 
-export default App
+export default App;
