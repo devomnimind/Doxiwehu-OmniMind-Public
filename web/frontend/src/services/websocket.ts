@@ -32,7 +32,7 @@ class WebSocketService {
   private maxReconnectAttempts = 10;
   private reconnectDelay = 1000; // Start with 1 second
   private maxReconnectDelay = 30000; // Max 30 seconds
-  private reconnectTimer: number | null = null;
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
   private messageHandlers: Set<MessageHandler> = new Set();
   private stateHandlers: Set<StateChangeHandler> = new Set();
   private currentState: ConnectionState = 'disconnected';
