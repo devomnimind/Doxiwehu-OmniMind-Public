@@ -197,22 +197,22 @@ app.include_router(health.router)
 
 **Recursos:**
 - UIs de fallback específicas por componente
-- Configurable retry attempts (2-5 retries)
-- Auto-recovery support
-- Graceful degradation
-- Error telemetry hooks
-- User-friendly error messages
+- Tentativas de retry configuráveis (2-5 tentativas)
+- Suporte de recuperação automática
+- Degradação graciosa
+- Hooks de telemetria de erro
+- Mensagens de erro amigáveis ao usuário
 
-**Usage:**
+**Uso:**
 ```tsx
-import { 
+import {
   DashboardErrorBoundary,
   TaskErrorBoundary,
   AgentErrorBoundary,
-  HealthErrorBoundary 
+  HealthErrorBoundary
 } from './components/ComponentErrorBoundaries';
 
-// Wrap components:
+// Envolver componentes:
 <DashboardErrorBoundary>
   <Dashboard />
 </DashboardErrorBoundary>
@@ -226,25 +226,25 @@ import {
 </HealthErrorBoundary>
 ```
 
-**Error Severity Levels:**
-- CRITICAL - Full page/component failure
-- HIGH - Major feature unavailable
-- MEDIUM - Degraded functionality
-- LOW - Minor UI glitches
+**Níveis de Severidade de Erro:**
+- CRÍTICO - Falha completa de página/componente
+- ALTO - Recurso principal indisponível
+- MÉDIO - Funcionalidade degradada
+- BAIXO - Pequenos glitches na UI
 
 ---
 
-## 🔧 4. Configuration Validation (Already Complete)
+## 🔧 4. Validação de Configuração (Já Concluída)
 
-**File:** `src/security/config_validator.py`
+**Arquivo:** `src/security/config_validator.py`
 
-**Features Already Implemented:**
-- JSON Schema validation
-- Dependency checking
-- Environment-specific validation (dev/staging/production)
-- Auto-fix suggestions
-- Configuration migration utilities
-- Value range validation (ports, paths, URLs)
+**Recursos Já Implementados:**
+- Validação de JSON Schema
+- Verificação de dependências
+- Validação específica por ambiente (dev/staging/production)
+- Sugestões de correção automática
+- Utilitários de migração de configuração
+- Validação de intervalo de valores (portas, caminhos, URLs)
 
 **Usage:**
 ```python
@@ -265,34 +265,34 @@ if not result.valid and result.auto_fixes:
 
 ---
 
-## 📊 5. Audit Trail Enhancements (Already Complete)
+## 📊 5. Melhorias no Audit Trail (Já Concluídas)
 
-**Files:**
+**Arquivos:**
 - `src/audit/compliance_reporter.py`
 - `src/audit/retention_policy.py`
 - `src/audit/alerting_system.py`
 - `src/audit/log_analyzer.py`
 
-**Features Already Implemented:**
-- LGPD/GDPR compliance reporting
-- Data retention policies
-- Real-time alerting
-- Audit log analysis
-- Forensic search capabilities
-- Multi-tenant isolation
-- Immutable audit logs
+**Recursos Já Implementados:**
+- Relatórios de conformidade LGPD/GDPR
+- Políticas de retenção de dados
+- Alertas em tempo real
+- Análise de logs de auditoria
+- Capacidades de busca forense
+- Isolamento multi-tenant
+- Logs de auditoria imutáveis
 
 ---
 
-## 🧪 Testing
+## 🧪 Testes
 
-### Test Coverage
+### Cobertura de Testes
 
 ```bash
-# Run all monitoring tests
+# Executar todos os testes de monitoramento
 pytest tests/monitoring/ -v
 
-# Expected output:
+# Output esperado:
 # test_health_check_system_can_be_imported PASSED
 # test_health_routes_can_be_imported PASSED
 # test_health_dashboard_component PASSED
