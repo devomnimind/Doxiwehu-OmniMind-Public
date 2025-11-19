@@ -18,6 +18,6 @@
 
 > Atualize esse arquivo assim que qualquer warning for adicionado ou eliminado. Mantenha o histórico para onboarding futuros e referencie-o nos commits que lidam com os bloqueios listados.
 
-✅ BLOCO 1 COMPLETO E VALIDADO: src/metrics, tests/metrics, typings/structlog.pyi — zero mypy errors, 111 testes passando
-- **Hardware benchmark realizado** – , , , ,  e  coletaram métricas (CPU, memória, disco, GPU). Resultados salvos em  e  para Phase 10 (Autotimização).
-- **Hardware benchmark realizado** – scripts/system_info.py ...
+- ✅ BLOCO 1 COMPLETO E VALIDADO: src/metrics, tests/metrics, typings/structlog.pyi — zero mypy errors, 111 testes passando
+- **Hardware benchmark realizado** – os scripts `scripts/benchmarks/*` coletaram métricas (CPU, memória, disco, GPU). Resultados salvos em `hardware_audit.json` e `HARDWARE_BENCHMARK_REPORT.md` para Phase 10 (Autotimização).
+- **GPU setup parcial** – driver 550.163.01 com CUDA 12.4 detectados, mas `cuda-toolkit-12-4` e `libcudnn8` não estão nos repositórios Kali (erro `apt install`). Os scripts `test_pytorch_gpu.py`, `optimize_pytorch_config.py` e `scripts/verify_gpu_setup.py` já existem; execute-os novamente após adicionar o repositório NVIDIA oficial e instalar os pacotes faltantes para completar a configuração.
