@@ -60,91 +60,91 @@ CUDA Compute Capability: 7.5 (for GTX 1650)
 
 **Verification:**
 ```bash
-# Check system CUDA
+# Verificar CUDA do sistema
 nvcc --version
 
-# Expected: CUDA 12.4.x
-# Check cuDNN (system)
+# Esperado: CUDA 12.4.x
+# Verificar cuDNN (sistema)
 ldconfig -p | grep cudnn
 
-# Expected: libcudnn.so.8
+# Esperado: libcudnn.so.8
 ```
 
 ---
 
-## 🐍 Python Environment
+## 🐍 Ambiente Python
 
-### Python Version (CRITICAL)
+### Versão Python (CRÍTICA)
 ```
-Primary:    3.12.8 (via pyenv - MANDATORY for OmniMind)
-Alternatives: 3.11.x (acceptable), 3.10.x (acceptable)
-NOT Supported: 3.13+ (PyTorch has NO official wheel support)
-```
-
-**Why Python 3.12.8?**
-- PyTorch 2.6.0+cu124 has official wheels only for Python ≤ 3.12
-- Python 3.13 causes version resolver conflicts leading to incompatible CUDA library versions
-- OmniMind is locked to 3.12.8 via `.python-version` file
-
-### Virtual Environment
-```
-Location:   /home/fahbrain/projects/omnimind/.venv/
-Python:     3.12.8 (inherited from project .python-version)
-Package Manager: pip (28.4.0+)
-Dependencies: 100+ packages in requirements.txt
+Principal:   3.12.8 (via pyenv - OBRIGATÓRIA para OmniMind)
+Alternativas: 3.11.x (aceitável), 3.10.x (aceitável)
+NÃO Suportada: 3.13+ (PyTorch não tem suporte oficial a wheels)
 ```
 
-**Setup & Verification:**
+**Por que Python 3.12.8?**
+- PyTorch 2.6.0+cu124 tem wheels oficiais apenas para Python ≤ 3.12
+- Python 3.13 causa conflitos de resolução de versão levando a versões incompatíveis de bibliotecas CUDA
+- OmniMind está travado em 3.12.8 via arquivo `.python-version`
+
+### Ambiente Virtual
+```
+Localização: /home/fahbrain/projects/omnimind/.venv/
+Python:       3.12.8 (herdado do .python-version do projeto)
+Gerenciador de Pacotes: pip (28.4.0+)
+Dependências: 100+ pacotes em requirements.txt
+```
+
+**Configuração e Verificação:**
 ```bash
-# 1. Install Python 3.12.8 via pyenv (if not available)
+# 1. Instalar Python 3.12.8 via pyenv (se não disponível)
 pyenv install 3.12.8
-pyenv versions  # Should list 3.12.8
+pyenv versions  # Deve listar 3.12.8
 
-# 2. Create project venv with correct Python
+# 2. Criar venv do projeto com Python correto
 cd /home/fahbrain/projects/omnimind
 pyenv local 3.12.8
 python -m venv .venv
 source .venv/bin/activate
 
-# 3. Verify Python
-python --version  # MUST output: Python 3.12.8
+# 3. Verificar Python
+python --version  # DEVE mostrar: Python 3.12.8
 which python
 
-# 4. Install dependencies
+# 4. Instalar dependências
 pip install -r requirements.txt
 
-# 5. Verify environment
-echo $VIRTUAL_ENV  # Should show /home/fahbrain/projects/omnimind/.venv
+# 5. Verificar ambiente
+echo $VIRTUAL_ENV  # Deve mostrar /home/fahbrain/projects/omnimind/.venv
 ```
 
 ---
 
-## 📦 PyTorch GPU Stack (Phase 7 - VALIDATED)
+## 📦 Stack GPU PyTorch (Phase 7 - VALIDADO)
 
-### PyTorch Components
+### Componentes PyTorch
 ```
-torch:              2.6.0+cu124      (CUDA 12.4 compiled wheels from official NVIDIA index)
-torchvision:        0.21.0+cu124     (Must match torch version exactly)
-torchaudio:         2.6.0+cu124      (Must match torch version exactly)
-CUDA Toolkit:       12.4.127         (Bundled with PyTorch distribution)
-cuDNN:              9.1.0.70         (Bundled with PyTorch distribution)
+torch:              2.6.0+cu124      (wheels compilados CUDA 12.4 do índice oficial NVIDIA)
+torchvision:        0.21.0+cu124     (Deve corresponder exatamente à versão torch)
+torchaudio:         2.6.0+cu124      (Deve corresponder exatamente à versão torch)
+CUDA Toolkit:       12.4.127         (Empacotado com distribuição PyTorch)
+cuDNN:              9.1.0.70         (Empacotado com distribuição PyTorch)
 ```
 
-**Why these exact versions?**
-- `2.6.0+cu124` means PyTorch compiled for CUDA 12.4
-- Must be installed from `https://download.pytorch.org/whl/cu124` (official NVIDIA index)
-- System driver (550.xx) supports CUDA 12.4 via NVIDIA's cudalib translation layer
-- Python 3.12.8 required (3.13+ breaks dependency resolver)
+**Por que essas versões exatas?**
+- `2.6.0+cu124` significa PyTorch compilado para CUDA 12.4
+- Deve ser instalado de `https://download.pytorch.org/whl/cu124` (índice oficial NVIDIA)
+- Driver do sistema (550.xx) suporta CUDA 12.4 via camada de tradução cudalib da NVIDIA
+- Python 3.12.8 necessário (3.13+ quebra resolvedor de dependências)
 
-### Installation
+### Instalação
 ```bash
-# Activate venv FIRST
+# Ativar venv PRIMEIRO
 source .venv/bin/activate
 
-# Install from official NVIDIA CUDA 12.4 index
+# Instalar do índice oficial NVIDIA CUDA 12.4
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 
-# Expected output (final lines):
+# Output esperado (últimas linhas):
 # Successfully installed torch-2.6.0+cu124 torchvision-0.21.0+cu124 torchaudio-2.6.0+cu124
 # (and NVIDIA CUDA 12.4.127 runtime libraries)
 ```
