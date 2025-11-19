@@ -69,7 +69,9 @@ class DebugAgent(ReactAgent):
             return f"Error: {str(exc)}"
 
     def _think_node(self, state: AgentState) -> AgentState:
-        similar_episodes: List[SimilarEpisode] = self.memory.search_similar(state["current_task"], top_k=3)
+        similar_episodes: List[SimilarEpisode] = self.memory.search_similar(
+            state["current_task"], top_k=3
+        )
         system_status = self.tools_framework.execute_tool("inspect_context")
         system_status_str = (
             json.dumps(system_status, indent=2)

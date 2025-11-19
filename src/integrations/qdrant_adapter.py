@@ -102,7 +102,7 @@ class QdrantAdapter:
         )
         try:
             response = self.client.get_collection(collection_name=collection)
-            return response.dict()
+            return response.dict()  # type: ignore[no-any-return]
         except Exception:
             logger.info("Creating missing collection %s", collection)
             self.client.recreate_collection(
