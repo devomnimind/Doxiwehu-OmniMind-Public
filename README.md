@@ -16,15 +16,62 @@ OmniMind is a self-hosted multi-agent system with a FastAPI + React dashboard, s
 
 ## Installation & Startup
 
-1. Create and activate the Python virtual environment (Python 3.12+ recommended):
+1. **Prerequisites - GPU Setup (CRITICAL for Phase 7)**
+
+   Before creating the virtual environment, ensure GPU/CUDA is properly configured:
+
+   ```bash
+   # Verify NVIDIA driver
+   nvidia-smi
+
+   # Expected output: NVIDIA-SMI 550.163.01+ and CUDA 12.4.x
+   ```
+
+   If CUDA is unavailable (especially after system suspend/hibernate), reload the nvidia_uvm kernel module:
+
+   ```bash
+   sudo fuser --kill /dev/nvidia-uvm 2>/dev/null || true
+   sleep 1
+   sudo modprobe -r nvidia_uvm 2>/dev/null || true
+   sleep 1
+   sudo modprobe nvidia_uvm
+
+   # Verify: should show nvidia_uvm in output
+   lsmod | grep nvidia_uvm
+   ```
+
+2. **Python Environment (Python 3.12.8 Required)**
+
+   ⚠️ **CRITICAL: Python 3.13+ is NOT supported by PyTorch**
+
+   ```bash
+   # Use pyenv to install Python 3.12.8 (if not already available)
+   pyenv install 3.12.8
+
+   # Set project Python version
+   cd /home/fahbrain/projects/omnimind
+   pyenv local 3.12.8
+
+   # Verify pinning
+   python --version  # MUST output: Python 3.12.8
+   ```
+
+3. Create and activate the Python virtual environment:
 
 ```bash
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+
+# Verify GPU setup
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA Available: {torch.cuda.is_available()}')"
+
+# Expected output:
+# PyTorch: 2.6.0+cu124
+# CUDA Available: True
 ```
 
-2. Ensure system tooling (Docker, Nix, or host shell) satisfies the dashboard dependencies described in `web/backend/README.md`.
+4. Ensure system tooling (Docker, Nix, or host shell) satisfies the dashboard dependencies described in `web/backend/README.md`.
 
 3. Generate dashboard credentials on first run (auto-created at `config/dashboard_auth.json` with `chmod 600`). If you already have valid credentials, set the env vars before startup:
 
@@ -52,6 +99,38 @@ scripts/start_dashboard.sh
 - The React GUI (`web/frontend/`) reads credentials from the login form and stores `Basic` auth headers per session; it also surfaces the credential file path so administrators know where to rotate secrets.
 - `/observability` now surfaces a `validation` payload (pulled from `logs/security_validation.jsonl`) alongside `self_healing`, `atlas`, and `security`, so teams can see the latest audit-chain verdict directly in the UI.
 - MCP and D-Bus flows rely on `src/integrations` and the orchestrator agent to provide context, metrics, and manual triggers.
+
+## GPU Verification (Phase 7)
+
+After completing installation, verify GPU is operational:
+
+```bash
+# 1. Check CUDA availability
+python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}'); print(f'GPU: {torch.cuda.get_device_name(0)}')"
+
+# Expected output:
+# CUDA Available: True
+# GPU: NVIDIA GeForce GTX 1650
+
+# 2. Run GPU benchmark
+python PHASE7_COMPLETE_BENCHMARK_AUDIT.py
+
+# Expected output (validates GPU is working):
+# CPU Throughput: 253.21 GFLOPS
+# GPU Throughput: 1149.91 GFLOPS (≥1000 GFLOPS indicates success)
+# Memory Bandwidth: 12.67 GB/s
+# Report saved to: logs/PHASE7_BENCHMARK_REPORT.json
+
+# 3. Run audit tests to confirm integration
+pytest tests/test_audit.py -v --cov=src.audit
+
+# Expected: 14/14 tests passing
+```
+
+**Reference Documentation:**
+- Detailed GPU setup: `.github/copilot-instructions.md` (GPU/CUDA Setup Requirements section)
+- GPU troubleshooting: `docs/reports/PHASE7_GPU_CUDA_REPAIR_LOG.md`
+- Repair summary: `GPU_CUDA_REPAIR_AUDIT_COMPLETE.md`
 
 ## Testing & Quality Gates
 

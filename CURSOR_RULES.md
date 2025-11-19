@@ -44,6 +44,81 @@ You **MUST**:
 - ✅ Request approval for any architectural changes
 
 ---
+
+## 🎮 GPU Development Guidelines (Phase 7)
+
+### When to Use GPU Acceleration
+✅ **RECOMMENDED GPU OPERATIONS:**
+- Large matrix multiplications (≥1000x1000 tensors)
+- LLM inference and embeddings
+- Tensor operations in neural networks
+- Batch processing of data (>1000 samples)
+
+❌ **CPU FALLBACK WHEN:**
+- GPU memory unavailable (check `torch.cuda.is_available()`)
+- CUDA errors occur (especially after system suspend)
+- Processing small batches (<100 samples)
+- I/O-bound operations (file read/write)
+
+### GPU Memory Management
+**GTX 1650 VRAM: 3.81GB Total Constraint**
+- Large LLM: ~2.5GB (Qwen2-7B-Instruct quantized)
+- Agent buffers: ~800MB (embeddings, inference cache)
+- **User data: ≤500MB** (absolute maximum before OOM)
+
+**Batch Size Rules:**
+```python
+# Safe tensor operations on GTX 1650
+max_safe_tensor = 5000 * 5000  # ~190MB on GPU
+max_batch_size = 32  # For LLM inference
+max_embedding_batch = 128  # For vector operations
+
+# Check before GPU operation
+if torch.cuda.is_available():
+    allocated = torch.cuda.memory_allocated()
+    reserved = torch.cuda.memory_reserved()
+    free_memory = torch.cuda.get_device_properties(0).total_memory - allocated
+    if free_memory < required_bytes:
+        # Fall back to CPU or process smaller batches
+```
+
+### GPU Error Recovery
+**If CUDA becomes unavailable after suspend/hibernate:**
+```bash
+# 1. Verify GPU is visible
+nvidia-smi
+
+# 2. Reload nvidia_uvm kernel module (fastest fix)
+sudo fuser --kill /dev/nvidia-uvm 2>/dev/null || true
+sleep 1
+sudo modprobe -r nvidia_uvm 2>/dev/null || true
+sleep 1
+sudo modprobe nvidia_uvm
+
+# 3. Verify CUDA available
+python -c "import torch; print(torch.cuda.is_available())"
+```
+
+### GPU Testing Requirements
+- All GPU-intensive code must include fallback to CPU
+- Test with `pytest tests/test_pytorch_gpu.py` before committing
+- Verify benchmark script: `python PHASE7_COMPLETE_BENCHMARK_AUDIT.py`
+- Ensure performance is ≥1000 GFLOPS on benchmark
+
+### GPU Code Patterns
+```python
+# ✅ CORRECT: GPU with CPU fallback
+import torch
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+tensor = torch.randn(5000, 5000, device=device)
+result = torch.matmul(tensor, tensor)
+
+# ❌ WRONG: No fallback, will crash on CUDA error
+tensor = torch.randn(5000, 5000, device="cuda")
+```
+
+---
 ## 🚫 INVIOLABLE RULES (100% COMPLIANCE REQUIRED)
 
 ### Rule 1: Production-Ready Code Only

@@ -25,6 +25,181 @@ Standalone Autonomous Local AI Agent (100% local, zero cloud)
 - **Multi-agent architecture** with RLAIF self-improvement
 - **Hardware-optimized** for GTX 1650 4GB VRAM
 
+---
+
+## 🖥️ GPU/CUDA SETUP REQUIREMENTS (Phase 7 - MANDATORY)
+
+### Hardware Specification (Validated Phase 7)
+```
+CPU:        Intel i5 10th generation (4 cores/8 threads)
+GPU:        NVIDIA GeForce GTX 1650 (4GB VRAM, Compute Capability 7.5)
+RAM:        24GB total (18.5GB typically available)
+Driver:     NVIDIA 550.163.01+ (tested with 550.163.01)
+```
+
+### Python & Environment Configuration
+
+**⚠️ CRITICAL: Python 3.12.8 Required**
+- ❌ **NEVER** use Python 3.13+ (PyTorch has no official support for Python 3.13)
+- ✅ **MUST** use Python 3.12.8 via pyenv
+- ✅ **MUST** pin via `.python-version` file in project root containing: `3.12.8`
+
+**Installation & Verification:**
+```bash
+# Install Python 3.12.8 (if not already available via pyenv)
+pyenv install 3.12.8
+
+# Set project Python version
+cd /home/fahbrain/projects/omnimind
+pyenv local 3.12.8
+echo "3.12.8" > .python-version
+
+# Create fresh virtual environment
+rm -rf .venv
+python -m venv .venv
+source .venv/bin/activate
+
+# Verify Python version
+python --version  # MUST output: Python 3.12.8
+
+# Verify pip available
+pip --version
+```
+
+### PyTorch GPU Stack (Phase 7 Validated Configuration)
+
+**Exact Versions Required:**
+```
+torch==2.6.0+cu124           ← CRITICAL: cu124 matches CUDA 12.4
+torchvision==0.21.0+cu124    ← Must match torch version
+torchaudio==2.6.0+cu124      ← Must match torch version
+CUDA Toolkit: 12.4.127 (bundled with PyTorch)
+cuDNN: 9.1.0.70 (bundled with PyTorch)
+```
+
+**Installation (must be exact):**
+```bash
+# Activate venv first
+source .venv/bin/activate
+
+# Install with official NVIDIA index for CUDA 12.4
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+
+# Verify installation
+python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA Available: {torch.cuda.is_available()}'); print(f'GPU: {torch.cuda.get_device_name(0)}')"
+```
+
+**Expected Output:**
+```
+PyTorch: 2.6.0+cu124
+CUDA Available: True
+GPU: NVIDIA GeForce GTX 1650
+```
+
+### GPU/CUDA Troubleshooting
+
+**Issue: `CUDA unknown error` or `torch.cuda.is_available() returns False`**
+
+**Solution 1: Reload nvidia_uvm kernel module** (Most Common Fix)
+```bash
+# Kill any processes holding the module
+sudo fuser --kill /dev/nvidia-uvm 2>/dev/null || true
+sleep 1
+
+# Reload the module
+sudo modprobe -r nvidia_uvm 2>/dev/null || true
+sleep 1
+sudo modprobe nvidia_uvm
+
+# Verify module is loaded
+lsmod | grep nvidia_uvm
+
+# Test CUDA again
+python -c "import torch; print(torch.cuda.is_available())"
+```
+
+**Expected Result:** `torch.cuda.is_available()` should return `True`
+
+**Note:** nvidia_uvm kernel module corruption typically occurs after system suspend/hibernate on Linux. The reload procedure restores GPU access immediately.
+
+**Solution 2: Verify System CUDA Installation**
+```bash
+# Check NVIDIA driver
+nvidia-smi
+
+# Verify CUDA toolkit installed
+nvcc --version
+
+# Expected output should show CUDA 12.4.x
+```
+
+**Solution 3: Update System Library Cache**
+```bash
+# Rebuild ldconfig cache for NVIDIA libraries
+sudo ldconfig
+
+# Verify cuDNN found
+ldconfig -p | grep cudnn
+```
+
+### GPU Performance Baseline (Phase 7 Validation)
+
+**Validated Performance on GTX 1650:**
+- CPU Throughput: 253.21 GFLOPS (5000x5000 matrix multiply)
+- GPU Throughput: 1149.91 GFLOPS (5000x5000 matrix multiply)
+- Memory Bandwidth: 12.67 GB/s
+- Acceleration Factor: **4.5x GPU vs CPU**
+- PyTorch Version: 2.6.0+cu124
+- Status: ✅ VERIFIED Nov 18, 2025
+
+**Benchmark Script:** `python PHASE7_COMPLETE_BENCHMARK_AUDIT.py` (generates JSON report to `logs/`)
+
+### GPU Memory Constraints
+
+**GTX 1650 VRAM: 3.81GB Total**
+- Large Language Model: ~2.5GB (Qwen2-7B-Instruct quantized)
+- Agent Operations: ~800MB (embeddings, inference buffers)
+- Available for User Data: ~500MB max
+- **Important:** Batch sizes must be limited to avoid OOM errors
+
+**Tensor Operation Sizing:**
+```python
+# Safe: Processes without GPU memory exhaustion
+max_matrix_size = 5000  # 5000x5000 matrix = ~190MB on GPU
+
+# Unsafe: Will cause OOM on GTX 1650
+unsafe_matrix_size = 10000  # 10000x10000 matrix = ~760MB on GPU (leaves no overhead)
+```
+
+### Integration Validation
+
+**After GPU setup, verify complete stack:**
+```bash
+# 1. Verify Python + environment
+python --version
+echo $VIRTUAL_ENV
+
+# 2. Verify PyTorch GPU
+python -c "import torch; assert torch.cuda.is_available(), 'CUDA NOT AVAILABLE'"
+
+# 3. Run audit tests
+pytest tests/test_audit.py -v --cov=src.audit
+
+# Expected: 14/14 tests passing, ≥60% coverage
+
+# 4. Run GPU benchmark
+python PHASE7_COMPLETE_BENCHMARK_AUDIT.py
+
+# Expected: All benchmarks complete, JSON report generated to logs/
+```
+
+### Documentation References
+
+**For detailed Phase 7 GPU/CUDA repair history and troubleshooting:**
+- `docs/reports/PHASE7_GPU_CUDA_REPAIR_LOG.md` - Technical deep dive (500+ lines)
+- `GPU_CUDA_REPAIR_AUDIT_COMPLETE.md` - Executive summary and sign-off
+- `PHASE7_COMPLETE_BENCHMARK_AUDIT.py` - Automated validation script
+
 ### Critical Isolation Rule
 This Copilot Agent develops **ONLY OmniMind**. You **CANNOT**:
 - ❌ Reference or link external projects
