@@ -208,9 +208,7 @@ def test_load_balancer_capability_filtering() -> None:
         ),
     ]
 
-    task = DistributedTask(
-        task_id="task-1", task_type="gpu_tasks", payload={}
-    )
+    task = DistributedTask(task_id="task-1", task_type="gpu_tasks", payload={})
 
     selected = lb.select_node(nodes, task)
     assert selected is not None
@@ -261,9 +259,7 @@ async def test_cluster_coordinator_submit_task() -> None:
     coordinator.register_node(node)
 
     # Submit task
-    task = DistributedTask(
-        task_id="task-1", task_type="test", payload={"data": "test"}
-    )
+    task = DistributedTask(task_id="task-1", task_type="test", payload={"data": "test"})
     success = coordinator.submit_task(task)
 
     assert success is True

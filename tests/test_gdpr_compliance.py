@@ -8,7 +8,7 @@ from src.compliance.gdpr_compliance import (
     DataProcessingPurpose,
     DataCategory,
     RetentionPeriod,
-    ConsentStatus
+    ConsentStatus,
 )
 
 
@@ -31,9 +31,7 @@ class TestGDPRCompliance:
         subject = controller.register_data_subject("user123")
 
         consent_id = subject.grant_consent(
-            "analytics",
-            [DataCategory.BEHAVIORAL],
-            RetentionPeriod.SIX_MONTHS
+            "analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SIX_MONTHS
         )
 
         assert consent_id in subject.consents
@@ -49,9 +47,7 @@ class TestGDPRCompliance:
 
         # Grant consent
         subject.grant_consent(
-            "analytics",
-            [DataCategory.BEHAVIORAL],
-            RetentionPeriod.SIX_MONTHS
+            "analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SIX_MONTHS
         )
 
         # Check valid consent
@@ -65,9 +61,7 @@ class TestGDPRCompliance:
         subject = controller.register_data_subject("user123")
 
         consent_id = subject.grant_consent(
-            "analytics",
-            [DataCategory.BEHAVIORAL],
-            RetentionPeriod.SIX_MONTHS
+            "analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SIX_MONTHS
         )
 
         # Withdraw consent
@@ -84,7 +78,7 @@ class TestGDPRCompliance:
         subject.grant_consent(
             "legitimate_interests",
             [DataCategory.BEHAVIORAL],
-            RetentionPeriod.SIX_MONTHS
+            RetentionPeriod.SIX_MONTHS,
         )
 
         # Process data
@@ -93,7 +87,7 @@ class TestGDPRCompliance:
             DataProcessingPurpose.LEGITIMATE_INTERESTS,
             [DataCategory.BEHAVIORAL],
             {"action": "page_view", "timestamp": datetime.utcnow().isoformat()},
-            "OmniMind Analytics"
+            "OmniMind Analytics",
         )
 
         assert result is True
@@ -111,7 +105,7 @@ class TestGDPRCompliance:
             DataProcessingPurpose.LEGITIMATE_INTERESTS,
             [DataCategory.BEHAVIORAL],
             {"action": "page_view"},
-            "OmniMind Analytics"
+            "OmniMind Analytics",
         )
 
         assert result is False
@@ -122,9 +116,15 @@ class TestGDPRCompliance:
         subject = controller.register_data_subject("user123", "user@example.com")
 
         # Grant consent and process data
-        subject.grant_consent("analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SIX_MONTHS)
-        controller.process_data("user123", DataProcessingPurpose.LEGITIMATE_INTERESTS,
-                              [DataCategory.BEHAVIORAL], {"test": "data"})
+        subject.grant_consent(
+            "analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SIX_MONTHS
+        )
+        controller.process_data(
+            "user123",
+            DataProcessingPurpose.LEGITIMATE_INTERESTS,
+            [DataCategory.BEHAVIORAL],
+            {"test": "data"},
+        )
 
         # Request access
         response = controller.handle_data_subject_rights("user123", "access")
@@ -140,12 +140,20 @@ class TestGDPRCompliance:
         subject = controller.register_data_subject("user123", "user@example.com")
 
         # Grant consent and process data
-        subject.grant_consent("analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SIX_MONTHS)
-        controller.process_data("user123", DataProcessingPurpose.LEGITIMATE_INTERESTS,
-                              [DataCategory.BEHAVIORAL], {"test": "data"})
+        subject.grant_consent(
+            "analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SIX_MONTHS
+        )
+        controller.process_data(
+            "user123",
+            DataProcessingPurpose.LEGITIMATE_INTERESTS,
+            [DataCategory.BEHAVIORAL],
+            {"test": "data"},
+        )
 
         # Request erasure
-        response = controller.handle_data_subject_rights("user123", "erasure", reason="User request")
+        response = controller.handle_data_subject_rights(
+            "user123", "erasure", reason="User request"
+        )
 
         assert response["status"] == "success"
         assert subject.email is None  # Personal data anonymized
@@ -158,12 +166,17 @@ class TestGDPRCompliance:
         subject = controller.register_data_subject("user123")
 
         # Grant consent with short retention
-        subject.grant_consent("analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SESSION_ONLY)
+        subject.grant_consent(
+            "analytics", [DataCategory.BEHAVIORAL], RetentionPeriod.SESSION_ONLY
+        )
 
         # Manually expire the consent by setting old date
         import datetime
+
         old_date = datetime.datetime.utcnow() - datetime.timedelta(hours=25)
-        subject.consents[list(subject.consents.keys())[0]]["expires_at"] = old_date.isoformat()
+        subject.consents[list(subject.consents.keys())[0]][
+            "expires_at"
+        ] = old_date.isoformat()
 
         # Run retention enforcement
         cleaned_count = controller.enforce_data_retention()

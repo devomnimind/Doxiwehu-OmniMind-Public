@@ -20,6 +20,7 @@ logger = structlog.get_logger(__name__)
 @dataclass
 class KeyMetadata:
     """Metadata for cryptographic keys"""
+
     key_id: str
     algorithm: str
     key_size: int
@@ -48,7 +49,7 @@ class HSMManager:
         master_key_file = ".omnimind/hsm/master.key"
 
         if os.path.exists(master_key_file):
-            with open(master_key_file, 'rb') as f:
+            with open(master_key_file, "rb") as f:
                 return f.read()
         else:
             # Generate new master key
@@ -57,16 +58,12 @@ class HSMManager:
 
             # Encrypt master key with system-derived key (simulated)
             system_key = hashlib.pbkdf2_hmac(
-                'sha256',
-                os.urandom(32),
-                b'OmniMindHSMMasterKeySalt',
-                100000,
-                dklen=32
+                "sha256", os.urandom(32), b"OmniMindHSMMasterKeySalt", 100000, dklen=32
             )
 
             encrypted_master = self._encrypt_data(master_key, system_key)
 
-            with open(master_key_file, 'wb') as f:
+            with open(master_key_file, "wb") as f:
                 f.write(encrypted_master)
 
             logger.info("New master key generated and stored")
@@ -81,8 +78,12 @@ class HSMManager:
         """Simple decryption for demonstration"""
         return encrypted_data  # Placeholder - in production use proper decryption
 
-    def generate_key(self, algorithm: str = "RSA", key_size: int = 2048,
-                    max_usage: Optional[int] = None) -> str:
+    def generate_key(
+        self,
+        algorithm: str = "RSA",
+        key_size: int = 2048,
+        max_usage: Optional[int] = None,
+    ) -> str:
         """
         Generate a new cryptographic key in the HSM
 
@@ -118,15 +119,17 @@ class HSMManager:
                 key_id=key_id,
                 algorithm=algorithm,
                 key_size=key_size,
-                created_at=os.environ.get('CURRENT_TIME', '2025-11-19T12:00:00Z'),
-                max_usage=max_usage
-            )
+                created_at=os.environ.get("CURRENT_TIME", "2025-11-19T12:00:00Z"),
+                max_usage=max_usage,
+            ),
         }
 
-        logger.info("Cryptographic key generated",
-                   key_id=key_id,
-                   algorithm=algorithm,
-                   key_size=key_size)
+        logger.info(
+            "Cryptographic key generated",
+            key_id=key_id,
+            algorithm=algorithm,
+            key_size=key_size,
+        )
 
         return key_id
 
@@ -161,10 +164,12 @@ class HSMManager:
         private_key = key_data["private_key"]
         signature = hmac.new(private_key, data, hashlib.sha256).digest()
 
-        logger.info("Data signed",
-                   key_id=key_id,
-                   data_size=len(data),
-                   usage_count=metadata.usage_count)
+        logger.info(
+            "Data signed",
+            key_id=key_id,
+            data_size=len(data),
+            usage_count=metadata.usage_count,
+        )
 
         return signature
 
@@ -191,9 +196,7 @@ class HSMManager:
 
         is_valid = hmac.compare_digest(signature, expected_signature)
 
-        logger.info("Signature verification",
-                   key_id=key_id,
-                   is_valid=is_valid)
+        logger.info("Signature verification", key_id=key_id, is_valid=is_valid)
 
         return is_valid
 
@@ -216,11 +219,14 @@ class HSMManager:
 
         # Simple XOR encryption for demonstration
         # In production, use proper AES encryption
-        encrypted = bytes(a ^ b for a, b in zip(plaintext, private_key * (len(plaintext) // len(private_key) + 1)))
+        encrypted = bytes(
+            a ^ b
+            for a, b in zip(
+                plaintext, private_key * (len(plaintext) // len(private_key) + 1)
+            )
+        )
 
-        logger.info("Data encrypted",
-                   key_id=key_id,
-                   data_size=len(plaintext))
+        logger.info("Data encrypted", key_id=key_id, data_size=len(plaintext))
 
         return encrypted
 
@@ -242,11 +248,14 @@ class HSMManager:
         private_key = key_data["private_key"]
 
         # Reverse XOR encryption
-        decrypted = bytes(a ^ b for a, b in zip(ciphertext, private_key * (len(ciphertext) // len(private_key) + 1)))
+        decrypted = bytes(
+            a ^ b
+            for a, b in zip(
+                ciphertext, private_key * (len(ciphertext) // len(private_key) + 1)
+            )
+        )
 
-        logger.info("Data decrypted",
-                   key_id=key_id,
-                   data_size=len(ciphertext))
+        logger.info("Data decrypted", key_id=key_id, data_size=len(ciphertext))
 
         return decrypted
 
@@ -272,10 +281,7 @@ class HSMManager:
         Returns:
             Dictionary of key_id -> KeyMetadata
         """
-        return {
-            key_id: key_data["metadata"]
-            for key_id, key_data in self.keys.items()
-        }
+        return {key_id: key_data["metadata"] for key_id, key_data in self.keys.items()}
 
     def destroy_key(self, key_id: str) -> bool:
         """
@@ -303,7 +309,9 @@ class HSMManager:
             Status information
         """
         total_keys = len(self.keys)
-        active_keys = sum(1 for k in self.keys.values() if k["metadata"].status == "active")
+        active_keys = sum(
+            1 for k in self.keys.values() if k["metadata"].status == "active"
+        )
 
         return {
             "status": "operational",
@@ -312,7 +320,7 @@ class HSMManager:
             "master_key_initialized": self.master_key is not None,
             "supported_algorithms": ["RSA", "AES"],
             "fips_compliant": False,  # This is a simulation
-            "tamper_detected": False
+            "tamper_detected": False,
         }
 
     def backup_keys(self, backup_path: str) -> bool:
@@ -329,17 +337,18 @@ class HSMManager:
             # This is a simplified backup - in production, use proper key backup procedures
             backup_data = {
                 "keys": self.keys,
-                "backup_date": os.environ.get('CURRENT_TIME', '2025-11-19T12:00:00Z'),
-                "version": "1.0"
+                "backup_date": os.environ.get("CURRENT_TIME", "2025-11-19T12:00:00Z"),
+                "version": "1.0",
             }
 
             # Encrypt backup with master key
             import json
+
             backup_json = json.dumps(backup_data, default=str).encode()
             encrypted_backup = self._encrypt_data(backup_json, self.master_key)
 
             os.makedirs(os.path.dirname(backup_path), exist_ok=True)
-            with open(backup_path, 'wb') as f:
+            with open(backup_path, "wb") as f:
                 f.write(encrypted_backup)
 
             logger.info("Key backup created", backup_path=backup_path)
@@ -361,13 +370,14 @@ class HSMManager:
             True if restore successful
         """
         try:
-            with open(backup_path, 'rb') as f:
+            with open(backup_path, "rb") as f:
                 encrypted_backup = f.read()
 
             # Decrypt backup
             backup_json = self._decrypt_data(encrypted_backup, master_key)
 
             import json
+
             backup_data = json.loads(backup_json.decode())
 
             self.keys = backup_data["keys"]
