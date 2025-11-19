@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, Iterable, List, Optional, Protocol, cast
 
 import requests
 
@@ -23,20 +23,35 @@ class GraphQLCollectionPage:
     cursor: Optional[str]
 
 
+class GraphQLSessionResponse(Protocol):
+    status_code: int
+    text: str
+
+    def json(self) -> Dict[str, Any]: ...
+
+
+class GraphQLSession(Protocol):
+    def post(
+        self, url: str, json: Dict[str, Any], headers: Dict[str, Any], timeout: float
+    ) -> GraphQLSessionResponse: ...
+
+
 class GraphQLSupabaseHelper:
     """Helper for paging Supabase GraphQL collections with the service-role key."""
 
     def __init__(
         self,
         config: SupabaseConfig,
-        session: Optional[requests.Session] = None,
+        session: Optional[GraphQLSession] = None,
         max_retries: int = 3,
         backoff_factor: float = 0.5,
     ) -> None:
         if not config.service_role_key:
             raise GraphQLSupabaseError("Service role key required for GraphQL helper")
         self.config = config
-        self.session = session or requests.Session()
+        self.session: GraphQLSession = (
+            session or cast(GraphQLSession, requests.Session())
+        )
         self.endpoint = f"{config.url.rstrip('/')}/graphql/v1"
         self.headers = {
             "apikey": config.service_role_key,
@@ -52,7 +67,7 @@ class GraphQLSupabaseHelper:
         payload = {"query": query, "variables": variables or {}}
         logger.debug("GraphQL request payload %s", payload)
         attempt = 0
-        response: Optional[requests.Response] = None
+        response: Optional[GraphQLSessionResponse] = None
         while attempt < self.max_retries:
             attempt += 1
             try:

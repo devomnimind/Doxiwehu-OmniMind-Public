@@ -1,34 +1,37 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Dict, Optional, cast
 
 import pytest
 
 from src.integrations.graphql_supabase import (
     GraphQLCollectionPage,
+    GraphQLSession,
+    GraphQLSessionResponse,
     GraphQLSupabaseError,
     GraphQLSupabaseHelper,
 )
 from src.integrations.supabase_adapter import SupabaseConfig
 
 
-class DummyResponse:
+class DummyResponse(GraphQLSessionResponse):
     def __init__(self, status_code: int, payload: Any):
         self.status_code = status_code
         self._payload = payload
+        self.text = str(payload)
 
     def json(self) -> Any:
         return self._payload
 
 
-class DummySession:
+class DummySession(GraphQLSession):
     def __init__(self) -> None:
         self.calls: list[tuple[str, Any]] = []
         self.next_response: Optional[DummyResponse] = None
 
     def post(
-        self, url: str, json: dict[str, Any], headers: dict[str, str], timeout: float
+        self, url: str, json: Dict[str, Any], headers: Dict[str, str], timeout: float
     ) -> DummyResponse:
         self.calls.append((url, json))
         if self.next_response:
@@ -50,14 +53,14 @@ class DummySession:
         )
 
 
-@pytest.fixture  # type: ignore[misc]
+@pytest.fixture
 def config(tmp_path: Path) -> SupabaseConfig:
     return SupabaseConfig(
         url="https://supabase.test", anon_key="anon", service_role_key="service"
     )
 
 
-@pytest.fixture  # type: ignore[misc]
+@pytest.fixture
 def helper(config: SupabaseConfig) -> GraphQLSupabaseHelper:
     return GraphQLSupabaseHelper(config=config, session=DummySession())
 
@@ -71,13 +74,13 @@ def test_fetch_page(helper: GraphQLSupabaseHelper) -> None:
 
 
 def test_empty_collection(helper: GraphQLSupabaseHelper) -> None:
-    helper.session.next_response = DummyResponse(200, {"data": {}})
+    cast(DummySession, helper.session).next_response = DummyResponse(200, {"data": {}})
     with pytest.raises(GraphQLSupabaseError):
         helper.fetch_page("memory_consolidations", ["id"], first=1)
 
 
 def test_graphql_error(helper: GraphQLSupabaseHelper) -> None:
-    helper.session.next_response = DummyResponse(
+    cast(DummySession, helper.session).next_response = DummyResponse(
         200, {"data": None, "errors": [{"message": "boom"}]}
     )
     with pytest.raises(GraphQLSupabaseError):
