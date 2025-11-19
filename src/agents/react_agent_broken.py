@@ -3,12 +3,12 @@ ReAct Agent Base for OmniMind
 Implements Think → Act → Observe pattern using LangGraph.
 """
 
-from typing import TypedDict, List, Dict, Any, Optional
+from typing import TypeAlias, TypedDict, List, Dict, Any, Optional
 from datetime import datetime
 import yaml
 
-from langchain_community.llms import Ollama
-from langgraph.graph import StateGraph, END
+from langchain_community.llms import Ollama  # type: ignore[import-not-found]
+from langgraph.graph import StateGraph, CompiledStateGraph, END
 
 from ..memory import EpisodicMemory
 from ..tools import FileOperations, ShellExecutor, SystemMonitor
@@ -28,6 +28,9 @@ class AgentState(TypedDict):
     max_iterations: int
     completed: bool
     final_result: Optional[str]
+
+
+CompiledGraphType: TypeAlias = CompiledStateGraph[AgentState]
 
 
 class ReactAgent:
@@ -64,12 +67,16 @@ class ReactAgent:
         )
         self.monitor = SystemMonitor()
 
-        # Build state graph
-        self.graph = self._build_graph()
+        # Expose attributes for type checking and testing
+        self.mode: str = "react"
+        self.tools: List[Any] = [self.file_ops, self.shell, self.monitor]
 
-    def _build_graph(self) -> StateGraph:
+        # Build state graph
+        self.graph: CompiledGraphType = self._build_graph()
+
+    def _build_graph(self) -> CompiledGraphType:
         """Build LangGraph state machine for ReAct pattern."""
-        workflow = StateGraph(AgentState)
+        workflow: StateGraph[AgentState] = StateGraph(AgentState)
 
         # Add nodes
         workflow.add_node("think", self._think_node)
@@ -207,21 +214,21 @@ ARGS: <arguments as JSON>
         """Execute tool action."""
         try:
             if action == "read_file":
-                return self.file_ops.read_file(args.get("path", ""))  # type: ignore[no-any-return]
+                return self.file_ops.read_file(args.get("path", ""))
 
             elif action == "write_file":
-                return self.file_ops.write_file(  # type: ignore[no-any-return]
+                return self.file_ops.write_file(
                     args.get("path", ""), args.get("content", "")
                 )
 
             elif action == "list_files":
-                return self.file_ops.list_files(args.get("path", "."))  # type: ignore[no-any-return]
+                return self.file_ops.list_files(args.get("path", "."))
 
             elif action == "execute_shell":
-                return self.shell.execute(args.get("command", ""))  # type: ignore[no-any-return]
+                return self.shell.execute(args.get("command", ""))
 
             elif action == "system_info":
-                return self.monitor.format_info(self.monitor.get_info())  # type: ignore[no-any-return]
+                return self.monitor.format_info(self.monitor.get_info())
 
             else:
                 return f"Unknown action: {action}"
@@ -255,7 +262,7 @@ ARGS: <arguments as JSON>
 
         return "continue"
 
-    def run(self, task: str, max_iterations: int = 5) -> Dict[str, Any]:
+    def run(self, task: str, max_iterations: int = 5) -> AgentState:
         """
         Execute agent on given task.
 
@@ -298,11 +305,12 @@ ARGS: <arguments as JSON>
                 reward=1.0 if final_state["completed"] else 0.5,
             )
 
-            return final_state  # type: ignore[no-any-return]
+            return final_state
 
         except Exception as e:
-            return {
-                "error": str(e),
-                "messages": initial_state["messages"],
-                "completed": False,
-            }
+            # Return initial state with error information
+            error_state = initial_state.copy()
+            error_state["messages"].append(f"[ERROR] {str(e)}")
+            error_state["completed"] = False
+            error_state["final_result"] = f"Error: {str(e)}"
+            return error_state

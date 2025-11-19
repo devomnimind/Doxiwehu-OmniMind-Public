@@ -108,13 +108,13 @@ class DummyQdrantClient:
 def _patch_memory_module() -> None:
     import src.memory.episodic_memory as episodic_module
 
-    episodic_module.QdrantClient = DummyQdrantClient
-    episodic_module.PointStruct = DummyPointStruct
-    episodic_module.Distance = DummyDistance
-    episodic_module.VectorParams = DummyVectorParams
-    episodic_module.Filter = DummyFilter
-    episodic_module.FieldCondition = DummyFieldCondition
-    episodic_module.MatchValue = lambda *args, **kwargs: None
+    episodic_module.QdrantClient = DummyQdrantClient  # type: ignore[assignment,misc]
+    episodic_module.PointStruct = DummyPointStruct  # type: ignore[assignment]
+    episodic_module.Distance = DummyDistance  # type: ignore[assignment]
+    episodic_module.VectorParams = DummyVectorParams  # type: ignore[assignment]
+    episodic_module.Filter = DummyFilter  # type: ignore[assignment]
+    episodic_module.FieldCondition = DummyFieldCondition  # type: ignore[assignment]
+    episodic_module.MatchValue = lambda *args, **kwargs: None  # type: ignore[assignment]
 
 
 _patch_memory_module()
@@ -122,21 +122,21 @@ _patch_memory_module()
 try:
     import langchain_ollama
 except ImportError:
-    langchain_ollama = types.SimpleNamespace()
-    sys.modules["langchain_ollama"] = langchain_ollama  # type: ignore[assignment]
+    langchain_ollama = types.SimpleNamespace()  # type: ignore[assignment]
+    sys.modules["langchain_ollama"] = langchain_ollama
 
 
-@pytest.fixture  # type: ignore[misc]
+@pytest.fixture
 def config_path() -> str:
     return str(PROJECT_ROOT / "config" / "agent_config.yaml")
 
 
-@pytest.fixture  # type: ignore[misc]
+@pytest.fixture
 def orchestrator(config_path: str) -> Any:
     return OrchestratorAgent(config_path)
 
 
-@pytest.fixture  # type: ignore[misc]
+@pytest.fixture
 def temporary_file(tmp_path: Path) -> Path:
     return tmp_path / "agent_output.py"
 
@@ -192,7 +192,7 @@ def test_architect_restrictions_and_writing(config_path: str, tmp_path: Path) ->
 
 def test_reviewer_scores_code(config_path: str, tmp_path: Path) -> None:
     agent = ReviewerAgent(config_path)
-    agent.llm = DummyLLM()
+    agent.llm = DummyLLM()  # type: ignore[assignment]
 
     code_file = tmp_path / "fibonacci.py"
     code_file.write_text(

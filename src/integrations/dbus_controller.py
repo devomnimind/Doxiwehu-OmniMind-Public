@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List, Optional
 
-import dbus  # type: ignore[import-not-found]
+import dbus  # type: ignore[import-untyped]
 
 logger = logging.getLogger(__name__)
 
