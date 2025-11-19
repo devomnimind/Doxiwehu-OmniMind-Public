@@ -134,9 +134,6 @@ export function RealtimeAnalytics() {
         <h3 className="text-lg font-semibold text-gray-300">Performance Trends</h3>
         <div className="glass-card p-4 h-48 flex items-end justify-between gap-1">
           {analyticsData.slice(-20).map((data, index) => {
-            const maxValue = Math.max(data.cpu_usage, data.memory_usage);
-            const height = (maxValue / 100) * 100;
-            
             return (
               <div key={index} className="flex-1 flex flex-col items-center gap-1">
                 {/* Memory Bar */}

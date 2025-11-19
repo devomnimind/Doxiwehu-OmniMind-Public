@@ -24,9 +24,10 @@ export function WorkflowVisualization() {
   useEffect(() => {
     if (lastMessage?.type === 'task_update' || lastMessage?.type === 'workflow_update') {
       // Mock workflow data - in production, this would come from the backend
+      const data = lastMessage.data as { task_id?: string; name?: string } | undefined;
       const mockWorkflow: WorkflowData = {
-        task_id: lastMessage.data?.task_id || 'task-1',
-        task_name: lastMessage.data?.name || 'Data Processing Pipeline',
+        task_id: data?.task_id || 'task-1',
+        task_name: data?.name || 'Data Processing Pipeline',
         nodes: [
           { id: 'node-1', name: 'Initialize', status: 'completed', dependencies: [] },
           { id: 'node-2', name: 'Load Data', status: 'completed', agent: 'DataAgent', dependencies: ['node-1'] },
