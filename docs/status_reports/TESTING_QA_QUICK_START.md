@@ -1,125 +1,125 @@
-# Testing & Quality Assurance Features - Quick Start Guide
+# Recursos de Testes e Garantia de Qualidade - Guia de Início Rápido
 
-## Overview
+## Visão Geral
 
-This guide provides a quick introduction to the new testing and quality assurance features added to OmniMind.
+Este guia fornece uma introdução rápida aos novos recursos de testes e garantia de qualidade adicionados ao OmniMind.
 
-## 🎯 What's New
+## 🎯 O que há de Novo
 
-### 1. Interactive API Playground
+### 1. Playground Interativo da API
 
-Access the interactive API documentation at:
+Acesse a documentação interativa da API em:
 ```
 http://localhost:8000/docs
 ```
 
-Features:
-- Try API endpoints directly from the browser
-- Built-in authentication
-- Example requests and responses
-- Automatic API schema generation
+Recursos:
+- Teste endpoints da API diretamente do navegador
+- Autenticação integrada
+- Exemplos de requests e responses
+- Geração automática de schema da API
 
-**Learn more:** [docs/api/INTERACTIVE_API_PLAYGROUND.md](docs/api/INTERACTIVE_API_PLAYGROUND.md)
+**Saiba mais:** [docs/api/INTERACTIVE_API_PLAYGROUND.md](docs/api/INTERACTIVE_API_PLAYGROUND.md)
 
-### 2. Automated Diagnostics
+### 2. Diagnóstico Automatizado
 
-Run system health checks with one command:
+Execute verificações de saúde do sistema com um comando:
 
 ```bash
-# Quick health check
+# Verificação rápida de saúde
 python scripts/diagnose.py --quick
 
-# Full diagnostic
+# Diagnóstico completo
 python scripts/diagnose.py --full
 
-# Specific component check
+# Verificação de componente específico
 python scripts/diagnose.py --check-gpu
 python scripts/diagnose.py --check-services
 ```
 
-**Learn more:** [docs/api/TROUBLESHOOTING.md](docs/api/TROUBLESHOOTING.md)
+**Saiba mais:** [docs/api/TROUBLESHOOTING.md](docs/api/TROUBLESHOOTING.md)
 
-### 3. Performance Tuning
+### 3. Otimização de Performance
 
-Comprehensive performance optimization guide with:
-- Validated benchmark baselines
-- Hardware-specific recommendations
-- Optimization strategies
-- Monitoring tools
+Guia abrangente de otimização de performance com:
+- Baselines de benchmark validados
+- Recomendações específicas por hardware
+- Estratégias de otimização
+- Ferramentas de monitoramento
 
-**Learn more:** [docs/api/PERFORMANCE_TUNING.md](docs/api/PERFORMANCE_TUNING.md)
+**Saiba mais:** [docs/api/PERFORMANCE_TUNING.md](docs/api/PERFORMANCE_TUNING.md)
 
-### 4. End-to-End Testing
+### 4. Testes Ponta a Ponta
 
-Run comprehensive integration tests:
+Execute testes abrangentes de integração:
 
 ```bash
-# Run all E2E tests
+# Executar todos os testes E2E
 pytest tests/test_e2e_integration.py -v
 
-# Run specific test class
+# Executar classe de teste específica
 pytest tests/test_e2e_integration.py::TestAPIEndpoints -v
 ```
 
-Features:
-- API endpoint validation
-- WebSocket testing
-- UI interaction tests (Playwright)
-- Performance benchmarks
-- Security validation
+Recursos:
+- Validação de endpoints da API
+- Testes WebSocket
+- Testes de interação UI (Playwright)
+- Benchmarks de performance
+- Validação de segurança
 
-### 5. Chaos Engineering
+### 5. Engenharia do Caos
 
-Test system resilience with chaos engineering:
+Teste a resiliência do sistema com engenharia do caos:
 
 ```python
 from src.testing.chaos_engineering import enable_chaos, chaos_aware
 
-# Enable chaos engineering
+# Habilitar engenharia do caos
 enable_chaos(True)
 
-# Use decorator for automatic failure injection
+# Usar decorador para injeção automática de falhas
 @chaos_aware("database", "query")
 async def query_database(query: str):
     return await db.execute(query)
 ```
 
-Run chaos tests:
+Executar testes de caos:
 ```bash
 pytest tests/test_chaos_engineering.py -v
 ```
 
-### 6. Load Testing
+### 6. Testes de Carga
 
-Automated load testing with k6:
+Testes de carga automatizados com k6:
 
 ```bash
-# Install k6
+# Instalar k6
 brew install k6  # macOS
 sudo apt-get install k6  # Linux
 
-# Run load test
+# Executar teste de carga
 k6 run tests/load_tests/api_load_test.js
 
-# Custom configuration
+# Configuração customizada
 k6 run --vus 50 --duration 1m tests/load_tests/api_load_test.js
 ```
 
-**Learn more:** [tests/load_tests/README.md](tests/load_tests/README.md)
+**Saiba mais:** [tests/load_tests/README.md](tests/load_tests/README.md)
 
-### 7. Visual Regression Testing
+### 7. Testes de Regressão Visual
 
-Detect UI changes automatically:
+Detecte mudanças na UI automaticamente:
 
 ```bash
-# Install dependencies
+# Instalar dependências
 pip install playwright pillow
 playwright install chromium
 
-# Run visual regression tests
+# Executar testes de regressão visual
 pytest tests/test_visual_regression.py -v
 
-# Update baselines
+# Atualizar baselines
 rm -rf tests/visual_tests/baselines
 pytest tests/test_visual_regression.py -v
 ```
@@ -150,52 +150,52 @@ scripts/
 └── diagnose.py                           # Diagnostic tool
 ```
 
-## 🚀 Quick Start Checklist
+## 🚀 Checklist de Início Rápido
 
-- [ ] **1. Run System Diagnostic**
+- [ ] **1. Executar Diagnóstico do Sistema**
   ```bash
   python scripts/diagnose.py --full
   ```
 
-- [ ] **2. Explore API Playground**
-  - Start backend: `uvicorn web.backend.main:app`
-  - Visit: http://localhost:8000/docs
+- [ ] **2. Explorar Playground da API**
+  - Iniciar backend: `uvicorn web.backend.main:app`
+  - Visitar: http://localhost:8000/docs
 
-- [ ] **3. Run Tests**
+- [ ] **3. Executar Testes**
   ```bash
-  # Chaos engineering tests
+  # Testes de engenharia do caos
   pytest tests/test_chaos_engineering.py -v
-  
-  # E2E integration tests
+
+  # Testes de integração E2E
   pytest tests/test_e2e_integration.py -v
   ```
 
-- [ ] **4. Try Load Testing** (requires k6)
+- [ ] **4. Experimentar Testes de Carga** (requer k6)
   ```bash
   k6 run tests/load_tests/api_load_test.js
   ```
 
-- [ ] **5. Review Documentation**
+- [ ] **5. Revisar Documentação**
   ```bash
   cat docs/TESTING_QA_IMPLEMENTATION_SUMMARY.md
   ```
 
-## 🔍 Troubleshooting
+## 🔍 Solução de Problemas
 
-### Issue: Diagnostic script fails
+### Problema: Script de diagnóstico falha
 
-**Solution:**
+**Solução:**
 ```bash
-# Ensure logs directory exists
+# Garantir que diretório logs existe
 mkdir -p logs
 
-# Run diagnostic
+# Executar diagnóstico
 python scripts/diagnose.py --quick
 ```
 
-### Issue: Tests fail with import errors
+### Problema: Testes falham com erros de importação
 
-**Solution:**
+**Solução:**
 ```bash
 # Install test dependencies
 pip install pytest pytest-asyncio playwright pillow
