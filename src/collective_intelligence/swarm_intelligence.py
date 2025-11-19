@@ -178,9 +178,7 @@ class SwarmCoordinator:
 
                 # Social component (global best)
                 social = self.config.social_weight * random.random()
-                v += social * (
-                    self.global_best_position[d] - agent.position[d]
-                )
+                v += social * (self.global_best_position[d] - agent.position[d])
 
                 # Clamp velocity
                 v = max(-self.config.max_velocity, min(self.config.max_velocity, v))
@@ -382,9 +380,7 @@ class AntColonyOptimizer:
 
         while unvisited:
             # Select next city
-            next_city = self._select_next_city(
-                current, unvisited, distance_matrix
-            )
+            next_city = self._select_next_city(current, unvisited, distance_matrix)
             path.append(next_city)
             total_cost += distance_matrix[current][next_city]
             current = next_city
@@ -412,7 +408,7 @@ class AntColonyOptimizer:
                 distance = 1e-10  # Avoid division by zero
             heuristic = 1.0 / distance
 
-            prob = (pheromone ** self.alpha) * (heuristic ** self.beta)
+            prob = (pheromone**self.alpha) * (heuristic**self.beta)
             probabilities.append(prob)
 
         # Normalize
@@ -432,9 +428,7 @@ class AntColonyOptimizer:
 
         return cities[-1]
 
-    def _update_pheromones(
-        self, paths: List[List[int]], costs: List[float]
-    ) -> None:
+    def _update_pheromones(self, paths: List[List[int]], costs: List[float]) -> None:
         """Update pheromone trails."""
         # Evaporation
         for edge in self.pheromones:
@@ -449,6 +443,4 @@ class AntColonyOptimizer:
             for i in range(len(path)):
                 j = (i + 1) % len(path)
                 edge = (path[i], path[j])
-                self.pheromones[edge] = (
-                    self.pheromones.get(edge, 0) + deposit
-                )
+                self.pheromones[edge] = self.pheromones.get(edge, 0) + deposit

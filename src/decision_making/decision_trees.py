@@ -140,9 +140,7 @@ class DecisionTree:
 
             # Evaluate criterion
             next_key = self._evaluate_criterion(current_node, context)
-            explanation_parts.append(
-                f"{current_node.question} -> {next_key}"
-            )
+            explanation_parts.append(f"{current_node.question} -> {next_key}")
 
             if next_key not in current_node.children:
                 # Default to first child if key not found
@@ -176,9 +174,7 @@ class DecisionTree:
 
         return outcome
 
-    def _evaluate_criterion(
-        self, node: DecisionNode, context: Dict[str, Any]
-    ) -> str:
+    def _evaluate_criterion(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate node criterion and return next branch key."""
         if node.criterion_type == DecisionCriterion.THRESHOLD:
             return self._evaluate_threshold(node, context)
@@ -196,9 +192,7 @@ class DecisionTree:
             # Default to first child
             return list(node.children.keys())[0]
 
-    def _evaluate_threshold(
-        self, node: DecisionNode, context: Dict[str, Any]
-    ) -> str:
+    def _evaluate_threshold(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate threshold-based criterion."""
         # Extract value from context (simplified)
         value = context.get("value", 0.5)
@@ -209,18 +203,14 @@ class DecisionTree:
         else:
             return "low"
 
-    def _evaluate_category(
-        self, node: DecisionNode, context: Dict[str, Any]
-    ) -> str:
+    def _evaluate_category(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate category-based criterion."""
         category = context.get("category", "unknown")
         if node.categories and category in node.categories:
             return category
         return "unknown"
 
-    def _evaluate_probability(
-        self, node: DecisionNode, context: Dict[str, Any]
-    ) -> str:
+    def _evaluate_probability(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate probabilistic criterion."""
         import random
 
@@ -230,9 +220,7 @@ class DecisionTree:
         else:
             return "no"
 
-    def _evaluate_utility(
-        self, node: DecisionNode, context: Dict[str, Any]
-    ) -> str:
+    def _evaluate_utility(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate utility-based criterion."""
         utilities = context.get("utilities", {})
         if not utilities:
@@ -250,9 +238,7 @@ class DecisionTree:
 
         return best_child
 
-    def _evaluate_ethical(
-        self, node: DecisionNode, context: Dict[str, Any]
-    ) -> str:
+    def _evaluate_ethical(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate ethics-based criterion."""
         ethical_score = context.get("ethical_score", 0.5)
         if ethical_score >= 0.7:
@@ -262,9 +248,7 @@ class DecisionTree:
         else:
             return "unethical"
 
-    def _evaluate_learned(
-        self, node: DecisionNode, context: Dict[str, Any]
-    ) -> str:
+    def _evaluate_learned(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate learned criterion using weights."""
         if not node.learned_weights:
             return list(node.children.keys())[0]
@@ -323,12 +307,11 @@ class DecisionTree:
                 "average_confidence": 0.0,
             }
 
-        successful_decisions = sum(
-            1 for _, success in self.decision_history if success
+        successful_decisions = sum(1 for _, success in self.decision_history if success)
+        avg_confidence = (
+            sum(outcome.confidence for outcome, _ in self.decision_history)
+            / total_decisions
         )
-        avg_confidence = sum(
-            outcome.confidence for outcome, _ in self.decision_history
-        ) / total_decisions
 
         return {
             "total_decisions": total_decisions,

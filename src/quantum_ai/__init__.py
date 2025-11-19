@@ -3,7 +3,7 @@ Quantum-Enhanced AI Module for OmniMind - Phase 15 Implementation.
 
 This module provides quantum-inspired algorithms for AI:
 - Quantum algorithms (Grover, quantum annealing simulation)
-- Superposition computing  
+- Superposition computing
 - Quantum machine learning
 - Quantum-inspired optimization
 

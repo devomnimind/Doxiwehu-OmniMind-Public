@@ -88,7 +88,9 @@ class QAOAOptimizer(QuantumOptimizer):
         super().__init__(dimension, population_size=1)
         self.num_layers = num_layers
         self.mixing_angles = [random.uniform(0, math.pi) for _ in range(num_layers)]
-        self.problem_angles = [random.uniform(0, 2 * math.pi) for _ in range(num_layers)]
+        self.problem_angles = [
+            random.uniform(0, 2 * math.pi) for _ in range(num_layers)
+        ]
 
     def optimize(
         self,
@@ -101,8 +103,7 @@ class QAOAOptimizer(QuantumOptimizer):
 
         # Initialize solution
         solution = [
-            random.uniform(bounds[i][0], bounds[i][1])
-            for i in range(self.dimension)
+            random.uniform(bounds[i][0], bounds[i][1]) for i in range(self.dimension)
         ]
         value = objective(solution)
 
@@ -156,20 +157,20 @@ class QAOAOptimizer(QuantumOptimizer):
 
         for i in range(self.dimension):
             original = solution[i]
-            
+
             # Gradient estimate
             solution[i] = original + epsilon
             value_plus = objective(solution)
             solution[i] = original - epsilon
             value_minus = objective(solution)
             gradient = (value_plus - value_minus) / (2 * epsilon)
-            
+
             # Update based on angle
             new_solution[i] = original - angle * gradient
-            
+
             # Clamp to bounds
             new_solution[i] = max(bounds[i][0], min(bounds[i][1], new_solution[i]))
-            
+
             solution[i] = original
 
         return new_solution
@@ -201,12 +202,14 @@ class QAOAOptimizer(QuantumOptimizer):
         for _ in range(5):
             # Try random perturbation
             layer = random.randint(0, self.num_layers - 1)
-            
+
             if random.random() < 0.5:
                 # Perturb mixing angle
                 delta = random.uniform(-0.1, 0.1)
                 self.mixing_angles[layer] += delta
-                self.mixing_angles[layer] = max(0, min(math.pi, self.mixing_angles[layer]))
+                self.mixing_angles[layer] = max(
+                    0, min(math.pi, self.mixing_angles[layer])
+                )
             else:
                 # Perturb problem angle
                 delta = random.uniform(-0.1, 0.1)
@@ -244,8 +247,7 @@ class QuantumGradientDescent(QuantumOptimizer):
         """Optimize using quantum gradient descent."""
         # Initialize solution
         solution = [
-            random.uniform(bounds[i][0], bounds[i][1])
-            for i in range(self.dimension)
+            random.uniform(bounds[i][0], bounds[i][1]) for i in range(self.dimension)
         ]
         value = objective(solution)
 
@@ -305,16 +307,16 @@ class QuantumGradientDescent(QuantumOptimizer):
 
         for i in range(self.dimension):
             original = solution[i]
-            
+
             solution[i] = original + epsilon
             value_plus = objective(solution)
-            
+
             solution[i] = original - epsilon
             value_minus = objective(solution)
-            
+
             grad = (value_plus - value_minus) / (2 * epsilon)
             gradient.append(grad)
-            
+
             solution[i] = original
 
         return gradient

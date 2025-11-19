@@ -42,7 +42,7 @@ class QuantumState:
         """Initialize state to |0⟩."""
         if not self.amplitudes:
             # Initialize to |00...0⟩
-            size = 2 ** self.num_qubits
+            size = 2**self.num_qubits
             self.amplitudes = [complex(0, 0)] * size
             self.amplitudes[0] = complex(1, 0)  # |0⟩ state
 
@@ -55,7 +55,7 @@ class QuantumState:
     def measure(self) -> int:
         """Measure the quantum state (collapse to classical)."""
         probabilities = [abs(a) ** 2 for a in self.amplitudes]
-        
+
         # Sample according to probabilities
         r = random.random()
         cumsum = 0.0
@@ -63,7 +63,7 @@ class QuantumState:
             cumsum += prob
             if r <= cumsum:
                 return i
-        
+
         return len(probabilities) - 1
 
     def get_probabilities(self) -> List[float]:
@@ -107,15 +107,15 @@ class QuantumCircuit:
             self._apply_pauli_x(qubits[0])
         elif gate == QuantumGate.CNOT:
             self._apply_cnot(qubits[0], qubits[1])
-        
+
         self.gates_applied.append((gate, qubits))
         self.logger.debug("gate_applied", gate=gate.value, qubits=qubits)
 
     def _apply_hadamard(self, qubit: int) -> None:
         """Apply Hadamard gate to create superposition."""
         new_amplitudes = self.state.amplitudes.copy()
-        size = 2 ** self.num_qubits
-        
+        size = 2**self.num_qubits
+
         for i in range(size):
             if (i >> qubit) & 1 == 0:
                 # Qubit is 0
@@ -124,14 +124,14 @@ class QuantumCircuit:
                 a1 = self.state.amplitudes[j]
                 new_amplitudes[i] = (a0 + a1) / math.sqrt(2)
                 new_amplitudes[j] = (a0 - a1) / math.sqrt(2)
-        
+
         self.state.amplitudes = new_amplitudes
 
     def _apply_pauli_x(self, qubit: int) -> None:
         """Apply Pauli-X (NOT) gate."""
         new_amplitudes = self.state.amplitudes.copy()
-        size = 2 ** self.num_qubits
-        
+        size = 2**self.num_qubits
+
         for i in range(size):
             j = i ^ (1 << qubit)  # Flip qubit
             if i < j:  # Swap once
@@ -139,14 +139,14 @@ class QuantumCircuit:
                     self.state.amplitudes[j],
                     self.state.amplitudes[i],
                 )
-        
+
         self.state.amplitudes = new_amplitudes
 
     def _apply_cnot(self, control: int, target: int) -> None:
         """Apply CNOT gate."""
         new_amplitudes = self.state.amplitudes.copy()
-        size = 2 ** self.num_qubits
-        
+        size = 2**self.num_qubits
+
         for i in range(size):
             if (i >> control) & 1:  # Control is 1
                 j = i ^ (1 << target)  # Flip target
@@ -155,7 +155,7 @@ class QuantumCircuit:
                         self.state.amplitudes[j],
                         self.state.amplitudes[i],
                     )
-        
+
         self.state.amplitudes = new_amplitudes
 
     def measure(self) -> int:
@@ -216,19 +216,19 @@ class GroverSearch:
         for iteration in range(num_iterations):
             # Oracle (mark target states)
             self._apply_oracle(oracle)
-            
+
             # Diffusion operator (amplify marked states)
             self._apply_diffusion()
 
         # Measure
         result = self.circuit.measure()
-        
+
         self.logger.info(
             "search_complete",
             result=result,
             iterations=num_iterations,
         )
-        
+
         return result
 
     def _apply_oracle(self, oracle: Callable[[int], bool]) -> None:
@@ -243,14 +243,14 @@ class GroverSearch:
         # Hadamard on all qubits
         for i in range(self.num_qubits):
             self.circuit.apply_gate(QuantumGate.HADAMARD, [i])
-        
+
         # Conditional phase shift
         mean = sum(self.circuit.state.amplitudes) / len(self.circuit.state.amplitudes)
         for i in range(len(self.circuit.state.amplitudes)):
             self.circuit.state.amplitudes[i] = (
                 2 * mean - self.circuit.state.amplitudes[i]
             )
-        
+
         # Hadamard on all qubits
         for i in range(self.num_qubits):
             self.circuit.apply_gate(QuantumGate.HADAMARD, [i])
@@ -326,7 +326,7 @@ class QuantumAnnealer:
 
             # Accept new state based on energy and quantum tunneling
             energy_diff = new_energy - current_energy
-            
+
             if energy_diff < 0:
                 # Lower energy - always accept
                 accept = True

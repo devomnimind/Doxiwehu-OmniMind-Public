@@ -181,9 +181,7 @@ class EthicalDecisionMaker:
 
         return outcome
 
-    def _evaluate_option(
-        self, option: str, dilemma: EthicalDilemma
-    ) -> Dict[str, Any]:
+    def _evaluate_option(self, option: str, dilemma: EthicalDilemma) -> Dict[str, Any]:
         """Evaluate an option using multiple ethical frameworks."""
         if self.primary_framework == EthicalFramework.DEONTOLOGICAL:
             return self._evaluate_deontological(option, dilemma)
@@ -216,9 +214,7 @@ class EthicalDecisionMaker:
         return {
             "total_score": total_score,
             "principle_scores": principle_scores,
-            "stakeholder_impacts": self._assess_stakeholder_impacts(
-                option, dilemma
-            ),
+            "stakeholder_impacts": self._assess_stakeholder_impacts(option, dilemma),
         }
 
     def _evaluate_consequentialist(
@@ -236,9 +232,7 @@ class EthicalDecisionMaker:
 
         # Normalize to 0-1
         num_stakeholders = len(stakeholder_impacts) if stakeholder_impacts else 1
-        normalized_score = (total_utility + num_stakeholders) / (
-            2 * num_stakeholders
-        )
+        normalized_score = (total_utility + num_stakeholders) / (2 * num_stakeholders)
         normalized_score = max(0.0, min(1.0, normalized_score))
 
         # Map to principle scores
@@ -252,9 +246,7 @@ class EthicalDecisionMaker:
             "stakeholder_impacts": stakeholder_impacts,
         }
 
-    def _evaluate_virtue(
-        self, option: str, dilemma: EthicalDilemma
-    ) -> Dict[str, Any]:
+    def _evaluate_virtue(self, option: str, dilemma: EthicalDilemma) -> Dict[str, Any]:
         """Evaluate option using virtue ethics (character-based)."""
         # Assess virtues demonstrated by the option
         virtues = {
@@ -284,14 +276,10 @@ class EthicalDecisionMaker:
         return {
             "total_score": total_score,
             "principle_scores": principle_scores,
-            "stakeholder_impacts": self._assess_stakeholder_impacts(
-                option, dilemma
-            ),
+            "stakeholder_impacts": self._assess_stakeholder_impacts(option, dilemma),
         }
 
-    def _evaluate_care(
-        self, option: str, dilemma: EthicalDilemma
-    ) -> Dict[str, Any]:
+    def _evaluate_care(self, option: str, dilemma: EthicalDilemma) -> Dict[str, Any]:
         """Evaluate option using care ethics (relationship-based)."""
         # Assess impact on relationships and vulnerable parties
         stakeholder_impacts = self._assess_stakeholder_impacts(option, dilemma)
@@ -307,9 +295,7 @@ class EthicalDecisionMaker:
 
         # Normalize
         num_stakeholders = len(stakeholder_impacts) if stakeholder_impacts else 1
-        normalized_score = (care_score + num_stakeholders) / (
-            3 * num_stakeholders
-        )
+        normalized_score = (care_score + num_stakeholders) / (3 * num_stakeholders)
         normalized_score = max(0.0, min(1.0, normalized_score))
 
         # Map to principle scores
@@ -323,9 +309,7 @@ class EthicalDecisionMaker:
             "stakeholder_impacts": stakeholder_impacts,
         }
 
-    def _evaluate_hybrid(
-        self, option: str, dilemma: EthicalDilemma
-    ) -> Dict[str, Any]:
+    def _evaluate_hybrid(self, option: str, dilemma: EthicalDilemma) -> Dict[str, Any]:
         """Evaluate option using hybrid approach."""
         # Combine all frameworks
         deont = self._evaluate_deontological(option, dilemma)
@@ -355,9 +339,7 @@ class EthicalDecisionMaker:
         return {
             "total_score": total_score,
             "principle_scores": principle_scores,
-            "stakeholder_impacts": self._assess_stakeholder_impacts(
-                option, dilemma
-            ),
+            "stakeholder_impacts": self._assess_stakeholder_impacts(option, dilemma),
         }
 
     def _check_rule_compliance(
@@ -408,9 +390,7 @@ class EthicalDecisionMaker:
                     for word in ["help", "benefit", "support", "protect"]
                 ):
                     impact = 0.8
-                elif any(
-                    word in option_lower for word in ["harm", "damage", "hurt"]
-                ):
+                elif any(word in option_lower for word in ["harm", "damage", "hurt"]):
                     impact = -0.8
                 else:
                     impact = 0.3
@@ -448,16 +428,18 @@ class EthicalDecisionMaker:
         if scores["stakeholder_impacts"]:
             justification_parts.append("Stakeholder impacts:")
             for stakeholder, impact in scores["stakeholder_impacts"].items():
-                impact_str = "positive" if impact > 0 else "negative" if impact < 0 else "neutral"
+                impact_str = (
+                    "positive"
+                    if impact > 0
+                    else "negative" if impact < 0 else "neutral"
+                )
                 justification_parts.append(
                     f"  - {stakeholder}: {impact_str} ({impact:.2f})"
                 )
 
         return " | ".join(justification_parts)
 
-    def _compute_confidence(
-        self, option_scores: Dict[str, Dict[str, Any]]
-    ) -> float:
+    def _compute_confidence(self, option_scores: Dict[str, Dict[str, Any]]) -> float:
         """Compute confidence in the decision."""
         if len(option_scores) < 2:
             return 1.0
@@ -482,8 +464,12 @@ class EthicalDecisionMaker:
             }
 
         total_decisions = len(self.decision_history)
-        avg_score = sum(d.ethical_score for d in self.decision_history) / total_decisions
-        avg_confidence = sum(d.confidence for d in self.decision_history) / total_decisions
+        avg_score = (
+            sum(d.ethical_score for d in self.decision_history) / total_decisions
+        )
+        avg_confidence = (
+            sum(d.confidence for d in self.decision_history) / total_decisions
+        )
 
         # Principle distribution
         principle_counts: Dict[str, int] = {}

@@ -186,9 +186,7 @@ class EmergenceDetector:
 
         return None
 
-    def _are_similar(
-        self, state1: Dict[str, Any], state2: Dict[str, Any]
-    ) -> bool:
+    def _are_similar(self, state1: Dict[str, Any], state2: Dict[str, Any]) -> bool:
         """Check if two agent states are similar."""
         # Simple similarity: same action or close numerical values
         if state1.get("action") == state2.get("action"):
@@ -250,9 +248,7 @@ class SelfOrganization:
 
         return new_state
 
-    def _evaluate_condition(
-        self, condition: str, state: Dict[str, Any]
-    ) -> bool:
+    def _evaluate_condition(self, condition: str, state: Dict[str, Any]) -> bool:
         """Evaluate rule condition."""
         # Simple condition evaluation
         if condition == "always":
@@ -322,7 +318,9 @@ class AdaptiveSystem:
                     self.configuration.get("exploration_rate", 0.1)
                     + self.adaptation_rate,
                 )
-                self.logger.info("increased_exploration", rate=self.configuration["exploration_rate"])
+                self.logger.info(
+                    "increased_exploration", rate=self.configuration["exploration_rate"]
+                )
             elif recent_avg > 0.8:
                 # Performance good - decrease exploration
                 self.configuration["exploration_rate"] = max(
@@ -330,7 +328,9 @@ class AdaptiveSystem:
                     self.configuration.get("exploration_rate", 0.1)
                     - self.adaptation_rate,
                 )
-                self.logger.info("decreased_exploration", rate=self.configuration["exploration_rate"])
+                self.logger.info(
+                    "decreased_exploration", rate=self.configuration["exploration_rate"]
+                )
 
     def get_configuration(self) -> Dict[str, Any]:
         """Get current adapted configuration."""

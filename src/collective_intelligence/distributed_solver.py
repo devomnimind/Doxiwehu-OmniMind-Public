@@ -79,11 +79,13 @@ class TaskDecomposer:
         if data_size == 0:
             # Create simple subtasks
             for i in range(min(num_agents, problem.num_subtasks)):
-                subtasks.append({
-                    "subtask_id": f"subtask_{i}",
-                    "data": {"partition": i},
-                    "constraints": problem.constraints,
-                })
+                subtasks.append(
+                    {
+                        "subtask_id": f"subtask_{i}",
+                        "data": {"partition": i},
+                        "constraints": problem.constraints,
+                    }
+                )
         else:
             # Partition data
             partition_size = max(1, data_size // num_agents)
@@ -95,11 +97,13 @@ class TaskDecomposer:
                 if start >= data_size:
                     break
 
-                subtasks.append({
-                    "subtask_id": f"subtask_{i}",
-                    "data": {"items": items[start:end]},
-                    "constraints": problem.constraints,
-                })
+                subtasks.append(
+                    {
+                        "subtask_id": f"subtask_{i}",
+                        "data": {"items": items[start:end]},
+                        "constraints": problem.constraints,
+                    }
+                )
 
         self.logger.info("problem_decomposed", num_subtasks=len(subtasks))
         return subtasks
@@ -223,7 +227,7 @@ class SolutionAggregator:
 
         # Count unique results
         unique_results = set(str(sol.get("result")) for sol in solutions)
-        
+
         # Consensus is higher when more agents agree
         # Perfect consensus = 1.0, no consensus = 0.0
         consensus = 1.0 - (len(unique_results) - 1) / len(solutions)
@@ -288,11 +292,13 @@ class DistributedSolver:
             agent_id = f"agent_{i}"
             try:
                 result = agent_solver(subtask)
-                partial_solutions.append({
-                    "agent_id": agent_id,
-                    "result": result.get("result"),
-                    "confidence": result.get("confidence", 0.8),
-                })
+                partial_solutions.append(
+                    {
+                        "agent_id": agent_id,
+                        "result": result.get("result"),
+                        "confidence": result.get("confidence", 0.8),
+                    }
+                )
             except Exception as e:
                 self.logger.error(
                     "subtask_failed",

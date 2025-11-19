@@ -54,9 +54,7 @@ class KnowledgeBase:
     ) -> List[SharedExperience]:
         """Get experiences, optionally filtered by agent."""
         if agent_id:
-            experiences = [
-                exp for exp in self.experiences if exp.agent_id == agent_id
-            ]
+            experiences = [exp for exp in self.experiences if exp.agent_id == agent_id]
         else:
             experiences = self.experiences
 
@@ -88,9 +86,7 @@ class ConsensusLearning:
             num_agents=num_agents,
         )
 
-    def share_experience(
-        self, agent_id: str, experience: SharedExperience
-    ) -> None:
+    def share_experience(self, agent_id: str, experience: SharedExperience) -> None:
         """
         Share an experience from an agent.
 
@@ -100,7 +96,7 @@ class ConsensusLearning:
         """
         experience.agent_id = agent_id
         self.knowledge_base.add_experience(experience)
-        
+
         self.logger.info(
             "experience_shared",
             agent_id=agent_id,
@@ -136,14 +132,13 @@ class ConsensusLearning:
                 else:
                     # Use most common for non-numerical
                     from collections import Counter
+
                     counter = Counter(values)
                     consensus[key] = counter.most_common(1)[0][0]
 
         return consensus
 
-    def update_agent_model(
-        self, agent_id: str, model: Dict[str, Any]
-    ) -> None:
+    def update_agent_model(self, agent_id: str, model: Dict[str, Any]) -> None:
         """
         Update an agent's model contribution.
 
@@ -192,9 +187,7 @@ class FederatedLearning:
         """Get current global model."""
         return self.global_model.copy()
 
-    def submit_local_update(
-        self, agent_id: str, local_model: Dict[str, Any]
-    ) -> None:
+    def submit_local_update(self, agent_id: str, local_model: Dict[str, Any]) -> None:
         """
         Submit local model update from an agent.
 
@@ -303,9 +296,7 @@ class CollectiveLearner:
                 outcome=experience.outcome,
             )
 
-    def update_model(
-        self, agent_id: str, model_update: Dict[str, Any]
-    ) -> None:
+    def update_model(self, agent_id: str, model_update: Dict[str, Any]) -> None:
         """
         Update model from an agent.
 
@@ -370,9 +361,7 @@ class MultiAgentTrainer:
         """
         # Share all experiences
         for exp in agent_experiences:
-            self.collective_learner.learn_from_experience(
-                exp.agent_id, exp
-            )
+            self.collective_learner.learn_from_experience(exp.agent_id, exp)
 
         # Synchronize collective knowledge
         model = self.collective_learner.synchronize()
@@ -382,10 +371,11 @@ class MultiAgentTrainer:
         metrics = {
             "episode": self.training_episodes,
             "num_experiences": len(agent_experiences),
-            "avg_outcome": sum(e.outcome for e in agent_experiences)
-            / len(agent_experiences)
-            if agent_experiences
-            else 0,
+            "avg_outcome": (
+                sum(e.outcome for e in agent_experiences) / len(agent_experiences)
+                if agent_experiences
+                else 0
+            ),
             "model_version": self.training_episodes,
         }
 

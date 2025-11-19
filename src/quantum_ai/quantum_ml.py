@@ -34,12 +34,12 @@ class QuantumFeatureMap:
             Quantum state amplitudes
         """
         # Normalize features
-        norm = math.sqrt(sum(f ** 2 for f in features))
+        norm = math.sqrt(sum(f**2 for f in features))
         if norm > 0:
             features = [f / norm for f in features]
 
         # Create quantum amplitudes (simplified)
-        size = 2 ** self.num_qubits
+        size = 2**self.num_qubits
         amplitudes = [complex(0, 0)] * size
 
         for i, feature in enumerate(features[:size]):
@@ -67,7 +67,7 @@ class QuantumKernel:
         """Initialize quantum kernel."""
         self.num_qubits = num_qubits
         self.feature_map = QuantumFeatureMap(
-            dimension=2 ** num_qubits,
+            dimension=2**num_qubits,
             num_qubits=num_qubits,
         )
         self.logger = logger.bind(component="quantum_kernel")
@@ -92,10 +92,7 @@ class QuantumKernel:
         state2 = self.feature_map.encode(x2)
 
         # Compute overlap (inner product)
-        overlap = sum(
-            (a1.conjugate() * a2).real
-            for a1, a2 in zip(state1, state2)
-        )
+        overlap = sum((a1.conjugate() * a2).real for a1, a2 in zip(state1, state2))
 
         return abs(overlap)
 
@@ -145,7 +142,9 @@ class VariationalCircuit:
         self.num_qubits = num_qubits
         self.num_layers = num_layers
         self.num_params = num_qubits * num_layers * 2  # Rotations per layer
-        self.parameters = [random.uniform(0, 2 * math.pi) for _ in range(self.num_params)]
+        self.parameters = [
+            random.uniform(0, 2 * math.pi) for _ in range(self.num_params)
+        ]
         self.logger = logger.bind(component="variational_circuit")
 
     def forward(self, inputs: List[float]) -> float:
@@ -168,7 +167,7 @@ class VariationalCircuit:
                     # Apply rotation based on input and parameters
                     angle1 = self.parameters[param_idx] * inputs[qubit]
                     angle2 = self.parameters[param_idx + 1]
-                    
+
                     result += math.cos(angle1) * math.sin(angle2)
                     param_idx += 2
 
@@ -240,16 +239,16 @@ class QuantumNeuralNetwork:
         for i in range(len(self.circuit.parameters)):
             # Perturb parameter
             original = self.circuit.parameters[i]
-            
+
             self.circuit.parameters[i] = original + epsilon
             loss_plus = (self.circuit.forward(inputs) - target) ** 2
-            
+
             self.circuit.parameters[i] = original - epsilon
             loss_minus = (self.circuit.forward(inputs) - target) ** 2
-            
+
             gradient = (loss_plus - loss_minus) / (2 * epsilon)
             gradients.append(gradient)
-            
+
             # Restore
             self.circuit.parameters[i] = original
 
@@ -292,7 +291,7 @@ class QuantumClassifier:
         # Use all samples as support vectors (simplified)
         self.support_vectors = X.copy()
         self.support_labels = y.copy()
-        
+
         self.logger.info(
             "classifier_trained",
             num_samples=len(X),

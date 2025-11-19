@@ -43,16 +43,16 @@ class SuperpositionState:
     def collapse(self) -> Any:
         """Collapse superposition to single state (measurement)."""
         import random
-        
+
         probabilities = [abs(a) ** 2 for a in self.amplitudes]
         r = random.random()
         cumsum = 0.0
-        
+
         for i, prob in enumerate(probabilities):
             cumsum += prob
             if r <= cumsum:
                 return self.states[i]
-        
+
         return self.states[-1] if self.states else None
 
 
@@ -86,11 +86,11 @@ class SuperpositionProcessor:
             SuperpositionState with all results
         """
         results = [function(x) for x in inputs]
-        
+
         # Equal superposition
         amplitude = complex(1.0 / math.sqrt(len(results)), 0)
         amplitudes = [amplitude] * len(results)
-        
+
         return SuperpositionState(states=results, amplitudes=amplitudes)
 
     def quantum_search(
@@ -113,23 +113,23 @@ class SuperpositionProcessor:
             states=search_space,
             amplitudes=[complex(1, 0)] * len(search_space),
         )
-        
+
         # Amplify matching states
         for i, state in enumerate(superposition.states):
             if function(state):
                 # Amplify matching state
                 superposition.amplitudes[i] *= complex(2, 0)
-        
+
         superposition._normalize()
-        
+
         # Collapse to most probable
         result = superposition.collapse()
-        
+
         self.logger.info(
             "quantum_search_complete",
             result=str(result)[:50],
         )
-        
+
         return result
 
 
@@ -164,12 +164,12 @@ class QuantumParallelism:
         """
         # Simulate quantum parallel evaluation
         results = [function(x) for x in inputs]
-        
+
         self.logger.debug(
             "parallel_map_complete",
             num_inputs=len(inputs),
         )
-        
+
         return results
 
     def quantum_interference(
@@ -189,10 +189,10 @@ class QuantumParallelism:
         """
         # Evaluate all functions
         results = [f(input_value) for f in functions]
-        
+
         # Constructive interference (average)
         combined = sum(results) / len(results)
-        
+
         return combined
 
 
@@ -228,20 +228,20 @@ class StateAmplification:
             Amplified superposition
         """
         new_amplitudes = []
-        
+
         for state, amplitude in zip(superposition.states, superposition.amplitudes):
             if condition(state):
                 new_amplitudes.append(amplitude * amplification_factor)
             else:
                 new_amplitudes.append(amplitude)
-        
+
         result = SuperpositionState(
             states=superposition.states.copy(),
             amplitudes=new_amplitudes,
         )
-        
+
         self.logger.debug("states_amplified")
-        
+
         return result
 
     def select_high_amplitude(
@@ -260,11 +260,11 @@ class StateAmplification:
             List of high-amplitude states
         """
         probabilities = [abs(a) ** 2 for a in superposition.amplitudes]
-        
+
         selected = [
             state
             for state, prob in zip(superposition.states, probabilities)
             if prob >= threshold
         ]
-        
+
         return selected

@@ -198,9 +198,7 @@ def demo_phase13_ethical_decisions() -> None:
     """Demonstrate ethical decision making."""
     print_section("PHASE 13.3: Ethical Decision Framework")
 
-    maker = EthicalDecisionMaker(
-        primary_framework=EthicalFramework.HYBRID
-    )
+    maker = EthicalDecisionMaker(primary_framework=EthicalFramework.HYBRID)
 
     # Create an ethical dilemma
     dilemma = EthicalDilemma(
@@ -277,7 +275,7 @@ def demo_phase14_swarm_intelligence() -> None:
 
     # Define a simple optimization problem (Sphere function)
     def sphere_function(x: List[float]) -> float:
-        return sum(xi ** 2 for xi in x)
+        return sum(xi**2 for xi in x)
 
     print("Optimizing 2D Sphere function using Particle Swarm Optimization...")
     print("  Objective: minimize f(x, y) = x² + y²")
@@ -360,7 +358,11 @@ def demo_phase14_emergent_behaviors() -> None:
 
     # Simulate agent states
     agent_states = [
-        {"agent_id": f"agent_{i}", "action": "cooperate", "value": 0.7 + random.uniform(-0.1, 0.1)}
+        {
+            "agent_id": f"agent_{i}",
+            "action": "cooperate",
+            "value": 0.7 + random.uniform(-0.1, 0.1),
+        }
         for i in range(10)
     ]
 
@@ -435,7 +437,7 @@ def demo_phase15_quantum_algorithms() -> None:
     def energy_function(state: List[int]) -> float:
         # Convert binary to real values
         x = [(2 * bit - 1) for bit in state]
-        return sum(xi ** 2 for xi in x)
+        return sum(xi**2 for xi in x)
 
     annealer = QuantumAnnealer(num_variables=4)
     best_state, best_energy = annealer.anneal(energy_function, num_steps=100)
@@ -453,7 +455,7 @@ def demo_phase15_superposition() -> None:
 
     # Quantum parallel function evaluation
     def square(x: float) -> float:
-        return x ** 2
+        return x**2
 
     inputs = [1, 2, 3, 4, 5]
 
@@ -513,7 +515,7 @@ def demo_phase15_quantum_optimization() -> None:
         """Rastrigin function (challenging optimization problem)."""
         A = 10
         n = len(x)
-        return A * n + sum(xi ** 2 - A * math.cos(2 * math.pi * xi) for xi in x)
+        return A * n + sum(xi**2 - A * math.cos(2 * math.pi * xi) for xi in x)
 
     print("Optimizing Rastrigin function using QAOA...")
     print("  Dimension: 2")
@@ -522,9 +524,7 @@ def demo_phase15_quantum_optimization() -> None:
     optimizer = QAOAOptimizer(dimension=2, num_layers=3)
 
     bounds = [(-5.12, 5.12), (-5.12, 5.12)]
-    best_solution, best_value = optimizer.optimize(
-        rastrigin, bounds, max_iterations=30
-    )
+    best_solution, best_value = optimizer.optimize(rastrigin, bounds, max_iterations=30)
 
     print(f"\n  QAOA Results:")
     print(f"    Best Solution: ({best_solution[0]:.4f}, {best_solution[1]:.4f})")

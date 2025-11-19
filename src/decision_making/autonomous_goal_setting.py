@@ -394,14 +394,10 @@ class GoalSetter:
                 "avg_completion_time": 0.0,
             }
 
-        completed_goals = [
-            g for g in all_goals if g.status == GoalStatus.COMPLETED
-        ]
+        completed_goals = [g for g in all_goals if g.status == GoalStatus.COMPLETED]
         avg_completion_time = 0.0
         if completed_goals:
-            completion_times = [
-                g.updated_at - g.created_at for g in completed_goals
-            ]
+            completion_times = [g.updated_at - g.created_at for g in completed_goals]
             avg_completion_time = sum(completion_times) / len(completion_times)
 
         return {
