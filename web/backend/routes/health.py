@@ -222,7 +222,10 @@ async def start_health_monitoring() -> Dict[str, str]:
     """Start continuous health monitoring."""
     try:
         await health_system.start_monitoring()
-        return {"status": "started", "message": "Health monitoring started successfully"}
+        return {
+            "status": "started",
+            "message": "Health monitoring started successfully",
+        }
     except Exception as e:
         logger.error(f"Error starting health monitoring: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -233,7 +236,10 @@ async def stop_health_monitoring() -> Dict[str, str]:
     """Stop continuous health monitoring."""
     try:
         await health_system.stop_monitoring()
-        return {"status": "stopped", "message": "Health monitoring stopped successfully"}
+        return {
+            "status": "stopped",
+            "message": "Health monitoring stopped successfully",
+        }
     except Exception as e:
         logger.error(f"Error stopping health monitoring: {e}")
         raise HTTPException(status_code=500, detail=str(e))
