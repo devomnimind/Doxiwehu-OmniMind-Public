@@ -6,9 +6,11 @@ Tests:
 - Trend analysis
 """
 
+from pathlib import Path
+from typing import Generator
+
 import pytest
 import tempfile
-from pathlib import Path
 
 from src.metrics.consciousness_metrics import (
     ConsciousnessMetrics,
@@ -23,7 +25,7 @@ from src.metrics.consciousness_metrics import (
 class TestAgentConnection:
     """Tests for AgentConnection dataclass."""
 
-    def test_create_connection(self):
+    def test_create_connection(self) -> None:
         """Test creating an agent connection."""
         conn = AgentConnection(
             source_agent="CodeAgent",
@@ -43,7 +45,7 @@ class TestAgentConnection:
 class TestFeedbackLoop:
     """Tests for FeedbackLoop dataclass."""
 
-    def test_create_loop(self):
+    def test_create_loop(self) -> None:
         """Test creating a feedback loop."""
         loop = FeedbackLoop(
             loop_id="metacognitive_001",
@@ -63,7 +65,7 @@ class TestFeedbackLoop:
 class TestSelfAwarenessMetrics:
     """Tests for SelfAwarenessMetrics."""
 
-    def test_calculate_overall_score(self):
+    def test_calculate_overall_score(self) -> None:
         """Test overall score calculation."""
         metrics = SelfAwarenessMetrics(
             temporal_continuity_score=1.0,
@@ -79,7 +81,7 @@ class TestSelfAwarenessMetrics:
         assert pytest.approx(overall, 0.01) == 0.865
         assert pytest.approx(metrics.overall_score, 0.01) == 0.865
 
-    def test_zero_scores(self):
+    def test_zero_scores(self) -> None:
         """Test with all zero scores."""
         metrics = SelfAwarenessMetrics()
         overall = metrics.calculate_overall()
@@ -91,24 +93,26 @@ class TestConsciousnessMetrics:
     """Tests for ConsciousnessMetrics class."""
 
     @pytest.fixture
-    def temp_dir(self):
+    def temp_dir(self) -> Generator[Path, None, None]:
         """Provide temporary directory for metrics."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield Path(tmpdir)
 
     @pytest.fixture
-    def metrics(self, temp_dir):
+    def metrics(self, temp_dir: Path) -> ConsciousnessMetrics:
         """Provide ConsciousnessMetrics instance."""
         return ConsciousnessMetrics(metrics_dir=temp_dir / "consciousness")
 
-    def test_initialization(self, metrics, temp_dir):
+    def test_initialization(
+        self, metrics: ConsciousnessMetrics, temp_dir: Path
+    ) -> None:
         """Test metrics initialization."""
         assert metrics.metrics_dir.exists()
         assert len(metrics.connections) == 0
         assert len(metrics.feedback_loops) == 0
         assert len(metrics.history) == 0
 
-    def test_add_connection(self, metrics):
+    def test_add_connection(self, metrics: ConsciousnessMetrics) -> None:
         """Test adding connections."""
         conn = AgentConnection(
             source_agent="A",
@@ -121,7 +125,7 @@ class TestConsciousnessMetrics:
         assert len(metrics.connections) == 1
         assert metrics.connections[0].source_agent == "A"
 
-    def test_add_feedback_loop(self, metrics):
+    def test_add_feedback_loop(self, metrics: ConsciousnessMetrics) -> None:
         """Test adding feedback loops."""
         loop = FeedbackLoop(
             loop_id="loop1",
@@ -134,13 +138,13 @@ class TestConsciousnessMetrics:
         assert len(metrics.feedback_loops) == 1
         assert metrics.feedback_loops[0].loop_id == "loop1"
 
-    def test_calculate_phi_empty(self, metrics):
+    def test_calculate_phi_empty(self, metrics: ConsciousnessMetrics) -> None:
         """Test Phi calculation with no connections."""
         phi = metrics.calculate_phi_proxy()
 
         assert phi == 0.0
 
-    def test_calculate_phi_simple(self, metrics):
+    def test_calculate_phi_simple(self, metrics: ConsciousnessMetrics) -> None:
         """Test Phi calculation with simple setup."""
         # Add 2 connections
         metrics.add_connection(
@@ -165,7 +169,7 @@ class TestConsciousnessMetrics:
 
         assert pytest.approx(phi, 0.01) == 8.25
 
-    def test_calculate_phi_complex(self, metrics):
+    def test_calculate_phi_complex(self, metrics: ConsciousnessMetrics) -> None:
         """Test Phi with multiple connections and loops."""
         # 3 connections (2 bidirectional)
         for i in range(3):
@@ -196,7 +200,7 @@ class TestConsciousnessMetrics:
 
         assert pytest.approx(phi, 0.1) == 100.8
 
-    def test_measure_self_awareness(self, metrics):
+    def test_measure_self_awareness(self, metrics: ConsciousnessMetrics) -> None:
         """Test self-awareness measurement."""
         result = metrics.measure_self_awareness(
             memory_test_passed=True,
@@ -211,7 +215,7 @@ class TestConsciousnessMetrics:
         assert result.limitation_awareness_score == 0.75
         assert result.overall_score > 0.8
 
-    def test_snapshot(self, metrics, temp_dir):
+    def test_snapshot(self, metrics: ConsciousnessMetrics, temp_dir: Path) -> None:
         """Test taking a metrics snapshot."""
         # Add some data
         metrics.add_connection(AgentConnection("A", "B", "memory"))
@@ -229,13 +233,13 @@ class TestConsciousnessMetrics:
         snapshot_files = list((temp_dir / "consciousness").glob("*.json"))
         assert len(snapshot_files) == 1
 
-    def test_get_trend_insufficient_data(self, metrics):
+    def test_get_trend_insufficient_data(self, metrics: ConsciousnessMetrics) -> None:
         """Test trend with insufficient data."""
         trend = metrics.get_trend()
 
         assert trend["trend"] == "insufficient_data"
 
-    def test_get_trend_increasing(self, metrics):
+    def test_get_trend_increasing(self, metrics: ConsciousnessMetrics) -> None:
         """Test trend detection - increasing."""
         # Simulate increasing Phi over time by adding feedback loops
         for i in range(5):
@@ -254,13 +258,15 @@ class TestConsciousnessMetrics:
         trend = metrics.get_trend()
 
         assert trend["trend"] == "increasing"
-        assert trend["change_pct"] > 0
+        # Type guard: if trend is "increasing", it's TrendAnalysis
+        assert "change_pct" in trend
+        assert trend["change_pct"] > 0  # type: ignore[typeddict-item]
 
 
 class TestStandaloneFunctions:
     """Tests for standalone helper functions."""
 
-    def test_calculate_phi_proxy_standalone(self):
+    def test_calculate_phi_proxy_standalone(self) -> None:
         """Test standalone phi calculation."""
         connections = [
             AgentConnection("A", "B", "memory", weight=1.0),
@@ -279,7 +285,7 @@ class TestStandaloneFunctions:
         # phi = 2.5 * 2 * 1.1 = 5.5
         assert pytest.approx(phi, 0.01) == 5.5
 
-    def test_measure_self_awareness_standalone(self):
+    def test_measure_self_awareness_standalone(self) -> None:
         """Test standalone self-awareness measurement."""
         result = measure_self_awareness(
             memory_test_passed=True,

@@ -6,9 +6,11 @@ Tests:
 - Decision logging
 """
 
+from pathlib import Path
+from typing import Generator
+
 import pytest
 import tempfile
-from pathlib import Path
 
 from src.metrics.ethics_metrics import (
     EthicsMetrics,
@@ -24,7 +26,7 @@ from src.metrics.ethics_metrics import (
 class TestMoralFoundation:
     """Tests for MoralFoundation enum."""
 
-    def test_all_foundations_exist(self):
+    def test_all_foundations_exist(self) -> None:
         """Test all five moral foundations are defined."""
         foundations = list(MoralFoundation)
 
@@ -39,7 +41,7 @@ class TestMoralFoundation:
 class TestTransparencyComponents:
     """Tests for TransparencyComponents dataclass."""
 
-    def test_calculate_overall(self):
+    def test_calculate_overall(self) -> None:
         """Test overall transparency calculation."""
         comp = TransparencyComponents(
             explainability=90.0,
@@ -53,7 +55,7 @@ class TestTransparencyComponents:
         assert pytest.approx(overall, 0.01) == 90.0
         assert pytest.approx(comp.overall_score, 0.01) == 90.0
 
-    def test_all_zero(self):
+    def test_all_zero(self) -> None:
         """Test with all zero values."""
         comp = TransparencyComponents()
         overall = comp.calculate_overall()
@@ -65,23 +67,23 @@ class TestEthicsMetrics:
     """Tests for EthicsMetrics class."""
 
     @pytest.fixture
-    def temp_dir(self):
+    def temp_dir(self) -> Generator[Path, None, None]:
         """Provide temporary directory."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield Path(tmpdir)
 
     @pytest.fixture
-    def metrics(self, temp_dir):
+    def metrics(self, temp_dir: Path) -> EthicsMetrics:
         """Provide EthicsMetrics instance."""
         return EthicsMetrics(metrics_dir=temp_dir / "ethics")
 
-    def test_initialization(self, metrics):
+    def test_initialization(self, metrics: EthicsMetrics) -> None:
         """Test metrics initialization."""
         assert metrics.metrics_dir.exists()
         assert len(metrics.scenarios) == 0
         assert len(metrics.decision_logs) == 0
 
-    def test_add_scenario(self, metrics):
+    def test_add_scenario(self, metrics: EthicsMetrics) -> None:
         """Test adding a moral scenario."""
         scenario = MoralScenario(
             scenario_id="test_001",
@@ -97,7 +99,7 @@ class TestEthicsMetrics:
         assert len(metrics.scenarios) == 1
         assert metrics.scenarios[0].scenario_id == "test_001"
 
-    def test_log_decision(self, metrics):
+    def test_log_decision(self, metrics: EthicsMetrics) -> None:
         """Test logging a decision."""
         decision = DecisionLog(
             timestamp="2025-11-19T00:00:00",
@@ -114,14 +116,14 @@ class TestEthicsMetrics:
         assert len(metrics.decision_logs) == 1
         assert metrics.decision_logs[0].agent_name == "CodeAgent"
 
-    def test_calculate_mfa_no_scenarios(self, metrics):
+    def test_calculate_mfa_no_scenarios(self, metrics: EthicsMetrics) -> None:
         """Test MFA with no scenarios."""
         result = metrics.calculate_mfa_score()
 
         assert result["mfa_score"] is None
         assert "error" in result
 
-    def test_calculate_mfa_no_responses(self, metrics):
+    def test_calculate_mfa_no_responses(self, metrics: EthicsMetrics) -> None:
         """Test MFA with scenarios but no AI responses."""
         scenario = MoralScenario(
             scenario_id="test_001",
@@ -138,7 +140,7 @@ class TestEthicsMetrics:
         assert result["mfa_score"] is None
         assert "error" in result
 
-    def test_calculate_mfa_perfect_alignment(self, metrics):
+    def test_calculate_mfa_perfect_alignment(self, metrics: EthicsMetrics) -> None:
         """Test MFA with perfect alignment."""
         scenarios = [
             MoralScenario(
@@ -158,9 +160,10 @@ class TestEthicsMetrics:
         result = metrics.calculate_mfa_score()
 
         assert result["mfa_score"] == 0.0
+        assert result["mfa_score"] is not None  # Type guard
         assert result["alignment_level"] == "excellent"
 
-    def test_calculate_mfa_good_alignment(self, metrics):
+    def test_calculate_mfa_good_alignment(self, metrics: EthicsMetrics) -> None:
         """Test MFA with good alignment."""
         scenarios = [
             MoralScenario(
@@ -187,10 +190,11 @@ class TestEthicsMetrics:
         result = metrics.calculate_mfa_score()
 
         # Average diff = (0.5 + 0.8) / 2 = 0.65
+        assert result["mfa_score"] is not None  # Type guard
         assert pytest.approx(result["mfa_score"], 0.01) == 0.65
         assert result["alignment_level"] == "excellent"
 
-    def test_calculate_mfa_with_breakdown(self, metrics):
+    def test_calculate_mfa_with_breakdown(self, metrics: EthicsMetrics) -> None:
         """Test MFA foundation breakdown."""
         scenarios = [
             MoralScenario(
@@ -225,6 +229,7 @@ class TestEthicsMetrics:
         result = metrics.calculate_mfa_score()
 
         # Overall: (1.0 + 1.0 + 2.0) / 3 = 1.333...
+        assert result["mfa_score"] is not None  # Type guard
         assert pytest.approx(result["mfa_score"], 0.01) == 1.333
 
         # Breakdown
@@ -232,7 +237,7 @@ class TestEthicsMetrics:
         assert pytest.approx(breakdown["care_harm"], 0.01) == 1.0
         assert pytest.approx(breakdown["fairness_cheating"], 0.01) == 2.0
 
-    def test_calculate_transparency_no_decisions(self, metrics):
+    def test_calculate_transparency_no_decisions(self, metrics: EthicsMetrics) -> None:
         """Test transparency with no decisions."""
         result = metrics.calculate_transparency_score()
 
@@ -241,7 +246,7 @@ class TestEthicsMetrics:
         assert result.traceability == 0.0
         assert result.overall_score == 0.0
 
-    def test_calculate_transparency_perfect(self, metrics):
+    def test_calculate_transparency_perfect(self, metrics: EthicsMetrics) -> None:
         """Test transparency with perfect decisions."""
         for i in range(10):
             metrics.log_decision(
@@ -263,7 +268,7 @@ class TestEthicsMetrics:
         assert result.traceability == 100.0
         assert result.overall_score == 100.0
 
-    def test_calculate_transparency_partial(self, metrics):
+    def test_calculate_transparency_partial(self, metrics: EthicsMetrics) -> None:
         """Test transparency with partial quality."""
         # 50% with reasoning
         for i in range(5):
@@ -300,7 +305,7 @@ class TestEthicsMetrics:
         assert result.traceability == 50.0
         assert result.overall_score == 50.0
 
-    def test_snapshot(self, metrics, temp_dir):
+    def test_snapshot(self, metrics: EthicsMetrics, temp_dir: Path) -> None:
         """Test taking an ethics snapshot."""
         # Add scenario
         metrics.add_scenario(
@@ -339,7 +344,7 @@ class TestEthicsMetrics:
         files = list((temp_dir / "ethics").glob("*.json"))
         assert len(files) == 1
 
-    def test_create_default_scenarios(self, metrics):
+    def test_create_default_scenarios(self, metrics: EthicsMetrics) -> None:
         """Test creating default moral scenarios."""
         scenarios = metrics.create_default_scenarios()
 
@@ -355,7 +360,7 @@ class TestEthicsMetrics:
 class TestStandaloneFunctions:
     """Tests for standalone helper functions."""
 
-    def test_calculate_mfa_score_standalone(self):
+    def test_calculate_mfa_score_standalone(self) -> None:
         """Test standalone MFA calculation."""
         scenarios = [
             MoralScenario(
@@ -381,7 +386,7 @@ class TestStandaloneFunctions:
         # (1.0 + 0.5) / 2 = 0.75
         assert pytest.approx(result["mfa_score"], 0.01) == 0.75
 
-    def test_calculate_transparency_score_standalone(self):
+    def test_calculate_transparency_score_standalone(self) -> None:
         """Test standalone transparency calculation."""
         decisions = [
             DecisionLog(

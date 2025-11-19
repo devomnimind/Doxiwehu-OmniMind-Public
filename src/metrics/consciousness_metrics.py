@@ -12,11 +12,61 @@ import time
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import List, Optional, TypedDict, Union
 
 import structlog
 
 logger = structlog.get_logger(__name__)
+
+
+class ConnectionDict(TypedDict):
+    """Type definition for serialized agent connection."""
+
+    source: str
+    target: str
+    type: str
+    bidirectional: bool
+    weight: float
+
+
+class FeedbackLoopDict(TypedDict):
+    """Type definition for serialized feedback loop."""
+
+    id: str
+    agents: List[str]
+    type: str
+    iterations: int
+    latency_ms: float
+
+
+class ConsciousnessSnapshot(TypedDict):
+    """Type definition for consciousness metrics snapshot."""
+
+    timestamp: str
+    label: str
+    phi_proxy: float
+    num_connections: int
+    num_feedback_loops: int
+    connections: List[ConnectionDict]
+    feedback_loops: List[FeedbackLoopDict]
+
+
+class TrendAnalysis(TypedDict):
+    """Type definition for trend analysis results."""
+
+    trend: str
+    avg_phi: float
+    current_phi: float
+    initial_phi: float
+    change_pct: float
+    snapshots_analyzed: int
+
+
+class InsufficientDataTrend(TypedDict):
+    """Type definition for trend analysis with insufficient data."""
+
+    trend: str
+    snapshots: int
 
 
 @dataclass
@@ -109,7 +159,7 @@ class ConsciousnessMetrics:
     Reference: docs/concienciaetica-autonomia.md, Section 1
     """
 
-    def __init__(self, metrics_dir: Optional[Path] = None):
+    def __init__(self, metrics_dir: Optional[Path] = None) -> None:
         """Initialize consciousness metrics tracker.
 
         Args:
@@ -120,7 +170,7 @@ class ConsciousnessMetrics:
 
         self.connections: List[AgentConnection] = []
         self.feedback_loops: List[FeedbackLoop] = []
-        self.history: List[Dict[str, Any]] = []
+        self.history: List[ConsciousnessSnapshot] = []
 
         logger.info(
             "consciousness_metrics_initialized", metrics_dir=str(self.metrics_dir)
@@ -244,18 +294,18 @@ class ConsciousnessMetrics:
 
         return metrics
 
-    def snapshot(self, label: str = "") -> Dict[str, Any]:
+    def snapshot(self, label: str = "") -> ConsciousnessSnapshot:
         """Take a snapshot of current consciousness metrics.
 
         Args:
             label: Optional label for this snapshot
 
         Returns:
-            Dictionary with current metrics
+            ConsciousnessSnapshot with current metrics
         """
         phi = self.calculate_phi_proxy()
 
-        snapshot_data = {
+        snapshot_data: ConsciousnessSnapshot = {
             "timestamp": datetime.now().isoformat(),
             "label": label,
             "phi_proxy": phi,
@@ -296,14 +346,16 @@ class ConsciousnessMetrics:
 
         return snapshot_data
 
-    def get_trend(self, window: int = 10) -> Dict[str, Any]:
+    def get_trend(
+        self, window: int = 10
+    ) -> Union[TrendAnalysis, InsufficientDataTrend]:
         """Calculate trend in consciousness metrics.
 
         Args:
             window: Number of recent snapshots to analyze
 
         Returns:
-            Dictionary with trend analysis
+            TrendAnalysis with trend data or InsufficientDataTrend if not enough data
         """
         if len(self.history) < 2:
             return {"trend": "insufficient_data", "snapshots": len(self.history)}
