@@ -108,7 +108,7 @@ export function DragDropTaskList() {
   };
 
   const getSuccessRate = (task: typeof tasks[0]) => {
-    if (task.stats.total_executions === 0) return 0;
+    if (task.stats.total_executions === 0) return '0';
     return ((task.stats.successful_executions / task.stats.total_executions) * 100).toFixed(0);
   };
 
