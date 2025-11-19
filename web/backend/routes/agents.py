@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/agents", tags=["agents"])
 
 # Import monitoring system
 try:
-    from web.backend.monitoring import agent_monitor
+    from web.backend.monitoring.agent_monitor import agent_monitor
     MONITORING_ENABLED = True
 except ImportError:
     MONITORING_ENABLED = False
