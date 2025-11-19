@@ -8,6 +8,7 @@ Esta pasta contém toda a documentação organizada do projeto OmniMind, estrutu
 Recursos avançados e funcionalidades especiais do sistema.
 - `ADVANCED_FEATURES_IMPLEMENTATION.md` - Implementação de recursos avançados
 - `COPILOT_AGENT_INSTRUCTIONS.md` - Instruções para agentes Copilot
+- `DEVBRAIN_UI_COMPLETE_SUMMARY.md` - Resumo completo UI DevBrain
 - `ImmunityP0.md` - Sistema de imunidade
 - `OBSERVABILITY_SCALING_QUICKREF.md` - Referência rápida de observabilidade
 
@@ -53,6 +54,7 @@ Documentação das fases de implementação.
 - `PHASE8_9_IMPLEMENTATION_COMPLETE.md` - Implementação fases 8-9
 - `PHASE9_ADVANCED_COMPLETE.md` - Phase 9 avançada completa
 - `PHASE9_IMPLEMENTATION_SUMMARY.md` - Resumo implementação Phase 9
+- `PHASE11_COMPLETION_SUMMARY.md` - Resumo conclusão Phase 11
 - `PHASE11_CONSCIOUSNESS_EMERGENCE_IMPLEMENTATION.md` - Phase 11 consciência
 - `PHASE11_QUICK_REFERENCE.md` - Referência rápida Phase 11
 - `PHASE_10_IMPLEMENTATION_COMPLETE.pdf` - PDF Phase 10 completa
@@ -99,6 +101,18 @@ Relatórios de status e pendências.
 - `OMNIMIND_COMPREHENSIVE_PENDENCIES_REPORT_20251119.md` - Relatório abrangente pendências
 - `PROJECT_STATE_20251119.md` - Estado do projeto
 - `TESTING_QA_IMPLEMENTATION_SUMMARY.md` - Resumo implementação testes QA
+- `TESTING_QA_QUICK_START.md` - Guia rápido de testes QA
+
+### 📂 `implementation_reports/`
+Relatórios detalhados de implementação.
+- `IMPLEMENTATION_FINAL_REPORT.md` - Relatório final de implementação
+- `IMPLEMENTATION_REPORT_ADVANCED_FEATURES.md` - Relatório recursos avançados
+- `IMPLEMENTATION_REPORT_PHASE1_PHASE2.md` - Relatório fases 1-2
+
+### 📂 `production/`
+Guias e relatórios de produção.
+- `PRODUCTION_DEPLOYMENT_GUIDE.md` - Guia de deployment produção
+- `PRODUCTION_SETUP_REPORT.md` - Relatório setup produção
 
 ## 📄 Arquivos na Raiz
 
