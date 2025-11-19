@@ -3,6 +3,7 @@ Tests for hardware detection and auto-configuration.
 """
 
 import json
+from pathlib import Path
 
 from src.optimization.hardware_detector import (
     HardwareDetector,
@@ -17,7 +18,7 @@ from src.optimization.hardware_detector import (
 class TestHardwareProfile:
     """Test HardwareProfile dataclass."""
 
-    def test_creation(self):
+    def test_creation(self) -> None:
         """Test creating a hardware profile."""
         profile = HardwareProfile(
             cpu_cores_physical=4,
@@ -41,7 +42,7 @@ class TestHardwareProfile:
         assert profile.gpu_available is True
         assert profile.gpu_name == "NVIDIA GTX 1650"
 
-    def test_to_dict(self):
+    def test_to_dict(self) -> None:
         """Test converting profile to dictionary."""
         profile = HardwareProfile(
             cpu_cores_physical=4,
@@ -63,7 +64,7 @@ class TestHardwareProfile:
         assert data["gpu_available"] is False
         assert "detected_at" in data
 
-    def test_to_json(self, tmp_path):
+    def test_to_json(self, tmp_path: Path) -> None:
         """Test JSON serialization."""
         profile = HardwareProfile(
             cpu_cores_physical=4,
@@ -99,7 +100,7 @@ class TestHardwareProfile:
 class TestOptimizationConfig:
     """Test OptimizationConfig dataclass."""
 
-    def test_creation(self):
+    def test_creation(self) -> None:
         """Test creating optimization config."""
         config = OptimizationConfig(
             device="cuda",
@@ -125,7 +126,7 @@ class TestOptimizationConfig:
         assert config.llm_batch_size == 8
         assert config.vector_db == "chromadb"
 
-    def test_to_json(self, tmp_path):
+    def test_to_json(self, tmp_path: Path) -> None:
         """Test JSON serialization."""
         config = OptimizationConfig(
             device="cpu",
@@ -166,7 +167,7 @@ class TestOptimizationConfig:
 class TestHardwareDetector:
     """Test HardwareDetector class."""
 
-    def test_detect_hardware_cpu_only(self):
+    def test_detect_hardware_cpu_only(self) -> None:
         """Test hardware detection without GPU."""
         detector = HardwareDetector()
 
@@ -182,7 +183,7 @@ class TestHardwareDetector:
         # GPU availability depends on actual system
         assert isinstance(profile.gpu_available, bool)
 
-    def test_detect_hardware_with_gpu(self):
+    def test_detect_hardware_with_gpu(self) -> None:
         """Test hardware detection - GPU test depends on system."""
         detector = HardwareDetector()
         profile = detector.detect_hardware()
@@ -203,7 +204,7 @@ class TestHardwareDetector:
             assert profile.gpu_vram_gb is None
             assert profile.gpu_compute_capability is None
 
-    def test_generate_optimal_config_cpu(self):
+    def test_generate_optimal_config_cpu(self) -> None:
         """Test config generation for CPU-only system."""
         # Create a low-spec CPU profile
         profile = HardwareProfile(
@@ -231,7 +232,7 @@ class TestHardwareDetector:
         assert config.database == "sqlite"  # Local-first
         assert config.num_workers == 1  # 2 cores - 1 for system
 
-    def test_generate_optimal_config_gpu(self):
+    def test_generate_optimal_config_gpu(self) -> None:
         """Test config generation for GPU system."""
         # Create a GPU profile (GTX 1650 specs)
         profile = HardwareProfile(
@@ -261,7 +262,7 @@ class TestHardwareDetector:
         assert config.max_tensor_size == 5000
         assert config.vector_db == "chromadb"
 
-    def test_generate_optimal_config_high_end_gpu(self):
+    def test_generate_optimal_config_high_end_gpu(self) -> None:
         """Test config generation for high-end GPU."""
         profile = HardwareProfile(
             cpu_cores_physical=8,
@@ -288,7 +289,7 @@ class TestHardwareDetector:
         assert config.embedding_batch_size == 256
         assert config.max_tensor_size == 20000
 
-    def test_save_config(self, tmp_path):
+    def test_save_config(self, tmp_path: Path) -> None:
         """Test saving config to files."""
         detector = HardwareDetector()
         detector.detect_hardware()
@@ -310,7 +311,7 @@ class TestHardwareDetector:
         assert loaded_profile.cpu_cores_physical > 0
         assert loaded_config.device in ["cpu", "cuda"]
 
-    def test_detect_and_configure(self, tmp_path):
+    def test_detect_and_configure(self, tmp_path: Path) -> None:
         """Test convenience method."""
         detector = HardwareDetector()
 
@@ -326,7 +327,7 @@ class TestHardwareDetector:
 class TestAutoConfigureFunction:
     """Test auto_configure convenience function."""
 
-    def test_auto_configure(self):
+    def test_auto_configure(self) -> None:
         """Test auto_configure function."""
         # Don't save to avoid conflicts
         profile, config = auto_configure(save=False, prefer_local=True)
@@ -341,7 +342,7 @@ class TestAutoConfigureFunction:
 class TestQuantizationConfig:
     """Test quantization configuration."""
 
-    def test_quantization_low_ram(self):
+    def test_quantization_low_ram(self) -> None:
         """Test quantization is enabled on low RAM systems."""
         profile = HardwareProfile(
             cpu_cores_physical=2,
@@ -363,7 +364,7 @@ class TestQuantizationConfig:
         assert config.use_quantization is True
         assert config.quantization_bits == 8
 
-    def test_no_quantization_high_ram(self):
+    def test_no_quantization_high_ram(self) -> None:
         """Test quantization is disabled on high RAM systems."""
         profile = HardwareProfile(
             cpu_cores_physical=4,

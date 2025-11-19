@@ -3,15 +3,33 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass
-from typing import Any, Dict, Iterable, List, Optional
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, cast
 
-try:
-    from supabase import Client, create_client  # type: ignore[import-not-found]
-except ImportError as exc:
-    Client = Any
+# Use TYPE_CHECKING to avoid runtime circular dependencies and handle optional imports
+if TYPE_CHECKING:
+    from postgrest.exceptions import APIError
+    from supabase import Client, create_client
+    from supabase.lib.client_options import ClientOptions as SyncClientOptions
+else:
+    # If not type checking, provide dummy objects for runtime if library is missing
+    try:
+        from postgrest.exceptions import APIError
+        from supabase import Client, create_client
+        from supabase.lib.client_options import ClientOptions as SyncClientOptions
+    except ImportError:
+        # Define dummy classes and functions to avoid runtime errors if supabase-py is not installed.
+        # This code will not be seen by mypy in strict mode.
+        class APIError(Exception):
+            pass
 
-    def create_client(*args: Any, **kwargs: Any) -> Any:
-        raise ImportError("Install supabase-py to use SupabaseAdapter") from exc
+        class SyncClientOptions:
+            pass
+
+        class Client:
+            pass
+
+        def create_client(*args: Any, **kwargs: Any) -> Any:
+            raise ImportError("Install supabase-py to use SupabaseAdapter")
 
 
 from .mcp_client import MCPClient, MCPClientError
@@ -131,23 +149,33 @@ class SupabaseAdapter:
             .eq("table_name", table)
             .eq("table_schema", "public")
         )
-        response = query.execute()
-        if response.error:
-            raise SupabaseAdapterError(response.error)
-        return response.data  # type: ignore[no-any-return]
+        try:
+            response = query.execute()
+            return cast(List[Dict[str, Any]], response.data)
+        except APIError as e:
+            raise SupabaseAdapterError(e) from e
 
     def list_tables(self) -> List[str]:
         if not self.admin_client:
             raise SupabaseAdapterError("Service role key required to enumerate tables")
-        response = (
-            self.admin_client.table("information_schema.tables")
-            .select("table_name, table_type")
-            .eq("table_schema", "public")
-            .execute()
-        )
-        if response.error:
-            raise SupabaseAdapterError(response.error)
-        return [row.get("table_name") for row in response.data if row]
+        try:
+            response = (
+                self.admin_client.table("information_schema.tables")
+                .select("table_name, table_type")
+                .eq("table_schema", "public")
+                .execute()
+            )
+            # The response data is a list of dicts, so we can safely cast it.
+            table_data = cast(List[Dict[str, Any]], response.data)
+            
+            table_names: list[str] = []
+            for row in table_data:
+                name = row.get("table_name")
+                if isinstance(name, str):
+                    table_names.append(name)
+            return table_names
+        except APIError as e:
+            raise SupabaseAdapterError(e) from e
 
     def query_table(
         self,
@@ -163,46 +191,50 @@ class SupabaseAdapter:
         if filters:
             for key, value in filters.items():
                 query = query.eq(key, value)
-        response = query.limit(limit).offset(offset).execute()
-        if response.error:
-            raise SupabaseAdapterError(response.error)
-        return response.data  # type: ignore[no-any-return]
+        try:
+            response = query.limit(limit).offset(offset).execute()
+            return cast(List[Dict[str, Any]], response.data)
+        except APIError as e:
+            raise SupabaseAdapterError(e) from e
 
-    def insert_record(self, table: str, record: Dict[str, Any]) -> Dict[str, Any]:
-        response = self.client.table(table).insert(record).execute()
-        if response.error:
-            raise SupabaseAdapterError(response.error)
-        return response.data  # type: ignore[no-any-return]
+    def insert_record(self, table: str, record: Dict[str, Any]) -> list[dict[str, Any]]:
+        try:
+            response = self.client.table(table).insert(record).execute()
+            return cast(List[Dict[str, Any]], response.data)
+        except APIError as e:
+            raise SupabaseAdapterError(e) from e
 
     def update_record(
         self, table: str, record: Dict[str, Any], match: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        query = self.client.table(table)
+    ) -> list[dict[str, Any]]:
+        query = self.client.table(table).update(record)
         for key, value in match.items():
             query = query.eq(key, value)
-        response = query.update(record).execute()
-        if response.error:
-            raise SupabaseAdapterError(response.error)
-        return response.data  # type: ignore[no-any-return]
+        try:
+            response = query.execute()
+            return cast(List[Dict[str, Any]], response.data)
+        except APIError as e:
+            raise SupabaseAdapterError(e) from e
 
-    def delete_records(self, table: str, match: Dict[str, Any]) -> Dict[str, Any]:
-        query = self.client.table(table)
+    def delete_records(self, table: str, match: Dict[str, Any]) -> list[dict[str, Any]]:
+        query = self.client.table(table).delete()
         for key, value in match.items():
             query = query.eq(key, value)
-        response = query.delete().execute()
-        if response.error:
-            raise SupabaseAdapterError(response.error)
-        return response.data  # type: ignore[no-any-return]
+        try:
+            response = query.execute()
+            return cast(List[Dict[str, Any]], response.data)
+        except APIError as e:
+            raise SupabaseAdapterError(e) from e
 
     def log_operation(
         self, name: str, status: str, metadata: Optional[Dict[str, Any]] = None
     ) -> None:
-        payload = {
+        payload: Dict[str, Any] = {
             "name": name,
             "status": status,
             "source": "SupabaseAdapter",
             "timestamp": os.environ.get("OMNIMIND_TIMESTAMP") or "",
         }
         if metadata:
-            payload["metadata"] = metadata  # type: ignore[assignment]
+            payload["metadata"] = metadata
         logger.info("Supabase operation %s", payload)

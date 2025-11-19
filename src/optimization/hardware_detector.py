@@ -162,7 +162,7 @@ class HardwareDetector:
         gpu_compute_capability = None
 
         try:
-            import torch  # type: ignore[import-not-found]
+            import torch
 
             if torch.cuda.is_available():
                 gpu_available = True
