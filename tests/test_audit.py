@@ -7,6 +7,7 @@ import json
 import shutil
 import tempfile
 from pathlib import Path
+from typing import Iterator
 
 import pytest
 
@@ -17,24 +18,26 @@ class TestImmutableAuditSystem:
     """Testes para o sistema de auditoria com chain hashing."""
 
     @pytest.fixture
-    def temp_audit_dir(self):
+    def temp_audit_dir(self) -> Iterator[str]:
         """Cria diretório temporário para testes."""
         temp_dir = tempfile.mkdtemp(prefix="omnimind_test_")
         yield temp_dir
         shutil.rmtree(temp_dir, ignore_errors=True)
 
     @pytest.fixture
-    def audit_system(self, temp_audit_dir):
+    def audit_system(self, temp_audit_dir: str) -> ImmutableAuditSystem:
         """Cria instância do sistema de auditoria para testes."""
         return ImmutableAuditSystem(log_dir=temp_audit_dir)
 
-    def test_initialization(self, audit_system, temp_audit_dir):
+    def test_initialization(
+        self, audit_system: ImmutableAuditSystem, temp_audit_dir: str
+    ) -> None:
         """Testa inicialização do sistema."""
         assert audit_system.log_dir == Path(temp_audit_dir)
         assert audit_system.last_hash == "0" * 64 or len(audit_system.last_hash) == 64
         assert audit_system.audit_log_file.parent.exists()
 
-    def test_hash_content(self, audit_system):
+    def test_hash_content(self, audit_system: ImmutableAuditSystem) -> None:
         """Testa geração de hash SHA-256."""
         content = b"test content"
         hash1 = audit_system.hash_content(content)
@@ -48,7 +51,7 @@ class TestImmutableAuditSystem:
         hash3 = audit_system.hash_content(b"different content")
         assert hash1 != hash3
 
-    def test_log_action_single(self, audit_system):
+    def test_log_action_single(self, audit_system: ImmutableAuditSystem) -> None:
         """Testa registro de ação única."""
         action = "test_action"
         details = {"key": "value", "number": 42}
@@ -59,7 +62,7 @@ class TestImmutableAuditSystem:
         assert len(hash_result) == 64
         assert audit_system.audit_log_file.exists()
 
-    def test_log_action_chain(self, audit_system):
+    def test_log_action_chain(self, audit_system: ImmutableAuditSystem) -> None:
         """Testa cadeia de múltiplas ações."""
         hash1 = audit_system.log_action("action1", {"data": "first"})
         hash2 = audit_system.log_action("action2", {"data": "second"})
@@ -76,7 +79,9 @@ class TestImmutableAuditSystem:
             # Pelo menos 4 eventos (init + 3 testes)
             assert len(lines) >= 4
 
-    def test_verify_chain_integrity_valid(self, audit_system):
+    def test_verify_chain_integrity_valid(
+        self, audit_system: ImmutableAuditSystem
+    ) -> None:
         """Testa verificação de cadeia íntegra."""
         # Registrar algumas ações
         audit_system.log_action("action1", {"test": 1})
@@ -89,7 +94,9 @@ class TestImmutableAuditSystem:
         assert result["events_verified"] >= 3  # init + 2 ações
         assert "corrupted_events" not in result or len(result["corrupted_events"]) == 0
 
-    def test_verify_chain_integrity_corrupted(self, audit_system):
+    def test_verify_chain_integrity_corrupted(
+        self, audit_system: ImmutableAuditSystem
+    ) -> None:
         """Testa detecção de cadeia corrompida."""
         # Registrar ações
         audit_system.log_action("action1", {"test": 1})
@@ -115,7 +122,9 @@ class TestImmutableAuditSystem:
         assert "corrupted_events" in result
         assert len(result["corrupted_events"]) > 0
 
-    def test_file_xattr_operations(self, audit_system, temp_audit_dir):
+    def test_file_xattr_operations(
+        self, audit_system: ImmutableAuditSystem, temp_audit_dir: str
+    ) -> None:
         """Testa operações de extended attributes."""
         # Criar arquivo de teste
         test_file = Path(temp_audit_dir) / "test_file.txt"
@@ -138,7 +147,9 @@ class TestImmutableAuditSystem:
             verification = audit_system.verify_file_integrity(str(test_file))
             assert verification["valid"] is None  # Sem xattr registrado
 
-    def test_file_integrity_modified(self, audit_system, temp_audit_dir):
+    def test_file_integrity_modified(
+        self, audit_system: ImmutableAuditSystem, temp_audit_dir: str
+    ) -> None:
         """Testa detecção de arquivo modificado."""
         test_file = Path(temp_audit_dir) / "test_modified.txt"
         original_content = b"original content"
@@ -158,7 +169,7 @@ class TestImmutableAuditSystem:
             assert verification["expected_hash"] == original_hash
             assert verification["current_hash"] != original_hash
 
-    def test_get_audit_summary(self, audit_system):
+    def test_get_audit_summary(self, audit_system: ImmutableAuditSystem) -> None:
         """Testa geração de resumo de auditoria."""
         # Registrar algumas ações
         audit_system.log_action("test1", {"data": 1})
@@ -173,13 +184,13 @@ class TestImmutableAuditSystem:
         assert "chain_integrity" in summary
         assert summary["chain_integrity"]["valid"] is True
 
-    def test_thread_safety(self, audit_system):
+    def test_thread_safety(self, audit_system: ImmutableAuditSystem) -> None:
         """Testa segurança em multi-threading."""
         import threading
 
         results = []
 
-        def log_multiple():
+        def log_multiple() -> None:
             for i in range(10):
                 hash_val = audit_system.log_action(f"thread_action_{i}", {"i": i})
                 results.append(hash_val)
@@ -203,7 +214,7 @@ class TestImmutableAuditSystem:
         integrity = audit_system.verify_chain_integrity()
         assert integrity["valid"] is True
 
-    def test_security_log(self, audit_system):
+    def test_security_log(self, audit_system: ImmutableAuditSystem) -> None:
         """Testa registro de eventos de segurança."""
         audit_system._log_security_event("Test security event")
 
@@ -212,7 +223,7 @@ class TestImmutableAuditSystem:
         content = audit_system.security_log.read_text()
         assert "Test security event" in content
 
-    def test_categories(self, audit_system):
+    def test_categories(self, audit_system: ImmutableAuditSystem) -> None:
         """Testa registro com diferentes categorias."""
         categories = ["general", "code", "config", "security", "system"]
 
@@ -232,7 +243,7 @@ class TestImmutableAuditSystem:
 class TestModuleInterface:
     """Testa interface pública do módulo."""
 
-    def test_imports(self):
+    def test_imports(self) -> None:
         """Testa que todas as exportações estão disponíveis."""
         from audit import ImmutableAuditSystem, get_audit_system, log_action
 
@@ -240,7 +251,7 @@ class TestModuleInterface:
         assert get_audit_system is not None
         assert log_action is not None
 
-    def test_singleton_pattern(self):
+    def test_singleton_pattern(self) -> None:
         """Testa que get_audit_system retorna singleton."""
         from audit import get_audit_system
 
@@ -251,7 +262,7 @@ class TestModuleInterface:
 
 
 # Pytest configuration
-def pytest_configure(config):
+def pytest_configure(config: pytest.Config) -> None:
     """Configuração do pytest."""
     config.addinivalue_line("markers", "slow: marca testes lentos")
 
