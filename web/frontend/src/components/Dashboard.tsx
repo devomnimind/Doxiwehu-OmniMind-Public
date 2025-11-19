@@ -12,6 +12,9 @@ import { AgentStatus } from './AgentStatus';
 import { DaemonControls } from './DaemonControls';
 import { ConnectionStatus } from './ConnectionStatus';
 import { DashboardSkeleton } from './LoadingSkeletons';
+import { RealtimeAnalytics } from './RealtimeAnalytics';
+import { WorkflowVisualization } from './WorkflowVisualization';
+import { NotificationCenter } from './NotificationCenter';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
@@ -73,27 +76,44 @@ export function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-dark-300 cyber-grid">
+      {/* Animated Background Gradient */}
+      <div className="fixed inset-0 bg-gradient-to-br from-dark-300 via-dark-200 to-dark-300 opacity-50 pointer-events-none" />
+      
       {/* Header */}
-      <header className="bg-gray-800 border-b border-gray-700 sticky top-0 z-10">
+      <header className="glass-card sticky top-0 z-50 border-b border-cyber-500/20 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <h1 className="text-3xl font-bold text-white">🧠 OmniMind Dashboard</h1>
+              <h1 className="text-3xl font-bold text-gradient-cyber animate-fade-in">
+                🧠 OmniMind Dashboard
+              </h1>
               <button
                 onClick={fetchData}
-                className="px-3 py-1 bg-gray-700 hover:bg-gray-600 text-white rounded-lg text-sm transition-colors"
+                className="btn-outline-neon text-sm focus-cyber"
                 disabled={loading}
+                aria-label="Refresh dashboard data"
               >
-                🔄 Refresh
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="spinner-cyber w-4 h-4" />
+                    Syncing...
+                  </span>
+                ) : (
+                  <>🔄 Refresh</>
+                )}
               </button>
               <ConnectionStatus />
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-gray-400">Welcome, <span className="text-white font-semibold">{username}</span></span>
+              <NotificationCenter />
+              <span className="text-gray-400">
+                Welcome, <span className="text-gradient-neon font-semibold">{username}</span>
+              </span>
               <button
                 onClick={logout}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-semibold transition-colors"
+                className="px-4 py-2 bg-gradient-to-r from-neon-red to-red-700 hover:from-neon-red/80 hover:to-red-600 text-white rounded-lg font-semibold transition-all duration-300 hover:shadow-pink-glow focus-cyber"
+                aria-label="Logout from dashboard"
               >
                 Logout
               </button>
@@ -103,30 +123,59 @@ export function Dashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Real-time Analytics Section */}
+        <div className="mb-6 animate-slide-up">
+          <RealtimeAnalytics />
+        </div>
+
+        {/* Workflow Visualization Section */}
+        <div className="mb-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          <WorkflowVisualization />
+        </div>
+
+        {/* Original Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Status and Tasks */}
           <div className="lg:col-span-2 space-y-6">
-            <DaemonStatus />
-            <AgentStatus />
-            <TaskList />
+            <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+              <DaemonStatus />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
+              <AgentStatus />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
+              <TaskList />
+            </div>
           </div>
 
           {/* Right Column - Metrics, Controls, and Task Form */}
           <div className="space-y-6">
-            <SystemMetrics />
-            <DaemonControls />
-            <TaskForm />
+            <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
+              <SystemMetrics />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
+              <DaemonControls />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.7s' }}>
+              <TaskForm />
+            </div>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 border-t border-gray-700 mt-12">
+      <footer className="glass-card border-t border-cyber-500/20 mt-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="text-center text-gray-400 text-sm">
-            <p>OmniMind Autonomous Agent System</p>
-            <p className="mt-1">24/7 Background Task Execution</p>
+            <p className="flex items-center justify-center gap-2">
+              <span className="text-gradient-cyber font-semibold">OmniMind</span>
+              <span>Autonomous Agent System</span>
+            </p>
+            <p className="mt-1 flex items-center justify-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-neon-green animate-pulse-slow" style={{ boxShadow: '0 0 10px rgba(16, 185, 129, 0.8)' }} />
+              24/7 Background Task Execution
+            </p>
           </div>
         </div>
       </footer>
