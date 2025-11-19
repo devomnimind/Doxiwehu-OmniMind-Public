@@ -97,10 +97,10 @@ sudo modprobe -r nvidia_uvm 2>/dev/null || true
 sleep 1
 sudo modprobe nvidia_uvm
 
-# Verify module is loaded
+# Verificar se o módulo está carregado
 lsmod | grep nvidia_uvm
 
-# Test CUDA again
+# Testar CUDA novamente
 python -c "import torch; print(torch.cuda.is_available())"
 ```
 
@@ -108,95 +108,95 @@ python -c "import torch; print(torch.cuda.is_available())"
 
 **Nota:** Corrupção do módulo do kernel nvidia_uvm normalmente ocorre após suspensão/hibernação do sistema no Linux. O procedimento de recarregamento restaura o acesso à GPU imediatamente.
 
-**Solution 2: Verify System CUDA Installation**
+**Solução 2: Verificar Instalação CUDA do Sistema**
 ```bash
-# Check NVIDIA driver
+# Verificar driver NVIDIA
 nvidia-smi
 
-# Verify CUDA toolkit installed
+# Verificar se CUDA toolkit está instalado
 nvcc --version
 
-# Expected output should show CUDA 12.4.x
+# Output esperado deve mostrar CUDA 12.4.x
 ```
 
-**Solution 3: Update System Library Cache**
+**Solução 3: Atualizar Cache de Biblioteca do Sistema**
 ```bash
-# Rebuild ldconfig cache for NVIDIA libraries
+# Reconstruir cache ldconfig para bibliotecas NVIDIA
 sudo ldconfig
 
-# Verify cuDNN found
+# Verificar se cuDNN foi encontrado
 ldconfig -p | grep cudnn
 ```
 
-### GPU Performance Baseline (Phase 7 Validation)
+### Baseline de Performance da GPU (Validação Phase 7)
 
-**Validated Performance on GTX 1650:**
-- CPU Throughput: 253.21 GFLOPS (5000x5000 matrix multiply)
-- GPU Throughput: 1149.91 GFLOPS (5000x5000 matrix multiply)
-- Memory Bandwidth: 12.67 GB/s
-- Acceleration Factor: **4.5x GPU vs CPU**
-- PyTorch Version: 2.6.0+cu124
-- Status: ✅ VERIFIED Nov 18, 2025
+**Performance Validada na GTX 1650:**
+- Throughput CPU: 253.21 GFLOPS (multiplicação de matriz 5000x5000)
+- Throughput GPU: 1149.91 GFLOPS (multiplicação de matriz 5000x5000)
+- Largura de Banda de Memória: 12.67 GB/s
+- Fator de Aceleração: **4.5x GPU vs CPU**
+- Versão PyTorch: 2.6.0+cu124
+- Status: ✅ VERIFICADO 18 Nov 2025
 
-**Benchmark Script:** `python PHASE7_COMPLETE_BENCHMARK_AUDIT.py` (generates JSON report to `logs/`)
+**Script de Benchmark:** `python PHASE7_COMPLETE_BENCHMARK_AUDIT.py` (gera relatório JSON em `logs/`)
 
-### GPU Memory Constraints
+### Restrições de Memória GPU
 
 **GTX 1650 VRAM: 3.81GB Total**
-- Large Language Model: ~2.5GB (Qwen2-7B-Instruct quantized)
-- Agent Operations: ~800MB (embeddings, inference buffers)
-- Available for User Data: ~500MB max
-- **Important:** Batch sizes must be limited to avoid OOM errors
+- Modelo de Linguagem Grande: ~2.5GB (Qwen2-7B-Instruct quantizado)
+- Operações de Agente: ~800MB (embeddings, buffers de inferência)
+- Disponível para Dados do Usuário: ~500MB máximo
+- **Importante:** Tamanhos de batch devem ser limitados para evitar erros OOM
 
-**Tensor Operation Sizing:**
+**Dimensionamento de Operações Tensor:**
 ```python
-# Safe: Processes without GPU memory exhaustion
-max_matrix_size = 5000  # 5000x5000 matrix = ~190MB on GPU
+# Seguro: Processa sem exaustão de memória GPU
+max_matrix_size = 5000  # matriz 5000x5000 = ~190MB na GPU
 
-# Unsafe: Will cause OOM on GTX 1650
-unsafe_matrix_size = 10000  # 10000x10000 matrix = ~760MB on GPU (leaves no overhead)
+# Inseguro: Causará OOM na GTX 1650
+unsafe_matrix_size = 10000  # matriz 10000x10000 = ~760MB na GPU (não deixa margem)
 ```
 
-### Integration Validation
+### Validação de Integração
 
-**After GPU setup, verify complete stack:**
+**Após configuração da GPU, verificar stack completa:**
 ```bash
-# 1. Verify Python + environment
+# 1. Verificar Python + ambiente
 python --version
 echo $VIRTUAL_ENV
 
-# 2. Verify PyTorch GPU
-python -c "import torch; assert torch.cuda.is_available(), 'CUDA NOT AVAILABLE'"
+# 2. Verificar PyTorch GPU
+python -c "import torch; assert torch.cuda.is_available(), 'CUDA NÃO DISPONÍVEL'"
 
-# 3. Run audit tests
+# 3. Executar testes de auditoria
 pytest tests/test_audit.py -v --cov=src.audit
 
-# Expected: 14/14 tests passing, ≥60% coverage
+# Esperado: 14/14 testes passando, ≥60% cobertura
 
-# 4. Run GPU benchmark
+# 4. Executar benchmark GPU
 python PHASE7_COMPLETE_BENCHMARK_AUDIT.py
 
-# Expected: All benchmarks complete, JSON report generated to logs/
+# Esperado: Todos os benchmarks concluídos, relatório JSON gerado em logs/
 ```
 
-### Documentation References
+### Referências de Documentação
 
-**For detailed Phase 7 GPU/CUDA repair history and troubleshooting:**
-- `docs/reports/PHASE7_GPU_CUDA_REPAIR_LOG.md` - Technical deep dive (500+ lines)
-- `GPU_CUDA_REPAIR_AUDIT_COMPLETE.md` - Executive summary and sign-off
-- `PHASE7_COMPLETE_BENCHMARK_AUDIT.py` - Automated validation script
+**Para histórico detalhado de reparo GPU/CUDA Phase 7 e solução de problemas:**
+- `docs/reports/PHASE7_GPU_CUDA_REPAIR_LOG.md` - Análise técnica profunda (500+ linhas)
+- `GPU_CUDA_REPAIR_AUDIT_COMPLETE.md` - Resumo executivo e aprovação
+- `PHASE7_COMPLETE_BENCHMARK_AUDIT.py` - Script de validação automatizada
 
-### Critical Isolation Rule
-This Copilot Agent develops **ONLY OmniMind**. You **CANNOT**:
-- ❌ Reference or link external projects
-- ❌ Suggest integrations with other systems
-- ❌ Create cross-dependencies with other repos
-- ❌ Share code with other projects
-- ❌ Use symlinks to external code
+### Regra Crítica de Isolamento
+Este Agente Copilot desenvolve **APENAS OmniMind**. Você **NÃO PODE**:
+- ❌ Referenciar ou linkar projetos externos
+- ❌ Sugerir integrações com outros sistemas
+- ❌ Criar dependências cruzadas com outros repositórios
+- ❌ Compartilhar código com outros projetos
+- ❌ Usar symlinks para código externo
 
-You **MUST**:
-- ✅ Implement everything self-contained in `omnimind/`
-- ✅ Add external dependencies ONLY via `requirements.txt`
+Você **DEVE**:
+- ✅ Implementar tudo auto-contido em `omnimind/`
+- ✅ Adicionar dependências externas APENAS via `requirements.txt`
 - ✅ Document all architectural decisions
 - ✅ Request approval for any architectural changes
 
