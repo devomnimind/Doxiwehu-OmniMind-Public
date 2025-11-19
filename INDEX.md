@@ -11,6 +11,8 @@
 
 ### 🚀 Getting Started
 - **README.md** - Main project documentation and overview
+- **docs/COPILOT_AGENT_INSTRUCTIONS.md** - Copilot agent development guide 🚀
+- **docs/OMNIMIND_REMOTE_DEVELOPMENT_ROADMAP.md** - Complete remote development roadmap
 - **docs/root_docs/PHASE8_HANDOVER_GUIDE.md** - Quick start for Phase 8 development
 - **docs/root_docs/CURSOR_RULES.md** - Development standards and compliance rules
 
@@ -35,6 +37,7 @@
 
 ### 📊 Project Status & Reports
 - **docs/PROJECT_STATE_20251119.md** - Current project state and roadmap ✅
+- **docs/OMNIMIND_REMOTE_DEVELOPMENT_ROADMAP.md** - Complete remote development roadmap 🚀
 - **docs/OMNIMIND_AUTONOMOUS_ROADMAP.md** - Complete development roadmap
 - **docs/PHASE7-9_IMPLEMENTATION_SUMMARY.md** - Phase 7-9 implementation details
 - **docs/reports/GPU_SETUP_REPORT.md** - Current GPU/CUDA configuration ✅

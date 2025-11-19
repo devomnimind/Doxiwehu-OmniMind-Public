@@ -58,13 +58,14 @@ dist/
 # ------------------------------------------------------------------
 # OmniMind runtime debris
 # ------------------------------------------------------------------
-tmp/
-tmp_*/
-tmp_agents/
-tmp_tools/
-tmp_tools*/
-tmp_agents*/
-archive/examples/cuda/tmp*
+# Temporarily commented for remote development analysis
+# tmp/
+# tmp_*/
+# tmp_agents/
+# tmp_tools/
+# tmp_tools*/
+# tmp_agents*/
+# archive/examples/cuda/tmp*
 
 # Runtime databases & vector stores
 data/qdrant/

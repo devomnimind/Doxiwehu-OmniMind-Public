@@ -78,28 +78,50 @@ OmniMind/
 - **Marketplace Agent:** Publicação automatizada e monetização
 - **Ethics Agent:** Governança ética com 4 frameworks
 
-#### Phase 8 🚧 (Pendente)
-- **Frontend React/TypeScript:** Interface de usuário
-- **System Integration:** Hardening MCP, D-Bus
-- **Systemd Service:** Implantação como serviço
+#### Phase 8 🚧 (Próxima Prioridade - Ver Roadmap Detalhado)
+- **Frontend React/TypeScript:** Interface de usuário completa
+- **Backend FastAPI:** APIs REST e WebSocket
+- **System Integration:** Hardening MCP, D-Bus, Systemd
+- **Production Deployment:** Serviço systemd completo
+
+#### Phase 9 Advanced 🚧 (Próximas Fases)
+- **Metacognition Agent:** Auto-reflexão e auto-otimização
+- **Proactive Goal Generation:** Criação automática de objetivos
+- **Embodied Cognition:** Consciência corporal e homeostase
 
 ---
 
 ## 📋 Pendências e Próximos Passos
 
-### Phase 7 (Parcialmente Completa)
-- [ ] Task 7.2: Security Agent Integration (código existe, testar integração)
-- [ ] Task 7.3: PsychoanalyticAnalyst (implementado, testar integração)
+### 🚀 **VER ROADMAP DETALHADO:** `docs/OMNIMIND_REMOTE_DEVELOPMENT_ROADMAP.md`
 
-### Phase 8 (Não Iniciada)
-- [ ] Task 8.1: Frontend completo (React + TypeScript + Vite)
-- [ ] Task 8.2: System Integration hardening
-- [ ] Task 8.3: Systemd service deployment
+### Fase Atual: Phase 8 - Production Readiness
 
-### Phase 9 (Parcial)
-- [ ] Task 9.5: Metacognition Agent
-- [ ] Task 9.6: Proactive Goal Generation
-- [ ] Task 9.7: Homeostasis & Embodied Cognition
+#### Semana 1-2: Frontend React/TypeScript
+- [ ] **Task 8.1.1:** Estrutura do projeto frontend
+- [ ] **Task 8.1.2:** Componentes core (Dashboard, TaskForm, AgentStatus)
+- [ ] **Task 8.1.3:** State management com Zustand
+- [ ] **Task 8.1.4:** WebSocket real-time updates
+
+#### Semana 2-3: Backend APIs
+- [ ] **Task 8.2.1:** FastAPI setup
+- [ ] **Task 8.2.2:** Endpoints REST e WebSocket
+- [ ] **Task 8.2.3:** CORS e segurança
+
+#### Semana 3-4: System Integration
+- [ ] **Task 8.3.1:** MCP client enhancement
+- [ ] **Task 8.3.2:** D-Bus expansion
+- [ ] **Task 8.3.3:** Systemd service
+
+### Próximas Fases: Phase 9 Advanced
+
+#### Semana 5: Metacognition
+- [ ] **Task 9.5.1:** Metacognition module
+- [ ] **Task 9.5.2:** Integration com Orchestrator
+
+#### Semana 6: Proactive Goals & Homeostasis
+- [ ] **Task 9.6:** Goal generation engine
+- [ ] **Task 9.7:** Embodied cognition
 
 ---
 
