@@ -151,151 +151,151 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 
 ### Verification
 ```bash
-# Check PyTorch version
+# Verificar versão PyTorch
 python -c "import torch; print(torch.__version__)"
-# Expected: 2.6.0+cu124
+# Esperado: 2.6.0+cu124
 
-# Verify CUDA is available
+# Verificar se CUDA está disponível
 python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}'); print(f'GPU: {torch.cuda.get_device_name(0)}')"
-# Expected:
+# Esperado:
 # CUDA: True
 # GPU: NVIDIA GeForce GTX 1650
 
-# Check CUDA version in PyTorch
+# Verificar versão CUDA no PyTorch
 python -c "import torch; print(torch.cuda.get_arch_list())"
-# Expected: includes sm_75 (for GTX 1650)
+# Esperado: inclui sm_75 (para GTX 1650)
 
-# Benchmark GPU
+# Benchmark da GPU
 python test_pytorch_gpu.py
-# Expected: GPU Throughput ≥ 1000 GFLOPS
+# Esperado: Throughput GPU ≥ 1000 GFLOPS
 ```
 
 ---
 
-## 🔌 GPU Module Loading (Critical for Post-Suspend)
+## 🔌 Carregamento do Módulo GPU (Crítico Após Suspensão)
 
-### nvidia_uvm Kernel Module
+### Módulo do Kernel nvidia_uvm
 
-**What is nvidia_uvm?**
-- Kernel module that manages GPU virtual memory
-- Typically corrupted after system suspend/hibernate on Linux
-- When corrupted: `torch.cuda.is_available()` returns False even if GPU is visible in nvidia-smi
+**O que é nvidia_uvm?**
+- Módulo do kernel que gerencia memória virtual da GPU
+- Normalmente corrompido após suspensão/hibernação do sistema no Linux
+- Quando corrompido: `torch.cuda.is_available()` retorna False mesmo se GPU estiver visível no nvidia-smi
 
-**Recovery Procedure (FASTEST FIX):**
+**Procedimento de Recuperação (CORREÇÃO MAIS RÁPIDA):**
 ```bash
-# 1. Kill any processes holding the module
+# 1. Matar processos que estão segurando o módulo
 sudo fuser --kill /dev/nvidia-uvm 2>/dev/null || true
 sleep 1
 
-# 2. Unload and reload the module
+# 2. Descarregar e recarregar o módulo
 sudo modprobe -r nvidia_uvm 2>/dev/null || true
 sleep 1
 sudo modprobe nvidia_uvm
 
-# 3. Verify module is loaded
+# 3. Verificar se o módulo está carregado
 lsmod | grep nvidia_uvm
-# Expected output: nvidia_uvm line present
+# Output esperado: linha nvidia_uvm presente
 
-# 4. Test CUDA availability
+# 4. Testar disponibilidade CUDA
 python -c "import torch; print(torch.cuda.is_available())"
-# Expected: True (usually returns to normal after reload)
+# Esperado: True (normalmente volta ao normal após recarregamento)
 ```
 
-**When to execute this:**
-- After system suspend/hibernate
-- When `torch.cuda.is_available()` returns False but `nvidia-smi` shows GPU
-- When CUDA operations fail with "CUDA unknown error"
+**Quando executar isso:**
+- Após suspensão/hibernação do sistema
+- Quando `torch.cuda.is_available()` retorna False mas `nvidia-smi` mostra GPU
+- Quando operações CUDA falham com "CUDA unknown error"
 
-**Note:** This is NOT a permanent fix and might need to be run after future suspend cycles. For permanent solution, disable automatic suspend in system power settings.
+**Nota:** Esta NÃO é uma correção permanente e pode precisar ser executada após futuros ciclos de suspensão. Para solução permanente, desative suspensão automática nas configurações de energia do sistema.
 
 ---
 
-## 🧪 Verification Checklist
+## 🧪 Checklist de Verificação
 
-### Pre-Development Verification (Run Once Per Session)
+### Verificação Pré-Desenvolvimento (Executar Uma Vez por Sessão)
 
 ```bash
 #!/bin/bash
-# verify_omnimind_env.sh - Complete environment verification
+# verify_omnimind_env.sh - Verificação completa de ambiente
 
-echo "=== OmniMind Environment Verification ==="
+echo "=== Verificação de Ambiente OmniMind ==="
 
-# 1. Python version
-echo "1. Checking Python version..."
+# 1. Versão Python
+echo "1. Verificando versão Python..."
 python --version
-PYTHON_OK=$(python -c "import sys; sys.exit(0 if sys.version_info >= (3, 12, 0) and sys.version_info < (3, 13, 0) else 1)" && echo "PASS" || echo "FAIL")
+PYTHON_OK=$(python -c "import sys; sys.exit(0 if sys.version_info >= (3, 12, 0) and sys.version_info < (3, 13, 0) else 1)" && echo "APROVADO" || echo "REPROVADO")
 echo "   Python 3.12.x: $PYTHON_OK"
 
-# 2. Virtual environment
-echo "2. Checking virtual environment..."
+# 2. Ambiente virtual
+echo "2. Verificando ambiente virtual..."
 echo "   VIRTUAL_ENV: $VIRTUAL_ENV"
-[[ ! -z "$VIRTUAL_ENV" ]] && echo "   Status: ACTIVATED" || echo "   Status: NOT ACTIVATED - Run: source .venv/bin/activate"
+[[ ! -z "$VIRTUAL_ENV" ]] && echo "   Status: ATIVADO" || echo "   Status: NÃO ATIVADO - Execute: source .venv/bin/activate"
 
-# 3. NVIDIA driver
-echo "3. Checking NVIDIA driver..."
-nvidia-smi --query-gpu=driver_version --format=csv,noheader || echo "FAIL: nvidia-smi not found"
+# 3. Driver NVIDIA
+echo "3. Verificando driver NVIDIA..."
+nvidia-smi --query-gpu=driver_version --format=csv,noheader || echo "FALHA: nvidia-smi não encontrado"
 
-# 4. CUDA availability
-echo "4. Checking CUDA in PyTorch..."
-CUDA_OK=$(python -c "import torch; print('PASS' if torch.cuda.is_available() else 'FAIL')" 2>/dev/null || echo "ERROR")
-echo "   CUDA Available: $CUDA_OK"
+# 4. Disponibilidade CUDA
+echo "4. Verificando CUDA no PyTorch..."
+CUDA_OK=$(python -c "import torch; print('APROVADO' if torch.cuda.is_available() else 'REPROVADO')" 2>/dev/null || echo "ERRO")
+echo "   CUDA Disponível: $CUDA_OK"
 
-# 5. PyTorch version
-echo "5. Checking PyTorch version..."
+# 5. Versão PyTorch
+echo "5. Verificando versão PyTorch..."
 python -c "import torch; print(f'   PyTorch: {torch.__version__}')"
 
-# 6. GPU detection
-echo "6. Checking GPU detection..."
-GPU_NAME=$(python -c "import torch; print(torch.cuda.get_device_name(0))" 2>/dev/null || echo "NOT DETECTED")
+# 6. Detecção GPU
+echo "6. Verificando detecção GPU..."
+GPU_NAME=$(python -c "import torch; print(torch.cuda.get_device_name(0))" 2>/dev/null || echo "NÃO DETECTADO")
 echo "   GPU: $GPU_NAME"
 
-# 7. GPU memory
-echo "7. Checking GPU memory..."
-GPU_MEM=$(python -c "import torch; print(f'{torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB')" 2>/dev/null || echo "NOT DETECTED")
-echo "   Total VRAM: $GPU_MEM"
+# 7. Memória GPU
+echo "7. Verificando memória GPU..."
+GPU_MEM=$(python -c "import torch; print(f'{torch.cuda.get_device_properties(0).total_memory / 1e9:.2f} GB')" 2>/dev/null || echo "NÃO DETECTADO")
+echo "   VRAM Total: $GPU_MEM"
 
-# 8. Audit tests
-echo "8. Running audit tests (14 tests expected to pass)..."
-pytest tests/test_audit.py -q 2>/dev/null || echo "FAIL: pytest failed or test_audit.py missing"
+# 8. Testes de auditoria
+echo "8. Executando testes de auditoria (14 testes esperados para passar)..."
+pytest tests/test_audit.py -q 2>/dev/null || echo "FALHA: pytest falhou ou test_audit.py não encontrado"
 
-# 9. GPU benchmark
-echo "9. Running GPU benchmark (1000+ GFLOPS expected)..."
-python PHASE7_COMPLETE_BENCHMARK_AUDIT.py 2>/dev/null | grep -E "GPU Throughput|CUDA Status" || echo "FAIL: Benchmark script not found"
+# 9. Benchmark GPU
+echo "9. Executando benchmark GPU (1000+ GFLOPS esperados)..."
+python PHASE7_COMPLETE_BENCHMARK_AUDIT.py 2>/dev/null | grep -E "GPU Throughput|CUDA Status" || echo "FALHA: Script de benchmark não encontrado"
 
 echo ""
 echo "=== Verification Complete ==="
 ```
 
-**Run verification:**
+**Executar verificação:**
 ```bash
 bash verify_omnimind_env.sh
 ```
 
-### Expected Output
+### Output Esperado
 ```
-=== OmniMind Environment Verification ===
-1. Checking Python version...
-   Python 3.12.x: PASS
-2. Checking virtual environment...
+=== Verificação de Ambiente OmniMind ===
+1. Verificando versão Python...
+   Python 3.12.x: APROVADO
+2. Verificando ambiente virtual...
    VIRTUAL_ENV: /home/fahbrain/projects/omnimind/.venv
-   Status: ACTIVATED
-3. Checking NVIDIA driver...
+   Status: ATIVADO
+3. Verificando driver NVIDIA...
    550.163.01
-4. Checking CUDA in PyTorch...
-   CUDA Available: PASS
-5. Checking PyTorch version...
+4. Verificando CUDA no PyTorch...
+   CUDA Disponível: APROVADO
+5. Verificando versão PyTorch...
    PyTorch: 2.6.0+cu124
-6. Checking GPU detection...
+6. Verificando detecção GPU...
    GPU: NVIDIA GeForce GTX 1650
-7. Checking GPU memory...
-   Total VRAM: 3.81 GB
-8. Running audit tests (14 tests expected to pass)...
+7. Verificando memória GPU...
+   VRAM Total: 3.81 GB
+8. Executando testes de auditoria (14 testes esperados para passar)...
    14 passed in 0.43s
-9. Running GPU benchmark (1000+ GFLOPS expected)...
-   CUDA Status: ✅ ENABLED
-   GPU Throughput: 1149.91 GFLOPS
+9. Executando benchmark GPU (1000+ GFLOPS esperados)...
+   Status CUDA: ✅ HABILITADO
+   Throughput GPU: 1149.91 GFLOPS
 
-=== Verification Complete ===
+=== Verificação Concluída ===
 ```
 
 ---
@@ -306,7 +306,7 @@ bash verify_omnimind_env.sh
 
 **Diagnosis:**
 ```bash
-# Run this to see detailed error
+# Execute isso para ver erro detalhado
 python -c "import torch; print(torch.cuda.current_device())"
 ```
 
