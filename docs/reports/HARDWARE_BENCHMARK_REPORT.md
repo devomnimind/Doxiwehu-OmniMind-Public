@@ -1,25 +1,25 @@
 # Hardware Benchmark Report — OmniMind
 
-Data: 2025-11-19T02:19:05.050424
+Data: 2025-11-19T04:17:21.489882
 
 ## Resumo Executivo
 
 - **CPU:** None phys / None log cores
 - **Memória:** 0.0 GB total
-- **GPU:** OK
+- **GPU:** N/A
 - **Disco:** N/A
 
 ## Resultados de Benchmark
 | Teste | Resultado | Unidade |
 | --- | --- | --- |
-| Loop 1M iterações | 56.59 | ms |
-| Operações matemáticas | 34.91 | ms |
-| SHA-256 (hash) | 287.93 | ms |
-| Compressão (zlib) | 45.71 | ms |
-| Memory throughput | 20875.45 | MB/s |
-| Disk seq. write | 985.04 | MB/s |
-| Disk seq. read | 7922.26 | MB/s |
-| Disk random | 1230.17 | MB/s |
+| Loop 1M iterações | 71.71 | ms |
+| Operações matemáticas | 46.00 | ms |
+| SHA-256 (hash) | 286.74 | ms |
+| Compressão (zlib) | 43.49 | ms |
+| Memory throughput | 16698.51 | MB/s |
+| Disk seq. write | 939.99 | MB/s |
+| Disk seq. read | 6535.28 | MB/s |
+| Disk random | 607.55 | MB/s |
 
 ## Recomendações
 
@@ -32,7 +32,7 @@ Data: 2025-11-19T02:19:05.050424
 {
   "system_info": {
     "system_info": {
-      "timestamp": "2025-11-19T02:17:53.136373",
+      "timestamp": "2025-11-19T04:16:50.511885",
       "os": {
         "system": "Linux",
         "node": "kali",
@@ -45,17 +45,17 @@ Data: 2025-11-19T02:19:05.050424
         "physical_cores": 4,
         "logical_cores": 8,
         "frequency": {
-          "current_mhz": 2500.1861249999997,
+          "current_mhz": 2499.9975,
           "min_mhz": 800.0,
           "max_mhz": 2500.0
         },
         "architecture": "x86_64"
       },
       "memory": {
-        "total": 24931753984,
-        "available": 15765573632,
-        "used": 9166180352,
-        "percent": 36.8
+        "total": 24931749888,
+        "available": 17102729216,
+        "used": 7829020672,
+        "percent": 31.4
       },
       "swap": {
         "total": 25492975616,
@@ -68,18 +68,18 @@ Data: 2025-11-19T02:19:05.050424
           "mountpoint": "/",
           "fstype": "ext4",
           "total": 956184760320,
-          "used": 142051561472,
-          "free": 765486194688,
-          "percent": 15.7
+          "used": 148694827008,
+          "free": 758842929152,
+          "percent": 16.4
         },
         {
           "device": "/dev/nvme0n1p2",
           "mountpoint": "/boot",
           "fstype": "ext4",
           "total": 989052928,
-          "used": 384290816,
-          "free": 536764416,
-          "percent": 41.7
+          "used": 385970176,
+          "free": 535085056,
+          "percent": 41.9
         },
         {
           "device": "/dev/nvme0n1p1",
@@ -89,15 +89,6 @@ Data: 2025-11-19T02:19:05.050424
           "used": 311296,
           "free": 1021083648,
           "percent": 0.0
-        },
-        {
-          "device": "/dev/sda1",
-          "mountpoint": "/mnt/dev_brain_clean",
-          "fstype": "ext4",
-          "total": 491081818112,
-          "used": 19773530112,
-          "free": 446286753792,
-          "percent": 4.2
         }
       ],
       "network": {
@@ -131,7 +122,7 @@ Data: 2025-11-19T02:19:05.050424
             },
             {
               "family": "AF_INET6",
-              "address": "2804:7f0:9482:4cc5:6499:87f9:3f20:1358"
+              "address": "2804:7f0:9482:4cc5:4cb:eccb:b37a:e896"
             },
             {
               "family": "AF_INET6",
@@ -158,7 +149,7 @@ Data: 2025-11-19T02:19:05.050424
             },
             {
               "family": "AF_PACKET",
-              "address": "02:42:f8:c2:40:49"
+              "address": "02:42:0e:15:e0:56"
             }
           ]
         },
@@ -169,40 +160,37 @@ Data: 2025-11-19T02:19:05.050424
           "addresses": [
             {
               "family": "AF_PACKET",
-              "address": "4a:86:dd:b6:0f:28"
+              "address": "8e:a4:65:43:63:db"
             }
           ]
         }
       },
-      "uptime": "2025-11-18T10:15:16"
+      "uptime": "2025-11-19T00:27:54"
     }
   },
   "cpu": {
-    "loop_ms": 56.59115866971357,
-    "math_ms": 34.91044466742702,
-    "hash_ms": 287.92961133391753,
-    "compression_ms": 45.71238266847407,
-    "timestamp": 1763518682.2479289
+    "loop_ms": 71.70636233331606,
+    "math_ms": 46.003471666760255,
+    "hash_ms": 286.73677666665753,
+    "compression_ms": 43.485132999952235,
+    "timestamp": 1763525817.6316276
   },
   "gpu": {
-    "init_ms": 11.726748998626135,
-    "cpu_to_gpu_ms": 108.85301700182026,
-    "matrix_mult_ms": 21.970768000755925,
-    "gpu_to_cpu_ms": 30.581625003833324,
-    "status": "OK"
+    "status": "N/A",
+    "reason": "torch.cuda unavailable or torch not installed"
   },
   "memory": {
-    "memory_total": 24931753984,
+    "memory_total": 24931749888,
     "memory_throughput_mb_s": [
-      20875.44517210614,
-      20514.148261669114
+      16698.50793853115,
+      16158.783783896306
     ],
-    "timestamp": 1763518724.760559
+    "timestamp": 1763525823.645532
   },
   "disk": {
-    "write_throughput_mb_s": 985.0376232770991,
-    "read_throughput_mb_s": 7922.2610703220025,
-    "random_access_mb_s": 1230.1716039842938,
-    "timestamp": 1763518734.8419156
+    "write_throughput_mb_s": 939.9865581892917,
+    "read_throughput_mb_s": 6535.282651331439,
+    "random_access_mb_s": 607.5486746688151,
+    "timestamp": 1763525830.4471664
   }
 }
