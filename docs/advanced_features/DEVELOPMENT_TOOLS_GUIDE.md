@@ -47,33 +47,33 @@ cd OmniMind
    - Identifies package manager
    - Detects GPU and hardware capabilities
 
-2. **System Dependencies**
-   - Installs build tools (gcc, make, etc.)
-   - Installs Python development headers
-   - Installs required libraries
+2. **Dependências do Sistema**
+   - Instala ferramentas de compilação (gcc, make, etc.)
+   - Instala headers de desenvolvimento Python
+   - Instala bibliotecas necessárias
 
-3. **Python Environment**
-   - Creates virtual environment
-   - Installs Python packages from requirements.txt
-   - Validates installation
+3. **Ambiente Python**
+   - Cria ambiente virtual
+   - Instala pacotes Python de requirements.txt
+   - Valida instalação
 
-4. **Configuration**
-   - Creates .env file from template
-   - Sets up configuration directories
-   - Runs configuration validation
+4. **Configuração**
+   - Cria arquivo .env do template
+   - Configura diretórios de configuração
+   - Executa validação de configuração
 
-5. **Hardware Optimization**
-   - Configures GPU support if available
-   - Sets CPU-only mode if no GPU
+5. **Otimização de Hardware**
+   - Configura suporte GPU se disponível
+   - Define modo apenas CPU se não houver GPU
 
-6. **Services**
-   - Builds Docker images
-   - Prepares systemd service files
+6. **Serviços**
+   - Constrói imagens Docker
+   - Prepara arquivos de serviço systemd
 
-7. **Validation**
-   - Runs diagnostic checks
-   - Verifies module imports
-   - Generates installation report
+7. **Validação**
+   - Executa verificações de diagnóstico
+   - Verifica importações de módulos
+   - Gera relatório de instalação
 
 ### Logs
 
@@ -81,18 +81,18 @@ Installation log saved to: `logs/install_YYYYMMDD_HHMMSS.log`
 
 ---
 
-## Environment Auto-Detection
+## Auto-Detecção de Ambiente
 
-### Overview
-Automatic hardware and environment detection with optimized configuration generation.
+### Visão Geral
+Detecção automática de hardware e ambiente com geração de configuração otimizada.
 
-### Features
-- **CPU Detection**: Core count, frequency, architecture
-- **RAM Detection**: Total and available memory
-- **GPU Detection**: NVIDIA GPU with VRAM and compute capability
-- **Automatic Optimization**: Generates optimal batch sizes, worker counts, etc.
+### Recursos
+- **Detecção CPU**: Contagem de núcleos, frequência, arquitetura
+- **Detecção RAM**: Memória total e disponível
+- **Detecção GPU**: GPU NVIDIA com VRAM e capacidade de computação
+- **Otimização Automática**: Gera tamanhos de batch ideais, contagens de workers, etc.
 
-### Usage
+### Uso
 
 ```python
 from src.optimization.hardware_detector import auto_configure
