@@ -7,7 +7,7 @@ OmniMind is a self-hosted multi-agent system with a FastAPI + React dashboard, s
 ### Choose Your Deployment:
 
 1. **[CPU-Only / Cloud-Free](docs/CLOUD_FREE_DEPLOYMENT.md)** - GitHub Actions, Docker, no GPU needed
-2. **[GPU-Enabled](docs/reports/PHASE7_GPU_CUDA_REPAIR_LOG.md)** - Local machine with NVIDIA GPU  
+2. **[GPU-Enabled](docs/reports/PHASE7_GPU_CUDA_REPAIR_LOG.md)** - Local machine with NVIDIA GPU
 3. **[Free Services Guide](docs/FREE_SERVICE_ALTERNATIVES.md)** - Local alternatives to paid cloud services
 
 ### Automatic Hardware Detection
