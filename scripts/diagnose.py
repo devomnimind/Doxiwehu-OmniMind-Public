@@ -314,7 +314,10 @@ class DiagnosticTool:
 
     def generate_report(self, output_file: str = "diagnostic_report.json") -> None:
         """Generate diagnostic report."""
-        output_path = self.omnimind_root / "logs" / output_file
+        logs_dir = self.omnimind_root / "logs"
+        logs_dir.mkdir(parents=True, exist_ok=True)
+        
+        output_path = logs_dir / output_file
 
         with open(output_path, "w") as f:
             json.dump(self.results, f, indent=2)
