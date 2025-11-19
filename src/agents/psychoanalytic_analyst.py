@@ -1,0 +1,143 @@
+"""
+PsychoanalyticAnalyst - Agente de Análise Psicanalítica
+Modo: psychoanalyst (🧐)
+
+Função: Analisar textos (transcrições de sessões, notas) sob diferentes
+lentes teóricas da psicanálise para gerar insights e relatórios.
+"""
+
+from __future__ import annotations
+
+import json
+import logging
+from typing import Any, Dict, Optional, List
+from enum import Enum
+
+from .react_agent import ReactAgent
+
+logger = logging.getLogger(__name__)
+
+
+class PsychoanalyticFramework(Enum):
+    """Frameworks teóricos disponíveis para análise."""
+
+    FREUDIAN = "Freudiano"
+    LACANIAN = "Lacaniano"
+    KLEINIAN = "Kleiniano"
+    WINNICOTTIAN = "Winnicottiano"
+
+
+class PsychoanalyticAnalyst(ReactAgent):
+    """
+    Agente especializado em análise de textos com base em teorias psicanalíticas.
+    """
+
+    def __init__(self, config_path: str) -> None:
+        super().__init__(config_path)
+        self.mode = "psychoanalyst"
+
+    def analyze_session(
+        self,
+        session_notes: str,
+        framework: PsychoanalyticFramework = PsychoanalyticFramework.FREUDIAN,
+    ) -> Dict[str, Any]:
+        """
+        Analisa as notas de uma sessão clínica usando um framework psicanalítico.
+
+        Args:
+            session_notes: O texto com as notas da sessão.
+            framework: O framework teórico a ser utilizado.
+
+        Returns:
+            Um dicionário com os insights e a análise.
+        """
+        prompt = self._build_analysis_prompt(session_notes, framework)
+        
+        logger.info(f"Iniciando análise com o framework {framework.value}...")
+        
+        response = self.llm.invoke(prompt)
+        
+        analysis = self._parse_analysis(response)
+        analysis["framework_used"] = framework.value
+
+        return analysis
+
+    def generate_abnt_report(self, analysis: Dict[str, Any]) -> str:
+        """
+        Gera um relatório estruturado a partir da análise (placeholder).
+        NOTA: ABNT completo é complexo. Isto é uma simulação estruturada.
+        """
+        report = f"""
+# RELATÓRIO DE ANÁLISE PSICANALÍTICA
+
+**Framework Teórico:** {analysis.get('framework_used', 'N/A')}
+
+## 1. Hipótese Interpretativa Principal
+{analysis.get('hypothesis', 'Nenhuma hipótese gerada.')}
+
+## 2. Pontos de Resistência Identificados
+{analysis.get('resistance', 'Nenhum ponto de resistência identificado.')}
+
+## 3. Elementos-Chave da Sessão
+{analysis.get('key_elements', 'Nenhum elemento-chave identificado.')}
+
+## 4. Observações Adicionais
+{analysis.get('observations', 'Nenhuma observação adicional.')}
+
+---
+*Este é um relatório gerado automaticamente pelo OmniMind.*
+"""
+        return report
+
+    def _build_analysis_prompt(
+        self, session_notes: str, framework: PsychoanalyticFramework
+    ) -> str:
+        """Constrói o prompt para o LLM."""
+        
+        framework_instructions = {
+            PsychoanalyticFramework.FREUDIAN: "Foque em conflitos edípicos, mecanismos de defesa (repressão, negação, projeção), e a dinâmica entre Id, Ego e Superego.",
+            PsychoanalyticFramework.LACANIAN: "Analise a estrutura da linguagem, a função do significante, o Real, o Simbólico e o Imaginário, e a posição do sujeito em relação ao Outro.",
+            PsychoanalyticFramework.KLEINIAN: "Identifique ansiedades primitivas, posições esquizo-paranoide e depressiva, e o uso de identificação projetiva.",
+            PsychoanalyticFramework.WINNICOTTIAN: "Observe a relação com o ambiente, o papel do 'holding', objetos transicionais e a dialética entre o verdadeiro e o falso self.",
+        }
+
+        prompt = f"""
+Você é um assistente de IA especializado em psicanálise. Sua tarefa é analisar as seguintes notas de uma sessão clínica sob a ótica do framework {framework.value}.
+
+**Instruções do Framework:**
+{framework_instructions[framework]}
+
+**Notas da Sessão:**
+---
+{session_notes}
+---
+
+**Sua Análise (responda em formato JSON):**
+Com base nas notas e no framework, forneça a seguinte estrutura:
+{{
+  "hypothesis": "Formule uma hipótese interpretativa central sobre o material apresentado.",
+  "resistance": "Identifique possíveis pontos de resistência ou defesas notáveis no discurso.",
+  "key_elements": "Liste 3 a 5 elementos-chave (símbolos, atos falhos, padrões de repetição) que se destacam.",
+  "observations": "Ofereça uma breve observação ou questão que poderia guiar a próxima sessão."
+}}
+"""
+        return prompt
+
+    def _parse_analysis(self, llm_response: Any) -> Dict[str, Any]:
+        """Extrai a análise JSON da resposta do LLM."""
+        try:
+            # A resposta do Ollama pode vir em um objeto com 'content'
+            content = getattr(llm_response, "content", llm_response)
+            # O LLM pode retornar o JSON dentro de um bloco de código markdown
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0]
+            
+            return json.loads(content)
+        except (json.JSONDecodeError, AttributeError, IndexError) as e:
+            logger.error(f"Falha ao parsear a resposta do LLM: {e}")
+            return {
+                "error": "Não foi possível parsear a análise.",
+                "raw_response": str(llm_response),
+            }
+
+__all__ = ["PsychoanalyticAnalyst", "PsychoanalyticFramework"]

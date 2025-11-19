@@ -43,6 +43,8 @@ from ..integrations.qdrant_adapter import (
 )
 from .orchestrator_metrics import OrchestratorMetricsCollector
 from ..security.security_agent import SecurityAgent
+from .psychoanalytic_analyst import PsychoanalyticAnalyst
+
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +57,7 @@ class AgentMode(Enum):
     ARCHITECT = "architect"
     DEBUG = "debug"
     REVIEWER = "reviewer"
+    PSYCHOANALYST = "psychoanalyst"
     SECURITY = "security"
     MCP = "mcp"
     DBUS = "dbus"
@@ -432,6 +435,8 @@ class OrchestratorAgent(ReactAgent):
                 self._agents[mode] = DebugAgent(self.config_path)
             elif mode == AgentMode.REVIEWER:
                 self._agents[mode] = ReviewerAgent(self.config_path)
+            elif mode == AgentMode.PSYCHOANALYST:
+                self._agents[mode] = PsychoanalyticAnalyst(self.config_path)
             else:
                 raise ValueError(f"Unknown agent mode: {mode}")
 
@@ -448,6 +453,7 @@ AVAILABLE SPECIALIST AGENTS:
 - ArchitectAgent (architect): Plans architecture, writes specs/docs
 - DebugAgent (debug): Diagnoses bugs, analyzes errors
 - ReviewerAgent (reviewer): Reviews quality, provides RLAIF feedback
+- PsychoanalyticAnalyst (psychoanalyst): Analyzes text with psychoanalytic theories
 
 Your job is to break this task into sequential subtasks and assign each to the appropriate agent.
 
@@ -514,6 +520,7 @@ Your decomposition plan:"""
                     "architect",
                     "debug",
                     "reviewer",
+                    "psychoanalyst",
                     "security",
                     "mcp",
                     "dbus",
@@ -570,6 +577,12 @@ Your decomposition plan:"""
                             "review",
                             "quality",
                         ],
+                        "psychoanalyst": [
+                            "psychoanalytic",
+                            "psychoanalyst",
+                            "analyze session",
+                            "abnt report",
+                        ],
                         "security": [
                             "security",
                             "securityagent",
@@ -597,6 +610,7 @@ Your decomposition plan:"""
                             "architect",
                             "debug",
                             "reviewer",
+                            "psychoanalyst",
                             "security",
                             "mcp",
                             "dbus",
@@ -669,6 +683,7 @@ Your decomposition plan:"""
                     AgentMode.ARCHITECT,
                     AgentMode.DEBUG,
                     AgentMode.REVIEWER,
+                    AgentMode.PSYCHOANALYST,
                 }:
                     agent = self._get_agent(agent_mode)
 
@@ -698,6 +713,16 @@ Your decomposition plan:"""
                         "completed": True,
                         "mode": "reviewer",
                         "note": "Review would be performed on generated files",
+                    }
+                elif agent_mode == AgentMode.PSYCHOANALYST:
+                    # This is a simplified execution for the analyst
+                    analysis = agent.analyze_session(subtask["description"])  # type: ignore[union-attr]
+                    report = agent.generate_abnt_report(analysis)  # type: ignore[union-attr]
+                    result = {
+                        "completed": True,
+                        "final_result": report,
+                        "details": analysis,
+                        "iteration": 1,
                     }
                 else:
                     result = agent.run(  # type: ignore[union-attr]
