@@ -41,6 +41,11 @@ The backend will always prefer env vars, otherwise it loads/generates the secure
 scripts/start_dashboard.sh
 ```
 
+## Dependency Compatibility Notes
+
+- O pacote `supabase-py>=1.0.0` ainda não oferece wheel compatível com Python 3.13 em Linux x86_64, então `pip install -r requirements.txt` falha nesse ponto por ausência de `supabase-py`. Por ora mantemos `psutil`, `dbus-python` e os outros pacotes, mas a integração completa com Supabase exige Python **≤ 3.12**.
+- A recomendação operacional é usar um ambiente Python 3.12 (ou menor) sempre que precisar rodar os adaptadores Supabase/Qdrant e os testes que dependem deles.
+
 ## Dashboard Workflow
 
 - Access the FastAPI endpoints (secured via Basic Auth) for `/status`, `/snapshot`, `/metrics`, `/tasks/orchestrate`, `/mcp/execute`, `/dbus/execute`, etc.
@@ -69,6 +74,7 @@ Ensure `logs/.coverage` is removed or regenerated via `pytest --cov=src` and kee
 ## Maintenance Notes
 
 - Legacy artifacts live in `archive/reports/` and `archive/examples/`; reference `archive/README.md` for context.
+- Legacy demos that contain invalid syntax (e.g., the old `archive/examples/demo_phase6*`) have been removed to keep the formatter pipeline operável. Any new artifacts placed under `archive/examples/` must be sanitized and approved before re-enabling them in `black`/`flake8` runs; by default essa pasta fica excluída dos hooks de qualidade.
 - Scripts under `scripts/` are the only runtime automation files allowed at the root level; please do not scatter lone `.py` or `.sh` files outside this directory.
 - Tests that once lived at the root now reside under `tests/legacy/`; keep new tests under `tests/`.
 - Temporary tool outputs must stay within `tmp/`; this directory is ignored and safe to wipe.
