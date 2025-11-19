@@ -161,7 +161,7 @@ class AsyncMCPClient:
             "id": request_id,
         }
 
-        last_exception = None
+        last_exception: MCPTimeoutError | MCPConnectionError | MCPClientError | None = None
         backoff = self.retry_backoff
 
         for attempt in range(self.max_retries):

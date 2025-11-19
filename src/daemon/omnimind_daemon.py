@@ -29,8 +29,8 @@ import psutil
 import structlog
 
 # Configure structured logging
-structlog.configure(  # type: ignore[attr-defined]
-    processors=[  # type: ignore[attr-defined]
+structlog.configure(
+    processors=[
         structlog.processors.TimeStamper(fmt="iso"),  # type: ignore[attr-defined]
         structlog.processors.add_log_level,  # type: ignore[attr-defined]
         structlog.processors.JSONRenderer(),  # type: ignore[attr-defined]

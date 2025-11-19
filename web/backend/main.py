@@ -19,6 +19,7 @@ from pydantic import BaseModel
 from secrets import compare_digest
 from starlette.status import HTTP_401_UNAUTHORIZED
 
+
 # Simple observability for backend (replaces DEVBRAIN_V23 import)
 class AutonomyObservability:
     def __init__(self) -> None:

@@ -948,7 +948,8 @@ Your decomposition plan:"""
 
             if critical_suggestions:
                 logger.warning(
-                    f"Metacognition found {len(critical_suggestions)} critical optimization suggestions"
+                    "Metacognition found %d critical optimization suggestions",
+                    len(critical_suggestions)
                 )
                 for suggestion in critical_suggestions:
                     logger.warning(f"  - {suggestion.get('title')}")

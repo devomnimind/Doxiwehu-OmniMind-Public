@@ -9,7 +9,7 @@ import json
 import logging
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -228,7 +228,6 @@ class SelfAnalysis:
             Health summary with key metrics
         """
         decision_patterns = self.analyze_decision_patterns(lookback_hours=24)
-        execution_times = self.analyze_execution_times()
         failure_patterns = self.identify_failure_patterns()
 
         # Determine health status

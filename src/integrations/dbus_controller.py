@@ -155,7 +155,7 @@ class DBusSystemController:
         try:
             import psutil
 
-            battery = psutil.sensors_battery()
+            battery = psutil.sensors_battery()  # type: ignore[no-untyped-call]
             if battery is None:
                 return {"error": "No battery detected"}
 
@@ -188,7 +188,7 @@ class DBusSystemController:
                     "is_up": iface_stats.isup,
                     "speed": iface_stats.speed,
                     "mtu": iface_stats.mtu,
-                    "addresses": [],
+                    "addresses": list(),
                 }
 
                 # Add addresses if available

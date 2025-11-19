@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-import asyncio
-import json
-from typing import Any, Dict
+# Dict not used in this test file
 
 import pytest
 from fastapi.testclient import TestClient
@@ -13,9 +11,7 @@ from fastapi.testclient import TestClient
 try:
     from web.backend.main import app
     from web.backend.websocket_manager import MessageType, ws_manager
-    from web.backend.routes.tasks import TaskCreate, TaskPriority, TaskStatus
-    from web.backend.routes.agents import AgentStatus, AgentType
-    from web.backend.routes.security import SecurityEventType, SecurityEventSeverity
+    from web.backend.routes.tasks import TaskStatus
 
     BACKEND_AVAILABLE = True
 except ImportError:

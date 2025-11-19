@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -361,7 +360,9 @@ class ProactiveGoalEngine:
                     content = f.read()
                     # Simple check: file should have triple-quoted docstring
                     if '"""' not in content and "'''" not in content:
-                        files_without_docstrings.append(str(py_file.relative_to(self.workspace_path)))
+                        files_without_docstrings.append(
+                            str(py_file.relative_to(self.workspace_path))
+                        )
             except Exception:
                 continue
 
