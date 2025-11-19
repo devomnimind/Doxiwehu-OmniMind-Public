@@ -50,7 +50,8 @@ memory-profiler>=0.61.0
 # Web dashboard
 fastapi>=0.110.0
 uvicorn>=0.23.0
-supabase-py>=1.0.0
+# supabase-py>=1.0.0  # Incompatível com Python 3.12, substituído por 'supabase'
+supabase>=2.0.0
 
 # DEVBRAIN V23 senses and infrastructure
 redis>=5.4.0
@@ -64,4 +65,4 @@ pydub>=0.25.1
 whisper>=1.1.10
 falcon>=3.0.0
 sounddevice>=0.4.9
-TTS>=0.13.1
+# TTS>=0.13.1  # Incompatível com Python 3.12
