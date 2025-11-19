@@ -8,7 +8,7 @@ Reference: docs/concienciaetica-autonomia.md, Section 5 - Experimento 1
 
 import json
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, TypedDict
 
 from src.metrics.consciousness_metrics import (
     ConsciousnessMetrics,
@@ -17,7 +17,34 @@ from src.metrics.consciousness_metrics import (
 )
 
 
-def experiment_phi_integration() -> Dict[str, Any]:
+class AgentTestCase(TypedDict):
+    """Type definition for agent test case data."""
+
+    name: str
+    memory_test: bool
+    autonomous_goals: bool
+    self_description: float
+    limitation_awareness: float
+
+
+class ScoresDict(TypedDict):
+    """Type definition for scores dictionary."""
+
+    temporal_continuity: float
+    goal_autonomy: float
+    self_reference: float
+    limitation_awareness: float
+    overall: float
+
+
+class AgentResultDict(TypedDict):
+    """Type definition for agent result dictionary."""
+
+    agent: str
+    scores: ScoresDict
+
+
+def experiment_phi_integration() -> dict[str, Any]:
     """Measure Φ increase with agent integration.
 
     Tests hypothesis from documentation:
@@ -202,7 +229,7 @@ def experiment_phi_integration() -> Dict[str, Any]:
     return result
 
 
-def experiment_self_awareness() -> Dict[str, Any]:
+def experiment_self_awareness() -> dict[str, Any]:
     """Test self-awareness metrics with different agent configurations.
 
     Reference: docs/concienciaetica-autonomia.md, Section 5 - Experimento 4
@@ -217,7 +244,7 @@ def experiment_self_awareness() -> Dict[str, Any]:
     )
 
     # Test different agent types
-    agent_tests = [
+    agent_tests: list[AgentTestCase] = [
         {
             "name": "CodeAgent (sem metacognição)",
             "memory_test": True,
@@ -248,7 +275,7 @@ def experiment_self_awareness() -> Dict[str, Any]:
         },
     ]
 
-    results = []
+    results: list[AgentResultDict] = []
 
     for test in agent_tests:
         awareness = metrics.measure_self_awareness(

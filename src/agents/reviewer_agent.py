@@ -136,7 +136,7 @@ Your review:"""
                     score_str = line.split(":")[1].strip().split()[0]
                     scores["OVERALL_SCORE"] = float(score_str)
                 except (ValueError, IndexError):
-                        continue
+                    continue
         return scores
 
     def run_review_cycle(

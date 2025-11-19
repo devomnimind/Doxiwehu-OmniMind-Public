@@ -4,7 +4,7 @@ import json
 import os
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 import langchain_ollama
 import pytest
@@ -12,12 +12,12 @@ import pytest
 import src.agents.react_agent as react_module
 from src.agents.debug_agent import DebugAgent
 from src.agents.orchestrator_agent import OrchestratorAgent
-from src.agents.react_agent import ReactAgent
+from src.agents.react_agent import ReactAgent, AgentState
 
 
 class DummyLLM:
-    def __init__(self, *args, **kwargs):
-        self.history = []
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        self.history: List[str] = []
 
     def invoke(self, prompt: str) -> str:
         self.history.append(prompt)
@@ -25,18 +25,23 @@ class DummyLLM:
 
 
 class InMemoryMemory:
-    def __init__(self, *args, **kwargs):
-        self.episodes = []
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        self.episodes: List[Dict[str, Any]] = []
 
-    def search_similar(self, *args, **kwargs):
+    def search_similar(self, *args: Any, **kwargs: Any) -> List[Dict[str, Any]]:
         query = args[0] if args else kwargs.get("query", "")
         return [
             episode for episode in self.episodes if query in episode.get("task", "")
         ]
 
     def store_episode(
-        self, task: str, action: str, result: str, reward: float = 0.0, metadata=None
-    ):
+        self,
+        task: str,
+        action: str,
+        result: str,
+        reward: float = 0.0,
+        metadata: Optional[Dict[str, Any]] = None,
+    ) -> str:
         entry = {
             "task": task,
             "action": action,
@@ -49,16 +54,16 @@ class InMemoryMemory:
         self.episodes.append(entry)
         return str(len(self.episodes))
 
-    def get_stats(self):
+    def get_stats(self) -> Dict[str, int]:
         return {"total_episodes": len(self.episodes)}
 
-    def get_episode(self, episode_id: str):
+    def get_episode(self, episode_id: str) -> Optional[Dict[str, Any]]:
         for entry in self.episodes:
             if entry.get("episode_id") == episode_id:
                 return entry
         return None
 
-    def consolidate_memory(self, *args, **kwargs):
+    def consolidate_memory(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
         total = len(self.episodes)
         return {
             "status": "skipped",
@@ -106,7 +111,7 @@ def test_react_agent_performs_file_and_shell_ops() -> None:
     )
     assert "analysis.txt" in shell_output
 
-    state = {
+    state: AgentState = {
         "messages": [],
         "current_task": "observe",
         "reasoning_chain": [],
@@ -123,7 +128,7 @@ def test_react_agent_performs_file_and_shell_ops() -> None:
         "iteration": 0,
         "max_iterations": 5,
         "completed": False,
-        "final_result": None,
+        "final_result": "",
     }
 
     observed_state = agent._observe_node(state)
@@ -147,7 +152,7 @@ def test_orchestrator_parses_and_executes_plan() -> None:
 
     simple_agent = type("SimpleAgent", (), {})()
 
-    def run_stub(task: str, max_iterations: int = 1, **kwargs: Any) -> dict:
+    def run_stub(task: str, max_iterations: int = 1, **kwargs: Any) -> Dict[str, Any]:
         return {
             "completed": True,
             "final_result": f"{task} done",
@@ -157,7 +162,7 @@ def test_orchestrator_parses_and_executes_plan() -> None:
     setattr(simple_agent, "run", run_stub)
     setattr(simple_agent, "run_code_task", run_stub)
 
-    orchestrator._get_agent = lambda mode: simple_agent
+    orchestrator._get_agent = lambda mode: simple_agent  # type: ignore[method-assign]
 
     execution = orchestrator.execute_plan(
         {

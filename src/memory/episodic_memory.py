@@ -117,7 +117,8 @@ class EpisodicMemory:
         if self._embedding_model:
             try:
                 encoded = self._embedding_model.encode(text, normalize_embeddings=True)
-                return [float(x) for x in encoded]
+                # encoded is ndarray[Any] for single string input
+                return [float(x) for x in encoded]  # type: ignore[arg-type,union-attr]
             except Exception as exc:
                 logger.warning(
                     (
@@ -354,3 +355,25 @@ class EpisodicMemory:
             "duplicates_removed": removed,
             "remaining": remaining,
         }
+
+
+# Export Qdrant types for use in tests and type annotations
+__all__ = [
+    "EpisodicMemory",
+    "EpisodePayload",
+    "QdrantClient",
+    "PointStruct",
+    "Distance",
+    "VectorParams",
+    "Filter",
+    "FieldCondition",
+    "MatchValue",
+]
+
+# Re-export Qdrant types
+PointStruct = qmodels.PointStruct
+Distance = qmodels.Distance
+VectorParams = qmodels.VectorParams
+Filter = qmodels.Filter
+FieldCondition = qmodels.FieldCondition
+MatchValue = qmodels.MatchValue

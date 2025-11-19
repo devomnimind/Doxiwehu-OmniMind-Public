@@ -51,7 +51,7 @@ class DummyMemory:
         return {"total_episodes": len(self.episodes)}
 
 
-@pytest.fixture(autouse=True)  # type: ignore[misc]
+@pytest.fixture(autouse=True)
 def patch_agent_dependencies(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     monkeypatch.setenv("HOME", str(tmp_path))
     import langchain_ollama
@@ -62,7 +62,7 @@ def patch_agent_dependencies(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) ->
     monkeypatch.setattr(mem_mod, "EpisodicMemory", DummyMemory)
 
 
-@pytest.fixture  # type: ignore[misc]
+@pytest.fixture
 def config_path() -> Path:
     return CONFIG_PATH
 

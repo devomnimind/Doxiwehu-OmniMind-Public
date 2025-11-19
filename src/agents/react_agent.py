@@ -8,10 +8,10 @@ import logging
 import os
 import yaml
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Protocol, TypedDict, cast
+from typing import Any, Dict, List, Protocol, TypeAlias, TypedDict, cast
 
 from langchain_ollama import OllamaLLM
-from langgraph.graph import END, StateGraph
+from langgraph.graph import END, StateGraph, CompiledStateGraph
 
 from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory import EpisodicMemory
@@ -38,11 +38,10 @@ class AgentState(TypedDict):
 
 
 class GraphInvoker(Protocol):
-    def invoke(self, state: AgentState) -> AgentState:
-        ...
+    def invoke(self, state: AgentState) -> AgentState: ...
 
 
-StateGraphType = StateGraph[AgentState, None, Any, Any]
+CompiledGraphType: TypeAlias = CompiledStateGraph[AgentState]
 
 
 class ReactAgent:
@@ -89,15 +88,20 @@ class ReactAgent:
             timeout=system_config["shell_timeout"],
         )
         self.monitor = SystemMonitor()
-        self.graph: GraphInvoker = self._build_graph()
+
+        # Expose attributes for type checking and testing
+        self.mode: str = "react"
+        self.tools: List[Any] = [self.file_ops, self.shell, self.monitor]
+
+        self.graph: CompiledGraphType = self._build_graph()
 
     def _timestamp(self) -> str:
         """Generate ISO timestamp for logging"""
         return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
-    def _build_graph(self) -> GraphInvoker:
+    def _build_graph(self) -> CompiledGraphType:
         """Build LangGraph state machine."""
-        workflow: StateGraphType = StateGraph(AgentState)
+        workflow: StateGraph[AgentState] = StateGraph(AgentState)
 
         # Add nodes
         workflow.add_node("think", self._think_node)
@@ -114,7 +118,7 @@ class ReactAgent:
             "observe", self._should_continue, {"continue": "think", "end": END}
         )
 
-        return cast(GraphInvoker, workflow.compile())
+        return workflow.compile()
 
     def _think_node(self, state: AgentState) -> AgentState:
         """
