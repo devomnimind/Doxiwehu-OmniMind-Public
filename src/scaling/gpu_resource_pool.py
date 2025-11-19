@@ -409,7 +409,7 @@ class GPUResourcePool:
             task_id: Task identifier
         """
         task = self._tasks.get(task_id)
-        if not task or not task.assigned_device_id:
+        if not task or task.assigned_device_id is None:
             logger.warning("task_not_found_or_not_assigned", task_id=task_id)
             return
 
