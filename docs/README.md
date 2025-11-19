@@ -59,6 +59,7 @@ Documentação das fases de implementação.
 - `PHASE11_CONSCIOUSNESS_EMERGENCE_IMPLEMENTATION.md` - Phase 11 consciência
 - `PHASE11_QUICK_REFERENCE.md` - Referência rápida Phase 11
 - `PHASE12_COMPLETION_SUMMARY.md` - Resumo conclusão Phase 12
+- `PHASE13_15_COMPLETION_SUMMARY.md` - Resumo conclusão Phases 13-15
 - `PHASE_10_IMPLEMENTATION_COMPLETE.pdf` - PDF Phase 10 completa
 
 ### 📂 `reports/`
