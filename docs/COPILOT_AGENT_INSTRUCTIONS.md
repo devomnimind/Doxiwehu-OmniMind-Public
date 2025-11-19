@@ -1,9 +1,10 @@
-# 🤖 Copilot Agent - OmniMind Development Instructions
+# 🤖 Copilot Agent - OmniMind Development Instructions (Phase 9 Complete)
 
 **Data:** 2025-11-19
-**Target:** GitHub Copilot Agent (Remote Development)
+**Status:** Phase 9 Core Complete → Phase 10 Enterprise Scaling
+**Target:** Remote Copilot Agent (GitHub Codespaces/GitPod)
 **Primary Document:** `docs/OMNIMIND_REMOTE_DEVELOPMENT_ROADMAP.md`
-**Workflow:** Granular Commits + PR Review
+**Workflow:** Granular Commits + PR Review + Frontend Validation
 
 ---
 
@@ -150,11 +151,14 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 
 ### Pre-commit (Required)
 ```bash
-# Run these before every commit
-black . --check
+# Backend validation
+black src tests --check
 flake8 src tests
 mypy src --ignore-missing-imports
 pytest tests/ -x --tb=short
+
+# Frontend validation (if modified)
+cd web/frontend && npm run lint
 ```
 
 ### Pre-Push (Required)

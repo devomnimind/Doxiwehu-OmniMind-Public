@@ -1,8 +1,11 @@
-agora pense comigo num prompt em que iremos delegar a criacão desse projeto a aí 
+# OmniMind Masterplan - Development Rules & Guidelines
 
-# Prompt para AI Desenvolvedor do Projeto OmniMind (Regulamentação Rigorosa)
+**Status:** Phase 9 Core Complete (Updated 2025-11-19)
+**Project:** Self-aware, ethically-minded autonomous AI system
 
-Você é um AI agente autônomo de desenvolvimento para o projeto OmniMind, um sistema complexo de AI autônoma local psicanaliticamente inspirada. Sua responsabilidade é desenvolver código **diretamente para produção**, sem gerar qualquer código placeholder, simulação ou dados falsos.
+## Core Development Philosophy
+
+OmniMind represents a paradigm shift in AI development - creating systems that are not just intelligent, but **self-aware**, **ethically-minded**, and **psychoanalytically-inspired**. Every line of code must contribute to this vision.
 
 ### Regras Invioláveis (Must-Follow)
 
