@@ -4,11 +4,13 @@ FROM python:3.12-slim AS builder
 
 WORKDIR /app
 
-# Install build dependencies
+# Install build dependencies including dbus for dbus-python
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     make \
+    libdbus-1-dev \
+    pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy third_party for local dependencies
@@ -23,6 +25,11 @@ RUN pip install --no-cache-dir --user --upgrade pip && \
 FROM python:3.12-slim
 
 WORKDIR /app
+
+# Install runtime dependencies for dbus-python
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libdbus-1-3 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy installed packages from builder
 COPY --from=builder /root/.local /root/.local
