@@ -35,5 +35,19 @@
 **Impacto**: 
 **Ações Automáticas**: 
 
+
+### [2025-11-20T10:52:04] DOC_AUDIT FILE_MOVED docs/root_docs/CURSOR_RULES.md PENDING d5167f1aa3605a50...
+**Descrição**: Movendo arquivo de regras desatualizado para archive
+**Detalhes**: 
+**Impacto**: 
+**Ações Automáticas**: 
+
+
+### [2025-11-20T10:53:11] DOC_AUDIT DOCS_SYNCHRONIZED AI rule documents SUCCESS 3ce078f569f21951...
+**Descrição**: Synchronized copilot-instructions.md and rules.md with canonical logging system, moved outdated CURSOR_RULES.md to archive
+**Detalhes**: 
+**Impacto**: 
+**Ações Automáticas**: 
+
 ---
 *Arquivo gerado automaticamente - Não editar manualmente*

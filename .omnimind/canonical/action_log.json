@@ -57,13 +57,37 @@
       "details": "",
       "impact": "",
       "automatic_actions": []
+    },
+    {
+      "timestamp": "2025-11-20T10:52:04.017782",
+      "ai_agent": "DOC_AUDIT",
+      "action_type": "FILE_MOVED",
+      "target": "docs/root_docs/CURSOR_RULES.md",
+      "result": "PENDING",
+      "hash": "d5167f1aa3605a5010340ca6ae5a9f5c66347ce4589ee0820c4bb6459b8a061d",
+      "description": "Movendo arquivo de regras desatualizado para archive",
+      "details": "",
+      "impact": "",
+      "automatic_actions": []
+    },
+    {
+      "timestamp": "2025-11-20T10:53:11.980645",
+      "ai_agent": "DOC_AUDIT",
+      "action_type": "DOCS_SYNCHRONIZED",
+      "target": "AI rule documents",
+      "result": "SUCCESS",
+      "hash": "3ce078f569f2195190971e0310b24537cd5d3401f0fd6fd1b0b2e1271f2be2e2",
+      "description": "Synchronized copilot-instructions.md and rules.md with canonical logging system, moved outdated CURSOR_RULES.md to archive",
+      "details": "",
+      "impact": "",
+      "automatic_actions": []
     }
   ],
   "pending_automatic_actions": [],
   "system_integrity": {
-    "last_validation": "2025-11-20T10:35:27.832198",
+    "last_validation": "2025-11-20T10:53:11.980645",
     "hash_chain_valid": true,
-    "total_records": 3,
+    "total_records": 5,
     "corruption_detected": false
   }
 }
