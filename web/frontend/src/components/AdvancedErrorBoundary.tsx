@@ -79,7 +79,7 @@ export class AdvancedErrorBoundary extends Component<
     };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<AdvancedErrorBoundaryState> {
+  static getDerivedStateFromError(_error: Error): Partial<AdvancedErrorBoundaryState> {
     // Convert error to ErrorReport in componentDidCatch
     return { error: null };
   }
@@ -162,7 +162,7 @@ export class AdvancedErrorBoundary extends Component<
     return ErrorCategory.UNKNOWN;
   }
 
-  determineErrorSeverity(error: Error, category: ErrorCategory): ErrorSeverity {
+  determineErrorSeverity(_error: Error, category: ErrorCategory): ErrorSeverity {
     // Critical errors that require immediate attention
     if (category === ErrorCategory.PERMISSION) {
       return ErrorSeverity.CRITICAL;
@@ -186,7 +186,7 @@ export class AdvancedErrorBoundary extends Component<
     return ErrorSeverity.MEDIUM;
   }
 
-  getUserFriendlyMessage(error: Error, category: ErrorCategory): string {
+  getUserFriendlyMessage(_error: Error, category: ErrorCategory): string {
     const messages: Record<ErrorCategory, string> = {
       [ErrorCategory.NETWORK]: 'Unable to connect to the server. Please check your internet connection and try again.',
       [ErrorCategory.API]: 'The server encountered an error. Please try again in a moment.',
@@ -200,7 +200,7 @@ export class AdvancedErrorBoundary extends Component<
     return messages[category] || messages[ErrorCategory.UNKNOWN];
   }
 
-  canRecoverFromError(error: Error, category: ErrorCategory): boolean {
+  canRecoverFromError(_error: Error, category: ErrorCategory): boolean {
     // Network and API errors are usually recoverable with retry
     if (category === ErrorCategory.NETWORK || category === ErrorCategory.API) {
       return true;

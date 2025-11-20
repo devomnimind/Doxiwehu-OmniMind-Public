@@ -8,7 +8,7 @@
  * - Shortcut help modal
  */
 
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export interface KeyboardShortcut {
   key: string;
@@ -51,7 +51,7 @@ class KeyboardShortcutManager {
     const target = event.target as HTMLElement;
     const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
     
-    for (const [id, shortcut] of this.shortcuts.entries()) {
+    for (const [, shortcut] of this.shortcuts.entries()) {
       if (shortcut.enabled === false) continue;
 
       // Skip shortcuts when in input fields unless explicitly allowed
@@ -79,7 +79,7 @@ class KeyboardShortcutManager {
   getShortcutsByCategory(): ShortcutCategory[] {
     const categorized = new Map<string, KeyboardShortcut[]>();
     
-    for (const [id, shortcut] of this.shortcuts.entries()) {
+    for (const [, shortcut] of this.shortcuts.entries()) {
       const category = shortcut.category || 'General';
       if (!categorized.has(category)) {
         categorized.set(category, []);
