@@ -1,6 +1,5 @@
 """Tests for Root Cause Analysis engine."""
 
-
 from src.metacognition.root_cause_analysis import (
     ComponentType,
     DependencyGraph,

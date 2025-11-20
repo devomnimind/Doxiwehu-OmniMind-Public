@@ -1,6 +1,5 @@
 """Tests for proactive issue prediction engine."""
 
-
 from src.metacognition.issue_prediction import (
     IssuePredictionEngine,
     MetricType,
@@ -284,7 +283,6 @@ class TestIssuePredictionEngine:
         # Generate predictions
         for i in range(30):
             engine.update_metric(MetricType.CPU_USAGE, 60.0 + i * 1.0)
-
 
         engine.clear_predictions()
 

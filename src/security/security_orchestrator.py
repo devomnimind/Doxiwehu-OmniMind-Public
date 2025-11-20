@@ -252,7 +252,7 @@ class SecurityOrchestrator:
         try:
             # Monitor processes - SecurityAgent uses async monitoring
             # suspicious_process = await self.security_agent._monitor_processes()  # Not available synchronously
-    
+
             # Monitor network connections - SecurityAgent uses async monitoring
             # suspicious_connection = await self.security_agent._monitor_network()  # Not available synchronously
             pass
@@ -393,7 +393,9 @@ class SecurityOrchestrator:
         risk += min(25, len(network_anomalies) * 5)
 
         # Web vulnerabilities (0-30 points)
-        critical_web = sum(1 for v in web_vulnerabilities if v.get("severity") == "CRITICAL")
+        critical_web = sum(
+            1 for v in web_vulnerabilities if v.get("severity") == "CRITICAL"
+        )
         high_web = sum(1 for v in web_vulnerabilities if v.get("severity") == "HIGH")
         risk += min(30, critical_web * 10 + high_web * 5)
 
@@ -429,9 +431,13 @@ class SecurityOrchestrator:
             )
 
         # Web recommendations
-        critical_web = [v for v in web_vulnerabilities if v.get("severity") == "CRITICAL"]
+        critical_web = [
+            v for v in web_vulnerabilities if v.get("severity") == "CRITICAL"
+        ]
         if critical_web:
-            recommendations.append(f"URGENT: Fix {len(critical_web)} critical web vulnerabilities")
+            recommendations.append(
+                f"URGENT: Fix {len(critical_web)} critical web vulnerabilities"
+            )
 
         # System recommendations
         if security_events:

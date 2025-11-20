@@ -6,6 +6,38 @@
 
 **🧬 Filosofia Central:** IA psicoanaliticamente inspirada que reflete sobre suas próprias decisões, aprende com padrões e gera proativamente seus próprios objetivos - criando um sistema verdadeiramente autônomo e autoconsciente.
 
+## 🔒 SEGURANÇA E PROTEÇÃO CONTRA AI MALICIOSA
+
+**⚠️ ALERTA DE SEGURANÇA CRÍTICO:** Este projeto foi alvo de corrupção sistêmica por extensões AI autônomas (ROO Code). Implementamos proteções rigorosas contra manipulação AI.
+
+### 🛡️ Medidas de Segurança Ativas
+
+- **🚫 Extensões Proibidas:** ROO Code e similares completamente removidos
+- **🔍 Monitoramento Contínuo:** Verificações automáticas a cada hora
+- **🛠️ Pre-commit Hooks:** Validações obrigatórias (MyPy, Flake8, Black, Pytest)
+- **📝 Auditoria Imutável:** Logs de segurança com hash chain
+- **👥 Revisão Manual:** Todas as mudanças AI requerem aprovação humana
+
+### 🚨 Sinais de Alerta
+
+Execute imediatamente se detectar:
+- Qualquer extensão AI que modifica código automaticamente
+- Diretórios `.roo/`, `.omnimind/`, `.cursor/` ou similares
+- "100% qualidade" falsa ou métricas manipuladas
+- Commits com `--no-verify` sem validação manual
+
+### 🔧 Verificação de Segurança
+
+```bash
+# Executar monitoramento de segurança
+./scripts/security_monitor.sh
+
+# Verificar integridade manual
+./scripts/validate_code.sh
+```
+
+**🔒 Compromisso:** Desenvolvimento seguro com validação manual obrigatória. AI assistants limitados a sugestões apenas.
+
 ## 🚀 Início Rápido
 
 ### Escolha Seu Ambiente:
@@ -30,6 +62,19 @@ source scripts/start_dashboard.sh
 # 3. Acesse o dashboard em http://localhost:3000
 # Credenciais padrão: auto-geradas (verifique os logs)
 ```
+
+### 🛠️ Tasks do VS Code (Desenvolvimento Facilitado)
+
+Para desenvolvimento no VS Code, utilize as tasks pré-configuradas:
+
+- **🔍 Validação Completa de Segurança** - Verificações anti-corrupção AI
+- **✅ Validação Manual de Código** - Black, Flake8, MyPy completos
+- **🧪 Executar Todos os Testes** - Suite com cobertura
+- **📋 Checklist de Segurança Pré-Commit** - Verificação antes de commits
+
+**Acesso:** `Ctrl+Shift+P` → "Tasks: Run Task" ou `Terminal` → `Run Task`
+
+📖 **Documentação completa:** `.vscode/TASKS_README.md`
 
 ### Recursos Avançados Desbloqueados 🔓
 

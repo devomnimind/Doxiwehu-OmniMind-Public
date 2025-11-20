@@ -230,7 +230,6 @@ class TestTwoPhaseCommitCoordinator:
         """Test getting active transactions."""
         coordinator = TwoPhaseCommitCoordinator()
 
-
         active = coordinator.get_active_transactions()
 
         assert len(active) == 2

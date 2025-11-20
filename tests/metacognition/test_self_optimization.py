@@ -1,5 +1,7 @@
 """Tests for Self-Optimization Engine."""
 
+import pytest
+from datetime import datetime
 
 from src.metacognition.self_optimization import (
     ABTest,
@@ -105,6 +107,7 @@ class TestABTest:
         control = Configuration("control", "Control", {"threads": 10})
         treatment = Configuration("treatment", "Treatment", {"threads": 20})
 
+        test = ABTest(
             test_id="test-1",
             name="Thread count test",
             control_config=control,
@@ -120,6 +123,7 @@ class TestABTest:
         control = Configuration("control", "Control", {"threads": 10})
         treatment = Configuration("treatment", "Treatment", {"threads": 20})
 
+        test = ABTest(
             test_id="test-1",
             name="Test",
             control_config=control,
@@ -161,6 +165,7 @@ class TestABTest:
         control = Configuration("control", "Control", {"threads": 10})
         treatment = Configuration("treatment", "Treatment", {"threads": 20})
 
+        test = ABTest(
             test_id="test-1",
             name="Test",
             control_config=control,
@@ -177,6 +182,7 @@ class TestABTest:
         control = Configuration("control", "Control", {"threads": 10})
         treatment = Configuration("treatment", "Treatment", {"threads": 20})
 
+        test = ABTest(
             test_id="test-1",
             name="Test",
             control_config=control,
@@ -242,6 +248,8 @@ class TestSelfOptimizationEngine:
         engine.set_baseline_configuration(baseline)
 
         treatment = Configuration("treatment", "Treatment", {"threads": 20})
+
+        test = engine.create_ab_test("test-1", "Thread test", treatment)
 
         assert test.test_id == "test-1"
         assert test.control_config == baseline

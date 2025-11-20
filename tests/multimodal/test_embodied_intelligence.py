@@ -1,6 +1,5 @@
 """Tests for Embodied Intelligence (Phase 12.4)."""
 
-
 from src.multimodal.embodied_intelligence import (
     Action,
     ActionPlan,
