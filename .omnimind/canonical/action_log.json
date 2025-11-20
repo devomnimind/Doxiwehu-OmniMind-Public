@@ -81,13 +81,25 @@
       "details": "",
       "impact": "",
       "automatic_actions": []
+    },
+    {
+      "timestamp": "2025-11-20T10:54:25.602301",
+      "ai_agent": "DOC_AUDIT",
+      "action_type": "FILE_ARCHIVED",
+      "target": "CURSOR_RULES.md",
+      "result": "SUCCESS",
+      "hash": "d47930a1b5dbfed1badfcc8b378cfb443f96197e781a3c1eb8b2a8e371076379",
+      "description": "Arquivo de regras desatualizado movido para HD externo /run/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_archives/",
+      "details": "",
+      "impact": "",
+      "automatic_actions": []
     }
   ],
   "pending_automatic_actions": [],
   "system_integrity": {
-    "last_validation": "2025-11-20T10:53:11.980645",
+    "last_validation": "2025-11-20T10:54:25.602301",
     "hash_chain_valid": true,
-    "total_records": 5,
+    "total_records": 6,
     "corruption_detected": false
   }
 }

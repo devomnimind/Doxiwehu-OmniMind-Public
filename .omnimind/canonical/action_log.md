@@ -49,5 +49,12 @@
 **Impacto**: 
 **Ações Automáticas**: 
 
+
+### [2025-11-20T10:54:25] DOC_AUDIT FILE_ARCHIVED CURSOR_RULES.md SUCCESS d47930a1b5dbfed1...
+**Descrição**: Arquivo de regras desatualizado movido para HD externo /run/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_archives/
+**Detalhes**: 
+**Impacto**: 
+**Ações Automáticas**: 
+
 ---
 *Arquivo gerado automaticamente - Não editar manualmente*
