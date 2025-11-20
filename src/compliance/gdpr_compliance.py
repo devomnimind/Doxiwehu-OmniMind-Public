@@ -157,7 +157,7 @@ class DataProcessingRecord:
         self.data_categories = data_categories
         self.data_controller = data_controller
         self.timestamp = datetime.now(UTC)
-        self.processed_data_hash = None  # Will be set when data is processed
+        self.processed_data_hash: Optional[str] = None  # Will be set when data is processed
 
     def record_processing(self, data_hash: str) -> None:
         """Record that data processing occurred"""
@@ -173,7 +173,7 @@ class DataProcessingRecord:
 class GDPRController:
     """Main GDPR compliance controller"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.data_subjects: Dict[str, DataSubject] = {}
         self.processing_records: List[DataProcessingRecord] = []
         self.retention_schedule: Dict[DataCategory, RetentionPeriod] = {
@@ -251,7 +251,7 @@ class GDPRController:
         return True
 
     def handle_data_subject_rights(
-        self, subject_id: str, right: str, **kwargs
+        self, subject_id: str, right: str, **kwargs: Any
     ) -> Dict[str, Any]:
         """Handle data subject rights requests (GDPR Article 15-22)"""
 

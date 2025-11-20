@@ -32,7 +32,7 @@ async def test_self_healing_metrics_and_remediation() -> None:
             "id": "42",
         }
 
-    async def remediation(_: dict) -> dict:
+    async def remediation(_: dict[str, Any]) -> dict:
         return {"success": True, "description": "fixed"}
 
     loop.register_monitor(monitor)
@@ -86,7 +86,7 @@ async def test_self_healing_remediation_failure() -> None:
             "description": "Test issue",
         }
 
-    async def broken_remediation(_: dict) -> dict:
+    async def broken_remediation(_: dict[str, Any]) -> dict:
         raise RuntimeError("remediation failed")
 
     loop.register_monitor(monitor)
@@ -230,10 +230,10 @@ async def test_multiple_monitors_and_remediations() -> None:
             "description": "Issue 2",
         }
 
-    async def remediation1(_: dict) -> dict:
+    async def remediation1(_: dict[str, Any]) -> dict:
         return {"success": True, "description": "Fixed issue 1"}
 
-    async def remediation2(_: dict) -> dict:
+    async def remediation2(_: dict[str, Any]) -> dict:
         return {"success": True, "description": "Fixed issue 2"}
 
     loop.register_monitor(monitor1)

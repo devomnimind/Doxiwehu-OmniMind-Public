@@ -17,7 +17,7 @@ async def test_event_bus_delivers_messages() -> None:
         received: list[dict] = []
         received_event = asyncio.Event()
 
-        async def handler(payload: dict) -> None:
+        async def handler(payload: dict[str, Any]) -> None:
             received.append(payload)
             received_event.set()
 

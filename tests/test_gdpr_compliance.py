@@ -15,7 +15,7 @@ from src.compliance.gdpr_compliance import (
 class TestGDPRCompliance:
     """Test GDPR compliance functionality"""
 
-    def test_register_data_subject(self):
+    def test_register_data_subject(self) -> None:
         """Test data subject registration"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123", "user@example.com")
@@ -25,7 +25,7 @@ class TestGDPRCompliance:
         assert subject.consents == {}
         assert len(subject.data_processing_records) == 0
 
-    def test_grant_consent(self):
+    def test_grant_consent(self) -> None:
         """Test consent granting"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123")
@@ -40,7 +40,7 @@ class TestGDPRCompliance:
         assert "behavioral" in consent["data_categories"]
         assert consent["status"] == ConsentStatus.GRANTED.value
 
-    def test_has_consent(self):
+    def test_has_consent(self) -> None:
         """Test consent validation"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123")
@@ -55,7 +55,7 @@ class TestGDPRCompliance:
         # Check invalid consent
         assert not subject.has_consent("marketing", DataCategory.BEHAVIORAL)
 
-    def test_withdraw_consent(self):
+    def test_withdraw_consent(self) -> None:
         """Test consent withdrawal"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123")
@@ -69,7 +69,7 @@ class TestGDPRCompliance:
         assert result is True
         assert subject.consents[consent_id]["status"] == ConsentStatus.WITHDRAWN.value
 
-    def test_data_processing(self):
+    def test_data_processing(self) -> None:
         """Test data processing with consent"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123")
@@ -97,7 +97,7 @@ class TestGDPRCompliance:
         assert len(subject.data_processing_records) == 1
         assert len(controller.processing_records) == 1
 
-    def test_data_processing_without_consent(self):
+    def test_data_processing_without_consent(self) -> None:
         """Test data processing without consent fails"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123")
@@ -113,7 +113,7 @@ class TestGDPRCompliance:
 
         assert result is False
 
-    def test_right_of_access(self):
+    def test_right_of_access(self) -> None:
         """Test GDPR right of access"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123", "user@example.com")
@@ -137,7 +137,7 @@ class TestGDPRCompliance:
         assert "consents" in response["data"]
         assert "processing_records" in response["data"]
 
-    def test_right_to_erasure(self):
+    def test_right_to_erasure(self) -> None:
         """Test GDPR right to erasure"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123", "user@example.com")
@@ -163,7 +163,7 @@ class TestGDPRCompliance:
         assert subject.consents == {}  # Consents removed
         assert subject.data_processing_records == []  # Processing records removed
 
-    def test_data_retention_enforcement(self):
+    def test_data_retention_enforcement(self) -> None:
         """Test data retention policy enforcement"""
         controller = GDPRController()
         subject = controller.register_data_subject("user123")

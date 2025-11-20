@@ -29,7 +29,7 @@ class FakeDoc2Agent:
     def get_aggregate_metrics(self) -> dict:
         total = len(self.last_results)
         failure = sum(1 for entry in self.last_results if entry["result"].get("error"))
-        tools: dict[str, dict] = {}
+        tools: dict[str, Any][str, dict] = {}
         for entry in self.last_results:
             tool = entry["tool"]
             if tool not in tools:

@@ -63,7 +63,7 @@ async def test_doc2agent_tracks_health_and_alerts() -> None:
 async def test_doc2agent_custom_invoker_metrics_called() -> None:
     captured_metrics: list[dict] = []
 
-    async def failing_invoker(tool: str, params: dict) -> dict:
+    async def failing_invoker(tool: str, params: dict[str, Any]) -> dict:
         raise RuntimeError("invoker broken")
 
     plan = [

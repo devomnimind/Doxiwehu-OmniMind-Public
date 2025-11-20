@@ -15,7 +15,7 @@ from src.decision_making.decision_trees import (
 class TestDecisionNode:
     """Tests for DecisionNode class."""
 
-    def test_create_leaf_node(self):
+    def test_create_leaf_node(self) -> None:
         """Test creating a leaf node."""
         node = DecisionNode(
             node_id="leaf1",
@@ -26,7 +26,7 @@ class TestDecisionNode:
         assert node.is_leaf()
         assert node.action == "approve"
 
-    def test_create_internal_node(self):
+    def test_create_internal_node(self) -> None:
         """Test creating an internal node."""
         node = DecisionNode(
             node_id="internal1",
@@ -36,7 +36,7 @@ class TestDecisionNode:
         assert not node.is_leaf()
         assert node.action is None
 
-    def test_update_statistics(self):
+    def test_update_statistics(self) -> None:
         """Test updating node statistics."""
         node = DecisionNode(
             node_id="test",
@@ -61,7 +61,7 @@ class TestDecisionNode:
         assert node.success_count == 1
         assert node.confidence == 0.5
 
-    def test_get_success_rate(self):
+    def test_get_success_rate(self) -> None:
         """Test success rate calculation."""
         node = DecisionNode(
             node_id="test",
@@ -82,7 +82,7 @@ class TestDecisionNode:
 class TestDecisionOutcome:
     """Tests for DecisionOutcome class."""
 
-    def test_create_outcome(self):
+    def test_create_outcome(self) -> None:
         """Test creating a decision outcome."""
         outcome = DecisionOutcome(
             action="test_action",
@@ -95,7 +95,7 @@ class TestDecisionOutcome:
         assert isinstance(outcome.path, list)
         assert isinstance(outcome.metadata, dict)
 
-    def test_confidence_validation(self):
+    def test_confidence_validation(self) -> None:
         """Test confidence validation."""
         # Valid confidence
         outcome = DecisionOutcome(action="test", confidence=0.5, explanation="")
@@ -113,7 +113,7 @@ class TestDecisionOutcome:
 class TestDecisionTreeBuilder:
     """Tests for DecisionTreeBuilder class."""
 
-    def test_build_simple_tree(self):
+    def test_build_simple_tree(self) -> None:
         """Test building a simple decision tree."""
         builder = DecisionTreeBuilder(name="simple_tree")
 
@@ -148,7 +148,7 @@ class TestDecisionTreeBuilder:
         assert tree.root.node_id == "root"
         assert len(tree.root.children) == 2
 
-    def test_add_edge_validation(self):
+    def test_add_edge_validation(self) -> None:
         """Test edge validation."""
         builder = DecisionTreeBuilder()
         builder.add_node(
@@ -274,7 +274,7 @@ class TestDecisionTree:
 class TestDecisionCriteria:
     """Tests for different decision criteria."""
 
-    def test_category_criterion(self):
+    def test_category_criterion(self) -> None:
         """Test category-based criterion."""
         builder = DecisionTreeBuilder(name="category_tree")
 
@@ -310,7 +310,7 @@ class TestDecisionCriteria:
         outcome = tree.decide({"category": "Z"})
         assert outcome.action == "action_unknown"
 
-    def test_ethical_criterion(self):
+    def test_ethical_criterion(self) -> None:
         """Test ethical-based criterion."""
         builder = DecisionTreeBuilder(name="ethical_tree")
 
@@ -349,7 +349,7 @@ class TestDecisionCriteria:
 class TestAdaptiveLearning:
     """Tests for adaptive learning capabilities."""
 
-    def test_adaptation_enabled(self):
+    def test_adaptation_enabled(self) -> None:
         """Test that adaptation updates node statistics."""
         builder = DecisionTreeBuilder()
         builder.add_node(
@@ -380,7 +380,7 @@ class TestAdaptiveLearning:
         # Confidence may change based on statistics
         assert outcome2.confidence >= 0
 
-    def test_adaptation_disabled(self):
+    def test_adaptation_disabled(self) -> None:
         """Test that adaptation can be disabled."""
         builder = DecisionTreeBuilder()
         builder.add_node(

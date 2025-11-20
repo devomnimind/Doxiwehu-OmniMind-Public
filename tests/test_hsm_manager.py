@@ -7,14 +7,14 @@ from src.security.hsm_manager import HSMManager, KeyMetadata
 class TestHSMManager:
     """Test HSM Manager functionality"""
 
-    def test_hsm_initialization(self):
+    def test_hsm_initialization(self) -> None:
         """Test HSM manager initialization"""
         hsm = HSMManager()
         assert hsm.master_key is not None
         assert isinstance(hsm.keys, dict)
         assert hsm.key_counter == 0
 
-    def test_generate_key_rsa(self):
+    def test_generate_key_rsa(self) -> None:
         """Test RSA key generation"""
         hsm = HSMManager()
         key_id = hsm.generate_key("RSA", 2048)
@@ -32,7 +32,7 @@ class TestHSMManager:
         assert metadata.status == "active"
         assert metadata.usage_count == 0
 
-    def test_generate_key_aes(self):
+    def test_generate_key_aes(self) -> None:
         """Test AES key generation"""
         hsm = HSMManager()
         key_id = hsm.generate_key("AES", 256)
@@ -42,14 +42,14 @@ class TestHSMManager:
         assert key_data["algorithm"] == "AES"
         assert key_data["key_size"] == 256
 
-    def test_generate_key_invalid_algorithm(self):
+    def test_generate_key_invalid_algorithm(self) -> None:
         """Test invalid algorithm rejection"""
         hsm = HSMManager()
 
         with pytest.raises(ValueError, match="Unsupported algorithm"):
             hsm.generate_key("INVALID", 256)
 
-    def test_sign_and_verify_data(self):
+    def test_sign_and_verify_data(self) -> None:
         """Test data signing and verification"""
         hsm = HSMManager()
         key_id = hsm.generate_key("RSA", 2048)
@@ -68,7 +68,7 @@ class TestHSMManager:
         is_valid_wrong = hsm.verify_signature(key_id, b"Wrong data", signature)
         assert is_valid_wrong is False
 
-    def test_sign_usage_limits(self):
+    def test_sign_usage_limits(self) -> None:
         """Test key usage limits"""
         hsm = HSMManager()
         key_id = hsm.generate_key("RSA", 2048, max_usage=2)
@@ -81,7 +81,7 @@ class TestHSMManager:
         with pytest.raises(ValueError, match="usage limit exceeded"):
             hsm.sign_data(key_id, b"data3")
 
-    def test_encrypt_decrypt_data(self):
+    def test_encrypt_decrypt_data(self) -> None:
         """Test data encryption and decryption"""
         hsm = HSMManager()
         key_id = hsm.generate_key("AES", 256)
@@ -95,7 +95,7 @@ class TestHSMManager:
         decrypted = hsm.decrypt_data(key_id, encrypted)
         assert decrypted == test_data
 
-    def test_get_key_info(self):
+    def test_get_key_info(self) -> None:
         """Test key information retrieval"""
         hsm = HSMManager()
         key_id = hsm.generate_key("RSA", 2048)
@@ -109,7 +109,7 @@ class TestHSMManager:
         info_none = hsm.get_key_info("nonexistent")
         assert info_none is None
 
-    def test_list_keys(self):
+    def test_list_keys(self) -> None:
         """Test key listing"""
         hsm = HSMManager()
 
@@ -125,7 +125,7 @@ class TestHSMManager:
         assert keys[key1].algorithm == "RSA"
         assert keys[key2].algorithm == "AES"
 
-    def test_destroy_key(self):
+    def test_destroy_key(self) -> None:
         """Test key destruction"""
         hsm = HSMManager()
         key_id = hsm.generate_key("RSA", 2048)
@@ -141,7 +141,7 @@ class TestHSMManager:
         result_none = hsm.destroy_key("nonexistent")
         assert result_none is False
 
-    def test_hsm_status(self):
+    def test_hsm_status(self) -> None:
         """Test HSM status reporting"""
         hsm = HSMManager()
 
@@ -158,7 +158,7 @@ class TestHSMManager:
         assert "RSA" in status["supported_algorithms"]
         assert "AES" in status["supported_algorithms"]
 
-    def test_key_backup_restore(self):
+    def test_key_backup_restore(self) -> None:
         """Test key backup and restore"""
         import tempfile
         import os

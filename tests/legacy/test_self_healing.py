@@ -16,7 +16,7 @@ async def test_self_healing_metrics_and_remediation() -> None:
     async def monitor() -> dict:
         return {"status": "error", "type": "monitor_issue", "id": "42"}
 
-    async def remediation(_: dict) -> dict:
+    async def remediation(_: dict[str, Any]) -> dict:
         return {"success": True, "description": "fixed"}
 
     loop.register_monitor(monitor)

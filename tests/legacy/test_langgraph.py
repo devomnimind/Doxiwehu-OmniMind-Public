@@ -13,7 +13,7 @@ class MemoryStub:
         self.queries.append(task)
         return [{"id": "cached", "document": "doc", "metadata": {}}]
 
-    async def store_episode(self, payload: dict) -> None:
+    async def store_episode(self, payload: dict[str, Any]) -> None:
         self.stored.append(payload)
 
 

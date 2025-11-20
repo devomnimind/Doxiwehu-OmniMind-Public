@@ -31,7 +31,7 @@ from src.scaling.multi_level_cache import (
 class TestGPUResourcePool:
     """Tests for GPU resource pool."""
 
-    def test_gpu_device_creation(self):
+    def test_gpu_device_creation(self) -> None:
         """Test GPU device creation."""
         gpu = GPUDevice(
             device_id=0,
@@ -43,7 +43,7 @@ class TestGPUResourcePool:
         assert gpu.is_available()
         assert gpu.has_capacity(2048)
 
-    def test_gpu_pool_config(self):
+    def test_gpu_pool_config(self) -> None:
         """Test GPU pool configuration."""
         config = GPUPoolConfig(
             auto_discover_gpus=False,
@@ -52,13 +52,13 @@ class TestGPUResourcePool:
         assert config.enable_load_balancing is True
         assert config.auto_discover_gpus is False
 
-    def test_pool_initialization(self):
+    def test_pool_initialization(self) -> None:
         """Test pool initialization."""
         config = GPUPoolConfig(auto_discover_gpus=False)
         pool = GPUResourcePool(config)
         assert pool.get_pool_stats()["total_gpus"] == 0
 
-    def test_add_gpu(self):
+    def test_add_gpu(self) -> None:
         """Test adding GPU to pool."""
         config = GPUPoolConfig(auto_discover_gpus=False)
         pool = GPUResourcePool(config)
@@ -74,7 +74,7 @@ class TestGPUResourcePool:
         assert pool.get_pool_stats()["total_gpus"] == 1
         assert len(pool.get_available_gpus()) == 1
 
-    def test_allocate_gpu(self):
+    def test_allocate_gpu(self) -> None:
         """Test GPU allocation."""
         config = GPUPoolConfig(auto_discover_gpus=False)
         pool = GPUResourcePool(config)
@@ -94,7 +94,7 @@ class TestGPUResourcePool:
         assert task.is_assigned()
         assert len(pool.get_available_gpus()) == 0
 
-    def test_release_gpu(self):
+    def test_release_gpu(self) -> None:
         """Test GPU release."""
         config = GPUPoolConfig(auto_discover_gpus=False)
         pool = GPUResourcePool(config)
@@ -114,7 +114,7 @@ class TestGPUResourcePool:
         assert len(pool.get_available_gpus()) == 1
         assert task.is_completed()
 
-    def test_gpu_load_balancing(self):
+    def test_gpu_load_balancing(self) -> None:
         """Test GPU load balancing."""
         config = GPUPoolConfig(
             auto_discover_gpus=False,
@@ -138,7 +138,7 @@ class TestGPUResourcePool:
         # Should allocate to GPU with lower utilization (GPU2)
         assert device_id == 1
 
-    def test_gpu_task_queueing(self):
+    def test_gpu_task_queueing(self) -> None:
         """Test task queueing when no GPU available."""
         config = GPUPoolConfig(auto_discover_gpus=False)
         pool = GPUResourcePool(config)
@@ -160,7 +160,7 @@ class TestGPUResourcePool:
         stats = pool.get_pool_stats()
         assert stats["queued_tasks"] == 1
 
-    def test_update_gpu_stats(self):
+    def test_update_gpu_stats(self) -> None:
         """Test updating GPU statistics."""
         config = GPUPoolConfig(auto_discover_gpus=False)
         pool = GPUResourcePool(config)
@@ -178,7 +178,7 @@ class TestGPUResourcePool:
 class TestDatabaseConnectionPool:
     """Tests for database connection pool."""
 
-    def test_pool_config_creation(self):
+    def test_pool_config_creation(self) -> None:
         """Test pool configuration."""
         config = PoolConfig(
             pool_size=10,
@@ -187,7 +187,7 @@ class TestDatabaseConnectionPool:
         assert config.pool_size == 10
         assert config.max_overflow == 5
 
-    def test_pool_initialization(self):
+    def test_pool_initialization(self) -> None:
         """Test pool initialization."""
         config = PoolConfig(pool_size=3)
         pool = DatabaseConnectionPool("postgresql://test", config)
@@ -195,7 +195,7 @@ class TestDatabaseConnectionPool:
         stats = pool.get_stats()
         assert stats["pool_size"] <= 3
 
-    def test_get_connection(self):
+    def test_get_connection(self) -> None:
         """Test getting connection from pool."""
         config = PoolConfig(pool_size=2)
         pool = DatabaseConnectionPool("postgresql://test", config)
@@ -203,7 +203,7 @@ class TestDatabaseConnectionPool:
         with pool.get_connection() as conn:
             assert conn is not None
 
-    def test_connection_reuse(self):
+    def test_connection_reuse(self) -> None:
         """Test connection reuse."""
         config = PoolConfig(pool_size=2)
         pool = DatabaseConnectionPool("postgresql://test", config)
@@ -215,7 +215,7 @@ class TestDatabaseConnectionPool:
             # Should reuse the same connection
             assert conn2.conn_id == conn1_id
 
-    def test_connection_overflow(self):
+    def test_connection_overflow(self) -> None:
         """Test connection overflow."""
         config = PoolConfig(pool_size=1, max_overflow=2)
         pool = DatabaseConnectionPool("postgresql://test", config)
@@ -235,7 +235,7 @@ class TestDatabaseConnectionPool:
         for conn in conns:
             conn.__exit__(None, None, None)
 
-    def test_connection_stats(self):
+    def test_connection_stats(self) -> None:
         """Test connection pool statistics."""
         config = PoolConfig(pool_size=2)
         pool = DatabaseConnectionPool("postgresql://test", config)
@@ -244,7 +244,7 @@ class TestDatabaseConnectionPool:
             stats = pool.get_stats()
             assert stats["total_created"] > 0
 
-    def test_close_all_connections(self):
+    def test_close_all_connections(self) -> None:
         """Test closing all connections."""
         config = PoolConfig(pool_size=2)
         pool = DatabaseConnectionPool("postgresql://test", config)
@@ -258,7 +258,7 @@ class TestDatabaseConnectionPool:
 class TestMultiLevelCache:
     """Tests for multi-level caching."""
 
-    def test_cache_config_creation(self):
+    def test_cache_config_creation(self) -> None:
         """Test cache configuration."""
         config = CacheConfig(
             max_size_bytes=1024 * 1024,
@@ -267,13 +267,13 @@ class TestMultiLevelCache:
         assert config.max_size_bytes == 1024 * 1024
         assert config.eviction_policy == EvictionPolicy.LRU
 
-    def test_cache_layer_creation(self):
+    def test_cache_layer_creation(self) -> None:
         """Test cache layer creation."""
         config = CacheConfig()
         layer = CacheLayer(CacheLevel.L1, config)
         assert layer.level == CacheLevel.L1
 
-    def test_cache_set_get(self):
+    def test_cache_set_get(self) -> None:
         """Test basic cache set/get."""
         config = CacheConfig()
         layer = CacheLayer(CacheLevel.L1, config)
@@ -283,7 +283,7 @@ class TestMultiLevelCache:
 
         assert value == "value1"
 
-    def test_cache_miss(self):
+    def test_cache_miss(self) -> None:
         """Test cache miss."""
         config = CacheConfig()
         layer = CacheLayer(CacheLevel.L1, config)
@@ -291,7 +291,7 @@ class TestMultiLevelCache:
         value = layer.get("nonexistent")
         assert value is None
 
-    def test_cache_ttl_expiration(self):
+    def test_cache_ttl_expiration(self) -> None:
         """Test TTL expiration."""
         config = CacheConfig(default_ttl_seconds=1)
         layer = CacheLayer(CacheLevel.L1, config)
@@ -302,7 +302,7 @@ class TestMultiLevelCache:
         value = layer.get("key1")
         assert value is None  # Should be expired
 
-    def test_cache_eviction_lru(self):
+    def test_cache_eviction_lru(self) -> None:
         """Test LRU eviction."""
         config = CacheConfig(
             max_entries=2,
@@ -318,7 +318,7 @@ class TestMultiLevelCache:
         assert layer.get("key2") is not None
         assert layer.get("key3") is not None
 
-    def test_cache_stats(self):
+    def test_cache_stats(self) -> None:
         """Test cache statistics."""
         config = CacheConfig()
         layer = CacheLayer(CacheLevel.L1, config)
@@ -332,7 +332,7 @@ class TestMultiLevelCache:
         assert stats.misses == 1
         assert stats.hit_rate() == 0.5
 
-    def test_multi_level_cache_creation(self):
+    def test_multi_level_cache_creation(self) -> None:
         """Test multi-level cache creation."""
         l1_config = CacheConfig(max_size_bytes=1024)
         l2_config = CacheConfig(max_size_bytes=10240)
@@ -341,7 +341,7 @@ class TestMultiLevelCache:
         cache = MultiLevelCache(l1_config, l2_config, l3_config)
         assert cache is not None
 
-    def test_multi_level_cache_set_get(self):
+    def test_multi_level_cache_set_get(self) -> None:
         """Test multi-level cache set/get."""
         l1_config = CacheConfig()
         l2_config = CacheConfig()
@@ -354,7 +354,7 @@ class TestMultiLevelCache:
 
         assert value == "value1"
 
-    def test_cache_promotion(self):
+    def test_cache_promotion(self) -> None:
         """Test cache promotion from L2 to L1."""
         l1_config = CacheConfig()
         l2_config = CacheConfig()
@@ -371,7 +371,7 @@ class TestMultiLevelCache:
         assert value == "value1"
         assert cache._l1.get("key1") == "value1"
 
-    def test_cache_delete_all_levels(self):
+    def test_cache_delete_all_levels(self) -> None:
         """Test deletion from all cache levels."""
         l1_config = CacheConfig()
         l2_config = CacheConfig()
@@ -386,7 +386,7 @@ class TestMultiLevelCache:
         assert cache._l2.get("key1") is None
         assert cache._l3.get("key1") is None
 
-    def test_cache_decorator(self):
+    def test_cache_decorator(self) -> None:
         """Test cache decorator."""
         l1_config = CacheConfig()
         l2_config = CacheConfig()
@@ -409,7 +409,7 @@ class TestMultiLevelCache:
         assert result2 == 10
         assert call_count == 1  # Should only call once, second is cached
 
-    def test_cache_clear(self):
+    def test_cache_clear(self) -> None:
         """Test clearing all cache levels."""
         l1_config = CacheConfig()
         l2_config = CacheConfig()
@@ -422,7 +422,7 @@ class TestMultiLevelCache:
 
         assert cache.get("key1") is None
 
-    def test_cache_stats_multi_level(self):
+    def test_cache_stats_multi_level(self) -> None:
         """Test statistics across all cache levels."""
         l1_config = CacheConfig()
         l2_config = CacheConfig()

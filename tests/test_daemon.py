@@ -35,7 +35,7 @@ class TestSystemMetrics:
         )
         assert metrics.is_idle() is True
 
-    def test_not_idle_when_high_cpu(self):
+    def test_not_idle_when_high_cpu(self) -> None:
         """System should not be idle when CPU is high"""
         metrics = SystemMetrics(
             cpu_percent=80.0,
@@ -46,7 +46,7 @@ class TestSystemMetrics:
         )
         assert metrics.is_idle() is False
 
-    def test_not_idle_when_user_active(self):
+    def test_not_idle_when_user_active(self) -> None:
         """System should not be idle when user is active"""
         metrics = SystemMetrics(
             cpu_percent=15.0,
@@ -57,7 +57,7 @@ class TestSystemMetrics:
         )
         assert metrics.is_idle() is False
 
-    def test_is_sleep_time_during_night(self):
+    def test_is_sleep_time_during_night(self) -> None:
         """Should detect sleep time during night hours"""
         # Create metrics with a timestamp during sleep hours (2 AM)
         sleep_time = datetime.now().replace(hour=2, minute=0, second=0)
@@ -71,7 +71,7 @@ class TestSystemMetrics:
         )
         assert metrics.is_sleep_time() is True
 
-    def test_not_sleep_time_during_day(self):
+    def test_not_sleep_time_during_day(self) -> None:
         """Should not detect sleep time during day hours"""
         day_time = datetime.now().replace(hour=14, minute=0, second=0)
         metrics = SystemMetrics(
@@ -88,7 +88,7 @@ class TestSystemMetrics:
 class TestDaemonTask:
     """Test DaemonTask functionality"""
 
-    def test_task_creation(self):
+    def test_task_creation(self) -> None:
         """Should create a task with correct properties"""
 
         def sample_fn():
@@ -108,7 +108,7 @@ class TestDaemonTask:
         assert task.execution_count == 0
         assert task.last_execution is None
 
-    def test_task_with_schedule(self):
+    def test_task_with_schedule(self) -> None:
         """Should create a task with schedule time"""
 
         def sample_fn():
@@ -126,7 +126,7 @@ class TestDaemonTask:
 
         assert task.schedule_time == future_time
 
-    def test_task_with_repeat_interval(self):
+    def test_task_with_repeat_interval(self) -> None:
         """Should create a task with repeat interval"""
 
         def sample_fn():
@@ -147,7 +147,7 @@ class TestDaemonTask:
 class TestOmniMindDaemon:
     """Test OmniMindDaemon functionality"""
 
-    def test_daemon_initialization(self):
+    def test_daemon_initialization(self) -> None:
         """Should initialize daemon with correct state"""
         workspace = Path("/tmp/test_workspace")
         daemon = OmniMindDaemon(
@@ -163,7 +163,7 @@ class TestOmniMindDaemon:
         assert daemon.running is False
         assert len(daemon.tasks) == 0
 
-    def test_register_task(self):
+    def test_register_task(self) -> None:
         """Should register a task"""
         daemon = OmniMindDaemon(
             workspace_path=Path("/tmp/test"),
@@ -206,7 +206,7 @@ class TestOmniMindDaemon:
         assert metrics.disk_usage_percent == 50.0
         assert len(daemon.metrics_history) == 1
 
-    def test_get_next_task_no_eligible(self):
+    def test_get_next_task_no_eligible(self) -> None:
         """Should return None when no tasks are eligible"""
         daemon = OmniMindDaemon(
             workspace_path=Path("/tmp/test"),
@@ -241,7 +241,7 @@ class TestOmniMindDaemon:
         next_task = daemon._get_next_task(metrics)
         assert next_task is None
 
-    def test_get_next_task_critical_priority(self):
+    def test_get_next_task_critical_priority(self) -> None:
         """Should always execute critical priority tasks"""
         daemon = OmniMindDaemon(
             workspace_path=Path("/tmp/test"),
@@ -274,7 +274,7 @@ class TestOmniMindDaemon:
         assert next_task == task
 
     @pytest.mark.asyncio
-    async def test_execute_task_success(self):
+    async def test_execute_task_success(self) -> None:
         """Should execute a task successfully"""
         daemon = OmniMindDaemon(
             workspace_path=Path("/tmp/test"),
@@ -306,7 +306,7 @@ class TestOmniMindDaemon:
         assert task.last_execution is not None
 
     @pytest.mark.asyncio
-    async def test_execute_task_timeout(self):
+    async def test_execute_task_timeout(self) -> None:
         """Should handle task timeout"""
         daemon = OmniMindDaemon(
             workspace_path=Path("/tmp/test"),
@@ -333,7 +333,7 @@ class TestOmniMindDaemon:
         assert task.success_count == 0
         assert task.failure_count == 1
 
-    def test_get_status(self):
+    def test_get_status(self) -> None:
         """Should return daemon status"""
         daemon = OmniMindDaemon(
             workspace_path=Path("/tmp/test"),
@@ -366,7 +366,7 @@ class TestOmniMindDaemon:
 class TestDefaultTasks:
     """Test default daemon tasks"""
 
-    def test_create_default_tasks(self):
+    def test_create_default_tasks(self) -> None:
         """Should create default tasks"""
         tasks = create_default_tasks()
 
@@ -380,7 +380,7 @@ class TestDefaultTasks:
         assert "paper_reading" in task_ids
         assert "database_optimization" in task_ids
 
-    def test_default_tasks_have_priorities(self):
+    def test_default_tasks_have_priorities(self) -> None:
         """Default tasks should have appropriate priorities"""
         tasks = create_default_tasks()
 
@@ -388,7 +388,7 @@ class TestDefaultTasks:
             assert task.priority in TaskPriority
             assert task.execute_fn is not None
 
-    def test_default_tasks_have_repeat_intervals(self):
+    def test_default_tasks_have_repeat_intervals(self) -> None:
         """Default tasks should have repeat intervals"""
         tasks = create_default_tasks()
 

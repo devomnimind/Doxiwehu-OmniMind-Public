@@ -40,7 +40,7 @@ from src.observability.profiling_tools import (
 class TestDistributedTracing:
     """Tests for distributed tracing."""
 
-    def test_trace_config_creation(self):
+    def test_trace_config_creation(self) -> None:
         """Test trace configuration creation."""
         config = TraceConfig(
             service_name="test-service",
@@ -50,14 +50,14 @@ class TestDistributedTracing:
         assert config.sample_rate == 0.5
         assert config.enabled is True
 
-    def test_tracer_initialization(self):
+    def test_tracer_initialization(self) -> None:
         """Test tracer initialization."""
         config = TraceConfig(service_name="test")
         tracer = DistributedTracer(config)
         assert tracer.config.service_name == "test"
         assert tracer.get_active_traces_count() == 0
 
-    def test_create_span_context(self):
+    def test_create_span_context(self) -> None:
         """Test span context creation."""
         config = TraceConfig()
         tracer = DistributedTracer(config)
@@ -73,7 +73,7 @@ class TestDistributedTracing:
         assert child_context.trace_id == context.trace_id
         assert child_context.parent_span_id == context.span_id
 
-    def test_start_span(self):
+    def test_start_span(self) -> None:
         """Test span creation."""
         config = TraceConfig()
         tracer = DistributedTracer(config)
@@ -84,7 +84,7 @@ class TestDistributedTracing:
         assert span.status == SpanStatus.UNSET
         assert tracer.get_total_spans_count() == 1
 
-    def test_trace_context_manager(self):
+    def test_trace_context_manager(self) -> None:
         """Test trace context manager."""
         config = TraceConfig()
         tracer = DistributedTracer(config)
@@ -97,7 +97,7 @@ class TestDistributedTracing:
         assert span.end_time is not None
         assert "key" in span.attributes
 
-    def test_trace_error_handling(self):
+    def test_trace_error_handling(self) -> None:
         """Test trace error handling."""
         config = TraceConfig()
         tracer = DistributedTracer(config)
@@ -109,7 +109,7 @@ class TestDistributedTracing:
         assert span.status == SpanStatus.ERROR
         assert "exception.type" in span.attributes
 
-    def test_span_attributes(self):
+    def test_span_attributes(self) -> None:
         """Test span attributes."""
         config = TraceConfig()
         tracer = DistributedTracer(config)
@@ -122,7 +122,7 @@ class TestDistributedTracing:
         assert span.attributes["custom"] == "data"
         assert span.attributes["number"] == 42
 
-    def test_span_events(self):
+    def test_span_events(self) -> None:
         """Test span events."""
         config = TraceConfig()
         tracer = DistributedTracer(config)
@@ -134,7 +134,7 @@ class TestDistributedTracing:
         assert len(span.events) == 2
         assert span.events[0]["name"] == "event1"
 
-    def test_export_traces(self):
+    def test_export_traces(self) -> None:
         """Test trace export."""
         config = TraceConfig(service_name="test")
         tracer = DistributedTracer(config)
@@ -147,7 +147,7 @@ class TestDistributedTracing:
         traces_dir = Path.home() / ".omnimind" / "traces"
         assert traces_dir.exists()
 
-    def test_disabled_tracing(self):
+    def test_disabled_tracing(self) -> None:
         """Test disabled tracing."""
         config = TraceConfig(enabled=False)
         tracer = DistributedTracer(config)
@@ -163,7 +163,7 @@ class TestDistributedTracing:
 class TestMetricsExporter:
     """Tests for custom metrics exporter."""
 
-    def test_metrics_config_creation(self):
+    def test_metrics_config_creation(self) -> None:
         """Test metrics configuration."""
         config = MetricsConfig(
             prometheus_port=9090,
@@ -172,13 +172,13 @@ class TestMetricsExporter:
         assert config.prometheus_port == 9090
         assert config.enabled is True
 
-    def test_exporter_initialization(self):
+    def test_exporter_initialization(self) -> None:
         """Test exporter initialization."""
         config = MetricsConfig()
         exporter = CustomMetricsExporter(config)
         assert exporter.get_metrics_count() > 0  # ML metrics auto-initialized
 
-    def test_register_metric(self):
+    def test_register_metric(self) -> None:
         """Test metric registration."""
         config = MetricsConfig(include_ml_metrics=False)
         exporter = CustomMetricsExporter(config)
@@ -195,7 +195,7 @@ class TestMetricsExporter:
         assert metric.name == "test_metric"
         assert metric.type == MetricType.COUNTER
 
-    def test_record_counter(self):
+    def test_record_counter(self) -> None:
         """Test counter metric recording."""
         config = MetricsConfig(include_ml_metrics=False)
         exporter = CustomMetricsExporter(config)
@@ -206,7 +206,7 @@ class TestMetricsExporter:
         metric = exporter.get_metric("requests_total")
         assert metric.get_latest_value() == 2.0
 
-    def test_record_gauge(self):
+    def test_record_gauge(self) -> None:
         """Test gauge metric recording."""
         config = MetricsConfig(include_ml_metrics=False)
         exporter = CustomMetricsExporter(config)
@@ -217,7 +217,7 @@ class TestMetricsExporter:
         metric = exporter.get_metric("temperature")
         assert metric.get_latest_value() == 26.0
 
-    def test_record_histogram(self):
+    def test_record_histogram(self) -> None:
         """Test histogram metric recording."""
         config = MetricsConfig(include_ml_metrics=False)
         exporter = CustomMetricsExporter(config)
@@ -228,7 +228,7 @@ class TestMetricsExporter:
         metric = exporter.get_metric("latency")
         assert len(metric.values) == 2
 
-    def test_ml_metrics(self):
+    def test_ml_metrics(self) -> None:
         """Test ML-specific metrics."""
         config = MetricsConfig()
         exporter = CustomMetricsExporter(config)
@@ -244,7 +244,7 @@ class TestMetricsExporter:
         assert exporter.get_metric("model_inference_latency_ms") is not None
         assert exporter.get_metric("gpu_utilization") is not None
 
-    def test_prometheus_export(self):
+    def test_prometheus_export(self) -> None:
         """Test Prometheus format export."""
         config = MetricsConfig(include_ml_metrics=False)
         exporter = CustomMetricsExporter(config)
@@ -256,7 +256,7 @@ class TestMetricsExporter:
         assert "# TYPE" in prometheus_text
         assert "# HELP" in prometheus_text
 
-    def test_json_export(self):
+    def test_json_export(self) -> None:
         """Test JSON format export."""
         config = MetricsConfig(include_ml_metrics=False)
         exporter = CustomMetricsExporter(config)
@@ -268,7 +268,7 @@ class TestMetricsExporter:
         assert "metrics" in data
         assert "test_gauge" in data["metrics"]
 
-    def test_metric_labels(self):
+    def test_metric_labels(self) -> None:
         """Test metrics with labels."""
         config = MetricsConfig(include_ml_metrics=False)
         exporter = CustomMetricsExporter(config)
@@ -283,7 +283,7 @@ class TestMetricsExporter:
 class TestLogAggregator:
     """Tests for log aggregation."""
 
-    def test_log_config_creation(self):
+    def test_log_config_creation(self) -> None:
         """Test log configuration."""
         config = LogConfig(
             log_level=LogLevel.DEBUG,
@@ -292,13 +292,13 @@ class TestLogAggregator:
         assert config.log_level == LogLevel.DEBUG
         assert config.enabled is True
 
-    def test_aggregator_initialization(self):
+    def test_aggregator_initialization(self) -> None:
         """Test aggregator initialization."""
         config = LogConfig()
         aggregator = LogAggregator(config)
         assert aggregator.config.enabled is True
 
-    def test_log_entry(self):
+    def test_log_entry(self) -> None:
         """Test log entry creation."""
         config = LogConfig()
         aggregator = LogAggregator(config)
@@ -309,7 +309,7 @@ class TestLogAggregator:
         assert len(logs) == 1
         assert logs[0].message == "Test message"
 
-    def test_log_pattern_detection(self):
+    def test_log_pattern_detection(self) -> None:
         """Test pattern detection."""
         config = LogConfig()
         aggregator = LogAggregator(config)
@@ -320,7 +320,7 @@ class TestLogAggregator:
         assert len(alerts) > 0
         # Should match "critical_error" pattern
 
-    def test_custom_pattern(self):
+    def test_custom_pattern(self) -> None:
         """Test custom pattern."""
         config = LogConfig()
         aggregator = LogAggregator(config)
@@ -338,7 +338,7 @@ class TestLogAggregator:
         alerts = aggregator.get_alerts(severity=AlertSeverity.HIGH)
         assert any(a.pattern_name == "custom_pattern" for a in alerts)
 
-    def test_log_analytics(self):
+    def test_log_analytics(self) -> None:
         """Test log analytics."""
         config = LogConfig()
         aggregator = LogAggregator(config)
@@ -353,7 +353,7 @@ class TestLogAggregator:
         assert distribution["INFO"] == 2
         assert distribution["ERROR"] == 1
 
-    def test_log_export(self):
+    def test_log_export(self) -> None:
         """Test log export."""
         config = LogConfig()
         aggregator = LogAggregator(config)
@@ -369,7 +369,7 @@ class TestLogAggregator:
 class TestProfilingTools:
     """Tests for profiling tools."""
 
-    def test_profiling_config_creation(self):
+    def test_profiling_config_creation(self) -> None:
         """Test profiling configuration."""
         config = ProfilingConfig(
             sample_interval_seconds=30,
@@ -378,13 +378,13 @@ class TestProfilingTools:
         assert config.sample_interval_seconds == 30
         assert config.enabled is True
 
-    def test_profiler_initialization(self):
+    def test_profiler_initialization(self) -> None:
         """Test profiler initialization."""
         config = ProfilingConfig()
         profiler = ContinuousProfiler(config)
         assert profiler.config.enabled is True
 
-    def test_profile_decorator(self):
+    def test_profile_decorator(self) -> None:
         """Test profile decorator."""
         config = ProfilingConfig()
         profiler = ContinuousProfiler(config)
@@ -400,7 +400,7 @@ class TestProfilingTools:
         samples = profiler.get_samples()
         assert len(samples) > 0
 
-    def test_start_stop_profiling(self):
+    def test_start_stop_profiling(self) -> None:
         """Test start/stop profiling."""
         config = ProfilingConfig()
         profiler = ContinuousProfiler(config)
@@ -412,7 +412,7 @@ class TestProfilingTools:
         samples = profiler.get_samples()
         assert len(samples) > 0
 
-    def test_top_functions(self):
+    def test_top_functions(self) -> None:
         """Test top functions."""
         config = ProfilingConfig()
         profiler = ContinuousProfiler(config)
@@ -431,7 +431,7 @@ class TestProfilingTools:
         top = profiler.get_top_functions(limit=2)
         assert len(top) <= 2
 
-    def test_flamegraph_generation(self):
+    def test_flamegraph_generation(self) -> None:
         """Test flame graph generation."""
         config = ProfilingConfig()
         profiler = ContinuousProfiler(config)
@@ -450,7 +450,7 @@ class TestProfilingTools:
             assert flame_graph is not None
             assert flame_graph.name == "root"
 
-    def test_flamegraph_json_export(self):
+    def test_flamegraph_json_export(self) -> None:
         """Test flame graph JSON export."""
         config = ProfilingConfig()
         profiler = ContinuousProfiler(config)
