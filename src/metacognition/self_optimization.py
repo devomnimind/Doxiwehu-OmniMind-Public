@@ -173,12 +173,8 @@ class ABTest:
         )
 
         # Simple statistical test (t-test would be better, but requires scipy)
-        (
-            statistics.stdev(control_scores) if len(control_scores) > 1 else 0
-        )
-        (
-            statistics.stdev(treatment_scores) if len(treatment_scores) > 1 else 0
-        )
+        (statistics.stdev(control_scores) if len(control_scores) > 1 else 0)
+        (statistics.stdev(treatment_scores) if len(treatment_scores) > 1 else 0)
 
         # Calculate confidence (simplified)
         confidence = min(0.99, 0.5 + abs(improvement) * 0.5)
