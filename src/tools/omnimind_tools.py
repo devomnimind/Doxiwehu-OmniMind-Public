@@ -631,7 +631,7 @@ class NewTaskTool(AuditedTool):
         metadata: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         """Cria nova tarefa com ID único"""
-        task_id = hashlib.md5(f"{task_name}{time.time()}".encode()).hexdigest()[:8]
+        task_id = hashlib.sha256(f"{task_name}{time.time()}".encode()).hexdigest()[:8]
 
         task = {
             "id": task_id,

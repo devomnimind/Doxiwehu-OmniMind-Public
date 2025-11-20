@@ -52,8 +52,12 @@ class FirecrackerSandbox:
         enabled: bool = True,
     ) -> None:
         # Read from environment variables if not provided
-        self.kernel_path = Path(kernel_path or os.environ.get("OMNIMIND_FIRECRACKER_KERNEL", ""))
-        self.rootfs_path = Path(rootfs_path or os.environ.get("OMNIMIND_FIRECRACKER_ROOTFS", ""))
+        self.kernel_path = Path(
+            kernel_path or os.environ.get("OMNIMIND_FIRECRACKER_KERNEL", "")
+        )
+        self.rootfs_path = Path(
+            rootfs_path or os.environ.get("OMNIMIND_FIRECRACKER_ROOTFS", "")
+        )
         self.enabled = enabled and bool(
             self.kernel_path
             and self.rootfs_path
