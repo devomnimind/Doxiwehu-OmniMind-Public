@@ -40,7 +40,7 @@ def backend_server():
     # Import and create test client
     from fastapi.testclient import TestClient
     from web.backend.main import app
-    
+
     client = TestClient(app)
     return client
 
@@ -83,7 +83,9 @@ class TestAPIEndpoints:
         assert data["status"] == "ok"
 
     @pytest.mark.asyncio
-    async def test_authenticated_endpoint(self, backend_server, auth_credentials: Dict[str, str]):
+    async def test_authenticated_endpoint(
+        self, backend_server, auth_credentials: Dict[str, str]
+    ):
         """Test authenticated endpoint access."""
         # Without auth - should fail
         response = backend_server.get("/status")
@@ -96,7 +98,9 @@ class TestAPIEndpoints:
         )
         assert response.status_code == 200
 
-    def test_task_orchestration_workflow(self, backend_server, auth_credentials: Dict[str, str]):
+    def test_task_orchestration_workflow(
+        self, backend_server, auth_credentials: Dict[str, str]
+    ):
         """Test complete task orchestration workflow."""
         auth = (auth_credentials["username"], auth_credentials["password"])
 

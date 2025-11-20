@@ -41,15 +41,15 @@ class CanonicalLogger:
                     "Records are immutable",
                     "SHA-256 hash chain",
                     "Automatic validation",
-                    "Audit trail"
-                ]
+                    "Audit trail",
+                ],
             },
             "current_metrics": {
                 "total_files": 0,
                 "tests_passing": "0/0",
                 "qdrant_collections": {"local": 0, "cloud": 0},
                 "knowledge_points": 0,
-                "canonical_documents": 1
+                "canonical_documents": 1,
             },
             "action_log": [],
             "pending_automatic_actions": [],
@@ -57,11 +57,11 @@ class CanonicalLogger:
                 "last_validation": datetime.now().isoformat(),
                 "hash_chain_valid": True,
                 "total_records": 0,
-                "corruption_detected": False
-            }
+                "corruption_detected": False,
+            },
         }
 
-        with open(self.json_file, 'w', encoding='utf-8') as f:
+        with open(self.json_file, "w", encoding="utf-8") as f:
             json.dump(initial_data, f, indent=2, ensure_ascii=False)
 
         # Create MD file
@@ -84,28 +84,40 @@ class CanonicalLogger:
 ---
 *Arquivo gerado automaticamente - Não editar manualmente*
 """
-        with open(self.md_file, 'w', encoding='utf-8') as f:
+        with open(self.md_file, "w", encoding="utf-8") as f:
             f.write(md_content)
 
-    def log_action(self, ai_agent: str, action_type: str, target: str,
-                   result: str, description: str, details: str = "",
-                   impact: str = "", automatic_actions: List[str] = None) -> str:
+    def log_action(
+        self,
+        ai_agent: str,
+        action_type: str,
+        target: str,
+        result: str,
+        description: str,
+        details: str = "",
+        impact: str = "",
+        automatic_actions: List[str] = None,
+    ) -> str:
         """Log an action with integrity hash."""
 
         # Load current data
-        with open(self.json_file, 'r', encoding='utf-8') as f:
+        with open(self.json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         # Create new record
         timestamp = datetime.now().isoformat()
-        record_content = f"{timestamp}{ai_agent}{action_type}{target}{result}{description}"
-        
+        record_content = (
+            f"{timestamp}{ai_agent}{action_type}{target}{result}{description}"
+        )
+
         # Calculate hash
         if data["action_log"]:
             prev_hash = data["action_log"][-1]["hash"]
         else:
-            prev_hash = "0000000000000000000000000000000000000000000000000000000000000000"
-        
+            prev_hash = (
+                "0000000000000000000000000000000000000000000000000000000000000000"
+            )
+
         content_hash = hashlib.sha256((prev_hash + record_content).encode()).hexdigest()
 
         new_record = {
@@ -118,7 +130,7 @@ class CanonicalLogger:
             "description": description,
             "details": details,
             "impact": impact,
-            "automatic_actions": automatic_actions or []
+            "automatic_actions": automatic_actions or [],
         }
 
         # Add to JSON
@@ -126,7 +138,7 @@ class CanonicalLogger:
         data["system_integrity"]["total_records"] = len(data["action_log"])
         data["system_integrity"]["last_validation"] = timestamp
 
-        with open(self.json_file, 'w', encoding='utf-8') as f:
+        with open(self.json_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
         # Update MD file
@@ -146,7 +158,7 @@ class CanonicalLogger:
 """
 
         # Read current content
-        with open(self.md_file, 'r', encoding='utf-8') as f:
+        with open(self.md_file, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Insert before the footer
@@ -156,19 +168,23 @@ class CanonicalLogger:
         else:
             new_content = content + md_entry
 
-        with open(self.md_file, 'w', encoding='utf-8') as f:
+        with open(self.md_file, "w", encoding="utf-8") as f:
             f.write(new_content)
 
     def validate_integrity(self) -> bool:
         """Validate the hash chain integrity."""
-        with open(self.json_file, 'r', encoding='utf-8') as f:
+        with open(self.json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
 
-        expected_hash = "0000000000000000000000000000000000000000000000000000000000000000"
+        expected_hash = (
+            "0000000000000000000000000000000000000000000000000000000000000000"
+        )
 
         for record in data["action_log"]:
             record_content = f"{record['timestamp']}{record['ai_agent']}{record['action_type']}{record['target']}{record['result']}{record['description']}"
-            calculated_hash = hashlib.sha256((expected_hash + record_content).encode()).hexdigest()
+            calculated_hash = hashlib.sha256(
+                (expected_hash + record_content).encode()
+            ).hexdigest()
 
             if calculated_hash != record["hash"]:
                 logger.error(f"Hash chain broken at record: {record['timestamp']}")
@@ -180,18 +196,18 @@ class CanonicalLogger:
 
     def get_metrics(self) -> Dict[str, Any]:
         """Get current system metrics."""
-        with open(self.json_file, 'r', encoding='utf-8') as f:
+        with open(self.json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
         return data["current_metrics"]
 
     def update_metrics(self, metrics: Dict[str, Any]):
         """Update system metrics."""
-        with open(self.json_file, 'r', encoding='utf-8') as f:
+        with open(self.json_file, "r", encoding="utf-8") as f:
             data = json.load(f)
 
         data["current_metrics"].update(metrics)
 
-        with open(self.json_file, 'w', encoding='utf-8') as f:
+        with open(self.json_file, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
 

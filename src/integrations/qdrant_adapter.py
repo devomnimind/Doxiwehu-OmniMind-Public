@@ -40,7 +40,7 @@ class QdrantConfig:
                     else None
                 ),
             )
-        
+
         # Fallback to local configuration
         url = os.environ.get("OMNIMIND_QDRANT_URL")
         if not url:
