@@ -157,7 +157,9 @@ class DataProcessingRecord:
         self.data_categories = data_categories
         self.data_controller = data_controller
         self.timestamp = datetime.now(UTC)
-        self.processed_data_hash: Optional[str] = None  # Will be set when data is processed
+        self.processed_data_hash: Optional[str] = (
+            None  # Will be set when data is processed
+        )
 
     def record_processing(self, data_hash: str) -> None:
         """Record that data processing occurred"""

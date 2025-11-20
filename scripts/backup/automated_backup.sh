@@ -185,7 +185,7 @@ Recovery Instructions:
 3. Restart services
 4. Verify integrity
 
-Contact: omnimind@devbrain.systems
+Contact: support@omnimind.ai
 EOF
 
     log "Backup manifest created"
