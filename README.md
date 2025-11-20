@@ -112,6 +112,14 @@ source scripts/start_dashboard.sh
 #### Passos de Instalação
 
 ```bash
+# 0. Instalar dependências do sistema (NECESSÁRIO para dbus-python)
+# Ubuntu/Debian:
+sudo apt-get update && sudo apt-get install -y libdbus-1-dev pkg-config
+# Fedora/RHEL:
+# sudo dnf install dbus-devel pkgconfig
+# macOS:
+# brew install dbus pkg-config
+
 # 1. Configuração do ambiente Python
 pyenv install 3.12.8
 pyenv local 3.12.8
@@ -130,6 +138,8 @@ python -c "import torch; print(f'CUDA: {torch.cuda.is_available()}')"
 # 5. Iniciar sistema completo
 source scripts/start_dashboard.sh
 ```
+
+> **⚠️ IMPORTANTE:** As dependências do sistema (`libdbus-1-dev` e `pkg-config`) devem ser instaladas **ANTES** de `pip install`. Veja [docs/DBUS_DEPENDENCY_SETUP.md](docs/DBUS_DEPENDENCY_SETUP.md) para detalhes.
 
 ### Gerenciamento de Serviços
 
