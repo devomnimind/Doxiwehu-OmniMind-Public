@@ -284,6 +284,197 @@ async def get_agent_history(agent_id: str, limit: int = 50) -> Dict[str, Any]:
     }
 
 
+# ============================================================================
+# AGENT COMMUNICATION ENDPOINTS
+# ============================================================================
+
+
+@router.get("/communication/stats")
+async def get_communication_stats() -> Dict[str, Any]:
+    """Get agent communication statistics from the message bus."""
+    from src.agents.agent_protocol import get_message_bus
+
+    bus = get_message_bus()
+    stats = bus.get_stats()
+
+    return {
+        "message_bus": stats,
+        "timestamp": time.time(),
+    }
+
+
+@router.get("/communication/queue/{agent_id}")
+async def get_agent_queue(agent_id: str) -> Dict[str, Any]:
+    """Get message queue status for a specific agent."""
+    from src.agents.agent_protocol import get_message_bus
+
+    bus = get_message_bus()
+    queue_size = bus.get_queue_size(agent_id)
+
+    subscriptions = []
+    if agent_id in bus._subscriptions:
+        subscriptions = [msg_type.value for msg_type in bus._subscriptions[agent_id]]
+
+    return {
+        "agent_id": agent_id,
+        "queue_size": queue_size,
+        "subscriptions": subscriptions,
+        "timestamp": time.time(),
+    }
+
+
+class SendMessageRequest(BaseModel):
+    """Request to send a message between agents."""
+
+    sender: str = Field(..., description="Sender agent ID")
+    recipient: str = Field(..., description="Recipient agent ID")
+    message_type: str = Field(..., description="Message type")
+    payload: Dict[str, Any] = Field(..., description="Message payload")
+    priority: str = Field("MEDIUM", description="Message priority")
+
+
+@router.post("/communication/send")
+async def send_agent_message(request: SendMessageRequest) -> Dict[str, Any]:
+    """Send a message between agents."""
+    from src.agents.agent_protocol import (
+        AgentMessage,
+        MessageType,
+        MessagePriority,
+        get_message_bus,
+    )
+    import uuid
+
+    try:
+        # Convert string to enums
+        msg_type = MessageType(request.message_type.lower())
+        priority = MessagePriority[request.priority.upper()]
+
+        # Create and send message
+        message = AgentMessage(
+            message_id=str(uuid.uuid4()),
+            message_type=msg_type,
+            sender=request.sender,
+            recipient=request.recipient,
+            payload=request.payload,
+            priority=priority,
+        )
+
+        bus = get_message_bus()
+        await bus.send_message(message)
+
+        return {
+            "success": True,
+            "message_id": message.message_id,
+            "timestamp": message.timestamp,
+        }
+    except ValueError as exc:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=400, detail=f"Invalid message: {exc}")
+
+
+@router.get("/ast/analyze/{filepath:path}")
+async def analyze_code_structure(filepath: str) -> Dict[str, Any]:
+    """Analyze code structure using AST parser."""
+    from src.tools.ast_parser import ASTParser
+    from pathlib import Path
+
+    parser = ASTParser()
+
+    # Ensure filepath is safe
+    file_path = Path(filepath)
+    if not file_path.exists():
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=404, detail=f"File not found: {filepath}")
+
+    if not file_path.suffix == ".py":
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=400, detail="Only Python files (.py) can be analyzed"
+        )
+
+    structure = parser.parse_file(str(file_path))
+
+    if not structure:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=500, detail="Failed to parse file")
+
+    return {
+        "filepath": structure.filepath,
+        "classes": [
+            {
+                "name": c.name,
+                "lines": f"{c.line_start}-{c.line_end}",
+                "docstring": c.docstring,
+                "bases": c.bases,
+            }
+            for c in structure.classes
+        ],
+        "functions": [
+            {
+                "name": f.name,
+                "lines": f"{f.line_start}-{f.line_end}",
+                "parameters": f.parameters,
+                "return_type": f.return_type,
+                "docstring": f.docstring,
+            }
+            for f in structure.functions
+        ],
+        "imports": [i.name for i in structure.imports],
+        "dependencies": list(structure.dependencies),
+        "complexity": structure.complexity,
+        "lines_of_code": structure.lines_of_code,
+    }
+
+
+class CodeValidationRequest(BaseModel):
+    """Request to validate code syntax."""
+
+    code: str = Field(..., description="Python code to validate")
+
+
+@router.post("/ast/validate")
+async def validate_code_syntax(request: CodeValidationRequest) -> Dict[str, Any]:
+    """Validate Python code syntax."""
+    from src.tools.ast_parser import ASTParser
+
+    parser = ASTParser()
+    is_valid, error = parser.validate_syntax(request.code)
+
+    return {
+        "valid": is_valid,
+        "error": error,
+        "timestamp": time.time(),
+    }
+
+
+@router.post("/ast/security")
+async def analyze_code_security(request: CodeValidationRequest) -> Dict[str, Any]:
+    """Analyze code for security issues."""
+    from src.tools.ast_parser import ASTParser
+
+    parser = ASTParser()
+    warnings = parser.analyze_security_issues(request.code)
+
+    return {
+        "warnings": warnings,
+        "safe": len(warnings) == 0,
+        "severity": (
+            "high"
+            if any("eval" in w or "exec" in w for w in warnings)
+            else "medium" if warnings else "low"
+        ),
+        "timestamp": time.time(),
+    }
+        "agent_id": agent_id,
+        "history": [],
+        "count": 0,
+    }
+
+
 @router.get("/monitoring/summary")
 async def get_monitoring_summary() -> Dict[str, Any]:
     """Get overall monitoring summary for all agents."""

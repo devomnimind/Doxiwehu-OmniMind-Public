@@ -128,6 +128,9 @@ async def lifespan(app_instance: FastAPI) -> Any:
     # Import WebSocket manager
     from web.backend.websocket_manager import ws_manager
 
+    # Import agent communication broadcaster
+    from web.backend.agent_communication_ws import get_broadcaster
+
     # Import monitoring systems
     try:
         from web.backend.monitoring import agent_monitor, metrics_collector, performance_tracker
@@ -138,6 +141,10 @@ async def lifespan(app_instance: FastAPI) -> Any:
 
     # Start WebSocket manager
     await ws_manager.start()
+
+    # Start agent communication broadcaster
+    broadcaster = get_broadcaster()
+    await broadcaster.start()
 
     # Start monitoring systems
     if monitoring_available:
@@ -157,6 +164,9 @@ async def lifespan(app_instance: FastAPI) -> Any:
             task.cancel()
             with suppress(asyncio.CancelledError):
                 await task
+
+        # Stop agent communication broadcaster
+        await broadcaster.stop()
 
         # Stop monitoring systems
         if monitoring_available:
