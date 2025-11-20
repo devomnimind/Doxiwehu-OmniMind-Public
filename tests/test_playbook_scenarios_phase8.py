@@ -166,7 +166,7 @@ async def test_intrusion_playbook_blocks_and_preserves_scene(
             "output": "ok",
         }
 
-    def fake_write(path: str, payload: dict[str, Any][str, Any]) -> None:
+    def fake_write(path: str, payload: dict[str, Any]) -> None:
         destination = tmp_path / Path(path).name
         destination.write_text(json.dumps(payload))
 

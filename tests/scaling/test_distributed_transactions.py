@@ -1,6 +1,8 @@
 """Tests for distributed transactions coordination."""
 
 import asyncio
+from typing import Any
+
 import pytest
 
 from src.scaling.distributed_transactions import (

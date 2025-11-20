@@ -1,4 +1,5 @@
 """Tests for self-healing integration."""
+from typing import Any
 
 import pytest
 
