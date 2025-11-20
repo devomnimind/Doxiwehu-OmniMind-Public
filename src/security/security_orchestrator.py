@@ -251,10 +251,12 @@ class SecurityOrchestrator:
 
         try:
             # Monitor processes - SecurityAgent uses async monitoring
-            # suspicious_process = await self.security_agent._monitor_processes()  # Not available synchronously
-    
+            # suspicious_process = await self.security_agent._monitor_processes()
+            # Not available synchronously
+
             # Monitor network connections - SecurityAgent uses async monitoring
-            # suspicious_connection = await self.security_agent._monitor_network()  # Not available synchronously
+            # suspicious_connection = await self.security_agent._monitor_network()
+            # Not available synchronously
             pass
 
         except Exception as e:

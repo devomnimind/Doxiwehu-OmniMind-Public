@@ -1,6 +1,7 @@
 """Tests for distributed transactions coordination."""
 
 import asyncio
+import pytest
 from typing import Any
 
 
@@ -229,7 +230,6 @@ class TestTwoPhaseCommitCoordinator:
     async def test_get_active_transactions(self) -> None:
         """Test getting active transactions."""
         coordinator = TwoPhaseCommitCoordinator()
-
 
         active = coordinator.get_active_transactions()
 
