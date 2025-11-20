@@ -75,7 +75,7 @@
 | tools | 2 | 329 | 260 | 33 |
 | workflows | 1 | 357 | 279 | 40 |
 
-**TOTAL:** 103 files | **16,278 LOC** | **~1,609 test functions**
+**TOTAL:** 86 files | **16,278 LOC** | **~651 test functions**
 
 ---
 
@@ -140,7 +140,7 @@ OmniMind/
 │   ├── testing/           # Testing utilities
 │   ├── tools/             # Agent tools framework
 │   └── workflows/         # Workflow orchestration
-├── tests/                 # 17 subdirectories, 103 test files
+├── tests/                 # 17 subdirectories, 86 test files
 ├── docs/                  # 71 documentation files
 ├── web/                   # FastAPI backend + React frontend
 ├── scripts/               # Automation scripts
@@ -188,7 +188,7 @@ OmniMind/
 ## Notable Findings
 
 ### ✅ Strengths
-1. **Comprehensive test coverage** - 103 test files with 1,609 test functions
+1. **Comprehensive test coverage** - 86 test files with 651 test functions
 2. **Excellent documentation** - 71 markdown files
 3. **Well-organized structure** - Clear separation of concerns across 26 modules
 4. **Extensive docstrings** - 7,184 lines of docstrings

@@ -2,7 +2,7 @@
 
 **OmniMind** é um revolucionário sistema de IA autônomo que combina tomada de decisão psicoanalítica com capacidades avançadas de metacognição. Esta arquitetura auto-hospedada e local-first apresenta orquestração multi-agente, comunicação WebSocket em tempo real e inteligência auto-evolutiva.
 
-**🚀 Status Atual:** Phase 15 Quantum-Enhanced AI Complete | 105/105 Tests Passing | Produção Pronta
+**🚀 Status Atual:** Phase 15 Quantum-Enhanced AI Complete | 650/651 Tests Passing | Produção Pronta
 
 **🧬 Filosofia Central:** IA psicoanaliticamente inspirada que reflete sobre suas próprias decisões, aprende com padrões e gera proativamente seus próprios objetivos - criando um sistema verdadeiramente autônomo e autoconsciente.
 
@@ -78,7 +78,7 @@ source scripts/start_dashboard.sh
 - `web/` – Aplicação web full-stack (frontend React + backend FastAPI)
 - `src/` – Módulos Python centrais (agentes, metacognição, segurança, integrações)
 - `scripts/` – Scripts de automação (implantação, systemd, benchmarks)
-- `tests/` – Suíte abrangente de testes (105 testes passando)
+- `tests/` – Suíte abrangente de testes (650/651 testes passando)
 - `logs/` – Trilhas de auditoria e logs de execução (imutáveis)
 - `data/` – Conjuntos de dados e dados experimentais (ignorados pelo Git)
 
