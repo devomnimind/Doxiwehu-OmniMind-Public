@@ -21,10 +21,30 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Union, TYPE_CHECKING
 
 import math
 import statistics
+
+# Type checking imports (for type hints only)
+if TYPE_CHECKING:
+    try:
+        import numpy.typing as npt
+
+        NDArray = npt.NDArray[Any]
+    except ImportError:
+        NDArray = Any  # type: ignore
+else:
+    NDArray = Any  # type: ignore
+
+# Runtime imports
+try:
+    import numpy as np
+
+    NUMPY_AVAILABLE = True
+except ImportError:
+    NUMPY_AVAILABLE = False
+    np = None  # type: ignore
 
 try:
     import torch
@@ -58,7 +78,7 @@ class HolographicSurface:
         max_entropy: Maximum entropy (Bekenstein bound)
     """
 
-    surface_bits: List[List[float]]
+    surface_bits: Union[NDArray, List[List[float]]]
     area: float
     entropy: float
     max_entropy: float
@@ -106,7 +126,9 @@ class HolographicProjection:
                 break
         return depth
 
-    def project_to_boundary(self, information: Dict[str, Any]) -> List[List[float]]:
+    def project_to_boundary(
+        self, information: Dict[str, Any]
+    ) -> Union[NDArray, List[List[float]]]:
         """
         Project 3D volumetric information to 2D boundary surface.
 
@@ -132,12 +154,18 @@ class HolographicProjection:
                 > self.max_surface_dim
             ):
                 surface = self._downsample_fft(surface, self.max_surface_dim)
+            # Convert to numpy array if available
+            if NUMPY_AVAILABLE and np is not None:
+                return np.array(surface)
             return surface
 
         # For 3D data, project to 2D surface using radon transform approximation
         # This preserves essential structure while reducing dimensionality
         surface_projection = self._radon_projection(info_tensor)
 
+        # Convert to numpy array if available
+        if NUMPY_AVAILABLE and np is not None:
+            return np.array(surface_projection)
         return surface_projection
 
     def _information_to_tensor(self, information: Dict[str, Any]) -> Sequence[Any]:

@@ -315,9 +315,13 @@ class ASTParser:
             params_str = ", ".join(params)
             return_annotation = f" -> {return_type}" if return_type else ""
 
-            lines.append(
-                f"    def {method_name}(self, {params_str}){return_annotation}:"
-            )
+            # Only add comma separator if there are params
+            if params_str:
+                signature = f"self, {params_str}"
+            else:
+                signature = "self"
+
+            lines.append(f"    def {method_name}({signature}){return_annotation}:")
             lines.append(f'        """TODO: Implement {method_name}"""')
             lines.append("        pass")
             lines.append("")

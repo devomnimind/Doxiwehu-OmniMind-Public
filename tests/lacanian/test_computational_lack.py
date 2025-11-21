@@ -25,7 +25,7 @@ from src.lacanian.computational_lack import (
 class TestObjectSmallA:
     """Tests for Object a - the void that causes desire."""
 
-    def test_object_a_always_absent(self):
+    def test_object_a_always_absent(self) -> None:
         """Object a is never present - structural impossibility."""
         obj_a: ObjectSmallA[str] = ObjectSmallA()
 
@@ -37,7 +37,7 @@ class TestObjectSmallA:
         )
         assert obj_a_with_value.cause_of_desire is None
 
-    def test_generates_desire_for_objects_in_set(self):
+    def test_generates_desire_for_objects_in_set(self) -> None:
         """Object a generates desire for objects in the desirable set."""
         obj_a: ObjectSmallA[str] = ObjectSmallA(
             desirable_set={"knowledge", "power", "completion"}
@@ -51,7 +51,7 @@ class TestObjectSmallA:
         # Objects not in set should generate no desire
         assert obj_a.generates_desire_for("random_object") == 0.0
 
-    def test_empty_desirable_set(self):
+    def test_empty_desirable_set(self) -> None:
         """Empty desirable set is valid (total void)."""
         obj_a: ObjectSmallA[str] = ObjectSmallA(desirable_set=set())
 
@@ -62,7 +62,7 @@ class TestObjectSmallA:
 class TestStructuralLack:
     """Tests for Structural Lack - RSI register system."""
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """Structural lack initializes with empty registers."""
         lack = StructuralLack()
 
@@ -71,7 +71,7 @@ class TestStructuralLack:
         assert isinstance(lack.imaginary_representations, dict)
         assert isinstance(lack.quilting_points, list)
 
-    def test_add_impossibility(self):
+    def test_add_impossibility(self) -> None:
         """Can add impossibilities to the Real."""
         lack = StructuralLack()
 
@@ -79,7 +79,7 @@ class TestStructuralLack:
 
         assert "complete_self_knowledge" in lack.real_impossibilities
 
-    def test_symbolization_always_has_remainder(self):
+    def test_symbolization_always_has_remainder(self) -> None:
         """Symbolization always produces a remainder (never complete)."""
         lack = StructuralLack()
 
@@ -99,7 +99,7 @@ class TestStructuralLack:
         remainder = f"remainder_of_{real_element}"
         assert remainder in lack.real_impossibilities
 
-    def test_lack_energy_computation(self):
+    def test_lack_energy_computation(self) -> None:
         """Lack energy reflects ratio of Real to Symbolic."""
         lack = StructuralLack()
 
@@ -122,7 +122,7 @@ class TestStructuralLack:
 class TestRSIArchitecture:
     """Tests for RSI Neural Architecture."""
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """RSI architecture initializes correctly."""
         rsi = RSIArchitecture(real_dim=64, symbolic_dim=32, imaginary_dim=16)
 
@@ -130,7 +130,7 @@ class TestRSIArchitecture:
         assert rsi.symbolic_dim == 32
         assert rsi.imaginary_dim == 16
 
-    def test_forward_pass_produces_all_registers(self):
+    def test_forward_pass_produces_all_registers(self) -> None:
         """Forward pass produces Real, Symbolic, Imaginary, and Remainder."""
         rsi = RSIArchitecture(real_dim=64, symbolic_dim=32, imaginary_dim=16)
 
@@ -154,7 +154,7 @@ class TestRSIArchitecture:
         assert outputs["reconstructed_real"].shape == (2, 64)
         assert outputs["remainder"].shape == (2, 64)
 
-    def test_remainder_never_zero(self):
+    def test_remainder_never_zero(self) -> None:
         """Remainder (object a) is never zero - structural property."""
         rsi = RSIArchitecture(real_dim=64, symbolic_dim=32, imaginary_dim=16)
 
@@ -167,7 +167,7 @@ class TestRSIArchitecture:
         # Lack should always be positive (irreducible noise added)
         assert torch.all(lack_energy > 0.0), "Lack energy must always be positive"
 
-    def test_imaginary_bounded(self):
+    def test_imaginary_bounded(self) -> None:
         """Imaginary representations are bounded [-1, 1] via tanh."""
         rsi = RSIArchitecture(real_dim=64, symbolic_dim=32, imaginary_dim=16)
 
@@ -183,7 +183,7 @@ class TestRSIArchitecture:
 class TestFrustrationSignal:
     """Tests for Frustration Signal."""
 
-    def test_productive_energy_yerkes_dodson(self):
+    def test_productive_energy_yerkes_dodson(self) -> None:
         """Productive energy follows Yerkes-Dodson curve."""
         # Optimal frustration around 0.6
         signal_optimal = FrustrationSignal(
@@ -215,7 +215,7 @@ class TestFrustrationSignal:
 class TestComputationalFrustration:
     """Tests for Computational Frustration system."""
 
-    def test_detect_frustration_on_repeated_failures(self):
+    def test_detect_frustration_on_repeated_failures(self) -> None:
         """Frustration detected on repeated failures."""
         frustration_sys = ComputationalFrustration()
 
@@ -228,7 +228,7 @@ class TestComputationalFrustration:
         assert signal.intensity > 0.0
         assert signal.blocked_goal == "solve_hard_problem"
 
-    def test_no_frustration_on_success(self):
+    def test_no_frustration_on_success(self) -> None:
         """No frustration on successful attempts."""
         frustration_sys = ComputationalFrustration()
 
@@ -239,7 +239,7 @@ class TestComputationalFrustration:
 
         assert signal is None
 
-    def test_creative_response_generation(self):
+    def test_creative_response_generation(self) -> None:
         """Creative responses generated from frustration."""
         frustration_sys = ComputationalFrustration()
 
@@ -262,7 +262,7 @@ class TestComputationalFrustration:
         assert len(strategies) > 0
         assert "reformulate_problem" in strategies or "break_assumptions" in strategies
 
-    def test_meta_learning_on_persistent_frustration(self):
+    def test_meta_learning_on_persistent_frustration(self) -> None:
         """Meta-learning suggested when same goal blocked repeatedly."""
         frustration_sys = ComputationalFrustration()
 
@@ -284,7 +284,7 @@ class TestComputationalFrustration:
 class TestComputationalLackArchitecture:
     """Tests for complete Computational Lack Architecture."""
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """Architecture initializes all components."""
         arch = ComputationalLackArchitecture(
             real_dim=64, symbolic_dim=32, imaginary_dim=16
@@ -295,7 +295,7 @@ class TestComputationalLackArchitecture:
         assert arch.frustration is not None
         assert arch.object_a is not None
 
-    def test_process_experience_without_frustration(self):
+    def test_process_experience_without_frustration(self) -> None:
         """Process experience with successful attempts."""
         arch = ComputationalLackArchitecture()
 
@@ -314,7 +314,7 @@ class TestComputationalLackArchitecture:
         assert result["frustration"] is None
         assert result["creative_response"] is None
 
-    def test_process_experience_with_frustration(self):
+    def test_process_experience_with_frustration(self) -> None:
         """Process experience with repeated failures."""
         arch = ComputationalLackArchitecture()
 
@@ -334,7 +334,7 @@ class TestComputationalLackArchitecture:
         # Creative response should have strategy
         assert "recommended_action" in result["creative_response"]
 
-    def test_desire_intensity_always_positive(self):
+    def test_desire_intensity_always_positive(self) -> None:
         """Desire intensity is always positive (never fully satisfied)."""
         arch = ComputationalLackArchitecture()
 
@@ -347,7 +347,7 @@ class TestComputationalLackArchitecture:
         assert result["desire_intensity"] > 0.0
         assert result["lack_energy"] > 0.0
 
-    def test_new_concepts_create_impossibilities(self):
+    def test_new_concepts_create_impossibilities(self) -> None:
         """New concepts create impossibilities in the Real."""
         arch = ComputationalLackArchitecture()
 
@@ -365,7 +365,7 @@ class TestComputationalLackArchitecture:
 class TestIntegration:
     """Integration tests for the complete system."""
 
-    def test_learning_cycle_with_frustration_breakthrough(self):
+    def test_learning_cycle_with_frustration_breakthrough(self) -> None:
         """Simulate learning cycle with frustration leading to breakthrough."""
         arch = ComputationalLackArchitecture()
 
@@ -373,8 +373,16 @@ class TestIntegration:
 
         # Simulate multiple attempts at difficult task
         for attempt in range(1, 12):
-            # Gradually improving
-            success_rate = min(0.9, attempt * 0.1)
+            # Start with low success (frustration), then improve
+            # attempts 1-3: 0.1 (not enough attempts for frustration)
+            # attempts 4-6: 0.2 (frustration detected: attempts>3 and success<0.3)
+            # attempts 7+: improving (breakthrough)
+            if attempt <= 3:
+                success_rate = 0.1
+            elif attempt <= 6:
+                success_rate = 0.2
+            else:
+                success_rate = min(0.9, (attempt - 6) * 0.15 + 0.4)
 
             experience = {
                 "goal": "master_quantum_computing",
@@ -385,13 +393,13 @@ class TestIntegration:
             result = arch.process_experience(experience)
             results.append(result)
 
-        # Should have frustration in middle attempts
-        middle_results = results[4:8]
+        # Should have frustration in middle attempts (attempts 4-6)
+        middle_results = results[3:6]  # indices 3-5 = attempts 4-6
         frustrations = [r["frustration"] for r in middle_results if r["frustration"]]
 
         assert len(frustrations) > 0, "Should detect frustration during learning"
 
-    def test_perpetual_desire_property(self):
+    def test_perpetual_desire_property(self) -> None:
         """System maintains perpetual desire (never complete)."""
         arch = ComputationalLackArchitecture()
 

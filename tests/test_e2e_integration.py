@@ -77,6 +77,10 @@ def auth_credentials():
 class TestAPIEndpoints:
     """Test API endpoints via direct HTTP calls."""
 
+    @pytest.mark.skipif(
+        not os.environ.get("RUN_E2E_TESTS"),
+        reason="E2E tests require running server (set RUN_E2E_TESTS=1)",
+    )
     @pytest.mark.asyncio
     async def test_health_endpoint(self, backend_server: str):
         """Test health endpoint is accessible."""
@@ -89,6 +93,10 @@ class TestAPIEndpoints:
             assert "status" in data
             assert data["status"] == "ok"
 
+    @pytest.mark.skipif(
+        not os.environ.get("RUN_E2E_TESTS"),
+        reason="E2E tests require running server (set RUN_E2E_TESTS=1)",
+    )
     @pytest.mark.asyncio
     async def test_authenticated_endpoint(
         self, backend_server: str, auth_credentials: Dict[str, str]
@@ -108,6 +116,10 @@ class TestAPIEndpoints:
             )
             assert response.status_code == 200
 
+    @pytest.mark.skipif(
+        not os.environ.get("RUN_E2E_TESTS"),
+        reason="E2E tests require running server (set RUN_E2E_TESTS=1)",
+    )
     @pytest.mark.asyncio
     async def test_task_orchestration_workflow(
         self, backend_server: str, auth_credentials: Dict[str, str]
@@ -141,6 +153,10 @@ class TestAPIEndpoints:
 class TestWebSocketIntegration:
     """Test WebSocket real-time communication."""
 
+    @pytest.mark.skipif(
+        not os.environ.get("RUN_E2E_TESTS"),
+        reason="E2E tests require running server (set RUN_E2E_TESTS=1)",
+    )
     @pytest.mark.asyncio
     async def test_websocket_connection(self, backend_server: str):
         """Test WebSocket connection and ping/pong."""
@@ -158,6 +174,10 @@ class TestWebSocketIntegration:
             assert data["type"] == "pong"
             assert "timestamp" in data
 
+    @pytest.mark.skipif(
+        not os.environ.get("RUN_E2E_TESTS"),
+        reason="E2E tests require running server (set RUN_E2E_TESTS=1)",
+    )
     @pytest.mark.asyncio
     async def test_websocket_subscription(self, backend_server: str):
         """Test WebSocket channel subscription."""
