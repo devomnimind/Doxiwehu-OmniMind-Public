@@ -1,7 +1,6 @@
 import json
 import os
 import random
-import string
 import time
 
 TEST_FILE = "docs/reports/benchmarks/disk_test.bin"
