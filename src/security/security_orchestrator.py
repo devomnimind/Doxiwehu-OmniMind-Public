@@ -8,7 +8,6 @@ Implements the organic security architecture with coordinated monitoring.
 """
 
 import asyncio
-import os
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
@@ -90,20 +89,8 @@ class SecurityOrchestrator:
         # SecurityAgent requires config file, make it optional for testing
         self.security_agent = None
         try:
-            # Try to find a default config path
-            config_paths = [
-                "/home/fahbrain/projects/omnimind/config/agent_config.yaml",
-                "/home/fahbrain/.omnimind/config.yaml",
-                "config/agent_config.yaml",
-            ]
-            config_path = None
-            for path in config_paths:
-                if os.path.exists(path):
-                    config_path = path
-                    break
-            if config_path:
-                self.security_agent = SecurityAgent(config_path=config_path)
-        except (TypeError, FileNotFoundError, Exception):
+            self.security_agent = SecurityAgent(config_path=None)
+        except (TypeError, FileNotFoundError):
             # SecurityAgent not available without config, continue without it
             pass
 
@@ -250,14 +237,29 @@ class SecurityOrchestrator:
             return  # SecurityAgent not available
 
         try:
-            # Monitor processes - SecurityAgent uses async monitoring
-            # suspicious_process = await self.security_agent._monitor_processes()
-            # Not available synchronously
+            # Monitor processes
+            suspicious_process = self.security_agent.monitor_processes()
+            if suspicious_process:
+                self.alerting_system.create_alert(
+                    severity=AlertSeverity.WARNING,
+                    category=AlertCategory.SECURITY,
+                    title="Suspicious Process Detected",
+                    message=f"Process: {suspicious_process.get('name')}",
+                    details=suspicious_process,
+                    source="security_agent",
+                )
 
-            # Monitor network connections - SecurityAgent uses async monitoring
-            # suspicious_connection = await self.security_agent._monitor_network()
-            # Not available synchronously
-            pass
+            # Monitor network connections
+            suspicious_connection = self.security_agent.monitor_network()
+            if suspicious_connection:
+                self.alerting_system.create_alert(
+                    severity=AlertSeverity.WARNING,
+                    category=AlertCategory.SECURITY,
+                    title="Suspicious Network Connection",
+                    message=f"Connection: {suspicious_connection.get('remote')}",
+                    details=suspicious_connection,
+                    source="security_agent",
+                )
 
         except Exception as e:
             self.audit_system.log_action(
@@ -309,13 +311,16 @@ class SecurityOrchestrator:
             web_vulnerabilities.extend(scan_result.get("findings", []))
 
         # System security
-        security_events: List[Any] = []
+        security_events = []
 
         if self.security_agent:
-            # SecurityAgent uses async monitoring, not available synchronously
-            # suspicious_process = self.security_agent.monitor_processes()
-            # suspicious_connection = self.security_agent.monitor_network()
-            pass
+            suspicious_process = self.security_agent.monitor_processes()
+            if suspicious_process:
+                security_events.append(suspicious_process)
+
+            suspicious_connection = self.security_agent.monitor_network()
+            if suspicious_connection:
+                security_events.append(suspicious_connection)
 
         # Calculate overall risk score
         risk_score = self._calculate_risk_score(
@@ -385,7 +390,7 @@ class SecurityOrchestrator:
         security_events: List[Any],
     ) -> float:
         """Calculate overall risk score (0-100)."""
-        risk: float = 0.0
+        risk = 0.0
 
         # Network health contributes (0-30 points)
         network_score = network_health.get("health_score", 100)

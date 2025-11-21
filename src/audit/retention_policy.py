@@ -77,8 +77,7 @@ class RetentionPolicyManager:
         """Load retention policy configuration."""
         if self.config_file.exists():
             with open(self.config_file, "r") as f:
-                config = json.load(f)
-                return dict(config) if isinstance(config, dict) else {}
+                return json.load(f)
 
         # Default configuration
         default_config = {
@@ -136,13 +135,8 @@ class RetentionPolicyManager:
 
     def get_retention_period(self, category: DataCategory) -> int:
         """Get retention period for a data category in days."""
-        period = self.config["retention_policies"].get(
+        return self.config["retention_policies"].get(
             category.value, RetentionPeriod.DAYS_365.value
-        )
-        return (
-            int(period)
-            if isinstance(period, (int, str))
-            else RetentionPeriod.DAYS_365.value
         )
 
     def archive_old_data(
@@ -360,7 +354,7 @@ class RetentionPolicyManager:
             category_enum = DataCategory(category)
             files = self._find_files_to_archive(category_enum, cutoff_date)
 
-            report["policies"][category] = {  # type: ignore
+            report["policies"][category] = {
                 "retention_period_days": period_days,
                 "cutoff_date": (
                     cutoff_date.isoformat() if period_days > 0 else "permanent"

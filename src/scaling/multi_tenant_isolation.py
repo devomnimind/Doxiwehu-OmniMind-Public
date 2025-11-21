@@ -497,7 +497,7 @@ class MultiTenantIsolationManager:
         }
 
         for quota_key, quota in tenant.quotas.items():
-            summary["quotas"][quota_key] = {  # type: ignore
+            summary["quotas"][quota_key] = {
                 "limit": quota.limit,
                 "current_usage": quota.current_usage,
                 "available": quota.available(),

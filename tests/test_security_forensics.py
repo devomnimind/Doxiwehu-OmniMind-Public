@@ -43,7 +43,7 @@ class TestNetworkSensors:
         assert isinstance(sensors.known_hosts, dict)
         assert isinstance(sensors.baseline_ports, dict)
 
-    def test_network_host_creation(self) -> None:
+    def test_network_host_creation(self):
         """Test network host data structure."""
         host = NetworkHost(
             ip="192.168.1.1",
@@ -57,7 +57,7 @@ class TestNetworkSensors:
         assert len(host.open_ports) == 3
         assert 22 in host.open_ports
 
-    def test_network_anomaly_creation(self) -> None:
+    def test_network_anomaly_creation(self):
         """Test network anomaly data structure."""
         anomaly = NetworkAnomaly(
             type="new_host_detected",
@@ -166,7 +166,7 @@ class TestWebScanner:
         scanner = WebScannerBrain(temp_audit_system)
         assert scanner.audit_system == temp_audit_system
 
-    def test_web_vulnerability_creation(self) -> None:
+    def test_web_vulnerability_creation(self):
         """Test web vulnerability data structure."""
         vuln = WebVulnerability(
             url="https://example.com",
