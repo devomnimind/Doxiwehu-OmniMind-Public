@@ -10,6 +10,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { apiService } from '../services/api';
 
 interface HealthCheck {
   name: string;
@@ -89,9 +90,7 @@ export function HealthDashboard() {
   const fetchHealth = async () => {
     try {
       const response = await fetch('/api/v1/health/', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: apiService.getHeaders(),
       });
       
       if (!response.ok) {
@@ -112,9 +111,7 @@ export function HealthDashboard() {
   const fetchTrend = async (checkName: string) => {
     try {
       const response = await fetch(`/api/v1/health/${checkName}/trend`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: apiService.getHeaders(),
       });
       
       if (!response.ok) {
