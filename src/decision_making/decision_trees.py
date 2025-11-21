@@ -205,8 +205,12 @@ class DecisionTree:
 
     def _evaluate_category(self, node: DecisionNode, context: Dict[str, Any]) -> str:
         """Evaluate category-based criterion."""
-        category = context.get("category", "unknown")
-        if node.categories and category in node.categories:
+        category = context.get("category")
+        if (
+            isinstance(category, str)
+            and node.categories
+            and category in node.categories
+        ):
             return category
         return "unknown"
 

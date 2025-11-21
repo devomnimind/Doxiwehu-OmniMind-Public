@@ -197,6 +197,18 @@ class MetacognitionAgent:
                 "timestamp": datetime.now().isoformat(),
             }
 
+    def _extract_suggestions(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
+        """Normalize the optimization suggestions list for type safety."""
+        raw_suggestions = report.get("optimization_suggestions")
+        if not isinstance(raw_suggestions, list):
+            return []
+
+        normalized: List[Dict[str, Any]] = []
+        for entry in raw_suggestions:
+            if isinstance(entry, dict):
+                normalized.append(entry)
+        return normalized
+
     def get_top_suggestions(self, limit: int = 5) -> List[Dict[str, Any]]:
         """Get top optimization suggestions from last analysis.
 
@@ -209,13 +221,13 @@ class MetacognitionAgent:
         if not self.analysis_history:
             # Run analysis if never run
             report = self.run_analysis()
-            return report.get("optimization_suggestions", [])[:limit]
+            return self._extract_suggestions(report)[:limit]
 
         # Return from last analysis
         # Note: Would need to persist suggestions to return from history
         # For now, run a new analysis
         report = self.run_analysis()
-        return report.get("optimization_suggestions", [])[:limit]
+        return self._extract_suggestions(report)[:limit]
 
     def should_run_analysis(self) -> bool:
         """Check if it's time to run periodic analysis.

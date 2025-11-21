@@ -19,7 +19,7 @@ License: MIT
 from __future__ import annotations
 
 import logging
-from typing import Optional
+from typing import Any, Optional, TYPE_CHECKING, cast
 import math
 
 try:
@@ -33,6 +33,11 @@ except (ImportError, OSError):
     torch = None
     nn = None
     F = None
+
+if TYPE_CHECKING:
+    from torch import Tensor as TorchTensor
+else:
+    TorchTensor = Any
 
 logger = logging.getLogger(__name__)
 
@@ -88,11 +93,11 @@ class ThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):  # type:
 
     def forward(
         self,
-        query: torch.Tensor,
-        key: torch.Tensor,
-        value: torch.Tensor,
-        mask: Optional[torch.Tensor] = None,
-    ) -> torch.Tensor:
+        query: TorchTensor,
+        key: TorchTensor,
+        value: TorchTensor,
+        mask: Optional[TorchTensor] = None,
+    ) -> TorchTensor:
         """
         Forward pass with entropy-based attention.
 
@@ -140,7 +145,7 @@ class ThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):  # type:
 
         return output
 
-    def _local_entropy(self, representations: torch.Tensor) -> torch.Tensor:
+    def _local_entropy(self, representations: TorchTensor) -> TorchTensor:
         """
         Compute local Shannon entropy for each position.
 
@@ -169,7 +174,7 @@ class ThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):  # type:
 
         return entropies
 
-    def _compute_entropy_gradients(self, entropies: torch.Tensor) -> torch.Tensor:
+    def _compute_entropy_gradients(self, entropies: TorchTensor) -> TorchTensor:
         """
         Compute gradients of entropy (direction of maximum ΔS).
 
@@ -277,11 +282,11 @@ class MultiHeadThermodynamicAttention(
 
     def forward(
         self,
-        query: torch.Tensor,
-        key: torch.Tensor,
-        value: torch.Tensor,
-        mask: Optional[torch.Tensor] = None,
-    ) -> torch.Tensor:
+        query: TorchTensor,
+        key: TorchTensor,
+        value: TorchTensor,
+        mask: Optional[TorchTensor] = None,
+    ) -> TorchTensor:
         """
         Multi-head forward pass.
 
@@ -308,7 +313,7 @@ class MultiHeadThermodynamicAttention(
         V = V.view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
 
         # Apply attention for each head
-        head_outputs = []
+        head_outputs: list[TorchTensor] = []
         for i, attention_head in enumerate(self.attention_heads):
             # Extract head-specific Q, K, V
             Q_head = Q[:, i, :, :]  # [batch, seq_len, head_dim]
@@ -329,4 +334,4 @@ class MultiHeadThermodynamicAttention(
         output = self.out_proj(concat_output)
         output = self.dropout(output)
 
-        return output
+        return cast(TorchTensor, output)

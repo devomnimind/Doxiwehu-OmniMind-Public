@@ -9,10 +9,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     g++ \
     make \
+    pkg-config \
+    libdbus-1-dev \
+    libglib2.0-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install to user directory
 COPY requirements.txt .
+COPY third_party third_party
 RUN pip install --no-cache-dir --user --upgrade pip && \
     pip install --no-cache-dir --user -r requirements.txt
 

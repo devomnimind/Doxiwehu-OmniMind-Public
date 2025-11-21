@@ -338,7 +338,9 @@ class OrchestratorAgent(ReactAgent):
         return {"completed": completed, "failed": failed}
 
     def _infer_path_from_description(self, description: str) -> Optional[str]:
-        matches = re.findall(r"\b(?:config|src|web|data|logs)/[^\s,;]+", description)
+        matches: list[str] = re.findall(
+            r"\b(?:config|src|web|data|logs)/[^\s,;]+", description
+        )
         return matches[0] if matches else None
 
     def _execute_mcp_subtask(

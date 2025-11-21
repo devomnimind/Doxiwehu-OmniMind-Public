@@ -10,7 +10,7 @@ import random
 import time
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Type, cast
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +134,10 @@ class ChaosMonkey:
             message = experiment.parameters.get(
                 "message", f"Chaos injection: {experiment.name}"
             )
-            exception_class = experiment.parameters.get("exception_class", Exception)
+            exception_class = cast(
+                Type[Exception],
+                experiment.parameters.get("exception_class", Exception),
+            )
             return exception_class(message)
 
         elif experiment.failure_type == FailureType.TIMEOUT:

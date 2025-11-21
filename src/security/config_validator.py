@@ -19,9 +19,11 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple, Type
 
 logger = logging.getLogger(__name__)
+
+TypeInfo = Type[Any] | tuple[Type[Any], ...]
 
 
 class ConfigEnvironment(str, Enum):
@@ -391,7 +393,7 @@ class ConfigurationValidator:
 
     def _check_type(self, value: Any, expected_type: str) -> bool:
         """Check if value matches expected type."""
-        type_map = {
+        type_map: dict[str, TypeInfo] = {
             "string": str,
             "number": (int, float),
             "integer": int,
@@ -400,7 +402,7 @@ class ConfigurationValidator:
             "object": dict,
         }
 
-        expected_python_type = type_map.get(expected_type)
+        expected_python_type: Optional[TypeInfo] = type_map.get(expected_type)
         if expected_python_type:
             return isinstance(value, expected_python_type)
         return True
@@ -519,7 +521,8 @@ class ConfigurationValidator:
         migration_notes = []
 
         # Define migration rules
-        migrations = {
+        MigrationRule = tuple[str, Optional[str], str]
+        migrations: dict[tuple[str, str], list[MigrationRule]] = {
             ("1.0", "2.0"): [
                 ("daemon_port", "port", "Renamed 'daemon_port' to 'port'"),
                 ("enable_ssl", "ssl_enabled", "Renamed 'enable_ssl' to 'ssl_enabled'"),

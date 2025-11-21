@@ -19,7 +19,16 @@ import platform
 import psutil
 import json
 from pathlib import Path
-from typing import Dict, Optional, Any, Literal
+from typing import Dict, Optional, Any, Literal, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from psutil import sensors_battery as _typed_sensors_battery
+else:
+
+    def _typed_sensors_battery() -> Any:
+        return psutil.sensors_battery()
+
+
 from dataclasses import dataclass, asdict
 from datetime import datetime
 
@@ -297,7 +306,7 @@ class HardwareDetector:
         # CPU governor (performance for servers, powersave for laptops)
         # Detect if on battery (laptop) or AC power
         try:
-            battery = psutil.sensors_battery()
+            battery = _typed_sensors_battery()  # type: ignore[no-untyped-call]
             if battery and not battery.power_plugged:
                 cpu_governor = "powersave"
             else:

@@ -17,7 +17,7 @@ import json
 import logging
 import time
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, cast
 
 from src.audit.immutable_audit import get_audit_system
 from src.integrations.mcp_client import MCPClient, MCPClientError
@@ -407,12 +407,13 @@ class EnhancedMCPClient:
         self, path: str, encoding: str = "utf-8", enable_compression: bool = True
     ) -> str:
         """Lê arquivo com proteção de dados e cache."""
-        return str(
+        return cast(
+            str,
             self.call_with_context_optimization(
                 "read_file",
                 {"path": path, "encoding": encoding},
                 enable_compression=enable_compression,
-            )
+            ),
         )
 
     def write_file(
@@ -422,14 +423,15 @@ class EnhancedMCPClient:
         # Write não usa cache
         protected_content, _ = self._protect_data(content)
 
-        return str(self.client.write_file(path, protected_content, encoding))
+        return self.client.write_file(path, protected_content, encoding)
 
     def list_dir(self, path: str, recursive: bool = False) -> Dict[str, Any]:
         """Lista diretório com cache."""
         result = self.call_with_context_optimization(
             "list_dir", {"path": path, "recursive": recursive}
         )
-        return dict(result) if not isinstance(result, dict) else result
+        normalized = result if isinstance(result, dict) else dict(result)
+        return cast(Dict[str, Any], normalized)
 
     def get_metrics(self) -> Dict[str, Any]:
         """Retorna métricas do cliente."""

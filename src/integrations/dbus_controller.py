@@ -1,11 +1,32 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Protocol, cast
 
 import dbus
 
 logger = logging.getLogger(__name__)
+
+
+class _PsutilInterface(Protocol):
+    def disk_partitions(self) -> list[Any]: ...
+
+    def disk_usage(self, path: str) -> Any: ...
+
+    def sensors_battery(self) -> Any: ...
+
+    def net_if_stats(self) -> dict[str, Any]: ...
+
+    def net_if_addrs(self) -> dict[str, list[Any]]: ...
+
+
+def _load_psutil() -> Optional[_PsutilInterface]:
+    try:
+        import psutil
+
+        return cast(_PsutilInterface, psutil)
+    except ImportError:
+        return None
 
 
 class DBusSessionController:
@@ -122,13 +143,14 @@ class DBusSystemController:
             Dictionary with disk usage information
         """
         try:
-            import psutil
+            psutil_module = _load_psutil()
+            if psutil_module is None:
+                return {"error": "psutil is not available"}
 
-            # Use psutil for cross-platform disk usage
             disk_info = {}
-            for partition in psutil.disk_partitions():
+            for partition in psutil_module.disk_partitions():
                 try:
-                    usage = psutil.disk_usage(partition.mountpoint)
+                    usage = psutil_module.disk_usage(partition.mountpoint)
                     disk_info[partition.mountpoint] = {
                         "device": partition.device,
                         "fstype": partition.fstype,
@@ -153,9 +175,11 @@ class DBusSystemController:
             Dictionary with battery information
         """
         try:
-            import psutil
+            psutil_module = _load_psutil()
+            if psutil_module is None:
+                return {"error": "psutil is not available"}
 
-            battery = psutil.sensors_battery()
+            battery = psutil_module.sensors_battery()
             if battery is None:
                 return {"error": "No battery detected"}
 
@@ -177,24 +201,27 @@ class DBusSystemController:
             Dictionary with network interface details
         """
         try:
-            import psutil
+            psutil_module = _load_psutil()
+            if psutil_module is None:
+                return {"error": "psutil is not available"}
 
             interfaces = {}
-            stats = psutil.net_if_stats()
-            addrs = psutil.net_if_addrs()
+            stats = psutil_module.net_if_stats()
+            addrs = psutil_module.net_if_addrs()
 
             for iface_name, iface_stats in stats.items():
+                addresses: list[Dict[str, Any]] = []
                 interface_info = {
                     "is_up": iface_stats.isup,
                     "speed": iface_stats.speed,
                     "mtu": iface_stats.mtu,
-                    "addresses": list(),
+                    "addresses": addresses,
                 }
 
                 # Add addresses if available
                 if iface_name in addrs:
                     for addr in addrs[iface_name]:
-                        interface_info["addresses"].append(
+                        addresses.append(
                             {
                                 "family": str(addr.family),
                                 "address": addr.address,

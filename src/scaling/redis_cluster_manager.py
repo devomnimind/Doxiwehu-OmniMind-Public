@@ -20,22 +20,53 @@ Example:
     >>> value = manager.get("key")
 """
 
-from typing import Dict, List, Optional, Any, Union, cast
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    TypedDict,
+    TYPE_CHECKING,
+    Type,
+    Union,
+    cast,
+)
 from dataclasses import dataclass
 from enum import Enum
 import logging
 import time
 
+# Runtime constructors are stored separately from typed aliases
+RedisClusterNodeCtor: Type[Any] | None = None
+RedisClusterCtor: Type[Any] | None = None
+SentinelCtor: Type[Any] | None = None
+
 # Redis is optional dependency for local-first operation
 try:
-    from redis.cluster import RedisCluster
-    from redis.sentinel import Sentinel
+    import redis.cluster as redis_cluster_module
+    import redis.sentinel as redis_sentinel_module
 
+    RedisClusterNodeCtor = redis_cluster_module.ClusterNode
+    RedisClusterCtor = redis_cluster_module.RedisCluster
+    SentinelCtor = redis_sentinel_module.Sentinel
     REDIS_AVAILABLE = True
 except ImportError:
     REDIS_AVAILABLE = False
-    RedisCluster = None
-    Sentinel = None
+    RedisClusterNodeCtor = None
+    RedisClusterCtor = None
+    SentinelCtor = None
+
+if TYPE_CHECKING:
+    from redis.cluster import ClusterNode as RedisClusterNodeType
+    from redis.cluster import RedisCluster as RedisClusterType
+    from redis.sentinel import Sentinel as SentinelType
+else:
+    RedisClusterType = Any
+    SentinelType = Any
+    RedisClusterNodeType = Any
+
+SentinelFactory = Callable[..., SentinelType]
 
 logger = logging.getLogger(__name__)
 
@@ -62,6 +93,13 @@ class ClusterNode:
     def is_master(self) -> bool:
         """Check if node is a master."""
         return self.role == "master"
+
+
+class ClusterNodeConfig(TypedDict):
+    """Configuration payload for connecting to a Redis Cluster node."""
+
+    host: str
+    port: int
 
 
 @dataclass
@@ -114,7 +152,7 @@ class RedisClusterManager:
 
     def __init__(
         self,
-        nodes: List[Dict[str, Any]],
+        nodes: List[ClusterNodeConfig],
         sentinel_nodes: Optional[List[tuple[str, int]]] = None,
         password: Optional[str] = None,
         max_connections: int = 50,
@@ -136,35 +174,52 @@ class RedisClusterManager:
             ImportError: If redis package not installed
             ConnectionError: If cannot connect to cluster
         """
-        if not REDIS_AVAILABLE:
-            logger.warning(
-                "Redis package not available. "
-                "Operating in local-only mode with in-memory fallback."
-            )
-            self.cluster = None
-            self.sentinel = None
-            self._local_cache: Dict[str, tuple[Any, Optional[float]]] = {}
-            self.nodes = nodes
-            return
-
+        self.cluster: Optional[RedisClusterType] = None
+        self.sentinel: Optional[SentinelType] = None
+        self._local_cache: Dict[str, tuple[Any, Optional[float]]] = {}
         self.nodes = nodes
         self.password = password
         self.max_connections = max_connections
         self.socket_timeout = socket_timeout
         self.decode_responses = decode_responses
 
-        # Statistics
-        self._stats = {"hits": 0, "misses": 0, "sets": 0, "deletes": 0, "errors": 0}
+        if not REDIS_AVAILABLE:
+            logger.warning(
+                "Redis package not available. "
+                "Operating in local-only mode with in-memory fallback."
+            )
+            return
 
-        # Initialize cluster
+        # Statistics
+        self._stats = {
+            "hits": 0,
+            "misses": 0,
+            "sets": 0,
+            "deletes": 0,
+            "errors": 0,
+        }
+
+        # Build typed startup nodes for redis-py
+        assert RedisClusterNodeCtor is not None
+        cluster_node_factory: Type[RedisClusterNodeType] = cast(
+            Type[RedisClusterNodeType], RedisClusterNodeCtor
+        )
+        startup_nodes = [
+            cluster_node_factory(node["host"], node["port"]) for node in nodes
+        ]
+
         try:
-            self.cluster = RedisCluster(
-                startup_nodes=nodes,
-                decode_responses=decode_responses,
-                skip_full_coverage_check=False,
-                max_connections=max_connections,
-                password=password,
-                socket_timeout=socket_timeout,
+            assert RedisClusterCtor is not None
+            self.cluster = cast(
+                RedisClusterType,
+                RedisClusterCtor(
+                    startup_nodes=startup_nodes,
+                    decode_responses=decode_responses,
+                    skip_full_coverage_check=False,
+                    max_connections=max_connections,
+                    password=password,
+                    socket_timeout=socket_timeout,
+                ),
             )
             logger.info(f"Connected to Redis Cluster with {len(nodes)} nodes")
         except Exception as e:
@@ -172,10 +227,10 @@ class RedisClusterManager:
             raise ConnectionError(f"Cannot connect to Redis Cluster: {e}")
 
         # Initialize sentinel if provided
-        self.sentinel = None
-        if sentinel_nodes:
+        if sentinel_nodes and SentinelCtor:
+            sentinel_factory: SentinelFactory = cast(SentinelFactory, SentinelCtor)
             try:
-                self.sentinel = Sentinel(
+                self.sentinel = sentinel_factory(
                     sentinel_nodes, socket_timeout=0.1, password=password
                 )
                 logger.info(f"Connected to Sentinel with {len(sentinel_nodes)} nodes")
@@ -207,11 +262,13 @@ class RedisClusterManager:
             self._stats["sets"] += 1
             return True
 
+        cluster = self.cluster
+        assert cluster is not None
         try:
             if ttl:
-                result = self.cluster.setex(key, ttl, value)
+                result = cluster.setex(key, ttl, value)
             else:
-                result = self.cluster.set(key, value)
+                result = cluster.set(key, value)
 
             self._stats["sets"] += 1
             return bool(result)
@@ -247,8 +304,10 @@ class RedisClusterManager:
             self._stats["misses"] += 1
             return None
 
+        cluster = self.cluster
+        assert cluster is not None
         try:
-            value = self.cluster.get(key)
+            value = cluster.get(key)
             if value is not None:
                 self._stats["hits"] += 1
             else:
@@ -282,8 +341,10 @@ class RedisClusterManager:
                 return True
             return False
 
+        cluster = self.cluster
+        assert cluster is not None
         try:
-            result = self.cluster.delete(key)
+            result = cluster.delete(key)
             self._stats["deletes"] += 1
             return bool(result)
 
@@ -322,7 +383,9 @@ class RedisClusterManager:
             return results
 
         try:
-            result: list[Any | None] = list(self.cluster.mget(keys))
+            cluster = self.cluster
+            assert cluster is not None
+            result: list[Any | None] = cast(List[Any | None], cluster.mget(keys))
             return result
         except Exception as e:
             logger.error(f"Failed to mget: {e}")
@@ -352,7 +415,9 @@ class RedisClusterManager:
             return False
 
         try:
-            return bool(self.cluster.exists(key))
+            cluster = self.cluster
+            assert cluster is not None
+            return bool(cluster.exists(key))
         except Exception as e:
             logger.error(f"Failed to check exists {key}: {e}")
             return False
@@ -383,15 +448,17 @@ class RedisClusterManager:
             "state": ClusterState.UNKNOWN.value,
         }
 
+        cluster = self.cluster
+        assert cluster is not None
         try:
-            cluster_info = self.cluster.cluster_info()
+            cluster_info = cast(Dict[str, Any], cluster.cluster_info())
             info["state"] = cluster_info.get("cluster_state", "unknown")
             info["slots_assigned"] = cluster_info.get("cluster_slots_assigned", 0)
             info["slots_ok"] = cluster_info.get("cluster_slots_ok", 0)
             info["slots_pfail"] = cluster_info.get("cluster_slots_pfail", 0)
             info["slots_fail"] = cluster_info.get("cluster_slots_fail", 0)
 
-            nodes_info = self.cluster.cluster_nodes()
+            nodes_info = cast(Any, cluster.cluster_nodes())
             if isinstance(nodes_info, str):
                 for node_line in nodes_info.split("\n"):
                     if node_line.strip():
@@ -515,7 +582,9 @@ class RedisClusterManager:
             return True
 
         try:
-            self.cluster.flushall()
+            cluster = self.cluster
+            assert cluster is not None
+            cluster.flushall()
             logger.warning("Flushed all keys from Redis Cluster")
             return True
         except Exception as e:
@@ -525,8 +594,9 @@ class RedisClusterManager:
     def close(self) -> None:
         """Close cluster connections."""
         if self.cluster:
+            cluster = self.cluster
             try:
-                self.cluster.close()
+                cluster.close()
                 logger.info("Closed Redis Cluster connections")
             except Exception as e:
                 logger.error(f"Error closing cluster: {e}")

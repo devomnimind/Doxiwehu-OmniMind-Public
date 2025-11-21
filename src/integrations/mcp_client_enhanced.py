@@ -17,7 +17,7 @@ from collections import deque
 from dataclasses import dataclass, field
 from enum import Enum
 from threading import Lock
-from typing import Any, Callable, Dict, Optional, TypeVar
+from typing import Any, Callable, Dict, Optional, TypeVar, cast
 from uuid import uuid4
 
 import structlog
@@ -406,9 +406,12 @@ class EnhancedMCPClient:
         Returns:
             File contents
         """
-        return self._request(
-            "read_file",
-            {"path": path, "encoding": encoding},
+        return cast(
+            str,
+            self._request(
+                "read_file",
+                {"path": path, "encoding": encoding},
+            ),
         )
 
     def write_file(
@@ -424,9 +427,12 @@ class EnhancedMCPClient:
         Returns:
             Write result
         """
-        return self._request(
-            "write_file",
-            {"path": path, "content": content, "encoding": encoding},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "write_file",
+                {"path": path, "content": content, "encoding": encoding},
+            ),
         )
 
     def list_dir(self, path: str, recursive: bool = False) -> Dict[str, Any]:
@@ -439,9 +445,12 @@ class EnhancedMCPClient:
         Returns:
             Directory listing
         """
-        return self._request(
-            "list_dir",
-            {"path": path, "recursive": recursive},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "list_dir",
+                {"path": path, "recursive": recursive},
+            ),
         )
 
     def stat(self, path: str) -> Dict[str, Any]:
@@ -453,9 +462,12 @@ class EnhancedMCPClient:
         Returns:
             File statistics
         """
-        return self._request(
-            "stat",
-            {"path": path},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "stat",
+                {"path": path},
+            ),
         )
 
     def get_metrics(self) -> Dict[str, Any]:
@@ -464,9 +476,12 @@ class EnhancedMCPClient:
         Returns:
             Server metrics
         """
-        return self._request(
-            "get_metrics",
-            {},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "get_metrics",
+                {},
+            ),
         )
 
     def get_stats(self) -> Dict[str, Any]:

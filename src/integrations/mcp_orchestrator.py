@@ -14,7 +14,7 @@ import subprocess
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, cast
 
 from src.audit.immutable_audit import get_audit_system
 
@@ -126,7 +126,7 @@ class MCPOrchestrator:
             with open(self.config_path, encoding="utf-8") as f:
                 config = json.load(f)
             logger.info("Configuração carregada de %s", self.config_path)
-            return config
+            return cast(Dict[str, Any], config)
         except json.JSONDecodeError as e:
             raise MCPOrchestratorError(f"Erro ao parsear configuração JSON: {e}") from e
         except Exception as e:
@@ -476,17 +476,18 @@ class MCPOrchestrator:
         Returns:
             Dict com métricas agregadas.
         """
+        servers: Dict[str, Dict[str, Any]] = {}
         metrics = {
             "timestamp": time.time(),
             "total_servers": len(self.servers),
             "enabled_servers": sum(1 for s in self.servers.values() if s.enabled),
             "running_servers": sum(1 for s in self.status.values() if s.running),
             "healthy_servers": sum(1 for s in self.status.values() if s.healthy),
-            "servers": {},
+            "servers": servers,
         }
 
         for name, status in self.status.items():
-            metrics["servers"][name] = {
+            servers[name] = {
                 "enabled": status.enabled,
                 "running": status.running,
                 "healthy": status.healthy,

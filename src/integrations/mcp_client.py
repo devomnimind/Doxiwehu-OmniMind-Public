@@ -4,7 +4,7 @@ import json
 import logging
 import urllib.error
 import urllib.request
-from typing import Any, Dict
+from typing import Any, Dict, cast
 from uuid import uuid4
 
 logger = logging.getLogger(__name__)
@@ -57,33 +57,48 @@ class MCPClient:
         return payload.get("result")
 
     def read_file(self, path: str, encoding: str = "utf-8") -> str:
-        return self._request(
-            "read_file",
-            {"path": path, "encoding": encoding},
+        return cast(
+            str,
+            self._request(
+                "read_file",
+                {"path": path, "encoding": encoding},
+            ),
         )
 
     def write_file(
         self, path: str, content: str, encoding: str = "utf-8"
     ) -> Dict[str, Any]:
-        return self._request(
-            "write_file",
-            {"path": path, "content": content, "encoding": encoding},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "write_file",
+                {"path": path, "content": content, "encoding": encoding},
+            ),
         )
 
     def list_dir(self, path: str, recursive: bool = False) -> Dict[str, Any]:
-        return self._request(
-            "list_dir",
-            {"path": path, "recursive": recursive},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "list_dir",
+                {"path": path, "recursive": recursive},
+            ),
         )
 
     def stat(self, path: str) -> Dict[str, Any]:
-        return self._request(
-            "stat",
-            {"path": path},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "stat",
+                {"path": path},
+            ),
         )
 
     def get_metrics(self) -> Dict[str, Any]:
-        return self._request(
-            "get_metrics",
-            {},
+        return cast(
+            Dict[str, Any],
+            self._request(
+                "get_metrics",
+                {},
+            ),
         )
