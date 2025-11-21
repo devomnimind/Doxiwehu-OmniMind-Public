@@ -16,6 +16,13 @@ class ApiService {
     return `Basic ${credentials}`;
   }
 
+  getHeaders(): HeadersInit {
+    return {
+      'Authorization': this.getAuthHeader(),
+      'Content-Type': 'application/json',
+    };
+  }
+
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const headers = {
       'Authorization': this.getAuthHeader(),

@@ -28,6 +28,11 @@ except ImportError:
 @pytest.fixture(scope="session")
 def backend_server():
     """Start backend server for E2E tests."""
+    # If running in production mode, use the existing server
+    if os.environ.get("OMNIMIND_ENV") == "production":
+        yield "http://localhost:8000"
+        return
+
     # Set test credentials
     os.environ["OMNIMIND_DASHBOARD_USER"] = "test_user"
     os.environ["OMNIMIND_DASHBOARD_PASS"] = "test_pass"

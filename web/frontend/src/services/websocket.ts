@@ -18,7 +18,10 @@ export type WebSocketMessage =
   | { type: 'agent_error'; data: { agent?: string; message?: string } }
   | { type: 'system_alert'; data: { message?: string } }
   | { type: 'workflow_update'; data: { task_id?: string; name?: string } }
-  | { type: 'error'; data: { message: string } };
+  | { type: 'error'; data: { message: string } }
+  | { type: 'agent_message'; data: unknown }
+  | { type: 'queue_stats'; data: unknown }
+  | { type: 'conflict_resolution'; data: unknown };
 
 export type ConnectionState = 'connecting' | 'connected' | 'disconnected' | 'error';
 

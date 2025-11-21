@@ -17,22 +17,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Copy requirements and install to user directory
 COPY requirements.txt .
 COPY third_party third_party
-RUN pip install --no-cache-dir --user --upgrade pip && \
-    pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # Stage 2: Runtime - Minimal production image
 FROM python:3.12-slim
 
 WORKDIR /app
 
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libdbus-1-3 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy installed packages from builder
-COPY --from=builder /root/.local /root/.local
+COPY --from=builder /install /usr/local
 
 # Copy application code
 COPY . .
 
-# Update PATH to include user-installed packages
-ENV PATH=/root/.local/bin:$PATH
+# Update PATH
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
