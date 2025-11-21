@@ -155,7 +155,7 @@ class DBusSystemController:
         try:
             import psutil
 
-            battery = psutil.sensors_battery()  # type: ignore[no-untyped-call]
+            battery = psutil.sensors_battery()
             if battery is None:
                 return {"error": "No battery detected"}
 
@@ -194,7 +194,7 @@ class DBusSystemController:
                 # Add addresses if available
                 if iface_name in addrs:
                     for addr in addrs[iface_name]:
-                        interface_info["addresses"].append(  # type: ignore[attr-defined]
+                        interface_info["addresses"].append(
                             {
                                 "family": str(addr.family),
                                 "address": addr.address,

@@ -409,10 +409,12 @@ class EnhancedMCPClient:
         self, path: str, encoding: str = "utf-8", enable_compression: bool = True
     ) -> str:
         """Lê arquivo com proteção de dados e cache."""
-        return self.call_with_context_optimization(  # type: ignore[return-value]
-            "read_file",
-            {"path": path, "encoding": encoding},
-            enable_compression=enable_compression,
+        return str(
+            self.call_with_context_optimization(
+                "read_file",
+                {"path": path, "encoding": encoding},
+                enable_compression=enable_compression,
+            )
         )
 
     def write_file(
@@ -422,13 +424,14 @@ class EnhancedMCPClient:
         # Write não usa cache
         protected_content, _ = self._protect_data(content)
 
-        return self.client.write_file(path, protected_content, encoding)  # type: ignore[return-value]
+        return str(self.client.write_file(path, protected_content, encoding))
 
     def list_dir(self, path: str, recursive: bool = False) -> Dict[str, Any]:
         """Lista diretório com cache."""
-        return self.call_with_context_optimization(  # type: ignore[return-value]
+        result = self.call_with_context_optimization(
             "list_dir", {"path": path, "recursive": recursive}
         )
+        return dict(result) if not isinstance(result, dict) else result
 
     def get_metrics(self) -> Dict[str, Any]:
         """Retorna métricas do cliente."""

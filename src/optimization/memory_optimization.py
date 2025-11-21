@@ -344,7 +344,7 @@ class MemoryProfiler:
         virtual_mem = psutil.virtual_memory()
 
         # Get GC stats
-        gc_stats = {
+        gc_stats: Dict[str, Any] = {
             f"generation_{i}": {
                 "count": gc.get_count()[i],
                 "threshold": gc.get_threshold()[i],

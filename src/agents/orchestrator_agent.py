@@ -759,7 +759,7 @@ Your decomposition plan:"""
                         "iteration": 1,
                     }
                 else:
-                    result = agent.run(  # type: ignore[union-attr]
+                    result = agent.run(
                         subtask["description"], max_iterations=max_iterations_per_task
                     )
 

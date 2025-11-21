@@ -22,8 +22,6 @@ import logging
 from typing import Optional
 import math
 
-import numpy as np
-
 try:
     import torch
     import torch.nn as nn
@@ -331,4 +329,4 @@ class MultiHeadThermodynamicAttention(
         output = self.out_proj(concat_output)
         output = self.dropout(output)
 
-        return output  # type: ignore
+        return output

@@ -21,8 +21,6 @@ import math
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
-import numpy as np
-
 logger = logging.getLogger(__name__)
 
 # Physical constants (normalized)

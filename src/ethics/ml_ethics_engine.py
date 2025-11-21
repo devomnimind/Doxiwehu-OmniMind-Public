@@ -232,7 +232,9 @@ class MLEthicsEngine:
         }
 
         # Performance tracking
-        self.framework_accuracy = defaultdict(lambda: {"correct": 0, "total": 0})
+        self.framework_accuracy: Dict[EthicalFramework, Dict[str, int]] = defaultdict(
+            lambda: {"correct": 0, "total": 0}
+        )
 
         logger.info("MLEthicsEngine initialized with consensus-based decision making")
 

@@ -112,7 +112,8 @@ class OpenTelemetryIntegration:
         self._initialized = False
 
         logger.info(
-            f"opentelemetry_integration_created service_name={config.service_name} environment={config.environment}"
+            f"opentelemetry_integration_created service_name={config.service_name} "
+            f"environment={config.environment}"
         )
 
     def initialize(self) -> None:
@@ -142,7 +143,8 @@ class OpenTelemetryIntegration:
 
         self._initialized = True
         logger.info(
-            f"opentelemetry_initialized service={self.config.service_name} exporters={self._get_enabled_exporters()}"
+            f"opentelemetry_initialized service={self.config.service_name} "
+            f"exporters={self._get_enabled_exporters()}"
         )
 
     def _initialize_tracing(self, resource: Resource) -> None:

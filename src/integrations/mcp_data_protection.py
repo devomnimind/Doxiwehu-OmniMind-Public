@@ -422,7 +422,7 @@ class MCPDataProtection:
         Returns:
             Dicionário sanitizado.
         """
-        sanitized = {}
+        sanitized: Dict[str, Any] = {}
 
         for key, value in data.items():
             # Remover campos sensíveis
@@ -537,19 +537,19 @@ class MCPDataProtection:
 
         elif isinstance(data, list):
             # Sanitizar lista
-            sanitized = []
+            sanitized_list: List[Any] = []
             for item in data:
                 sanitized_item, _ = self.sanitize_for_mcp(item, remove_paths)
-                sanitized.append(sanitized_item)
+                sanitized_list.append(sanitized_item)
 
             result = ProtectionResult(
                 original_size=len(str(data)),
-                protected_size=len(str(sanitized)),
+                protected_size=len(str(sanitized_list)),
                 actions_taken=["List sanitized"],
                 sanitized=True,
             )
 
-            return sanitized, result
+            return sanitized_list, result
 
         else:
             # Tipos primitivos (int, float, bool, None)

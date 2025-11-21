@@ -6,7 +6,6 @@ import pytest
 
 from src.integrations.mcp_data_protection import (
     MCPDataProtection,
-    ProtectionResult,
     SensitivePattern,
     get_data_protection,
     protect_for_mcp,

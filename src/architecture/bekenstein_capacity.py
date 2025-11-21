@@ -19,8 +19,6 @@ import logging
 import math
 from typing import Dict
 
-import numpy as np
-
 logger = logging.getLogger(__name__)
 
 # Physical constants
@@ -56,7 +54,7 @@ class BekensteinArchitect:
         """
         # Bekenstein bound: S ≤ 2πRE/(ℏc ln 2)
         # Using normalized units
-        S_max = (2 * np.pi * spatial_extent * compute_budget) / LN2
+        S_max = (2 * math.pi * spatial_extent * compute_budget) / LN2
 
         # Convert to parameters (assuming float32 = 32 bits)
         max_params = int(S_max / 32)

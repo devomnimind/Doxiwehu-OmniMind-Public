@@ -18,7 +18,7 @@ from uuid import uuid4
 try:
     import httpx
 except ImportError:
-    httpx = None  # type: ignore
+    httpx = None
 
 logger = logging.getLogger(__name__)
 
@@ -160,7 +160,7 @@ class AsyncMCPClient:
                     f"MCP request {method} (attempt {attempt + 1}/{self.max_retries})"
                 )
 
-                response = await self._client.post(  # type: ignore
+                response = await self._client.post(
                     self.endpoint, json=payload, headers=self._headers
                 )
 

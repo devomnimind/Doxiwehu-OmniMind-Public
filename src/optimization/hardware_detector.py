@@ -297,7 +297,7 @@ class HardwareDetector:
         # CPU governor (performance for servers, powersave for laptops)
         # Detect if on battery (laptop) or AC power
         try:
-            battery = psutil.sensors_battery()  # type: ignore[no-untyped-call]
+            battery = psutil.sensors_battery()
             if battery and not battery.power_plugged:
                 cpu_governor = "powersave"
             else:
