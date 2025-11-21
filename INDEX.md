@@ -46,6 +46,8 @@
 - **docs/reports/GPU_SETUP_REPORT.md** - Configuração atual GPU/CUDA ✅
 - **docs/root_docs/PHASE7_DOCUMENTATION_COMPLETION_REPORT.md** - Detalhes de conclusão Phase 7
 - **docs/root_docs/WORKSPACE_CONSOLIDATION_REPORT.md** - Reorganização recente do workspace
+- **docs/studies/ESTUDO_REPOSITORIOS_PUBLICOS.md** - Estudo para criação de 7 repositórios públicos 🚀
+- **docs/studies/RESUMO_EXECUTIVO_REPOSITORIOS.md** - Resumo executivo do estudo de repositórios
 - **docs/reports/** - Relatórios históricos e benchmarks
 
 ---
