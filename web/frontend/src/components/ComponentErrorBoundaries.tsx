@@ -9,7 +9,7 @@
  */
 
 import { ReactNode } from 'react';
-import { AdvancedErrorBoundary, ErrorReport } from './AdvancedErrorBoundary';
+import { AdvancedErrorBoundary, ErrorReport, ErrorSeverity, ErrorCategory } from './AdvancedErrorBoundary';
 
 interface ComponentErrorBoundaryProps {
   children: ReactNode;
@@ -122,7 +122,7 @@ export function TaskErrorBoundary({ children }: ComponentErrorBoundaryProps) {
  * Error Boundary for Agent Status Components
  */
 export function AgentErrorBoundary({ children }: ComponentErrorBoundaryProps) {
-  const fallback = (_error: ErrorReport, retry: () => void) => (
+  const fallback = (error: ErrorReport, retry: () => void) => (
     <div className="bg-gray-800 rounded-lg p-6 border-2 border-orange-500">
       <div className="flex items-center gap-3 mb-3">
         <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -159,7 +159,7 @@ export function AgentErrorBoundary({ children }: ComponentErrorBoundaryProps) {
  * Error Boundary for Metrics Components
  */
 export function MetricsErrorBoundary({ children }: ComponentErrorBoundaryProps) {
-  const fallback = (_error: ErrorReport, retry: () => void) => (
+  const fallback = (error: ErrorReport, retry: () => void) => (
     <div className="bg-gray-800 rounded-lg p-6 border-2 border-purple-500">
       <div className="flex items-center gap-3 mb-3">
         <svg className="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -196,7 +196,7 @@ export function MetricsErrorBoundary({ children }: ComponentErrorBoundaryProps) 
  * Error Boundary for Health Dashboard
  */
 export function HealthErrorBoundary({ children }: ComponentErrorBoundaryProps) {
-  const fallback = (_error: ErrorReport, retry: () => void) => (
+  const fallback = (error: ErrorReport, retry: () => void) => (
     <div className="bg-gray-800 rounded-lg p-6 border-2 border-red-500">
       <div className="flex items-center gap-3 mb-3">
         <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,7 +233,7 @@ export function HealthErrorBoundary({ children }: ComponentErrorBoundaryProps) {
  * Error Boundary for WebSocket Components
  */
 export function WebSocketErrorBoundary({ children }: ComponentErrorBoundaryProps) {
-  const fallback = (_error: ErrorReport, retry: () => void) => (
+  const fallback = (error: ErrorReport, retry: () => void) => (
     <div className="bg-gray-800 rounded-lg p-4 border border-blue-500">
       <div className="flex items-center gap-2 mb-2">
         <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
