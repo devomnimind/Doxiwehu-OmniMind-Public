@@ -22,7 +22,7 @@ from src.audit.immutable_audit import ImmutableAuditSystem
 class TestResourceQuota:
     """Test resource quota functionality."""
 
-    def test_quota_initialization(self) -> None:
+    def test_quota_initialization(self):
         """Test quota initialization."""
         quota = ResourceQuota(
             resource_type=ResourceType.CPU,
@@ -36,7 +36,7 @@ class TestResourceQuota:
         assert quota.current_usage == 2.0
         assert quota.unit == "cores"
 
-    def test_quota_exceeded(self) -> None:
+    def test_quota_exceeded(self):
         """Test quota exceeded detection."""
         quota = ResourceQuota(
             resource_type=ResourceType.MEMORY,
@@ -49,7 +49,7 @@ class TestResourceQuota:
         quota.current_usage = 512.0
         assert not quota.is_exceeded()
 
-    def test_quota_available(self) -> None:
+    def test_quota_available(self):
         """Test available quota calculation."""
         quota = ResourceQuota(
             resource_type=ResourceType.STORAGE,
@@ -59,7 +59,7 @@ class TestResourceQuota:
 
         assert quota.available() == 8192.0
 
-    def test_quota_usage_percentage(self) -> None:
+    def test_quota_usage_percentage(self):
         """Test usage percentage calculation."""
         quota = ResourceQuota(
             resource_type=ResourceType.CPU,
@@ -73,7 +73,7 @@ class TestResourceQuota:
 class TestTenantConfig:
     """Test tenant configuration."""
 
-    def test_tenant_config_initialization(self) -> None:
+    def test_tenant_config_initialization(self):
         """Test tenant config initialization."""
         config = TenantConfig(
             tenant_id="test123",
@@ -86,7 +86,7 @@ class TestTenantConfig:
         assert config.status == TenantStatus.ACTIVE
         assert config.created_at is not None
 
-    def test_tenant_config_to_dict(self) -> None:
+    def test_tenant_config_to_dict(self):
         """Test converting tenant config to dict."""
         quota = ResourceQuota(
             resource_type=ResourceType.CPU,

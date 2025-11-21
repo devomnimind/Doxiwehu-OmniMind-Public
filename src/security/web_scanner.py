@@ -56,10 +56,10 @@ class WebVulnerability:
     evidence: Optional[str] = None
     remediation: Optional[str] = None
     scanner: str = "custom"
-    timestamp: Optional[str] = None
-    details: Optional[Dict[str, Any]] = None
+    timestamp: str = None
+    details: Dict[str, Any] = None
 
-    def __post_init__(self) -> None:
+    def __post_init__(self):
         if self.timestamp is None:
             self.timestamp = datetime.now(timezone.utc).isoformat()
         if self.details is None:
