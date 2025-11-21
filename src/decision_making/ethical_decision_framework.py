@@ -444,7 +444,7 @@ class EthicalDecisionMaker:
         if len(option_scores) < 2:
             return 1.0
 
-        scores = [s["total_score"] for s in option_scores.values()]
+        scores = [float(s["total_score"]) for s in option_scores.values()]
         max_score = max(scores)
         second_max = sorted(scores, reverse=True)[1]
 
@@ -464,10 +464,10 @@ class EthicalDecisionMaker:
             }
 
         total_decisions = len(self.decision_history)
-        avg_score = (
+        avg_score: float = (
             sum(d.ethical_score for d in self.decision_history) / total_decisions
         )
-        avg_confidence = (
+        avg_confidence: float = (
             sum(d.confidence for d in self.decision_history) / total_decisions
         )
 

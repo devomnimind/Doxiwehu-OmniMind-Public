@@ -147,7 +147,7 @@ class QAOAOptimizer(QuantumOptimizer):
         self,
         solution: List[float],
         angle: float,
-        objective: Callable,
+        objective: Callable[[List[float]], float],
         bounds: List[Tuple[float, float]],
     ) -> List[float]:
         """Apply problem-specific unitary."""
@@ -194,7 +194,7 @@ class QAOAOptimizer(QuantumOptimizer):
 
     def _optimize_angles(
         self,
-        objective: Callable,
+        objective: Callable[[List[float]], float],
         bounds: List[Tuple[float, float]],
     ) -> None:
         """Optimize QAOA angles."""
@@ -298,7 +298,7 @@ class QuantumGradientDescent(QuantumOptimizer):
 
     def _compute_gradient(
         self,
-        objective: Callable,
+        objective: Callable[[List[float]], float],
         solution: List[float],
     ) -> List[float]:
         """Compute gradient using finite differences."""

@@ -414,7 +414,7 @@ class PolicyGradientAgent(RLAgent):
 
     def _compute_returns(self) -> List[float]:
         """Compute discounted returns for each timestep."""
-        returns = []
+        returns: List[float] = []
         G = 0.0
 
         # Compute returns in reverse order
@@ -434,7 +434,7 @@ class PolicyGradientAgent(RLAgent):
                 "baseline_value": self.baseline_value,
             }
 
-        all_params = []
+        all_params: List[float] = []
         for state_params in self.policy_params.values():
             all_params.extend(state_params.values())
 

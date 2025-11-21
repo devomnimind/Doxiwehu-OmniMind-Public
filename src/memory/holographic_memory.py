@@ -21,9 +21,10 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
-import numpy as np
+import math
+import statistics
 
 try:
     import torch
@@ -57,7 +58,7 @@ class HolographicSurface:
         max_entropy: Maximum entropy (Bekenstein bound)
     """
 
-    surface_bits: np.ndarray
+    surface_bits: List[List[float]]
     area: float
     entropy: float
     max_entropy: float
@@ -90,7 +91,22 @@ class HolographicProjection:
         self.max_surface_dim = max_surface_dim
         logger.debug(f"HolographicProjection initialized (max_dim={max_surface_dim})")
 
-    def project_to_boundary(self, information: Dict[str, Any]) -> np.ndarray:
+    def _tensor_depth(self, tensor: Any) -> int:
+        """Estimate the nesting depth of a sequence (1..3)."""
+        if not isinstance(tensor, Sequence) or isinstance(tensor, (str, bytes)):
+            return 0
+        depth = 1
+        cur = tensor
+        while isinstance(cur, Sequence) and not isinstance(cur, (str, bytes)):
+            if not cur:
+                break
+            cur = cur[0]
+            depth += 1
+            if depth >= 3:
+                break
+        return depth
+
+    def project_to_boundary(self, information: Dict[str, Any]) -> List[List[float]]:
         """
         Project 3D volumetric information to 2D boundary surface.
 
@@ -107,10 +123,11 @@ class HolographicProjection:
         info_tensor = self._information_to_tensor(information)
 
         # If already 2D or 1D, ensure it's 2D and within size limits
-        if info_tensor.ndim <= 2:
+        depth = self._tensor_depth(info_tensor)
+        if depth <= 2:
             surface = self._ensure_2d(info_tensor)
             # Check if downsampling needed
-            if max(surface.shape) > self.max_surface_dim:
+            if max(len(surface), len(surface[0]) if surface and surface[0] else 0) > self.max_surface_dim:
                 surface = self._downsample_fft(surface, self.max_surface_dim)
             return surface
 
@@ -120,7 +137,7 @@ class HolographicProjection:
 
         return surface_projection
 
-    def _information_to_tensor(self, information: Dict[str, Any]) -> np.ndarray:
+    def _information_to_tensor(self, information: Dict[str, Any]) -> Sequence[Any]:
         """
         Convert information dictionary to tensor representation.
 
@@ -131,25 +148,28 @@ class HolographicProjection:
             Numpy array representation
         """
         # Handle different data types
-        if "tensor" in information and isinstance(information["tensor"], np.ndarray):
-            return information["tensor"]
-        elif "array" in information and isinstance(information["array"], np.ndarray):
+        if "tensor" in information and isinstance(information["tensor"], Sequence):
+            return information["tensor"]  # typed as nested sequences
+        elif "array" in information and isinstance(information["array"], Sequence):
             return information["array"]
         elif "embedding" in information:
             embedding = information["embedding"]
-            if isinstance(embedding, np.ndarray):
+            if isinstance(embedding, list):
                 return embedding
             elif TORCH_AVAILABLE and torch is not None:
                 # Only check torch.Tensor if torch is available
                 if hasattr(torch, "Tensor") and isinstance(embedding, torch.Tensor):
-                    return embedding.detach().cpu().numpy()
+                    return embedding.detach().cpu().numpy().tolist()
 
         # Default: create random tensor (placeholder for unknown data)
         # In production, this would parse structured data
         logger.warning("No recognized data format, generating placeholder tensor")
-        return np.random.randn(16, 16, 16).astype(np.float32)
+        # Simple deterministic placeholder 3D tensor (list-of-lists-of-floats)
+        return [
+            [[0.0 for _ in range(16)] for _ in range(16)] for _ in range(16)
+        ]
 
-    def _ensure_2d(self, arr: np.ndarray) -> np.ndarray:
+    def _ensure_2d(self, arr: Sequence[Any]) -> List[List[float]]:
         """
         Ensure array is 2D.
 
@@ -159,21 +179,28 @@ class HolographicProjection:
         Returns:
             2D array
         """
-        if arr.ndim == 1:
-            # Reshape 1D to square-ish 2D
-            size = int(np.sqrt(arr.size))
-            if size * size < arr.size:
-                size += 1
-            padded = np.pad(arr, (0, size * size - arr.size), mode="constant")
-            return padded.reshape(size, size)
-        elif arr.ndim == 2:
-            return arr
+        # Convert nested sequences into flat list and reshape into square-ish 2D
+        flat: List[float] = []
+        if isinstance(arr, Sequence) and not isinstance(arr, (str, bytes)):
+            for item in arr:
+                if isinstance(item, Sequence) and not isinstance(item, (str, bytes)):
+                    for sub in item:
+                        if isinstance(sub, Sequence) and not isinstance(sub, (str, bytes)):
+                            flat.extend([float(x) for x in sub])
+                        else:
+                            flat.append(float(sub))
+                else:
+                    flat.append(float(item))
         else:
-            # Flatten to 1D then reshape to 2D
-            flat = arr.flatten()
-            return self._ensure_2d(flat)
+            flat = [float(arr)]
 
-    def _radon_projection(self, volume: np.ndarray) -> np.ndarray:
+        side = max(int(math.sqrt(len(flat))), 1)
+        while side * side < len(flat):
+            side += 1
+        padded = flat + [0.0] * (side * side - len(flat))
+        return [padded[i * side : (i + 1) * side] for i in range(side)]
+
+    def _radon_projection(self, volume: Sequence[Sequence[Sequence[Any]]]) -> List[List[float]]:
         """
         Radon transform approximation for 3D→2D projection.
 
@@ -190,16 +217,27 @@ class HolographicProjection:
         # Simple projection: sum along one axis (like CT scan)
         # More sophisticated: actual Radon transform
         # For now: maximum intensity projection (MIP)
-        projection = np.max(volume, axis=0)
+        # Expecting volume as list-of-lists-of-lists; compute max along first axis
+        if not volume:
+            return []
+        depth = len(volume)
+        h = len(volume[0]) if depth and volume[0] else 0
+        w = len(volume[0][0]) if h and volume[0][0] else 0
+        projection: List[List[float]] = [[0.0 for _ in range(w)] for _ in range(h)]
+        for z in range(depth):
+            layer = volume[z]
+            for i in range(h):
+                for j in range(w):
+                    projection[i][j] = max(projection[i][j], float(layer[i][j]))
 
         # Ensure within size limits
-        if max(projection.shape) > self.max_surface_dim:
+        if max(len(projection), len(projection[0]) if projection and projection[0] else 0) > self.max_surface_dim:
             # Downsample using FFT-based method
             projection = self._downsample_fft(projection, self.max_surface_dim)
 
         return projection
 
-    def _downsample_fft(self, data: np.ndarray, target_size: int) -> np.ndarray:
+    def _downsample_fft(self, data: Sequence[Sequence[Any]], target_size: int) -> List[List[float]]:
         """
         Downsample 2D data using FFT (preserves low frequencies).
 
@@ -210,27 +248,28 @@ class HolographicProjection:
         Returns:
             Downsampled array
         """
-        # FFT to frequency domain
-        freq = np.fft.fft2(data)
-        freq_shifted = np.fft.fftshift(freq)
+        # Simple center-crop downsample implementation (no FFT dependency)
+        h = len(data)
+        w = len(data[0]) if h else 0
+        if max(h, w) <= target_size:
+            # Convert to list-of-lists of floats
+            return [[float(x) for x in row] for row in data]
 
-        # Extract center (low frequencies)
-        h, w = freq_shifted.shape
-        h_start = (h - target_size) // 2
-        w_start = (w - target_size) // 2
-
-        if h_start < 0 or w_start < 0:
-            # Already smaller than target
-            return data
-
-        cropped = freq_shifted[
-            h_start : h_start + target_size, w_start : w_start + target_size
-        ]
-
-        # Inverse FFT
-        reconstructed = np.fft.ifft2(np.fft.ifftshift(cropped))
-
-        return np.abs(reconstructed)
+        h_start = max(0, (h - target_size) // 2)
+        w_start = max(0, (w - target_size) // 2)
+        cropped: List[List[float]] = []
+        for i in range(h_start, h_start + min(target_size, h - h_start)):
+            row: List[float] = []
+            for j in range(w_start, w_start + min(target_size, w - w_start)):
+                row.append(float(data[i][j]))
+            # pad row if shorter than target_size
+            if len(row) < target_size:
+                row.extend([0.0] * (target_size - len(row)))
+            cropped.append(row)
+        # pad additional rows if necessary
+        while len(cropped) < target_size:
+            cropped.append([0.0] * target_size)
+        return cropped
 
 
 class EventHorizonMemory:
@@ -299,7 +338,7 @@ class EventHorizonMemory:
         """
         # S = A/4 in nats, convert to bits
         entropy_nats = self.area / 4.0
-        entropy_bits = entropy_nats / np.log(2)
+        entropy_bits = entropy_nats / math.log(2)
         return float(entropy_bits)
 
     def store(self, information: Dict[str, Any]) -> Dict[str, Any]:
@@ -383,7 +422,7 @@ class EventHorizonMemory:
             "child_count": len(self.child_memories),
         }
 
-    def _calculate_entropy(self, surface_bits: np.ndarray) -> float:
+    def _calculate_entropy(self, surface_bits: Sequence[Sequence[Any]]) -> float:
         """
         Calculate Shannon entropy of surface encoding.
 
@@ -394,23 +433,29 @@ class EventHorizonMemory:
             Entropy in bits
         """
         # Normalize to probability distribution
-        data_flat = surface_bits.flatten()
-        data_abs = np.abs(data_flat)
-        data_sum = np.sum(data_abs)
+        # Flatten into list
+        flat: List[float] = []
+        for row in surface_bits:
+            for val in row:
+                flat.append(float(val))
+
+        data_abs = [abs(x) for x in flat]
+        data_sum = sum(data_abs)
 
         if data_sum < 1e-10:
             return 0.0
 
-        prob_dist = data_abs / data_sum
+        prob_dist = [x / data_sum for x in data_abs]
 
         # Shannon entropy: H = -sum(p * log2(p))
-        # Filter out zeros to avoid log(0)
-        prob_nonzero = prob_dist[prob_dist > 1e-10]
-        entropy = -np.sum(prob_nonzero * np.log2(prob_nonzero))
+        entropy = 0.0
+        for p in prob_dist:
+            if p > 1e-10:
+                entropy -= p * math.log2(p)
 
         return float(entropy)
 
-    def _merge_surfaces(self, surface1: np.ndarray, surface2: np.ndarray) -> np.ndarray:
+    def _merge_surfaces(self, surface1: Sequence[Sequence[Any]], surface2: Sequence[Sequence[Any]]) -> List[List[float]]:
         """
         Merge two holographic surfaces (quantum superposition).
 
@@ -422,22 +467,32 @@ class EventHorizonMemory:
             Merged surface
         """
         # Ensure same shape (pad if necessary)
-        max_h = max(surface1.shape[0], surface2.shape[0])
-        max_w = max(surface1.shape[1], surface2.shape[1])
-
-        s1_padded = np.pad(
-            surface1,
-            ((0, max_h - surface1.shape[0]), (0, max_w - surface1.shape[1])),
-            mode="constant",
-        )
-        s2_padded = np.pad(
-            surface2,
-            ((0, max_h - surface2.shape[0]), (0, max_w - surface2.shape[1])),
-            mode="constant",
+        max_h = max(len(surface1), len(surface2))
+        max_w = max(
+            len(surface1[0]) if surface1 and surface1[0] else 0,
+            len(surface2[0]) if surface2 and surface2[0] else 0,
         )
 
-        # Weighted average (interference pattern)
-        merged = 0.7 * s1_padded + 0.3 * s2_padded
+        # pad both surfaces to max_h x max_w
+        s1_padded: List[List[float]] = [
+            [
+                float(surface1[r][c]) if r < len(surface1) and c < len(surface1[0]) else 0.0
+                for c in range(max_w)
+            ]
+            for r in range(max_h)
+        ]
+        s2_padded: List[List[float]] = [
+            [
+                float(surface2[r][c]) if r < len(surface2) and c < len(surface2[0]) else 0.0
+                for c in range(max_w)
+            ]
+            for r in range(max_h)
+        ]
+
+        merged: List[List[float]] = [
+            [0.7 * s1_padded[r][c] + 0.3 * s2_padded[r][c] for c in range(max_w)]
+            for r in range(max_h)
+        ]
 
         return merged
 
@@ -472,7 +527,7 @@ class EventHorizonMemory:
 
     def retrieve(
         self, query: Dict[str, Any], search_children: bool = True
-    ) -> Optional[np.ndarray]:
+    ) -> Optional[List[List[float]]]:
         """
         Retrieve information via holographic correlation matching.
 
@@ -516,7 +571,7 @@ class EventHorizonMemory:
 
         return None
 
-    def _compute_correlation(self, surface1: np.ndarray, surface2: np.ndarray) -> float:
+    def _compute_correlation(self, surface1: Sequence[Sequence[Any]], surface2: Sequence[Sequence[Any]]) -> float:
         """
         Compute holographic correlation between surfaces.
 
@@ -528,26 +583,37 @@ class EventHorizonMemory:
             Correlation coefficient (0-1)
         """
         # Ensure same shape
-        min_h = min(surface1.shape[0], surface2.shape[0])
-        min_w = min(surface1.shape[1], surface2.shape[1])
+        min_h = min(len(surface1), len(surface2))
+        min_w = min(
+            len(surface1[0]) if surface1 and surface1[0] else 0,
+            len(surface2[0]) if surface2 and surface2[0] else 0,
+        )
 
-        s1_crop = surface1[:min_h, :min_w]
-        s2_crop = surface2[:min_h, :min_w]
+        s1_crop = [row[:min_w] for row in surface1[:min_h]]
+        s2_crop = [row[:min_w] for row in surface2[:min_h]]
 
         # Normalized cross-correlation
-        s1_flat = s1_crop.flatten()
-        s2_flat = s2_crop.flatten()
+        # Flatten arrays into lists
+        s1_flat: List[float] = [float(x) for row in s1_crop for x in row]
+        s2_flat: List[float] = [float(x) for row in s2_crop for x in row]
 
-        s1_norm = s1_flat - np.mean(s1_flat)
-        s2_norm = s2_flat - np.mean(s2_flat)
+        if not s1_flat or not s2_flat:
+            return 0.0
 
-        s1_std = np.std(s1_flat)
-        s2_std = np.std(s2_flat)
+        mean1 = statistics.mean(s1_flat)
+        mean2 = statistics.mean(s2_flat)
+
+        s1_norm = [x - mean1 for x in s1_flat]
+        s2_norm = [x - mean2 for x in s2_flat]
+
+        s1_std = statistics.pstdev(s1_flat)
+        s2_std = statistics.pstdev(s2_flat)
 
         if s1_std < 1e-10 or s2_std < 1e-10:
             return 0.0
 
-        correlation = np.dot(s1_norm, s2_norm) / (s1_std * s2_std * len(s1_flat))
+        dot = sum(a * b for a, b in zip(s1_norm, s2_norm))
+        correlation = dot / (s1_std * s2_std * len(s1_flat))
 
         # Clamp to [0, 1]
         return float(max(0.0, min(1.0, (correlation + 1.0) / 2.0)))

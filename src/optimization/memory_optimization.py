@@ -160,7 +160,7 @@ class MemoryPool(Generic[T]):
 class MemoryAllocator:
     """Custom memory allocator with tracking and pooling."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize memory allocator."""
         self.pools: Dict[str, MemoryPool[Any]] = {}
         self.stats_by_type: Dict[str, AllocationStats] = defaultdict(AllocationStats)
@@ -439,7 +439,7 @@ class MemoryProfiler:
 class MemoryOptimizer:
     """Integrated memory optimization system."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize memory optimizer."""
         self.allocator = MemoryAllocator()
         self.profiler = MemoryProfiler()

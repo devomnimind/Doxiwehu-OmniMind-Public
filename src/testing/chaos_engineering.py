@@ -312,7 +312,7 @@ def register_default_experiments() -> None:
 # Decorator for chaos-aware functions
 
 
-def chaos_aware(component: str, operation: Optional[str] = None):
+def chaos_aware(component: str, operation: Optional[str] = None) -> Callable:
     """
     Decorator to make a function chaos-aware.
 
@@ -324,11 +324,11 @@ def chaos_aware(component: str, operation: Optional[str] = None):
     def decorator(func: Callable) -> Callable:
         op_name = operation or func.__name__
 
-        async def async_wrapper(*args, **kwargs):
+        async def async_wrapper(*args: Any, **kwargs: Any) -> Any:
             inject_chaos(component, op_name)
             return await func(*args, **kwargs)
 
-        def sync_wrapper(*args, **kwargs):
+        def sync_wrapper(*args: Any, **kwargs: Any) -> Any:
             inject_chaos(component, op_name)
             return func(*args, **kwargs)
 

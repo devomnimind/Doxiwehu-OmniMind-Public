@@ -117,7 +117,7 @@ class Value:
 class DigitalMaslowHierarchy:
     """Hierarchical needs system for AI (Digital Maslow)."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the hierarchy."""
         self.needs: Dict[str, Need] = self._initialize_needs()
         self.satisfaction_history: List[Dict[str, float]] = []
@@ -347,7 +347,7 @@ class CompressionProgressTheory:
 class ArtificialCuriosityEngine:
     """Curiosity engine based on surprise and compression."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize engine."""
         self.compression_theory = CompressionProgressTheory()
         self.surprise_threshold = 0.7
@@ -739,7 +739,7 @@ class DesireDrivenMetaLearning:
 class ValueEvolutionSystem:
     """Value evolution system."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize system."""
         self.values: Dict[str, Value] = self._initialize_core_values()
         self.value_history: List[Dict] = []
@@ -913,7 +913,7 @@ class SelfTranscendenceEngine:
 class DesireEngine:
     """Main desire engine orchestrator."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize desire engine."""
         self.needs_hierarchy = DigitalMaslowHierarchy()
         self.curiosity_engine = ArtificialCuriosityEngine()

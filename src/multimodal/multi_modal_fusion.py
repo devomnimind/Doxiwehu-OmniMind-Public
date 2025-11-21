@@ -391,14 +391,14 @@ class MultiModalFusion:
         self, inputs: List[ModalityInput]
     ) -> AttentionWeights:
         """Compute attention weights for modality inputs."""
+        weights: Dict[Modality, float] = {}
+
         if not self.enable_attention:
             # Uniform weights
             weights = {inp.modality: 1.0 / len(inputs) for inp in inputs}
             return AttentionWeights(weights=weights, strategy="uniform")
 
         # Compute attention based on confidence and recency
-        weights: Dict[Modality, float] = {}
-
         for inp in inputs:
             # Weight = confidence * recency_factor
             # (simulated: in production, use learned attention)

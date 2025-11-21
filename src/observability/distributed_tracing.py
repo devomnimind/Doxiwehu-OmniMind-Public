@@ -192,7 +192,7 @@ class DistributedTracer:
         >>> tracer.export_traces()
     """
 
-    def __init__(self, config: TraceConfig):
+    def __init__(self, config: TraceConfig) -> None:
         """Initialize the distributed tracer.
 
         Args:
@@ -296,7 +296,7 @@ class DistributedTracer:
         name: str,
         kind: SpanKind = SpanKind.INTERNAL,
         attributes: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> Any:
         """Context manager for tracing an operation.
 
         Args:

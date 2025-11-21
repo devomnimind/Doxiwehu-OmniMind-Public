@@ -56,7 +56,7 @@ class DistributedSolution:
 class TaskDecomposer:
     """Decomposes problems into distributable subtasks."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize task decomposer."""
         self.logger = logger.bind(component="task_decomposer")
 

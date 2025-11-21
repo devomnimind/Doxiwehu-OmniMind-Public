@@ -216,7 +216,7 @@ class CodeAnalyzer:
 class ImpactPredictor:
     """ML-based impact prediction for goals."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize impact predictor."""
         self.historical_goals: List[Dict[str, Any]] = []
         self.model_trained = False

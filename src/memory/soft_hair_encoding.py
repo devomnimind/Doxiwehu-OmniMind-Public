@@ -1,28 +1,18 @@
 """
 Soft Hair Encoding - Low-Energy Information Storage
 
-Implements information encoding in "soft hair" (low-frequency electromagnetic modes)
-following Hawking, Perry, and Strominger's soft hair theorem.
-
-Based on:
-- Soft hair theorem (Hawking, Perry, Strominger, 2016)
-- Low-energy photon modes on black hole horizons
-- Fourier analysis and frequency decomposition
-- Quantum compression via soft modes
-
-This enables efficient compression and robust storage of high-entropy information.
-
-Author: OmniMind Development Team
-License: MIT
+Implements soft hair encoding focused on typed helpers rather than heavy numeric
+libraries so MyPy can reason about the entire compression pipeline.
 """
 
 from __future__ import annotations
 
+import cmath
 import logging
+import math
+import statistics
 from dataclasses import dataclass
-from typing import Any, Dict, Optional
-
-import numpy as np
+from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -34,109 +24,34 @@ MAX_SOFT_MODES = 256  # Maximum soft modes for memory efficiency
 
 @dataclass
 class SoftHair:
-    """
-    Soft hair dataclass - compressed information in soft modes.
-
-    Attributes:
-        soft_modes: Low-frequency Fourier coefficients
-        metadata: Additional metadata about encoding
-        compression_ratio: Achieved compression ratio
-        original_shape: Shape of original data
-    """
-
-    soft_modes: np.ndarray
+    soft_modes: List[List[complex]]
     metadata: Dict[str, Any]
     compression_ratio: float
-    original_shape: tuple
+    original_shape: Tuple[int, ...]
 
 
 class SoftHairEncoder:
-    """
-    Encode high-entropy information in low-energy soft modes.
-
-    Soft modes = low-frequency Fourier components
-    These are more robust to noise and require less storage.
-
-    Analogous to Hawking's soft hair on black hole horizons:
-    - Soft photons (low energy) carry information
-    - Information encoded imperceptibly but recoverable
-    - Resistance to perturbations
-    """
-
     def __init__(
         self,
         soft_mode_cutoff: float = DEFAULT_SOFT_MODE_CUTOFF,
         max_modes: int = MAX_SOFT_MODES,
     ) -> None:
-        """
-        Initialize soft hair encoder.
-
-        Args:
-            soft_mode_cutoff: Fraction of frequencies to keep (0-1)
-            max_modes: Maximum number of soft modes to extract
-        """
         self.soft_mode_cutoff = soft_mode_cutoff
         self.max_modes = max_modes
-
         logger.info(
-            f"SoftHairEncoder initialized: cutoff={soft_mode_cutoff}, "
-            f"max_modes={max_modes}"
+            f"SoftHairEncoder initialized: cutoff={soft_mode_cutoff}, max_modes={max_modes}"
         )
 
-    def encode_to_soft_hair(self, high_entropy_data: np.ndarray) -> SoftHair:
-        """
-        Encode complex data in low-energy soft modes.
-
-        Process:
-        1. FFT to frequency domain
-        2. Extract low-frequency components (soft modes)
-        3. Compress and store
-
-        Args:
-            high_entropy_data: High-entropy data to encode
-
-        Returns:
-            SoftHair object with compressed encoding
-        """
-        original_shape = high_entropy_data.shape
-        original_size = high_entropy_data.size
-
-        # Ensure 2D for FFT processing
-        if high_entropy_data.ndim == 1:
-            # Reshape 1D to square-ish 2D
-            size = int(np.sqrt(len(high_entropy_data)))
-            if size * size < len(high_entropy_data):
-                size += 1
-            padded = np.pad(
-                high_entropy_data,
-                (0, size * size - len(high_entropy_data)),
-                mode="constant",
-            )
-            data_2d = padded.reshape(size, size)
-        elif high_entropy_data.ndim == 2:
-            data_2d = high_entropy_data
-        else:
-            # Flatten higher dimensions
-            data_2d = high_entropy_data.reshape(high_entropy_data.shape[0], -1)
-
-        # FFT to frequency domain
-        freq_data = np.fft.fft2(data_2d)
-
-        # Extract soft modes (low frequencies)
-        soft_modes = self._extract_soft_modes(freq_data)
-
-        # Compute compression ratio
-        compressed_size = soft_modes.size
-        compression_ratio = original_size / max(compressed_size, 1)
-
-        # Extract metadata
-        metadata = self._extract_metadata(high_entropy_data, soft_modes)
-
-        logger.debug(
-            f"Encoded to soft hair: {original_size} → {compressed_size} "
-            f"(ratio={compression_ratio:.2f}x)"
-        )
-
+    def encode_to_soft_hair(self, high_entropy_data: Sequence[Any]) -> SoftHair:
+        flat_data = self._flatten(high_entropy_data)
+        original_shape = self._infer_shape(high_entropy_data)
+        data_2d = self._prepare_2d_grid(flat_data)
+        freq = self._fft2d(data_2d)
+        shifted = self._fftshift(freq)
+        soft_modes = self._extract_soft_modes(shifted)
+        compressed_size = sum(len(row) for row in soft_modes)
+        compression_ratio = len(flat_data) / max(compressed_size, 1)
+        metadata = self._extract_metadata(flat_data, soft_modes)
         return SoftHair(
             soft_modes=soft_modes,
             metadata=metadata,
@@ -144,259 +59,255 @@ class SoftHairEncoder:
             original_shape=original_shape,
         )
 
-    def _extract_soft_modes(self, freq_data: np.ndarray) -> np.ndarray:
-        """
-        Extract low-frequency components (soft modes).
+    def _flatten(self, data: Sequence[Any]) -> List[complex]:
+        flattened: List[complex] = []
+        for item in data:
+            if isinstance(item, Sequence) and not isinstance(item, (str, bytes)):
+                flattened.extend(self._flatten(item))
+            else:
+                flattened.append(complex(item))
+        return flattened
 
-        Soft modes = center of FFT spectrum (low frequencies).
+    def _infer_shape(self, data: Sequence[Any]) -> Tuple[int, ...]:
+        shape: List[int] = []
+        cursor: Any = data
+        while isinstance(cursor, Sequence) and not isinstance(cursor, (str, bytes)):
+            shape.append(len(cursor))
+            if not cursor:
+                break
+            first = cursor[0]
+            if isinstance(first, Sequence) and not isinstance(first, (str, bytes)):
+                cursor = first
+            else:
+                break
+        return tuple(shape) if shape else (len(data),)
 
-        Args:
-            freq_data: Frequency domain data
+    def _prepare_2d_grid(self, flat_data: List[complex]) -> List[List[complex]]:
+        side = max(int(math.sqrt(len(flat_data))), 1)
+        while side * side < len(flat_data):
+            side += 1
+        padded = flat_data + [0j] * (side * side - len(flat_data))
+        return [padded[row * side : (row + 1) * side] for row in range(side)]
 
-        Returns:
-            Soft mode coefficients
-        """
-        # Shift zero frequency to center
-        freq_shifted = np.fft.fftshift(freq_data)
+    def _fft2d(self, grid: List[List[complex]]) -> List[List[complex]]:
+        rows = len(grid)
+        cols = len(grid[0]) if rows else 0
+        if not rows or not cols:
+            return []
+        result: List[List[complex]] = [[0j for _ in range(cols)] for _ in range(rows)]
+        for u in range(rows):
+            for v in range(cols):
+                total = 0 + 0j
+                for x in range(rows):
+                    for y in range(cols):
+                        exponent = -2 * math.pi * ((u * x) / rows + (v * y) / cols)
+                        total += grid[x][y] * cmath.exp(exponent * 1j)
+                result[u][v] = total
+        return result
 
-        h, w = freq_shifted.shape
+    def _ifft2d(self, grid: List[List[complex]]) -> List[List[complex]]:
+        rows = len(grid)
+        cols = len(grid[0]) if rows else 0
+        if not rows or not cols:
+            return []
+        factor = rows * cols
+        result: List[List[complex]] = [[0j for _ in range(cols)] for _ in range(rows)]
+        for x in range(rows):
+            for y in range(cols):
+                total = 0 + 0j
+                for u in range(rows):
+                    for v in range(cols):
+                        exponent = 2 * math.pi * ((u * x) / rows + (v * y) / cols)
+                        total += grid[u][v] * cmath.exp(exponent * 1j)
+                result[x][y] = total / factor
+        return result
 
-        # Calculate soft mode region size
-        soft_h = max(MIN_SOFT_MODES, int(h * self.soft_mode_cutoff))
-        soft_w = max(MIN_SOFT_MODES, int(w * self.soft_mode_cutoff))
+    def _roll(
+        self,
+        grid: List[List[complex]],
+        shift_rows: int,
+        shift_cols: int,
+    ) -> List[List[complex]]:
+        rows = len(grid)
+        cols = len(grid[0]) if rows else 0
+        if not rows or not cols:
+            return []
+        shifted: List[List[complex]] = [[0j for _ in range(cols)] for _ in range(rows)]
+        for i in range(rows):
+            for j in range(cols):
+                new_i = (i + shift_rows) % rows
+                new_j = (j + shift_cols) % cols
+                shifted[new_i][new_j] = grid[i][j]
+        return shifted
 
-        # Limit to max modes
+    def _fftshift(self, grid: List[List[complex]]) -> List[List[complex]]:
+        rows = len(grid)
+        cols = len(grid[0]) if rows else 0
+        if not rows or not cols:
+            return grid
+        return self._roll(grid, rows // 2, cols // 2)
+
+    def _ifftshift(self, grid: List[List[complex]]) -> List[List[complex]]:
+        rows = len(grid)
+        cols = len(grid[0]) if rows else 0
+        if not rows or not cols:
+            return grid
+        return self._roll(grid, -rows // 2, -cols // 2)
+
+    def _extract_soft_modes(
+        self, freq_data: List[List[complex]]
+    ) -> List[List[complex]]:
+        rows = len(freq_data)
+        cols = len(freq_data[0]) if rows else 0
+        if not rows or not cols:
+            return []
+        soft_h = max(MIN_SOFT_MODES, int(rows * self.soft_mode_cutoff))
+        soft_w = max(MIN_SOFT_MODES, int(cols * self.soft_mode_cutoff))
         soft_h = min(soft_h, self.max_modes)
         soft_w = min(soft_w, self.max_modes)
-
-        # Extract center region (low frequencies)
-        h_start = (h - soft_h) // 2
-        w_start = (w - soft_w) // 2
-
-        soft_modes = freq_shifted[
-            h_start : h_start + soft_h, w_start : w_start + soft_w
+        h_start = (rows - soft_h) // 2
+        w_start = (cols - soft_w) // 2
+        return [
+            row[w_start : w_start + soft_w]
+            for row in freq_data[h_start : h_start + soft_h]
         ]
 
-        return soft_modes
-
     def _extract_metadata(
-        self, original_data: np.ndarray, soft_modes: np.ndarray
+        self, flattened: List[complex], soft_modes: List[List[complex]]
     ) -> Dict[str, Any]:
-        """
-        Extract metadata about the encoding.
-
-        Args:
-            original_data: Original data
-            soft_modes: Extracted soft modes
-
-        Returns:
-            Metadata dictionary
-        """
+        magnitudes = [abs(value) for value in flattened]
+        mean_value = float(statistics.mean(magnitudes)) if magnitudes else 0.0
+        std_value = float(statistics.stdev(magnitudes)) if len(magnitudes) > 1 else 0.0
+        mode_shape = (
+            len(soft_modes),
+            len(soft_modes[0]) if soft_modes and soft_modes[0] else 0,
+        )
         return {
-            "original_mean": float(np.mean(original_data)),
-            "original_std": float(np.std(original_data)),
-            "soft_mode_shape": soft_modes.shape,
+            "original_mean": mean_value,
+            "original_std": std_value,
+            "soft_mode_shape": mode_shape,
             "dominant_frequency": self._find_dominant_frequency(soft_modes),
         }
 
-    def _find_dominant_frequency(self, soft_modes: np.ndarray) -> float:
-        """
-        Find dominant frequency in soft modes.
-
-        Args:
-            soft_modes: Soft mode coefficients
-
-        Returns:
-            Dominant frequency index
-        """
-        # Find mode with maximum magnitude
-        magnitudes = np.abs(soft_modes)
-        max_idx = np.unravel_index(np.argmax(magnitudes), magnitudes.shape)
-
-        # Convert to frequency
-        return float(np.sqrt(max_idx[0] ** 2 + max_idx[1] ** 2))
+    def _find_dominant_frequency(self, soft_modes: List[List[complex]]) -> float:
+        max_mag = 0.0
+        max_idx: Tuple[int, int] = (0, 0)
+        for i, row in enumerate(soft_modes):
+            for j, coeff in enumerate(row):
+                magnitude = abs(coeff)
+                if magnitude > max_mag:
+                    max_mag = magnitude
+                    max_idx = (i, j)
+        return float(math.hypot(*max_idx))
 
     def decode_from_soft_hair(
-        self, soft_hair: SoftHair, target_shape: Optional[tuple] = None
-    ) -> np.ndarray:
-        """
-        Decode data from soft hair encoding.
-
-        Reconstruction via inverse FFT with soft modes.
-
-        Args:
-            soft_hair: SoftHair object
-            target_shape: Target shape for reconstruction (optional)
-
-        Returns:
-            Reconstructed data
-        """
+        self, soft_hair: SoftHair, target_shape: Optional[Tuple[int, ...]] = None
+    ) -> Sequence[Any]:
         if target_shape is None:
             target_shape = soft_hair.original_shape
-
-        # Determine reconstruction size
+        if not target_shape:
+            return []
         if len(target_shape) == 1:
-            size = int(np.sqrt(target_shape[0]))
+            size = int(math.sqrt(target_shape[0]))
             if size * size < target_shape[0]:
                 size += 1
             recon_shape = (size, size)
-        elif len(target_shape) == 2:
-            recon_shape = target_shape
+        elif len(target_shape) >= 2:
+            first = target_shape[0]
+            second = target_shape[1]
+            recon_shape = (first, second)
         else:
-            # Use first two dimensions
-            recon_shape = target_shape[:2]
-
-        # Create full frequency spectrum with soft modes in center
+            recon_shape = (1, 1)
         h, w = recon_shape
-        freq_full = np.zeros((h, w), dtype=complex)
-
-        # Place soft modes in center
-        soft_h, soft_w = soft_hair.soft_modes.shape
-        h_start = (h - soft_h) // 2
-        w_start = (w - soft_w) // 2
-
-        freq_full[h_start : h_start + soft_h, w_start : w_start + soft_w] = (
-            soft_hair.soft_modes
-        )
-
-        # Inverse FFT shift and transform
-        freq_unshifted = np.fft.ifftshift(freq_full)
-        reconstructed = np.fft.ifft2(freq_unshifted)
-
-        # Take real part
-        reconstructed_real = np.real(reconstructed)
-
-        # Reshape to target
+        if not h or not w:
+            return []
+        freq_full: List[List[complex]] = [[0j for _ in range(w)] for _ in range(h)]
+        soft_h = len(soft_hair.soft_modes)
+        soft_w = len(soft_hair.soft_modes[0]) if soft_h else 0
+        h_start = (h - soft_h) // 2 if soft_h else 0
+        w_start = (w - soft_w) // 2 if soft_w else 0
+        for r, row in enumerate(soft_hair.soft_modes):
+            for c, value in enumerate(row):
+                freq_full[h_start + r][w_start + c] = value
+        freq_unshifted = self._ifftshift(freq_full)
+        reconstructed = self._ifft2d(freq_unshifted)
+        real_flat = [cell.real for row in reconstructed for cell in row]
         if len(target_shape) == 1:
-            reconstructed_real = reconstructed_real.flatten()[: target_shape[0]]
-        elif len(target_shape) > 2:
-            # Reshape to original dimensionality
-            try:
-                reconstructed_real = reconstructed_real.reshape(target_shape)
-            except ValueError:
-                logger.warning(
-                    f"Cannot reshape to {target_shape}, " f"returning flattened"
-                )
-                reconstructed_real = reconstructed_real.flatten()[
-                    : np.prod(target_shape)
-                ]
+            return real_flat[: target_shape[0]]
+        if len(target_shape) > 2:
+            return self._reshape_nested(real_flat, target_shape)
+        return real_flat
 
-        logger.debug(f"Decoded from soft hair to shape {target_shape}")
+    def _reshape_nested(self, flat: List[float], shape: Tuple[int, ...]) -> List[Any]:
+        if not shape:
+            return []
+        total = math.prod(shape)
+        padded = flat + [0.0] * max(0, total - len(flat))
+        iterator: Iterator[float] = iter(padded)
 
-        return reconstructed_real
+        def build(current_shape: Tuple[int, ...]) -> List[Any]:
+            if len(current_shape) == 1:
+                return [next(iterator) for _ in range(current_shape[0])]
+            return [build(current_shape[1:]) for _ in range(current_shape[0])]
+
+        return build(shape)
 
     def compute_fidelity(
-        self, original: np.ndarray, reconstructed: np.ndarray
+        self,
+        original: Sequence[float],
+        reconstructed: Sequence[float],
     ) -> float:
-        """
-        Compute reconstruction fidelity.
-
-        Args:
-            original: Original data
-            reconstructed: Reconstructed data
-
-        Returns:
-            Fidelity score (0-1, higher is better)
-        """
-        # Ensure same shape
-        min_size = min(original.size, reconstructed.size)
-        orig_flat = original.flatten()[:min_size]
-        recon_flat = reconstructed.flatten()[:min_size]
-
-        # Normalized MSE
-        mse = np.mean((orig_flat - recon_flat) ** 2)
-        signal_power = np.mean(orig_flat**2)
-
+        orig_flat = list(original)
+        recon_flat = list(reconstructed)
+        min_size = min(len(orig_flat), len(recon_flat))
+        if min_size == 0:
+            return 0.0
+        diffs = [(orig_flat[i] - recon_flat[i]) ** 2 for i in range(min_size)]
+        mse = sum(diffs) / min_size
+        signal_power = sum(orig_flat[i] ** 2 for i in range(min_size)) / min_size
         if signal_power < 1e-10:
             return 0.0
-
-        # Convert to fidelity (1 - normalized error)
         fidelity = 1.0 - min(mse / signal_power, 1.0)
-
         return float(max(0.0, fidelity))
 
 
 class SoftHairMemory:
-    """
-    Memory system using soft hair encoding.
-
-    Stores information compressed in soft modes for:
-    - Efficient storage
-    - Robustness to noise
-    - Subconscious communication (low-bandwidth)
-    """
-
     def __init__(self, encoder: Optional[SoftHairEncoder] = None) -> None:
-        """
-        Initialize soft hair memory.
-
-        Args:
-            encoder: SoftHairEncoder instance (creates default if None)
-        """
         self.encoder = encoder or SoftHairEncoder()
         self.memory_bank: Dict[str, SoftHair] = {}
-
         logger.info("SoftHairMemory initialized")
 
-    def store(self, key: str, data: np.ndarray) -> SoftHair:
-        """
-        Store data in soft hair encoding.
-
-        Args:
-            key: Memory key
-            data: Data to store
-
-        Returns:
-            SoftHair encoding
-        """
+    def store(self, key: str, data: Sequence[Any]) -> SoftHair:
         soft_hair = self.encoder.encode_to_soft_hair(data)
         self.memory_bank[key] = soft_hair
-
         logger.debug(f"Stored '{key}': compression={soft_hair.compression_ratio:.2f}x")
-
         return soft_hair
 
-    def retrieve(self, key: str) -> Optional[np.ndarray]:
-        """
-        Retrieve and decode data.
-
-        Args:
-            key: Memory key
-
-        Returns:
-            Decoded data or None if not found
-        """
-        if key not in self.memory_bank:
+    def retrieve(self, key: str) -> Optional[Sequence[Any]]:
+        soft_hair = self.memory_bank.get(key)
+        if not soft_hair:
             return None
-
-        soft_hair = self.memory_bank[key]
         decoded = self.encoder.decode_from_soft_hair(soft_hair)
-
         logger.debug(f"Retrieved '{key}'")
-
         return decoded
 
     def get_compression_stats(self) -> Dict[str, Any]:
-        """
-        Get compression statistics.
-
-        Returns:
-            Dict with statistics
-        """
         if not self.memory_bank:
             return {
                 "total_items": 0,
                 "average_compression": 0.0,
                 "total_soft_modes": 0,
             }
-
-        compressions = [sh.compression_ratio for sh in self.memory_bank.values()]
-        total_modes = sum(sh.soft_modes.size for sh in self.memory_bank.values())
-
+        ratios = [sh.compression_ratio for sh in self.memory_bank.values()]
+        total_modes = sum(
+            len(sh.soft_modes) * (len(sh.soft_modes[0]) if sh.soft_modes else 0)
+            for sh in self.memory_bank.values()
+        )
+        average_ratio = sum(ratios) / len(ratios)
         return {
             "total_items": len(self.memory_bank),
-            "average_compression": np.mean(compressions),
-            "max_compression": np.max(compressions),
-            "min_compression": np.min(compressions),
+            "average_compression": average_ratio,
+            "max_compression": max(ratios),
+            "min_compression": min(ratios),
             "total_soft_modes": total_modes,
         }

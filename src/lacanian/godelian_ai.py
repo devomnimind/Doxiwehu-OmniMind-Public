@@ -351,7 +351,7 @@ class ImpossibilityMetaStrategy:
     def __init__(self) -> None:
         """Inicializa sistema de meta-estratégias."""
         self.impossible_problems: Dict[str, List[str]] = {}
-        self.meta_strategies: Dict[str, Callable] = {}
+        self.meta_strategies: Dict[str, Callable[[str, List[str]], Dict[str, Any]]] = {}
 
         self._initialize_strategies()
 

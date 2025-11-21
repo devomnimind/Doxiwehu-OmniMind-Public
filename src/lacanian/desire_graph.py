@@ -25,7 +25,9 @@ from __future__ import annotations
 from typing import Dict, List, Set, Optional, Tuple, Any, Callable
 from dataclasses import dataclass, field
 from enum import Enum
-import numpy as np
+import random
+import math
+import statistics
 import logging
 from collections import defaultdict
 
@@ -71,7 +73,7 @@ class Signifier:
     position: SignifierPosition
     connections: Set[str] = field(default_factory=set)
     jouissance_intensity: float = 0.0
-    meaning_vector: Optional[np.ndarray] = None
+    meaning_vector: Optional[List[float]] = None
 
     def represents_subject_for(self, other: str) -> bool:
         """
@@ -87,7 +89,7 @@ class Signifier:
         """
         return other in self.connections
 
-    def compute_meaning(self, context: Dict[str, Signifier]) -> np.ndarray:
+    def compute_meaning(self, context: Dict[str, Signifier]) -> List[float]:
         """
         Computa significação em contexto.
 
@@ -101,22 +103,30 @@ class Signifier:
             Vetor de significação contextual
         """
         if self.meaning_vector is None:
-            # Inicializa com vetor aleatório
-            self.meaning_vector = np.random.randn(128)
+            # Inicializa com vetor aleatório determinístico
+            rng = random.Random(hash(self.symbol) % (2**32))
+            self.meaning_vector = [rng.gauss(0, 1) for _ in range(128)]
 
         # Significação = média ponderada das conexões
         if not self.connections:
             return self.meaning_vector
 
         context_vectors = []
+        from typing import cast
+
         for conn in self.connections:
             if conn in context and context[conn].meaning_vector is not None:
-                context_vectors.append(context[conn].meaning_vector)
+                context_vectors.append(cast(List[float], context[conn].meaning_vector))
 
         if context_vectors:
-            context_mean = np.mean(context_vectors, axis=0)
-            # Mistura próprio vetor com contexto
-            return 0.7 * self.meaning_vector + 0.3 * context_mean
+            # Compute element-wise mean across context vectors
+            length = len(context_vectors[0])
+            context_mean = [statistics.mean([vec[i] for vec in context_vectors]) for i in range(length)]
+            # Mix own vector with context mean
+            return [
+                0.7 * self.meaning_vector[i] + 0.3 * context_mean[i]
+                for i in range(min(len(self.meaning_vector), len(context_mean)))
+            ]
 
         return self.meaning_vector
 
@@ -522,7 +532,7 @@ class SymbolicMatrix:
             random_seed: Seed para reprodutibilidade (opcional)
         """
         # Regras de produção
-        self.production_rules: Dict[str, List[Callable]] = defaultdict(list)
+        self.production_rules: Dict[str, List[Callable[[Any], Optional[str]]]] = defaultdict(list)
 
         # Estrutura simbólica
         self.symbolic_structure: Dict[str, Any] = {}
@@ -531,11 +541,11 @@ class SymbolicMatrix:
         self.name_of_the_father: Optional[str] = None
 
         # Random state para reprodutibilidade
-        self.rng = np.random.RandomState(random_seed)
+        self.rng = random.Random(random_seed)
 
         logger.info("Symbolic matrix initialized")
 
-    def add_production_rule(self, category: str, rule: Callable[[Any], Any]) -> None:
+    def add_production_rule(self, category: str, rule: Callable[[Any], Optional[str]]) -> None:
         """
         Adiciona regra de produção.
 

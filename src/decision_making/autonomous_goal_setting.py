@@ -95,7 +95,7 @@ class GoalHierarchy:
     - Progress propagation
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize goal hierarchy."""
         self.goals: Dict[str, Goal] = {}
         self.logger = logger.bind(component="goal_hierarchy")

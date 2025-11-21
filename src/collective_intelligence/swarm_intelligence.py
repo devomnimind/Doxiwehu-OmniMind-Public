@@ -14,7 +14,7 @@ import time
 import uuid
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, cast
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -394,7 +394,7 @@ class AntColonyOptimizer:
     def _select_next_city(
         self,
         current: int,
-        unvisited: set,
+        unvisited: set[int],
         distance_matrix: List[List[float]],
     ) -> int:
         """Select next city using pheromone and heuristic information."""

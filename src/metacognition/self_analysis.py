@@ -9,7 +9,7 @@ import json
 import logging
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, cast
 
 logger = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ class SelfAnalysis:
         try:
             with self.hash_chain_path.open("r", encoding="utf-8") as f:
                 data = json.load(f)
-                return data.get("entries", [])
+                return cast(List[Dict[str, Any]], data.get("entries", []))
         except Exception as exc:
             logger.error(f"Failed to load hash chain: {exc}")
             return []
@@ -69,8 +69,8 @@ class SelfAnalysis:
             return {"error": "No recent entries found"}
 
         # Analyze patterns
-        tool_usage = {}
-        agent_usage = {}
+        tool_usage: Dict[str, int] = {}
+        agent_usage: Dict[str, int] = {}
         success_counts = {"success": 0, "failure": 0}
 
         for entry in recent_entries:
@@ -114,7 +114,7 @@ class SelfAnalysis:
         if not entries:
             return {"error": "No audit log data available"}
 
-        execution_times = {}
+        execution_times: Dict[str, List[float]] = {}
 
         for entry in entries:
             tool = entry.get("tool_name")
@@ -157,8 +157,8 @@ class SelfAnalysis:
             return {"message": "No failures detected", "total_failures": 0}
 
         # Group failures by type
-        failure_by_tool = {}
-        failure_by_error = {}
+        failure_by_tool: Dict[str, int] = {}
+        failure_by_error: Dict[str, int] = {}
 
         for failure in failures:
             tool = failure.get("tool_name", "unknown")

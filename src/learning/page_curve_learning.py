@@ -21,9 +21,11 @@ from __future__ import annotations
 import logging
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence
 
-import numpy as np
+import random
+import math
+import statistics
 
 logger = logging.getLogger(__name__)
 
@@ -180,70 +182,50 @@ class PageCurveLearner:
         Returns:
             Von Neumann entropy (in nats)
         """
-        # Extract numerical data from model state
-        if "weights" in model_state and isinstance(model_state["weights"], np.ndarray):
-            data = model_state["weights"].flatten()
-        elif "parameters" in model_state and isinstance(
-            model_state["parameters"], np.ndarray
-        ):
-            data = model_state["parameters"].flatten()
-        elif "activations" in model_state and isinstance(
-            model_state["activations"], np.ndarray
-        ):
-            data = model_state["activations"].flatten()
+        # Extract numerical data from model state (accept sequences)
+        data_raw: List[float] = []
+        if "weights" in model_state and isinstance(model_state["weights"], Sequence):
+            data_raw = [float(x) for x in model_state["weights"]]
+        elif "parameters" in model_state and isinstance(model_state["parameters"], Sequence):
+            data_raw = [float(x) for x in model_state["parameters"]]
+        elif "activations" in model_state and isinstance(model_state["activations"], Sequence):
+            data_raw = [float(x) for x in model_state["activations"]]
         else:
-            # Default: generate from model_state hash for consistency
+            # Default deterministic fallback using a seeded random generator
             state_hash = hash(str(model_state))
-            np.random.seed(state_hash % (2**32))
-            data = np.random.randn(100)
+            rng = random.Random(state_hash % (2**32))
+            data_raw = [rng.gauss(0, 1) for _ in range(100)]
 
         # Ensure we have enough data
+        data = list(data_raw)
         if len(data) < 2:
             return 0.0
 
         # Construct density matrix approximation
         # Use covariance matrix as proxy for quantum density matrix
         # Reshape to matrix form
-        size = int(np.sqrt(len(data)))
+        size = int(math.sqrt(len(data)))
         if size * size > len(data):
-            size = int(np.sqrt(len(data)))
+            size = int(math.sqrt(len(data)))
 
         if size < 2:
             # Not enough data, use simple Shannon entropy
-            prob_dist = np.abs(data)
-            prob_dist = prob_dist / (np.sum(prob_dist) + 1e-10)
-            prob_dist = prob_dist[prob_dist > 1e-10]
-            return float(-np.sum(prob_dist * np.log(prob_dist + 1e-10)))
+            prob_dist_list = [abs(x) for x in data]
+            total_pd = sum(prob_dist_list) + 1e-10
+            prob_nonzero = [p / total_pd for p in prob_dist_list if p > 1e-10]
+            entropy_small = -sum(p * math.log(p + 1e-10) for p in prob_nonzero)
+            return float(entropy_small)
 
-        # Take subset and reshape
-        matrix_data = data[: size * size].reshape(size, size)
-
-        # Compute density matrix (normalized)
-        rho = matrix_data @ matrix_data.T
-        trace = np.trace(rho)
-        if abs(trace) > 1e-10:
-            rho = rho / trace
-        else:
+        # Simple, robust approximation: use Shannon entropy on normalized absolute values
+        abs_vals = [abs(x) for x in data]
+        total = sum(abs_vals)
+        if total < 1e-10:
             return 0.0
-
-        # Compute eigenvalues
-        try:
-            eigenvalues = np.linalg.eigvalsh(rho)
-            # Filter positive eigenvalues
-            eigenvalues = eigenvalues[eigenvalues > 1e-10]
-
-            if len(eigenvalues) == 0:
-                return 0.0
-
-            # Von Neumann entropy: S = -Tr(ρ log ρ) = -Σ λᵢ log λᵢ
-            entropy = -np.sum(eigenvalues * np.log(eigenvalues + 1e-10))
-
-            return float(np.clip(entropy, MIN_ENTROPY, None))
-
-        except np.linalg.LinAlgError:
-            logger.warning("Failed to compute eigenvalues, using fallback")
-            # Fallback to simple entropy
-            return float(np.log(size))
+        probs = [v / total for v in abs_vals if v / total > 1e-10]
+        entropy = 0.0
+        for p in probs:
+            entropy -= p * math.log(p + 1e-10)
+        return float(max(MIN_ENTROPY, entropy))
 
     def _is_page_time(self) -> bool:
         """
@@ -294,11 +276,7 @@ class PageCurveLearner:
             return False
 
         # Compute linear regression slope
-        x = np.arange(len(values))
-        y = np.array(values)
-
-        # Simple slope calculation
-        slope = np.polyfit(x, y, 1)[0]
+        slope = self._linear_regression_slope(values)
 
         return slope < -1e-6  # Negative slope = declining
 
@@ -337,11 +315,21 @@ class PageCurveLearner:
             return 0.0
 
         recent = self.entropy_history[-SMOOTHING_WINDOW:]
-        x = np.arange(len(recent))
-        y = np.array(recent)
-
-        slope = np.polyfit(x, y, 1)[0]
+        slope = self._linear_regression_slope(recent)
         return float(slope)
+
+    def _linear_regression_slope(self, values: List[float]) -> float:
+        """Compute slope of linear regression for y over x=[0..n-1]."""
+        n = len(values)
+        if n < 2:
+            return 0.0
+        x_mean = (n - 1) / 2.0
+        y_mean = statistics.mean(values)
+        cov = sum((i - x_mean) * (values[i] - y_mean) for i in range(n))
+        var = sum((i - x_mean) ** 2 for i in range(n))
+        if abs(var) < 1e-12:
+            return 0.0
+        return cov / var
 
     def _enable_information_recovery_mode(self) -> None:
         """
@@ -360,7 +348,7 @@ class PageCurveLearner:
         Returns:
             Dict with recommendations
         """
-        recommendations = {
+        recommendations: Dict[str, Any] = {
             "continue_training": True,
             "adjust_learning_rate": False,
             "increase_regularization": False,

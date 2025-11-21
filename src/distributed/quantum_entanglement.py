@@ -23,12 +23,14 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-import numpy as np
+import random
+import math
+import statistics
 
 logger = logging.getLogger(__name__)
 
 # Quantum state constants
-SQRT_2 = np.sqrt(2.0)
+SQRT_2 = math.sqrt(2.0)
 
 
 class BellState(Enum):
@@ -52,14 +54,15 @@ class AgentState:
     """
 
     agent_id: str
-    state_vector: np.ndarray  # Complex amplitude [α, β]
+    state_vector: List[complex]  # Complex amplitude [α, β]
     entangled_with: List[str]
 
     def __post_init__(self) -> None:
         """Normalize state vector."""
-        norm = np.linalg.norm(self.state_vector)
+        # compute norm
+        norm = math.sqrt(sum(abs(x) ** 2 for x in self.state_vector))
         if norm > 1e-10:
-            self.state_vector = self.state_vector / norm
+            self.state_vector = [x / norm for x in self.state_vector]
 
 
 @dataclass
@@ -121,7 +124,7 @@ class EntangledAgentNetwork:
             Created AgentState
         """
         # Initialize in equal superposition
-        state_vector = np.array([1.0, 1.0], dtype=complex) / SQRT_2
+        state_vector = [complex(1.0, 0.0) / SQRT_2, complex(1.0, 0.0) / SQRT_2]
 
         agent = AgentState(
             agent_id=agent_id, state_vector=state_vector, entangled_with=[]
@@ -164,36 +167,20 @@ class EntangledAgentNetwork:
         # Set entangled states
         if bell_state == BellState.PHI_PLUS:
             # |Φ+⟩ = (|00⟩ + |11⟩)/√2
-            self.agents[agent1_id].state_vector = (
-                np.array([1.0, 0.0], dtype=complex) / SQRT_2
-            )
-            self.agents[agent2_id].state_vector = (
-                np.array([1.0, 0.0], dtype=complex) / SQRT_2
-            )
+            self.agents[agent1_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
+            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
         elif bell_state == BellState.PHI_MINUS:
             # |Φ-⟩ = (|00⟩ - |11⟩)/√2
-            self.agents[agent1_id].state_vector = (
-                np.array([1.0, 0.0], dtype=complex) / SQRT_2
-            )
-            self.agents[agent2_id].state_vector = (
-                np.array([1.0, 0.0], dtype=complex) / SQRT_2
-            )
+            self.agents[agent1_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
+            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
         elif bell_state == BellState.PSI_PLUS:
             # |Ψ+⟩ = (|01⟩ + |10⟩)/√2
-            self.agents[agent1_id].state_vector = (
-                np.array([0.0, 1.0], dtype=complex) / SQRT_2
-            )
-            self.agents[agent2_id].state_vector = (
-                np.array([1.0, 0.0], dtype=complex) / SQRT_2
-            )
+            self.agents[agent1_id].state_vector = [complex(0.0, 0.0), complex(1.0, 0.0) / SQRT_2]
+            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
         elif bell_state == BellState.PSI_MINUS:
             # |Ψ-⟩ = (|01⟩ - |10⟩)/√2
-            self.agents[agent1_id].state_vector = (
-                np.array([0.0, 1.0], dtype=complex) / SQRT_2
-            )
-            self.agents[agent2_id].state_vector = (
-                np.array([1.0, 0.0], dtype=complex) / SQRT_2
-            )
+            self.agents[agent1_id].state_vector = [complex(0.0, 0.0), complex(1.0, 0.0) / SQRT_2]
+            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
 
         # Update entanglement lists
         self.agents[agent1_id].entangled_with.append(agent2_id)
@@ -310,7 +297,7 @@ class EntangledAgentNetwork:
         # Simulate measurement (random outcome)
         # In real quantum system, this would be determined by state
         outcomes = list(BellState)
-        measured = np.random.choice(outcomes)
+        measured = random.choice(outcomes)
 
         logger.debug(f"Bell measurement on {agent_id}: {measured.value}")
 
@@ -345,7 +332,9 @@ class EntangledAgentNetwork:
         agent2 = self.agents[agent2_id]
 
         # Compute state vector correlation
-        overlap = np.abs(np.dot(agent1.state_vector.conj(), agent2.state_vector))
+        # compute complex overlap: abs(sum(conj(a)*b))
+        overlap_complex = sum((a.conjugate() * b) for a, b in zip(agent1.state_vector, agent2.state_vector))
+        overlap = abs(overlap_complex)
 
         return float(overlap)
 
@@ -364,9 +353,7 @@ class EntangledAgentNetwork:
             len(agent.entangled_with) for agent in self.agents.values()
         ]
 
-        avg_entanglements = (
-            np.mean(entanglements_per_agent) if entanglements_per_agent else 0.0
-        )
+        avg_entanglements = statistics.mean(entanglements_per_agent) if entanglements_per_agent else 0.0
 
         return {
             "total_agents": total_agents,

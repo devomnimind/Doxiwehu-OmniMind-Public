@@ -60,7 +60,7 @@ class EmergenceDetector:
     - Complexity metrics
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize emergence detector."""
         self.detected_patterns: List[EmergentPattern] = []
         self.logger = logger.bind(component="emergence_detector")
@@ -210,7 +210,7 @@ class SelfOrganization:
     - Adaptive behavior
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize self-organizing system."""
         self.rules: List[BehaviorRule] = []
         self.agent_states: Dict[str, Dict[str, Any]] = {}
@@ -283,13 +283,8 @@ class AdaptiveSystem:
     - Resilience to changes
     """
 
-    def __init__(self, adaptation_rate: float = 0.1):
-        """
-        Initialize adaptive system.
-
-        Args:
-            adaptation_rate: Rate of adaptation (0-1)
-        """
+    def __init__(self, adaptation_rate: float = 0.1) -> None:
+        """Initialize adaptive system."""
         self.adaptation_rate = adaptation_rate
         self.performance_history: List[float] = []
         self.configuration: Dict[str, Any] = {}

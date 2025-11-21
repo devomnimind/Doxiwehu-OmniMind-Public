@@ -69,7 +69,7 @@ class PatternRecognition:
                     )
 
         # Sort by repetitions
-        patterns.sort(key=lambda p: p["repetitions"], reverse=True)
+        patterns.sort(key=lambda p: p["repetitions"], reverse=True)  # type: ignore
 
         return {
             "patterns": patterns[:5],

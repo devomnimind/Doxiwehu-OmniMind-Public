@@ -92,11 +92,11 @@ class SecurityMonitor:
 
     def __init__(
         self,
-        audit_system=None,
-        alerting_system=None,
+        audit_system: Optional[Any] = None,
+        alerting_system: Optional[Any] = None,
         monitoring_interval: int = 30,
         log_dir: Optional[str] = None,
-    ):
+    ) -> None:
         """
         Initialize Security Monitor.
 

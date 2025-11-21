@@ -59,7 +59,7 @@ class WebVulnerability:
     timestamp: str = None
     details: Dict[str, Any] = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.timestamp is None:
             self.timestamp = datetime.now(timezone.utc).isoformat()
         if self.details is None:
@@ -83,7 +83,7 @@ class WebScannerBrain:
         self,
         audit_system: Optional[ImmutableAuditSystem] = None,
         alerting_system: Optional[AlertingSystem] = None,
-    ):
+    ) -> None:
         """
         Initialize web scanner.
 

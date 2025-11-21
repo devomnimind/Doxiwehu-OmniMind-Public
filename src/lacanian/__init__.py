@@ -14,7 +14,7 @@ Author: OmniMind Development Team
 Date: November 2025
 """
 
-from typing import List
+from typing import List, Any
 
 __version__ = "1.0.0"
 __author__ = "OmniMind Development Team"
@@ -29,7 +29,7 @@ __all__: List[str] = [
 
 
 # Lazy imports to avoid circular dependencies
-def __getattr__(name: str):
+def __getattr__(name: str) -> Any:
     """Lazy import of submodules."""
     if name in __all__:
         if name == "ComputationalLackArchitecture":

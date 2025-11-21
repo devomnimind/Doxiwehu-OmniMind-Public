@@ -19,7 +19,8 @@ License: MIT
 from __future__ import annotations
 
 import logging
-from dataclasses import dataclass
+import random
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -51,15 +52,12 @@ class KnowledgeItem:
     mass: float
     last_used: datetime
     use_count: int = 0
-    correlations: List[str] = None
-    creation_time: datetime = None
+    correlations: List[str] = field(default_factory=list)
+    creation_time: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def __post_init__(self) -> None:
         """Initialize defaults."""
-        if self.correlations is None:
-            self.correlations = []
-        if self.creation_time is None:
-            self.creation_time = datetime.now(timezone.utc)
+        pass
 
 
 @dataclass
@@ -146,7 +144,7 @@ class HawkingMotivationEngine:
         # Rate proportional to temperature (hotter = faster evaporation)
         rate = HAWKING_CONSTANT * temp / MAX_TEMPERATURE
 
-        return float(np.clip(rate, 0.0, 1.0))
+        return float(max(0.0, min(rate, 1.0)))
 
     def add_knowledge(self, knowledge_id: str, content: str, mass: float = 1.0) -> None:
         """
@@ -243,7 +241,7 @@ class HawkingMotivationEngine:
                 evap_prob = self.evaporation_rate / max(item.mass, 0.1)
                 evap_prob = min(evap_prob, 1.0)
 
-                if np.random.random() < evap_prob:
+                if random.random() < evap_prob:
                     # Extract correlations before evaporation
                     correlations = self._extract_correlations(item)
 
@@ -308,7 +306,7 @@ class HawkingMotivationEngine:
         preserved = []
 
         for corr_id in item.correlations:
-            if np.random.random() < self.correlation_strength:
+            if random.random() < self.correlation_strength:
                 preserved.append(corr_id)
 
         return preserved
@@ -340,7 +338,7 @@ class HawkingMotivationEngine:
 
         total = (recency_frustration + mass_frustration + usage_frustration) / 3.0
 
-        return float(np.clip(total, 0.0, 1.0))
+        return float(max(0.0, min(total, 1.0)))
 
     def _generate_urgency(self, correlations: List[str]) -> float:
         """
@@ -366,7 +364,7 @@ class HawkingMotivationEngine:
                 if time_unused > self.evaporation_threshold.total_seconds() * 0.5:
                     urgency += 0.1
 
-        return float(np.clip(urgency, 0.0, 1.0))
+        return float(max(0.0, min(urgency, 1.0)))
 
     def _compute_urgency_factor(self, evaporated_ids: List[str]) -> float:
         """
@@ -392,7 +390,7 @@ class HawkingMotivationEngine:
 
         urgency = recent_evaporations / 10.0
 
-        return float(np.clip(urgency, 0.0, 1.0))
+        return float(max(0.0, min(urgency, 1.0)))
 
     def _identify_at_risk_correlations(self) -> List[str]:
         """
@@ -445,12 +443,14 @@ class HawkingMotivationEngine:
             "at_risk_count": len(at_risk),
             "at_risk_ids": at_risk,
             "average_mass": (
-                np.mean([item.mass for item in self.knowledge_base.values()])
+                sum(item.mass for item in self.knowledge_base.values())
+                / len(self.knowledge_base)
                 if self.knowledge_base
                 else 0.0
             ),
             "average_use_count": (
-                np.mean([item.use_count for item in self.knowledge_base.values()])
+                sum(item.use_count for item in self.knowledge_base.values())
+                / len(self.knowledge_base)
                 if self.knowledge_base
                 else 0.0
             ),

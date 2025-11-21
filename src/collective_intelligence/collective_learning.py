@@ -11,7 +11,7 @@ License: MIT
 import time
 import uuid
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -115,7 +115,7 @@ class ConsensusLearning:
 
         # Simple averaging of model parameters
         consensus = {}
-        all_keys = set()
+        all_keys: set[str] = set()
         for model in self.agent_models.values():
             all_keys.update(model.keys())
 
@@ -210,7 +210,7 @@ class FederatedLearning:
 
         # Federated averaging
         aggregated = {}
-        all_keys = set()
+        all_keys: set[str] = set()
         for model in self.local_models.values():
             all_keys.update(model.keys())
 
@@ -264,10 +264,11 @@ class CollectiveLearner:
         self.num_agents = num_agents
         self.use_federated = use_federated
 
-        if use_federated:
-            self.learner = FederatedLearning(num_agents)
-        else:
-            self.learner = ConsensusLearning(num_agents)
+        self.learner: Union[FederatedLearning, ConsensusLearning] = (
+            FederatedLearning(num_agents)
+            if use_federated
+            else ConsensusLearning(num_agents)
+        )
 
         self.logger = logger.bind(
             component="collective_learner",
@@ -364,7 +365,7 @@ class MultiAgentTrainer:
             self.collective_learner.learn_from_experience(exp.agent_id, exp)
 
         # Synchronize collective knowledge
-        model = self.collective_learner.synchronize()
+        self.collective_learner.synchronize()
 
         self.training_episodes += 1
 

@@ -66,7 +66,7 @@ class SuperpositionProcessor:
     - Interference patterns
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize superposition processor."""
         self.logger = logger.bind(component="superposition_processor")
 
@@ -143,7 +143,7 @@ class QuantumParallelism:
     - Quantum speedup simulation
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize quantum parallelism."""
         self.logger = logger.bind(component="quantum_parallelism")
 
@@ -206,7 +206,7 @@ class StateAmplification:
     - Probability enhancement
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize state amplification."""
         self.logger = logger.bind(component="state_amplification")
 

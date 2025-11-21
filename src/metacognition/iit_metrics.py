@@ -10,11 +10,11 @@ This module implements:
 from __future__ import annotations
 
 import logging
+import math
+import statistics
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Tuple
-
-import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -27,15 +27,15 @@ class SystemState:
     elements: Dict[str, bool]  # Element name -> active/inactive
     timestamp: datetime = field(default_factory=datetime.now)
 
-    def to_vector(self) -> np.ndarray:
+    def to_vector(self) -> List[int]:
         """Convert state to binary vector."""
-        return np.array([1 if v else 0 for v in self.elements.values()])
+        return [1 if v else 0 for v in self.elements.values()]
 
     def hamming_distance(self, other: SystemState) -> int:
         """Calculate Hamming distance to another state."""
         v1 = self.to_vector()
         v2 = other.to_vector()
-        return int(np.sum(v1 != v2))
+        return sum(1 for a, b in zip(v1, v2) if a != b)
 
 
 @dataclass
@@ -84,6 +84,31 @@ class IITAnalyzer:
 
         logger.info("IITAnalyzer initialized")
 
+    def _linear_regression_slope(self, x: List[int], y: List[float]) -> float:
+        """Calculate slope of linear regression.
+
+        Args:
+            x: X values
+            y: Y values
+
+        Returns:
+            Slope
+        """
+        n = len(x)
+        if n < 2:
+            return 0.0
+
+        x_sum = sum(x)
+        y_sum = sum(y)
+        xy_sum = sum(xi * yi for xi, yi in zip(x, y))
+        x2_sum = sum(xi * xi for xi in x)
+
+        denominator = n * x2_sum - x_sum * x_sum
+        if denominator == 0:
+            return 0.0
+
+        return (n * xy_sum - x_sum * y_sum) / denominator
+
     def record_state(self, state: SystemState) -> None:
         """Record a system state.
 
@@ -126,7 +151,7 @@ class IITAnalyzer:
         probabilities = [count / total for count in unique_states.values()]
 
         # Shannon entropy: H = -Σ(p * log2(p))
-        entropy = -sum(p * np.log2(p) for p in probabilities if p > 0)
+        entropy = -sum(p * math.log2(p) for p in probabilities if p > 0)
 
         return float(entropy)
 
@@ -255,7 +280,7 @@ class IITAnalyzer:
 
         complexity = entropy * (unique_states / max_unique)
 
-        return complexity
+        return float(complexity)
 
     def calculate_integration(self, states: List[SystemState]) -> float:
         """Calculate information integration level.
@@ -302,7 +327,7 @@ class IITAnalyzer:
         # Differentiation as fraction of state space explored
         differentiation = unique_states / max_states
 
-        return differentiation
+        return float(differentiation)
 
     def calculate_emergence_level(self, phi: float, complexity: float) -> float:
         """Calculate consciousness emergence level.
@@ -426,9 +451,9 @@ class IITAnalyzer:
 
         # Calculate trend (linear regression slope)
         if len(recent) >= 2:
-            x = np.arange(len(recent))
-            phi_trend = np.polyfit(x, phi_values, 1)[0]  # Slope
-            emergence_trend = np.polyfit(x, emergence_values, 1)[0]
+            x = list(range(len(recent)))
+            phi_trend = self._linear_regression_slope(x, phi_values)
+            emergence_trend = self._linear_regression_slope(x, emergence_values)
         else:
             phi_trend = 0.0
             emergence_trend = 0.0
@@ -443,12 +468,14 @@ class IITAnalyzer:
 
         return {
             "trend": trend,
-            "phi_avg": float(np.mean(phi_values)),
-            "phi_std": float(np.std(phi_values)),
-            "emergence_avg": float(np.mean(emergence_values)),
-            "emergence_std": float(np.std(emergence_values)),
-            "phi_trend": float(phi_trend),
-            "emergence_trend": float(emergence_trend),
+            "phi_avg": sum(phi_values) / len(phi_values),
+            "phi_std": statistics.stdev(phi_values) if len(phi_values) > 1 else 0.0,
+            "emergence_avg": sum(emergence_values) / len(emergence_values),
+            "emergence_std": (
+                statistics.stdev(emergence_values) if len(emergence_values) > 1 else 0.0
+            ),
+            "phi_trend": phi_trend,
+            "emergence_trend": emergence_trend,
             "samples": len(recent),
         }
 

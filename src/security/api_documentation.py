@@ -635,13 +635,13 @@ class APIDocumentationGenerator:
             )
 
             # Group by tags
-            by_tag: Dict[str, List[APIEndpoint]] = {}
+            by_tag = {}  # type: ignore[var-annotated]
             for methods in self.endpoints.values():
                 for endpoint in methods.values():
                     for tag in endpoint.tags:
                         if tag not in by_tag:
-                            by_tag[tag] = []
-                        by_tag[tag].append(endpoint)
+                            by_tag[tag] = []  # type: ignore[assignment]
+                        by_tag[tag].append(endpoint)  # type: ignore[assignment]
 
             # Write sections
             for tag, endpoints in sorted(by_tag.items()):
@@ -1043,7 +1043,7 @@ if (typeof module !== 'undefined' && module.exports) {
             folder = {"name": tag, "item": []}
 
             for endpoint in endpoints:
-                item = {
+                item: Dict[str, Any] = {
                     "name": endpoint.summary,
                     "request": {
                         "method": endpoint.method,
@@ -1064,9 +1064,9 @@ if (typeof module !== 'undefined' && module.exports) {
                         "options": {"raw": {"language": "json"}},
                     }
 
-                folder["item"].append(item)
+                folder["item"].append(item)  # type: ignore[attr-defined]
 
-            collection["item"].append(folder)
+            collection["item"].append(folder)  # type: ignore[attr-defined]
 
         output_path = self.output_dir / "OmniMind_API.postman_collection.json"
         with output_path.open("w") as f:

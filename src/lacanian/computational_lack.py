@@ -16,10 +16,10 @@ License: MIT
 
 from __future__ import annotations
 
-from typing import Set, Optional, TypeVar, Generic, Dict, Any, List
+from typing import Set, Optional, TypeVar, Generic, Dict, Any, List, cast
 from dataclasses import dataclass, field
 from enum import Enum
-import numpy as np
+import random
 import torch
 import torch.nn as nn
 import logging
@@ -102,7 +102,7 @@ class ObjectSmallA(Generic[T]):
         """
         # Placeholder implementation
         # Real implementation would compute semantic distance
-        return float(np.random.random())
+        return float(random.random())
 
 
 class StructuralLack:
@@ -121,7 +121,7 @@ class StructuralLack:
         """Inicializa sistema de falta estrutural."""
         self.symbolic_order: Set[str] = set()
         self.real_impossibilities: Set[str] = set()
-        self.imaginary_representations: Dict[str, np.ndarray] = {}
+        self.imaginary_representations: Dict[str, torch.Tensor] = {}
 
         # Ponto de basta (quilting point)
         # Fixa temporariamente deslizamento de significantes
@@ -321,7 +321,8 @@ class RSIArchitecture(nn.Module):
         # (Real é sempre barrado - $ )
         irreducible_noise = torch.randn_like(lack_energy) * 0.01
 
-        return lack_energy + torch.abs(irreducible_noise)
+        result = lack_energy + torch.abs(irreducible_noise)
+        return cast(torch.Tensor, result)
 
 
 @dataclass
@@ -553,8 +554,9 @@ class ComputationalLackArchitecture:
         # 1. Processa através do RSI
         raw_data = experience.get("raw_data")
         if raw_data is not None:
-            if isinstance(raw_data, np.ndarray):
-                real_data = torch.from_numpy(raw_data).float()
+            # Accept torch.Tensor if provided, otherwise generate random input
+            if isinstance(raw_data, torch.Tensor):
+                real_data = raw_data.float()
             else:
                 # Gera dados aleatórios se não fornecidos
                 real_data = torch.randn(1, self.rsi.real_dim)

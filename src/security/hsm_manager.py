@@ -37,7 +37,7 @@ class HSMManager:
     In production, this would interface with actual HSM hardware.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.keys: Dict[str, Dict[str, Any]] = {}
         self.master_key = self._generate_master_key()
         self.key_counter = 0

@@ -39,7 +39,7 @@ class NetworkHost:
     services: List[str] = None
     last_seen: str = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.open_ports is None:
             self.open_ports = []
         if self.services is None:
@@ -60,7 +60,7 @@ class NetworkAnomaly:
     timestamp: str = None
     details: Dict[str, Any] = None
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.timestamp is None:
             self.timestamp = datetime.now(timezone.utc).isoformat()
         if self.details is None:
