@@ -7,7 +7,6 @@ This module provides self-reflective AI capabilities including:
 - Optimization suggestions
 - Proactive goal generation
 - Homeostatic resource management
-- Intelligent goal generation with impact prediction
 """
 
 from __future__ import annotations
@@ -22,18 +21,14 @@ __all__ = [
 ]
 
 # IIT (Integrated Information Theory) metrics
-
-# Intelligent goal generation
-
-__all__.extend(
-    [
-        "IITAnalyzer",
-        "PhiMetrics",
-        "SystemState",
-        "CodeAnalyzer",
-        "ImpactMetrics",
-        "ImpactPredictor",
-        "IntelligentGoalEngine",
-        "RepositoryAnalysis",
-    ]
+from src.metacognition.iit_metrics import (
+    IITAnalyzer,
+    PhiMetrics,
+    SystemState,
 )
+
+__all__.extend([
+    "IITAnalyzer",
+    "PhiMetrics",
+    "SystemState",
+])
