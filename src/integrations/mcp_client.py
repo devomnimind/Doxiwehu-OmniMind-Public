@@ -57,20 +57,33 @@ class MCPClient:
         return payload.get("result")
 
     def read_file(self, path: str, encoding: str = "utf-8") -> str:
-        return self._request("read_file", {"path": path, "encoding": encoding})  # type: ignore[no-any-return]
+        return self._request(
+            "read_file",
+            {"path": path, "encoding": encoding},
+        )
 
     def write_file(
         self, path: str, content: str, encoding: str = "utf-8"
     ) -> Dict[str, Any]:
-        return self._request(  # type: ignore[no-any-return]
-            "write_file", {"path": path, "content": content, "encoding": encoding}
+        return self._request(
+            "write_file",
+            {"path": path, "content": content, "encoding": encoding},
         )
 
     def list_dir(self, path: str, recursive: bool = False) -> Dict[str, Any]:
-        return self._request("list_dir", {"path": path, "recursive": recursive})  # type: ignore[no-any-return]
+        return self._request(
+            "list_dir",
+            {"path": path, "recursive": recursive},
+        )
 
     def stat(self, path: str) -> Dict[str, Any]:
-        return self._request("stat", {"path": path})  # type: ignore[no-any-return]
+        return self._request(
+            "stat",
+            {"path": path},
+        )
 
     def get_metrics(self) -> Dict[str, Any]:
-        return self._request("get_metrics", {})  # type: ignore[no-any-return]
+        return self._request(
+            "get_metrics",
+            {},
+        )

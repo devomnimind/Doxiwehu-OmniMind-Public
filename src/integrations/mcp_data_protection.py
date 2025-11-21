@@ -10,13 +10,11 @@ Baseado nos requisitos de segurança LGPD e zero vazamento de dados.
 from __future__ import annotations
 
 import hashlib
-import json
 import logging
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Pattern, Set, Tuple
+from typing import Any, Dict, List, Optional, Pattern, Tuple
 
 from cryptography.fernet import Fernet
 
@@ -134,7 +132,11 @@ class MCPDataProtection:
         ),
         SensitivePattern(
             name="ipv4_private",
-            pattern=r"\b(10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}|192\.168\.\d{1,3}\.\d{1,3})\b",
+            pattern=(
+                r"\b(10\.\d{1,3}\.\d{1,3}\.\d{1,3}"
+                r"|172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3}"
+                r"|192\.168\.\d{1,3}\.\d{1,3})\b"
+            ),
             severity="medium",
             action="mask",
             description="Private IPv4 addresses",

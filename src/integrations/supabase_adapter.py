@@ -3,9 +3,18 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, cast
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    cast,
+)
 
-# Use TYPE_CHECKING to avoid runtime circular dependencies and handle optional imports
+# Use TYPE_CHECKING to avoid runtime circular dependencies.
+# It also prevents optional imports from executing at runtime.
 if TYPE_CHECKING:
     from postgrest.exceptions import APIError
     from supabase import Client, create_client
@@ -17,7 +26,8 @@ else:
         from supabase import Client, create_client
         from supabase.lib.client_options import ClientOptions as SyncClientOptions
     except ImportError:
-        # Define dummy classes and functions to avoid runtime errors if supabase-py is not installed.
+        # Define dummy classes and functions to avoid runtime errors if
+        # supabase-py is not installed.
         # This code will not be seen by mypy in strict mode.
         class APIError(Exception):
             pass

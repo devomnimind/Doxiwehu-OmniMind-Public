@@ -420,7 +420,7 @@ class MCPOrchestrator:
 
         Returns:
             True se saudável, False caso contrário.
-            
+
         Note:
             Implementação atual verifica apenas se o processo está rodando.
             TODO: Implementar health check via endpoint HTTP/gRPC para verificação

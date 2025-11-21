@@ -16,9 +16,7 @@ import hashlib
 import json
 import logging
 import time
-from collections import defaultdict
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
 from src.audit.immutable_audit import get_audit_system
