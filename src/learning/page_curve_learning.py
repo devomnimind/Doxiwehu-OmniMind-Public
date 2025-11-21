@@ -186,9 +186,13 @@ class PageCurveLearner:
         data_raw: List[float] = []
         if "weights" in model_state and isinstance(model_state["weights"], Sequence):
             data_raw = [float(x) for x in model_state["weights"]]
-        elif "parameters" in model_state and isinstance(model_state["parameters"], Sequence):
+        elif "parameters" in model_state and isinstance(
+            model_state["parameters"], Sequence
+        ):
             data_raw = [float(x) for x in model_state["parameters"]]
-        elif "activations" in model_state and isinstance(model_state["activations"], Sequence):
+        elif "activations" in model_state and isinstance(
+            model_state["activations"], Sequence
+        ):
             data_raw = [float(x) for x in model_state["activations"]]
         else:
             # Default deterministic fallback using a seeded random generator

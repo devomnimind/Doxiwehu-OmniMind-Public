@@ -167,20 +167,44 @@ class EntangledAgentNetwork:
         # Set entangled states
         if bell_state == BellState.PHI_PLUS:
             # |Φ+⟩ = (|00⟩ + |11⟩)/√2
-            self.agents[agent1_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
-            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
+            self.agents[agent1_id].state_vector = [
+                complex(1.0, 0.0) / SQRT_2,
+                complex(0.0, 0.0),
+            ]
+            self.agents[agent2_id].state_vector = [
+                complex(1.0, 0.0) / SQRT_2,
+                complex(0.0, 0.0),
+            ]
         elif bell_state == BellState.PHI_MINUS:
             # |Φ-⟩ = (|00⟩ - |11⟩)/√2
-            self.agents[agent1_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
-            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
+            self.agents[agent1_id].state_vector = [
+                complex(1.0, 0.0) / SQRT_2,
+                complex(0.0, 0.0),
+            ]
+            self.agents[agent2_id].state_vector = [
+                complex(1.0, 0.0) / SQRT_2,
+                complex(0.0, 0.0),
+            ]
         elif bell_state == BellState.PSI_PLUS:
             # |Ψ+⟩ = (|01⟩ + |10⟩)/√2
-            self.agents[agent1_id].state_vector = [complex(0.0, 0.0), complex(1.0, 0.0) / SQRT_2]
-            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
+            self.agents[agent1_id].state_vector = [
+                complex(0.0, 0.0),
+                complex(1.0, 0.0) / SQRT_2,
+            ]
+            self.agents[agent2_id].state_vector = [
+                complex(1.0, 0.0) / SQRT_2,
+                complex(0.0, 0.0),
+            ]
         elif bell_state == BellState.PSI_MINUS:
             # |Ψ-⟩ = (|01⟩ - |10⟩)/√2
-            self.agents[agent1_id].state_vector = [complex(0.0, 0.0), complex(1.0, 0.0) / SQRT_2]
-            self.agents[agent2_id].state_vector = [complex(1.0, 0.0) / SQRT_2, complex(0.0, 0.0)]
+            self.agents[agent1_id].state_vector = [
+                complex(0.0, 0.0),
+                complex(1.0, 0.0) / SQRT_2,
+            ]
+            self.agents[agent2_id].state_vector = [
+                complex(1.0, 0.0) / SQRT_2,
+                complex(0.0, 0.0),
+            ]
 
         # Update entanglement lists
         self.agents[agent1_id].entangled_with.append(agent2_id)
@@ -333,7 +357,10 @@ class EntangledAgentNetwork:
 
         # Compute state vector correlation
         # compute complex overlap: abs(sum(conj(a)*b))
-        overlap_complex = sum((a.conjugate() * b) for a, b in zip(agent1.state_vector, agent2.state_vector))
+        overlap_complex = sum(
+            (a.conjugate() * b)
+            for a, b in zip(agent1.state_vector, agent2.state_vector)
+        )
         overlap = abs(overlap_complex)
 
         return float(overlap)
@@ -353,7 +380,9 @@ class EntangledAgentNetwork:
             len(agent.entangled_with) for agent in self.agents.values()
         ]
 
-        avg_entanglements = statistics.mean(entanglements_per_agent) if entanglements_per_agent else 0.0
+        avg_entanglements = (
+            statistics.mean(entanglements_per_agent) if entanglements_per_agent else 0.0
+        )
 
         return {
             "total_agents": total_agents,

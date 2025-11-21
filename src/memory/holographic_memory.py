@@ -127,7 +127,10 @@ class HolographicProjection:
         if depth <= 2:
             surface = self._ensure_2d(info_tensor)
             # Check if downsampling needed
-            if max(len(surface), len(surface[0]) if surface and surface[0] else 0) > self.max_surface_dim:
+            if (
+                max(len(surface), len(surface[0]) if surface and surface[0] else 0)
+                > self.max_surface_dim
+            ):
                 surface = self._downsample_fft(surface, self.max_surface_dim)
             return surface
 
@@ -165,9 +168,7 @@ class HolographicProjection:
         # In production, this would parse structured data
         logger.warning("No recognized data format, generating placeholder tensor")
         # Simple deterministic placeholder 3D tensor (list-of-lists-of-floats)
-        return [
-            [[0.0 for _ in range(16)] for _ in range(16)] for _ in range(16)
-        ]
+        return [[[0.0 for _ in range(16)] for _ in range(16)] for _ in range(16)]
 
     def _ensure_2d(self, arr: Sequence[Any]) -> List[List[float]]:
         """
@@ -185,7 +186,9 @@ class HolographicProjection:
             for item in arr:
                 if isinstance(item, Sequence) and not isinstance(item, (str, bytes)):
                     for sub in item:
-                        if isinstance(sub, Sequence) and not isinstance(sub, (str, bytes)):
+                        if isinstance(sub, Sequence) and not isinstance(
+                            sub, (str, bytes)
+                        ):
                             flat.extend([float(x) for x in sub])
                         else:
                             flat.append(float(sub))
@@ -200,7 +203,9 @@ class HolographicProjection:
         padded = flat + [0.0] * (side * side - len(flat))
         return [padded[i * side : (i + 1) * side] for i in range(side)]
 
-    def _radon_projection(self, volume: Sequence[Sequence[Sequence[Any]]]) -> List[List[float]]:
+    def _radon_projection(
+        self, volume: Sequence[Sequence[Sequence[Any]]]
+    ) -> List[List[float]]:
         """
         Radon transform approximation for 3D→2D projection.
 
@@ -231,13 +236,21 @@ class HolographicProjection:
                     projection[i][j] = max(projection[i][j], float(layer[i][j]))
 
         # Ensure within size limits
-        if max(len(projection), len(projection[0]) if projection and projection[0] else 0) > self.max_surface_dim:
+        if (
+            max(
+                len(projection),
+                len(projection[0]) if projection and projection[0] else 0,
+            )
+            > self.max_surface_dim
+        ):
             # Downsample using FFT-based method
             projection = self._downsample_fft(projection, self.max_surface_dim)
 
         return projection
 
-    def _downsample_fft(self, data: Sequence[Sequence[Any]], target_size: int) -> List[List[float]]:
+    def _downsample_fft(
+        self, data: Sequence[Sequence[Any]], target_size: int
+    ) -> List[List[float]]:
         """
         Downsample 2D data using FFT (preserves low frequencies).
 
@@ -455,7 +468,9 @@ class EventHorizonMemory:
 
         return float(entropy)
 
-    def _merge_surfaces(self, surface1: Sequence[Sequence[Any]], surface2: Sequence[Sequence[Any]]) -> List[List[float]]:
+    def _merge_surfaces(
+        self, surface1: Sequence[Sequence[Any]], surface2: Sequence[Sequence[Any]]
+    ) -> List[List[float]]:
         """
         Merge two holographic surfaces (quantum superposition).
 
@@ -476,14 +491,22 @@ class EventHorizonMemory:
         # pad both surfaces to max_h x max_w
         s1_padded: List[List[float]] = [
             [
-                float(surface1[r][c]) if r < len(surface1) and c < len(surface1[0]) else 0.0
+                (
+                    float(surface1[r][c])
+                    if r < len(surface1) and c < len(surface1[0])
+                    else 0.0
+                )
                 for c in range(max_w)
             ]
             for r in range(max_h)
         ]
         s2_padded: List[List[float]] = [
             [
-                float(surface2[r][c]) if r < len(surface2) and c < len(surface2[0]) else 0.0
+                (
+                    float(surface2[r][c])
+                    if r < len(surface2) and c < len(surface2[0])
+                    else 0.0
+                )
                 for c in range(max_w)
             ]
             for r in range(max_h)
@@ -571,7 +594,9 @@ class EventHorizonMemory:
 
         return None
 
-    def _compute_correlation(self, surface1: Sequence[Sequence[Any]], surface2: Sequence[Sequence[Any]]) -> float:
+    def _compute_correlation(
+        self, surface1: Sequence[Sequence[Any]], surface2: Sequence[Sequence[Any]]
+    ) -> float:
         """
         Compute holographic correlation between surfaces.
 

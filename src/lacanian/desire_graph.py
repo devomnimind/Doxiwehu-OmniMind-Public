@@ -121,7 +121,10 @@ class Signifier:
         if context_vectors:
             # Compute element-wise mean across context vectors
             length = len(context_vectors[0])
-            context_mean = [statistics.mean([vec[i] for vec in context_vectors]) for i in range(length)]
+            context_mean = [
+                statistics.mean([vec[i] for vec in context_vectors])
+                for i in range(length)
+            ]
             # Mix own vector with context mean
             return [
                 0.7 * self.meaning_vector[i] + 0.3 * context_mean[i]
@@ -532,7 +535,9 @@ class SymbolicMatrix:
             random_seed: Seed para reprodutibilidade (opcional)
         """
         # Regras de produção
-        self.production_rules: Dict[str, List[Callable[[Any], Optional[str]]]] = defaultdict(list)
+        self.production_rules: Dict[str, List[Callable[[Any], Optional[str]]]] = (
+            defaultdict(list)
+        )
 
         # Estrutura simbólica
         self.symbolic_structure: Dict[str, Any] = {}
@@ -545,7 +550,9 @@ class SymbolicMatrix:
 
         logger.info("Symbolic matrix initialized")
 
-    def add_production_rule(self, category: str, rule: Callable[[Any], Optional[str]]) -> None:
+    def add_production_rule(
+        self, category: str, rule: Callable[[Any], Optional[str]]
+    ) -> None:
         """
         Adiciona regra de produção.
 
