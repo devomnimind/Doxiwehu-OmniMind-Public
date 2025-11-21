@@ -10,13 +10,11 @@ Tests the core components:
 """
 
 import pytest
-import numpy as np
 import torch
 
 from src.lacanian.computational_lack import (
     ObjectSmallA,
     StructuralLack,
-    LacanianRegister,
     RSIArchitecture,
     FrustrationSignal,
     ComputationalFrustration,
@@ -104,9 +102,6 @@ class TestStructuralLack:
     def test_lack_energy_computation(self):
         """Lack energy reflects ratio of Real to Symbolic."""
         lack = StructuralLack()
-
-        # Initially no elements
-        initial_energy = lack.compute_lack_energy()
 
         # Add to Real
         lack.add_impossibility("truth1")

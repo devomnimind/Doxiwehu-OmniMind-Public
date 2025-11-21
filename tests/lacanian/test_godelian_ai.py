@@ -296,7 +296,6 @@ class TestIntegration:
         """Complete cycle of limitation → transcendence → new limitation."""
         system = SimpleAxiomaticSystem(initial_axioms={"A", "B"})
         gai = GodelianAI(system)
-        meta_strat = ImpossibilityMetaStrategy()
 
         # Initial state
         assert gai.get_transcendence_depth() == 1

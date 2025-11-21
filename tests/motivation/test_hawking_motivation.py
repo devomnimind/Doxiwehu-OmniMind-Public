@@ -7,8 +7,6 @@ and motivation generation mechanisms.
 
 from datetime import datetime, timedelta, timezone
 
-import numpy as np
-import pytest
 
 from src.motivation.hawking_motivation import (
     EvaporationEvent,
@@ -369,11 +367,9 @@ class TestIntegration:
         engine.knowledge_base["k1"].last_used = past
 
         # Try to evaporate
-        evaporated = False
         for _ in range(50):
             evaporated_ids, motivation_data = engine.evaporate_unused_knowledge()
             if "k1" in evaporated_ids:
-                evaporated = True
                 # k2 should still exist (was used recently)
                 assert "k2" in engine.knowledge_base
                 assert "k2" not in evaporated_ids

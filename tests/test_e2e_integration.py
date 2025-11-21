@@ -11,7 +11,7 @@ import re
 import subprocess
 import time
 from pathlib import Path
-from typing import Any, Dict
+from typing import Dict
 
 import pytest
 
@@ -352,7 +352,6 @@ class TestDataIntegrity:
                 auth=auth,
             )
             assert response.status_code == 200
-            result1 = response.json()
 
             # Get snapshot
             response = await client.get(f"{backend_server}/snapshot", auth=auth)

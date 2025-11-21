@@ -13,7 +13,6 @@ from src.security.soc2_compliance import (
     PentestResult,
     RiskLevel,
     SOC2ComplianceManager,
-    TrustServicesCriteria,
     VulnerabilityFinding,
 )
 

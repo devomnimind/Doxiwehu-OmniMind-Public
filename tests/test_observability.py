@@ -10,7 +10,6 @@ from pathlib import Path
 
 from src.observability.distributed_tracing import (
     DistributedTracer,
-    SpanContext,
     SpanKind,
     SpanStatus,
     TraceConfig,
@@ -23,9 +22,7 @@ from src.observability.metrics_exporter import (
 )
 from src.observability.log_aggregator import (
     LogAggregator,
-    LogAlert,
     LogConfig,
-    LogEntry,
     LogLevel,
     LogPattern,
     AlertSeverity,
@@ -152,7 +149,7 @@ class TestDistributedTracing:
         config = TraceConfig(enabled=False)
         tracer = DistributedTracer(config)
 
-        with tracer.trace("operation") as span:
+        with tracer.trace("operation"):
             pass
 
         tracer.export_traces()

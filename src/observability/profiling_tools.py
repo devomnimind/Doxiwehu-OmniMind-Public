@@ -10,8 +10,6 @@ import json
 import time
 import cProfile
 import pstats
-import io
-from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -252,7 +250,9 @@ class ContinuousProfiler:
         stats = pstats.Stats(profiler)
 
         # Parse stats
-        for func_key, (cc, nc, tt, ct, callers) in stats.stats.items():  # type: ignore[attr-defined]
+        for func_key, (cc, nc, tt, ct, callers) in (
+            stats.stats.items()  # type: ignore[attr-defined]
+        ):
             filename, line_number, function_name = func_key
 
             # Filter builtins if configured

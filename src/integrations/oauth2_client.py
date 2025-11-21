@@ -419,5 +419,3 @@ class OAuth2Client:
 
 class OAuth2Error(Exception):
     """OAuth 2.0 error."""
-
-    pass

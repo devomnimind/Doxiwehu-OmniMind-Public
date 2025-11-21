@@ -2,9 +2,7 @@
 Tests for dependency_manager module.
 """
 
-import json
 from pathlib import Path
-from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -12,10 +10,6 @@ from src.tools.dependency_manager import (
     DependencyLockfile,
     DependencyManager,
     PackageInfo,
-    Vulnerability,
-    VulnerabilitySeverity,
-    create_lockfile,
-    scan_dependencies,
 )
 
 

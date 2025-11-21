@@ -6,7 +6,6 @@ and Page time detection.
 """
 
 import numpy as np
-import pytest
 
 from src.learning.page_curve_learning import (
     LearningPhase,

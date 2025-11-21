@@ -13,7 +13,6 @@ from src.testing.chaos_engineering import (
     create_api_timeout_experiment,
     create_database_latency_experiment,
     enable_chaos,
-    inject_chaos,
 )
 
 

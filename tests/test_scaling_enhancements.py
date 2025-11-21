@@ -3,19 +3,15 @@
 Tests GPU resource pooling, database connection pooling, and multi-level caching.
 """
 
-import pytest
 import time
 
 from src.scaling.gpu_resource_pool import (
     GPUDevice,
     GPUResourcePool,
     GPUPoolConfig,
-    GPUStatus,
     GPUTask,
 )
 from src.scaling.database_connection_pool import (
-    ConnectionInfo,
-    ConnectionStatus,
     DatabaseConnectionPool,
     PoolConfig,
 )

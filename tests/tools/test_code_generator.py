@@ -8,7 +8,6 @@ import pytest
 
 from src.tools.code_generator import (
     CodeGenerator,
-    CodeTemplateType,
     generate_agent,
     generate_test_for_class,
 )

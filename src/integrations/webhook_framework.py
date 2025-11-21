@@ -454,5 +454,3 @@ class WebhookSender:
 
 class WebhookError(Exception):
     """Webhook error."""
-
-    pass

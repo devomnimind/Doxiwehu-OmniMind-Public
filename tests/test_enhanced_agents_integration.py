@@ -6,12 +6,10 @@ Testa integração entre AST parser, comunicação inter-agentes e agentes aprim
 """
 
 import pytest
-import asyncio
 from pathlib import Path
 from src.agents.code_agent import CodeAgent
 from src.agents.architect_agent import ArchitectAgent
 from src.agents.agent_protocol import (
-    AgentMessage,
     MessageType,
     MessagePriority,
     get_message_bus,

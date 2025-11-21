@@ -10,7 +10,6 @@ Reference: Problem Statement - FRENTE 5: MCP Client Completo
 from __future__ import annotations
 
 import json
-import logging
 import time
 import urllib.error
 import urllib.request
@@ -150,6 +149,7 @@ class CircuitBreaker:
             self._on_success()
             return result
         except Exception as e:
+            logger.warning("circuit_breaker_failure", error=str(e))
             self._on_failure()
             raise
 
@@ -210,8 +210,6 @@ class CircuitBreaker:
 
 class CircuitOpenError(Exception):
     """Raised when circuit breaker is open."""
-
-    pass
 
 
 class EnhancedMCPClient:
@@ -478,5 +476,3 @@ class EnhancedMCPClient:
 
 class MCPClientError(Exception):
     """MCP client error."""
-
-    pass

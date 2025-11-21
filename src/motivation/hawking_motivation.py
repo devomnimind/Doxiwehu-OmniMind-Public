@@ -24,7 +24,6 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
-import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +56,6 @@ class KnowledgeItem:
 
     def __post_init__(self) -> None:
         """Initialize defaults."""
-        pass
 
 
 @dataclass

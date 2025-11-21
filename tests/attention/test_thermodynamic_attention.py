@@ -5,7 +5,6 @@ Tests entropy-based attention, temperature control,
 and multi-head thermodynamic attention.
 """
 
-import numpy as np
 import pytest
 
 try:

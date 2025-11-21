@@ -12,7 +12,6 @@ from src.workflows.automated_code_review import (
     IssueSeverity,
     IssueCategory,
     ReviewResult,
-    review_code,
 )
 
 

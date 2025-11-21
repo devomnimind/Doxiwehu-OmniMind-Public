@@ -6,7 +6,6 @@ Bekenstein bound constraints and hierarchical memory spawning.
 """
 
 import numpy as np
-import pytest
 
 from src.memory.holographic_memory import (
     EventHorizonMemory,

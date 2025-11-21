@@ -20,7 +20,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -347,7 +347,13 @@ class AutomatedCodeReviewer:
         sql_keywords = ["SELECT", "INSERT", "UPDATE", "DELETE", "DROP"]
         for i, line in enumerate(lines, 1):
             if any(keyword in line.upper() for keyword in sql_keywords):
-                if "%" in line or ".format(" in line or f"f'" in line:
+                # Check for string formatting that could lead to SQL injection
+                has_formatting = (
+                    "%" in line
+                    or ".format(" in line
+                    or (("f'" in line or 'f"' in line) and "{" in line)
+                )
+                if has_formatting:
                     result.add_issue(
                         line=i,
                         severity=IssueSeverity.ERROR,
@@ -419,7 +425,10 @@ class AutomatedCodeReviewer:
                             line=node.lineno,
                             severity=IssueSeverity.WARNING,
                             category=IssueCategory.COMPLEXITY,
-                            message=f"Function '{node.name}' is too complex (complexity: {func_complexity})",
+                            message=(
+                                f"Function '{node.name}' is too complex "
+                                f"(complexity: {func_complexity})"
+                            ),
                             suggestion="Break function into smaller functions",
                             rule_id="CMP001",
                         )
@@ -474,7 +483,10 @@ class AutomatedCodeReviewer:
                                 line=node.lineno,
                                 severity=IssueSeverity.INFO,
                                 category=IssueCategory.DOCUMENTATION,
-                                message=f"Missing docstring for {node.__class__.__name__} '{node.name}'",
+                                message=(
+                                    f"Missing docstring for "
+                                    f"{node.__class__.__name__} '{node.name}'"
+                                ),
                                 suggestion="Add Google-style docstring",
                                 rule_id="DOC002",
                             )
@@ -733,9 +745,9 @@ if __name__ == "__main__":
     print(f"Status: {'✅ PASSED' if result.passed else '❌ FAILED'}")
 
     if result.metrics:
-        print(f"\nMetrics:")
+        print("\nMetrics:")
         print(f"  Complexity: {result.metrics.complexity}")
         print(f"  Type Hints: {result.metrics.type_hint_coverage:.1f}%")
         print(f"  Docstrings: {result.metrics.docstring_coverage:.1f}%")
 
-    print(f"\n📄 Report saved to logs/code_review_report.md")
+    print("\n📄 Report saved to logs/code_review_report.md")

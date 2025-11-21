@@ -257,7 +257,6 @@ class TestEmbodiedIntelligence:
     def test_execute_action_move(self) -> None:
         """Test executing a move action."""
         ei = EmbodiedIntelligence()
-        initial_pos = ei.current_state.position
 
         target = Position3D(5.0, 5.0, 0.0)
         action = Action(

@@ -16,8 +16,7 @@ from __future__ import annotations
 import ast
 import logging
 from dataclasses import dataclass, field
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import List, Optional, Set
 
 logger = logging.getLogger(__name__)
 
@@ -356,7 +355,8 @@ class ASTParser:
                         for alias in node.names:
                             if alias.name in dangerous_modules:
                                 warnings.append(
-                                    f"Line {node.lineno}: Potentially dangerous import: {alias.name}"
+                                    f"Line {node.lineno}: "
+                                    f"Potentially dangerous import: {alias.name}"
                                 )
 
         except Exception as exc:

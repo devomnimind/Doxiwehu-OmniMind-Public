@@ -6,7 +6,6 @@ and reconstruction fidelity.
 """
 
 import numpy as np
-import pytest
 
 from src.memory.soft_hair_encoding import (
     SoftHair,

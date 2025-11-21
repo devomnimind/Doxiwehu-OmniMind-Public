@@ -9,12 +9,11 @@ Implements creative thinking and novel solution generation:
 
 from __future__ import annotations
 
-import logging
 import random
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
 import structlog
 
@@ -403,7 +402,7 @@ class CreativeProblemSolver:
         # If not enough analogies, generate hybrid solutions
         while len(solutions) < num_solutions:
             solution = Solution(
-                description=f"Hybrid approach combining multiple strategies",
+                description="Hybrid approach combining multiple strategies",
                 category=SolutionCategory.HYBRID,
                 novelty_score=random.uniform(0.6, 0.8),
                 feasibility_score=random.uniform(0.6, 0.85),

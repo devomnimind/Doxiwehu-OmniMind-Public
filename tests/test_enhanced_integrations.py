@@ -6,7 +6,7 @@ Tests MCP client enhancements, OAuth 2.0, and webhook framework.
 import json
 import pytest
 import time
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
 from src.integrations.mcp_client_enhanced import (
     EnhancedMCPClient,
@@ -20,7 +20,6 @@ from src.integrations.oauth2_client import (
     OAuth2Client,
     OAuth2Config,
     OAuth2Token,
-    OAuth2Error,
 )
 from src.integrations.webhook_framework import (
     WebhookReceiver,

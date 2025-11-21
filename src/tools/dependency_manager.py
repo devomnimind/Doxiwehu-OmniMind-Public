@@ -11,7 +11,6 @@ Provides comprehensive dependency management with:
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 import subprocess
@@ -19,7 +18,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import requests
 
@@ -653,4 +652,4 @@ if __name__ == "__main__":
     report = manager.generate_security_report(
         Path("logs/dependency_security_report.md")
     )
-    print(f"✓ Report saved to logs/dependency_security_report.md")
+    print("✓ Report saved to logs/dependency_security_report.md")

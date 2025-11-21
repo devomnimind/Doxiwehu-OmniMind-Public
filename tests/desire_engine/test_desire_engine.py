@@ -1,7 +1,6 @@
 """Tests for Artificial Desire Engine."""
 
 import pytest
-from datetime import datetime
 from src.desire_engine import (
     DesireEngine,
     DigitalMaslowHierarchy,

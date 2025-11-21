@@ -12,7 +12,6 @@ from src.agents.agent_protocol import (
     AgentMessageBus,
     MessageType,
     MessagePriority,
-    ConflictResolution,
 )
 
 

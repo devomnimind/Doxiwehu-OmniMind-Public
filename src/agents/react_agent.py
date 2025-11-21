@@ -14,18 +14,16 @@ from typing import Any, Dict, List, Protocol, TypeAlias, TypedDict, cast, Option
 from langchain_ollama import OllamaLLM
 from langgraph.graph import END, StateGraph
 
-from .agent_protocol import AgentMessage, MessagePriority, MessageType, get_message_bus
+from .agent_protocol import (
+    AgentMessage,
+    MessagePriority,
+    MessageType,
+    get_message_bus,
+)
 from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory import EpisodicMemory
 from ..onboarding import SupabaseMemoryOnboarding
 from ..tools import FileOperations, ShellExecutor, SystemMonitor
-from .agent_protocol import (
-    AgentMessage,
-    AgentMessageBus,
-    MessageType,
-    MessagePriority,
-    get_message_bus,
-)
 
 logger = logging.getLogger(__name__)
 

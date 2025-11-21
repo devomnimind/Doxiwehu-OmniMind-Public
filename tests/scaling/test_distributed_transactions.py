@@ -229,8 +229,8 @@ class TestTwoPhaseCommitCoordinator:
         """Test getting active transactions."""
         coordinator = TwoPhaseCommitCoordinator()
 
-        tx1 = await coordinator.begin_transaction(["node-1"])
-        tx2 = await coordinator.begin_transaction(["node-2"])
+        await coordinator.begin_transaction(["node-1"])
+        await coordinator.begin_transaction(["node-2"])
 
         active = coordinator.get_active_transactions()
 

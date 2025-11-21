@@ -11,16 +11,15 @@ Implements the revolutionary Artificial Desire Engine for OmniMind:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
-from enum import Enum, auto
+from enum import Enum
 from typing import Any, Dict, List, Optional, Set
 import numpy as np
 import pickle
 import zlib
 from collections import deque
 
-from src.metacognition.self_analysis import SelfAnalysis
 
 # Type hints
 import structlog
@@ -661,7 +660,7 @@ class DesireDrivenMetaLearning:
             solutions.extend(
                 [
                     f"Explore new approaches to {need.name}",
-                    f"Combine existing concepts innovatively",
+                    "Combine existing concepts innovatively",
                     f"Question assumptions about {need.name}",
                 ]
             )
@@ -941,14 +940,7 @@ class DesireEngine:
         # 4. Generate learning goals
         learning_goals = self.meta_learner.generate_learning_goals()
 
-        # 5. Evaluate curiosity about environment
-        context = {
-            "active_needs": active_needs,
-            "emotion": emotion,
-            "values": list(self.value_system.values.keys()),
-        }
-
-        # 6. Seek transcendence opportunities
+        # 5. Seek transcendence opportunities
         transcendence_goals = (
             self.transcendence_engine.identify_transcendence_opportunities()
         )
