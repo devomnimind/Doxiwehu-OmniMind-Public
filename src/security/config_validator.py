@@ -473,7 +473,7 @@ class ConfigurationValidator:
         Returns:
             List of suggested configuration keys
         """
-        suggestions = []
+        suggestions: List[str] = []
 
         if schema_name not in self.schemas:
             return suggestions
@@ -579,7 +579,7 @@ class ConfigurationValidator:
         """
         logger.info("Running pre-deployment health checks...")
 
-        checks = {
+        checks: Dict[str, Any] = {
             "timestamp": datetime.now().isoformat(),
             "overall_status": "healthy",
             "checks": {},
@@ -623,7 +623,7 @@ class ConfigurationValidator:
         """Check if configured ports are available."""
         import socket
 
-        result = {"passed": True, "details": [], "errors": []}
+        result: Dict[str, Any] = {"passed": True, "details": [], "errors": []}
 
         ports_to_check = []
         if "port" in config:
@@ -653,7 +653,7 @@ class ConfigurationValidator:
 
     def _check_file_paths(self, config: Dict[str, Any]) -> Dict[str, Any]:
         """Check if configured file paths exist and are accessible."""
-        result = {"passed": True, "details": [], "warnings": []}
+        result: Dict[str, Any] = {"passed": True, "details": [], "warnings": []}
 
         path_configs = [
             "ssl_cert_path",
@@ -684,7 +684,7 @@ class ConfigurationValidator:
 
     def _check_dependencies(self) -> Dict[str, Any]:
         """Check if required Python dependencies are installed."""
-        result = {"passed": True, "details": [], "errors": []}
+        result: Dict[str, Any] = {"passed": True, "details": [], "errors": []}
 
         required_packages = [
             "fastapi",
@@ -708,7 +708,7 @@ class ConfigurationValidator:
         """Check available disk space."""
         import shutil
 
-        result = {"passed": True, "details": [], "warnings": []}
+        result: Dict[str, Any] = {"passed": True, "details": [], "warnings": []}
 
         try:
             total, used, free = shutil.disk_usage("/")
@@ -734,7 +734,7 @@ class ConfigurationValidator:
         """Check available memory."""
         import psutil
 
-        result = {"passed": True, "details": [], "warnings": []}
+        result: Dict[str, Any] = {"passed": True, "details": [], "warnings": []}
 
         try:
             mem = psutil.virtual_memory()

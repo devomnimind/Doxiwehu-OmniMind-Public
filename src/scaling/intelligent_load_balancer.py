@@ -10,12 +10,11 @@ This module extends the basic load balancer with:
 from __future__ import annotations
 
 import logging
+import statistics
 from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Deque, Dict, List, Optional, Tuple
-
-import numpy as np
 
 from src.scaling.multi_node import DistributedTask, NodeInfo
 
@@ -54,13 +53,13 @@ class NodePerformanceMetrics:
         """Calculate average task completion time."""
         if not self.task_completion_times:
             return 0.0
-        return float(np.mean(self.task_completion_times))
+        return statistics.mean(self.task_completion_times)
 
     def get_completion_time_variance(self) -> float:
         """Calculate variance in completion times."""
         if len(self.task_completion_times) < 2:
             return 0.0
-        return float(np.var(self.task_completion_times))
+        return statistics.variance(self.task_completion_times)
 
     def predict_next_completion_time(self) -> float:
         """Predict next task completion time using exponential smoothing."""
@@ -243,7 +242,7 @@ class IntelligentLoadBalancer:
                 if m.get_average_completion_time() > 0
             ]
             if all_times:
-                global_avg = np.mean(all_times)
+                global_avg = statistics.mean(all_times)
                 if global_avg > 0:
                     speed_score = (avg_time / global_avg) * speed_weight
                 else:
@@ -369,7 +368,7 @@ class IntelligentLoadBalancer:
                 "message": "No performance data available",
             }
 
-        all_completion_times = []
+        all_completion_times: list[float] = []
         all_success_rates = []
 
         for metrics in self.node_metrics.values():
@@ -380,13 +379,15 @@ class IntelligentLoadBalancer:
             "total_nodes": len(self.node_metrics),
             "total_tasks": len(self.task_history),
             "avg_completion_time": (
-                float(np.mean(all_completion_times)) if all_completion_times else 0.0
+                statistics.mean(all_completion_times) if all_completion_times else 0.0
             ),
             "completion_time_std": (
-                float(np.std(all_completion_times)) if all_completion_times else 0.0
+                statistics.stdev(all_completion_times)
+                if len(all_completion_times) > 1
+                else 0.0
             ),
             "avg_success_rate": (
-                float(np.mean(all_success_rates)) if all_success_rates else 0.0
+                statistics.mean(all_success_rates) if all_success_rates else 0.0
             ),
             "nodes": {
                 node_id: {

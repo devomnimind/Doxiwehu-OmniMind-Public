@@ -226,7 +226,7 @@ class GPUResourcePool:
         self.config = config
         self._gpus: Dict[int, GPUDevice] = {}
         self._tasks: Dict[str, GPUTask] = {}
-        self._task_queue: deque = deque()
+        self._task_queue: deque[str] = deque()
 
         if config.auto_discover_gpus:
             self._discover_gpus()

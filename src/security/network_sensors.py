@@ -10,7 +10,7 @@ Legal Compliance: 100% legal when used on own systems (GPL v2 licenses)
 import subprocess
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 import re
 
@@ -35,16 +35,12 @@ class NetworkHost:
     hostname: Optional[str] = None
     mac_address: Optional[str] = None
     os_guess: Optional[str] = None
-    open_ports: List[int] = None
-    services: List[str] = None
-    last_seen: str = None
+    open_ports: List[int] = field(default_factory=list)
+    services: List[str] = field(default_factory=list)
+    last_seen: str = field(default="")
 
     def __post_init__(self) -> None:
-        if self.open_ports is None:
-            self.open_ports = []
-        if self.services is None:
-            self.services = []
-        if self.last_seen is None:
+        if not self.last_seen:
             self.last_seen = datetime.now(timezone.utc).isoformat()
 
 
@@ -57,14 +53,12 @@ class NetworkAnomaly:
     description: str
     source_ip: Optional[str] = None
     destination_ip: Optional[str] = None
-    timestamp: str = None
-    details: Dict[str, Any] = None
+    timestamp: str = field(default="")
+    details: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        if self.timestamp is None:
+        if not self.timestamp:
             self.timestamp = datetime.now(timezone.utc).isoformat()
-        if self.details is None:
-            self.details = {}
 
 
 class NetworkSensorGanglia:
@@ -216,7 +210,7 @@ class NetworkSensorGanglia:
                     current_host.mac_address = mac_match.group(1)
 
             # Open port
-            elif "/tcp" in line or "/udp" in line and current_host:
+            elif ("/tcp" in line or "/udp" in line) and current_host:
                 port_match = re.search(r"(\d+)/(tcp|udp)\s+open", line)
                 if port_match:
                     port = int(port_match.group(1))
@@ -365,7 +359,7 @@ class NetworkSensorGanglia:
                 hosts_with_suspicious_ports += 1
 
         # Calculate health score (100 = perfect, 0 = critical)
-        health_score = 100
+        health_score: float = 100.0
 
         if total_hosts > 0:
             # Penalize for suspicious ports

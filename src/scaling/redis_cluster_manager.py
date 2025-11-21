@@ -115,7 +115,7 @@ class RedisClusterManager:
     def __init__(
         self,
         nodes: List[Dict[str, Any]],
-        sentinel_nodes: Optional[List[tuple]] = None,
+        sentinel_nodes: Optional[List[tuple[str, int]]] = None,
         password: Optional[str] = None,
         max_connections: int = 50,
         socket_timeout: float = 5.0,
@@ -322,7 +322,8 @@ class RedisClusterManager:
             return results
 
         try:
-            return self.cluster.mget(keys)
+            result: list[Any | None] = self.cluster.mget(keys)
+            return result
         except Exception as e:
             logger.error(f"Failed to mget: {e}")
             return [None] * len(keys)
@@ -376,7 +377,11 @@ class RedisClusterManager:
                 "message": "Operating in local-only mode",
             }
 
-        info = {"nodes": [], "slots_assigned": 0, "state": ClusterState.UNKNOWN.value}
+        info: Dict[str, Any] = {
+            "nodes": [],
+            "slots_assigned": 0,
+            "state": ClusterState.UNKNOWN.value,
+        }
 
         try:
             cluster_info = self.cluster.cluster_info()
@@ -491,7 +496,7 @@ class RedisClusterManager:
         """
         stats = self._stats.copy()
         total = stats["hits"] + stats["misses"]
-        stats["hit_rate"] = stats["hits"] / total if total > 0 else 0.0
+        stats["hit_rate"] = (stats["hits"] / total) if total > 0 else 0.0
         return stats
 
     def flush_all(self) -> bool:

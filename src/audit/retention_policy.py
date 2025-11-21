@@ -77,7 +77,8 @@ class RetentionPolicyManager:
         """Load retention policy configuration."""
         if self.config_file.exists():
             with open(self.config_file, "r") as f:
-                return json.load(f)
+                config: Dict[str, Any] = json.load(f)
+                return config
 
         # Default configuration
         default_config = {
@@ -135,9 +136,10 @@ class RetentionPolicyManager:
 
     def get_retention_period(self, category: DataCategory) -> int:
         """Get retention period for a data category in days."""
-        return self.config["retention_policies"].get(
+        period: int = self.config["retention_policies"].get(
             category.value, RetentionPeriod.DAYS_365.value
         )
+        return period
 
     def archive_old_data(
         self, category: DataCategory, dry_run: bool = False
@@ -342,7 +344,7 @@ class RetentionPolicyManager:
         Returns:
             Dict containing retention report
         """
-        report = {
+        report: Dict[str, Any] = {
             "generated_at": datetime.now(timezone.utc).isoformat(),
             "policies": {},
             "statistics": {},

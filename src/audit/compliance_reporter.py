@@ -68,7 +68,7 @@ class ComplianceReporter:
         if start_date is None:
             start_date = end_date - timedelta(days=30)
 
-        report = {
+        report: Dict[str, Any] = {
             "standard": "LGPD",
             "report_id": f"lgpd_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}",
             "period": {
@@ -169,7 +169,7 @@ class ComplianceReporter:
         if start_date is None:
             start_date = end_date - timedelta(days=30)
 
-        report = {
+        report: Dict[str, Any] = {
             "standard": "GDPR",
             "report_id": f"gdpr_{datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')}",
             "period": {
@@ -420,7 +420,7 @@ class ComplianceReporter:
         self, start_date: datetime, end_date: datetime
     ) -> List[Dict[str, Any]]:
         """Get audit events within date range."""
-        events = []
+        events: List[Dict[str, Any]] = []
 
         if not self.audit_system.audit_log_file.exists():
             return events
@@ -464,7 +464,7 @@ class ComplianceReporter:
 
         with open(file_path, "w", newline="") as f:
             # Get all unique keys from events
-            fieldnames = set()
+            fieldnames: set[str] = set()
             for event in events:
                 fieldnames.update(event.keys())
 

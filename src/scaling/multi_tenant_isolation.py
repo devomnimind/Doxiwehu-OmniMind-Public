@@ -490,7 +490,7 @@ class MultiTenantIsolationManager:
         if not tenant:
             return {"error": "Tenant not found"}
 
-        summary = {
+        summary: Dict[str, Any] = {
             "tenant_id": tenant_id,
             "tenant_name": tenant.tenant_name,
             "quotas": {},

@@ -538,7 +538,7 @@ class APIDocumentationGenerator:
         Returns:
             OpenAPI specification dictionary
         """
-        spec = {
+        spec: Dict[str, Any] = {
             "openapi": "3.0.0",
             "info": {
                 "title": "OmniMind API",
@@ -640,8 +640,8 @@ class APIDocumentationGenerator:
                 for endpoint in methods.values():
                     for tag in endpoint.tags:
                         if tag not in by_tag:
-                            by_tag[tag] = []  # type: ignore[assignment]
-                        by_tag[tag].append(endpoint)  # type: ignore[assignment]
+                            by_tag[tag] = []
+                        by_tag[tag].append(endpoint)
 
             # Write sections
             for tag, endpoints in sorted(by_tag.items()):

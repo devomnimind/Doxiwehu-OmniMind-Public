@@ -11,7 +11,7 @@ Tools: Nikto (GPL v2), Custom scanners
 import subprocess
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from urllib.parse import urlparse
 import requests
@@ -56,14 +56,12 @@ class WebVulnerability:
     evidence: Optional[str] = None
     remediation: Optional[str] = None
     scanner: str = "custom"
-    timestamp: str = None
-    details: Dict[str, Any] = None
+    timestamp: str = field(default="")
+    details: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        if self.timestamp is None:
+        if not self.timestamp:
             self.timestamp = datetime.now(timezone.utc).isoformat()
-        if self.details is None:
-            self.details = {}
 
 
 class WebScannerBrain:

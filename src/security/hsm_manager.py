@@ -272,7 +272,8 @@ class HSMManager:
         if key_id not in self.keys:
             return None
 
-        return self.keys[key_id]["metadata"]
+        metadata: KeyMetadata = self.keys[key_id]["metadata"]
+        return metadata
 
     def list_keys(self) -> Dict[str, KeyMetadata]:
         """

@@ -13,6 +13,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import uuid
+from collections.abc import Awaitable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
@@ -123,16 +124,18 @@ class TwoPhaseCommitCoordinator:
     def __init__(self) -> None:
         """Initialize coordinator."""
         self._transactions: Dict[str, DistributedTransaction] = {}
-        self._prepare_handlers: Dict[str, Callable] = {}
-        self._commit_handlers: Dict[str, Callable] = {}
-        self._abort_handlers: Dict[str, Callable] = {}
+        self._prepare_handlers: Dict[
+            str, Callable[[str, Dict[str, Any]], Awaitable[bool]]
+        ] = {}
+        self._commit_handlers: Dict[str, Callable[[str], Awaitable[bool]]] = {}
+        self._abort_handlers: Dict[str, Callable[[str], Awaitable[None]]] = {}
 
     def register_node_handlers(
         self,
         node_id: str,
-        prepare_handler: Callable[[str, Dict[str, Any]], bool],
-        commit_handler: Callable[[str], bool],
-        abort_handler: Callable[[str], None],
+        prepare_handler: Callable[[str, Dict[str, Any]], Awaitable[bool]],
+        commit_handler: Callable[[str], Awaitable[bool]],
+        abort_handler: Callable[[str], Awaitable[None]],
     ) -> None:
         """Register handlers for a node.
 
@@ -392,8 +395,8 @@ class SagaStep:
     """Step in a saga transaction."""
 
     step_id: str
-    action: Callable[[Dict[str, Any]], Any]  # Forward action
-    compensation: Callable[[Dict[str, Any]], None]  # Rollback action
+    action: Callable[[Dict[str, Any]], Awaitable[Any]]  # Forward action
+    compensation: Callable[[Dict[str, Any]], Awaitable[None]]  # Rollback action
     completed: bool = False
     compensated: bool = False
     result: Optional[Any] = None
@@ -411,7 +414,7 @@ class SagaCoordinator:
     def create_saga(
         self,
         saga_id: str,
-        steps: List[Tuple[Callable, Callable]],
+        steps: List[Tuple[Callable[..., Any], Callable[..., Any]]],
     ) -> None:
         """Create a new saga.
 

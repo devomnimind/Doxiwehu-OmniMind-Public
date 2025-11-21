@@ -115,8 +115,8 @@ class RaftNode:
         self.match_index: Dict[str, int] = {}
 
         # Election and heartbeat
-        self._election_timer: Optional[asyncio.Task] = None
-        self._heartbeat_timer: Optional[asyncio.Task] = None
+        self._election_timer: Optional[asyncio.Task[None]] = None
+        self._heartbeat_timer: Optional[asyncio.Task[None]] = None
         self._running = False
 
         # State machine
@@ -324,10 +324,11 @@ class RaftNode:
 
         if operation == "set":
             value = command.get("value")
-            self.state_machine[key] = value
-            logger.debug(f"State machine: SET {key} = {value}")
+            if key is not None:
+                self.state_machine[key] = value
+                logger.debug(f"State machine: SET {key} = {value}")
         elif operation == "delete":
-            if key in self.state_machine:
+            if key is not None and key in self.state_machine:
                 del self.state_machine[key]
                 logger.debug(f"State machine: DELETE {key}")
 
@@ -503,7 +504,7 @@ class FailoverCoordinator:
         self.recovered_nodes: Set[str] = set()
 
         self._running = False
-        self._health_check_task: Optional[asyncio.Task] = None
+        self._health_check_task: Optional[asyncio.Task[None]] = None
 
         logger.info(f"FailoverCoordinator initialized for node {node_id}")
 
