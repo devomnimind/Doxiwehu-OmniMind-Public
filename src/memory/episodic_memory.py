@@ -91,32 +91,42 @@ class EpisodicMemory:
         self.client: QdrantClient = QdrantClient(url=qdrant_url)
         self.collection_name = collection_name
         self.embedding_dim = embedding_dim
-        self._embedding_model: Optional["SentenceTransformer"] = _load_embedding_model(
-            "all-MiniLM-L6-v2"
-        )
+        self._embedding_model: Optional["SentenceTransformer"] = None
+        self._model_attempted = False
 
         # Initialize collection if it does not exist.
         self._ensure_collection()
 
     def _ensure_collection(self) -> None:
         """Create collection if it does not exist."""
-        collections = self.client.get_collections().collections or []
-        collection_names = [info.name for info in collections]
+        try:
+            collections = self.client.get_collections().collections or []
+            collection_names = [info.name for info in collections]
 
-        if self.collection_name not in collection_names:
-            self.client.create_collection(
-                collection_name=self.collection_name,
-                vectors_config=qmodels.VectorParams(
-                    size=self.embedding_dim, distance=qmodels.Distance.COSINE
-                ),
-            )
-            logger.info("Created Qdrant collection: %s", self.collection_name)
+            if self.collection_name not in collection_names:
+                self.client.create_collection(
+                    collection_name=self.collection_name,
+                    vectors_config=qmodels.VectorParams(
+                        size=self.embedding_dim, distance=qmodels.Distance.COSINE
+                    ),
+                )
+                logger.info("Created Qdrant collection: %s", self.collection_name)
+        except Exception as exc:
+            logger.warning("Failed to ensure Qdrant collection: %s", exc)
+
+    def _get_embedding_model(self) -> Optional["SentenceTransformer"]:
+        """Lazy load embedding model."""
+        if not self._model_attempted:
+            self._embedding_model = _load_embedding_model("all-MiniLM-L6-v2")
+            self._model_attempted = True
+        return self._embedding_model
 
     def _generate_embedding(self, text: str) -> List[float]:
         """Generate embedding from text using SentenceTransformer with fallback."""
-        if self._embedding_model:
+        model = self._get_embedding_model()
+        if model:
             try:
-                encoded = self._embedding_model.encode(text, normalize_embeddings=True)
+                encoded = model.encode(text, normalize_embeddings=True)
                 # encoded is ndarray[Any] for single string input
                 return [float(x) for x in encoded]  # type: ignore[arg-type,union-attr]
             except Exception as exc:

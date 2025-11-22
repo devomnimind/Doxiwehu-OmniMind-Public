@@ -387,6 +387,7 @@ Your response:"""
             return {"error": str(e), "completed": False, "final_result": None}
 
     def _run_supabase_memory_onboarding(self) -> None:
+        """Run Supabase memory onboarding in a background thread to avoid blocking startup."""
         config = SupabaseConfig.load()
         if not config or not config.service_role_key:
             logger.debug(
@@ -394,18 +395,28 @@ Your response:"""
             )
             return
 
-        onboarding = SupabaseMemoryOnboarding(config=config, memory=self.memory)
-        report = onboarding.seed_collection()
-        logger.info(
-            "Started Supabase onboarding: %s/%s nodes stored (cursor=%s)",
-            report.nodes_loaded,
-            report.nodes_processed,
-            report.last_cursor,
-        )
-        if report.errors:
-            logger.warning(
-                "Supabase memory onboarding reported errors: %s", report.errors
-            )
+        def _onboard():
+            try:
+                onboarding = SupabaseMemoryOnboarding(config=config, memory=self.memory)
+                report = onboarding.seed_collection()
+                logger.info(
+                    "Supabase onboarding finished: %s/%s nodes stored (cursor=%s)",
+                    report.nodes_loaded,
+                    report.nodes_processed,
+                    report.last_cursor,
+                )
+                if report.errors:
+                    logger.warning(
+                        "Supabase memory onboarding reported errors: %s", report.errors
+                    )
+            except Exception as exc:
+                logger.error("Supabase onboarding failed: %s", exc)
+
+        # Run in background thread
+        import threading
+        thread = threading.Thread(target=_onboard, daemon=True, name="SupabaseOnboarding")
+        thread.start()
+        logger.info("Supabase memory onboarding started in background")
 
     async def send_message(
         self,

@@ -12,6 +12,7 @@ from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Tuple
 
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
@@ -19,6 +20,8 @@ from pydantic import BaseModel
 from secrets import compare_digest
 from starlette.status import HTTP_401_UNAUTHORIZED
 
+# Load environment variables from .env file
+load_dotenv()
 
 # Simple observability for backend (replaces DEVBRAIN_V23 import)
 class AutonomyObservability:

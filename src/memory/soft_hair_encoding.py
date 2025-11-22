@@ -62,24 +62,32 @@ class SoftHairEncoder:
     def _flatten(self, data: Sequence[Any]) -> List[complex]:
         flattened: List[complex] = []
         for item in data:
-            if isinstance(item, Sequence) and not isinstance(item, (str, bytes)):
+            if (isinstance(item, Sequence) or hasattr(item, "__iter__")) and not isinstance(item, (str, bytes)):
                 flattened.extend(self._flatten(item))
             else:
                 flattened.append(complex(item))
         return flattened
 
     def _infer_shape(self, data: Sequence[Any]) -> Tuple[int, ...]:
+        if hasattr(data, "shape"):
+            return tuple(data.shape)
+            
         shape: List[int] = []
         cursor: Any = data
-        while isinstance(cursor, Sequence) and not isinstance(cursor, (str, bytes)):
-            shape.append(len(cursor))
-            if not cursor:
-                break
-            first = cursor[0]
-            if isinstance(first, Sequence) and not isinstance(first, (str, bytes)):
-                cursor = first
+        while (isinstance(cursor, Sequence) or hasattr(cursor, "__iter__")) and not isinstance(cursor, (str, bytes)):
+            if hasattr(cursor, "__len__"):
+                shape.append(len(cursor))
             else:
                 break
+                
+            if not cursor:
+                break
+            try:
+                first = cursor[0]
+                cursor = first
+            except (IndexError, TypeError):
+                break
+                
         return tuple(shape) if shape else (len(data),)
 
     def _prepare_2d_grid(self, flat_data: List[complex]) -> List[List[complex]]:
@@ -234,7 +242,7 @@ class SoftHairEncoder:
         real_flat = [cell.real for row in reconstructed for cell in row]
         if len(target_shape) == 1:
             return real_flat[: target_shape[0]]
-        if len(target_shape) > 2:
+        if len(target_shape) >= 2:
             return self._reshape_nested(real_flat, target_shape)
         return real_flat
 
@@ -254,11 +262,17 @@ class SoftHairEncoder:
 
     def compute_fidelity(
         self,
-        original: Sequence[float],
-        reconstructed: Sequence[float],
+        original: Sequence[Any],
+        reconstructed: Sequence[Any],
     ) -> float:
-        orig_flat = list(original)
-        recon_flat = list(reconstructed)
+        # Flatten inputs to handle 2D/3D arrays
+        flat_orig_complex = self._flatten(original)
+        flat_recon_complex = self._flatten(reconstructed)
+        
+        # Use real part for fidelity (assuming real signals)
+        orig_flat = [c.real for c in flat_orig_complex]
+        recon_flat = [c.real for c in flat_recon_complex]
+        
         min_size = min(len(orig_flat), len(recon_flat))
         if min_size == 0:
             return 0.0
