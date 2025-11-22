@@ -878,7 +878,7 @@ class AuditSecurityTool(AuditedTool):
 
             elif check_type == "audit_chain":
                 # Verificar integridade da cadeia de auditoria
-                from ..audit import ImmutableAuditSystem
+                from ..audit.immutable_audit import get_audit_system
 
                 audit = get_audit_system()
                 if not audit.verify_chain_integrity():
