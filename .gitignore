@@ -102,6 +102,13 @@ benchmark_outputs/
 !logs/.gitkeep
 !scripts/benchmarks/
 
+# Canonical action logs (runtime audit trail - never version)
+.omnimind/canonical/action_log.json
+.omnimind/canonical/action_log.md
+.omnimind/canonical/
+.omnimind/hsm/
+.omnimind/
+
 # ------------------------------------------------------------------
 # Backups / confidential configs
 # ------------------------------------------------------------------
