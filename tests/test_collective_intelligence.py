@@ -192,7 +192,7 @@ class TestDistributedSolver:
 
         # Deve processar sem erro
         try:
-            solver.solve(problem)
+            solver.solve(problem, lambda x: {"result": "solved", "confidence": 0.8})
         except Exception:
             # Pode falhar se não houver agentes configurados, mas não deve dar erro de importação
             pass
@@ -238,7 +238,7 @@ class TestEmergenceDetector:
 
         # Deve executar sem erro
         try:
-            detector.detect([])
+            detector.detect_patterns([])
         except Exception:
             # Pode falhar com dados vazios, mas não deve dar erro de importação
             pass
