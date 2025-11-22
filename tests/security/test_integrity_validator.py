@@ -11,16 +11,13 @@ Date: November 2025
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List
 import tempfile
-import hashlib
 import pytest
 
 from src.security.integrity_validator import (
     IntegrityValidator,
     IntegrityStatus,
     ValidationScope,
-    FileIntegrityRecord,
     IntegrityReport,
 )
 
@@ -42,9 +39,7 @@ class TestIntegrityValidatorInit:
             baseline_dir = str(Path(tmpdir) / "baselines")
             log_dir = str(Path(tmpdir) / "logs")
 
-            validator = IntegrityValidator(
-                baseline_dir=baseline_dir, log_dir=log_dir
-            )
+            validator = IntegrityValidator(baseline_dir=baseline_dir, log_dir=log_dir)
 
             assert validator.baseline_dir == baseline_dir
             assert validator.log_dir == log_dir
@@ -206,9 +201,7 @@ class TestComplianceReporting:
                 log_dir=str(Path(tmpdir) / "logs"),
             )
 
-    def test_generate_compliance_report(
-        self, validator: IntegrityValidator
-    ) -> None:
+    def test_generate_compliance_report(self, validator: IntegrityValidator) -> None:
         """Testa geração de relatório de compliance."""
         with tempfile.TemporaryDirectory() as tmpdir:
             test_dir = Path(tmpdir)

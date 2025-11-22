@@ -11,7 +11,7 @@ Date: November 2025
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, Any
 import tempfile
 import pytest
 
@@ -212,9 +212,7 @@ class TestMetaReasoning:
         with tempfile.TemporaryDirectory() as tmpdir:
             yield MetacognitionAgent(storage_dir=Path(tmpdir))
 
-    def test_metacognitive_monitoring(
-        self, metacog_agent: MetacognitionAgent
-    ) -> None:
+    def test_metacognitive_monitoring(self, metacog_agent: MetacognitionAgent) -> None:
         """Testa monitoramento metacognitivo."""
         # Monitora próprio pensamento
         thought_process = {"steps": ["analyze", "plan", "execute"]}
@@ -246,9 +244,7 @@ class TestMetaReasoning:
         assert strategy is not None
         assert isinstance(strategy, dict) or isinstance(strategy, str)
 
-    def test_metacognitive_regulation(
-        self, metacog_agent: MetacognitionAgent
-    ) -> None:
+    def test_metacognitive_regulation(self, metacog_agent: MetacognitionAgent) -> None:
         """Testa regulação metacognitiva."""
         # Regula próprio processo de pensamento
         current_state = {"progress": 0.5, "confidence": 0.7}

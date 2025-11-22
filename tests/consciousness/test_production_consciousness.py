@@ -16,11 +16,7 @@ import tempfile
 import pytest
 
 from src.consciousness.production_consciousness import ProductionConsciousnessSystem
-from src.metrics.consciousness_metrics import (
-    AgentConnection,
-    FeedbackLoop,
-    SelfAwarenessMetrics,
-)
+from src.metrics.consciousness_metrics import SelfAwarenessMetrics
 
 
 class TestProductionConsciousnessSystemInit:
@@ -348,9 +344,7 @@ class TestEdgeCases:
         assert isinstance(phi, float)
         assert phi >= 0.0
 
-    def test_repeated_measurements(
-        self, system: ProductionConsciousnessSystem
-    ) -> None:
+    def test_repeated_measurements(self, system: ProductionConsciousnessSystem) -> None:
         """Testa múltiplas medições consecutivas."""
         agents = ["agent1", "agent2"]
 

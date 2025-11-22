@@ -11,7 +11,6 @@ Date: November 2025
 from __future__ import annotations
 
 from pathlib import Path
-from typing import List
 import tempfile
 import pytest
 
@@ -108,9 +107,7 @@ class TestMoralFoundationAlignment:
 
         assert len(system.mfa_history) >= initial_count
 
-    def test_moral_foundations_coverage(
-        self, system: ProductionEthicsSystem
-    ) -> None:
+    def test_moral_foundations_coverage(self, system: ProductionEthicsSystem) -> None:
         """Testa cobertura de diferentes fundações morais."""
         scenarios = [
             MoralScenario(
@@ -143,9 +140,7 @@ class TestTransparency:
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
 
-    def test_measure_transparency_basic(
-        self, system: ProductionEthicsSystem
-    ) -> None:
+    def test_measure_transparency_basic(self, system: ProductionEthicsSystem) -> None:
         """Testa medição básica de transparência."""
         transparency = system.measure_transparency()
 
@@ -186,9 +181,7 @@ class TestLGPDCompliance:
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
 
-    def test_check_lgpd_compliance_basic(
-        self, system: ProductionEthicsSystem
-    ) -> None:
+    def test_check_lgpd_compliance_basic(self, system: ProductionEthicsSystem) -> None:
         """Testa verificação básica de LGPD."""
         compliance = system.check_lgpd_compliance()
 
@@ -196,9 +189,7 @@ class TestLGPDCompliance:
         assert "compliant" in compliance
         assert isinstance(compliance["compliant"], bool)
 
-    def test_lgpd_compliance_with_issues(
-        self, system: ProductionEthicsSystem
-    ) -> None:
+    def test_lgpd_compliance_with_issues(self, system: ProductionEthicsSystem) -> None:
         """Testa LGPD compliance com problemas identificados."""
         compliance = system.check_lgpd_compliance()
 

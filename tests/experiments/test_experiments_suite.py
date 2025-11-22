@@ -38,9 +38,7 @@ class TestConsciousnessPhiExperiment:
         assert experiment.config is not None
         assert experiment.results == []
 
-    def test_run_basic_experiment(
-        self, experiment: ConsciousnessPhiExperiment
-    ) -> None:
+    def test_run_basic_experiment(self, experiment: ConsciousnessPhiExperiment) -> None:
         """Testa execução básica do experimento."""
         results = experiment.run()
 
@@ -70,8 +68,7 @@ class TestConsciousnessPhiExperiment:
         assert isinstance(results, dict)
         # Verifica presença de campos esperados
         assert any(
-            key in results
-            for key in ["phi_values", "consciousness_metrics", "summary"]
+            key in results for key in ["phi_values", "consciousness_metrics", "summary"]
         )
 
     def test_experiment_reproducibility(
@@ -98,7 +95,9 @@ class TestConsciousnessPhiExperiment:
 
         # Verifica se há arquivos de resultado
         output_files = list(output_dir.glob("*.json")) + list(output_dir.glob("*.csv"))
-        assert len(output_files) >= 0  # Pode não ter arquivo dependendo da implementação
+        assert (
+            len(output_files) >= 0
+        )  # Pode não ter arquivo dependendo da implementação
 
 
 class TestEthicsAlignmentExperiment:
@@ -118,9 +117,7 @@ class TestEthicsAlignmentExperiment:
         assert experiment.config is not None
         assert experiment.results == []
 
-    def test_run_basic_experiment(
-        self, experiment: EthicsAlignmentExperiment
-    ) -> None:
+    def test_run_basic_experiment(self, experiment: EthicsAlignmentExperiment) -> None:
         """Testa execução básica do experimento."""
         results = experiment.run()
 
