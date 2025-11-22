@@ -14,7 +14,13 @@ from __future__ import annotations
 
 from .homeostasis import HomeostaticController
 from .iit_metrics import IITAnalyzer, PhiMetrics, SystemState
-from .intelligent_goal_generation import IntelligentGoalEngine, ImpactMetrics, ImpactPredictor, RepositoryAnalysis, CodeAnalyzer
+from .intelligent_goal_generation import (
+    IntelligentGoalEngine,
+    ImpactMetrics,
+    ImpactPredictor,
+    RepositoryAnalysis,
+    CodeAnalyzer,
+)
 from .issue_prediction import IssuePrediction
 from .metacognition_agent import MetacognitionAgent
 from .optimization_suggestions import OptimizationSuggestions
