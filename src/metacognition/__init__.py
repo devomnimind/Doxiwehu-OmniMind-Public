@@ -12,6 +12,19 @@ This module provides self-reflective AI capabilities including:
 
 from __future__ import annotations
 
+from .homeostasis import HomeostaticController
+from .iit_metrics import IITAnalyzer, PhiMetrics, SystemState
+from .intelligent_goal_generation import IntelligentGoalEngine, ImpactMetrics, ImpactPredictor, RepositoryAnalysis, CodeAnalyzer
+from .issue_prediction import IssuePrediction
+from .metacognition_agent import MetacognitionAgent
+from .optimization_suggestions import OptimizationSuggestions
+from .pattern_recognition import PatternRecognition
+from .proactive_goals import ProactiveGoalEngine
+from .root_cause_analysis import RootCauseAnalysis
+from .self_analysis import SelfAnalysis
+from .self_healing import SelfHealingLoop
+from .self_optimization import SelfOptimizationEngine
+
 __all__ = [
     "MetacognitionAgent",
     "SelfAnalysis",
@@ -19,21 +32,16 @@ __all__ = [
     "OptimizationSuggestions",
     "ProactiveGoalEngine",
     "HomeostaticController",
+    "IITAnalyzer",
+    "PhiMetrics",
+    "SystemState",
+    "CodeAnalyzer",
+    "ImpactMetrics",
+    "ImpactPredictor",
+    "IntelligentGoalEngine",
+    "RepositoryAnalysis",
+    "IssuePrediction",
+    "RootCauseAnalysis",
+    "SelfHealingLoop",
+    "SelfOptimizationEngine",
 ]
-
-# IIT (Integrated Information Theory) metrics
-
-# Intelligent goal generation
-
-__all__.extend(
-    [
-        "IITAnalyzer",
-        "PhiMetrics",
-        "SystemState",
-        "CodeAnalyzer",
-        "ImpactMetrics",
-        "ImpactPredictor",
-        "IntelligentGoalEngine",
-        "RepositoryAnalysis",
-    ]
-)

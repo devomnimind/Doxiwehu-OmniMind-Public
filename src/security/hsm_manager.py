@@ -50,21 +50,38 @@ class HSMManager:
 
         if os.path.exists(master_key_file):
             with open(master_key_file, "rb") as f:
-                return f.read()
+                encrypted_data = f.read()
+                # Extract salt (first 32 bytes) and encrypted master key
+                if len(encrypted_data) < 32:
+                    raise ValueError("Invalid master key file format")
+                salt = encrypted_data[:32]
+                encrypted_master = encrypted_data[32:]
+
+                # Derive system key using stored salt
+                system_key = hashlib.pbkdf2_hmac(
+                    "sha256", os.urandom(32), salt, 100000, dklen=32
+                )
+
+                master_key = self._decrypt_data(encrypted_master, system_key)
+                return master_key
         else:
             # Generate new master key
             os.makedirs(os.path.dirname(master_key_file), exist_ok=True)
             master_key = secrets.token_bytes(32)  # 256-bit key
 
-            # Encrypt master key with system-derived key (simulated)
+            # Generate unique salt for this master key
+            salt = secrets.token_bytes(32)  # 256-bit salt
+
+            # Derive system key using random salt
             system_key = hashlib.pbkdf2_hmac(
-                "sha256", os.urandom(32), b"OmniMindHSMMasterKeySalt", 100000, dklen=32
+                "sha256", os.urandom(32), salt, 100000, dklen=32
             )
 
             encrypted_master = self._encrypt_data(master_key, system_key)
 
+            # Store salt + encrypted master key
             with open(master_key_file, "wb") as f:
-                f.write(encrypted_master)
+                f.write(salt + encrypted_master)
 
             logger.info("New master key generated and stored")
             return master_key

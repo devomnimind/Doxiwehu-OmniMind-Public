@@ -285,11 +285,7 @@ class HolographicProjection:
         if (
             max(
                 len(projection),
-                (
-                    len(projection[0])
-                    if projection and len(projection) > 0 and projection[0]
-                    else 0
-                ),
+                (len(projection[0]) if projection and projection[0] else 0),
             )
             > self.max_surface_dim
         ):
@@ -671,16 +667,8 @@ class EventHorizonMemory:
         # Ensure same shape
         min_h = min(len(surface1), len(surface2))
         min_w = min(
-            (
-                len(surface1[0])
-                if surface1 is not None and len(surface1) > 0 and len(surface1[0]) > 0
-                else 0
-            ),
-            (
-                len(surface2[0])
-                if surface2 is not None and len(surface2) > 0 and len(surface2[0]) > 0
-                else 0
-            ),
+            (len(surface1[0]) if surface1 is not None and len(surface1) > 0 else 0),
+            (len(surface2[0]) if surface2 is not None and len(surface2) > 0 else 0),
         )
 
         s1_crop = [row[:min_w] for row in surface1[:min_h]]
