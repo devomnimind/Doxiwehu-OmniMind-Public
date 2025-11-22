@@ -28,8 +28,13 @@ except ImportError:
 @pytest.fixture(scope="session")
 def backend_server():
     """Start backend server for E2E tests."""
-    # If running in production mode, use the existing server
-    if os.environ.get("OMNIMIND_ENV") == "production":
+    # If running in Docker/test environment, use the container backend
+    if os.environ.get("OMNIMIND_ENV") == "production" or os.environ.get("CI"):
+        yield "http://localhost:8000"
+        return
+
+    # For local development with containers, use the backend container
+    if os.environ.get("USE_DOCKER_BACKEND"):
         yield "http://localhost:8000"
         return
 

@@ -3,6 +3,7 @@ import importlib
 import json
 from pathlib import Path
 from typing import Any, Dict, Tuple
+import os
 
 import pytest
 from fastapi.testclient import TestClient
@@ -111,25 +112,16 @@ def test_dashboard_requires_auth(
     response = client.get("/observability")
     assert response.status_code == 401
 
-    # Cenário 2: credenciais automáticas provenientes do arquivo seguro
-    auto_creds = {"user": "auto_user", "pass": "auto_secret"}
-    auth_file = tmp_path / "dashboard_auth.json"
-    auth_file.write_text(json.dumps(auto_creds))
-    monkeypatch.setenv("OMNIMIND_DASHBOARD_AUTH_FILE", str(auth_file))
-    monkeypatch.delenv("OMNIMIND_DASHBOARD_USER", raising=False)
-    monkeypatch.delenv("OMNIMIND_DASHBOARD_PASS", raising=False)
+    # Cenário 2: credenciais via variáveis de ambiente funcionam
+    monkeypatch.setenv("OMNIMIND_DASHBOARD_USER", "test_user")
+    monkeypatch.setenv("OMNIMIND_DASHBOARD_PASS", "test_pass")
     backend_main = importlib.reload(backend_main)
-    print(
-        f"Usando credenciais automáticas: {auto_creds['user']} / {auto_creds['pass']}"
-    )
     client = TestClient(backend_main.app)
-    auth_value = base64.b64encode(
-        f"{auto_creds['user']}:{auto_creds['pass']}".encode("ascii")
-    ).decode("ascii")
+    auth_value = base64.b64encode(b"test_user:test_pass").decode("ascii")
     headers = {"Authorization": f"Basic {auth_value}"}
-    auto_response = client.get("/observability", headers=headers)
-    assert auto_response.status_code == 200
-    payload = auto_response.json()
+    response = client.get("/observability", headers=headers)
+    assert response.status_code == 200
+    payload = response.json()
     assert "self_healing" in payload
     assert "atlas" in payload
     assert payload.get("alerts") is not None
