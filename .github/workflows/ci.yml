@@ -41,7 +41,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libdbus-1-dev pkg-config cmake build-essential libffi-dev libglib2.0-dev meson ninja-build
+          sudo apt-get install -y libdbus-1-dev libdbus-glib-1-dev pkg-config cmake build-essential libffi-dev libglib2.0-dev meson ninja-build
           # Clean up apt cache to save space
           sudo apt-get clean
           sudo rm -rf /var/lib/apt/lists/*
@@ -110,7 +110,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libdbus-1-dev pkg-config cmake build-essential libffi-dev libglib2.0-dev meson ninja-build
+          sudo apt-get install -y libdbus-1-dev libdbus-glib-1-dev pkg-config cmake build-essential libffi-dev libglib2.0-dev meson ninja-build
           # Clean up apt cache to save space
           sudo apt-get clean
           sudo rm -rf /var/lib/apt/lists/*
@@ -227,7 +227,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libdbus-1-dev pkg-config cmake build-essential libffi-dev libglib2.0-dev meson ninja-build
+          sudo apt-get install -y libdbus-1-dev libdbus-glib-1-dev pkg-config cmake build-essential libffi-dev libglib2.0-dev meson ninja-build
           # Clean up apt cache to save space
           sudo apt-get clean
           sudo rm -rf /var/lib/apt/lists/*
