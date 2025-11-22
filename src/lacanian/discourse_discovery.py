@@ -350,7 +350,7 @@ class LacanianDiscourseAnalyzer:
                     all_markers.append(keyword)
 
         # Identifica discurso dominante
-        dominant_discourse = max(discourse_scores, key=discourse_scores.get)
+        dominant_discourse = max(discourse_scores, key=lambda k: discourse_scores[k])
 
         # Assinatura emocional do discurso dominante
         emotional_signature = self.discourse_markers[dominant_discourse].emotional_tone

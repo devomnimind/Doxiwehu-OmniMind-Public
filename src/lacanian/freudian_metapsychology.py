@@ -27,7 +27,6 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Any, Tuple, Set
 from dataclasses import dataclass
 from enum import Enum
-import numpy as np
 import random
 import logging
 
@@ -470,7 +469,7 @@ class FreudianMind:
 
     def evaluate_conflict(
         self, actions: List[Action], reality_context: Dict[str, Any]
-    ) -> Tuple[float, Dict[str, float]]:
+    ) -> Tuple[float, Dict[str, Dict[str, float]]]:
         """
         Avalia conflito entre as três instâncias.
 
@@ -501,9 +500,13 @@ class FreudianMind:
                 preferences["ego"][action_id],
                 preferences["superego"][action_id],
             ]
-            all_scores.append(np.std(scores))
+            # Calculate standard deviation manually
+            mean_score = sum(scores) / len(scores)
+            variance = sum((x - mean_score) ** 2 for x in scores) / len(scores)
+            std_dev = variance**0.5
+            all_scores.append(std_dev)
 
-        conflict_severity = np.mean(all_scores) if all_scores else 0.0
+        conflict_severity = sum(all_scores) / len(all_scores) if all_scores else 0.0
 
         return conflict_severity, preferences
 
@@ -652,7 +655,7 @@ class FreudianMind:
             )
 
         # Seleciona ação com maior score combinado
-        best_action_id = max(combined_scores, key=combined_scores.get)
+        best_action_id = max(combined_scores, key=lambda k: combined_scores[k])
 
         # Encontra objeto Action
         for action in actions:

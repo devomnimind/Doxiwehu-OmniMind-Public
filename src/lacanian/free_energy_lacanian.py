@@ -26,7 +26,6 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
-import numpy as np
 import torch
 import torch.nn as nn
 import logging
@@ -82,7 +81,7 @@ class DesireVector:
     """
 
     intensity: float
-    direction: np.ndarray
+    direction: torch.Tensor
     synchronization: float
     jouissance: float
 
@@ -218,7 +217,7 @@ class ActiveInferenceAgent(nn.Module):
         symbolic = self.generative_imaginary_to_symbolic(imaginary_state)
 
         # Symbolic → Real (prediction)
-        predicted_sensory = self.generative_symbolic_to_real(symbolic)
+        predicted_sensory: torch.Tensor = self.generative_symbolic_to_real(symbolic)
 
         return predicted_sensory
 
@@ -325,13 +324,13 @@ class ActiveInferenceAgent(nn.Module):
             Vetor de desejo
         """
         # Intensidade = magnitude da energia livre
-        intensity = np.tanh(current_state.free_energy / 10.0)
+        intensity = torch.tanh(torch.tensor(current_state.free_energy / 10.0))
 
         # Direction = gradiente negativo (simplified)
-        direction = np.array(
+        direction = torch.tensor(
             [-current_state.surprise, -current_state.complexity, current_state.accuracy]
         )
-        direction = direction / (np.linalg.norm(direction) + 1e-8)
+        direction = direction / (torch.norm(direction) + 1e-8)
 
         # Synchronization com Big Other (simplified)
         # Em implementação completa, seria sincronização com outros agents
@@ -474,9 +473,15 @@ class LacanianFreeEnergySystem:
             "agent_states": agent_states,
             "agent_desires": agent_desires,
             "big_other": self.big_other_symbolic,
-            "mean_free_energy": np.mean([s.free_energy for s in agent_states]),
-            "mean_object_a": np.mean([s.object_a_discrepancy for s in agent_states]),
-            "mean_synchronization": np.mean([d.synchronization for d in agent_desires]),
+            "mean_free_energy": torch.mean(
+                torch.tensor([s.free_energy for s in agent_states])
+            ),
+            "mean_object_a": torch.mean(
+                torch.tensor([s.object_a_discrepancy for s in agent_states])
+            ),
+            "mean_synchronization": torch.mean(
+                torch.tensor([d.synchronization for d in agent_desires])
+            ),
         }
 
 

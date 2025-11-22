@@ -12,13 +12,16 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 from uuid import uuid4
 
-try:
+if TYPE_CHECKING:
     import httpx
-except ImportError:
-    httpx = None
+else:
+    try:
+        import httpx
+    except ImportError:
+        httpx = None
 
 logger = logging.getLogger(__name__)
 
@@ -140,6 +143,8 @@ class AsyncMCPClient:
         """
         if self._client is None:
             await self.connect()
+
+        assert self._client is not None  # Should be connected after above
 
         request_id = uuid4().hex
         payload = {

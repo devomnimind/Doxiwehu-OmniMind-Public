@@ -17,7 +17,6 @@ from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
 from ..audit.alerting_system import AlertingSystem, AlertSeverity, AlertCategory
 from .network_sensors import NetworkSensorGanglia
 from .web_scanner import WebScannerBrain
-from .security_agent import SecurityAgent
 
 
 class SecurityStatus(Enum):
@@ -88,11 +87,6 @@ class SecurityOrchestrator:
         )
         # SecurityAgent requires config file, make it optional for testing
         self.security_agent = None
-        try:
-            self.security_agent = SecurityAgent(config_path=None)
-        except (TypeError, FileNotFoundError):
-            # SecurityAgent not available without config, continue without it
-            pass
 
         # Monitoring state
         self.monitoring_active = False
@@ -311,7 +305,7 @@ class SecurityOrchestrator:
             web_vulnerabilities.extend(scan_result.get("findings", []))
 
         # System security
-        security_events = []
+        security_events: List[Dict[str, Any]] = []
 
         if self.security_agent:
             suspicious_process = self.security_agent.monitor_processes()

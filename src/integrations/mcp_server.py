@@ -7,7 +7,7 @@ from dataclasses import dataclass, field
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from time import perf_counter
-from typing import Any, Callable, Dict, Iterable, List, Optional, Union
+from typing import Any, Callable, Dict, Iterable, List, Optional, Union, cast
 
 from src.audit.immutable_audit import get_audit_system
 
@@ -226,13 +226,13 @@ class MCPServer:
         message: str,
         data: Optional[Any] = None,
     ) -> str:
-        payload = {
+        payload: Dict[str, Any] = {
             "jsonrpc": "2.0",
             "id": request_id,
             "error": {"code": code, "message": message},
         }
         if data is not None:
-            payload["error"]["data"] = data
+            cast(Dict[str, Any], payload["error"])["data"] = data
         return json.dumps(payload)
 
     def _resolve_path(self, path: str) -> Path:
@@ -334,6 +334,7 @@ if __name__ == "__main__":
     try:
         server.start()
         logger.info("Press Ctrl+C to stop MCPServer")
-        server._thread.join()
+        if server._thread:
+            server._thread.join()
     except KeyboardInterrupt:
         server.stop()

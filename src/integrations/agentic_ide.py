@@ -362,7 +362,7 @@ class ModelSelector:
             factors[model] = score
 
         # Seleciona melhor
-        selected_model = max(factors, key=factors.get)
+        selected_model = max(factors, key=lambda k: factors[k])
 
         logger.info(
             f"Model selected: {selected_model.value} " f"for task_type={task_type}"

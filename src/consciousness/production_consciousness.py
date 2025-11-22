@@ -14,93 +14,16 @@ License: MIT
 from __future__ import annotations
 
 from typing import Dict, List, Optional, Any
-from dataclasses import dataclass
 from pathlib import Path
-import json
 import logging
 
 # Import from existing consciousness metrics
-try:
-    from src.metrics.consciousness_metrics import (
-        ConsciousnessMetrics,
-        AgentConnection,
-        FeedbackLoop,
-        SelfAwarenessScore,
-    )
-except ImportError:
-    logger = logging.getLogger(__name__)
-    logger.warning("consciousness_metrics not found, using mock")
-
-    # Mock classes for standalone operation
-    @dataclass
-    class AgentConnection:
-        source_agent: str
-        target_agent: str
-        connection_type: str
-        bidirectional: bool
-        weight: float
-
-    @dataclass
-    class FeedbackLoop:
-        loop_id: str
-        agents_involved: List[str]
-        loop_type: str
-        iterations_count: int
-        avg_latency_ms: float
-
-    @dataclass
-    class SelfAwarenessScore:
-        temporal_continuity_score: float
-        goal_autonomy_score: float
-        self_reference_score: float
-        limitation_awareness_score: float
-        overall_score: float
-
-    class ConsciousnessMetrics:
-        def __init__(self, metrics_dir: Path):
-            self.metrics_dir = metrics_dir
-            self.connections: List[AgentConnection] = []
-            self.feedback_loops: List[FeedbackLoop] = []
-
-        def add_connection(self, conn: AgentConnection) -> None:
-            self.connections.append(conn)
-
-        def add_feedback_loop(self, loop: FeedbackLoop) -> None:
-            self.feedback_loops.append(loop)
-
-        def calculate_phi_proxy(self) -> float:
-            # Simplified Phi calculation
-            base_phi = len(self.connections) * 2.0
-            feedback_bonus = len(self.feedback_loops) * 8.0
-            return base_phi + feedback_bonus
-
-        def measure_self_awareness(
-            self,
-            memory_test_passed: bool,
-            has_autonomous_goals: bool,
-            self_description_quality: float,
-            limitation_acknowledgment: float,
-        ) -> SelfAwarenessScore:
-            temporal = 1.0 if memory_test_passed else 0.0
-            goal_autonomy = 1.0 if has_autonomous_goals else 0.0
-            self_ref = self_description_quality
-            limitation = limitation_acknowledgment
-            overall = (temporal + goal_autonomy + self_ref + limitation) / 4.0
-
-            return SelfAwarenessScore(
-                temporal_continuity_score=temporal,
-                goal_autonomy_score=goal_autonomy,
-                self_reference_score=self_ref,
-                limitation_awareness_score=limitation,
-                overall_score=overall,
-            )
-
-        def snapshot(self, label: str) -> Path:
-            path = self.metrics_dir / f"{label}_snapshot.json"
-            path.parent.mkdir(parents=True, exist_ok=True)
-            with open(path, "w") as f:
-                json.dump({"label": label}, f)
-            return path
+from src.metrics.consciousness_metrics import (
+    ConsciousnessMetrics,
+    AgentConnection,
+    FeedbackLoop,
+    SelfAwarenessMetrics,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -129,7 +52,7 @@ class ProductionConsciousnessSystem:
 
         # Histórico
         self.phi_history: List[float] = []
-        self.awareness_history: List[SelfAwarenessScore] = []
+        self.awareness_history: List[SelfAwarenessMetrics] = []
 
         logger.info("Production consciousness system initialized")
 
@@ -227,7 +150,7 @@ class ProductionConsciousnessSystem:
         has_autonomous_goals: bool,
         self_description_quality: float,
         limitation_awareness: float,
-    ) -> SelfAwarenessScore:
+    ) -> SelfAwarenessMetrics:
         """
         Mede auto-consciência de um agent.
 
@@ -307,7 +230,14 @@ class ProductionConsciousnessSystem:
         Returns:
             Path do snapshot salvo
         """
-        return self.consciousness_metrics.snapshot(label)
+        snapshot_result = self.consciousness_metrics.snapshot(label)
+        # Handle both Path (mock) and ConsciousnessSnapshot (real) returns
+        if isinstance(snapshot_result, Path):
+            return snapshot_result
+        else:
+            # For real ConsciousnessMetrics, snapshot is saved automatically
+            # Return a path based on the label
+            return self.metrics_dir / f"{label}_snapshot.json"
 
 
 def demonstrate_production_consciousness() -> None:

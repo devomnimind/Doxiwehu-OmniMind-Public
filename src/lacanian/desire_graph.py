@@ -110,11 +110,13 @@ class Signifier:
         if not self.connections:
             return self.meaning_vector
 
-        context_vectors = []
+        context_vectors: List[List[float]] = []
 
         for conn in self.connections:
-            if conn in context and context[conn].meaning_vector is not None:
-                context_vectors.append(context[conn].meaning_vector)
+            if conn in context and hasattr(context[conn], "meaning_vector"):
+                meaning_vec = context[conn].meaning_vector
+                if meaning_vec is not None and isinstance(meaning_vec, list):
+                    context_vectors.append(meaning_vec)
 
         if context_vectors:
             # Compute element-wise mean across context vectors

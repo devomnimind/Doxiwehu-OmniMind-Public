@@ -772,9 +772,17 @@ ESTIMATED_COMPLEXITY: low
                         "iteration": 1,
                     }
                 else:
-                    result = agent.run(
-                        subtask["description"], max_iterations=max_iterations_per_task
-                    )
+                    if agent is None:
+                        result = {
+                            "completed": False,
+                            "final_result": f"Agent {subtask['agent']} not available",
+                            "iteration": 0,
+                        }
+                    else:
+                        result = agent.run(
+                            subtask["description"],
+                            max_iterations=max_iterations_per_task,
+                        )
 
                 if not isinstance(result, dict):
                     result = {
