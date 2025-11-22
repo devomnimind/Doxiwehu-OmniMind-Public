@@ -30,7 +30,7 @@ tensorboard>=2.15.0
 # Vector database para memória episódica (LOCAL-FIRST)
 # Prefer ChromaDB (already in main requirements) for local-first
 chromadb>=0.4.1  # Local, no server needed
-# qdrant-client>=1.16.0,<2.0.0  # OPTIONAL: Requires Qdrant server
+qdrant-client>=1.16.0,<2.0.0  # For testing with local Qdrant server
 
 # Modelos e dados
 pydantic>=2.5.0
