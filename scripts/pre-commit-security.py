@@ -32,7 +32,7 @@ def check_active_violations() -> bool:
     validator = DLPValidator(policy_path=policy_path)
 
     # Check recent audit logs for violations
-    audit_system = ImmutableAuditSystem()
+    audit_system = get_audit_system()
     recent_events = audit_system.get_recent_events(limit=50)
 
     blocking_violations = []

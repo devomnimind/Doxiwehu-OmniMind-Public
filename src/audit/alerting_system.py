@@ -18,7 +18,7 @@ from typing import Any, Callable, Dict, List, Optional, Set
 from dataclasses import dataclass, field
 import uuid
 
-from .immutable_audit import ImmutableAuditSystem
+from .immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 class AlertSeverity(Enum):
@@ -107,7 +107,7 @@ class AlertingSystem:
         Args:
             audit_system: Optional audit system instance
         """
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
         self.alerts_dir = self.audit_system.log_dir / "alerts"
         self.alerts_dir.mkdir(parents=True, exist_ok=True)
 

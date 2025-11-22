@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from enum import Enum
 
-from .immutable_audit import ImmutableAuditSystem
+from .immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 class RetentionPeriod(Enum):
@@ -63,7 +63,7 @@ class RetentionPolicyManager:
             audit_system: Optional audit system instance
             config_file: Optional path to retention policy configuration
         """
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
         self.config_file = config_file or (
             self.audit_system.log_dir / "retention_policy.json"
         )

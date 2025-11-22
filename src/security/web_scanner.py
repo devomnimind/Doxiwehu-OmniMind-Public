@@ -16,7 +16,7 @@ from enum import Enum
 from urllib.parse import urlparse
 import requests
 
-from ..audit.immutable_audit import ImmutableAuditSystem
+from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
 from ..audit.alerting_system import AlertingSystem, AlertSeverity, AlertCategory
 
 
@@ -89,7 +89,7 @@ class WebScannerBrain:
             audit_system: Optional audit system instance
             alerting_system: Optional alerting system instance
         """
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
         self.alerting_system = alerting_system or AlertingSystem()
         self.nikto_available = self._check_nikto_available()
 

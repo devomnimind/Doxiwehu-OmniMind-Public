@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 import re
 
-from ..audit.immutable_audit import ImmutableAuditSystem
+from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
 from ..audit.alerting_system import AlertingSystem, AlertSeverity, AlertCategory
 
 
@@ -86,7 +86,7 @@ class NetworkSensorGanglia:
             audit_system: Optional audit system instance
             alerting_system: Optional alerting system instance
         """
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
         self.alerting_system = alerting_system or AlertingSystem()
         self.known_hosts: Dict[str, NetworkHost] = {}
         self.baseline_ports: Dict[str, List[int]] = {}

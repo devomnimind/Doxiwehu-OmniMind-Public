@@ -23,7 +23,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 import threading
 
-from ..audit.immutable_audit import ImmutableAuditSystem
+from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 class TenantStatus(Enum):
@@ -135,7 +135,7 @@ class MultiTenantIsolationManager:
         self.data_dir = data_dir or Path.home() / ".omnimind" / "tenants"
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
         self.tenants: Dict[str, TenantConfig] = {}
         self.encryption_keys: Dict[str, bytes] = {}
         self._lock = threading.Lock()

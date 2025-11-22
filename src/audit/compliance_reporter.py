@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 from enum import Enum
 
-from .immutable_audit import ImmutableAuditSystem
+from .immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 class ComplianceStandard(Enum):
@@ -38,7 +38,7 @@ class ComplianceReporter:
         Args:
             audit_system: Optional audit system instance (creates new if None)
         """
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
         self.report_dir = self.audit_system.log_dir / "compliance_reports"
         self.report_dir.mkdir(parents=True, exist_ok=True)
 

@@ -17,7 +17,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 
-from .immutable_audit import ImmutableAuditSystem
+from .immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 @dataclass
@@ -51,7 +51,7 @@ class AuditLogAnalyzer:
         Args:
             audit_system: Optional audit system instance
         """
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
 
     def query(
         self,

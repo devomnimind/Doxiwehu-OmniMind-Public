@@ -880,7 +880,7 @@ class AuditSecurityTool(AuditedTool):
                 # Verificar integridade da cadeia de auditoria
                 from ..audit import ImmutableAuditSystem
 
-                audit = ImmutableAuditSystem()
+                audit = get_audit_system()
                 if not audit.verify_chain_integrity():
                     results["findings"].append("Audit chain compromised")
                     results["passed"] = False

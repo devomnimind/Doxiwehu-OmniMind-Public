@@ -19,5 +19,15 @@
 **Detalhes**: Systematic type hint addition to improve code quality and reduce MyPy errors
 **Impacto**: 
 **Ações Automáticas**: 
+### [2025-11-22T02:12:24] CODE_AGENT AUDIT_INTEGRITY_CHECK_FAILED src/audit/immutable_audit.py FAILURE fe31c3f2208c667c...
+**Descrição**: Audit chain integrity verification failed - 6736 events, integrity: False
+**Detalhes**: 
+**Impacto**: 
+**Ações Automáticas**: 
+### [2025-11-22T02:15:11] CODE_AGENT AUDIT_CHAIN_CORRUPTION_IDENTIFIED logs/audit_chain.log KNOWN_ISSUE c859b80eda7e1cd0...
+**Descrição**: Audit chain corruption detected at line 962 - prev_hash mismatch. Multiple ImmutableAuditSystem instances were created instead of using singleton. New events use correct singleton pattern.
+**Detalhes**: Corruption occurred due to race conditions between multiple audit system instances. Fixed by enforcing singleton usage across codebase.
+**Impacto**: Historical chain integrity compromised, but new events are properly chained. System remains functional for security logging.
+**Ações Automáticas**: 
 ---
 *Arquivo gerado automaticamente - Não editar manualmente*

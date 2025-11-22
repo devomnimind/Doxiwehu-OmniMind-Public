@@ -13,7 +13,7 @@ from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 from enum import Enum
 
-from ..audit.immutable_audit import ImmutableAuditSystem
+from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
 from ..audit.alerting_system import AlertingSystem, AlertSeverity, AlertCategory
 from .network_sensors import NetworkSensorGanglia
 from .web_scanner import WebScannerBrain
@@ -74,7 +74,7 @@ class SecurityOrchestrator:
             audit_system: Optional audit system instance
             alerting_system: Optional alerting system instance
         """
-        self.audit_system = audit_system or ImmutableAuditSystem()
+        self.audit_system = audit_system or get_audit_system()
         self.alerting_system = alerting_system or AlertingSystem()
 
         # Initialize security sensors
