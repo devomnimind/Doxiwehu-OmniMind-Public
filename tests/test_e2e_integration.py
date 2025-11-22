@@ -42,6 +42,7 @@ def backend_server():
     project_root = Path(__file__).parent.parent
     env["PYTHONPATH"] = str(project_root)
     import sys
+
     server_process = subprocess.Popen(
         [sys.executable, str(project_root / "run_test_server.py")],
         stdout=subprocess.PIPE,
