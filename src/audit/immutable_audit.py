@@ -135,6 +135,7 @@ class ImmutableAuditSystem:
     def verify_chain_integrity(self) -> Dict[str, Any]:
         """
         Verifica integridade completa da cadeia de hash.
+        Permite quebras controladas na cadeia quando há reinicializações do sistema.
 
         Returns:
             Dicionário com resultado da verificação
@@ -149,6 +150,7 @@ class ImmutableAuditSystem:
         events_verified = 0
         prev_hash = "0" * 64
         corrupted_events = []
+        system_restarts = 0
 
         try:
             with open(self.audit_log_file, "rb") as f:
@@ -158,14 +160,21 @@ class ImmutableAuditSystem:
 
                     try:
                         event = json.loads(line)
+                        action = event.get("action", "")
 
-                        # Verificar hash anterior
-                        if event.get("prev_hash") != prev_hash:
+                        # Permitir quebra na cadeia para eventos de inicialização do sistema
+                        if action == "audit_system_initialized":
+                            # Sistema foi reinicializado - reset do prev_hash
+                            prev_hash = "0" * 64
+                            system_restarts += 1
+                        elif event.get("prev_hash") != prev_hash:
+                            # Verificar se é uma quebra não autorizada
                             corrupted_events.append(
                                 {
                                     "line": line_num,
                                     "expected_prev_hash": prev_hash,
                                     "found_prev_hash": event.get("prev_hash"),
+                                    "action": action,
                                 }
                             )
 
@@ -192,6 +201,7 @@ class ImmutableAuditSystem:
                                     "hash_mismatch": True,
                                     "expected": calculated_hash,
                                     "found": stored_hash,
+                                    "action": action,
                                 }
                             )
 
@@ -203,23 +213,33 @@ class ImmutableAuditSystem:
                             {"line": line_num, "error": "JSON inválido"}
                         )
 
-            if corrupted_events:
+            # Avaliar resultado baseado em corrupções não autorizadas
+            unauthorized_corruptions = [
+                c
+                for c in corrupted_events
+                if not c.get("action", "").startswith("audit_system_")
+            ]
+
+            if unauthorized_corruptions:
                 corruption_msg = (
                     "ALERTA: Cadeia de auditoria corrompida! "
-                    f"{len(corrupted_events)} eventos inválidos"
+                    f"{len(unauthorized_corruptions)} eventos inválidos não autorizados"
                 )
                 self._log_security_event(corruption_msg)
                 return {
                     "valid": False,
                     "message": "Cadeia corrompida detectada",
                     "events_verified": events_verified,
-                    "corrupted_events": corrupted_events,
+                    "system_restarts": system_restarts,
+                    "unauthorized_corruptions": len(unauthorized_corruptions),
+                    "corrupted_events": unauthorized_corruptions,
                 }
 
             return {
                 "valid": True,
-                "message": "Cadeia íntegra",
+                "message": f"Cadeia íntegra ({system_restarts} reinicializações autorizadas)",
                 "events_verified": events_verified,
+                "system_restarts": system_restarts,
             }
 
         except Exception as e:
@@ -360,6 +380,137 @@ class ImmutableAuditSystem:
         except Exception as e:
             self._log_security_event(f"Falha ao registrar evento de sistema: {e}")
 
+    def repair_chain_integrity(self) -> Dict[str, Any]:
+        """
+        Tenta reparar a cadeia de auditoria detectando e corrigindo quebras.
+
+        Returns:
+            Dicionário com resultado do reparo
+        """
+        if not self.audit_log_file.exists():
+            return {"repaired": False, "message": "Log não existe"}
+
+        print("🔧 Iniciando reparo da cadeia de auditoria...")
+
+        # Fazer backup do log original
+        backup_file = self.audit_log_file.with_suffix(".bak")
+        import shutil
+
+        shutil.copy2(self.audit_log_file, backup_file)
+
+        events_repaired = 0
+        events_removed = 0
+        valid_events = []
+
+        try:
+            with open(self.audit_log_file, "rb") as f:
+                lines = f.readlines()
+
+            prev_hash = "0" * 64
+            system_restarts = 0
+
+            for line_num, line in enumerate(lines, 1):
+                if not line.strip():
+                    continue
+
+                try:
+                    event = json.loads(line)
+                    action = event.get("action", "")
+
+                    # Permitir quebra na cadeia para eventos de inicialização
+                    if action == "audit_system_initialized":
+                        prev_hash = "0" * 64
+                        system_restarts += 1
+                        valid_events.append(line)
+                        continue
+
+                    # Verificar se o prev_hash está correto
+                    if event.get("prev_hash") != prev_hash:
+                        print(
+                            f"⚠️  Quebra detectada na linha {line_num} "
+                            f"({action}) - removendo evento"
+                        )
+                        events_removed += 1
+                        continue
+
+                    # Verificar hash do evento
+                    event_for_hash = {
+                        "action": event.get("action"),
+                        "category": event.get("category"),
+                        "details": event.get("details"),
+                        "timestamp": event.get("timestamp"),
+                        "datetime_utc": event.get("datetime_utc"),
+                        "prev_hash": event.get("prev_hash"),
+                    }
+
+                    json_data = json.dumps(event_for_hash, sort_keys=True).encode(
+                        "utf-8"
+                    )
+                    calculated_hash = self.hash_content(json_data)
+                    stored_hash = event.get("current_hash")
+
+                    if calculated_hash != stored_hash:
+                        print(
+                            f"⚠️  Hash inválido na linha {line_num} ({action}) - removendo evento"
+                        )
+                        events_removed += 1
+                        continue
+
+                    # Evento válido
+                    valid_events.append(line)
+                    prev_hash = stored_hash
+                    events_repaired += 1
+
+                except json.JSONDecodeError:
+                    print(f"⚠️  JSON inválido na linha {line_num} - removendo")
+                    events_removed += 1
+
+            # Reescrever log com eventos válidos
+            with open(self.audit_log_file, "wb") as f:
+                for event_line in valid_events:
+                    f.write(event_line)
+
+            # Atualizar último hash
+            if valid_events:
+                last_event = json.loads(valid_events[-1])
+                self.last_hash = last_event.get("current_hash", "0" * 64)
+                self._save_last_hash(self.last_hash)
+
+            result = {
+                "repaired": True,
+                "message": (
+                    f"Cadeia reparada: {events_repaired} eventos válidos, "
+                    f"{events_removed} removidos"
+                ),
+                "events_repaired": events_repaired,
+                "events_removed": events_removed,
+                "system_restarts": system_restarts,
+                "backup_file": str(backup_file),
+            }
+
+            print(f"✅ Reparo concluído: {result['message']}")
+            self._log_security_event(
+                f"Cadeia de auditoria reparada: {events_repaired} válidos, "
+                f"{events_removed} removidos"
+            )
+
+            return result
+
+        except Exception as e:
+            error_msg = f"Erro durante reparo: {str(e)}"
+            print(f"❌ {error_msg}")
+            self._log_security_event(error_msg)
+
+            # Restaurar backup em caso de erro
+            shutil.copy2(backup_file, self.audit_log_file)
+            print("📁 Backup restaurado")
+
+            return {
+                "repaired": False,
+                "message": error_msg,
+                "backup_restored": True,
+            }
+
     def get_audit_summary(self) -> Dict[str, Any]:
         """
         Retorna resumo do sistema de auditoria.
@@ -390,13 +541,15 @@ class ImmutableAuditSystem:
 
 # Instância global singleton
 _audit_system: Optional[ImmutableAuditSystem] = None
+_audit_lock = threading.Lock()
 
 
 def get_audit_system() -> ImmutableAuditSystem:
     """Retorna instância singleton do sistema de auditoria."""
     global _audit_system
-    if _audit_system is None:
-        _audit_system = ImmutableAuditSystem()
+    with _audit_lock:
+        if _audit_system is None:
+            _audit_system = ImmutableAuditSystem()
     return _audit_system
 
 

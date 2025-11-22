@@ -17,7 +17,7 @@ from src.quantum_ai.quantum_algorithms import (
 class TestQuantumGate:
     """Test QuantumGate enum."""
 
-    def test_quantum_gate_values(self):
+    def test_quantum_gate_values(self) -> None:
         """Test that all quantum gates are defined."""
         assert QuantumGate.HADAMARD.value == "H"
         assert QuantumGate.PAULI_X.value == "X"
@@ -30,7 +30,7 @@ class TestQuantumGate:
 class TestQuantumState:
     """Test QuantumState class."""
 
-    def test_initialization_default(self):
+    def test_initialization_default(self) -> None:
         """Test QuantumState initialization with default amplitudes."""
         state = QuantumState(num_qubits=2)
 
@@ -43,7 +43,7 @@ class TestQuantumState:
         assert state.amplitudes[2] == complex(0, 0)
         assert state.amplitudes[3] == complex(0, 0)
 
-    def test_initialization_custom_amplitudes(self):
+    def test_initialization_custom_amplitudes(self) -> None:
         """Test QuantumState initialization with custom amplitudes."""
         custom_amps = [
             complex(0.5, 0),
@@ -56,7 +56,7 @@ class TestQuantumState:
         assert len(state.amplitudes) == 4
         assert state.amplitudes == custom_amps
 
-    def test_normalize(self):
+    def test_normalize(self) -> None:
         """Test state normalization."""
         # Create unnormalized state
         state = QuantumState(num_qubits=2)
@@ -69,7 +69,7 @@ class TestQuantumState:
         norm_squared = sum(abs(a) ** 2 for a in state.amplitudes)
         assert abs(norm_squared - 1.0) < 1e-10
 
-    def test_get_probabilities(self):
+    def test_get_probabilities(self) -> None:
         """Test getting measurement probabilities."""
         state = QuantumState(num_qubits=1)
         # Set equal superposition: |0⟩ + |1⟩
@@ -81,7 +81,7 @@ class TestQuantumState:
         assert abs(probs[0] - 0.5) < 1e-10
         assert abs(probs[1] - 0.5) < 1e-10
 
-    def test_measure(self):
+    def test_measure(self) -> None:
         """Test quantum measurement."""
         state = QuantumState(num_qubits=1)
         # Set to |0⟩ state
@@ -91,7 +91,7 @@ class TestQuantumState:
         result = state.measure()
         assert result == 0
 
-    def test_measure_superposition(self):
+    def test_measure_superposition(self) -> None:
         """Test measurement in superposition."""
         state = QuantumState(num_qubits=1)
         # Set equal superposition
@@ -108,7 +108,7 @@ class TestQuantumState:
 class TestQuantumCircuit:
     """Test QuantumCircuit class."""
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """Test QuantumCircuit initialization."""
         circuit = QuantumCircuit(num_qubits=2)
 
@@ -116,7 +116,7 @@ class TestQuantumCircuit:
         assert len(circuit.state.amplitudes) == 4
         assert len(circuit.gates_applied) == 0
 
-    def test_apply_hadamard_gate(self):
+    def test_apply_hadamard_gate(self) -> None:
         """Test applying Hadamard gate."""
         circuit = QuantumCircuit(num_qubits=1)
 
@@ -132,7 +132,7 @@ class TestQuantumCircuit:
         assert len(circuit.gates_applied) == 1
         assert circuit.gates_applied[0][0] == QuantumGate.HADAMARD
 
-    def test_apply_pauli_x_gate(self):
+    def test_apply_pauli_x_gate(self) -> None:
         """Test applying Pauli-X (NOT) gate."""
         circuit = QuantumCircuit(num_qubits=1)
 
@@ -144,7 +144,7 @@ class TestQuantumCircuit:
         assert abs(probs[0] - 0.0) < 1e-10
         assert abs(probs[1] - 1.0) < 1e-10
 
-    def test_apply_cnot_gate(self):
+    def test_apply_cnot_gate(self) -> None:
         """Test applying CNOT gate."""
         circuit = QuantumCircuit(num_qubits=2)
 
@@ -157,7 +157,7 @@ class TestQuantumCircuit:
         # Should create entangled Bell state
         assert len(circuit.gates_applied) == 2
 
-    def test_measure(self):
+    def test_measure(self) -> None:
         """Test circuit measurement."""
         circuit = QuantumCircuit(num_qubits=2)
 
@@ -165,7 +165,7 @@ class TestQuantumCircuit:
         result = circuit.measure()
         assert result == 0
 
-    def test_get_state_vector(self):
+    def test_get_state_vector(self) -> None:
         """Test getting state vector."""
         circuit = QuantumCircuit(num_qubits=1)
 
@@ -179,7 +179,7 @@ class TestQuantumCircuit:
 class TestGroverSearch:
     """Test GroverSearch algorithm."""
 
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         """Test GroverSearch initialization."""
         grover = GroverSearch(search_space_size=4)
 
@@ -187,7 +187,7 @@ class TestGroverSearch:
         assert grover.num_qubits == 2
         assert isinstance(grover.circuit, QuantumCircuit)
 
-    def test_search_simple(self):
+    def test_search_simple(self) -> None:
         """Test Grover search with simple oracle."""
 
         def oracle(x: int) -> bool:
@@ -202,7 +202,7 @@ class TestGroverSearch:
         # Result should be a valid index
         assert 0 <= result < 4
 
-    def test_search_power_of_two(self):
+    def test_search_power_of_two(self) -> None:
         """Test that search space must be power of 2."""
         # Valid power of 2
         grover = GroverSearch(search_space_size=8)
@@ -216,7 +216,7 @@ class TestGroverSearch:
 class TestQuantumAlgorithmsIntegration:
     """Integration tests for quantum algorithms."""
 
-    def test_bell_state_creation(self):
+    def test_bell_state_creation(self) -> None:
         """Test creating a Bell state (entangled pair)."""
         circuit = QuantumCircuit(num_qubits=2)
 
@@ -234,7 +234,7 @@ class TestQuantumAlgorithmsIntegration:
         assert abs(probs[2] - 0.0) < 1e-10  # |10⟩
         assert abs(probs[3] - 0.5) < 1e-10  # |11⟩
 
-    def test_multiple_hadamard_gates(self):
+    def test_multiple_hadamard_gates(self) -> None:
         """Test applying multiple Hadamard gates."""
         circuit = QuantumCircuit(num_qubits=2)
 
@@ -249,7 +249,7 @@ class TestQuantumAlgorithmsIntegration:
         for prob in probs:
             assert abs(prob - 0.25) < 1e-10
 
-    def test_x_gate_reversibility(self):
+    def test_x_gate_reversibility(self) -> None:
         """Test that X gate is its own inverse."""
         circuit = QuantumCircuit(num_qubits=1)
 
