@@ -1,6 +1,6 @@
 {
-  "write_throughput_mb_s": 939.9865581892917,
-  "read_throughput_mb_s": 6535.282651331439,
-  "random_access_mb_s": 607.5486746688151,
-  "timestamp": 1763525830.4471664
+  "write_throughput_mb_s": 1128.8020607320964,
+  "read_throughput_mb_s": 8724.149037787858,
+  "random_access_mb_s": 1013.7501502093163,
+  "timestamp": 1763899250.74795
 }
