@@ -344,6 +344,53 @@ Register BEFORE execution:
 - Include edge cases and error conditions
 - Use descriptive test names: `test_<function>_<scenario>_<expected_result>`
 
+#### Lessons Learned from PR #59 - Test Creation Best Practices
+
+**CRITICAL LESSONS FROM RECENT CORRECTIONS:**
+
+1. **Pytest Imports (MANDATORY):**
+   - ALWAYS include `import pytest` when using `pytest.approx`, `pytest.mark.asyncio`, or other pytest features
+   - Missing imports cause runtime errors during test execution
+
+2. **Float Comparisons:**
+   - NEVER use `==` for floating-point comparisons
+   - ALWAYS use `pytest.approx(value)` for float assertions
+   - Example: `assert result == pytest.approx(2.5)` instead of `assert result == 2.5`
+
+3. **Type Hints in Tests:**
+   - Include proper type hints for test functions, especially async functions
+   - Use `-> None` for test methods that don't return values
+   - Example: `async def test_async_function(self) -> None:`
+
+4. **Code Cleanup:**
+   - Remove commented-out code immediately (violates linting rules)
+   - Remove unused variables (causes mypy errors)
+   - Clean imports: remove unused imports, sort with `isort` if available
+
+5. **TypedDict Usage:**
+   - Ensure TypedDict classes are properly defined before use
+   - Use TypedDict in function signatures and return types
+   - Validate that test data conforms to TypedDict structure
+
+6. **Merge Conflict Awareness:**
+   - When resolving conflicts, check for import differences between branches
+   - Verify pytest usage consistency across merged files
+   - Test all affected files after merge resolution
+
+7. **Test Structure Consistency:**
+   - Use Google-style docstrings for all test classes and methods
+   - Follow naming conventions: `test_<action>_<condition>_<expected>`
+   - Group related tests in classes with descriptive names
+
+**VALIDATION CHECKLIST FOR NEW TESTS:**
+- [ ] `import pytest` included if using pytest features
+- [ ] Float comparisons use `pytest.approx`
+- [ ] Type hints present on all functions
+- [ ] No commented code or unused variables
+- [ ] TypedDict properly defined and used
+- [ ] Tests pass individually and in suite
+- [ ] Coverage maintained ≥90%
+
 ### Updating Dependencies
 
 1. Check compatibility with Python 3.12.8

@@ -6,6 +6,9 @@ Total: 29 tests covering all goal generation capabilities.
 
 import json
 from pathlib import Path
+from unittest.mock import patch
+
+import pytest
 
 from src.metacognition.proactive_goals import (
     GoalCategory,
@@ -78,7 +81,7 @@ class TestProactiveGoal:
         )
 
         assert goal.metrics == metrics
-        assert goal.metrics["current_coverage"] == 65.0
+        assert goal.metrics["current_coverage"] == pytest.approx(65.0)
 
     def test_goal_to_dict(self) -> None:
         """Test converting goal to dictionary."""
@@ -156,10 +159,8 @@ class TestAssessTestCoverage:
 
         engine = ProactiveGoalEngine(workspace_path=str(tmp_path))
 
-        # Mock the command run to indicate success
-        engine._run_command = lambda cmd: (True, "")
-
-        goals = engine.assess_test_coverage()
+        with patch.object(engine, "_run_command", return_value=(True, "")):
+            goals = engine.assess_test_coverage()
 
         # Should generate goal to increase coverage
         if len(goals) > 0:
@@ -178,9 +179,9 @@ class TestAssessTestCoverage:
             json.dump(coverage_data, f)
 
         engine = ProactiveGoalEngine(workspace_path=str(tmp_path))
-        engine._run_command = lambda cmd: (True, "")
 
-        goals = engine.assess_test_coverage()
+        with patch.object(engine, "_run_command", return_value=(True, "")):
+            goals = engine.assess_test_coverage()
 
         # May have no goals or goals for other issues
         assert isinstance(goals, list)
@@ -201,9 +202,9 @@ class TestAssessTestCoverage:
             json.dump(coverage_data, f)
 
         engine = ProactiveGoalEngine(workspace_path=str(tmp_path))
-        engine._run_command = lambda cmd: (True, "")
 
-        goals = engine.assess_test_coverage()
+        with patch.object(engine, "_run_command", return_value=(True, "")):
+            goals = engine.assess_test_coverage()
 
         # Should have goal for untested files
         untested_goals = [g for g in goals if "low-coverage" in g.title]
@@ -217,10 +218,10 @@ class TestDetectPerformanceBottlenecks:
         """Test when no bottlenecks detected."""
         engine = ProactiveGoalEngine()
 
-        # Mock command that doesn't indicate slow imports
-        engine._run_command = lambda cmd: (True, "import completed")
-
-        goals = engine.detect_performance_bottlenecks()
+        with patch.object(
+            engine, "_run_command", return_value=(True, "import completed")
+        ):
+            goals = engine.detect_performance_bottlenecks()
 
         # May have 0 goals
         assert isinstance(goals, list)
@@ -231,9 +232,11 @@ class TestDetectPerformanceBottlenecks:
 
         # Mock output with slow import
         slow_import_output = "150 ms import src.heavy_module"
-        engine._run_command = lambda cmd: (True, slow_import_output)
 
-        goals = engine.detect_performance_bottlenecks()
+        with patch.object(
+            engine, "_run_command", return_value=(True, slow_import_output)
+        ):
+            goals = engine.detect_performance_bottlenecks()
 
         # Should detect slow import goal
         if len(goals) > 0:
@@ -247,10 +250,8 @@ class TestAssessCodeQuality:
         """Test when code quality is good."""
         engine = ProactiveGoalEngine()
 
-        # Mock flake8 with no issues
-        engine._run_command = lambda cmd: (True, "")
-
-        goals = engine.assess_code_quality()
+        with patch.object(engine, "_run_command", return_value=(True, "")):
+            goals = engine.assess_code_quality()
 
         # No goals for quality
         assert len(goals) == 0
@@ -264,9 +265,11 @@ class TestAssessCodeQuality:
         100 E501 line too long
         50 E302 expected 2 blank lines
         """
-        engine._run_command = lambda cmd: (True, violations_output)
 
-        goals = engine.assess_code_quality()
+        with patch.object(
+            engine, "_run_command", return_value=(True, violations_output)
+        ):
+            goals = engine.assess_code_quality()
 
         # Should generate quality goal
         if len(goals) > 0:
@@ -278,9 +281,9 @@ class TestAssessCodeQuality:
 
         # Mock flake8 with few violations
         few_violations = "5 E501 line too long"
-        engine._run_command = lambda cmd: (True, few_violations)
 
-        goals = engine.assess_code_quality()
+        with patch.object(engine, "_run_command", return_value=(True, few_violations)):
+            goals = engine.assess_code_quality()
 
         # Should not generate goal (< 50 threshold)
         assert len(goals) == 0
@@ -363,13 +366,14 @@ class TestGenerateGoals:
         """Test that generate_goals returns dictionaries."""
         engine = ProactiveGoalEngine()
 
-        # Mock all assessment methods to return empty
-        engine.assess_test_coverage = lambda: []
-        engine.detect_performance_bottlenecks = lambda: []
-        engine.assess_code_quality = lambda: []
-        engine.check_documentation_gaps = lambda: []
-
-        goals = engine.generate_goals()
+        with patch.multiple(
+            engine,
+            assess_test_coverage=lambda: [],
+            detect_performance_bottlenecks=lambda: [],
+            assess_code_quality=lambda: [],
+            check_documentation_gaps=lambda: [],
+        ):
+            goals = engine.generate_goals()
 
         assert isinstance(goals, list)
 
@@ -401,12 +405,14 @@ class TestGenerateGoals:
         )
 
         # Mock methods to return these goals
-        engine.assess_test_coverage = lambda: [low_goal]
-        engine.detect_performance_bottlenecks = lambda: [critical_goal]
-        engine.assess_code_quality = lambda: []
-        engine.check_documentation_gaps = lambda: []
-
-        goals = engine.generate_goals()
+        with patch.multiple(
+            engine,
+            assess_test_coverage=lambda: [low_goal],
+            detect_performance_bottlenecks=lambda: [critical_goal],
+            assess_code_quality=lambda: [],
+            check_documentation_gaps=lambda: [],
+        ):
+            goals = engine.generate_goals()
 
         # Critical should come before low
         if len(goals) >= 2:
@@ -428,10 +434,8 @@ class TestIntegration:
 
         engine = ProactiveGoalEngine(workspace_path=str(tmp_path))
 
-        # Mock command runner to avoid actual subprocess calls
-        engine._run_command = lambda cmd: (False, "")
-
-        goals = engine.generate_goals()
+        with patch.object(engine, "_run_command", return_value=(False, "")):
+            goals = engine.generate_goals()
 
         # Should complete successfully
         assert isinstance(goals, list)
