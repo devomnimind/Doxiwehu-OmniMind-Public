@@ -43,24 +43,6 @@ def backend_server():
     os.environ["OMNIMIND_DASHBOARD_USER"] = "test_user"
     os.environ["OMNIMIND_DASHBOARD_PASS"] = "test_pass"
 
-
-@pytest.fixture(scope="session")
-def backend_server():
-    """Start backend server for E2E tests."""
-    # If running in Docker/test environment, use the container backend
-    if os.environ.get("OMNIMIND_ENV") == "production" or os.environ.get("CI"):
-        yield "http://localhost:8000"
-        return
-
-    # For local development with containers, use the backend container
-    if os.environ.get("USE_DOCKER_BACKEND"):
-        yield "http://localhost:8000"
-        return
-
-    # Set test credentials
-    os.environ["OMNIMIND_DASHBOARD_USER"] = "test_user"
-    os.environ["OMNIMIND_DASHBOARD_PASS"] = "test_pass"
-
     # Start server in background
     env = os.environ.copy()
     project_root = Path(__file__).parent.parent
@@ -337,7 +319,7 @@ class TestMockedUIInteraction:
 
         auth_credentials = {"username": "test_user", "password": "test_pass"}
 
-        with patch("playwright.async_api.expect") as _mock_expect:
+        with patch("playwright.async_api.expect"):
             await mock_page.goto("http://localhost:3000")
 
             # Find and fill login form

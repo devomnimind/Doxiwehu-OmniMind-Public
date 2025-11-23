@@ -163,134 +163,6 @@ class RLAgent(ABC):
         self.exploration_rate = max(0.01, self.exploration_rate)
 
 
-class QLearningAgent(RLAgent):
-    """
-    Q-Learning agent with tabular Q-function.
-
-    Features:
-    - Epsilon-greedy exploration
-    - Online learning from transitions
-    - Integration with ethical rewards
-    """
-
-    def __init__(
-        self,
-        name: str = "q_learner",
-        learning_rate: float = 0.1,
-        discount_factor: float = 0.95,
-        exploration_rate: float = 0.1,
-    ):
-        """Initialize Q-learning agent."""
-        super().__init__(name, learning_rate, discount_factor, exploration_rate)
-        self.q_table: Dict[Tuple[str, str], float] = {}
-        self.visit_counts: Dict[Tuple[str, str], int] = {}
-
-    def select_action(
-        self, state: RLState, available_actions: List[RLAction]
-    ) -> RLAction:
-        """Select action using epsilon-greedy policy."""
-        if not available_actions:
-            raise ValueError("No available actions")
-
-        # Epsilon-greedy exploration
-        if random.random() < self.exploration_rate:
-            action = random.choice(available_actions)
-            self.logger.debug("exploration_action", action_id=action.action_id)
-            return action
-
-        # Greedy exploitation
-        best_action = available_actions[0]
-        best_q = self._get_q_value(state, best_action)
-
-        for action in available_actions[1:]:
-            q_value = self._get_q_value(state, action)
-            if q_value > best_q:
-                best_q = q_value
-                best_action = action
-
-        self.logger.debug(
-            "exploitation_action",
-            action_id=best_action.action_id,
-            q_value=best_q,
-        )
-        return best_action
-
-    def update(self, transition: RLTransition) -> None:
-        """Update Q-table using Q-learning update rule."""
-        state_key = transition.state.state_id
-        action_key = transition.action.action_id
-        sa_pair = (state_key, action_key)
-
-        # Get current Q-value
-        current_q = self._get_q_value(transition.state, transition.action)
-
-        # Compute max Q-value for next state
-        if transition.done:
-            max_next_q = 0.0
-        else:
-            # Assume all actions available (simplified)
-            max_next_q = max(
-                [
-                    self.q_table.get(a, 0.0)
-                    for a in self.q_table.keys()
-                    if a[0] == transition.next_state.state_id
-                ]
-                + [0.0]  # Default if no Q-values exist
-            )
-
-        # Q-learning update
-        reward = transition.reward.value
-        target = reward + self.discount_factor * max_next_q
-        new_q = current_q + self.learning_rate * (target - current_q)
-
-        # Update Q-table
-        self.q_table[sa_pair] = new_q
-
-        # Update visit counts
-        self.visit_counts[sa_pair] = self.visit_counts.get(sa_pair, 0) + 1
-
-        self.total_reward += reward
-
-        self.logger.debug(
-            "q_update",
-            state=state_key,
-            action=action_key,
-            old_q=current_q,
-            new_q=new_q,
-            reward=reward,
-        )
-
-    def _get_q_value(self, state: RLState, action: RLAction) -> float:
-        """Get Q-value for state-action pair."""
-        key = (state.state_id, action.action_id)
-        return self.q_table.get(key, 0.0)
-
-    def get_policy_metrics(self) -> Dict[str, Any]:
-        """Get metrics about the learned policy."""
-        if not self.q_table:
-            return {
-                "num_states": 0,
-                "num_actions": 0,
-                "avg_q_value": 0.0,
-                "max_q_value": 0.0,
-            }
-
-        states = set(k[0] for k in self.q_table.keys())
-        actions = set(k[1] for k in self.q_table.keys())
-        q_values = list(self.q_table.values())
-
-        return {
-            "num_states": len(states),
-            "num_actions": len(actions),
-            "num_state_action_pairs": len(self.q_table),
-            "avg_q_value": sum(q_values) / len(q_values),
-            "max_q_value": max(q_values),
-            "min_q_value": min(q_values),
-            "total_reward": self.total_reward,
-            "episodes": self.episode_count,
-        }
-
-
 class PolicyGradientAgent(RLAgent):
     """
     Policy gradient agent with parametric policy.
@@ -447,7 +319,7 @@ class PolicyGradientAgent(RLAgent):
 # Aliases for backward compatibility with tests
 State = RLState
 Action = RLAction
-ReinforcementLearningAgent = QLearningAgent
+ReinforcementLearningAgent = PolicyGradientAgent  # Use PolicyGradientAgent as default
 
 
 class TabularQLearningAgent:
@@ -473,27 +345,27 @@ class TabularQLearningAgent:
         self.epsilon = epsilon
 
         # Initialize Q-table
-        self.q_table = np.zeros((num_states, num_actions))
+        self.q_table = np.zeros((num_states, num_actions))  # type: ignore
 
     def choose_action(self, state: int) -> int:
         """Choose action for given state using epsilon-greedy."""
-        if np.random.random() < self.epsilon:
-            return int(np.random.randint(self.num_actions))
+        if np.random.random() < self.epsilon:  # type: ignore
+            return int(np.random.randint(self.num_actions))  # type: ignore
 
         # Greedy action
-        return int(np.argmax(self.q_table[state]))
+        return int(np.argmax(self.q_table[state]))  # type: ignore
 
     def update(self, state: int, action: int, reward: float, next_state: int) -> None:
         """Update Q-value using Q-learning."""
         current_q = self.q_table[state, action]
-        max_next_q = np.max(self.q_table[next_state])
+        max_next_q = np.max(self.q_table[next_state])  # type: ignore
 
         target = reward + self.discount_factor * max_next_q
         self.q_table[state, action] += self.learning_rate * (target - current_q)
 
     def get_best_action(self, state: int) -> int:
         """Get best action for given state."""
-        return int(np.argmax(self.q_table[state]))
+        return int(np.argmax(self.q_table[state]))  # type: ignore
 
 
 # Update alias to use the tabular version for tests

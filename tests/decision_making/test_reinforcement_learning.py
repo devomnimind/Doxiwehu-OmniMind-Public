@@ -12,14 +12,11 @@ Cobertura de:
 from __future__ import annotations
 
 import pytest
-from unittest.mock import Mock, patch
 import numpy as np
 
 from src.decision_making.reinforcement_learning import (
     QLearningAgent,
     ReinforcementLearningAgent,
-    State,
-    Action,
 )
 
 

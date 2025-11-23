@@ -14,9 +14,8 @@ Cobertura de:
 from __future__ import annotations
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock, mock_open
+from unittest.mock import Mock, patch, MagicMock
 from pathlib import Path
-from typing import Dict, Any
 
 try:
     from src.agents.react_agent import (
@@ -264,8 +263,7 @@ system:
 
         if hasattr(agent, "run"):
             try:
-                result = agent.run("Simple test task", max_iterations=3)
-                assert result is not None or result is None
+                agent.run("Simple test task", max_iterations=3)
             except Exception:
                 pass  # Some failures expected without full setup
 
@@ -444,7 +442,7 @@ system:
 
         if hasattr(agent, "run"):
             try:
-                result = agent.run("", max_iterations=1)
+                agent.run("", max_iterations=1)
             except (ValueError, Exception):
                 pass  # Expected
 

@@ -136,7 +136,7 @@ class TestAsyncMCPClient:
         mock_response.json.return_value = {
             "jsonrpc": "2.0",
             "id": "test_id",
-            "result": {"result": "success"}
+            "result": {"result": "success"},
         }
         mock_response.raise_for_status = MagicMock()
 
@@ -159,13 +159,40 @@ class TestAsyncMCPClient:
     @patch("src.integrations.mcp_client_async.httpx")
     async def test_send_request_with_retry(self, mock_httpx: Mock) -> None:
         """Testa retry logic."""
-        # First call fails, second succeeds
-        mock_response_fail = AsyncMock()
-        mock_response_fail.status_code = 500
 
-        mock_response_success = AsyncMock()
+        # Mock exception classes to avoid TypeError
+        class MockTimeoutException(Exception):
+            pass
+
+        class MockConnectError(Exception):
+            pass
+
+        class MockHTTPStatusError(Exception):
+            def __init__(self, message):
+                super().__init__(message)
+                self.response = MagicMock()
+                self.response.status_code = 400
+                self.response.reason_phrase = "Bad Request"
+
+        mock_httpx.TimeoutException = MockTimeoutException
+        mock_httpx.ConnectError = MockConnectError
+        mock_httpx.HTTPStatusError = MockHTTPStatusError
+
+        # First call fails, second succeeds
+        mock_response_fail = MagicMock()
+        mock_response_fail.status_code = 400
+        mock_response_fail.reason_phrase = "Bad Request"
+        mock_response_fail.raise_for_status.side_effect = MockHTTPStatusError(
+            "HTTP error: 400 Bad Request"
+        )
+
+        mock_response_success = MagicMock()
         mock_response_success.status_code = 200
-        mock_response_success.json.return_value = {"result": "success"}
+        mock_response_success.json.return_value = {
+            "jsonrpc": "2.0",
+            "id": "test",
+            "result": "success",
+        }
 
         mock_client = AsyncMock()
         mock_client.post.side_effect = [
@@ -185,7 +212,7 @@ class TestAsyncMCPClient:
             params={"key": "value"},
         )
 
-        assert response["result"] == "success"
+        assert response == "success"
         assert mock_client.post.call_count <= 2
 
     @pytest.mark.asyncio
@@ -245,7 +272,7 @@ class TestAsyncMCPClient:
         }
 
         # Should not raise exception
-        validated = client.validate_response(valid_response)
+        validated = client._validate_response(valid_response)
         assert validated is not None or validated is None
 
     @pytest.mark.asyncio
@@ -264,7 +291,7 @@ class TestAsyncMCPClient:
 
         # Should handle error response
         with pytest.raises((MCPProtocolError, Exception)):
-            client.validate_response(error_response)
+            client._validate_response(error_response)
 
     @pytest.mark.asyncio
     @patch("src.integrations.mcp_client_async.httpx")

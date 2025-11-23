@@ -200,6 +200,10 @@ class AsyncMCPClient:
                 )
                 logger.warning(f"MCP HTTP error (attempt {attempt + 1}): {exc}")
 
+            except MCPConnectionError as exc:
+                last_exception = exc
+                logger.warning(f"MCP connection error (attempt {attempt + 1}): {exc}")
+
             except (MCPProtocolError, MCPClientError) as exc:
                 # Don't retry protocol errors
                 logger.error(f"MCP protocol error: {exc}")

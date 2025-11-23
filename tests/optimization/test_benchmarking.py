@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import time
 from pathlib import Path
-from typing import Any
 
 import pytest
 
@@ -203,15 +202,15 @@ class TestPerformanceBenchmark:
 
         def slow_workload() -> None:
             """Workload lento."""
-            total = sum(i**2 for i in range(1000))  # CPU work to generate metrics
+            sum(i**2 for i in range(1000))  # CPU work to generate metrics
             time.sleep(0.001)
 
         def fast_workload() -> None:
             """Workload rápido."""
-            total = sum(i**2 for i in range(500))  # Less CPU work
+            sum(i**2 for i in range(500))  # Less CPU work
             time.sleep(0.001)
 
-        baseline = benchmark.establish_baseline("slow", slow_workload, iterations=3)
+        benchmark.establish_baseline("slow", slow_workload, iterations=3)
 
         try:
             comparison = benchmark.compare_to_baseline(
@@ -235,15 +234,15 @@ class TestPerformanceBenchmark:
 
         def fast_workload() -> None:
             """Workload rápido."""
-            total = sum(i**2 for i in range(500))
+            sum(i**2 for i in range(500))
             time.sleep(0.001)
 
         def slow_workload() -> None:
             """Workload lento."""
-            total = sum(i**2 for i in range(1000))
+            sum(i**2 for i in range(1000))
             time.sleep(0.001)
 
-        baseline = benchmark.establish_baseline("fast", fast_workload, iterations=3)
+        benchmark.establish_baseline("fast", fast_workload, iterations=3)
 
         try:
             comparison = benchmark.compare_to_baseline(
@@ -267,7 +266,7 @@ class TestPerformanceBenchmark:
             """Test workload."""
             pass
 
-        result = benchmark.run_benchmark("persist_test", test_workload, iterations=3)
+        benchmark.run_benchmark("persist_test", test_workload, iterations=3)
 
         # Save results
         saved_path = benchmark.save_results("persist_test_results.json")

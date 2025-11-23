@@ -12,10 +12,8 @@ Cobertura de:
 from __future__ import annotations
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock
 from pathlib import Path
 import tempfile
-import json
 from typing import Generator
 
 from src.audit.immutable_audit import (

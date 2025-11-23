@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import pytest
 from unittest.mock import Mock, patch, MagicMock
-from typing import Dict, Any
 
 from src.security.web_scanner import (
     VulnerabilityType,
@@ -230,7 +229,7 @@ class TestWebScannerBrain:
         scanner = WebScannerBrain()
 
         try:
-            result = scanner.scan_url("https://slow-site.com")
+            scanner.scan_url("https://slow-site.com")
         except requests.Timeout:
             pass  # Expected
 
@@ -248,7 +247,7 @@ class TestWebScannerBrain:
         scanner = WebScannerBrain()
 
         try:
-            result = scanner.scan_url("https://invalid-site.com")
+            scanner.scan_url("https://invalid-site.com")
         except requests.ConnectionError:
             pass  # Expected
 
@@ -385,7 +384,7 @@ class TestWebScannerEdgeCases:
 
         # Should handle gracefully
         try:
-            result = scanner.scan_url("https://example.com")
+            scanner.scan_url("https://example.com")
         except Exception:
             pass  # Some exceptions acceptable
 

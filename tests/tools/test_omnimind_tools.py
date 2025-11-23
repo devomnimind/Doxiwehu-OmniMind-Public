@@ -17,7 +17,6 @@ from __future__ import annotations
 import pytest
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
-from typing import List
 
 from src.tools.omnimind_tools import (
     ReadFileTool,
@@ -164,7 +163,7 @@ class TestWriteFileTool:
         """Testa escrita de novo arquivo."""
         test_file = tmp_path / "new_file.txt"
 
-        result = tool.execute(str(test_file), "New content")
+        tool.execute(str(test_file), "New content")
 
         assert test_file.exists()
         assert test_file.read_text() == "New content"
@@ -182,7 +181,7 @@ class TestWriteFileTool:
         """Testa criação de diretórios."""
         nested_file = tmp_path / "nested" / "dir" / "file.txt"
 
-        result = tool.execute(str(nested_file), "Content")
+        tool.execute(str(nested_file), "Content")
 
         assert nested_file.parent.exists()
 
@@ -343,7 +342,7 @@ class TestToolAuditing:
         tool = WriteFileTool()
 
         with patch("builtins.open", side_effect=PermissionError()):
-            with patch.object(tool, "_audit_action") as mock_audit:
+            with patch.object(tool, "_audit_action"):
                 tool.execute("/readonly/file.txt", "content")
 
                 # Should handle gracefully

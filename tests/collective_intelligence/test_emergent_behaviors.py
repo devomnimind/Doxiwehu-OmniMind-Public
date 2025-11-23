@@ -12,7 +12,6 @@ Cobertura de:
 from __future__ import annotations
 
 import pytest
-from unittest.mock import Mock, patch
 
 from src.collective_intelligence.emergent_behaviors import (
     EmergentBehaviorSystem,

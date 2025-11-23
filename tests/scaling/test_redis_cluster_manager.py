@@ -14,14 +14,11 @@ from __future__ import annotations
 
 import pytest
 from unittest.mock import Mock, patch, MagicMock
-from typing import Any, Dict, List
 
 from src.scaling.redis_cluster_manager import (
     ClusterState,
     ClusterNode,
-    ClusterNodeConfig,
     RedisClusterManager,
-    ClusterHealthReport,
     REDIS_AVAILABLE,
 )
 
@@ -87,13 +84,10 @@ class TestRedisClusterManager:
 
     def test_initialization_success(self) -> None:
         """Testa inicialização bem-sucedida do manager."""
-        nodes = [
-            {"host": "localhost", "port": 7000},
-            {"host": "localhost", "port": 7001},
-        ]
+        # Test requires Redis to be available - see test_initialization_with_mock for mocked version
 
     @patch("src.scaling.redis_cluster_manager.RedisClusterCtor")
-    def test_initialization_success(self, mock_redis_cluster: Mock) -> None:
+    def test_initialization_with_mock(self, mock_redis_cluster: Mock) -> None:
         """Testa inicialização bem-sucedida do manager."""
         mock_client = MagicMock()
         mock_redis_cluster.return_value = mock_client

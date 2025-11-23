@@ -3,13 +3,13 @@
     "total_test_files": 139,
     "total_test_functions_defined": 2412,
     "total_async_tests": 155,
-    "files_with_import_errors": 36,
-    "tests_blocked_by_imports": 474,
+    "files_with_import_errors": 3,
+    "tests_blocked_by_imports": 36,
     "files_with_skip_markers": 8,
     "total_skip_decorators": 0,
     "total_skipif_decorators": 39,
     "total_xfail_decorators": 0,
-    "expected_runnable_tests": 1899,
+    "expected_runnable_tests": 2337,
     "modules_without_tests": 55,
     "critical_modules_without_tests": 25
   },
@@ -22,7 +22,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "agents/test_react_agent.py",
@@ -142,7 +142,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "decision_making/test_decision_trees.py",
@@ -152,7 +152,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "decision_making/test_ethical_decision_framework.py",
@@ -162,7 +162,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "decision_making/test_reinforcement_learning.py",
@@ -172,7 +172,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "desire_engine/test_desire_engine.py",
@@ -192,7 +192,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "ethics/test_ml_ethics_engine.py",
@@ -252,7 +252,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "lacanian/test_desire_graph.py",
@@ -262,7 +262,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "lacanian/test_discourse_discovery.py",
@@ -292,7 +292,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "memory/test_holographic_memory.py",
@@ -302,7 +302,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "memory/test_soft_hair_encoding.py",
@@ -312,7 +312,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "metacognition/test_homeostasis.py",
@@ -662,7 +662,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_agent_protocol.py",
@@ -672,7 +672,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_agentic_ide.py",
@@ -692,7 +692,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_agents_phase8.py",
@@ -702,7 +702,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_agents_phase8_additional.py",
@@ -712,7 +712,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_api_documentation.py",
@@ -852,7 +852,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_dbus.py",
@@ -862,7 +862,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_dlp_validator.py",
@@ -882,7 +882,7 @@
       "skip_count": 0,
       "skipif_count": 15,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_economics_marketplace.py",
@@ -902,7 +902,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_enhanced_integrations.py",
@@ -922,7 +922,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_firecracker_sandbox.py",
@@ -952,7 +952,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_freudian_metapsychology.py",
@@ -1032,7 +1032,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": false
+      "has_import_error": true
     },
     {
       "file": "test_mcp_agentic_client.py",
@@ -1052,7 +1052,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_mcp_orchestrator.py",
@@ -1072,7 +1072,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_memory_phase8.py",
@@ -1082,7 +1082,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_meta_learning_black_hole.py",
@@ -1102,7 +1102,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_multi_node_scaling.py",
@@ -1152,7 +1152,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_phase8_backend_enhancements.py",
@@ -1162,7 +1162,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_phase9_advanced.py",
@@ -1202,7 +1202,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_qdrant_adapter.py",
@@ -1212,7 +1212,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_quantum_algorithms_comprehensive.py",
@@ -1252,7 +1252,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_security_forensics.py",
@@ -1282,7 +1282,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_security_phase7.py",
@@ -1342,7 +1342,7 @@
       "skip_count": 0,
       "skipif_count": 0,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "test_tools_integration.py",
@@ -1362,7 +1362,7 @@
       "skip_count": 0,
       "skipif_count": 4,
       "xfail_count": 0,
-      "has_import_error": true
+      "has_import_error": false
     },
     {
       "file": "tools/test_code_generator.py",
@@ -1407,250 +1407,76 @@
   ],
   "import_errors": [
     {
-      "file": "agents/test_orchestrator_agent.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
-    },
-    {
       "file": "benchmarks/test_pytorch_gpu.py",
-      "error": "E   ModuleNotFoundError: No module named 'torch'"
-    },
-    {
-      "file": "decision_making/test_autonomous_goal_setting.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "decision_making/test_decision_trees.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "decision_making/test_ethical_decision_framework.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "decision_making/test_reinforcement_learning.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "distributed/test_quantum_entanglement.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "integrations/test_mcp_client_optimized.py",
-      "error": "E   ModuleNotFoundError: No module named 'cryptography'"
-    },
-    {
-      "file": "lacanian/test_computational_lack.py",
-      "error": "E   ModuleNotFoundError: No module named 'torch'"
-    },
-    {
-      "file": "lacanian/test_desire_graph.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "learning/test_page_curve_learning.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "memory/test_holographic_memory.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "memory/test_soft_hair_encoding.py",
-      "error": "E   ModuleNotFoundError: No module named 'numpy'"
-    },
-    {
-      "file": "test_agent_monitor.py",
-      "error": "E   ModuleNotFoundError: No module named 'fastapi'"
-    },
-    {
-      "file": "test_agent_protocol.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
-    },
-    {
-      "file": "test_agents_core_integration.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
-    },
-    {
-      "file": "test_agents_phase8.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
-    },
-    {
-      "file": "test_agents_phase8_additional.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
-    },
-    {
-      "file": "test_dashboard_e2e.py",
-      "error": "E   ModuleNotFoundError: No module named 'fastapi'"
-    },
-    {
-      "file": "test_dbus.py",
-      "error": "E   ModuleNotFoundError: No module named 'dbus'"
-    },
-    {
-      "file": "test_e2e_integration.py",
       "error": "Unknown import error"
     },
     {
-      "file": "test_enhanced_agents_integration.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
+      "file": "integrations/test_mcp_client_optimized.py",
+      "error": "Unknown import error"
     },
     {
-      "file": "test_enhanced_observability.py",
-      "error": "E   ModuleNotFoundError: No module named 'opentelemetry'"
-    },
-    {
-      "file": "test_free_energy_lacanian.py",
-      "error": "E   ModuleNotFoundError: No module named 'torch'"
-    },
-    {
-      "file": "test_mcp_data_protection.py",
-      "error": "E   ModuleNotFoundError: No module named 'cryptography'"
-    },
-    {
-      "file": "test_memory_onboarding.py",
-      "error": "E   ModuleNotFoundError: No module named 'qdrant_client'"
-    },
-    {
-      "file": "test_memory_phase8.py",
-      "error": "E   ModuleNotFoundError: No module named 'qdrant_client'"
-    },
-    {
-      "file": "test_metrics_collector.py",
-      "error": "E   ModuleNotFoundError: No module named 'fastapi'"
-    },
-    {
-      "file": "test_performance_tracker.py",
-      "error": "E   ModuleNotFoundError: No module named 'fastapi'"
-    },
-    {
-      "file": "test_phase8_backend_enhancements.py",
-      "error": "E   ModuleNotFoundError: No module named 'fastapi'"
-    },
-    {
-      "file": "test_psychoanalytic_analyst.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
-    },
-    {
-      "file": "test_qdrant_adapter.py",
-      "error": "E   ModuleNotFoundError: No module named 'qdrant_client'"
-    },
-    {
-      "file": "test_security_agent_integration.py",
-      "error": "E   ModuleNotFoundError: No module named 'langchain_ollama'"
-    },
-    {
-      "file": "test_security_monitoring.py",
-      "error": "E   ModuleNotFoundError: No module named 'fastapi'"
-    },
-    {
-      "file": "test_task_tracking.py",
-      "error": "E   ModuleNotFoundError: No module named 'fastapi'"
-    },
-    {
-      "file": "test_visual_regression.py",
+      "file": "test_mcp.py",
       "error": "Unknown import error"
     }
   ],
   "untested_modules": [
     {
-      "module": "ethics/ethics_agent.py",
+      "module": "integrations/webhook_framework.py",
       "functions": 14,
-      "classes": 4,
-      "is_critical": false
-    },
-    {
-      "module": "optimization/performance_profiler.py",
-      "functions": 7,
-      "classes": 3,
-      "is_critical": false
-    },
-    {
-      "module": "scaling/multi_level_cache.py",
-      "functions": 28,
-      "classes": 7,
-      "is_critical": false
-    },
-    {
-      "module": "scaling/database_connection_pool.py",
-      "functions": 24,
       "classes": 6,
-      "is_critical": false
+      "is_critical": true
     },
     {
-      "module": "scaling/multi_node.py",
-      "functions": 20,
-      "classes": 6,
-      "is_critical": false
-    },
-    {
-      "module": "scaling/gpu_resource_pool.py",
-      "functions": 29,
-      "classes": 5,
-      "is_critical": false
-    },
-    {
-      "module": "quantum_ai/quantum_algorithms.py",
-      "functions": 17,
-      "classes": 5,
-      "is_critical": false
-    },
-    {
-      "module": "quantum_ai/superposition_computing.py",
-      "functions": 13,
-      "classes": 4,
-      "is_critical": false
-    },
-    {
-      "module": "quantum_ai/quantum_optimizer.py",
-      "functions": 14,
-      "classes": 4,
-      "is_critical": false
-    },
-    {
-      "module": "economics/marketplace_agent.py",
+      "module": "integrations/oauth2_client.py",
       "functions": 16,
+      "classes": 5,
+      "is_critical": true
+    },
+    {
+      "module": "integrations/mcp_server.py",
+      "functions": 23,
       "classes": 4,
-      "is_critical": false
+      "is_critical": true
     },
     {
-      "module": "motivation/achievement_system.py",
-      "functions": 13,
-      "classes": 2,
-      "is_critical": false
-    },
-    {
-      "module": "motivation/intrinsic_rewards.py",
-      "functions": 14,
+      "module": "integrations/dbus_controller.py",
+      "functions": 17,
       "classes": 3,
+      "is_critical": true
+    },
+    {
+      "module": "integrations/mcp_client_enhanced.py",
+      "functions": 18,
+      "classes": 8,
+      "is_critical": true
+    },
+    {
+      "module": "integrations/mcp_client.py",
+      "functions": 7,
+      "classes": 2,
+      "is_critical": true
+    },
+    {
+      "module": "experiments/exp_consciousness_phi.py",
+      "functions": 3,
+      "classes": 3,
+      "is_critical": false
+    },
+    {
+      "module": "experiments/exp_ethics_alignment.py",
+      "functions": 4,
+      "classes": 1,
+      "is_critical": false
+    },
+    {
+      "module": "experiments/run_all_experiments.py",
+      "functions": 3,
+      "classes": 1,
       "is_critical": false
     },
     {
       "module": "identity/agent_signature.py",
       "functions": 12,
-      "classes": 3,
-      "is_critical": false
-    },
-    {
-      "module": "workflows/code_review_workflow.py",
-      "functions": 19,
-      "classes": 2,
-      "is_critical": false
-    },
-    {
-      "module": "meta_learning/black_hole_collapse.py",
-      "functions": 7,
-      "classes": 2,
-      "is_critical": false
-    },
-    {
-      "module": "tools/tool_base.py",
-      "functions": 7,
-      "classes": 3,
-      "is_critical": false
-    },
-    {
-      "module": "tools/agent_tools.py",
-      "functions": 9,
       "classes": 3,
       "is_critical": false
     },
@@ -1661,22 +1487,10 @@
       "is_critical": false
     },
     {
-      "module": "experiments/exp_consciousness_phi.py",
-      "functions": 3,
-      "classes": 3,
-      "is_critical": false
-    },
-    {
-      "module": "experiments/run_all_experiments.py",
-      "functions": 3,
-      "classes": 1,
-      "is_critical": false
-    },
-    {
-      "module": "experiments/exp_ethics_alignment.py",
-      "functions": 4,
-      "classes": 1,
-      "is_critical": false
+      "module": "security/dlp.py",
+      "functions": 8,
+      "classes": 5,
+      "is_critical": true
     },
     {
       "module": "security/security_orchestrator.py",
@@ -1691,16 +1505,46 @@
       "is_critical": true
     },
     {
-      "module": "security/dlp.py",
-      "functions": 8,
-      "classes": 5,
+      "module": "audit/retention_policy.py",
+      "functions": 14,
+      "classes": 3,
       "is_critical": true
     },
     {
-      "module": "desire_engine/core.py",
-      "functions": 37,
-      "classes": 15,
+      "module": "audit/alerting_system.py",
+      "functions": 19,
+      "classes": 4,
       "is_critical": true
+    },
+    {
+      "module": "audit/compliance_reporter.py",
+      "functions": 21,
+      "classes": 2,
+      "is_critical": true
+    },
+    {
+      "module": "audit/log_analyzer.py",
+      "functions": 12,
+      "classes": 2,
+      "is_critical": true
+    },
+    {
+      "module": "meta_learning/black_hole_collapse.py",
+      "functions": 7,
+      "classes": 2,
+      "is_critical": false
+    },
+    {
+      "module": "optimization/performance_profiler.py",
+      "functions": 7,
+      "classes": 3,
+      "is_critical": false
+    },
+    {
+      "module": "observability/distributed_tracing.py",
+      "functions": 23,
+      "classes": 6,
+      "is_critical": false
     },
     {
       "module": "observability/performance_analyzer.py",
@@ -1712,12 +1556,6 @@
       "module": "observability/opentelemetry_integration.py",
       "functions": 10,
       "classes": 2,
-      "is_critical": false
-    },
-    {
-      "module": "observability/metrics_exporter.py",
-      "functions": 22,
-      "classes": 6,
       "is_critical": false
     },
     {
@@ -1733,33 +1571,197 @@
       "is_critical": false
     },
     {
-      "module": "observability/distributed_tracing.py",
-      "functions": 23,
+      "module": "observability/metrics_exporter.py",
+      "functions": 22,
       "classes": 6,
       "is_critical": false
     },
     {
-      "module": "audit/compliance_reporter.py",
-      "functions": 21,
-      "classes": 2,
+      "module": "common/types.py",
+      "functions": 0,
+      "classes": 0,
+      "is_critical": false
+    },
+    {
+      "module": "desire_engine/core.py",
+      "functions": 37,
+      "classes": 15,
       "is_critical": true
     },
     {
-      "module": "audit/alerting_system.py",
+      "module": "workflows/code_review_workflow.py",
       "functions": 19,
+      "classes": 2,
+      "is_critical": false
+    },
+    {
+      "module": "economics/marketplace_agent.py",
+      "functions": 16,
       "classes": 4,
+      "is_critical": false
+    },
+    {
+      "module": "tools/tool_base.py",
+      "functions": 7,
+      "classes": 3,
+      "is_critical": false
+    },
+    {
+      "module": "tools/agent_tools.py",
+      "functions": 9,
+      "classes": 3,
+      "is_critical": false
+    },
+    {
+      "module": "quantum_ai/quantum_optimizer.py",
+      "functions": 14,
+      "classes": 4,
+      "is_critical": false
+    },
+    {
+      "module": "quantum_ai/quantum_algorithms.py",
+      "functions": 17,
+      "classes": 5,
+      "is_critical": false
+    },
+    {
+      "module": "quantum_ai/superposition_computing.py",
+      "functions": 13,
+      "classes": 4,
+      "is_critical": false
+    },
+    {
+      "module": "agents/code_agent.py",
+      "functions": 11,
+      "classes": 1,
       "is_critical": true
     },
     {
-      "module": "audit/log_analyzer.py",
-      "functions": 12,
+      "module": "agents/reviewer_agent.py",
+      "functions": 4,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "agents/architect_agent.py",
+      "functions": 7,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "agents/orchestrator_metrics.py",
+      "functions": 5,
       "classes": 2,
       "is_critical": true
     },
     {
-      "module": "audit/retention_policy.py",
+      "module": "ethics/ethics_agent.py",
+      "functions": 14,
+      "classes": 4,
+      "is_critical": false
+    },
+    {
+      "module": "scaling/multi_node.py",
+      "functions": 20,
+      "classes": 6,
+      "is_critical": false
+    },
+    {
+      "module": "scaling/database_connection_pool.py",
+      "functions": 24,
+      "classes": 6,
+      "is_critical": false
+    },
+    {
+      "module": "scaling/multi_level_cache.py",
+      "functions": 28,
+      "classes": 7,
+      "is_critical": false
+    },
+    {
+      "module": "scaling/gpu_resource_pool.py",
+      "functions": 29,
+      "classes": 5,
+      "is_critical": false
+    },
+    {
+      "module": "motivation/achievement_system.py",
+      "functions": 13,
+      "classes": 2,
+      "is_critical": false
+    },
+    {
+      "module": "motivation/intrinsic_rewards.py",
       "functions": 14,
       "classes": 3,
+      "is_critical": false
+    },
+    {
+      "module": "memory/episodic_memory.py",
+      "functions": 11,
+      "classes": 3,
+      "is_critical": true
+    },
+    {
+      "module": "collective_intelligence/distributed_solver.py",
+      "functions": 11,
+      "classes": 6,
+      "is_critical": false
+    },
+    {
+      "module": "collective_intelligence/collective_learning.py",
+      "functions": 20,
+      "classes": 6,
+      "is_critical": false
+    },
+    {
+      "module": "security/playbooks/utils.py",
+      "functions": 4,
+      "classes": 2,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/rootkit_response.py",
+      "functions": 6,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/privilege_escalation_response.py",
+      "functions": 7,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/malware_response.py",
+      "functions": 6,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/intrusion_response.py",
+      "functions": 8,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/data_exfiltration_response.py",
+      "functions": 7,
+      "classes": 1,
+      "is_critical": true
+    }
+  ],
+  "critical_untested": [
+    {
+      "module": "integrations/webhook_framework.py",
+      "functions": 14,
+      "classes": 6,
+      "is_critical": true
+    },
+    {
+      "module": "integrations/oauth2_client.py",
+      "functions": 16,
+      "classes": 5,
       "is_critical": true
     },
     {
@@ -1769,9 +1771,9 @@
       "is_critical": true
     },
     {
-      "module": "integrations/webhook_framework.py",
-      "functions": 14,
-      "classes": 6,
+      "module": "integrations/dbus_controller.py",
+      "functions": 17,
+      "classes": 3,
       "is_critical": true
     },
     {
@@ -1787,103 +1789,11 @@
       "is_critical": true
     },
     {
-      "module": "integrations/oauth2_client.py",
-      "functions": 16,
+      "module": "security/dlp.py",
+      "functions": 8,
       "classes": 5,
       "is_critical": true
     },
-    {
-      "module": "integrations/dbus_controller.py",
-      "functions": 17,
-      "classes": 3,
-      "is_critical": true
-    },
-    {
-      "module": "common/types.py",
-      "functions": 0,
-      "classes": 0,
-      "is_critical": false
-    },
-    {
-      "module": "agents/architect_agent.py",
-      "functions": 7,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "agents/reviewer_agent.py",
-      "functions": 4,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "agents/orchestrator_metrics.py",
-      "functions": 5,
-      "classes": 2,
-      "is_critical": true
-    },
-    {
-      "module": "agents/code_agent.py",
-      "functions": 11,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "collective_intelligence/collective_learning.py",
-      "functions": 20,
-      "classes": 6,
-      "is_critical": false
-    },
-    {
-      "module": "collective_intelligence/distributed_solver.py",
-      "functions": 11,
-      "classes": 6,
-      "is_critical": false
-    },
-    {
-      "module": "memory/episodic_memory.py",
-      "functions": 11,
-      "classes": 3,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/malware_response.py",
-      "functions": 6,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/data_exfiltration_response.py",
-      "functions": 7,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/utils.py",
-      "functions": 4,
-      "classes": 2,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/intrusion_response.py",
-      "functions": 8,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/rootkit_response.py",
-      "functions": 6,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/privilege_escalation_response.py",
-      "functions": 7,
-      "classes": 1,
-      "is_critical": true
-    }
-  ],
-  "critical_untested": [
     {
       "module": "security/security_orchestrator.py",
       "functions": 12,
@@ -1897,21 +1807,9 @@
       "is_critical": true
     },
     {
-      "module": "security/dlp.py",
-      "functions": 8,
-      "classes": 5,
-      "is_critical": true
-    },
-    {
-      "module": "desire_engine/core.py",
-      "functions": 37,
-      "classes": 15,
-      "is_critical": true
-    },
-    {
-      "module": "audit/compliance_reporter.py",
-      "functions": 21,
-      "classes": 2,
+      "module": "audit/retention_policy.py",
+      "functions": 14,
+      "classes": 3,
       "is_critical": true
     },
     {
@@ -1921,56 +1819,26 @@
       "is_critical": true
     },
     {
+      "module": "audit/compliance_reporter.py",
+      "functions": 21,
+      "classes": 2,
+      "is_critical": true
+    },
+    {
       "module": "audit/log_analyzer.py",
       "functions": 12,
       "classes": 2,
       "is_critical": true
     },
     {
-      "module": "audit/retention_policy.py",
-      "functions": 14,
-      "classes": 3,
+      "module": "desire_engine/core.py",
+      "functions": 37,
+      "classes": 15,
       "is_critical": true
     },
     {
-      "module": "integrations/mcp_server.py",
-      "functions": 23,
-      "classes": 4,
-      "is_critical": true
-    },
-    {
-      "module": "integrations/webhook_framework.py",
-      "functions": 14,
-      "classes": 6,
-      "is_critical": true
-    },
-    {
-      "module": "integrations/mcp_client_enhanced.py",
-      "functions": 18,
-      "classes": 8,
-      "is_critical": true
-    },
-    {
-      "module": "integrations/mcp_client.py",
-      "functions": 7,
-      "classes": 2,
-      "is_critical": true
-    },
-    {
-      "module": "integrations/oauth2_client.py",
-      "functions": 16,
-      "classes": 5,
-      "is_critical": true
-    },
-    {
-      "module": "integrations/dbus_controller.py",
-      "functions": 17,
-      "classes": 3,
-      "is_critical": true
-    },
-    {
-      "module": "agents/architect_agent.py",
-      "functions": 7,
+      "module": "agents/code_agent.py",
+      "functions": 11,
       "classes": 1,
       "is_critical": true
     },
@@ -1981,15 +1849,15 @@
       "is_critical": true
     },
     {
-      "module": "agents/orchestrator_metrics.py",
-      "functions": 5,
-      "classes": 2,
+      "module": "agents/architect_agent.py",
+      "functions": 7,
+      "classes": 1,
       "is_critical": true
     },
     {
-      "module": "agents/code_agent.py",
-      "functions": 11,
-      "classes": 1,
+      "module": "agents/orchestrator_metrics.py",
+      "functions": 5,
+      "classes": 2,
       "is_critical": true
     },
     {
@@ -1999,27 +1867,9 @@
       "is_critical": true
     },
     {
-      "module": "security/playbooks/malware_response.py",
-      "functions": 6,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/data_exfiltration_response.py",
-      "functions": 7,
-      "classes": 1,
-      "is_critical": true
-    },
-    {
       "module": "security/playbooks/utils.py",
       "functions": 4,
       "classes": 2,
-      "is_critical": true
-    },
-    {
-      "module": "security/playbooks/intrusion_response.py",
-      "functions": 8,
-      "classes": 1,
       "is_critical": true
     },
     {
@@ -2030,6 +1880,24 @@
     },
     {
       "module": "security/playbooks/privilege_escalation_response.py",
+      "functions": 7,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/malware_response.py",
+      "functions": 6,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/intrusion_response.py",
+      "functions": 8,
+      "classes": 1,
+      "is_critical": true
+    },
+    {
+      "module": "security/playbooks/data_exfiltration_response.py",
       "functions": 7,
       "classes": 1,
       "is_critical": true

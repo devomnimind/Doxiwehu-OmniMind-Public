@@ -12,7 +12,7 @@ Cobertura de:
 from __future__ import annotations
 
 import pytest
-from unittest.mock import Mock, patch, MagicMock, AsyncMock
+from unittest.mock import Mock, patch
 
 from src.agents.orchestrator_agent import (
     AgentMode,
@@ -50,12 +50,10 @@ class TestOrchestratorAgent:
         """Testa delegação de tarefa."""
         agent = OrchestratorAgent(config_path="config/agent_config.yaml")
 
-        result = agent.delegate_task(
+        agent.delegate_task(
             task="Implement feature",
             agent_type="code",
         )
-
-        assert result is not None or result is None
 
     @patch("src.agents.orchestrator_agent.OmniMindCore")
     def test_orchestrate_workflow(self, mock_core: Mock) -> None:
@@ -77,7 +75,7 @@ class TestOrchestratorAgent:
             agent, "delegate_task", side_effect=Exception("Delegation failed")
         ):
             try:
-                result = agent.delegate_task("task", "agent")
+                agent.delegate_task("task", "agent")
             except Exception:
                 pass  # Expected
 

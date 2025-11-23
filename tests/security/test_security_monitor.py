@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import pytest
 from unittest.mock import Mock, patch, MagicMock
-from typing import Dict, Any, List
 
 try:
     import psutil

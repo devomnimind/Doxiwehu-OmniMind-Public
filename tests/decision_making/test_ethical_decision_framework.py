@@ -12,7 +12,6 @@ Cobertura de:
 from __future__ import annotations
 
 import pytest
-from typing import Dict
 
 from src.decision_making.ethical_decision_framework import (
     EthicalFramework,

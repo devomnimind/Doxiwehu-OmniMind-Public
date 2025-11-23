@@ -461,7 +461,7 @@ class EmergentBehaviorSystem:
         Returns:
             Analysis results
         """
-        analysis = {
+        analysis: Dict[str, Any] = {
             "total_interactions": len(self.interactions),
             "detected_patterns": len(self.patterns),
             "pattern_types": {},
@@ -473,29 +473,27 @@ class EmergentBehaviorSystem:
         }
 
         # Count pattern types
+        pattern_types = analysis["pattern_types"]
         for pattern in self.patterns:
             pattern_type = pattern.pattern_type
-            analysis["pattern_types"][pattern_type] = (
-                analysis["pattern_types"].get(pattern_type, 0) + 1
-            )
+            pattern_types[pattern_type] = pattern_types.get(pattern_type, 0) + 1
 
         # Calculate simple emergence metrics
+        emergence_metrics = analysis["emergence_metrics"]
         if self.interactions:
             # Diversity: number of unique interaction types
             interaction_types = {i.interaction_type for i in self.interactions}
-            analysis["emergence_metrics"]["diversity"] = len(interaction_types) / max(
+            emergence_metrics["diversity"] = len(interaction_types) / max(
                 1, len(self.interactions)
             )
 
             # Coordination: patterns per interaction ratio
-            analysis["emergence_metrics"]["coordination"] = len(self.patterns) / len(
+            emergence_metrics["coordination"] = len(self.patterns) / len(
                 self.interactions
             )
 
         # Adaptability: based on configuration changes
         config = self.adaptive.get_configuration()
-        analysis["emergence_metrics"]["adaptability"] = (
-            len(config) / 10.0
-        )  # Simple metric
+        emergence_metrics["adaptability"] = len(config) / 10.0  # Simple metric
 
         return analysis
