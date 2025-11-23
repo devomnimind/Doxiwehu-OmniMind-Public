@@ -30,6 +30,7 @@ from .root_cause_analysis import RootCauseAnalysis
 from .self_analysis import SelfAnalysis
 from .self_healing import SelfHealingLoop
 from .self_optimization import SelfOptimizationEngine
+from .trap_framework import TRAPFramework, TRAPScore, TRAPComponent
 
 __all__ = [
     "MetacognitionAgent",
@@ -50,4 +51,7 @@ __all__ = [
     "RootCauseAnalysis",
     "SelfHealingLoop",
     "SelfOptimizationEngine",
+    "TRAPFramework",
+    "TRAPScore",
+    "TRAPComponent",
 ]
