@@ -54,7 +54,7 @@ class TestBlackHoleMetaLearner:
 
         # Densidade baixa E volume grande
         should_collapse = learner.check_collapse_condition(
-            knowledge_mass=0.1, knowledge_volume=100.0  # Densidade = 0.001
+            knowledge_mass=0.1, knowledge_volume=100.0
         )
 
         # Com densidade baixa, NÃO deve causar colapso
@@ -191,8 +191,6 @@ class TestBlackHoleMetaLearner:
 
     def test_schwarzschild_radius_calculation(self) -> None:
         """Testa cálculo do raio de Schwarzschild."""
-        _ = BlackHoleMetaLearner()
-
         # Raio de Schwarzschild: r_s = 2GM/c²
         mass = 100.0
 

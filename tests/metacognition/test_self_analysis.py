@@ -252,7 +252,7 @@ class TestAnalyzeExecutionTimes:
         assert tool1_stats["count"] == 3
         assert tool1_stats["avg"] == pytest.approx(2.0)
         assert tool1_stats["min"] == pytest.approx(1.5)
-        assert tool1_stats["max"] == 2.5
+        assert tool1_stats["max"] == pytest.approx(2.5)
 
     def test_missing_duration_handled(self, tmp_path: Path) -> None:
         """Test handling of entries without duration."""

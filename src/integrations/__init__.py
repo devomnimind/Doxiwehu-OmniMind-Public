@@ -8,7 +8,16 @@ This module provides integrations for:
 - GraphQL and Supabase
 """
 
-from .dbus_controller import DBusSessionController, DBusSystemController
+# Try to import dbus-dependent modules
+try:
+    from .dbus_controller import DBusSessionController, DBusSystemController
+
+    _HAS_DBUS = True
+except ImportError:
+    _HAS_DBUS = False
+    DBusSessionController = None  # type: ignore
+    DBusSystemController = None  # type: ignore
+
 from .mcp_client import MCPClient, MCPClientError
 from .mcp_client_enhanced import EnhancedMCPClient, CircuitBreaker, CircuitOpenError
 from .graphql_supabase import GraphQLSupabaseHelper, GraphQLSupabaseError
@@ -32,7 +41,7 @@ __all__ = [
     "EnhancedMCPClient",
     "CircuitBreaker",
     "CircuitOpenError",
-    # D-Bus
+    # D-Bus (optional)
     "DBusSessionController",
     "DBusSystemController",
     # OAuth

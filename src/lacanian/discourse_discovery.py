@@ -357,10 +357,13 @@ class LacanianDiscourseAnalyzer:
 
         # Confiança (diferença entre top e segundo)
         sorted_scores = sorted(discourse_scores.values(), reverse=True)
-        if len(sorted_scores) > 1:
+        if len(sorted_scores) > 1 and sorted_scores[0] > 0:
             confidence = (sorted_scores[0] - sorted_scores[1]) / sorted_scores[0]
-        else:
+        elif sorted_scores[0] > 0:
             confidence = 1.0
+        else:
+            # Todos os scores são zero - nenhum marcador encontrado
+            confidence = 0.0
 
         # Cria resultado
         result = DiscourseAnalysisResult(
