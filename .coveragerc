@@ -1,4 +1,6 @@
 [run]
+data_file = .coverage
+parallel = False
 omit =
     src/agents/orchestrator_agent.py
     src/agents/react_agent.py
