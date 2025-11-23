@@ -4,10 +4,8 @@ Testes para Identity - Agent Signature and Digital Identity.
 Group 14: Integration Layer - identity/
 """
 
-import hashlib
 import json
 import tempfile
-from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
@@ -148,7 +146,7 @@ class TestReputationScore:
         rep.reliability = 0.85
 
         # overall = 0.3*code + 0.3*completion + 0.2*autonomy + 0.2*reliability
-        expected = 0.8 * 0.3 + 0.9 * 0.3 + 0.7 * 0.2 + 0.85 * 0.2
+        # expected = 0.8 * 0.3 + 0.9 * 0.3 + 0.7 * 0.2 + 0.85 * 0.2
 
         # Calcular através de update
         rep.update_from_task(success=True, quality_score=0.8, autonomy_level=0.7)

@@ -4,8 +4,6 @@ Testes para Meta Learning - Black Hole Collapse.
 Group 15: Learning & Monitoring - meta_learning/
 """
 
-import pytest
-
 from src.meta_learning.black_hole_collapse import (
     BlackHoleMetaLearner,
     MetaKnowledge,
@@ -205,8 +203,6 @@ class TestBlackHoleMetaLearner:
 
     def test_schwarzschild_radius_calculation(self) -> None:
         """Testa cálculo do raio de Schwarzschild."""
-        learner = BlackHoleMetaLearner()
-
         # Raio de Schwarzschild: r_s = 2GM/c²
         mass = 100.0
 
@@ -260,7 +256,7 @@ class TestBlackHoleMetaLearner:
         meta = learner.collapse_to_meta_level(knowledge)
 
         # Radiação de Hawking deve conter teoremas derivados
-        assert len(meta.hawking_radiation) >= 0
+        # assert len(meta.hawking_radiation) >= 0
         assert isinstance(meta.hawking_radiation, list)
 
     def test_get_statistics(self) -> None:

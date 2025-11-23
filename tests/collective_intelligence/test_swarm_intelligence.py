@@ -4,7 +4,6 @@ Tests for bio-inspired swarm algorithms including PSO and ACO.
 Total: 29 tests covering all aspects of swarm intelligence.
 """
 
-import pytest
 from typing import List
 
 from src.collective_intelligence.swarm_intelligence import (

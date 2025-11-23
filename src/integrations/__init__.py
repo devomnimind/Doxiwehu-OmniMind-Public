@@ -11,6 +11,7 @@ This module provides integrations for:
 # Try to import dbus-dependent modules
 try:
     from .dbus_controller import DBusSessionController, DBusSystemController
+
     _HAS_DBUS = True
 except ImportError:
     _HAS_DBUS = False

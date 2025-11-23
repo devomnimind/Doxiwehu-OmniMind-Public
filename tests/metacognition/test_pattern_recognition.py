@@ -4,9 +4,7 @@ Tests for behavioral pattern detection and anomaly identification.
 Total: 29 tests covering all pattern recognition capabilities.
 """
 
-import pytest
-from datetime import datetime, timedelta
-from typing import Any, Dict, List
+from datetime import datetime
 
 from src.metacognition.pattern_recognition import PatternRecognition
 

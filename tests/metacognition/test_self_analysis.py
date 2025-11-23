@@ -4,11 +4,9 @@ Tests for analyzing agent's own decision-making and execution patterns.
 Total: 29 tests covering all self-analysis capabilities.
 """
 
-import pytest
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List
 
 from src.metacognition.self_analysis import SelfAnalysis
 

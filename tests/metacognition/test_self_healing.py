@@ -141,8 +141,14 @@ class TestSelfHealingLoop:
 
     def test_initialization_with_callbacks(self) -> None:
         """Test initialization with callbacks."""
-        metrics_sink = lambda x: None
-        alert_callback = lambda x: None
+
+        def metrics_sink(x):
+            # Dummy callback for testing
+            pass
+
+        def alert_callback(x):
+            # Dummy callback for testing
+            pass
 
         loop = SelfHealingLoop(
             metrics_sink=metrics_sink,
@@ -221,7 +227,7 @@ class TestSelfHealingLoop:
 
         loop.register_monitor(failing_monitor)
 
-        actions = await loop.run_cycle()
+        await loop.run_cycle()
 
         assert loop._metrics["cycles"] == 1
         assert loop._metrics["issues_detected"] == 1

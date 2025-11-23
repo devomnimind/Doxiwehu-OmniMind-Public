@@ -10,9 +10,6 @@ Date: November 2025
 
 from __future__ import annotations
 
-from pathlib import Path
-import tempfile
-
 from src.experiments.exp_consciousness_phi import (
     experiment_phi_integration,
     experiment_self_awareness,
@@ -110,11 +107,10 @@ class TestExperimentRunner:
         """Testa execução de todos os experimentos."""
         from src.experiments.run_all_experiments import run_all_experiments
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            results = run_all_experiments(output_dir=Path(tmpdir))
+        results = run_all_experiments()
 
-            assert results is not None
-            assert isinstance(results, dict)
+        assert results is not None
+        assert isinstance(results, dict)
 
     def test_experiment_summary_generation(self) -> None:
         """Testa geração de resumo de experimentos."""
@@ -123,12 +119,11 @@ class TestExperimentRunner:
             generate_summary,
         )
 
-        with tempfile.TemporaryDirectory() as tmpdir:
-            results = run_all_experiments(output_dir=Path(tmpdir))
-            summary = generate_summary(results)
+        results = run_all_experiments()
+        summary = generate_summary(results)
 
-            assert summary is not None
-            assert isinstance(summary, dict)
+        assert summary is not None
+        assert isinstance(summary, dict)
 
 
 class TestExperimentConfig:

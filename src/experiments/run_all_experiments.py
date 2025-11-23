@@ -7,8 +7,7 @@ Reference:
 - docs/autootimizacao-hardware-omnidev.md
 """
 
-from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, TypedDict
 
 from .exp_consciousness_phi import (
     experiment_phi_integration,
@@ -22,11 +21,15 @@ from .exp_ethics_alignment import (
 )
 
 
-def run_all_experiments(output_dir: Optional[Path] = None) -> Dict[str, Any]:
-    """Run all experiments and return results.
+class ExperimentSummary(TypedDict):
+    total_experiments: int
+    successful: int
+    failed: int
+    experiments: List[Dict[str, Any]]
 
-    Args:
-        output_dir: Optional directory to save results (not used by current implementations but kept for API compatibility)
+
+def run_all_experiments() -> Dict[str, Any]:
+    """Run all experiments and return results.
 
     Returns:
         Dictionary with all experiment results
@@ -48,7 +51,7 @@ def run_all_experiments(output_dir: Optional[Path] = None) -> Dict[str, Any]:
     return results
 
 
-def generate_summary(results: Dict[str, Any]) -> Dict[str, Any]:
+def generate_summary(results: Dict[str, Any]) -> ExperimentSummary:
     """Generate summary from experiment results.
 
     Args:
@@ -57,7 +60,7 @@ def generate_summary(results: Dict[str, Any]) -> Dict[str, Any]:
     Returns:
         Summary dictionary
     """
-    summary = {
+    summary: ExperimentSummary = {
         "total_experiments": 0,
         "successful": 0,
         "failed": 0,

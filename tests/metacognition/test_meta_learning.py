@@ -168,7 +168,7 @@ class TestStrategyOptimization:
         optimizer.set_baseline_configuration(baseline)
 
         treatment = Configuration("new", "New", {"strategy": "B"})
-        test = optimizer.create_ab_test("strat_test", "Strategy Test", treatment)
+        _ = optimizer.create_ab_test("strat_test", "Strategy Test", treatment)
         optimizer.start_test("strat_test")
 
         # Record metrics
@@ -431,23 +431,22 @@ class TestMetaLearningIntegration:
 
     def test_meta_learning_feedback_loop(self) -> None:
         """Testa loop de feedback de meta-aprendizado (simulado)."""
-        with tempfile.TemporaryDirectory() as tmpdir:
-            optimizer = SelfOptimizationEngine()
-            from src.metacognition.self_optimization import Configuration
+        optimizer = SelfOptimizationEngine()
+        from src.metacognition.self_optimization import Configuration
 
-            baseline = Configuration("base", "Base", {"lr": 0.01})
-            optimizer.set_baseline_configuration(baseline)
+        baseline = Configuration("base", "Base", {"lr": 0.01})
+        optimizer.set_baseline_configuration(baseline)
 
-            # Ciclo iterativo
-            current_val = 0.01
-            for _ in range(3):
-                new_val, score = optimizer.auto_tune_parameter(
-                    "lr", current_val, (0.001, 0.1), 0.01
-                )
-                current_val = new_val
+        # Ciclo iterativo
+        current_val = 0.01
+        for _ in range(3):
+            new_val, _ = optimizer.auto_tune_parameter(
+                "lr", current_val, (0.001, 0.1), 0.01
+            )
+            current_val = new_val
 
-            # Performance deve ser rastreada
-            assert len(optimizer._optimization_history) >= 3
+        # Performance deve ser rastreada
+        assert len(optimizer._optimization_history) >= 3
 
 
 class TestMetaLearningEdgeCases:
@@ -475,7 +474,7 @@ class TestMetaLearningEdgeCases:
 
         treatment = Configuration("new", "New", {"lr": 0.02})
         # Set min_samples=1 to allow analysis with few samples
-        test = optimizer.create_ab_test(
+        _ = optimizer.create_ab_test(
             "test_conflict", "Conflict Test", treatment, min_samples=1
         )
         optimizer.start_test("test_conflict")
