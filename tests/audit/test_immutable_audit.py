@@ -48,9 +48,7 @@ class TestImmutableAuditSystem:
         audit = ImmutableAuditSystem(log_dir=str(temp_log_dir))
 
         hash_result = audit.log_action(
-            action="test_action",
-            details={"key": "value"},
-            category="test"
+            action="test_action", details={"key": "value"}, category="test"
         )
 
         assert isinstance(hash_result, str)
@@ -67,7 +65,7 @@ class TestImmutableAuditSystem:
             hash_result = audit.log_action(
                 action=f"test_{category}",
                 details={"category": category},
-                category=category
+                category=category,
             )
             assert isinstance(hash_result, str)
             assert len(hash_result) == 64
@@ -141,9 +139,7 @@ class TestImmutableAuditSystem:
     def test_log_action_global_function(self) -> None:
         """Testa função global log_action."""
         hash_result = log_action(
-            action="global_test",
-            details={"global": True},
-            category="test"
+            action="global_test", details={"global": True}, category="test"
         )
 
         assert isinstance(hash_result, str)
@@ -201,7 +197,7 @@ class TestImmutableAuditSystem:
                 hash_result = audit.log_action(
                     f"concurrent_action_{worker_id}",
                     {"worker": worker_id, "timestamp": time.time()},
-                    "concurrency_test"
+                    "concurrency_test",
                 )
                 results.append(hash_result)
             except Exception as e:

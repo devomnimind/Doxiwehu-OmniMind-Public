@@ -304,7 +304,7 @@ class TestIncidentAnalyzer:
         analyzer = IncidentAnalyzer()
 
         # Just verify it can be instantiated
-        assert hasattr(analyzer, 'analyze_incident')
+        assert hasattr(analyzer, "analyze_incident")
 
     def test_analyze_incident(self) -> None:
         """Testa análise de incidente."""
