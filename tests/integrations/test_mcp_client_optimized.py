@@ -526,6 +526,7 @@ class TestEnhancedMCPClient:
         config = RateLimitConfig(max_requests_per_minute=1)
         client = EnhancedMCPClient(
             enable_cache=False,  # Desabilita cache para forçar chamadas
+            enable_data_protection=False,  # Desabilita proteção para simplificar teste
             rate_limit=config,
         )
         
@@ -556,7 +557,7 @@ class TestEnhancedMCPClient:
         mock_mcp_instance._request.side_effect = MCPClientError("Test error")
         mock_mcp.return_value = mock_mcp_instance
         
-        client = EnhancedMCPClient(enable_cache=False)
+        client = EnhancedMCPClient(enable_cache=False, enable_data_protection=False)
         
         with pytest.raises(MCPClientError):
             client.call_with_context_optimization("test", {})
