@@ -164,9 +164,24 @@ class ImmutableAuditSystem:
 
                         # Permitir quebra na cadeia para eventos de inicialização do sistema
                         if action == "audit_system_initialized":
-                            # Sistema foi reinicializado - reset do prev_hash
-                            prev_hash = "0" * 64
-                            system_restarts += 1
+                            # Verificar se é um reset (000...) ou continuação válida
+                            if event.get("prev_hash") == "0" * 64:
+                                # Reset explícito
+                                prev_hash = "0" * 64
+                                system_restarts += 1
+                            elif event.get("prev_hash") == prev_hash:
+                                # Continuação da cadeia (Melhor segurança)
+                                pass
+                            else:
+                                # Nem reset nem continuação válida
+                                corrupted_events.append(
+                                    {
+                                        "line": line_num,
+                                        "expected_prev_hash": f"{prev_hash} OR {'0'*64}",
+                                        "found_prev_hash": event.get("prev_hash"),
+                                        "action": action,
+                                    }
+                                )
                         elif event.get("prev_hash") != prev_hash:
                             # Verificar se é uma quebra não autorizada
                             corrupted_events.append(
