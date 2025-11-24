@@ -25,6 +25,7 @@ __all__: List[str] = [
     "GodelianAI",
     "StructuralLack",
     "ObjectSmallA",
+    "EncryptedUnconsciousLayer",
 ]
 
 
@@ -52,5 +53,9 @@ def __getattr__(name: str) -> Any:
             from .computational_lack import ObjectSmallA
 
             return ObjectSmallA
+        elif name == "EncryptedUnconsciousLayer":
+            from .encrypted_unconscious import EncryptedUnconsciousLayer
+
+            return EncryptedUnconsciousLayer
 
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

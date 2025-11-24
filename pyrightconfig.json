@@ -1,0 +1,6 @@
+{
+    "include": ["src", "scripts"],
+    "extraPaths": ["src"],
+    "reportMissingImports": "warning",
+    "reportMissingTypeStubs": false
+}

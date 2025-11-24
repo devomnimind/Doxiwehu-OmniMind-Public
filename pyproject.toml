@@ -59,3 +59,7 @@ pythonpath = ["src"]
 testpaths = [
     "tests",
 ]
+
+[tool.pyright]
+include = ["src", "scripts"]
+extraPaths = ["src"]

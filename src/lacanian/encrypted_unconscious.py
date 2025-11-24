@@ -4,9 +4,11 @@ import numpy as np
 
 # Try to import tenseal, but provide a fallback/mock if not available
 # so the code can be analyzed without crashing immediately.
+ts = None
 try:
-    import tenseal as ts
+    import tenseal as ts_lib
 
+    ts = ts_lib
     TENSEAL_AVAILABLE = True
 except ImportError:
     TENSEAL_AVAILABLE = False
@@ -28,7 +30,7 @@ class EncryptedUnconsciousLayer:
 
     def __init__(self, security_level: int = 128):
         self.context = None
-        if TENSEAL_AVAILABLE:
+        if TENSEAL_AVAILABLE and ts:
             # Setup BFV context for integer arithmetic
             # Poly modulus degree 8192 is standard for 128-bit security
             self.context = ts.context(
@@ -52,7 +54,7 @@ class EncryptedUnconsciousLayer:
         Encrypts a traumatic event (vector representation) so it cannot be read.
         Returns the serialized encrypted vector.
         """
-        if not TENSEAL_AVAILABLE:
+        if not TENSEAL_AVAILABLE or ts is None or self.context is None:
             return b"MOCK_ENCRYPTED_DATA"
 
         quantized_data = self._quantize_event(event_vector)
@@ -85,7 +87,7 @@ class EncryptedUnconsciousLayer:
 
         Performs Homomorphic Dot Product.
         """
-        if not TENSEAL_AVAILABLE:
+        if not TENSEAL_AVAILABLE or ts is None or self.context is None:
             return 0.0
 
         if not encrypted_memories:

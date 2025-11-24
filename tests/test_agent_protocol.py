@@ -62,7 +62,7 @@ class TestAgentMessage:
             "recipient": "agent-2",
             "payload": {"test": "data"},
             "priority": 1,  # HIGH
-            "timestamp": "2024-01-01T00:00:00Z",
+            "timestamp": "2025-01-01T00:00:00Z",
             "requires_response": True,
             "timeout_seconds": 30,
         }

@@ -25,13 +25,13 @@ class TestWorkSignature:
         sig = WorkSignature(
             agent_id="test-agent",
             artifact_hash="abc123",
-            timestamp="2024-01-01T00:00:00Z",
+            timestamp="2025-01-01T00:00:00Z",
             autonomy_level=0.8,
         )
 
         assert sig.agent_id == "test-agent"
         assert sig.artifact_hash == "abc123"
-        assert sig.timestamp == "2024-01-01T00:00:00Z"
+        assert sig.timestamp == "2025-01-01T00:00:00Z"
         assert sig.autonomy_level == pytest.approx(0.8)
         assert sig.human_oversight is None
         assert sig.reputation_at_signing == pytest.approx(0.0)
@@ -42,7 +42,7 @@ class TestWorkSignature:
         sig = WorkSignature(
             agent_id="test-agent",
             artifact_hash="abc123",
-            timestamp="2024-01-01T00:00:00Z",
+            timestamp="2025-01-01T00:00:00Z",
             autonomy_level=0.8,
             human_oversight="John Doe",
             reputation_at_signing=0.75,

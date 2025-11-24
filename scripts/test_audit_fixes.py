@@ -4,9 +4,10 @@ import sys
 from typing import Dict, Any
 
 # Add src to path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src'))
 
-from quantum_consciousness.dwave_backend import DWaveBackend
+# pyright: reportMissingImports=false
+from quantum_consciousness.quantum_backend import DWaveBackend
 from lacanian.encrypted_unconscious import EncryptedUnconsciousLayer
 from social.omnimind_network import OmniMindSociety, OmniMindNode, EthicalDilemma
 
