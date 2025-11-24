@@ -1,6 +1,5 @@
-from typing import Dict, Any, Optional, Union
+from typing import Dict, Any, Optional
 import os
-import random
 import logging
 from dotenv import load_dotenv
 
@@ -29,8 +28,16 @@ except ImportError:
 # --- Qiskit Imports ---
 try:
     from qiskit_aer import AerSimulator
+    from qiskit_algorithms import QAOA
+    from qiskit_algorithms.optimizers import COBYLA
 
-    # Note: Full QAOA implementation requires qiskit-algorithms
+    try:
+        from qiskit.primitives import Sampler
+    except ImportError:
+        from qiskit.primitives import StatevectorSampler as Sampler
+    from qiskit_optimization import QuadraticProgram
+    from qiskit_optimization.algorithms import MinimumEigenOptimizer
+
     QISKIT_AVAILABLE = True
 except ImportError:
     QISKIT_AVAILABLE = False
@@ -136,28 +143,64 @@ class QuantumBackend:
 
     def _solve_gate_based(self, Q: Dict) -> Dict[str, Any]:
         """
-        Solves using Qiskit (QAOA-inspired or simple circuit).
-        For this prototype, we implement a simple VQE-like ansatz or just a superposition
-        collapsed by the cost function (Grover-like) to find the minimum.
+        Solves using Qiskit QAOA (Quantum Approximate Optimization Algorithm).
+        This replaces the previous brute-force simulation with a scientifically valid
+        variational quantum algorithm.
+        """
+        try:
+            # 1. Define the Problem (QUBO)
+            problem = QuadraticProgram()
+            # Add binary variables
+            problem.binary_var("id")
+            problem.binary_var("ego")
+            problem.binary_var("superego")
 
-        Actually, for stability, we will map the QUBO to a brute-force search on the simulator
-        if the problem is small (3 qubits), which is mathematically exact.
+            # Convert Q dictionary to linear and quadratic terms
+            linear = {}
+            quadratic = {}
+
+            for (u, v), bias in Q.items():
+                if u == v:
+                    linear[u] = bias
+                else:
+                    quadratic[(u, v)] = bias
+
+            problem.minimize(linear=linear, quadratic=quadratic)
+
+            # 2. Configure QAOA
+            optimizer = COBYLA(maxiter=50)  # Classical optimizer
+            sampler = Sampler()  # Primitive to execute circuits
+            qaoa = QAOA(sampler=sampler, optimizer=optimizer, reps=1)
+
+            # 3. Solve
+            algorithm = MinimumEigenOptimizer(qaoa)
+            result = algorithm.solve(problem)
+
+            # 4. Extract Results
+            # result.x is a list of variable values [id, ego, superego]
+            # We need to map back to names based on variable order
+            var_names = [v.name for v in problem.variables]
+            sample = {name: int(val) for name, val in zip(var_names, result.x)}
+
+            return self._format_result(
+                sample, result.fval, is_quantum=False
+            )  # Still simulated
+
+        except Exception as e:
+            logger.error(f"QAOA execution failed: {e}. Falling back to brute force.")
+            return self._solve_brute_force_fallback(Q)
+
+    def _solve_brute_force_fallback(self, Q: Dict) -> Dict[str, Any]:
+        """
+        Fallback to brute force if QAOA fails (e.g. missing libraries).
         """
         # 3 Qubits: 0=Id, 1=Ego, 2=Superego
-        # We iterate all 2^3 = 8 states and calculate energy
-        # This is "Simulation" of quantum state search
-
         best_state = None
         min_energy = float("inf")
 
-        # Brute force the energy function (valid for small N)
-        # In a real QAOA, we would optimize parameters to find this.
         for i in range(8):
-            # Convert to binary
-            b = format(i, "03b")  # e.g. '101' -> Id=1, Ego=0, Superego=1
+            b = format(i, "03b")
             state = {"id": int(b[0]), "ego": int(b[1]), "superego": int(b[2])}
-
-            # Calculate Energy
             energy = 0
             for (u, v), bias in Q.items():
                 val_u = state.get(u, 0)

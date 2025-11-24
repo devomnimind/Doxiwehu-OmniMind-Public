@@ -441,8 +441,11 @@ class SuperegoAgent:
             return 0.5
 
         # Simula proposta para a sociedade
+        desc = (
+            f"Action: {action.description}. Moral Alignment: {action.moral_alignment}"
+        )
         decision = self.society.propose_decision(
-            description=f"Action: {action.description}. Moral Alignment: {action.moral_alignment}",
+            description=desc,
             options=["approve", "reject"],
             context={"strictness": self.strictness},
         )
@@ -521,7 +524,11 @@ class FreudianMind:
     """
 
     def __init__(
-        self, id_lr: float = 0.1, ego_lr: float = 0.1, superego_strictness: float = 0.7
+        self,
+        id_lr: float = 0.1,
+        ego_lr: float = 0.1,
+        superego_strictness: float = 0.7,
+        quantum_provider: str = "auto",
     ) -> None:
         """
         Inicializa mente freudiana.
@@ -530,6 +537,7 @@ class FreudianMind:
             id_lr: Taxa de aprendizado do Id
             ego_lr: Taxa de aprendizado do Ego
             superego_strictness: Rigidez do Superego
+            quantum_provider: Backend quântico ('auto', 'neal', 'ibm', 'dwave')
         """
         self.id_agent = IdAgent(learning_rate=id_lr)
         self.ego_agent = EgoAgent(learning_rate=ego_lr)
@@ -545,9 +553,10 @@ class FreudianMind:
         self.quantum_backend = None
         if INTEGRATION_AVAILABLE:
             try:
-                self.quantum_backend = DWaveBackend()
+                self.quantum_backend = DWaveBackend(provider=quantum_provider)
+                provider_name = self.quantum_backend.provider.upper()
                 logger.info(
-                    f"Quantum Backend ({self.quantum_backend.provider.upper()}) initialized for Freudian Mind"
+                    f"Quantum Backend ({provider_name}) initialized for Freudian Mind"
                 )
             except Exception as e:
                 logger.warning(f"Failed to initialize Quantum Backend: {e}")
@@ -915,9 +924,8 @@ def demonstrate_freudian_mind() -> None:
     print("AVALIAÇÕES DOS AGENTES")
     print("-" * 70)
     print(f"Id (prazer): {mind.id_agent.evaluate_action(chosen_action):.2f}")
-    print(
-        f"Ego (realidade): {mind.ego_agent.evaluate_action(chosen_action, reality_context):.2f}"
-    )
+    ego_eval = mind.ego_agent.evaluate_action(chosen_action, reality_context)
+    print(f"Ego (realidade): {ego_eval:.2f}")
     print(f"Superego (moral): {mind.superego_agent.evaluate_action(chosen_action):.2f}")
     print()
 
