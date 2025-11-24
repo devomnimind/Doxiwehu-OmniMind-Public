@@ -14,8 +14,6 @@ Cobertura de:
 
 from __future__ import annotations
 
-import pytest
-from typing import Any, Dict
 
 from src.integrations.mcp_memory_server import MemoryMCPServer
 
@@ -35,7 +33,7 @@ class TestMemoryMCPServer:
             "create_association",
             "get_memory_graph",
             "consolidate_memories",
-            "export_graph"
+            "export_graph",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -44,8 +42,7 @@ class TestMemoryMCPServer:
         """Testa armazenamento básico de memória."""
         server = MemoryMCPServer()
         result = server.store_memory(
-            content="Test memory content",
-            metadata={"type": "test"}
+            content="Test memory content", metadata={"type": "test"}
         )
         assert result is not None
         assert isinstance(result, dict)
@@ -62,11 +59,10 @@ class TestMemoryMCPServer:
             "timestamp": "2025-11-24T12:00:00Z",
             "tags": ["important", "conversation"],
             "priority": 5,
-            "source": "user_interaction"
+            "source": "user_interaction",
         }
         result = server.store_memory(
-            content="Complex memory with rich metadata",
-            metadata=metadata
+            content="Complex memory with rich metadata", metadata=metadata
         )
         assert result["status"] == "stored"
         assert result["id"] == "mem_stub_123"
@@ -74,10 +70,7 @@ class TestMemoryMCPServer:
     def test_store_memory_empty_metadata(self) -> None:
         """Testa armazenamento com metadata vazio."""
         server = MemoryMCPServer()
-        result = server.store_memory(
-            content="Memory without metadata",
-            metadata={}
-        )
+        result = server.store_memory(content="Memory without metadata", metadata={})
         assert result["status"] == "stored"
 
     def test_retrieve_memory_basic(self) -> None:
@@ -107,10 +100,7 @@ class TestMemoryMCPServer:
     def test_update_memory_basic(self) -> None:
         """Testa atualização básica de memória."""
         server = MemoryMCPServer()
-        result = server.update_memory(
-            memory_id="mem_123",
-            content="Updated content"
-        )
+        result = server.update_memory(memory_id="mem_123", content="Updated content")
         assert result is not None
         assert isinstance(result, dict)
         assert result["id"] == "mem_123"
@@ -121,10 +111,7 @@ class TestMemoryMCPServer:
         server = MemoryMCPServer()
         ids = ["mem_001", "mem_abc", "mem_xyz_123"]
         for memory_id in ids:
-            result = server.update_memory(
-                memory_id=memory_id,
-                content="New content"
-            )
+            result = server.update_memory(memory_id=memory_id, content="New content")
             assert result["id"] == memory_id
             assert result["status"] == "updated"
 
@@ -150,9 +137,7 @@ class TestMemoryMCPServer:
         """Testa criação básica de associação."""
         server = MemoryMCPServer()
         result = server.create_association(
-            source_id="mem_source",
-            target_id="mem_target",
-            type="related"
+            source_id="mem_source", target_id="mem_target", type="related"
         )
         assert result is not None
         assert isinstance(result, dict)
@@ -168,13 +153,11 @@ class TestMemoryMCPServer:
             "similarity",
             "temporal",
             "hierarchical",
-            "semantic"
+            "semantic",
         ]
         for assoc_type in association_types:
             result = server.create_association(
-                source_id="source_1",
-                target_id="target_1",
-                type=assoc_type
+                source_id="source_1", target_id="target_1", type=assoc_type
             )
             assert result["type"] == assoc_type
 
@@ -244,7 +227,7 @@ class TestMemoryMCPServer:
             "write_file",
             "list_dir",
             "stat",
-            "get_metrics"
+            "get_metrics",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -256,7 +239,7 @@ class TestMemoryMCPServer:
             "episodic memories",
             "semantic knowledge",
             "recent events",
-            "important conversations"
+            "important conversations",
         ]
         for query in queries:
             result = server.retrieve_memory(query=query, limit=20)

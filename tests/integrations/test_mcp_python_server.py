@@ -14,9 +14,7 @@ Cobertura de:
 
 from __future__ import annotations
 
-import pytest
 import sys
-from typing import Any, Dict
 
 from src.integrations.mcp_python_server import PythonMCPServer
 
@@ -36,7 +34,7 @@ class TestPythonMCPServer:
             "lint_code",
             "type_check",
             "run_tests",
-            "format_code"
+            "format_code",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -189,11 +187,7 @@ def add(a: int, b: int) -> int:
     def test_run_tests_different_paths(self) -> None:
         """Testa execução de testes em diferentes paths."""
         server = PythonMCPServer()
-        paths = [
-            "tests/unit/",
-            "tests/integration/",
-            "tests/test_example.py"
-        ]
+        paths = ["tests/unit/", "tests/integration/", "tests/test_example.py"]
         for path in paths:
             result = server.run_tests(path=path)
             assert result is not None
@@ -244,7 +238,7 @@ def my_func(x,y):
             "write_file",
             "list_dir",
             "stat",
-            "get_metrics"
+            "get_metrics",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -263,7 +257,7 @@ def my_func(x,y):
 class MyClass:
     def __init__(self, value: int) -> None:
         self.value = value
-    
+
     def get_value(self) -> int:
         return self.value
 """

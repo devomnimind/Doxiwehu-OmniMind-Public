@@ -11,8 +11,6 @@ Cobertura de:
 
 from __future__ import annotations
 
-import pytest
-from typing import Any, Dict
 
 from src.integrations.mcp_system_info_server import SystemInfoMCPServer
 
@@ -29,7 +27,7 @@ class TestSystemInfoMCPServer:
             "get_cpu_info",
             "get_memory_info",
             "get_disk_info",
-            "get_temperature"
+            "get_temperature",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -151,7 +149,7 @@ class TestSystemInfoMCPServer:
             "write_file",
             "list_dir",
             "stat",
-            "get_metrics"
+            "get_metrics",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -164,7 +162,7 @@ class TestSystemInfoMCPServer:
             server.get_cpu_info,
             server.get_memory_info,
             server.get_disk_info,
-            server.get_temperature
+            server.get_temperature,
         ]
         for method in methods:
             result = method()
@@ -214,6 +212,6 @@ class TestSystemInfoMCPServer:
         memory = server.get_memory_info()
         disk = server.get_disk_info()
         temp = server.get_temperature()
-        
+
         assert all([gpu, cpu, memory, disk, temp])
         assert all(isinstance(x, dict) for x in [gpu, cpu, memory, disk, temp])

@@ -14,8 +14,6 @@ Cobertura de:
 
 from __future__ import annotations
 
-import pytest
-from typing import Any, Dict, List
 
 from src.integrations.mcp_thinking_server import ThinkingMCPServer
 
@@ -35,7 +33,7 @@ class TestThinkingMCPServer:
             "merge_branches",
             "evaluate_quality",
             "export_chain",
-            "resume_session"
+            "resume_session",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -54,12 +52,7 @@ class TestThinkingMCPServer:
     def test_start_session_different_goals(self) -> None:
         """Testa início de sessão com diferentes objetivos."""
         server = ThinkingMCPServer()
-        goals = [
-            "Analyze data",
-            "Generate code",
-            "Debug issue",
-            "Plan architecture"
-        ]
+        goals = ["Analyze data", "Generate code", "Debug issue", "Plan architecture"]
         for goal in goals:
             result = server.start_session(goal=goal)
             assert result["goal"] == goal
@@ -76,9 +69,7 @@ class TestThinkingMCPServer:
         """Testa adição básica de passo."""
         server = ThinkingMCPServer()
         result = server.add_step(
-            session_id="sess_123",
-            content="First thinking step",
-            type="reasoning"
+            session_id="sess_123", content="First thinking step", type="reasoning"
         )
         assert result is not None
         assert isinstance(result, dict)
@@ -90,18 +81,12 @@ class TestThinkingMCPServer:
     def test_add_step_different_types(self) -> None:
         """Testa adição de passos com diferentes tipos."""
         server = ThinkingMCPServer()
-        step_types = [
-            "reasoning",
-            "analysis",
-            "synthesis",
-            "evaluation",
-            "decision"
-        ]
+        step_types = ["reasoning", "analysis", "synthesis", "evaluation", "decision"]
         for step_type in step_types:
             result = server.add_step(
                 session_id="sess_test",
                 content=f"Step of type {step_type}",
-                type=step_type
+                type=step_type,
             )
             assert result["session_id"] == "sess_test"
             assert result["step_id"] == "step_stub_1"
@@ -112,9 +97,7 @@ class TestThinkingMCPServer:
         session_id = "sess_multi"
         for i in range(5):
             result = server.add_step(
-                session_id=session_id,
-                content=f"Step {i}",
-                type="reasoning"
+                session_id=session_id, content=f"Step {i}", type="reasoning"
             )
             assert result["session_id"] == session_id
 
@@ -140,10 +123,7 @@ class TestThinkingMCPServer:
     def test_branch_thinking_basic(self) -> None:
         """Testa ramificação básica de pensamento."""
         server = ThinkingMCPServer()
-        result = server.branch_thinking(
-            session_id="sess_main",
-            step_id="step_5"
-        )
+        result = server.branch_thinking(session_id="sess_main", step_id="step_5")
         assert result is not None
         assert isinstance(result, dict)
         assert "new_session_id" in result
@@ -156,19 +136,14 @@ class TestThinkingMCPServer:
         server = ThinkingMCPServer()
         step_ids = ["step_1", "step_2", "step_3"]
         for step_id in step_ids:
-            result = server.branch_thinking(
-                session_id="sess_parent",
-                step_id=step_id
-            )
+            result = server.branch_thinking(session_id="sess_parent", step_id=step_id)
             assert result["parent_session"] == "sess_parent"
             assert result["new_session_id"] == "sess_branch_123"
 
     def test_merge_branches_basic(self) -> None:
         """Testa fusão básica de ramificações."""
         server = ThinkingMCPServer()
-        result = server.merge_branches(
-            session_ids=["sess_1", "sess_2"]
-        )
+        result = server.merge_branches(session_ids=["sess_1", "sess_2"])
         assert result is not None
         assert isinstance(result, dict)
         assert "merged_session_id" in result
@@ -180,7 +155,7 @@ class TestThinkingMCPServer:
         session_lists = [
             ["sess_a", "sess_b"],
             ["sess_1", "sess_2", "sess_3"],
-            ["sess_x", "sess_y", "sess_z", "sess_w"]
+            ["sess_x", "sess_y", "sess_z", "sess_w"],
         ]
         for sessions in session_lists:
             result = server.merge_branches(session_ids=sessions)
@@ -266,7 +241,7 @@ class TestThinkingMCPServer:
             "write_file",
             "list_dir",
             "stat",
-            "get_metrics"
+            "get_metrics",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -274,27 +249,25 @@ class TestThinkingMCPServer:
     def test_full_thinking_workflow(self) -> None:
         """Testa fluxo completo de pensamento."""
         server = ThinkingMCPServer()
-        
+
         # Inicia sessão
         session = server.start_session(goal="Complete workflow test")
         assert session["session_id"] == "sess_stub_123"
-        
+
         # Adiciona passos
         step1 = server.add_step(
-            session_id=session["session_id"],
-            content="First step",
-            type="reasoning"
+            session_id=session["session_id"], content="First step", type="reasoning"
         )
         assert step1["step_id"] == "step_stub_1"
-        
+
         # Obtém histórico
         history = server.get_history(session_id=session["session_id"])
         assert "steps" in history
-        
+
         # Avalia qualidade
         quality = server.evaluate_quality(session_id=session["session_id"])
         assert quality["score"] == 0.8
-        
+
         # Exporta cadeia
         chain = server.export_chain(session_id=session["session_id"])
         assert "chain" in chain
@@ -302,14 +275,11 @@ class TestThinkingMCPServer:
     def test_branching_workflow(self) -> None:
         """Testa fluxo de ramificação."""
         server = ThinkingMCPServer()
-        
+
         # Cria ramificação
-        branch = server.branch_thinking(
-            session_id="sess_main",
-            step_id="step_3"
-        )
+        branch = server.branch_thinking(session_id="sess_main", step_id="step_3")
         assert branch["new_session_id"] == "sess_branch_123"
-        
+
         # Mescla ramificações
         merged = server.merge_branches(
             session_ids=["sess_main", branch["new_session_id"]]

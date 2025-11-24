@@ -9,8 +9,6 @@ Cobertura de:
 
 from __future__ import annotations
 
-import pytest
-from typing import Any, Dict
 
 from src.integrations.mcp_logging_server import LoggingMCPServer
 
@@ -109,7 +107,7 @@ class TestLoggingMCPServer:
             "write_file",
             "list_dir",
             "stat",
-            "get_metrics"
+            "get_metrics",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -123,7 +121,7 @@ class TestLoggingMCPServer:
             "INFO",
             "DEBUG",
             "timestamp:2025-11-24",
-            "source:mcp_server"
+            "source:mcp_server",
         ]
         for query in queries:
             result = server.search_logs(query=query, limit=10)

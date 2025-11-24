@@ -10,9 +10,6 @@ Cobertura de:
 
 from __future__ import annotations
 
-import pytest
-from typing import Dict, List
-
 from src.autopoietic.advanced_repair import AdvancedRepair
 from src.autopoietic.meta_architect import ComponentSpec
 from src.autopoietic.code_synthesizer import SynthesizedComponent
@@ -39,10 +36,10 @@ class TestAdvancedRepair:
         repair = AdvancedRepair()
         error_map = {"component_a": "Failed to initialize"}
         specs = repair.detect_failures(error_map)
-        
+
         assert isinstance(specs, list)
         assert len(specs) == 1
-        
+
         spec = specs[0]
         assert isinstance(spec, ComponentSpec)
         assert spec.name == "repair_component_a"
@@ -59,18 +56,18 @@ class TestAdvancedRepair:
         error_map = {
             "module_x": "Import error",
             "module_y": "Runtime exception",
-            "module_z": "Configuration missing"
+            "module_z": "Configuration missing",
         }
         specs = repair.detect_failures(error_map)
-        
+
         assert len(specs) == 3
-        
+
         # Verifica que todos os specs foram criados corretamente
         names = [spec.name for spec in specs]
         assert "repair_module_x" in names
         assert "repair_module_y" in names
         assert "repair_module_z" in names
-        
+
         # Verifica que todos têm tipo "repair"
         for spec in specs:
             assert spec.type == "repair"
@@ -83,7 +80,7 @@ class TestAdvancedRepair:
         repair = AdvancedRepair()
         error_msg = "DetailedError: Component failed at line 42"
         error_map = {"critical_component": error_msg}
-        
+
         specs = repair.detect_failures(error_map)
         assert len(specs) == 1
         assert specs[0].config["error"] == error_msg
@@ -101,13 +98,13 @@ class TestAdvancedRepair:
         spec = ComponentSpec(
             name="repair_test",
             type="repair",
-            config={"original_component": "test", "error": "test error"}
+            config={"original_component": "test", "error": "test error"},
         )
         patches = repair.synthesize_patches([spec])
-        
+
         assert isinstance(patches, dict)
         assert "repair_test" in patches
-        
+
         synth = patches["repair_test"]
         assert isinstance(synth, SynthesizedComponent)
         assert synth.name == "repair_test"
@@ -121,20 +118,20 @@ class TestAdvancedRepair:
             ComponentSpec(
                 name="repair_a",
                 type="repair",
-                config={"original_component": "a", "error": "error a"}
+                config={"original_component": "a", "error": "error a"},
             ),
             ComponentSpec(
                 name="repair_b",
                 type="repair",
-                config={"original_component": "b", "error": "error b"}
+                config={"original_component": "b", "error": "error b"},
             ),
         ]
         patches = repair.synthesize_patches(specs)
-        
+
         assert len(patches) == 2
         assert "repair_a" in patches
         assert "repair_b" in patches
-        
+
         for name, synth in patches.items():
             assert isinstance(synth, SynthesizedComponent)
             assert synth.name == name
@@ -151,16 +148,15 @@ class TestAdvancedRepair:
         """Testa aplicação de um único patch."""
         repair = AdvancedRepair()
         synth = SynthesizedComponent(
-            name="repair_component",
-            source_code="class RepairComponent:\n    pass"
+            name="repair_component", source_code="class RepairComponent:\n    pass"
         )
         patches = {"repair_component": synth}
-        
+
         applied = repair.apply_patches(patches)
-        
+
         assert isinstance(applied, dict)
         assert len(applied) == 1
-        
+
         expected_path = "src/autopoietic/repairs/repair_component.py"
         assert expected_path in applied
         assert applied[expected_path] == synth.source_code
@@ -170,26 +166,23 @@ class TestAdvancedRepair:
         repair = AdvancedRepair()
         patches = {
             "repair_x": SynthesizedComponent(
-                name="repair_x",
-                source_code="# Repair X code"
+                name="repair_x", source_code="# Repair X code"
             ),
             "repair_y": SynthesizedComponent(
-                name="repair_y",
-                source_code="# Repair Y code"
+                name="repair_y", source_code="# Repair Y code"
             ),
             "repair_z": SynthesizedComponent(
-                name="repair_z",
-                source_code="# Repair Z code"
+                name="repair_z", source_code="# Repair Z code"
             ),
         }
-        
+
         applied = repair.apply_patches(patches)
-        
+
         assert len(applied) == 3
         assert "src/autopoietic/repairs/repair_x.py" in applied
         assert "src/autopoietic/repairs/repair_y.py" in applied
         assert "src/autopoietic/repairs/repair_z.py" in applied
-        
+
         assert applied["src/autopoietic/repairs/repair_x.py"] == "# Repair X code"
         assert applied["src/autopoietic/repairs/repair_y.py"] == "# Repair Y code"
         assert applied["src/autopoietic/repairs/repair_z.py"] == "# Repair Z code"
@@ -200,34 +193,34 @@ class TestAdvancedRepair:
         source = """class MyRepair:
     def __init__(self):
         self.status = 'active'
-    
+
     def repair(self):
         return True
 """
         synth = SynthesizedComponent(name="my_repair", source_code=source)
         applied = repair.apply_patches({"my_repair": synth})
-        
+
         path = "src/autopoietic/repairs/my_repair.py"
         assert applied[path] == source
 
     def test_full_repair_workflow(self) -> None:
         """Testa fluxo completo de reparo."""
         repair = AdvancedRepair()
-        
+
         # 1. Detecta falhas
         error_map = {
             "broken_module": "Module crashed unexpectedly",
-            "failing_component": "Assertion failed in core logic"
+            "failing_component": "Assertion failed in core logic",
         }
         specs = repair.detect_failures(error_map)
         assert len(specs) == 2
-        
+
         # 2. Sintetiza patches
         patches = repair.synthesize_patches(specs)
         assert len(patches) == 2
         assert "repair_broken_module" in patches
         assert "repair_failing_component" in patches
-        
+
         # 3. Aplica patches
         applied = repair.apply_patches(patches)
         assert len(applied) == 2
@@ -237,12 +230,9 @@ class TestAdvancedRepair:
     def test_detect_failures_with_special_characters(self) -> None:
         """Testa detecção com nomes contendo caracteres especiais."""
         repair = AdvancedRepair()
-        error_map = {
-            "module_with_underscore": "Error 1",
-            "module-with-dash": "Error 2"
-        }
+        error_map = {"module_with_underscore": "Error 1", "module-with-dash": "Error 2"}
         specs = repair.detect_failures(error_map)
-        
+
         assert len(specs) == 2
         names = [spec.name for spec in specs]
         assert "repair_module_with_underscore" in names
@@ -251,22 +241,22 @@ class TestAdvancedRepair:
     def test_synthesize_and_apply_integration(self) -> None:
         """Testa integração entre síntese e aplicação."""
         repair = AdvancedRepair()
-        
+
         # Cria specs
         specs = [
             ComponentSpec(
                 name="fix_a",
                 type="repair",
-                config={"original_component": "component_a", "error": "test"}
+                config={"original_component": "component_a", "error": "test"},
             )
         ]
-        
+
         # Sintetiza
         patches = repair.synthesize_patches(specs)
-        
+
         # Aplica
         applied = repair.apply_patches(patches)
-        
+
         # Verifica integração
         assert len(applied) == 1
         path = "src/autopoietic/repairs/fix_a.py"

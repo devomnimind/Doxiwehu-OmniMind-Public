@@ -11,8 +11,6 @@ Cobertura de:
 
 from __future__ import annotations
 
-import pytest
-from typing import Any, Dict
 
 from src.integrations.mcp_context_server import ContextMCPServer
 
@@ -33,9 +31,7 @@ class TestContextMCPServer:
         """Testa armazenamento de contexto."""
         server = ContextMCPServer()
         result = server.store_context(
-            level="high",
-            content="Test content",
-            metadata={"key": "value"}
+            level="high", content="Test content", metadata={"key": "value"}
         )
         assert result is not None
         assert isinstance(result, dict)
@@ -45,21 +41,19 @@ class TestContextMCPServer:
     def test_store_context_different_levels(self) -> None:
         """Testa armazenamento em diferentes níveis."""
         server = ContextMCPServer()
-        
+
         # Teste com nível "low"
         result_low = server.store_context(
-            level="low",
-            content="Low level content",
-            metadata={}
+            level="low", content="Low level content", metadata={}
         )
         assert result_low["level"] == "low"
         assert result_low["status"] == "stored"
-        
+
         # Teste com nível "medium"
         result_med = server.store_context(
             level="medium",
             content="Medium level content",
-            metadata={"priority": "normal"}
+            metadata={"priority": "normal"},
         )
         assert result_med["level"] == "medium"
         assert result_med["status"] == "stored"
@@ -96,7 +90,7 @@ class TestContextMCPServer:
     def test_compress_context_different_levels(self) -> None:
         """Testa compressão em diferentes níveis."""
         server = ContextMCPServer()
-        
+
         for level in ["low", "medium", "high"]:
             result = server.compress_context(level=level)
             assert result["status"] == "compressed"
@@ -116,7 +110,7 @@ class TestContextMCPServer:
         server = ContextMCPServer()
         expected_methods = [
             "store_context",
-            "retrieve_context", 
+            "retrieve_context",
             "compress_context",
             "snapshot_context",
             # Métodos herdados de MCPServer
@@ -124,7 +118,7 @@ class TestContextMCPServer:
             "write_file",
             "list_dir",
             "stat",
-            "get_metrics"
+            "get_metrics",
         ]
         for method in expected_methods:
             assert method in server._methods
@@ -133,9 +127,7 @@ class TestContextMCPServer:
         """Testa armazenamento com metadata vazio."""
         server = ContextMCPServer()
         result = server.store_context(
-            level="test",
-            content="Content without metadata",
-            metadata={}
+            level="test", content="Content without metadata", metadata={}
         )
         assert result["status"] == "stored"
         assert result["level"] == "test"
@@ -147,12 +139,10 @@ class TestContextMCPServer:
             "timestamp": "2025-11-24T12:00:00Z",
             "tags": ["important", "test"],
             "priority": 1,
-            "nested": {"key": "value"}
+            "nested": {"key": "value"},
         }
         result = server.store_context(
-            level="high",
-            content="Complex content",
-            metadata=complex_metadata
+            level="high", content="Complex content", metadata=complex_metadata
         )
         assert result["status"] == "stored"
         assert result["level"] == "high"
