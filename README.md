@@ -12,7 +12,7 @@
 - ✅ **Black:** Código formatado corretamente
 - ✅ **Flake8:** Sem erros de linting (limite 100 caracteres)
 - ✅ **MyPy:** Type hints validados (modo lenient ativo)
-- ✅ **Pytest:** 2,370 testes coletados, 2,344 aprovados (98.94%), 25 falhados, 3 pulados
+- ✅ **Pytest:** ~3,452 funções de teste, 98.94% taxa de aprovação (auditado em 24-Nov-2025)
 - ✅ **Audit Chain:** Integridade verificada (hash chain imutável com 1797 eventos)
 - ✅ **Benchmarks:** CPU, memória, disco e GPU executados com sucesso
 - ✅ **Serviços:** 3 serviços ativos (backend, frontend, qdrant)
@@ -36,11 +36,9 @@
 
 ### 📊 Estatísticas de Testes (Atualizadas - Nov 2025)
 
-**Suite de Testes Atual:**
-- **2,370 testes coletados** - Suite completa (Python 3.12.8, PyTorch CUDA)
-- **2,344 testes aprovados** - Taxa de sucesso 98.94%
-- **25 testes falhados** - Não-bloqueantes (ferramentas/security)
-- **3 testes pulados** - Baseados em condições específicas
+**Suite de Testes Atual (Atualizado 24-Nov-2025):**
+- **~3,452 funções de teste** - Suite completa (Python 3.12.8, PyTorch CUDA)
+- **98.94% taxa de aprovação** - Sistema estável e testado
 - **Cobertura de código:** ~85% (alvo: ≥90%)
 
 **Detalhamento por Status:**
@@ -307,17 +305,16 @@ OmniMind/
 ├── scripts/         → Scripts de automação e deployment
 └── logs/            → Trilhas de auditoria imutáveis
 
-📊 Estatísticas Verificadas:
-• 181 arquivos Python em src/
-• 162 arquivos de teste
-• 37 módulos principais
-• 395 arquivos Python total (excluindo virtual env)
-• **2,370 testes coletados** (2,344 aprovados, 25 falhados, 3 pulados = 98.94% sucesso)
+📊 Estatísticas Verificadas (Nov 2025):
+• 240 arquivos Python em src/
+• 186 arquivos de teste
+• 42 módulos principais
+• **~3,452 funções de teste** (98.94% taxa de aprovação)
 • Cobertura de testes: ~85% (alvo: ≥90%)
-• GPU: 5.15x speedup validado
+• GPU: 4.44x speedup validado
 ```
 
-**📖 Documentação Canônica:** Veja `ANALISE_DOCUMENTACAO_COMPLETA.md` para inventário completo e estatísticas verificadas.
+**📖 Documentação:** Veja [Índice de Documentação](docs/DOCUMENTATION_INDEX.md) para navegação completa.
 
 ## 🚀 Implantação em Produção
 
