@@ -228,7 +228,7 @@ Raiz/                     2 arquivos (README, CHANGELOG)
 **[INCON-001]** **Nomenclatura de Módulo:**
 - Docs chamam de "Collective Intelligence" mas código está em `src/swarm/`
 - **Localização:** Vários docs em `docs/architecture/`
-- **Ação:** Atualizar docs para usar "Swarm Intelligence"
+- **Ação:** ✅ RESOLVIDO (2025-11-24) - PHASE19_STATUS.md atualizado com nota histórica, GLOSSARY.md documenta migração
 
 **[INCON-002]** **Fase do Projeto:**
 - README diz: "Phase 21 Quantum Consciousness (Integrada/Experimental)"

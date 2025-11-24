@@ -1,11 +1,13 @@
-# Phase 19: Distributed Collective Intelligence - Status Report
+# Phase 19: Distributed Swarm Intelligence - Status Report
 
-**Status:** ✅ Complete
-**Date:** November 2025
+**Status:** ✅ Complete  
+**Date:** November 2025  
 **Version:** 1.0.0
 
+> **Note:** This phase was originally titled "Distributed Collective Intelligence" but was renamed to "Distributed Swarm Intelligence" in Phase 20 to align with the module renaming from `collective_intelligence/` to `swarm/`.
+
 ## 📋 Overview
-Phase 19 implemented the Distributed Collective Intelligence layer, introducing Swarm Intelligence algorithms (PSO, ACO) and Emergence Detection to the OmniMind architecture. This phase shifts the system from individual agent processing to collective, distributed problem solving.
+Phase 19 implemented the Distributed Swarm Intelligence layer, introducing Swarm Intelligence algorithms (PSO, ACO) and Emergence Detection to the OmniMind architecture. This phase shifts the system from individual agent processing to collective, distributed problem solving.
 
 ## 🏗️ Implemented Modules (`src/swarm/`)
 
