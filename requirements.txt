@@ -79,3 +79,8 @@ whisper>=1.1.10
 falcon>=3.0.0
 sounddevice>=0.4.9
 # TTS>=0.13.1  # Incompatível com Python 3.12
+
+# Quantum Computing (Phase 21 - Experimental)
+qiskit>=0.43.0
+qiskit-aer>=0.12.0
+cirq>=1.2.0
