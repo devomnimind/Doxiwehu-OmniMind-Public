@@ -21,6 +21,7 @@ from src.optimization.benchmarking import (
     BenchmarkResult,
     ComparisonResult,
     PerformanceBenchmark,
+    RegressionDetector,
 )
 
 
@@ -409,9 +410,7 @@ class TestRegressionDetector:
         assert detector.regression_threshold == 15.0
         assert temp_dir.exists()
 
-    def test_record_benchmark_new_file(
-        self, detector: "RegressionDetector"
-    ) -> None:
+    def test_record_benchmark_new_file(self, detector: "RegressionDetector") -> None:
         """Testa gravação de benchmark em arquivo novo."""
         result = BenchmarkResult(
             name="test_metric",
@@ -656,9 +655,7 @@ class TestRegressionDetector:
 class TestBenchmarkWithRegressionDetection:
     """Testes para função benchmark_with_regression_detection."""
 
-    def test_benchmark_with_regression_detection_basic(
-        self, tmp_path: Path
-    ) -> None:
+    def test_benchmark_with_regression_detection_basic(self, tmp_path: Path) -> None:
         """Testa benchmark com detecção de regressão."""
         from src.optimization.benchmarking import benchmark_with_regression_detection
 

@@ -153,3 +153,5 @@ data/forensics/evidence/*.json
 # ------------------------------------------------------------------
 *.jsonl
 scripts/archive/security/upload_secrets.sh
+.cursor/
+.cursorignore

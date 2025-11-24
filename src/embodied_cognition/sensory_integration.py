@@ -27,6 +27,7 @@ class VisualUnderstanding:
     embedding: Optional[List[float]] = None
     objects_detected: Optional[List[str]] = None
     spatial_layout: Optional[Dict[str, Any]] = None
+    symbolic_facts: Optional[List[Dict[str, str]]] = None
     confidence: float = 0.5
 
 
@@ -147,10 +148,19 @@ class SensoryIntegration:
                 }
                 detected = [w for w in words if w in common_objects]
                 result.objects_detected = detected
+                result.symbolic_facts = []
 
                 # Add facts to knowledge graph
                 for obj in detected:
                     self.symbolic.add_fact(obj, "is_visible", "true")
+                    if result.symbolic_facts is not None:
+                        result.symbolic_facts.append(
+                            {
+                                "subject": obj,
+                                "predicate": "is_visible",
+                                "object": "true",
+                            }
+                        )
             except Exception as e:
                 logger.error(f"Symbolic visual processing failed: {e}")
 

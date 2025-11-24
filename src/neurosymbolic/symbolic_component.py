@@ -8,7 +8,7 @@ Responsável por:
   - Inferência simbólica determinística
 """
 
-from typing import List, Optional, Set, Tuple
+from typing import Any, List, Optional, Set, Tuple
 from dataclasses import dataclass
 import logging
 
@@ -166,3 +166,28 @@ class SymbolicComponent:
     def get_rules(self) -> List[Tuple[List[str], str]]:
         """Retorna todas as regras."""
         return self.rules
+
+    def process(self, input_data: Any) -> dict[str, Any]:
+        """
+        Wrapper genérico para processamento (compatibilidade de interface).
+
+        Args:
+            input_data: Dados de entrada (texto ou dict)
+
+        Returns:
+            Resultado em formato de dicionário
+        """
+        # Extrair query do input
+        if isinstance(input_data, dict):
+            query = str(input_data.get("query", str(input_data)))
+        else:
+            query = str(input_data)
+
+        result = self.infer(query)
+
+        return {
+            "conclusion": result.conclusion,
+            "proof": result.proof,
+            "certainty": result.certainty,
+            "derived_facts": [str(f) for f in (result.derived_facts or [])],
+        }

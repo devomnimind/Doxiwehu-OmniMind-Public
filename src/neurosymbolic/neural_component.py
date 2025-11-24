@@ -144,3 +144,22 @@ class NeuralComponent:
         """
         logger.info(f"Batch neural inference: {len(queries)} queries")
         return [self.infer(q, context) for q in queries]
+
+    def process(self, input_data: Any) -> Dict[str, Any]:
+        """
+        Wrapper genérico para processamento (compatibilidade de interface).
+
+        Args:
+            input_data: Dados de entrada (texto ou dict)
+
+        Returns:
+            Resultado em formato de dicionário
+        """
+        query = str(input_data)
+        result = self.infer(query)
+        return {
+            "answer": result.answer,
+            "confidence": result.confidence,
+            "embedding": result.embedding,
+            "alternatives": result.alternatives,
+        }

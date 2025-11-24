@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 class TRAPComponent(Enum):
     """Componentes do framework TRAP."""
+
     TRANSPARENCY = "transparency"
     REASONING = "reasoning"
     ADAPTATION = "adaptation"
@@ -34,25 +35,26 @@ class TRAPComponent(Enum):
 @dataclass
 class TRAPScore:
     """Score de cada componente TRAP."""
+
     transparency: float = 0.5  # 0-1
     reasoning: float = 0.5
     adaptation: float = 0.5
     perception: float = 0.5
-    
+
     def overall_wisdom(self) -> float:
         """Calcula score geral de sabedoria."""
         return (
-            self.transparency * 0.25 +
-            self.reasoning * 0.25 +
-            self.adaptation * 0.25 +
-            self.perception * 0.25
+            self.transparency * 0.25
+            + self.reasoning * 0.25
+            + self.adaptation * 0.25
+            + self.perception * 0.25
         )
 
 
 class TRAPFramework:
     """
     Framework TRAP completo com 11 níveis de metacognição.
-    
+
     Implementa avaliação estruturada de:
       - Transparency: Explica decisões
       - Reasoning: Qualidade do raciocínio
@@ -65,7 +67,7 @@ class TRAPFramework:
         self.scores: Dict[str, TRAPScore] = {}
         self.decision_history: List[Dict[str, Any]] = []
         self.metacognitive_level = 4  # Atualmente Level 4 (Phase 15)
-        
+
         logger.info(f"TRAP Framework initialized (level={self.metacognitive_level})")
 
     def evaluate(
@@ -75,31 +77,33 @@ class TRAPFramework:
     ) -> TRAPScore:
         """
         Avaliar decisão usando framework TRAP.
-        
+
         Args:
             decision: Descrição da decisão
             context: Contexto da decisão
-            
+
         Returns:
             TRAPScore com scores de cada componente
         """
         logger.info(f"TRAP evaluation: {decision}")
-        
+
         # Avaliação básica (placeholder)
         score = TRAPScore(
             transparency=0.75,  # Quão explícita é a decisão?
-            reasoning=0.70,     # Quão bem fundamentada?
-            adaptation=0.65,    # Quão adaptável?
-            perception=0.80,    # Quão contextualizada?
+            reasoning=0.70,  # Quão bem fundamentada?
+            adaptation=0.65,  # Quão adaptável?
+            perception=0.80,  # Quão contextualizada?
         )
-        
+
         self.scores[decision] = score
-        self.decision_history.append({
-            "decision": decision,
-            "score": score,
-            "context": context,
-        })
-        
+        self.decision_history.append(
+            {
+                "decision": decision,
+                "score": score,
+                "context": context,
+            }
+        )
+
         logger.info(f"TRAP score: {score.overall_wisdom():.2%}")
         return score
 
@@ -118,20 +122,20 @@ class TRAPFramework:
     def get_wisdom_score(self) -> float:
         """
         Calcula score geral de sabedoria do sistema.
-        
+
         Returns:
             Score 0-1 representando wisdom geral
         """
         if not self.scores:
             return 0.0
-        
+
         return sum(s.overall_wisdom() for s in self.scores.values()) / len(self.scores)
 
     def explain_decision(self, decision: str) -> str:
         """Explica razões por trás de uma decisão."""
         if decision not in self.scores:
             return f"No TRAP evaluation found for: {decision}"
-        
+
         score = self.scores[decision]
         explanation = f"""
 DECISION EXPLANATION (TRAP Framework):

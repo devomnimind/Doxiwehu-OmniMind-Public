@@ -60,6 +60,7 @@ class MotorController:
         if enable_ros:
             try:
                 import rospy as rospy_module  # noqa: F401
+
                 logger.info("ROS interface enabled")
             except ImportError:
                 logger.warning("ROS not available, using simulation only")
@@ -182,6 +183,7 @@ class MotorController:
         """Execute action via ROS."""
         try:
             import rospy as rospy_module  # noqa: F401
+
             # TODO: Implement ROS action execution
             logger.info(f"[ROS ACTION] {action}")
             return True

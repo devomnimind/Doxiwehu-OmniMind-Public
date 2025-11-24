@@ -183,3 +183,42 @@ Reconciliation:
 Overall Confidence: {inference.overall_confidence:.2%}
 """
         return explanation
+
+    def reason(
+        self,
+        reconciliation_result: Any,  # Type: ReconciliationResult (avoid circular import)
+        context: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """
+        Raciocinar sobre o resultado reconciliado.
+
+        Args:
+            reconciliation_result: Resultado da reconciliação
+            context: Contexto do raciocínio
+
+        Returns:
+            Dict com resultado e metadados
+        """
+        # Extrair dados do resultado de reconciliação
+        # Assumindo que é um objeto ReconciliationResult ou similar
+
+        answer = getattr(
+            reconciliation_result, "final_answer", str(reconciliation_result)
+        )
+        confidence = getattr(reconciliation_result, "confidence", 0.5)
+        explanation = getattr(reconciliation_result, "explanation", "")
+
+        logger.info(f"Reasoning on reconciled result: {answer[:50]}...")
+
+        return {
+            "result": answer,
+            "confidence": confidence,
+            "explanation": explanation,
+            "neural_confidence": getattr(
+                reconciliation_result, "neural_contribution", 0.5
+            ),
+            "symbolic_certainty": getattr(
+                reconciliation_result, "symbolic_contribution", 0.5
+            ),
+            "context_used": list(context.keys()),
+        }
