@@ -1,14 +1,20 @@
 """
-Collective Intelligence Module for OmniMind - Phase 14 Implementation.
+Collective Intelligence Module (LEGACY).
 
-This module provides multi-agent coordination and collective intelligence:
-- Swarm intelligence algorithms
-- Distributed problem solving
-- Emergent behavior patterns
-- Collective learning systems
+.. warning::
+    This module is DEPRECATED and will be removed in future versions.
+    Please use `src.swarm` (Phase 19) for Swarm Intelligence capabilities.
 
-All components designed for autonomous multi-agent collaboration.
+Provides distributed problem-solving capabilities through swarm intelligence
+and emergent behavior analysis.
 """
+import warnings
+
+warnings.warn(
+    "src.collective_intelligence is deprecated. Use src.swarm instead.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 from src.collective_intelligence.swarm_intelligence import (
     SwarmAgent,

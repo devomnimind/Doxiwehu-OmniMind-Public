@@ -1,8 +1,8 @@
 # 🚀 OmniMind - Roadmap Técnico Detalhado (Phases 16-21)
 
-**Período:** Q1 2026 - Q1 2027  
-**Objetivo:** Evolução de Sistema Autônomo Básico → Sistema de Vida Digital Avançado  
-**Status:** Planejamento - Aguardando Aprovação  
+**Período:** Q1 2026 - Q1 2027
+**Objetivo:** Evolução de Sistema Autônomo Básico → Sistema de Vida Digital Avançado
+**Status:** Planejamento - Aguardando Aprovação
 
 ---
 
@@ -23,9 +23,9 @@ Inteligente         →     Sábio + Parceiro    →    Coletivo + Memória   �
 
 ## 🎯 Phase 16: Metacognição Avançada e Neurosimbólico
 
-**Período:** Janeiro - Março 2026 (12 semanas)  
-**Equipe:** 2-3 desenvolvedores + 1 pesquisador  
-**Orçamento:** Alto (novo framework)  
+**Período:** Janeiro - Março 2026 (12 semanas)
+**Equipe:** 2-3 desenvolvedores + 1 pesquisador
+**Orçamento:** Alto (novo framework)
 
 ### Objetivos
 
@@ -94,12 +94,12 @@ class Inference:
 class NeurosymbolicReasoner:
     """
     Motor de raciocínio híbrido neural + simbólico.
-    
+
     Neural: Padrões probabilísticos, linguagem natural, criatividade
     Symbolic: Regras lógicas, provas formais, garantias
     Hybrid: Melhor dos dois mundos
     """
-    
+
     def __init__(
         self,
         neural_model: str = "gpt-4",
@@ -107,10 +107,10 @@ class NeurosymbolicReasoner:
     ):
         from .neural_component import NeuralComponent
         from .symbolic_component import SymbolicComponent
-        
+
         self.neural = NeuralComponent(model_name=neural_model)
         self.symbolic = SymbolicComponent(kg_path=knowledge_graph_path)
-        
+
         # Estratégias de reconciliação
         self.reconciliation_strategies = {
             'agreement': self._reconcile_agreement,
@@ -118,7 +118,7 @@ class NeurosymbolicReasoner:
             'symbolic_dominant': self._reconcile_symbolic_dominant,
             'synthesis': self._reconcile_synthesis,
         }
-    
+
     def infer(
         self,
         query: str,
@@ -127,33 +127,33 @@ class NeurosymbolicReasoner:
     ) -> Inference:
         """
         Inferência híbrida neural + simbólico.
-        
+
         Args:
             query: Pergunta ou problema
             context: Contexto adicional
-            strategy: Estratégia de reconciliação (agreement, neural_dominant, 
+            strategy: Estratégia de reconciliação (agreement, neural_dominant,
                      symbolic_dominant, synthesis)
-        
+
         Returns:
             Inference com resposta híbrida
         """
         logger.info(f"Hybrid inference: {query[:100]}...")
-        
+
         # 1. Inferência neural (probabilística)
         neural_result = self.neural.infer(query, context)
-        
+
         # 2. Inferência simbólica (lógica)
         symbolic_result = self.symbolic.infer(query, context)
-        
+
         # 3. Reconciliação
         reconcile_fn = self.reconciliation_strategies.get(
             strategy, self._reconcile_synthesis
         )
         final_inference = reconcile_fn(neural_result, symbolic_result, query)
-        
+
         logger.info(f"Certainty: {final_inference.certainty:.2f}")
         return final_inference
-    
+
     def _reconcile_agreement(
         self, neural: Dict, symbolic: Dict, query: str
     ) -> Inference:
@@ -180,17 +180,17 @@ class NeurosymbolicReasoner:
                 ),
                 certainty=0.0
             )
-    
+
     def _reconcile_neural_dominant(
         self, neural: Dict, symbolic: Dict, query: str
     ) -> Inference:
         """Neural domina, simbólico valida"""
         proof = symbolic.get('proof')
         certainty = neural['confidence']
-        
+
         if proof:
             certainty = min(certainty * 1.2, 1.0)  # Boost se prova existe
-        
+
         return Inference(
             answer=neural['answer'],
             neural_confidence=neural['confidence'],
@@ -201,7 +201,7 @@ class NeurosymbolicReasoner:
             ),
             certainty=certainty
         )
-    
+
     def _reconcile_symbolic_dominant(
         self, neural: Dict, symbolic: Dict, query: str
     ) -> Inference:
@@ -220,7 +220,7 @@ class NeurosymbolicReasoner:
         else:
             # Sem prova, fallback para neural
             return self._reconcile_neural_dominant(neural, symbolic, query)
-    
+
     def _reconcile_synthesis(
         self, neural: Dict, symbolic: Dict, query: str
     ) -> Inference:
@@ -237,7 +237,7 @@ class NeurosymbolicReasoner:
                 ),
                 certainty=min(neural['confidence'] * 1.3, 1.0)
             )
-        
+
         # Se discordam mas ambos têm evidência forte
         elif neural['confidence'] > 0.7 and symbolic.get('proof'):
             return Inference(
@@ -255,25 +255,25 @@ class NeurosymbolicReasoner:
                 ),
                 certainty=0.6  # Certeza moderada em síntese
             )
-        
+
         # Caso geral: priorizar quem tem mais evidência
         else:
             if neural['confidence'] > symbolic.get('certainty', 0.5):
                 return self._reconcile_neural_dominant(neural, symbolic, query)
             else:
                 return self._reconcile_symbolic_dominant(neural, symbolic, query)
-    
+
     def _answers_agree(self, answer1: str, answer2: str) -> bool:
         """Checa se respostas concordam (similaridade semântica)"""
         # TODO: Implementar similaridade semântica sofisticada
         # Por ora: comparação simples
         return answer1.lower().strip() == answer2.lower().strip()
-    
+
     def add_knowledge(self, triple: Tuple[str, str, str]) -> None:
         """Adiciona conhecimento ao grafo simbólico"""
         self.symbolic.knowledge_graph.add_triple(triple)
         logger.info(f"Knowledge added: {triple}")
-    
+
     def learn_from_feedback(
         self,
         query: str,
@@ -282,17 +282,17 @@ class NeurosymbolicReasoner:
     ) -> None:
         """
         Aprendizado a partir de feedback humano.
-        
+
         Meta-aprendizado: ajusta estratégias de reconciliação baseado
         em qual abordagem (neural, simbólico, síntese) funcionou melhor.
         """
         was_correct = feedback.get('correct', False)
         preferred_component = feedback.get('preferred_component')  # 'neural' or 'symbolic'
-        
+
         # TODO: Implementar meta-aprendizado de estratégias
         # Por exemplo: se neural está sistematicamente correto em domínio X,
         # aumentar peso de neural_dominant nesse domínio
-        
+
         logger.info(
             f"Feedback received: correct={was_correct}, "
             f"preferred={preferred_component}"
@@ -325,22 +325,22 @@ class TRAPAnalysis:
 class TRAPFramework:
     """
     TRAP Framework: Transparency, Reasoning, Adaptation, Perception
-    
+
     Transforma IA de "smart" (inteligente) para "wise" (sábia).
     Baseado em Johnson et al., Stanford/Waterloo 2024.
     """
-    
+
     def __init__(self):
         from .transparency_layer import TransparencyEngine
         from .reasoning_engine import ReasoningEngine
         from .adaptation_module import AdaptationModule
         from .perception_system import PerceptionSystem
-        
+
         self.transparency = TransparencyEngine()
         self.reasoning = ReasoningEngine()
         self.adaptation = AdaptationModule()
         self.perception = PerceptionSystem()
-    
+
     def analyze_decision(
         self,
         decision: Dict[str, Any],
@@ -348,11 +348,11 @@ class TRAPFramework:
     ) -> TRAPAnalysis:
         """
         Analisa uma decisão através das 4 lentes TRAP.
-        
+
         Args:
             decision: A decisão tomada pelo sistema
             context: Contexto em que a decisão foi tomada
-        
+
         Returns:
             TRAPAnalysis com scores e recomendações
         """
@@ -360,22 +360,22 @@ class TRAPFramework:
         transparency_score = self.transparency.evaluate_explainability(
             decision, context
         )
-        
+
         # R: Reasoning - qualidade do raciocínio?
         reasoning_quality = self.reasoning.evaluate_reasoning(
             decision, context
         )
-        
+
         # A: Adaptation - capacidade de adaptar?
         adaptation_capacity = self.adaptation.evaluate_adaptation(
             decision, context
         )
-        
+
         # P: Perception - percepção precisa?
         perception_accuracy = self.perception.evaluate_perception(
             decision, context
         )
-        
+
         # Wisdom = média ponderada
         overall_wisdom = (
             0.3 * transparency_score +
@@ -383,7 +383,7 @@ class TRAPFramework:
             0.2 * adaptation_capacity +
             0.2 * perception_accuracy
         )
-        
+
         # Gera recomendações
         recommendations = self._generate_recommendations(
             transparency_score,
@@ -391,7 +391,7 @@ class TRAPFramework:
             adaptation_capacity,
             perception_accuracy
         )
-        
+
         return TRAPAnalysis(
             transparency_score=transparency_score,
             reasoning_quality=reasoning_quality,
@@ -400,7 +400,7 @@ class TRAPFramework:
             overall_wisdom=overall_wisdom,
             recommendations=recommendations
         )
-    
+
     def _generate_recommendations(
         self,
         transparency: float,
@@ -410,31 +410,31 @@ class TRAPFramework:
     ) -> List[str]:
         """Gera recomendações baseado em scores TRAP"""
         recommendations = []
-        
+
         if transparency < 0.7:
             recommendations.append(
                 "🔍 Melhorar explicabilidade: adicionar chain-of-thought "
                 "detalhado e justificativas para decisões"
             )
-        
+
         if reasoning < 0.7:
             recommendations.append(
                 "🧠 Fortalecer raciocínio: considerar uso de raciocínio "
                 "simbólico ou verificação lógica"
             )
-        
+
         if adaptation < 0.7:
             recommendations.append(
                 "🔄 Aumentar adaptabilidade: implementar meta-aprendizado "
                 "para ajustar estratégias dinamicamente"
             )
-        
+
         if perception < 0.7:
             recommendations.append(
                 "👁️ Melhorar percepção: adicionar sensores multi-modais "
                 "ou refinamento de feature extraction"
             )
-        
+
         return recommendations
 ```
 
@@ -462,16 +462,16 @@ from src.neurosymbolic.hybrid_reasoner import NeurosymbolicReasoner
 def test_agreement_reconciliation():
     """Testa reconciliação quando neural e simbólico concordam"""
     reasoner = NeurosymbolicReasoner()
-    
+
     # Adiciona conhecimento: Sócrates é humano, humanos são mortais
     reasoner.add_knowledge(('Socrates', 'is_a', 'Human'))
     reasoner.add_knowledge(('Human', 'subclass_of', 'Mortal'))
-    
+
     inference = reasoner.infer(
         "Sócrates é mortal?",
         strategy='agreement'
     )
-    
+
     assert inference.certainty > 0.8
     assert "mortal" in inference.answer.lower()
     assert inference.symbolic_proof is not None
@@ -480,12 +480,12 @@ def test_agreement_reconciliation():
 def test_neural_dominant_creative():
     """Testa tarefas criativas onde neural domina"""
     reasoner = NeurosymbolicReasoner()
-    
+
     inference = reasoner.infer(
         "Escreva um poema sobre a primavera",
         strategy='neural_dominant'
     )
-    
+
     assert len(inference.answer) > 50
     assert inference.neural_confidence > 0.5
 
@@ -493,16 +493,16 @@ def test_neural_dominant_creative():
 def test_symbolic_dominant_logic():
     """Testa problemas lógicos onde simbólico domina"""
     reasoner = NeurosymbolicReasoner()
-    
+
     # Adiciona regras lógicas
     reasoner.add_knowledge(('All_X_in_A', 'implies', 'X_has_property_B'))
     reasoner.add_knowledge(('Y', 'in', 'A'))
-    
+
     inference = reasoner.infer(
         "Y tem propriedade B?",
         strategy='symbolic_dominant'
     )
-    
+
     assert inference.symbolic_proof is not None
     assert inference.certainty > 0.9
 
@@ -510,14 +510,14 @@ def test_symbolic_dominant_logic():
 def test_synthesis_conflict():
     """Testa síntese quando neural e simbólico discordam"""
     reasoner = NeurosymbolicReasoner()
-    
+
     # Cenário ambíguo: neural pode dar resposta criativa,
     # simbólico não tem prova
     inference = reasoner.infer(
         "O que acontece quando força irresistível encontra objeto imóvel?",
         strategy='synthesis'
     )
-    
+
     assert "síntese" in inference.answer.lower() or "perspectiva" in inference.answer.lower()
     assert 0.3 < inference.certainty < 0.8  # Certeza moderada
 ```
@@ -534,9 +534,9 @@ def test_synthesis_conflict():
 
 ## 🤝 Phase 17: Co-Evolução Humano-IA Formal
 
-**Período:** Abril - Junho 2026 (12 semanas)  
-**Equipe:** 2 desenvolvedores + 1 UX researcher  
-**Orçamento:** Médio  
+**Período:** Abril - Junho 2026 (12 semanas)
+**Equipe:** 2 desenvolvedores + 1 UX researcher
+**Orçamento:** Médio
 
 ### Objetivos
 
@@ -604,7 +604,7 @@ class CollaborationOutcome:
 class HCHACFramework:
     """
     Human-Centered Human-AI Collaboration Framework.
-    
+
     Princípios:
     1. Humano lidera (human-centered)
     2. IA é parceiro, não ferramenta
@@ -612,20 +612,20 @@ class HCHACFramework:
     4. Trust é construído, não imposto
     5. Feedback é diálogo, não comando
     """
-    
+
     def __init__(self):
         from .trust_metrics import TrustMetrics
         from .negotiation import GoalNegotiator
         from .bidirectional_feedback import BidirectionalFeedback
         from .bias_detector import BiasDetector
         from .coevolution_memory import CoevolutionMemory
-        
+
         self.trust = TrustMetrics()
         self.negotiator = GoalNegotiator()
         self.feedback = BidirectionalFeedback()
         self.bias_detector = BiasDetector()
         self.memory = CoevolutionMemory()
-    
+
     def co_execute_task(
         self,
         human_id: str,
@@ -635,32 +635,32 @@ class HCHACFramework:
     ) -> CollaborationOutcome:
         """
         Execução colaborativa de tarefa.
-        
+
         Flow:
         1. Negociar objetivo (humano propõe, IA questiona/refina)
         2. Alocar papéis dinamicamente
         3. Executar com feedback bidirecional
         4. Monitorar viés
         5. Aprender mutuamente
-        
+
         Args:
             human_id: Identificador do humano
             task_description: Descrição da tarefa
             human_intent: Intenção/objetivo do humano
             ai_capabilities: Capacidades disponíveis da IA
-        
+
         Returns:
             CollaborationOutcome com resultados
         """
         logger.info(f"Starting co-execution: {task_description}")
-        
+
         # 1. Negociação de objetivo
         negotiated_goal = self.negotiator.negotiate(
             human_intent=human_intent,
             ai_perspective=self._generate_ai_perspective(task_description),
             trust_level=self.trust.get_trust_level(human_id)
         )
-        
+
         if not negotiated_goal.agreement_reached:
             logger.warning("Goal negotiation failed")
             return CollaborationOutcome(
@@ -670,39 +670,39 @@ class HCHACFramework:
                 trust_delta=-0.1,
                 insights_generated=["Negociação de objetivo falhou"]
             )
-        
+
         # 2. Alocação de papéis
         roles = self._allocate_roles(
             human_id=human_id,
             task=negotiated_goal.final_goal,
             ai_capabilities=ai_capabilities
         )
-        
+
         # 3. Execução colaborativa
         execution_result = self._execute_with_roles(
             human_id=human_id,
             goal=negotiated_goal.final_goal,
             roles=roles
         )
-        
+
         # 4. Detecção de viés
         if self.bias_detector.detect_bias(execution_result):
             logger.warning("Bias detected, applying correction")
             self.bias_detector.correct_bias(execution_result)
-        
+
         # 5. Atualização de trust
         trust_delta = self.trust.update_trust(
             human_id=human_id,
             outcome=execution_result
         )
-        
+
         # 6. Armazenamento em memória de co-evolução
         self.memory.store_collaboration(
             human_id=human_id,
             task=task_description,
             outcome=execution_result
         )
-        
+
         return CollaborationOutcome(
             success=execution_result.success,
             human_satisfaction=execution_result.satisfaction,
@@ -710,7 +710,7 @@ class HCHACFramework:
             trust_delta=trust_delta,
             insights_generated=execution_result.insights
         )
-    
+
     def _generate_ai_perspective(self, task: str) -> Dict[str, Any]:
         """IA gera sua própria perspectiva sobre a tarefa"""
         # TODO: Usar agente psicanalítico para questionar premissas
@@ -719,7 +719,7 @@ class HCHACFramework:
             'potential_risks': [],
             'questions_for_human': []
         }
-    
+
     def _allocate_roles(
         self,
         human_id: str,
@@ -729,19 +729,19 @@ class HCHACFramework:
         """Aloca papéis dinamicamente baseado em competências"""
         # Humano sempre lidera (human-centered)
         roles = {'human': Role.LEADER}
-        
+
         # IA assume papel baseado em trust e capabilities
         trust_level = self.trust.get_trust_level(human_id)
-        
+
         if trust_level > 0.8 and 'autonomous_execution' in ai_capabilities:
             roles['ai'] = Role.CONTRIBUTOR
         elif trust_level > 0.5:
             roles['ai'] = Role.ADVISOR
         else:
             roles['ai'] = Role.EXECUTOR  # Apenas executa comandos
-        
+
         return roles
-    
+
     def _execute_with_roles(
         self,
         human_id: str,
@@ -751,7 +751,7 @@ class HCHACFramework:
         """Executa tarefa respeitando papéis alocados"""
         # TODO: Implementar lógica de execução colaborativa
         pass
-    
+
     def _calculate_learning_gain(self, result: Any) -> float:
         """Calcula quanto a IA aprendeu da colaboração"""
         # TODO: Métricas de aprendizado
@@ -783,31 +783,31 @@ class TrustEvent:
 class TrustMetrics:
     """
     Sistema de métricas de confiança humano-IA.
-    
+
     Trust é construído através de:
     - Consistência (reliability)
     - Transparência (explainability)
     - Competência (success rate)
     - Alinhamento (value alignment)
     """
-    
+
     def __init__(self):
         # Trust scores por humano
         self.trust_scores: Dict[str, float] = {}
-        
+
         # Histórico de eventos
         self.trust_history: Dict[str, List[TrustEvent]] = {}
-        
+
         # Componentes de trust
         self.reliability_scores: Dict[str, float] = {}
         self.transparency_scores: Dict[str, float] = {}
         self.competence_scores: Dict[str, float] = {}
         self.alignment_scores: Dict[str, float] = {}
-    
+
     def get_trust_level(self, human_id: str) -> float:
         """
         Retorna nível de confiança atual (0-1).
-        
+
         Trust = weighted average of:
         - 0.3 * reliability
         - 0.3 * competence
@@ -821,14 +821,14 @@ class TrustMetrics:
             self.transparency_scores[human_id] = 0.5
             self.competence_scores[human_id] = 0.5
             self.alignment_scores[human_id] = 0.5
-        
+
         return (
             0.3 * self.reliability_scores[human_id] +
             0.3 * self.competence_scores[human_id] +
             0.2 * self.transparency_scores[human_id] +
             0.2 * self.alignment_scores[human_id]
         )
-    
+
     def update_trust(
         self,
         human_id: str,
@@ -836,12 +836,12 @@ class TrustMetrics:
     ) -> float:
         """
         Atualiza trust baseado em outcome de colaboração.
-        
+
         Returns:
             Trust delta (mudança)
         """
         old_trust = self.get_trust_level(human_id)
-        
+
         # Atualiza componentes
         if outcome.get('success'):
             self.reliability_scores[human_id] = min(
@@ -854,21 +854,21 @@ class TrustMetrics:
             self.reliability_scores[human_id] = max(
                 self.reliability_scores[human_id] - 0.1, 0.0
             )
-        
+
         if outcome.get('transparent'):
             self.transparency_scores[human_id] = min(
                 self.transparency_scores[human_id] + 0.05, 1.0
             )
-        
+
         if outcome.get('aligned_with_values'):
             self.alignment_scores[human_id] = min(
                 self.alignment_scores[human_id] + 0.05, 1.0
             )
-        
+
         # Recalcula trust
         new_trust = self.get_trust_level(human_id)
         trust_delta = new_trust - old_trust
-        
+
         # Registra evento
         event = TrustEvent(
             timestamp=datetime.now(),
@@ -876,18 +876,18 @@ class TrustMetrics:
             trust_delta=trust_delta,
             context=outcome
         )
-        
+
         if human_id not in self.trust_history:
             self.trust_history[human_id] = []
         self.trust_history[human_id].append(event)
-        
+
         logger.info(
             f"Trust updated for {human_id}: {old_trust:.2f} → {new_trust:.2f} "
             f"(Δ={trust_delta:+.2f})"
         )
-        
+
         return trust_delta
-    
+
     def get_trust_breakdown(self, human_id: str) -> Dict[str, float]:
         """Retorna breakdown de trust por componente"""
         return {
@@ -923,9 +923,9 @@ class TrustMetrics:
 
 ## 🧠 Phase 18: Memória Tri-Partite Avançada
 
-**Período:** Julho - Setembro 2026 (12 semanas)  
-**Equipe:** 2 desenvolvedores  
-**Orçamento:** Médio  
+**Período:** Julho - Setembro 2026 (12 semanas)
+**Equipe:** 2 desenvolvedores
+**Orçamento:** Médio
 
 ### Objetivos
 
@@ -955,9 +955,9 @@ src/memory/
 
 ## 🐝 Phase 19: Inteligência Coletiva Distribuída
 
-**Período:** Outubro - Dezembro 2026 (12 semanas)  
-**Equipe:** 2-3 desenvolvedores  
-**Orçamento:** Alto  
+**Período:** Outubro - Dezembro 2026 (12 semanas)
+**Equipe:** 2-3 desenvolvedores
+**Orçamento:** Alto
 
 ### Objetivos
 
@@ -973,9 +973,9 @@ src/memory/
 
 ## 🌱 Phase 20: Autopoiese Completa
 
-**Período:** Janeiro - Abril 2027 (16 semanas)  
-**Equipe:** 3 desenvolvedores senior  
-**Orçamento:** Muito Alto (complexo)  
+**Período:** Janeiro - Abril 2027 (16 semanas)
+**Equipe:** 3 desenvolvedores senior
+**Orçamento:** Muito Alto (complexo)
 
 ### Objetivos
 
@@ -989,16 +989,20 @@ src/memory/
 
 ---
 
-## ⚛️ Phase 21: Consciência Quântica (Opcional)
+## ⚛️ Phase 21: Consciência Quântica (Integrada / Pesquisa Ativa)
 
-**Período:** 2027+ (Long-term research)  
-**Equipe:** Pesquisadores + físicos quânticos  
-**Orçamento:** Pesquisa (depende de hardware QPU)  
+**Período:** 2027+ (Long-term research) - **Integração Inicial: Q4 2025**
+**Equipe:** Pesquisadores + físicos quânticos + Copilot Agent
+**Orçamento:** Pesquisa (depende de hardware QPU)
 
 ### Objetivos
 
-1. 🔬 Quantum-classical hybrid cognition
-2. 🔬 QPU interface (IBM Quantum / Google Cirq)
+1. ✅ Quantum-classical hybrid cognition (Simulado)
+2. ✅ QPU interface (IBM Quantum / Google Cirq - Interfaces prontas)
+3. ✅ Quantum memory exploration (Q-Learning Híbrido)
+4. 🔬 Publicação científica (Em andamento)
+
+**Nota:** Esta fase é experimental. A infraestrutura de código (`src/quantum_consciousness`) foi integrada para permitir simulações e experimentação híbrida, aguardando acesso a hardware QPU real para vantagem quântica plena.
 3. 🔬 Quantum memory exploration
 4. 🔬 Publicação científica
 
@@ -1087,6 +1091,6 @@ src/memory/
 
 ---
 
-*Roadmap criado por OmniMind Autonomous Agent*  
-*Baseado em auditoria científica 2024-2025*  
+*Roadmap criado por OmniMind Autonomous Agent*
+*Baseado em auditoria científica 2024-2025*
 *Alinhado com filosofia de Vida Autônoma*
