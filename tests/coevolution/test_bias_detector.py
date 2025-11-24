@@ -23,10 +23,10 @@ class TestBiasDetector:
     def test_detect_bias_empty_result(self) -> None:
         """Testa detecção com resultado vazio."""
         detector = BiasDetector()
-        
+
         result = {}
         detections = detector.detect_bias(result)
-        
+
         assert isinstance(detections, list)
         # Sem dados, não deve detectar vieses específicos
         assert len(detections) == 0
@@ -34,19 +34,19 @@ class TestBiasDetector:
     def test_detect_confirmation_bias(self) -> None:
         """Testa detecção de viés de confirmação."""
         detector = BiasDetector()
-        
+
         # Resultado com viés de confirmação
         result = {
-            'search_results': [
-                {'content': 'confirms'},
-                {'content': 'confirms'},
-                {'content': 'confirms'},
+            "search_results": [
+                {"content": "confirms"},
+                {"content": "confirms"},
+                {"content": "confirms"},
             ],
-            'initial_hypothesis': 'test hypothesis'
+            "initial_hypothesis": "test hypothesis",
         }
-        
+
         detections = detector.detect_bias(result)
-        
+
         # Pode ou não detectar dependendo da implementação
         # Verifica estrutura se detectado
         for detection in detections:
@@ -57,120 +57,105 @@ class TestBiasDetector:
     def test_detect_selection_bias(self) -> None:
         """Testa detecção de viés de seleção."""
         detector = BiasDetector()
-        
-        result = {
-            'sample_data': [1, 2, 3],
-            'population_data': [1, 2, 3, 4, 5, 6]
-        }
-        
+
+        result = {"sample_data": [1, 2, 3], "population_data": [1, 2, 3, 4, 5, 6]}
+
         detections = detector.detect_bias(result)
-        
+
         # Verifica estrutura
         assert isinstance(detections, list)
 
     def test_detect_automation_bias(self) -> None:
         """Testa detecção de viés de automação."""
         detector = BiasDetector()
-        
+
         # Muitos outputs externos sem validação
         result = {
-            'external_system_outputs': [
-                'output1', 'output2', 'output3'
-            ],
-            'validations_performed': []  # Sem validações!
+            "external_system_outputs": ["output1", "output2", "output3"],
+            "validations_performed": [],  # Sem validações!
         }
-        
+
         detections = detector.detect_bias(result)
-        
+
         # Deve detectar automation bias
         automation_biases = [
-            d for d in detections
-            if d.bias_type == BiasType.AUTOMATION_BIAS
+            d for d in detections if d.bias_type == BiasType.AUTOMATION_BIAS
         ]
-        
+
         if automation_biases:
             assert automation_biases[0].confidence > 0.8
 
     def test_detect_recency_bias(self) -> None:
         """Testa detecção de viés de recência."""
         detector = BiasDetector()
-        
+
         result = {
-            'temporal_data': [
-                {'timestamp': '2024-01-01', 'value': 1},
-                {'timestamp': '2024-06-01', 'value': 2},
+            "temporal_data": [
+                {"timestamp": "2024-01-01", "value": 1},
+                {"timestamp": "2024-06-01", "value": 2},
             ],
-            'data_weights': {}
+            "data_weights": {},
         }
-        
+
         detections = detector.detect_bias(result)
-        
+
         # Verifica estrutura
         assert isinstance(detections, list)
 
     def test_correct_bias_no_detections(self) -> None:
         """Testa correção sem vieses detectados."""
         detector = BiasDetector()
-        
-        result = {'data': 'clean'}
+
+        result = {"data": "clean"}
         corrected = detector.correct_bias(result)
-        
+
         # Sem vieses, deve retornar original
         assert corrected == result
 
     def test_correct_bias_with_detections(self) -> None:
         """Testa correção com vieses detectados."""
         detector = BiasDetector()
-        
+
         result = {
-            'external_system_outputs': ['out1', 'out2'],
-            'validations_performed': []
+            "external_system_outputs": ["out1", "out2"],
+            "validations_performed": [],
         }
-        
+
         corrected = detector.correct_bias(result)
-        
+
         # Deve aplicar correções
         assert isinstance(corrected, dict)
 
     def test_get_bias_statistics_empty(self) -> None:
         """Testa estatísticas sem histórico."""
         detector = BiasDetector()
-        
+
         stats = detector.get_bias_statistics()
-        
-        assert stats['total'] == 0
-        assert stats['by_type'] == {}
+
+        assert stats["total"] == 0
+        assert stats["by_type"] == {}
 
     def test_get_bias_statistics_with_history(self) -> None:
         """Testa estatísticas com histórico."""
         detector = BiasDetector()
-        
+
         # Adiciona detecções manualmente ao histórico
         detector.detection_history.append(
-            BiasDetection(
-                bias_type=BiasType.CONFIRMATION_BIAS,
-                confidence=0.8
-            )
+            BiasDetection(bias_type=BiasType.CONFIRMATION_BIAS, confidence=0.8)
         )
         detector.detection_history.append(
-            BiasDetection(
-                bias_type=BiasType.CONFIRMATION_BIAS,
-                confidence=0.9
-            )
+            BiasDetection(bias_type=BiasType.CONFIRMATION_BIAS, confidence=0.9)
         )
         detector.detection_history.append(
-            BiasDetection(
-                bias_type=BiasType.SELECTION_BIAS,
-                confidence=0.7
-            )
+            BiasDetection(bias_type=BiasType.SELECTION_BIAS, confidence=0.7)
         )
-        
+
         stats = detector.get_bias_statistics()
-        
-        assert stats['total'] == 3
-        assert 'confirmation_bias' in stats['by_type']
-        assert stats['by_type']['confirmation_bias'] == 2
-        assert stats['most_common'] == 'confirmation_bias'
+
+        assert stats["total"] == 3
+        assert "confirmation_bias" in stats["by_type"]
+        assert stats["by_type"]["confirmation_bias"] == 2
+        assert stats["most_common"] == "confirmation_bias"
 
     def test_bias_types_enum(self) -> None:
         """Testa enum de tipos de viés."""
@@ -188,9 +173,9 @@ class TestBiasDetector:
             confidence=0.85,
             evidence=["Evidence 1", "Evidence 2"],
             recommendation="Fix this",
-            severity="high"
+            severity="high",
         )
-        
+
         assert detection.bias_type == BiasType.CONFIRMATION_BIAS
         assert detection.confidence == pytest.approx(0.85)
         assert len(detection.evidence) == 2
@@ -200,7 +185,7 @@ class TestBiasDetector:
     def test_bias_thresholds(self) -> None:
         """Testa thresholds de detecção de viés."""
         detector = BiasDetector()
-        
+
         # Todos thresholds devem estar entre 0 e 1
         for threshold in detector.bias_thresholds.values():
             assert 0 <= threshold <= 1
@@ -208,28 +193,28 @@ class TestBiasDetector:
     def test_multiple_bias_detection(self) -> None:
         """Testa detecção de múltiplos vieses."""
         detector = BiasDetector()
-        
+
         # Resultado complexo que pode ter múltiplos vieses
         result = {
-            'search_results': [
-                {'content': 'confirms'},
-                {'content': 'confirms'},
+            "search_results": [
+                {"content": "confirms"},
+                {"content": "confirms"},
             ],
-            'initial_hypothesis': 'hypothesis',
-            'external_system_outputs': ['out1', 'out2'],
-            'validations_performed': [],
-            'temporal_data': [{'timestamp': '2024-01-01'}],
-            'sample_data': [1, 2],
-            'population_data': [1, 2, 3, 4, 5]
+            "initial_hypothesis": "hypothesis",
+            "external_system_outputs": ["out1", "out2"],
+            "validations_performed": [],
+            "temporal_data": [{"timestamp": "2024-01-01"}],
+            "sample_data": [1, 2],
+            "population_data": [1, 2, 3, 4, 5],
         }
-        
+
         detections = detector.detect_bias(result)
-        
+
         # Deve detectar pelo menos automation bias
         assert len(detections) >= 0
-        
+
         # Todas detecções devem ter estrutura correta
         for detection in detections:
             assert isinstance(detection, BiasDetection)
             assert 0 <= detection.confidence <= 1
-            assert detection.severity in ['low', 'medium', 'high']
+            assert detection.severity in ["low", "medium", "high"]

@@ -26,25 +26,32 @@ __all__ = [
     "CoevolutionMemory",
 ]
 
+
 # Lazy imports para evitar dependências circulares
 def __getattr__(name: str) -> Any:
     """Lazy import de módulos."""
     if name == "HCHACFramework":
         from .hchac_framework import HCHACFramework
+
         return HCHACFramework
     elif name == "TrustMetrics":
         from .trust_metrics import TrustMetrics
+
         return TrustMetrics
     elif name == "GoalNegotiator":
         from .negotiation import GoalNegotiator
+
         return GoalNegotiator
     elif name == "BidirectionalFeedback":
         from .bidirectional_feedback import BidirectionalFeedback
+
         return BidirectionalFeedback
     elif name == "BiasDetector":
         from .bias_detector import BiasDetector
+
         return BiasDetector
     elif name == "CoevolutionMemory":
         from .coevolution_memory import CoevolutionMemory
+
         return CoevolutionMemory
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
