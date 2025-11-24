@@ -11,6 +11,7 @@ Responsável por:
 import json
 import logging
 import os
+import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
@@ -111,22 +112,44 @@ class NeuralComponent:
         Returns:
             NeuralInference com resposta e confiança
         """
+        from src.neurosymbolic.metrics_collector import get_metrics_collector
+
         logger.info(f"Neural inference ({self.provider}): {query[:100]}...")
+
+        start_time = time.time()
+        success = False
+        error_msg = None
 
         try:
             if self.provider == "ollama":
-                return self._infer_ollama(query, context)
+                result = self._infer_ollama(query, context)
             elif self.provider == "huggingface":
-                return self._infer_huggingface(query, context)
+                result = self._infer_huggingface(query, context)
             elif self.provider == "hf_space":
-                return self._infer_hf_space(query, context)
+                result = self._infer_hf_space(query, context)
             else:
-                return self._infer_stub(query)
+                result = self._infer_stub(query)
+
+            success = True
+            return result
 
         except Exception as e:
+            error_msg = str(e)
             logger.exception(f"Neural inference error ({self.provider})")
             # Fallback para stub em caso de erro
-            return self._infer_stub(query, error=str(e))
+            result = self._infer_stub(query, error=error_msg)
+            return result
+
+        finally:
+            # Registrar métricas
+            latency = time.time() - start_time
+            get_metrics_collector().record_request(
+                backend=self.provider,
+                latency_seconds=latency,
+                success=success,
+                error=error_msg
+            )
+
 
     def _infer_hf_space(
         self, query: str, context: Optional[Dict[str, Any]] = None
