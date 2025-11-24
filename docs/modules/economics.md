@@ -76,6 +76,10 @@ Distribuição de receita entre stakeholders.
 ```python
 from src.economics import MarketplaceAgent, MarketplacePlatform
 
+# Note: Add src/ to PYTHONPATH or install as package:
+# export PYTHONPATH="${PYTHONPATH}:$(pwd)"
+# OR: pip install -e .
+
 # Inicializar agente
 agent = MarketplaceAgent(
     agent_id="omnimind-001",

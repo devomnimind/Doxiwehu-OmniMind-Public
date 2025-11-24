@@ -12,7 +12,7 @@
 - ✅ **Black:** Código formatado corretamente
 - ✅ **Flake8:** Sem erros de linting (limite 100 caracteres)
 - ✅ **MyPy:** Type hints validados (modo lenient ativo)
-- ✅ **Pytest:** ~3,452 funções de teste, 98.94% taxa de aprovação (auditado em 24-Nov-2025)
+- ✅ **Pytest:** 3,452+ funções de teste, 98.94% taxa de aprovação (auditado em 24-Nov-2025)
 - ✅ **Audit Chain:** Integridade verificada (hash chain imutável com 1797 eventos)
 - ✅ **Benchmarks:** CPU, memória, disco e GPU executados com sucesso
 - ✅ **Serviços:** 3 serviços ativos (backend, frontend, qdrant)
@@ -37,7 +37,7 @@
 ### 📊 Estatísticas de Testes (Atualizadas - Nov 2025)
 
 **Suite de Testes Atual (Atualizado 24-Nov-2025):**
-- **~3,452 funções de teste** - Suite completa (Python 3.12.8, PyTorch CUDA)
+- **3,452+ funções de teste** - Suite completa (Python 3.12.8, PyTorch CUDA)
 - **98.94% taxa de aprovação** - Sistema estável e testado
 - **Cobertura de código:** ~85% (alvo: ≥90%)
 
@@ -309,7 +309,7 @@ OmniMind/
 • 240 arquivos Python em src/
 • 186 arquivos de teste
 • 42 módulos principais
-• **~3,452 funções de teste** (98.94% taxa de aprovação)
+• **3,452+ funções de teste** (98.94% taxa de aprovação)
 • Cobertura de testes: ~85% (alvo: ≥90%)
 • GPU: 4.44x speedup validado
 ```

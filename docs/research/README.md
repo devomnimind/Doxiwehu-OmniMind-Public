@@ -2,6 +2,8 @@
 
 Este diretório contém documentação de **trabalho interno** e **pesquisa**, que **NÃO** fazem parte da documentação oficial do projeto.
 
+**⚠️ Nota:** Documentos nesta pasta são arquivos históricos preservados como estavam no momento da criação, incluindo possíveis erros de digitação ou formatação. Eles servem como registro do processo de desenvolvimento e não devem ser tomados como documentação canônica.
+
 ---
 
 ## 📁 Estrutura
