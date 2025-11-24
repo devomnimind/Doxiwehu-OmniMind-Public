@@ -39,9 +39,9 @@ try:
     TORCH_AVAILABLE = True
 except (ImportError, OSError):
     TORCH_AVAILABLE = False
-    torch = None
-    nn = None
-    F = None
+    torch = None  # type: ignore
+    nn = None  # type: ignore
+    F = None  # type: ignore
 
 logger = logging.getLogger(__name__)
 

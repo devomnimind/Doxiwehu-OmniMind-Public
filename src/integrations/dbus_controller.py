@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List, Optional, Protocol, cast
 
-import dbus
+import dbus  # type: ignore  # external library without stubs
 
 logger = logging.getLogger(__name__)
 

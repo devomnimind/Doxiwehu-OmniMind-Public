@@ -13,7 +13,6 @@ Refs:
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 import logging
-import numpy as np
 from numpy.typing import NDArray
 
 logger = logging.getLogger(__name__)
@@ -81,8 +80,8 @@ class SensoryIntegration:
         try:
             from src.neurosymbolic import NeuralComponent, SymbolicComponent
 
-            self.neural = NeuralComponent()
-            self.symbolic = SymbolicComponent()
+            self.neural: Optional[NeuralComponent] = NeuralComponent()
+            self.symbolic: Optional[SymbolicComponent] = SymbolicComponent()
         except ImportError:
             logger.warning("Neurosymbolic components not available (stub mode)")
             self.neural = None

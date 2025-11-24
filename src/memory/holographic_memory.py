@@ -43,7 +43,7 @@ try:
     NUMPY_AVAILABLE = True
 except ImportError:
     NUMPY_AVAILABLE = False
-    np = None
+    np = None  # type: ignore
 
 try:
     import torch  # noqa: F811
@@ -52,8 +52,8 @@ try:
     TORCH_AVAILABLE = True
 except (ImportError, OSError):
     TORCH_AVAILABLE = False
-    torch = None
-    nn = None
+    torch = None  # type: ignore
+    nn = None  # type: ignore
 
 logger = logging.getLogger(__name__)
 

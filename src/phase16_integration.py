@@ -26,7 +26,7 @@ from copy import deepcopy
 
 from src.neurosymbolic.neural_component import NeuralComponent
 from src.neurosymbolic.symbolic_component import SymbolicComponent
-from src.neurosymbolic.reconciliation import Reconciliator, ReconciliationStrategy
+from src.neurosymbolic.reconciliation import Reconciliator
 from src.neurosymbolic.hybrid_reasoner import NeurosymbolicReasoner
 
 from src.embodied_cognition.sensory_integration import SensoryIntegration
@@ -77,7 +77,7 @@ class Phase16Integration:
     a system that thinks AND feels AND acts AND knows itself.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize integrated Phase 16 system."""
         logger.info("Initializing Phase 16/16.1 Integrated System...")
 
@@ -131,7 +131,8 @@ class Phase16Integration:
             "multimodal_integration_complete": True,
         }
 
-        logger.info(f"World perception complete: {len(visual.symbolic_facts)} facts")
+        fact_count = len(visual.symbolic_facts) if visual.symbolic_facts else 0
+        logger.info(f"World perception complete: {fact_count} facts")
         return self.current_state
 
     def reason_about_situation(
@@ -331,7 +332,7 @@ class Phase16Integration:
         self.cognitive_history.append(deepcopy(self.current_state))
 
         logger.info("=" * 60)
-        logger.info(f"✅ COGNITIVE CYCLE COMPLETE")
+        logger.info("✅ COGNITIVE CYCLE COMPLETE")
         logger.info(str(self.current_state))
 
         return self.current_state

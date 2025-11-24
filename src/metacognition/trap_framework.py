@@ -16,7 +16,7 @@ TRAP = Transparency, Reasoning, Adaptation, Perception
 """
 
 from typing import Any, Dict, Optional, List
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 import logging
 
@@ -62,7 +62,7 @@ class TRAPFramework:
       - Perception: Compreensão do contexto
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Inicializa framework TRAP."""
         self.scores: Dict[str, TRAPScore] = {}
         self.decision_history: List[Dict[str, Any]] = []
@@ -140,19 +140,19 @@ class TRAPFramework:
         explanation = f"""
 DECISION EXPLANATION (TRAP Framework):
   Decision: {decision}
-  
+
   Transparency: {score.transparency:.0%}
     └─ How explicitly explained
-  
+
   Reasoning: {score.reasoning:.0%}
     └─ Quality of underlying logic
-  
+
   Adaptation: {score.adaptation:.0%}
     └─ Can adjust to new situations
-  
+
   Perception: {score.perception:.0%}
     └─ Understanding of context
-  
+
   Overall Wisdom: {score.overall_wisdom():.0%}
 """
         return explanation

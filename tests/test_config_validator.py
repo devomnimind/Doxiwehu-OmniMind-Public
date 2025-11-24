@@ -228,7 +228,6 @@ def test_validation_result_to_dict(validator: ConfigurationValidator) -> None:
 
 def test_validation_issue_to_dict() -> None:
     """Test validation issue serialization."""
-    from src.security.config_validator import ValidationIssue
 
     issue = ValidationIssue(
         path="port",
@@ -558,7 +557,7 @@ def test_validation_result_add_issue() -> None:
     # valid should still be False (error already added)
 
 
-def test_validation_result_to_dict() -> None:
+def test_validation_result_to_dict_full() -> None:
     """Test ValidationResult to_dict method."""
     result = ValidationResult()
 

@@ -8,7 +8,6 @@ Estratégias:
   - synthesis: Combinar ambos (recomendado)
 """
 
-from typing import Optional
 from enum import Enum
 from dataclasses import dataclass
 import logging

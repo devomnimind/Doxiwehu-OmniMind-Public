@@ -29,7 +29,8 @@ class TestPhase16Integration:
 
         assert state.sensory_state is not None
         assert "visual_understood" in state.sensory_state
-        # assert state.sensory_state["multimodal_integration_complete"]  # Removed as implementation details changed
+        # assert state.sensory_state["multimodal_integration_complete"]
+        # Removed as implementation details changed
 
     def test_perceive_with_audio(self) -> None:
         """Test multimodal perception."""

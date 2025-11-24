@@ -11,7 +11,7 @@ Integração: Recebe comandos do Orchestrator e resultados de Debug/Ask
 """
 
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from .react_agent import ReactAgent, AgentState
 from ..memory.episodic_memory import SimilarEpisode
@@ -249,6 +249,7 @@ Your response:"""
             Dict com análise completa (classes, funções, imports, complexidade)
         """
         # Verificar cache
+        cached_structure: Optional[CodeStructure]
         if filepath in self._ast_cache:
             cached_structure = self._ast_cache[filepath]
         else:

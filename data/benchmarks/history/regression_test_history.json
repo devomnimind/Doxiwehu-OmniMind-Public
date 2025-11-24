@@ -46,5 +46,37 @@
     "mean_memory_mb": 754.8671875,
     "mean_cpu_percent": 0.0,
     "metadata": {}
+  },
+  {
+    "timestamp": "2025-11-23T21:45:04.985007",
+    "iterations": 3,
+    "mean_time_ms": 1.0755286651450053,
+    "mean_memory_mb": 727.91796875,
+    "mean_cpu_percent": 0.0,
+    "metadata": {}
+  },
+  {
+    "timestamp": "2025-11-23T21:50:07.825242",
+    "iterations": 3,
+    "mean_time_ms": 1.0638296662364155,
+    "mean_memory_mb": 735.15234375,
+    "mean_cpu_percent": 0.0,
+    "metadata": {}
+  },
+  {
+    "timestamp": "2025-11-23T21:51:04.694784",
+    "iterations": 3,
+    "mean_time_ms": 1.0621263330297854,
+    "mean_memory_mb": 754.58984375,
+    "mean_cpu_percent": 0.0,
+    "metadata": {}
+  },
+  {
+    "timestamp": "2025-11-23T22:25:45.695173",
+    "iterations": 3,
+    "mean_time_ms": 1.0660413317964412,
+    "mean_memory_mb": 523.77734375,
+    "mean_cpu_percent": 0.0,
+    "metadata": {}
   }
 ]

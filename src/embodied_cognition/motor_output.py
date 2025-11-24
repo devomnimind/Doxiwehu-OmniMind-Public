@@ -59,7 +59,7 @@ class MotorController:
 
         if enable_ros:
             try:
-                import rospy as rospy_module  # noqa: F401
+                import rospy as rospy_module  # noqa: F401  # type: ignore
 
                 logger.info("ROS interface enabled")
             except ImportError:
