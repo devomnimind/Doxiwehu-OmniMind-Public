@@ -6,7 +6,7 @@ irrelevant, redundant, or low-value information.
 Implements decay mechanisms based on access frequency and emotional significance.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 import logging
 from datetime import datetime, timedelta
 

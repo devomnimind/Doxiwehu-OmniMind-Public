@@ -6,7 +6,7 @@ to long-term semantic memory ("sleep" consolidation).
 Identifies patterns and abstractions from repeated experiences.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 import logging
 from collections import Counter
 from datetime import datetime

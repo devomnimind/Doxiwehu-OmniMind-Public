@@ -2,7 +2,6 @@
 Tests for Phase 18: Tri-Partite Memory.
 """
 
-import pytest
 from datetime import datetime, timedelta
 from src.memory.semantic_memory import SemanticMemory
 from src.memory.procedural_memory import ProceduralMemory

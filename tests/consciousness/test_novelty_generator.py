@@ -347,7 +347,7 @@ class TestNoveltyGenerator:
         ]
 
         # Use very high threshold
-        output = generator.generate_novel_concept(
+        generator.generate_novel_concept(
             seed_concepts=concepts,
             creativity_type=CreativityType.COMBINATIONAL,
             novelty_threshold=0.99,

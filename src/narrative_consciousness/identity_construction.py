@@ -8,7 +8,7 @@ References:
 - Ricoeur, P. (1992). Oneself as Another.
 """
 
-from typing import Dict, List, Optional, Any, Set
+from typing import Dict, List, Set
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum

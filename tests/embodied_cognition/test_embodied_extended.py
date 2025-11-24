@@ -5,7 +5,6 @@ Tests multimodal fusion, edge cases, and advanced scenarios.
 """
 
 import pytest
-from unittest.mock import Mock, patch
 from src.embodied_cognition.sensory_integration import SensoryIntegration
 from src.embodied_cognition.motor_output import MotorController
 from src.embodied_cognition.proprioception import ProprioceptionModule
@@ -130,10 +129,6 @@ class TestProprioceptionExtended:
     def test_emotional_state_integration(self) -> None:
         """Test integration of emotional state in proprioception."""
         prop = ProprioceptionModule()
-        somatic = SomaticLoop()
-
-        # Generate emotional marker
-        marker = somatic.process_decision("test decision", 0.8, 0.7)
 
         # Update proprioception
         prop.update_state()

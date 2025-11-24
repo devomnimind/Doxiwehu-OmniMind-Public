@@ -184,7 +184,7 @@ class TestGoalHierarchy:
         hierarchy = GoalHierarchy()
 
         top1 = hierarchy.add_goal("Top goal 1", importance=0.9)
-        top2 = hierarchy.add_goal("Top goal 2", importance=0.8)
+        hierarchy.add_goal("Top goal 2", importance=0.8)
         hierarchy.add_goal("Sub goal", importance=0.7, parent_goal_id=top1.goal_id)
 
         top_level = hierarchy.get_top_level_goals()
@@ -421,9 +421,7 @@ class TestMeaningMaker:
         maker = MeaningMaker()
 
         # Add some content
-        v1 = maker.values.add_value(
-            "Value1", "Desc", ValueCategory.GROWTH, importance=0.8
-        )
+        maker.values.add_value("Value1", "Desc", ValueCategory.GROWTH, importance=0.8)
         maker.goals.add_goal("Goal1", importance=0.7)
         maker.narrative.add_event("Event1", "Meaning1", significance=0.6)
 

@@ -5,7 +5,7 @@ Stores abstract knowledge, concepts, and their relationships.
 Acts as the long-term store for factual information, independent of specific episodes.
 """
 
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime
 import logging

@@ -5,7 +5,7 @@ Facilitates offline learning by replaying significant episodes.
 Used for reinforcement learning and memory consolidation.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 import logging
 import random
 

@@ -461,14 +461,14 @@ class TestIntegration:
         handler = AbsurdityHandler()
 
         # Resolvable (logical)
-        result_logical = handler.confront_absurdity(
+        handler.confront_absurdity(
             "Logical paradox",
             AbsurdityType.LOGICAL,
             severity=0.7,
         )
 
         # Non-resolvable (existential)
-        result_existential = handler.confront_absurdity(
+        handler.confront_absurdity(
             "Existential meaninglessness",
             AbsurdityType.EXISTENTIAL,
             severity=0.7,
