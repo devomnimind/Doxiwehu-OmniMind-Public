@@ -2,6 +2,10 @@ from typing import Dict, Any, Optional, Union
 import os
 import random
 import logging
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +48,13 @@ class QuantumBackend:
 
     def __init__(self, provider: str = "auto", api_token: Optional[str] = None):
         self.provider = provider
-        self.token = api_token or os.getenv("QUANTUM_API_TOKEN")
+        # Support both variable names
+        self.token = (
+            api_token
+            or os.getenv("QUANTUM_API_TOKEN")
+            or os.getenv("IBM_API_KEY")
+            or os.getenv("IBMQ_API_TOKEN")
+        )
         self.backend = None
 
         logger.info(f"Initializing Quantum Backend. Requested provider: {provider}")
@@ -53,7 +63,9 @@ class QuantumBackend:
         if self.provider == "auto":
             if DWAVE_AVAILABLE and os.getenv("DWAVE_API_TOKEN"):
                 self.provider = "dwave"
-            elif QISKIT_AVAILABLE and os.getenv("IBMQ_API_TOKEN"):
+            elif QISKIT_AVAILABLE and (
+                os.getenv("IBMQ_API_TOKEN") or os.getenv("IBM_API_KEY")
+            ):
                 self.provider = "ibm"
             elif NEAL_AVAILABLE:
                 self.provider = "neal"
@@ -75,7 +87,7 @@ class QuantumBackend:
             # For now, we default to local Aer simulator to ensure it runs without credentials
             # In production, this would connect to IBM Quantum via QiskitRuntimeService
             self.backend = AerSimulator()
-            logger.info("Initialized Qiskit Aer Simulator.")
+            logger.info("Initialized Qiskit Aer Simulator (IBM Token Detected).")
 
         if self.provider == "neal" and NEAL_AVAILABLE:
             self.backend = neal.SimulatedAnnealingSampler()
