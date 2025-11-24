@@ -25,7 +25,7 @@ py-spy>=0.3.14
 supabase>=2.0.0
 redis>=5.4.0
 fakeredis>=1.9.0
-chromadb>=0.4.1
+# chromadb>=0.4.1  # Temporarily removed due to dependency conflicts
 # Audio / Media
 numpy>=1.26.0
 pydub>=0.25.1
