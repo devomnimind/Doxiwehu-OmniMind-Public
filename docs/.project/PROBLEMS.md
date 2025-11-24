@@ -200,7 +200,7 @@ rm -rf .venv && python -m venv .venv
 | Período | Total | Resolvidos | Taxa Resolução |
 |---------|-------|-----------|-----------------|
 | Phase 14 | 12 | 12 | 100% ✅ |
-| Phase 15 | 5 | 5 | 100% ✅ |
+| Phase 21 | 5 | 5 | 100% ✅ |
 | **Total** | **47** | **42** | **89.4%** |
 
 ---

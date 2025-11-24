@@ -65,7 +65,7 @@
 
 ---
 
-## [1.13.0] - 2025-11-21 - Phase 15 Quantum AI
+## [1.13.0] - 2025-11-21 - Phase 21 Quantum AI
 
 ### ✨ Features
 - Quantum-inspired decision making framework

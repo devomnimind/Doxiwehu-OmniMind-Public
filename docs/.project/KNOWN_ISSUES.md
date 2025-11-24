@@ -187,7 +187,7 @@ GPU-accelerated tests might fail in CI environments without NVIDIA GPU or with n
 - Local development works fine (nvidia-uvm auto-loads)
 
 **Mitigation:**
-- ✅ nvidia-uvm auto-loads on reboot (FIXED in Phase 15)
+- ✅ nvidia-uvm auto-loads on reboot (FIXED in Phase 21)
 - ✅ Tests gracefully fall back to CPU if GPU unavailable
 
 **Status:** Should be resolved now. Monitor in Phase 16.
@@ -261,5 +261,5 @@ Archived (2025-12-01 - Moved to PROBLEMS.md with solution)
 
 ---
 
-**Last Review:** 2025-11-23 - Phase 15 GPU CUDA Fix
+**Last Review:** 2025-11-23 - Phase 21 GPU CUDA Fix
 **Next Review:** 2025-12-07 (Phase 16 Start)

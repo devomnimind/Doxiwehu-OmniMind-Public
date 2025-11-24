@@ -29,7 +29,7 @@ Há referências conflitantes sobre o estado atual do projeto:
 - `README.md`: "Phase 21 Quantum Consciousness" (Correto com o código).
 - `docs/README.md`: "Phase 16 - Documentation Reorganization Complete".
 - `docs/README.md` (seção Current Status): "Phase: 15 - Quantum-Enhanced AI".
-- `AUDITORIA_CONSOLIDADA.md`: Cabeçalho diz "Phase 21", mas corpo menciona "Phase 15" em várias métricas.
+- `AUDITORIA_CONSOLIDADA.md`: Cabeçalho diz "Phase 21", mas corpo menciona "Phase 21" em várias métricas.
 
 **Recomendação:** Atualizar todos os arquivos de status em `docs/` para refletir a **Phase 21**.
 
@@ -54,7 +54,7 @@ Arquivos que poluem a raiz e deveriam ser movidos:
 - **Ação:** Criar um `QUICKSTART.md` separado e deixar o `README.md` como vitrine/index.
 
 ### 3.2. Organização e Estrutura
-- A pasta `docs/` está bem estruturada (`guides`, `architecture`, `testing`), mas o conteúdo dentro dela está desatualizado (Phase 15/16).
+- A pasta `docs/` está bem estruturada (`guides`, `architecture`, `testing`), mas o conteúdo dentro dela está desatualizado (Phase 21/16).
 - A pasta `audit/` contém arquivos numerados (`1_INVENTORY.md`, etc.) que parecem ser de uma auditoria anterior. Devem ser arquivados ou atualizados.
 
 ### 3.3. Completude e Atualização
@@ -87,6 +87,6 @@ Arquivos que poluem a raiz e deveriam ser movidos:
 
 ## 5. Conclusão
 
-A documentação é rica mas sofre de "dores do crescimento" rápido do projeto (salto da Phase 15 para 21). A prioridade é alinhar o número da versão e o status em todos os arquivos de índice para evitar confusão.
+A documentação é rica mas sofre de "dores do crescimento" rápido do projeto (salto da Phase 21 para 21). A prioridade é alinhar o número da versão e o status em todos os arquivos de índice para evitar confusão.
 
 **Aprovação para Commit:** **CONDICIONADA** à atualização do `docs/README.md` e limpeza básica da raiz.
