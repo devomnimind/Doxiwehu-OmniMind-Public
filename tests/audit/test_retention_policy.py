@@ -209,7 +209,8 @@ class TestRetentionPolicyManager:
         self, manager: RetentionPolicyManager, temp_log_dir: Path
     ) -> None:
         """Testa dry run de purge."""
-        result = manager.purge_old_data(DataCategory.AUDIT_LOGS, dry_run=True)
+        # dry_run requires confirm=True or auto_purge_enabled
+        result = manager.purge_old_data(DataCategory.AUDIT_LOGS, confirm=True, dry_run=True)
 
         assert result["action"] == "dry_run"
         assert "files_to_purge" in result
