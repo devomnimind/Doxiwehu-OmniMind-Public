@@ -6,20 +6,20 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=%i
-Group=%i
-WorkingDirectory=/home/%i/projects/omnimind
+User=fahbrain
+Group=fahbrain
+WorkingDirectory=/home/fahbrain/projects/omnimind
 
 # Environment
 Environment="PYTHONUNBUFFERED=1"
-Environment="OMNIMIND_WORKSPACE=/home/%i/projects/omnimind"
+Environment="OMNIMIND_WORKSPACE=/home/fahbrain/projects/omnimind"
 Environment="OMNIMIND_LOG_LEVEL=INFO"
 
 # Virtual environment activation
 ExecStartPre=/bin/bash -c 'source .venv/bin/activate'
 
 # Main service
-ExecStart=/home/%i/projects/omnimind/.venv/bin/python -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8000 --log-level info
+ExecStart=/home/fahbrain/projects/omnimind/.venv/bin/python -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8000 --log-level info
 
 # Restart policy
 Restart=on-failure
@@ -37,7 +37,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=read-only
-ReadWritePaths=/home/%i/projects/omnimind/logs /home/%i/projects/omnimind/data
+ReadWritePaths=/home/fahbrain/projects/omnimind/logs /home/fahbrain/projects/omnimind/data /home/fahbrain/projects/omnimind/.omnimind
 
 # Logging
 StandardOutput=journal
