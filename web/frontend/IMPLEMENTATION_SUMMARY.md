@@ -260,7 +260,7 @@ POST /daemon/start       -> { message }
 POST /daemon/stop        -> { message }
 
 // WebSocket Endpoint
-WS   /ws/updates         -> Real-time messages
+WS   /ws                 -> Real-time messages
 ```
 
 ### Environment Variables

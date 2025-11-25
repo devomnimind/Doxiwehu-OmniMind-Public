@@ -34,8 +34,11 @@ export function TaskList() {
         </div>
       ) : (
         <div className="space-y-4">
-          {tasks.map((task) => (
-            <div key={task.task_id} className="bg-gray-700/50 rounded-lg p-4 border border-gray-600">
+          {tasks.map((task, index) => (
+            <div
+              key={`${task.task_id}-${task.stats.last_execution ?? task.stats.total_executions}-${index}`}
+              className="bg-gray-700/50 rounded-lg p-4 border border-gray-600"
+            >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <h3 className="text-white font-semibold text-lg mb-1">{task.name}</h3>

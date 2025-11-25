@@ -8,6 +8,7 @@ import secrets
 import threading
 import time
 import uuid
+from base64 import b64encode
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Tuple
@@ -18,7 +19,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from secrets import compare_digest
-from starlette.status import HTTP_401_UNAUTHORIZED
+from starlette.status import HTTP_401_UNAUTHORIZED, WS_1008_POLICY_VIOLATION
 
 # Load environment variables from .env file
 load_dotenv()
@@ -211,6 +212,22 @@ _validation_log = Path(
     os.environ.get("OMNIMIND_SECURITY_VALIDATION_LOG", "logs/security_validation.jsonl")
 )
 _dashboard_user, _dashboard_pass = _ensure_dashboard_credentials()
+
+
+def _expected_ws_token() -> str:
+    return b64encode(f"{_dashboard_user}:{_dashboard_pass}".encode()).decode()
+
+
+async def _authorize_websocket(websocket: WebSocket) -> bool:
+    auth_token = None
+    auth_header = websocket.headers.get('authorization')
+    if auth_header and auth_header.lower().startswith('basic '):
+        token = auth_header.split(' ', 1)[1].strip()
+        if token:
+            auth_token = token
+    if not auth_token:
+        auth_token = websocket.query_params.get('auth_token')
+    return auth_token == _expected_ws_token()
 
 
 class MetricsCollector:
@@ -691,6 +708,10 @@ from web.backend.websocket_manager import ws_manager
 async def websocket_endpoint(websocket: WebSocket):
     """Main WebSocket endpoint for real-time updates."""
     client_id = str(uuid.uuid4())
+    if not await _authorize_websocket(websocket):
+        await websocket.close(code=WS_1008_POLICY_VIOLATION)
+        return
+
     await ws_manager.connect(websocket, client_id)
 
     try:

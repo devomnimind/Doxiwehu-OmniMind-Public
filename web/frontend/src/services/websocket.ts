@@ -7,6 +7,8 @@
  * - Connection state tracking
  */
 
+import { apiService } from './api';
+
 export type WebSocketMessage = 
   | { type: 'daemon_status'; data: unknown }
   | { type: 'task_update'; data: unknown }
@@ -30,7 +32,7 @@ type StateChangeHandler = (state: ConnectionState) => void;
 
 class WebSocketService {
   private ws: WebSocket | null = null;
-  private url: string;
+  private readonly baseUrl?: string;
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 10;
   private reconnectDelay = 1000; // Start with 1 second
@@ -42,9 +44,18 @@ class WebSocketService {
   private shouldReconnect = true;
 
   constructor(baseUrl?: string) {
+    this.baseUrl = baseUrl;
+  }
+
+  private buildUrl(): string {
     const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = baseUrl || window.location.host;
-    this.url = `${wsProtocol}//${host}/ws/updates`;
+    const host = this.baseUrl || window.location.host;
+    const basePath = `${wsProtocol}//${host}/ws`;
+    const authToken = apiService.getAuthToken();
+    if (authToken) {
+      return `${basePath}?auth_token=${encodeURIComponent(authToken)}`;
+    }
+    return basePath;
   }
 
   /**
@@ -60,8 +71,9 @@ class WebSocketService {
     this.updateState('connecting');
 
     try {
-      console.log(`[WebSocket] Connecting to ${this.url}...`);
-      this.ws = new WebSocket(this.url);
+      const url = this.buildUrl();
+      console.log(`[WebSocket] Connecting to ${url}...`);
+      this.ws = new WebSocket(url);
 
       this.ws.onopen = this.handleOpen.bind(this);
       this.ws.onmessage = this.handleMessage.bind(this);

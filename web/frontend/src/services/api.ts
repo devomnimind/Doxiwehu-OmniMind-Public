@@ -1,5 +1,22 @@
 import type { DaemonStatus, DaemonTask, AddTaskRequest } from '../types/daemon';
 
+interface ApiDaemonTask {
+  task_id: string;
+  name: string;
+  description: string;
+  priority: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  repeat_interval?: string | null;
+  execution_count: number;
+  success_count: number;
+  failure_count: number;
+  last_execution?: string | null;
+}
+
+interface DaemonTasksResponse {
+  tasks: ApiDaemonTask[];
+  total_tasks: number;
+}
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 class ApiService {
@@ -9,6 +26,27 @@ class ApiService {
   setCredentials(username: string, password: string) {
     this.username = username;
     this.password = password;
+  }
+
+  getAuthToken(): string | null {
+    if (!this.username || !this.password) {
+      return null;
+    }
+    return btoa(`${this.username}:${this.password}`);
+  }
+
+  setDefaultCredentials(): void {
+    const defaultUser = import.meta.env.VITE_DASHBOARD_USER;
+    const defaultPass = import.meta.env.VITE_DASHBOARD_PASS;
+
+    if (
+      typeof defaultUser === 'string' &&
+      defaultUser &&
+      typeof defaultPass === 'string' &&
+      defaultPass
+    ) {
+      this.setCredentials(defaultUser, defaultPass);
+    }
   }
 
   private getAuthHeader(): string {
@@ -46,8 +84,46 @@ class ApiService {
     return this.request<DaemonStatus>('/daemon/status');
   }
 
+  private parseRepeatInterval(interval?: string | null): number | null {
+    if (!interval) return null;
+    const normalized = interval.trim();
+    if (!normalized || normalized.toLowerCase() === 'none') {
+      return null;
+    }
+
+    const parts = normalized.split(':').map((part) => Number(part));
+    if (parts.some((value) => Number.isNaN(value))) {
+      return null;
+    }
+
+    let seconds = 0;
+    if (parts.length === 3) {
+      seconds = parts[0] * 3600 + parts[1] * 60 + parts[2];
+    } else if (parts.length === 2) {
+      seconds = parts[0] * 60 + parts[1];
+    } else if (parts.length === 1) {
+      seconds = parts[0];
+    }
+
+    return seconds;
+  }
+
   async getDaemonTasks(): Promise<DaemonTask[]> {
-    return this.request<DaemonTask[]>('/daemon/tasks');
+    const response = await this.request<DaemonTasksResponse>('/daemon/tasks');
+    return response.tasks.map((task) => ({
+      task_id: task.task_id,
+      name: task.name,
+      description: task.description,
+      priority: task.priority,
+      repeat_interval_seconds: this.parseRepeatInterval(task.repeat_interval ?? null),
+      timeout_seconds: 0,
+      stats: {
+        total_executions: task.execution_count,
+        successful_executions: task.success_count,
+        failed_executions: task.failure_count,
+        last_execution: task.last_execution ?? undefined,
+      },
+    }));
   }
 
   async addTask(task: AddTaskRequest): Promise<{ message: string; task_id: string }> {
@@ -67,3 +143,4 @@ class ApiService {
 }
 
 export const apiService = new ApiService();
+apiService.setDefaultCredentials();
