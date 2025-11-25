@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2025-11-25T00:29:52.110241",
+    "iterations": 50,
+    "mean_time_ms": 20.828850599646103,
+    "mean_memory_mb": 81.155546875,
+    "mean_cpu_percent": 91.786,
+    "metadata": {}
+  },
+  {
+    "timestamp": "2025-11-25T00:30:19.538712",
+    "iterations": 50,
+    "mean_time_ms": 21.37612675956916,
+    "mean_memory_mb": 76.7815625,
+    "mean_cpu_percent": 89.978,
+    "metadata": {}
+  }
+]
