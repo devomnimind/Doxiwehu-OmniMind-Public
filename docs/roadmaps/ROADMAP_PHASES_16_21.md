@@ -13,7 +13,7 @@ Este roadmap técnico detalha a implementação de 6 fases evolutivas do OmniMin
 ### Progressão Evolutiva
 
 ```
-Phase 15 (Atual)          Phase 16-17              Phase 18-19              Phase 20-21
+Phase 21 (Atual)          Phase 16-17              Phase 18-19              Phase 20-21
     ↓                          ↓                         ↓                        ↓
 Inteligente         →     Sábio + Parceiro    →    Coletivo + Memória   →   Auto-Criador + Quântico
 (Smart)                   (Wise + Partner)         (Collective + Memory)    (Self-Creating + Quantum)

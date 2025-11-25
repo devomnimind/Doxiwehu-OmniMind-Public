@@ -161,3 +161,8 @@ scripts/archive/security/upload_secrets.sh
 # External archive (moved to external drive) – never versioned
 omnimind_archive_*/
 
+# ------------------------------------------------------------------
+# Documentation Backups (for audit purposes - not versioned)
+# ------------------------------------------------------------------
+.documentation_backup_*/
+
