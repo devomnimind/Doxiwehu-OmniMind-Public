@@ -150,6 +150,7 @@ data/experiments/**/consolidated_report.json
 # ------------------------------------------------------------------
 data/forensics/incidents/*.json
 data/forensics/evidence/*.json
+data/forensics/antigravity_investigation/
 
 # ------------------------------------------------------------------
 # Audit Logs

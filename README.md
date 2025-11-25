@@ -38,6 +38,18 @@ source scripts/start_dashboard.sh
 - **API Backend**: http://localhost:8000 (FastAPI com documentação automática)
 - **Documentação**: http://localhost:8000/docs (Swagger UI)
 
+### Opções de Deployment
+
+O OmniMind suporta dois ambientes de deployment com características distintas:
+
+| Ambiente | Performance | Uso de Memória | Casos de Uso |
+|----------|-------------|----------------|--------------|
+| **Systemd** | ⭐⭐⭐⭐⭐ (19.88ms) | 52.24MB | Produção dedicada, alta performance |
+| **Docker** | ⭐⭐⭐⭐ (21.52ms) | 48.55MB | Desenvolvimento, portabilidade |
+
+📊 **[Comparação Detalhada](docs/reports/benchmarks/PERFORMANCE_COMPARISON_SYSTEMD_DOCKER.md)** |
+📚 **[Guia de Produção](docs/production/PRODUCTION_DEPLOYMENT_GUIDE.md)**
+
 ## 📚 Documentação
 
 - **[Arquitetura](ARCHITECTURE.md)**: Visão técnica detalhada

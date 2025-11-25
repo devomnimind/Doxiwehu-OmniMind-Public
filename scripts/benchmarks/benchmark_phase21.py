@@ -6,8 +6,6 @@ from pathlib import Path
 from typing import Dict, Any
 
 from src.optimization.benchmarking import PerformanceBenchmark, RegressionDetector
-from src.integrations.mcp_client import MCPClient
-from src.integrations.mcp_server import MCPConfig
 
 # Configure logging
 logging.basicConfig(
@@ -22,9 +20,8 @@ async def run_production_benchmark():
     Executes the full Phase 21 production benchmark session.
     This benchmark tests the integrated system:
     - Native Backend (FastAPI)
-    - MCP Services (via Client)
     - Database Interactions (Qdrant/Redis via Backend)
-    - Autonomous Daemon Tasks
+    - System Resource Monitoring
     """
     logger.info("Starting Phase 21 Production Benchmark Session")
 
@@ -33,53 +30,25 @@ async def run_production_benchmark():
 
     results = {}
 
-    # 1. MCP Integration Benchmark
-    logger.info("Benchmarking MCP Integration...")
-
-    # Initialize MCP Client (assuming server is running on default port)
-    config = MCPConfig.load()
-    client = MCPClient(f"http://{config.host}:{config.port}/mcp")
-
-    def mcp_workload():
-        # Simulate a typical MCP interaction sequence
-        # 1. Get Metrics
-        client.get_metrics()
-        # 2. List Directory (simulating context gathering)
-        client.list_dir(".")
-        # 3. Read File (simulating code analysis)
-        client.read_file("README.md")
-
-    # Wrap workload for synchronous benchmark runner
-    def sync_mcp_workload():
-        mcp_workload()
-
-    mcp_result = benchmark.run_benchmark(
-        name="phase21_mcp_integration",
-        workload=sync_mcp_workload,
-        iterations=50,  # Reduced iterations for integration test
-        warmup_iterations=5,
-    )
-
-    mcp_regression = detector.detect_regressions("phase21_mcp_integration", mcp_result)
-    results["mcp"] = {
-        "metrics": {
-            "mean_time_ms": mcp_result.mean_time_ms,
-            "mean_memory_mb": mcp_result.mean_memory_mb,
-            "mean_cpu_percent": mcp_result.mean_cpu_percent,
-        },
-        "regression": mcp_regression,
-    }
-
-    # 2. Backend API Benchmark (Native)
+    # 1. Backend API Benchmark (Native)
     logger.info("Benchmarking Native Backend API...")
     import httpx
+    import os
+
+    # Detect environment and set appropriate backend URL
+    if os.path.exists('/.dockerenv') or os.environ.get('DOCKER_CONTAINER', '').lower() == 'true':
+        backend_url = "http://backend:8000"
+        environment = "docker_container"
+    else:
+        backend_url = "http://localhost:8000"
+        environment = "systemd_native"
 
     async def backend_workload():
         async with httpx.AsyncClient() as http_client:
             # 1. Health Check
-            await http_client.get("http://localhost:8000/health")
+            await http_client.get(f"{backend_url}/health")
             # 2. Root Endpoint
-            await http_client.get("http://localhost:8000/")
+            await http_client.get(f"{backend_url}/")
             # Add more endpoints as needed
 
     def sync_backend_workload():
@@ -115,7 +84,7 @@ async def run_production_benchmark():
         "regression": backend_regression,
     }
 
-    # 3. System Resource Baseline
+    # 2. System Resource Baseline
     logger.info("Capturing System Resource Baseline...")
     import psutil
 
@@ -127,13 +96,13 @@ async def run_production_benchmark():
     results["system"] = system_metrics
 
     # Save consolidated report
-    report_path = Path("docs/reports/benchmarks/phase21_production_report.json")
+    report_path = Path("data/benchmarks/phase21_production_report.json")
     report_path.parent.mkdir(parents=True, exist_ok=True)
 
     final_report = {
         "timestamp": time.time(),
         "phase": "21",
-        "environment": "production_native",
+        "environment": environment,
         "results": results,
     }
 

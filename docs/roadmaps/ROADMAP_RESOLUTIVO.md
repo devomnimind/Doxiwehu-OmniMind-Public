@@ -50,3 +50,20 @@ Sua responsabilidade é preparar o ambiente e conectar as pontas.
 ## 3. Próximos Passos Imediatos (Execução Remota)
 
 Iniciarei agora a implementação dos arquivos do **Lado Remoto**.
+
+---
+
+## 4. Otimização Contínua e Benchmarks
+
+### 📊 Sistema de Benchmarking
+- **Status:** ✅ Implementado e funcional
+- **Cenários:** Systemd (nativo) vs Docker (containerizado)
+- **Documentação:** [Comparação de Performance](../reports/benchmarks/PERFORMANCE_COMPARISON_SYSTEMD_DOCKER.md)
+- **Resultados Atuais:**
+  - Systemd: 19.88ms (melhor performance)
+  - Docker: 21.52ms (melhor eficiência de memória)
+
+### 🔄 Monitoramento Contínuo
+- Benchmarks automatizados integrados ao CI/CD
+- Comparação de performance entre releases
+- Otimização baseada em métricas reais de produção

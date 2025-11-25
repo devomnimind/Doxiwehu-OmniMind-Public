@@ -112,6 +112,7 @@
 - [Recomendações para Desenvolvedores](.project/DEVELOPER_RECOMMENDATIONS.md)
 
 ### Relatórios Recentes
+- [Comparação Systemd vs Docker](reports/benchmarks/PERFORMANCE_COMPARISON_SYSTEMD_DOCKER.md)
 - [Consolidação de Auditoria 2024-11-24](reports/AUDIT_CONSOLIDATION_2024-11-24.md)
 - [Validação do Backend Neural](reports/NEURAL_BACKEND_VALIDATION.md)
 

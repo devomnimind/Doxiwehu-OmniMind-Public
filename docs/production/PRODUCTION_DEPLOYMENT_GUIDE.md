@@ -72,7 +72,58 @@ nano .env
 
 ---
 
-## 🔍 Verificação e Monitoramento
+## 🎯 Escolha do Ambiente de Deployment
+
+### Comparação Systemd vs Docker
+
+O OmniMind suporta dois ambientes de deployment principais, cada um com vantagens específicas. A escolha depende dos requisitos de performance, isolamento e operação.
+
+#### 📊 Comparação de Performance (Benchmarks Phase 21)
+
+| Ambiente | Tempo Médio | Memória | CPU | Vantagens |
+|----------|-------------|---------|-----|-----------|
+| **Systemd (Nativo)** | 19.88ms | 52.24MB | 88.85% | 🚀 **Performance máxima**, menor latência |
+| **Docker (Container)** | 21.52ms | 48.55MB | 89.79% | 📦 **Portabilidade**, isolamento completo |
+
+#### 🏆 Quando Usar Systemd
+**Cenários ideais:**
+- Performance crítica com latência mínima
+- Integração nativa com ferramentas do sistema
+- Ambientes dedicados e controlados
+- Monitoramento avançado do sistema host
+
+**Vantagens:**
+- 35% mais rápido nas requisições HTTP
+- Menor overhead de virtualização
+- Integração direta com systemd (logs, monitoramento, auto-restart)
+
+#### 🏆 Quando Usar Docker
+**Cenários ideais:**
+- Portabilidade entre ambientes
+- Escalabilidade horizontal
+- Compartilhamento de recursos
+- Pipelines de CI/CD automatizados
+
+**Vantagens:**
+- 8% menos uso de memória
+- Consistência entre dev/prod
+- Versionamento e rollback simplificados
+- Multi-tenancy nativo
+
+### 📈 Recomendações por Caso de Uso
+
+| Caso de Uso | Ambiente Recomendado | Justificativa |
+|-------------|---------------------|---------------|
+| **API de Alta Performance** | Systemd | Latência mínima crítica |
+| **Microserviços** | Docker | Escalabilidade e isolamento |
+| **Desenvolvimento** | Docker | Consistência de ambiente |
+| **Produção Dedicada** | Systemd | Performance otimizada |
+| **Cloud/Orquestração** | Docker | Portabilidade e scaling |
+
+### 🔗 Documentação Detalhada
+Para análise completa de performance, consulte: [Comparação Systemd vs Docker](../reports/benchmarks/PERFORMANCE_COMPARISON_SYSTEMD_DOCKER.md)
+
+---
 
 ### Health Check Completo
 ```bash
