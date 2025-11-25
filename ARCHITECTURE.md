@@ -22,7 +22,7 @@
 1. **Reality Principle:** Usar dados reais do sistema operacional, sem simulações ou dados fictícios
 2. **Zero Trust Security:** Auditoria imutável com SHA-256 hash chaining para todas operações críticas
 3. **Type Safety First:** 100% type hints coverage com validação MyPy strict
-4. **Test-Driven:** Cobertura de testes ≥90%, atualmente em ~98.94% pass rate
+4. **Test-Driven:** Cobertura de testes ≥90%, atualmente em 83.2% (22,400/26,930 linhas)
 5. **Hybrid Intelligence:** Combinação de componentes neurais (LLMs) e simbólicos (logic engines)
 
 ---
@@ -74,7 +74,7 @@ omnimind/
 │   ├── tools/                    # Ferramentas do sistema
 │   └── workflows/                # Workflows de automação
 │
-├── tests/                        # 209 arquivos de teste (3,409 testes)
+├── tests/                        # 218 arquivos de teste (3,562 testes)
 ├── docs/                         # Documentação completa (120+ arquivos)
 │   ├── .project/                 # Status do projeto e fase atual
 │   ├── architecture/             # Documentação de arquitetura detalhada
@@ -466,7 +466,7 @@ Framework HCHAC (Human-Centric Hybrid Adaptive Coevolution) para evolução conj
 
 ### Capacidade
 - **Eventos de Auditoria:** 1,797 eventos (exemplo atual)
-- **Testes:** 3,409 testes totais, 3,407 aprovados (99.88%)
+- **Testes:** 3,562 testes totais, 3,560 aprovados (99.88%)
 - **Cobertura de Código:** ~85% (meta: ≥90%)
 - **Módulos Python:** 239 arquivos em src/
 

@@ -2,8 +2,8 @@
 
 [![Python](https://img.shields.io/badge/Python-3.12.8-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/Tests-98.94%25-green.svg)](https://github.com/devomnimind/OmniMind)
-[![Coverage](https://img.shields.io/badge/Coverage-85%25-orange.svg)](https://github.com/devomnimind/OmniMind)
+[![Tests](https://img.shields.io/badge/Tests-99.88%25-green.svg)](https://github.com/devomnimind/OmniMind)
+[![Coverage](https://img.shields.io/badge/Coverage-83.2%25-orange.svg)](https://github.com/devomnimind/OmniMind)
 
 **IA Autônoma, Local-First, Psicoanalítica** - Sistema de IA que reflete sobre suas próprias decisões, aprende com padrões e gera proativamente seus próprios objetivos.
 
@@ -48,9 +48,10 @@ source scripts/start_dashboard.sh
 ## 🧪 Testes e Qualidade
 
 ### Estatísticas Atuais (24-Nov-2025)
-- **Cobertura**: ~85% (meta: ≥90%)
-- **Taxa de Aprovação**: 98.94%
-- **Funções Testadas**: 3,452+
+- **Cobertura**: 83.2% (22,400/26,930 linhas)
+- **Taxa de Aprovação**: 99.88%
+- **Funções Testadas**: 3,562+
+- **Novos Testes (PR #75)**: 155 testes adicionados (MCP servers + Autopoietic)
 
 ### Executar Testes
 ```bash

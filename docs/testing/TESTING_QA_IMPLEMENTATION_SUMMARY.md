@@ -354,6 +354,7 @@ OmniMind/
 - ✅ 40+ E2E integration tests
 - ✅ 4 visual regression tests
 - ✅ 5 load test scenarios
+- ✅ **155+ MCP & Autopoietic tests (PR #75)** - 61.9%-100% coverage
 - ✅ Multiple test modes (quick, full, targeted)
 
 ### Framework Capabilities
