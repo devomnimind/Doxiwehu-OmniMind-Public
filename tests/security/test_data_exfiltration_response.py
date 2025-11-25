@@ -4,7 +4,6 @@ Testes para src/security/playbooks/data_exfiltration_response.py.
 Testa o playbook de resposta a exfiltração de dados.
 """
 
-import asyncio
 import pytest
 from typing import Any, Dict
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -50,20 +49,29 @@ class TestDataExfiltrationPlaybook:
 
     @pytest.mark.asyncio
     async def test_execute_playbook(
-        self, playbook: DataExfiltrationPlaybook, mock_agent: MagicMock, mock_event: MockEvent
+        self,
+        playbook: DataExfiltrationPlaybook,
+        mock_agent: MagicMock,
+        mock_event: MockEvent,
     ) -> None:
         """Testa execução completa do playbook."""
-        with patch.object(
-            playbook, "_detect_anomalous_transfer", new_callable=AsyncMock
-        ) as mock_detect, patch.object(
-            playbook, "_block_connection", new_callable=AsyncMock
-        ) as mock_block, patch.object(
-            playbook, "_throttle_bandwidth", new_callable=AsyncMock
-        ) as mock_throttle, patch.object(
-            playbook, "_preserve_logs", new_callable=AsyncMock
-        ) as mock_preserve, patch.object(
-            playbook, "_notify_team", new_callable=AsyncMock
-        ) as mock_notify:
+        with (
+            patch.object(
+                playbook, "_detect_anomalous_transfer", new_callable=AsyncMock
+            ) as mock_detect,
+            patch.object(
+                playbook, "_block_connection", new_callable=AsyncMock
+            ) as mock_block,
+            patch.object(
+                playbook, "_throttle_bandwidth", new_callable=AsyncMock
+            ) as mock_throttle,
+            patch.object(
+                playbook, "_preserve_logs", new_callable=AsyncMock
+            ) as mock_preserve,
+            patch.object(
+                playbook, "_notify_team", new_callable=AsyncMock
+            ) as mock_notify,
+        ):
 
             # Configure mocks
             mock_detect.return_value = {"status": "success"}
@@ -88,13 +96,16 @@ class TestDataExfiltrationPlaybook:
         self, playbook: DataExfiltrationPlaybook
     ) -> None:
         """Testa detecção de transferência anômala quando ss disponível."""
-        with patch(
-            "src.security.playbooks.data_exfiltration_response.command_available",
-            return_value=True,
-        ), patch(
-            "src.security.playbooks.data_exfiltration_response.run_command_async",
-            new_callable=AsyncMock,
-        ) as mock_run:
+        with (
+            patch(
+                "src.security.playbooks.data_exfiltration_response.command_available",
+                return_value=True,
+            ),
+            patch(
+                "src.security.playbooks.data_exfiltration_response.run_command_async",
+                new_callable=AsyncMock,
+            ) as mock_run,
+        ):
 
             mock_run.return_value = {"stdout": "test output", "success": True}
 
@@ -108,14 +119,20 @@ class TestDataExfiltrationPlaybook:
         self, playbook: DataExfiltrationPlaybook
     ) -> None:
         """Testa detecção quando ss não disponível."""
-        with patch(
-            "src.security.playbooks.data_exfiltration_response.command_available",
-            return_value=False,
-        ), patch(
-            "src.security.playbooks.data_exfiltration_response.skipped_command"
-        ) as mock_skipped:
+        with (
+            patch(
+                "src.security.playbooks.data_exfiltration_response.command_available",
+                return_value=False,
+            ),
+            patch(
+                "src.security.playbooks.data_exfiltration_response.skipped_command"
+            ) as mock_skipped,
+        ):
 
-            mock_skipped.return_value = {"status": "skipped", "reason": "tool unavailable"}
+            mock_skipped.return_value = {
+                "status": "skipped",
+                "reason": "tool unavailable",
+            }
 
             result = await playbook._detect_anomalous_transfer()
 
@@ -129,13 +146,16 @@ class TestDataExfiltrationPlaybook:
         """Testa bloqueio de conexão com IP remoto."""
         mock_event = MockEvent(details={"remote": "10.0.0.1"})
 
-        with patch(
-            "src.security.playbooks.data_exfiltration_response.command_available",
-            return_value=True,
-        ), patch(
-            "src.security.playbooks.data_exfiltration_response.run_command_async",
-            new_callable=AsyncMock,
-        ) as mock_run:
+        with (
+            patch(
+                "src.security.playbooks.data_exfiltration_response.command_available",
+                return_value=True,
+            ),
+            patch(
+                "src.security.playbooks.data_exfiltration_response.run_command_async",
+                new_callable=AsyncMock,
+            ) as mock_run,
+        ):
 
             mock_run.return_value = {"success": True}
 
@@ -144,6 +164,7 @@ class TestDataExfiltrationPlaybook:
             # Verify command was called with correct IP
             call_args = mock_run.call_args[0][0]
             assert "10.0.0.1" in call_args
+            assert result is not None
 
     @pytest.mark.asyncio
     async def test_block_connection_no_remote_ip(
@@ -152,13 +173,16 @@ class TestDataExfiltrationPlaybook:
         """Testa bloqueio de conexão sem IP remoto."""
         mock_event = MockEvent(details={})
 
-        with patch(
-            "src.security.playbooks.data_exfiltration_response.command_available",
-            return_value=True,
-        ), patch(
-            "src.security.playbooks.data_exfiltration_response.run_command_async",
-            new_callable=AsyncMock,
-        ) as mock_run:
+        with (
+            patch(
+                "src.security.playbooks.data_exfiltration_response.command_available",
+                return_value=True,
+            ),
+            patch(
+                "src.security.playbooks.data_exfiltration_response.run_command_async",
+                new_callable=AsyncMock,
+            ) as mock_run,
+        ):
 
             mock_run.return_value = {"success": True}
 
@@ -167,19 +191,23 @@ class TestDataExfiltrationPlaybook:
             # Should use default 0.0.0.0
             call_args = mock_run.call_args[0][0]
             assert "0.0.0.0" in call_args
+            assert result is not None
 
     @pytest.mark.asyncio
     async def test_throttle_bandwidth_available(
         self, playbook: DataExfiltrationPlaybook
     ) -> None:
         """Testa throttling de bandwidth quando tc disponível."""
-        with patch(
-            "src.security.playbooks.data_exfiltration_response.command_available",
-            return_value=True,
-        ), patch(
-            "src.security.playbooks.data_exfiltration_response.run_command_async",
-            new_callable=AsyncMock,
-        ) as mock_run:
+        with (
+            patch(
+                "src.security.playbooks.data_exfiltration_response.command_available",
+                return_value=True,
+            ),
+            patch(
+                "src.security.playbooks.data_exfiltration_response.run_command_async",
+                new_callable=AsyncMock,
+            ) as mock_run,
+        ):
 
             mock_run.return_value = {"success": True}
 
@@ -188,6 +216,7 @@ class TestDataExfiltrationPlaybook:
             # Verify tc command was called
             call_args = mock_run.call_args[0][0]
             assert "tc" in call_args
+            assert result is not None
 
     @pytest.mark.asyncio
     async def test_throttle_bandwidth_unavailable(
@@ -237,8 +266,11 @@ class TestDataExfiltrationPlaybook:
             # Verify echo command was called
             call_args = mock_run.call_args[0][0]
             assert "/bin/echo" in call_args
+            assert result is not None
 
-    def test_write_artifact(self, playbook: DataExfiltrationPlaybook, tmp_path: Any) -> None:
+    def test_write_artifact(
+        self, playbook: DataExfiltrationPlaybook, tmp_path: Any
+    ) -> None:
         """Testa escrita de artefato forense."""
         import json
 
@@ -258,7 +290,10 @@ class TestDataExfiltrationPlaybook:
 
     @pytest.mark.asyncio
     async def test_execute_handles_exceptions(
-        self, playbook: DataExfiltrationPlaybook, mock_agent: MagicMock, mock_event: MockEvent
+        self,
+        playbook: DataExfiltrationPlaybook,
+        mock_agent: MagicMock,
+        mock_event: MockEvent,
     ) -> None:
         """Testa que execute lida com exceções gracefully."""
         with patch.object(

@@ -6,12 +6,11 @@ Testa execução de experimentos de consciência e ética.
 
 import pytest
 from typing import Any, Dict
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from src.experiments.run_all_experiments import (
     run_all_experiments,
     generate_summary,
-    ExperimentSummary,
     main,
 )
 
@@ -21,15 +20,20 @@ class TestRunAllExperiments:
 
     def test_run_all_experiments_structure(self) -> None:
         """Testa que run_all_experiments retorna estrutura correta."""
-        with patch(
-            "src.experiments.run_all_experiments.experiment_phi_integration"
-        ) as mock_phi, patch(
-            "src.experiments.run_all_experiments.experiment_self_awareness"
-        ) as mock_awareness, patch(
-            "src.experiments.run_all_experiments.experiment_ethics_brazilian_context"
-        ) as mock_ethics, patch(
-            "src.experiments.run_all_experiments.experiment_transparency_tracking"
-        ) as mock_transparency:
+        with (
+            patch(
+                "src.experiments.run_all_experiments.experiment_phi_integration"
+            ) as mock_phi,
+            patch(
+                "src.experiments.run_all_experiments.experiment_self_awareness"
+            ) as mock_awareness,
+            patch(
+                "src.experiments.run_all_experiments.experiment_ethics_brazilian_context"
+            ) as mock_ethics,
+            patch(
+                "src.experiments.run_all_experiments.experiment_transparency_tracking"
+            ) as mock_transparency,
+        ):
 
             # Configure mocks
             mock_phi.return_value = {"status": "success"}
@@ -52,15 +56,20 @@ class TestRunAllExperiments:
 
     def test_run_all_experiments_calls_experiments(self) -> None:
         """Testa que todos os experimentos são chamados."""
-        with patch(
-            "src.experiments.run_all_experiments.experiment_phi_integration"
-        ) as mock_phi, patch(
-            "src.experiments.run_all_experiments.experiment_self_awareness"
-        ) as mock_awareness, patch(
-            "src.experiments.run_all_experiments.experiment_ethics_brazilian_context"
-        ) as mock_ethics, patch(
-            "src.experiments.run_all_experiments.experiment_transparency_tracking"
-        ) as mock_transparency:
+        with (
+            patch(
+                "src.experiments.run_all_experiments.experiment_phi_integration"
+            ) as mock_phi,
+            patch(
+                "src.experiments.run_all_experiments.experiment_self_awareness"
+            ) as mock_awareness,
+            patch(
+                "src.experiments.run_all_experiments.experiment_ethics_brazilian_context"
+            ) as mock_ethics,
+            patch(
+                "src.experiments.run_all_experiments.experiment_transparency_tracking"
+            ) as mock_transparency,
+        ):
 
             # Configure mocks
             mock_phi.return_value = {"status": "success"}
@@ -206,13 +215,15 @@ class TestMain:
 
     def test_main_calls_experiment_runners(self) -> None:
         """Testa que main chama os runners de experimentos."""
-        with patch(
-            "src.experiments.run_all_experiments.run_all_consciousness_experiments"
-        ) as mock_consciousness, patch(
-            "src.experiments.run_all_experiments.run_all_ethics_experiments"
-        ) as mock_ethics, patch(
-            "builtins.print"
-        ) as mock_print:
+        with (
+            patch(
+                "src.experiments.run_all_experiments.run_all_consciousness_experiments"
+            ) as mock_consciousness,
+            patch(
+                "src.experiments.run_all_experiments.run_all_ethics_experiments"
+            ) as mock_ethics,
+            patch("builtins.print") as mock_print,
+        ):
 
             main()
 
@@ -225,11 +236,13 @@ class TestMain:
 
     def test_main_prints_header(self) -> None:
         """Testa que main imprime cabeçalho."""
-        with patch(
-            "src.experiments.run_all_experiments.run_all_consciousness_experiments"
-        ), patch("src.experiments.run_all_experiments.run_all_ethics_experiments"), patch(
-            "builtins.print"
-        ) as mock_print:
+        with (
+            patch(
+                "src.experiments.run_all_experiments.run_all_consciousness_experiments"
+            ),
+            patch("src.experiments.run_all_experiments.run_all_ethics_experiments"),
+            patch("builtins.print") as mock_print,
+        ):
 
             main()
 
@@ -240,11 +253,13 @@ class TestMain:
 
     def test_main_prints_references(self) -> None:
         """Testa que main imprime referências."""
-        with patch(
-            "src.experiments.run_all_experiments.run_all_consciousness_experiments"
-        ), patch("src.experiments.run_all_experiments.run_all_ethics_experiments"), patch(
-            "builtins.print"
-        ) as mock_print:
+        with (
+            patch(
+                "src.experiments.run_all_experiments.run_all_consciousness_experiments"
+            ),
+            patch("src.experiments.run_all_experiments.run_all_ethics_experiments"),
+            patch("builtins.print") as mock_print,
+        ):
 
             main()
 
@@ -257,11 +272,13 @@ class TestMain:
 
     def test_main_prints_completion_message(self) -> None:
         """Testa que main imprime mensagem de conclusão."""
-        with patch(
-            "src.experiments.run_all_experiments.run_all_consciousness_experiments"
-        ), patch("src.experiments.run_all_experiments.run_all_ethics_experiments"), patch(
-            "builtins.print"
-        ) as mock_print:
+        with (
+            patch(
+                "src.experiments.run_all_experiments.run_all_consciousness_experiments"
+            ),
+            patch("src.experiments.run_all_experiments.run_all_ethics_experiments"),
+            patch("builtins.print") as mock_print,
+        ):
 
             main()
 

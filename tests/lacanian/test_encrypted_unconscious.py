@@ -8,7 +8,10 @@ import pytest
 import numpy as np
 from typing import List
 
-from src.lacanian.encrypted_unconscious import EncryptedUnconsciousLayer, TENSEAL_AVAILABLE
+from src.lacanian.encrypted_unconscious import (
+    EncryptedUnconsciousLayer,
+    TENSEAL_AVAILABLE,
+)
 
 
 class TestEncryptedUnconsciousLayer:
@@ -80,7 +83,9 @@ class TestEncryptedUnconsciousLayer:
         assert len(layer.audit_log) == 0  # No logging in mock mode
 
     @pytest.mark.skipif(not TENSEAL_AVAILABLE, reason="TenSEAL não disponível")
-    def test_repress_memory_with_tenseal(self, layer: EncryptedUnconsciousLayer) -> None:
+    def test_repress_memory_with_tenseal(
+        self, layer: EncryptedUnconsciousLayer
+    ) -> None:
         """Testa repressão de memória com TenSEAL."""
         event_vector = np.array([0.5, 0.3, 0.8, 0.2])
         metadata = {"type": "traumatic", "severity": "high"}
@@ -101,7 +106,9 @@ class TestEncryptedUnconsciousLayer:
         assert log_entry["metadata"] == metadata
 
     @pytest.mark.skipif(not TENSEAL_AVAILABLE, reason="TenSEAL não disponível")
-    def test_repress_memory_hash_uniqueness(self, layer: EncryptedUnconsciousLayer) -> None:
+    def test_repress_memory_hash_uniqueness(
+        self, layer: EncryptedUnconsciousLayer
+    ) -> None:
         """Testa que hashes de memórias diferentes são únicos."""
         event1 = np.array([0.1, 0.2, 0.3])
         event2 = np.array([0.4, 0.5, 0.6])
@@ -110,10 +117,13 @@ class TestEncryptedUnconsciousLayer:
         encrypted1 = layer.repress_memory(event1, metadata)
         encrypted2 = layer.repress_memory(event2, metadata)
 
+        # Verify hashes are different
         hash1 = layer.audit_log[0]["content_hash"]
         hash2 = layer.audit_log[1]["content_hash"]
 
         assert hash1 != hash2
+        # Also verify encrypted data is different
+        assert encrypted1 != encrypted2
 
     def test_unconscious_influence_mock_mode(self) -> None:
         """Testa influência inconsciente em modo mock."""
@@ -183,7 +193,9 @@ class TestEncryptedUnconsciousLayer:
         assert influence > 0.0
 
     @pytest.mark.skipif(not TENSEAL_AVAILABLE, reason="TenSEAL não disponível")
-    def test_memory_not_accessible_to_ego(self, layer: EncryptedUnconsciousLayer) -> None:
+    def test_memory_not_accessible_to_ego(
+        self, layer: EncryptedUnconsciousLayer
+    ) -> None:
         """Testa que memórias não são acessíveis ao Ego."""
         event_vector = np.array([0.5, 0.3, 0.8, 0.2])
         metadata = {"type": "repressed"}

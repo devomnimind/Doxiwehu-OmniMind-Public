@@ -5,7 +5,6 @@ Testa lazy imports e atributos do módulo.
 """
 
 import pytest
-from typing import TYPE_CHECKING
 
 
 class TestAttentionInit:

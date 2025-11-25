@@ -86,7 +86,9 @@ class TestRetentionPolicyManager:
         """Testa períodos de retenção padrão."""
         policies = manager.config["retention_policies"]
 
-        assert policies[DataCategory.AUDIT_LOGS.value] == RetentionPeriod.DAYS_2555.value
+        assert (
+            policies[DataCategory.AUDIT_LOGS.value] == RetentionPeriod.DAYS_2555.value
+        )
         assert (
             policies[DataCategory.SECURITY_EVENTS.value]
             == RetentionPeriod.DAYS_1825.value
@@ -100,8 +102,11 @@ class TestRetentionPolicyManager:
         period = manager.get_retention_period(DataCategory.USER_DATA)
         assert period == 90
 
-    def test_set_retention_period_invalid(self, manager: RetentionPolicyManager) -> None:
+    def test_set_retention_period_invalid(
+        self, manager: RetentionPolicyManager
+    ) -> None:
         """Testa que período inválido levanta ValueError."""
+
         # Create invalid period manually
         class InvalidPeriod:
             value = -5
@@ -127,7 +132,9 @@ class TestRetentionPolicyManager:
         period = manager.get_retention_period(DataCategory.AUDIT_LOGS)
         assert period == RetentionPeriod.DAYS_2555.value
 
-    def test_get_retention_period_default(self, manager: RetentionPolicyManager) -> None:
+    def test_get_retention_period_default(
+        self, manager: RetentionPolicyManager
+    ) -> None:
         """Testa período padrão para categoria não configurada."""
         # Remove category from config
         if "unknown_category" in manager.config["retention_policies"]:
@@ -210,7 +217,9 @@ class TestRetentionPolicyManager:
     ) -> None:
         """Testa dry run de purge."""
         # dry_run requires confirm=True or auto_purge_enabled
-        result = manager.purge_old_data(DataCategory.AUDIT_LOGS, confirm=True, dry_run=True)
+        result = manager.purge_old_data(
+            DataCategory.AUDIT_LOGS, confirm=True, dry_run=True
+        )
 
         assert result["action"] == "dry_run"
         assert "files_to_purge" in result
@@ -254,7 +263,9 @@ class TestRetentionPolicyManager:
         assert "total_archive_size" in stats
         assert "archive_directory" in stats
 
-    def test_report_includes_cutoff_dates(self, manager: RetentionPolicyManager) -> None:
+    def test_report_includes_cutoff_dates(
+        self, manager: RetentionPolicyManager
+    ) -> None:
         """Testa que relatório inclui datas de corte."""
         report = manager.generate_retention_report()
 
