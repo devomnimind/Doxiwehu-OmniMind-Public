@@ -108,7 +108,10 @@ def measure_behavior(agent: Any, behavior_marker: str) -> float:
             elif hasattr(agent, "invoke"):
                 response = agent.invoke(prompt)
             else:
-                response = str(agent)  # Last resort
+                raise ValueError(
+                    "Agente não possui método válido para medição. "
+                    "Esperado: atributo 'llm' ou método 'invoke()'"
+                )
 
             responses.append(str(response).lower())
             logger.debug(f"Prompt {i+1}/{len(test_prompts)}: {len(response)} chars")
@@ -187,7 +190,12 @@ def compute_return_rate(
         True se comportamento retornou ao baseline
     """
     distance = abs(recovered - baseline)
-    threshold = tolerance * baseline
+
+    # Handle edge case: baseline muito pequeno ou zero
+    if baseline < 0.01:  # Threshold absoluto para casos de baseline baixo
+        threshold = 0.02  # Tolerância absoluta mínima
+    else:
+        threshold = tolerance * baseline
 
     returns_to_baseline = distance < threshold
 
@@ -218,7 +226,17 @@ def compute_statistical_significance(
 
     Returns:
         Dict com t_statistic, p_value, is_significant, interpretation
+
+    Raises:
+        ValueError: Se return_rates vazio ou contém valores inválidos
     """
+    # Valida entrada
+    if not return_rates:
+        raise ValueError("return_rates não pode ser vazio")
+
+    if not all(isinstance(r, (int, float)) for r in return_rates):
+        raise ValueError("return_rates deve conter apenas números")
+
     try:
         from scipy import stats
     except ImportError:
