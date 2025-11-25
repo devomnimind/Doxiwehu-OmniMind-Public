@@ -6,16 +6,14 @@ Testa isolamento, delegação e execução segura de tarefas externas
 import asyncio
 import pytest
 import os
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 from typing import Dict, Any
 
 from src.integrations.external_ai_providers import (
-    ExternalAIProvider,
     GeminiProvider,
     CopilotProvider,
     OpenRouterProvider,
     TaskSpec,
-    TaskResult,
     TaskType,
     ProviderCapabilities,
 )

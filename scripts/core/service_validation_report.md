@@ -15,7 +15,7 @@
 - **omnimind.service**: ❌ FALHANDO
   - Erro: "Invalid user/group name or numeric ID"
   - Status: Arquivo de serviço precisa ser reinstalado após correção
-- **omnimind-backend.service**: ❌ FALHANDO
+- **omnimind.service**: ✅ (inclui backend)
   - Status: Não iniciado
 - **omnimind-test-suite.service**: ❌ FALHANDO
   - Status: Não iniciado

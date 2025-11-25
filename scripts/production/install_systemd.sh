@@ -9,7 +9,7 @@ cd "$BASEDIR/.."
 # Instalar serviços
 SERVICES=(
     "omnimind.service"
-    "omnimind-backend.service" 
+    "omnimind-daemon.service"
     "omnimind-frontend.service"
     "omnimind-mcp.service"
     "omnimind-qdrant.service"

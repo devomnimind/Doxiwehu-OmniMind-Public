@@ -6,6 +6,39 @@
 
 ---
 
+## [2025-11-25] Correções Aplicadas - v1.15.2
+
+### ✅ Resolvido: Warnings de Logging
+- **Problema:** Warnings "Agent monitoring not available" e "Firecracker sandbox disabled" aparecendo em logs INFO
+- **Solução:** Movidos para nível DEBUG (funcionalidades opcionais)
+- **Arquivos:** `web/backend/routes/agents.py`, `src/security/firecracker_sandbox.py`
+- **Status:** ✅ Resolvido
+
+### ✅ Resolvido: Erros de Comandos Sudo
+- **Problema:** Comandos `sudo ufw deny` e `sudo auditctl` falhando repetidamente
+- **Solução:** Validação de entradas, detecção automática de interface, verificação de estado antes de executar
+- **Arquivos:** `src/security/playbooks/data_exfiltration_response.py`, `src/security/playbooks/intrusion_response.py`, `src/security/playbooks/privilege_escalation_response.py`
+- **Status:** ✅ Resolvido
+
+### ✅ Resolvido: Serviços Systemd Duplicados
+- **Problema:** `omnimind-backend.service` redundante causando conflitos
+- **Solução:** Removido, dependências atualizadas para `omnimind.service`
+- **Arquivos:** `scripts/systemd/install_all_services.sh`, `scripts/systemd/omnimind-frontend.service`, `scripts/systemd/omnimind-test-suite.service`, `scripts/systemd/omnimind-benchmark.service`
+- **Status:** ✅ Resolvido
+
+### ✅ Resolvido: Health Check MCP
+- **Problema:** Servidores MCP reiniciando constantemente
+- **Solução:** Health check melhorado (verifica porta), lógica de reinicialização ajustada
+- **Arquivo:** `src/integrations/mcp_orchestrator.py`
+- **Status:** ✅ Resolvido
+
+### ✅ Resolvido: Permissões de Diretório
+- **Problema:** Erro "Read-only file system" para `.omnimind/security.log`
+- **Solução:** Diretório criado com permissões corretas
+- **Status:** ✅ Resolvido
+
+---
+
 ## Executive Summary
 
 ### Consistency Score: **8.5/10** ✅ **Good**

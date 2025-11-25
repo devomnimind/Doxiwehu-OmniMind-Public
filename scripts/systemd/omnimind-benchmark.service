@@ -1,7 +1,7 @@
 [Unit]
 Description=OmniMind Benchmark Suite
-After=network.target omnimind-backend.service omnimind-qdrant.service
-Requires=omnimind-backend.service omnimind-qdrant.service
+After=network.target omnimind.service omnimind-qdrant.service
+Requires=omnimind.service omnimind-qdrant.service
 
 [Service]
 Type=simple

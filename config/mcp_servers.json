@@ -15,11 +15,10 @@
       "priority": "critical",
       "tier": 1,
       "port": 4327,
-      "command": "uvx",
+      "command": "python",
       "args": [
-        "mcp-server-filesystem",
-        "--root",
-        "."
+        "-m",
+        "src.integrations.mcp_filesystem_wrapper"
       ],
       "allowed_paths": [
         "src/",
@@ -213,11 +212,10 @@
       "priority": "high",
       "tier": 2,
       "port": 4328,
-      "command": "uvx",
+      "command": "python",
       "args": [
-        "mcp-server-git",
-        "--repository",
-        "."
+        "-m",
+        "src.integrations.mcp_git_wrapper"
       ],
       "allowed_operations": [
         "status",
@@ -305,11 +303,10 @@
       "priority": "medium",
       "tier": 3,
       "port": 4329,
-      "command": "uvx",
+      "command": "python",
       "args": [
-        "mcp-server-sqlite",
-        "--db-path",
-        "data/omnimind_cache.db"
+        "-m",
+        "src.integrations.mcp_sqlite_wrapper"
       ],
       "databases": {
         "cache": {

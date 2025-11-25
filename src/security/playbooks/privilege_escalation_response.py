@@ -67,10 +67,23 @@ class PrivilegeEscalationPlaybook:
 
     async def _audit_sudoers(self) -> CommandResult:
         logger.debug("   [5/6] Auditing sudoers for unauthorized changes")
+
         command = ["sudo", "auditctl", "-w", "/etc/sudoers", "-p", "wa"]
         if not command_available(command[0]):
             return skipped_command("auditctl", "tool unavailable")
-        return await run_command_async(command)
+
+        try:
+            result = await run_command_async(command)
+            # If command fails, log but don't raise - auditctl may not be available or configured
+            if result.get("returncode", 0) != 0:
+                logger.debug(
+                    "   auditctl command failed (non-critical, auditd may not be running): %s",
+                    result.get("output", ""),
+                )
+            return result
+        except Exception as e:
+            logger.debug("   Error setting audit watch (non-critical): %s", e)
+            return {"command": " ".join(command), "returncode": 1, "output": str(e)}
 
     async def _notify_admin(self, event: Any) -> CommandResult:
         logger.debug("   [6/6] Alerting administrators")

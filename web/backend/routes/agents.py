@@ -18,9 +18,11 @@ router = APIRouter(prefix="/api/agents", tags=["agents"])
 try:
     from web.backend.monitoring.agent_monitor import agent_monitor
     MONITORING_ENABLED = True
-except ImportError:
+except ImportError as e:
     MONITORING_ENABLED = False
-    logger.warning("Agent monitoring not available")
+    # Only log at debug level - monitoring is optional
+    logger.debug("Agent monitoring not available: %s", e)
+    agent_monitor = None  # type: ignore
 
 
 class AgentStatus(str, Enum):
@@ -134,10 +136,13 @@ async def get_agent(agent_id: str) -> AgentInfo:
 async def get_agent_metrics(agent_id: str) -> Dict[str, Any]:
     """Get performance metrics for a specific agent."""
     # Try to get from monitoring system first
-    if MONITORING_ENABLED:
-        metrics = agent_monitor.get_agent_metrics(agent_id)
-        if metrics:
-            return metrics
+    if MONITORING_ENABLED and agent_monitor is not None:
+        try:
+            metrics = agent_monitor.get_agent_metrics(agent_id)
+            if metrics:
+                return metrics
+        except Exception as e:
+            logger.debug("Failed to get metrics from monitoring system: %s", e)
 
     # Fallback to basic metrics
     if agent_id not in _agents:
@@ -175,8 +180,11 @@ async def update_agent_status(
             _agents[agent_id]["current_task"] = current_task
 
         # Update monitoring system
-        if MONITORING_ENABLED:
-            agent_monitor.update_agent_status(agent_id, status, current_task)
+        if MONITORING_ENABLED and agent_monitor is not None:
+            try:
+                agent_monitor.update_agent_status(agent_id, status, current_task)
+            except Exception as e:
+                logger.debug("Failed to update agent status in monitoring: %s", e)
 
         # Broadcast status update via WebSocket
         from web.backend.websocket_manager import MessageType, ws_manager
@@ -213,8 +221,11 @@ async def register_agent(agent_id: str, agent_type: AgentType) -> None:
         logger.info(f"Registered agent: {agent_id} ({agent_type.value})")
 
         # Register with monitoring system
-        if MONITORING_ENABLED:
-            agent_monitor.register_agent(agent_id, agent_type, AgentStatus.IDLE)
+        if MONITORING_ENABLED and agent_monitor is not None:
+            try:
+                agent_monitor.register_agent(agent_id, agent_type, AgentStatus.IDLE)
+            except Exception as e:
+                logger.debug("Failed to register agent in monitoring: %s", e)
 
 
 async def increment_task_counter(agent_id: str, success: bool, duration: float = 0.0) -> None:
@@ -226,26 +237,32 @@ async def increment_task_counter(agent_id: str, success: bool, duration: float =
             _agents[agent_id]["tasks_failed"] += 1
 
         # Record in monitoring system
-        if MONITORING_ENABLED:
-            agent_monitor.record_task_completion(agent_id, success, duration)
+        if MONITORING_ENABLED and agent_monitor is not None:
+            try:
+                agent_monitor.record_task_completion(agent_id, success, duration)
+            except Exception as e:
+                logger.debug("Failed to record task completion in monitoring: %s", e)
 
 
 @router.get("/{agent_id}/health")
 async def get_agent_health(agent_id: str) -> Dict[str, Any]:
     """Get health indicators for a specific agent."""
-    if MONITORING_ENABLED:
-        metrics = agent_monitor.get_agent_metrics(agent_id)
-        if metrics:
-            return {
-                "agent_id": agent_id,
-                "health_score": metrics.get("health_score", 0.0),
-                "status": metrics.get("status", "unknown"),
-                "error_rate": metrics.get("error_rate", 0.0),
-                "throughput": metrics.get("throughput", 0.0),
-                "last_active": metrics.get("last_active", 0.0),
-                "cpu_usage": metrics.get("cpu_usage", 0.0),
-                "memory_usage": metrics.get("memory_usage", 0.0),
-            }
+    if MONITORING_ENABLED and agent_monitor is not None:
+        try:
+            metrics = agent_monitor.get_agent_metrics(agent_id)
+            if metrics:
+                return {
+                    "agent_id": agent_id,
+                    "health_score": metrics.get("health_score", 0.0),
+                    "status": metrics.get("status", "unknown"),
+                    "error_rate": metrics.get("error_rate", 0.0),
+                    "throughput": metrics.get("throughput", 0.0),
+                    "last_active": metrics.get("last_active", 0.0),
+                    "cpu_usage": metrics.get("cpu_usage", 0.0),
+                    "memory_usage": metrics.get("memory_usage", 0.0),
+                }
+        except Exception as e:
+            logger.debug("Failed to get health metrics from monitoring: %s", e)
 
     if agent_id not in _agents:
         from fastapi import HTTPException
@@ -268,13 +285,16 @@ async def get_agent_health(agent_id: str) -> Dict[str, Any]:
 @router.get("/{agent_id}/history")
 async def get_agent_history(agent_id: str, limit: int = 50) -> Dict[str, Any]:
     """Get task execution history for an agent."""
-    if MONITORING_ENABLED:
-        history = agent_monitor.get_task_history(agent_id, limit)
-        return {
-            "agent_id": agent_id,
-            "history": history,
-            "count": len(history),
-        }
+    if MONITORING_ENABLED and agent_monitor is not None:
+        try:
+            history = agent_monitor.get_task_history(agent_id, limit)
+            return {
+                "agent_id": agent_id,
+                "history": history,
+                "count": len(history),
+            }
+        except Exception as e:
+            logger.debug("Failed to get task history from monitoring: %s", e)
 
     # No history available without monitoring
     return {
@@ -474,14 +494,17 @@ async def analyze_code_security(request: CodeValidationRequest) -> Dict[str, Any
 @router.get("/monitoring/summary")
 async def get_monitoring_summary() -> Dict[str, Any]:
     """Get overall monitoring summary for all agents."""
-    if MONITORING_ENABLED:
-        all_metrics = agent_monitor.get_all_metrics()
-        return {
-            "agents": all_metrics,
-            "total_agents": len(all_metrics),
-            "monitoring_enabled": True,
-            "timestamp": time.time(),
-        }
+    if MONITORING_ENABLED and agent_monitor is not None:
+        try:
+            all_metrics = agent_monitor.get_all_metrics()
+            return {
+                "agents": all_metrics,
+                "total_agents": len(all_metrics),
+                "monitoring_enabled": True,
+                "timestamp": time.time(),
+            }
+        except Exception as e:
+            logger.debug("Failed to get monitoring summary: %s", e)
 
     # Fallback to basic summary
     return {

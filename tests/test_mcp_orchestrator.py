@@ -224,14 +224,17 @@ class TestMCPOrchestrator:
 
     @patch("subprocess.Popen")
     @patch("src.integrations.mcp_orchestrator.get_audit_system")
+    @patch("time.sleep")  # Mock sleep para acelerar testes
     def test_start_server_already_running(
         self,
+        mock_sleep: MagicMock,
         mock_audit: MagicMock,
         mock_popen: MagicMock,
         temp_config_file: Path,
     ) -> None:
         """Testa iniciar servidor que já está rodando."""
         mock_process = Mock()
+        # poll() sempre retorna None (processo ainda rodando)
         mock_process.poll.return_value = None
         mock_popen.return_value = mock_process
 
@@ -299,8 +302,10 @@ class TestMCPOrchestrator:
 
     @patch("subprocess.Popen")
     @patch("src.integrations.mcp_orchestrator.get_audit_system")
+    @patch("time.sleep")  # Mock sleep para acelerar testes
     def test_restart_server(
         self,
+        mock_sleep: MagicMock,
         mock_audit: MagicMock,
         mock_popen: MagicMock,
         temp_config_file: Path,
@@ -309,6 +314,7 @@ class TestMCPOrchestrator:
         mock_process = Mock()
         mock_process.poll.return_value = None
         mock_process.wait = Mock()
+        mock_process.terminate = Mock()
         mock_popen.return_value = mock_process
 
         mock_audit_system = Mock()
@@ -415,8 +421,10 @@ class TestMCPOrchestrator:
 
     @patch("subprocess.Popen")
     @patch("src.integrations.mcp_orchestrator.get_audit_system")
+    @patch("time.sleep")  # Mock sleep para acelerar testes
     def test_start_all_servers(
         self,
+        mock_sleep: MagicMock,
         mock_audit: MagicMock,
         mock_popen: MagicMock,
         temp_config_file: Path,

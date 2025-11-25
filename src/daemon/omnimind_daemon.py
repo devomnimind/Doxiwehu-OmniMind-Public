@@ -321,9 +321,48 @@ class OmniMindDaemon:
         """Get current daemon status"""
         current_metrics = self._collect_system_metrics() if self.running else None
 
+        # Calculate uptime (simplified - use a default if not tracking start time)
+        uptime_seconds = 0
+        # If daemon has been running, estimate uptime from metrics history
+        if self.metrics_history:
+            # Approximate uptime based on metrics collection interval
+            uptime_seconds = len(self.metrics_history) * self.check_interval
+
+        # Count completed and failed tasks
+        completed_tasks = sum(
+            1 for t in self.tasks if t.last_execution and t.success_count > 0
+        )
+        failed_tasks = sum(1 for t in self.tasks if t.failure_count > 0)
+
+        # Build system_metrics in the format expected by frontend
+        system_metrics = None
+        if current_metrics:
+            # Calculate idle seconds (simplified - time since last high CPU activity)
+            idle_seconds = 0
+            if len(self.metrics_history) > 1:
+                # Simple heuristic: if CPU was low for recent metrics
+                recent_low_cpu = sum(
+                    1 for m in self.metrics_history[-10:] if m.cpu_percent < 20
+                )
+                idle_seconds = recent_low_cpu * 5  # Approximate 5 seconds per metric
+
+            # Check if sleep hours (00:00-06:00)
+            current_hour = datetime.now().hour
+            is_sleep_hours = current_hour >= 0 and current_hour < 6
+
+            system_metrics = {
+                "cpu_percent": current_metrics.cpu_percent,
+                "memory_percent": current_metrics.memory_percent,
+                "disk_percent": current_metrics.disk_usage_percent,
+                "is_user_active": current_metrics.user_active,
+                "idle_seconds": idle_seconds,
+                "is_sleep_hours": is_sleep_hours,
+            }
+
         return {
             "state": self.state.value,
             "running": self.running,
+            "uptime_seconds": uptime_seconds,
             "tasks_registered": len(self.tasks),
             "tasks_pending": sum(
                 1
@@ -334,16 +373,19 @@ class OmniMindDaemon:
                     and datetime.now() >= t.last_execution + t.repeat_interval
                 )
             ),
-            "metrics": (
-                {
-                    "cpu_percent": current_metrics.cpu_percent,
-                    "memory_percent": current_metrics.memory_percent,
-                    "is_idle": current_metrics.is_idle(),
-                    "is_sleep_time": current_metrics.is_sleep_time(),
-                }
-                if current_metrics
-                else {}
-            ),
+            "system_metrics": system_metrics
+            or {
+                "cpu_percent": 0,
+                "memory_percent": 0,
+                "disk_percent": 0,
+                "is_user_active": False,
+                "idle_seconds": 0,
+                "is_sleep_hours": False,
+            },
+            "task_count": len(self.tasks),
+            "completed_tasks": completed_tasks,
+            "failed_tasks": failed_tasks,
+            "cloud_connected": self.enable_cloud,
             "cloud_enabled": self.enable_cloud,
             "workspace": str(self.workspace_path),
         }

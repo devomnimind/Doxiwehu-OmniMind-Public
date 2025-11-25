@@ -127,19 +127,24 @@ def _ensure_dashboard_credentials() -> Tuple[str, str]:
 
 
 @asynccontextmanager
-async def lifespan(app_instance: FastAPI) -> Any:
+async def lifespan(app_instance: FastAPI):
     # Import WebSocket manager
     from web.backend.websocket_manager import ws_manager
 
     # Import agent communication broadcaster
     from web.backend.agent_communication_ws import get_broadcaster
 
+    # Initialize monitoring variables
+    agent_monitor = None
+    metrics_collector = None
+    performance_tracker = None
+    monitoring_available = False
+
     # Import monitoring systems
     try:
         from web.backend.monitoring import agent_monitor, metrics_collector, performance_tracker
         monitoring_available = True
     except ImportError:
-        monitoring_available = False
         logger.warning("Monitoring systems not available")
 
     # Start WebSocket manager
@@ -150,7 +155,7 @@ async def lifespan(app_instance: FastAPI) -> Any:
     await broadcaster.start()
 
     # Start monitoring systems
-    if monitoring_available:
+    if monitoring_available and agent_monitor and metrics_collector and performance_tracker:
         await agent_monitor.start()
         await metrics_collector.start()
         await performance_tracker.start()
@@ -172,7 +177,7 @@ async def lifespan(app_instance: FastAPI) -> Any:
         await broadcaster.stop()
 
         # Stop monitoring systems
-        if monitoring_available:
+        if monitoring_available and agent_monitor and metrics_collector and performance_tracker:
             await agent_monitor.stop()
             await metrics_collector.stop()
             await performance_tracker.stop()

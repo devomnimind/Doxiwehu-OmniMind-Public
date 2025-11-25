@@ -17,6 +17,7 @@
 - **Raiz:** SEMPRE executar comandos desde `/home/fahbrain/projects/omnimind`.
 - **Verificação:** Verificar `pwd` antes de comandos críticos.
 - **Limpeza:** Limpar arquivos acidentais em diretórios pais imediatamente.
+- **Execução de testes pytest**: Sempre usar argumentos completos com coverage e log detalhado de (FAIL/SKIPPED|WARNING|deprecated|PendingDeprecationWarning) em arquivo auditável. 
 
 ### 4. Qualidade & Segurança de Tipo
 - **Python:** 3.12.8 RIGOROSAMENTE (não use 3.13+).

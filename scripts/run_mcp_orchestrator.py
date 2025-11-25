@@ -3,9 +3,12 @@ import logging
 import signal
 import sys
 import os
+from pathlib import Path
 
 # Add project root to python path
-sys.path.append(os.getcwd())
+project_root = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(project_root))
+os.chdir(project_root)
 
 from src.integrations.mcp_orchestrator import MCPOrchestrator
 

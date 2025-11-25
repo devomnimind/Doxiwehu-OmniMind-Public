@@ -69,7 +69,8 @@ class FirecrackerSandbox:
             and self.rootfs_path.exists()
         )
         if not self.enabled:
-            logger.warning(
+            # Log at debug level - Firecracker is optional and expected to be missing in dev
+            logger.debug(
                 "Firecracker sandbox disabled (kernel or rootfs missing): kernel=%s rootfs=%s",
                 self.kernel_path,
                 self.rootfs_path,

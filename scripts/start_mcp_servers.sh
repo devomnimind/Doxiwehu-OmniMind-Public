@@ -5,5 +5,8 @@ cd "$(dirname "$0")/.."
 # Activate virtual environment
 source .venv/bin/activate
 
-# Run the orchestrator
-python scripts/run_mcp_orchestrator.py
+# Ensure PATH includes .venv/bin
+export PATH="$(pwd)/.venv/bin:$PATH"
+
+# Run the orchestrator using the venv Python
+exec "$(pwd)/.venv/bin/python" scripts/run_mcp_orchestrator.py

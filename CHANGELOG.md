@@ -1,8 +1,52 @@
 # 📝 CHANGELOG - Histórico de Mudanças
 
 **Formato:** Semantic Versioning (MAJOR.MINOR.PATCH)  
-**Status:** Produção v1.15.1  
+**Status:** Produção v1.15.2  
 **Projeto iniciado:** Novembro 2025  
+
+---
+
+## [1.15.2] - 2025-11-25 - Systemd Services + Warnings Fix + Health Check
+
+### 🔧 Fixed
+- **Warnings de Logging:** "Agent monitoring not available" e "Firecracker sandbox disabled" movidos para nível DEBUG
+  - **Arquivos:** `web/backend/routes/agents.py`, `src/security/firecracker_sandbox.py`
+  - **Resultado:** Logs mais limpos, warnings apenas em modo debug
+- **Erros de Comandos Sudo:** Comandos `ufw deny` e `auditctl` falhando repetidamente
+  - **Correção:** Validação de endereços inválidos (0.0.0.0, unknown) antes de executar
+  - **Correção:** Detecção automática de interface de rede (não hardcoded)
+  - **Correção:** Verificação se qdisc já existe antes de adicionar
+  - **Arquivos:** `src/security/playbooks/data_exfiltration_response.py`, `src/security/playbooks/intrusion_response.py`, `src/security/playbooks/privilege_escalation_response.py`
+  - **Resultado:** Erros tratados como warnings/debug, não interrompem execução
+- **Serviços Systemd Duplicados:** `omnimind-backend.service` redundante removido
+  - **Causa:** `omnimind.service` já inclui backend
+  - **Solução:** Removido da instalação, dependências atualizadas
+  - **Arquivos:** `scripts/systemd/install_all_services.sh`, `scripts/systemd/omnimind-frontend.service`, `scripts/systemd/omnimind-test-suite.service`, `scripts/systemd/omnimind-benchmark.service`
+- **Health Check MCP:** Servidores reiniciando constantemente
+  - **Correção:** Verificação de porta respondendo (não apenas processo rodando)
+  - **Correção:** Não reinicia se processo está rodando mas porta não responde
+  - **Arquivo:** `src/integrations/mcp_orchestrator.py`
+  - **Resultado:** Reinicializações desnecessárias eliminadas
+- **Permissões de Diretório:** Erro "Read-only file system" para `.omnimind/security.log`
+  - **Correção:** Diretório `.omnimind` criado com permissões corretas (755)
+  - **Resultado:** SecurityAgent inicializa sem erros
+
+### 📊 Changed
+- **Logging:** Warnings opcionais movidos para nível DEBUG
+- **Health Check MCP:** Verifica conectividade de porta além de processo
+- **Dependências de Serviços:** Todos atualizados para usar `omnimind.service` (não `omnimind-backend.service`)
+
+### 📁 Added
+- `scripts/systemd/install_all_services.sh` - Instalação completa de serviços systemd
+- `scripts/systemd/cleanup_duplicate_services.sh` - Limpeza de serviços duplicados
+- `scripts/systemd/fix_test_benchmark_services.sh` - Correção de dependências test/benchmark
+- `scripts/systemd/fix_all_services.sh` - Script completo de correção de serviços
+- `.vscode/cursor-ai-terminal-config.md` - Documentação sobre terminal integrado
+
+### 🔐 Security
+- Comandos sudo validam entradas antes de executar
+- Tratamento de erros não críticos não interrompe execução
+- Health checks mais robustos para servidores MCP
 
 ---
 

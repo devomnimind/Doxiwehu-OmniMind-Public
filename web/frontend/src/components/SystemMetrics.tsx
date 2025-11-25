@@ -7,6 +7,18 @@ export function SystemMetrics() {
 
   const metrics = status.system_metrics;
 
+  // Safety check: if system_metrics is missing, show placeholder
+  if (!metrics) {
+    return (
+      <div className="bg-gray-800 rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-white mb-6">System Metrics</h2>
+        <div className="text-gray-400 text-center py-8">
+          System metrics not available
+        </div>
+      </div>
+    );
+  }
+
   const getUsageColor = (percent: number) => {
     if (percent > 80) return 'bg-red-500';
     if (percent > 60) return 'bg-yellow-500';
@@ -22,12 +34,14 @@ export function SystemMetrics() {
         <div>
           <div className="flex justify-between mb-2">
             <span className="text-gray-300">CPU Usage</span>
-            <span className="text-white font-semibold">{metrics.cpu_percent.toFixed(1)}%</span>
+            <span className="text-white font-semibold">
+              {(metrics.cpu_percent ?? 0).toFixed(1)}%
+            </span>
           </div>
           <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
             <div
-              className={`h-full transition-all duration-300 ${getUsageColor(metrics.cpu_percent)}`}
-              style={{ width: `${metrics.cpu_percent}%` }}
+              className={`h-full transition-all duration-300 ${getUsageColor(metrics.cpu_percent ?? 0)}`}
+              style={{ width: `${metrics.cpu_percent ?? 0}%` }}
             ></div>
           </div>
         </div>
@@ -36,12 +50,14 @@ export function SystemMetrics() {
         <div>
           <div className="flex justify-between mb-2">
             <span className="text-gray-300">Memory Usage</span>
-            <span className="text-white font-semibold">{metrics.memory_percent.toFixed(1)}%</span>
+            <span className="text-white font-semibold">
+              {(metrics.memory_percent ?? 0).toFixed(1)}%
+            </span>
           </div>
           <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
             <div
-              className={`h-full transition-all duration-300 ${getUsageColor(metrics.memory_percent)}`}
-              style={{ width: `${metrics.memory_percent}%` }}
+              className={`h-full transition-all duration-300 ${getUsageColor(metrics.memory_percent ?? 0)}`}
+              style={{ width: `${metrics.memory_percent ?? 0}%` }}
             ></div>
           </div>
         </div>
@@ -50,12 +66,14 @@ export function SystemMetrics() {
         <div>
           <div className="flex justify-between mb-2">
             <span className="text-gray-300">Disk Usage</span>
-            <span className="text-white font-semibold">{metrics.disk_percent.toFixed(1)}%</span>
+            <span className="text-white font-semibold">
+              {(metrics.disk_percent ?? 0).toFixed(1)}%
+            </span>
           </div>
           <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
             <div
-              className={`h-full transition-all duration-300 ${getUsageColor(metrics.disk_percent)}`}
-              style={{ width: `${metrics.disk_percent}%` }}
+              className={`h-full transition-all duration-300 ${getUsageColor(metrics.disk_percent ?? 0)}`}
+              style={{ width: `${metrics.disk_percent ?? 0}%` }}
             ></div>
           </div>
         </div>
@@ -72,7 +90,7 @@ export function SystemMetrics() {
           <div className="bg-gray-700/50 rounded-lg p-3">
             <div className="text-gray-400 text-sm mb-1">Idle Time</div>
             <div className="text-white font-semibold">
-              {Math.floor(metrics.idle_seconds / 60)}m
+              {Math.floor((metrics.idle_seconds ?? 0) / 60)}m
             </div>
           </div>
         </div>

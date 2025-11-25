@@ -452,11 +452,40 @@ class MCPOrchestrator:
             logger.warning("Servidor MCP %s não está mais rodando", name)
             return False
 
-        # TODO: Implementar health check via endpoint HTTP/gRPC
-        # Por enquanto, assumir que se o processo está rodando, está saudável
+        # Verificar se a porta está em uso (indica que o servidor HTTP está ativo)
+        config = self.servers.get(name)
+        if config and config.port:
+            try:
+                import socket
+
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.settimeout(0.5)
+                result = sock.connect_ex(("127.0.0.1", config.port))
+                sock.close()
+                if result == 0:
+                    # Porta está aberta e aceitando conexões
+                    self.status[name].healthy = True
+                    self.status[name].last_health_check = time.time()
+                    return True
+                else:
+                    # Porta não está respondendo, mas processo está rodando
+                    # Marcar como não saudável mas não reiniciar imediatamente
+                    logger.debug(
+                        "Servidor %s: porta %d não está respondendo", name, config.port
+                    )
+                    self.status[name].healthy = False
+                    self.status[name].last_health_check = time.time()
+                    return False
+            except Exception as e:
+                logger.debug("Erro ao verificar porta do servidor %s: %s", name, e)
+                # Em caso de erro, assumir que está saudável se processo está rodando
+                self.status[name].healthy = True
+                self.status[name].last_health_check = time.time()
+                return True
+
+        # Se não tem porta configurada, apenas verificar se processo está rodando
         self.status[name].healthy = True
         self.status[name].last_health_check = time.time()
-
         return True
 
     async def health_check_loop(self) -> None:
@@ -469,9 +498,20 @@ class MCPOrchestrator:
                     healthy = self.check_server_health(name)
 
                     if not healthy and self.servers[name].enabled:
-                        # Tentar reiniciar servidor não saudável
+                        # Verificar se o processo ainda está rodando antes de reiniciar
+                        if name in self.processes:
+                            process = self.processes[name]
+                            if process.poll() is None:
+                                # Processo ainda está rodando, apenas não saudável
+                                # Não reiniciar imediatamente - pode ser um problema temporário
+                                logger.debug(
+                                    "Servidor %s não saudável mas processo ainda rodando, aguardando próximo check",
+                                    name,
+                                )
+                                continue
+                        # Processo não está rodando, reiniciar
                         logger.warning(
-                            "Servidor %s não saudável, tentando reiniciar", name
+                            "Servidor %s não está rodando, tentando reiniciar", name
                         )
                         self.restart_server(name)
 

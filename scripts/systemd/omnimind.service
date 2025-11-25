@@ -19,7 +19,7 @@ Environment="OMNIMIND_LOG_LEVEL=INFO"
 ExecStartPre=/bin/bash -c 'source .venv/bin/activate'
 
 # Main service
-ExecStart=/home/fahbrain/projects/omnimind/.venv/bin/python -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8000 --log-level info
+ExecStart=/home/fahbrain/projects/omnimind/.venv/bin/python -m uvicorn web.backend.main:app --host 127.0.0.1 --port 8000 --log-level info
 
 # Restart policy
 Restart=on-failure

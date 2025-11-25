@@ -514,7 +514,11 @@ class TaskDelegationManager:
 
         # Adiciona tipo de tarefa se disponível
         if result.execution_result and hasattr(result.execution_result, "task_type"):
-            history_entry["task_type"] = result.execution_result.task_type.value
+            task_type = getattr(result.execution_result, "task_type", None)
+            if task_type and hasattr(task_type, "value"):
+                history_entry["task_type"] = task_type.value
+            elif task_type:
+                history_entry["task_type"] = str(task_type)
 
         self.task_history.append(history_entry)
 

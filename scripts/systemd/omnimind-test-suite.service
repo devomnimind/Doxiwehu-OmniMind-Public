@@ -1,7 +1,7 @@
 [Unit]
 Description=OmniMind Test Suite Runner
-After=omnimind-backend.service omnimind-qdrant.service
-Requires=omnimind-backend.service omnimind-qdrant.service
+After=omnimind.service omnimind-qdrant.service
+Requires=omnimind.service omnimind-qdrant.service
 Wants=omnimind-qdrant.service
 
 [Service]
