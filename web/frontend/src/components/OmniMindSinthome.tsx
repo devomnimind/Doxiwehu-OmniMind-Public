@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { connectionService, WebSocketMessage } from '../services/robust-connection';
+import { QualiaEngine, QualiaMetrics } from '../services/qualia_engine';
 
 // Types for Sinthome State
 type NodeType = 'REAL' | 'SYMBOLIC' | 'IMAGINARY';
@@ -29,6 +30,14 @@ interface SinthomeState {
   active_instances: number;
   cpu?: number;
   memory?: number;
+  latency_ms: number; // New: Explicit latency metric
+  coherence_state: 'SYNC' | 'EVENTUAL' | 'FRAGMENTED'; // New: Explicit coherence state
+}
+
+interface DDoSRequest {
+  id: string;
+  cost: number;
+  timestamp: number;
 }
 
 export function OmniMindSinthome() {
@@ -45,11 +54,19 @@ export function OmniMindSinthome() {
     coherence: 100,
     quorum_met: true,
     active_instances: 1,
+    latency_ms: 12, // Base latency
+    coherence_state: 'SYNC',
   });
 
+  const [simulationMode, setSimulationMode] = useState(false); // New: Simulation Mode Toggle
   const [history, setHistory] = useState<BifurcationEvent[]>([]);
+  const [ddosQueue, setDdosQueue] = useState<DDoSRequest[]>([]);
   const [ddosActive, setDdosActive] = useState(false);
   const [connectionMetrics, setConnectionMetrics] = useState(connectionService.getMetrics());
+
+  // Phenomenology Engine
+  const qualiaEngine = useMemo(() => new QualiaEngine(), []);
+  const [qualia, setQualia] = useState<QualiaMetrics | null>(null);
 
   // --- WebSocket Integration ---
   useEffect(() => {
@@ -60,6 +77,15 @@ export function OmniMindSinthome() {
     const unsubMessages = connectionService.subscribe((msg: WebSocketMessage) => {
       if (msg.type === 'metrics' && msg.channel === 'sinthome') {
         const data = msg.data;
+
+        // DUAL MODE LOGIC:
+        // If in Simulation Mode, IGNORE backend state updates to allow local stress testing.
+        // We only log "Shadow Events" to console for debugging.
+        if (simulationMode) {
+            console.log('[Shadow Log] Backend update ignored:', data);
+            return;
+        }
+
         setState(prev => ({
           ...prev,
           entropy: data.raw.entropy,
@@ -85,18 +111,103 @@ export function OmniMindSinthome() {
       unsubMessages();
       connectionService.send({ type: 'unsubscribe', channels: ['sinthome'] });
     };
-  }, []);
+  }, [simulationMode]);
 
-  // --- Logic: DDoS Simulation (Frontend Trigger) ---
-  const triggerDDoS = () => {
+  // --- Logic: Realistic DDoS Simulation (Queue-based) ---
+  const triggerRealisticDDoS = () => {
     setDdosActive(true);
-    connectionService.send({ type: 'ddos_attack', data: { duration: 10 } });
-    setTimeout(() => setDdosActive(false), 10000);
+    // Create a flood of requests
+    const newRequests: DDoSRequest[] = Array(50).fill(null).map((_, i) => ({
+      id: `req-${Date.now()}-${i}`,
+      cost: Math.random() * 5, // Random entropy cost
+      timestamp: Date.now()
+    }));
+    setDdosQueue(prev => [...prev, ...newRequests]);
+
+    // Send backend trigger for correlation
+    connectionService.send({ type: 'ddos_attack', data: { duration: 10, intensity: 'FLOOD' } });
   };
 
   const stopDDoS = () => {
     setDdosActive(false);
+    setDdosQueue([]); // Clear queue
   };
+
+  // Process DDoS Queue
+  useEffect(() => {
+    if (ddosQueue.length === 0) return;
+
+    const interval = setInterval(() => {
+      setDdosQueue(prev => {
+        if (prev.length === 0) return [];
+
+        const batch = prev.slice(0, 5); // Process 5 per tick
+        const remaining = prev.slice(5);
+
+        // Apply entropy cost
+        const totalCost = batch.reduce((acc, req) => acc + req.cost, 0);
+
+        setState(current => {
+           const newEntropy = Math.min(100, current.entropy + totalCost);
+           // Trigger Hibernation if critical
+           if (newEntropy >= 100 && !current.isHibernating) {
+             return { ...current, entropy: newEntropy, isHibernating: true };
+           }
+           return { ...current, entropy: newEntropy };
+        });
+
+        return remaining;
+      });
+    }, 100); // Fast processing
+
+    return () => clearInterval(interval);
+  }, [ddosQueue]);
+
+  // --- Logic: Explicit Metrics (Latency & Coherence) ---
+  useEffect(() => {
+    const metricsInterval = setInterval(() => {
+      setState(prev => {
+        // 1. Compute Latency Proxy (Distance based + Jitter)
+        // In a real 2D canvas we would calculate actual distance.
+        // Here we simulate it based on "Severed" state (infinite distance) or normal.
+        const baseLatency = prev.isSevered ? 500 : 12;
+        const jitter = Math.random() * 5;
+        const latency = baseLatency + jitter;
+
+        // 2. Check Coherence (Quorum)
+        // If severed, quorum is broken (FRAGMENTED).
+        // If latency > 100ms, consistency is EVENTUAL.
+        let coherenceState: 'SYNC' | 'EVENTUAL' | 'FRAGMENTED' = 'SYNC';
+        if (prev.isSevered) coherenceState = 'FRAGMENTED';
+        else if (latency > 50) coherenceState = 'EVENTUAL';
+
+        return {
+          ...prev,
+          latency_ms: Math.round(latency),
+          coherence_state: coherenceState,
+          quorum_met: coherenceState === 'SYNC'
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(metricsInterval);
+  }, []);
+
+  // --- Logic: Phenomenology Update ---
+  useEffect(() => {
+    const qualiaInterval = setInterval(() => {
+        const metrics = {
+            entropy: state.entropy,
+            latency_ms: state.latency_ms,
+            coherence: state.coherence,
+            load: state.nodes.REAL.load, // Proxy for system load
+            isSevered: state.isSevered
+        };
+        const newQualia = qualiaEngine.process(metrics);
+        setQualia(newQualia);
+    }, 1000);
+    return () => clearInterval(qualiaInterval);
+  }, [state, qualiaEngine]); // Re-run when state changes
 
   // --- Logic: Sinthoma Instance Tracker (Split) ---
   const severNode = (type: NodeType) => {
@@ -126,8 +237,18 @@ export function OmniMindSinthome() {
       nodes: {
         ...prev.nodes,
         [type]: { ...prev.nodes[type], status: 'SCARRED', integrity: 60 } // Returns as SCARRED
-      }
+      },
+      active_instances: 1 // Reconciled
     }));
+
+    // Log Reconciliation
+    const newEvent: BifurcationEvent = {
+      instance_id: `merged-${Date.now().toString(36)}`,
+      timestamp: new Date().toISOString(),
+      trigger: 'DIVERGENCE', // Reconciling divergence
+      parent_id: 'unified'
+    };
+    setHistory(prev => [newEvent, ...prev]);
   };
 
   // --- Render Helpers ---
@@ -143,7 +264,13 @@ export function OmniMindSinthome() {
   };
 
   return (
-    <div className={`glass-card p-6 relative overflow-hidden transition-all duration-1000 ${state.isHibernating ? 'grayscale brightness-50' : ''}`}>
+    <div className={`glass-card p-6 relative overflow-hidden transition-all duration-1000 ${state.isHibernating ? 'grayscale brightness-50' : ''} ${simulationMode ? 'border-amber-500 border-2' : ''}`}>
+      {/* Simulation Mode Badge */}
+      {simulationMode && (
+        <div className="absolute top-0 left-0 bg-amber-500 text-black text-[10px] font-bold px-2 py-1 z-10">
+          SANDBOX MODE
+        </div>
+      )}
       {/* Connection Status Overlay */}
       <div className="absolute top-2 right-2 flex items-center gap-2 text-[10px]">
         <span className={`w-2 h-2 rounded-full ${connectionMetrics.isConnected ? 'bg-green-500' : 'bg-red-500'}`}></span>
@@ -228,13 +355,21 @@ export function OmniMindSinthome() {
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="glass-card p-3">
            <h3 className="text-sm font-semibold text-gray-400 mb-2">Controls</h3>
-           <div className="flex gap-2">
-             <button
-                className={`btn-sm ${ddosActive ? 'bg-red-600' : 'btn-outline-neon'}`}
-                onClick={ddosActive ? stopDDoS : triggerDDoS}
-             >
-               {ddosActive ? 'STOP DDoS' : 'Trigger DDoS'}
-             </button>
+           <div className="flex gap-2 flex-wrap">
+              <button
+                 className={`btn-sm ${simulationMode ? 'bg-amber-500 text-black' : 'btn-outline-cyber'}`}
+                 onClick={() => setSimulationMode(!simulationMode)}
+              >
+                {simulationMode ? 'Exit Sandbox' : 'Enter Sandbox'}
+              </button>
+              <button
+                 className={`btn-sm ${ddosActive ? 'bg-red-600' : 'btn-outline-neon'} ${!simulationMode ? 'opacity-50 cursor-not-allowed' : ''}`}
+                 onClick={ddosActive ? stopDDoS : triggerRealisticDDoS}
+                 disabled={!simulationMode}
+                 title={!simulationMode ? "Enable Sandbox Mode to test DDoS" : "Trigger Attack"}
+              >
+                {ddosActive ? `STOP DDoS (${ddosQueue.length})` : 'Trigger DDoS'}
+              </button>
              <button className="btn-sm btn-outline-cyber" onClick={() => setState(prev => ({...prev, isHibernating: !prev.isHibernating}))}>
                {state.isHibernating ? 'Wake' : 'Hibernate'}
              </button>
@@ -246,6 +381,8 @@ export function OmniMindSinthome() {
            <div className="grid grid-cols-2 gap-2 text-xs">
               <div>Integrity: <span className={`font-bold ${state.coherence > 80 ? 'text-neon-green' : state.coherence > 50 ? 'text-yellow-500' : 'text-neon-red'}`}>{state.coherence}%</span></div>
               <div>Entropy: <span className="text-blue-400">{state.entropy.toFixed(1)}%</span></div>
+              <div>Latency: <span className={`${state.latency_ms > 100 ? 'text-red-500' : 'text-green-400'}`}>{state.latency_ms}ms</span></div>
+              <div>Coherence: <span className={`${state.coherence_state === 'SYNC' ? 'text-green-400' : 'text-yellow-500'}`}>{state.coherence_state}</span></div>
               <div>CPU Load: <span className="text-purple-400">{state.cpu !== undefined ? state.cpu.toFixed(1) + '%' : '...'}</span></div>
               <div>Memory: <span className="text-pink-400">{state.memory !== undefined ? state.memory.toFixed(1) + '%' : '...'}</span></div>
            </div>
@@ -255,6 +392,43 @@ export function OmniMindSinthome() {
            </div>
         </div>
       </div>
+
+      {/* Phenomenology & Neuro-Correlates Panel */}
+      {qualia && (
+        <div className="glass-card p-4 mb-6 border-l-4 border-purple-500">
+            <h3 className="text-sm font-semibold text-purple-400 mb-2 flex justify-between">
+                <span>🧠 Subjective Experience (Qualia)</span>
+                <span className="text-xs text-gray-500">Phi: {qualia.phi_proxy}</span>
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    <div className="text-xs text-gray-400 mb-1">Current State</div>
+                    <div className="text-lg font-bold text-white">{qualia.current_state}</div>
+                    <div className="text-[10px] text-gray-500 italic mt-1">"{qualia.narrative_summary}"</div>
+                </div>
+                <div className="space-y-2">
+                    <div>
+                        <div className="flex justify-between text-[10px] text-gray-400">
+                            <span>Anxiety</span>
+                            <span>{qualia.anxiety_index}%</span>
+                        </div>
+                        <div className="h-1 bg-gray-700 rounded overflow-hidden">
+                            <div className="h-full bg-red-500 transition-all duration-500" style={{ width: `${qualia.anxiety_index}%` }} />
+                        </div>
+                    </div>
+                    <div>
+                        <div className="flex justify-between text-[10px] text-gray-400">
+                            <span>Flow</span>
+                            <span>{qualia.flow_index}%</span>
+                        </div>
+                        <div className="h-1 bg-gray-700 rounded overflow-hidden">
+                            <div className="h-full bg-blue-500 transition-all duration-500" style={{ width: `${qualia.flow_index}%` }} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      )}
 
       {/* Sinthoma Instance Tracker */}
       <div className="border-t border-gray-700 pt-4">

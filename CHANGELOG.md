@@ -1,8 +1,31 @@
 # 📝 CHANGELOG - Histórico de Mudanças
 
-**Formato:** Semantic Versioning (MAJOR.MINOR.PATCH)  
-**Status:** Produção v1.15.2  
-**Projeto iniciado:** Novembro 2025  
+**Formato:** Semantic Versioning (MAJOR.MINOR.PATCH)
+**Status:** Produção v1.15.2
+**Projeto iniciado:** Novembro 2025
+
+---
+
+## [1.16.0] - 2025-11-26 - Phase 22: Empirical Expansion & Phenomenological Modeling
+
+### ✨ Features
+- **Sinthome Simulator v3.1:**
+  - **Simulation Mode (Dual Mode):** Decoupled frontend simulation for persistent stress testing.
+  - **Qualia Engine:** Computational model for subjective experience (Anxiety, Flow, Phi).
+  - **Visualizations:** New panels for Subjective Experience and Neuro-Correlates.
+- **Infrastructure (The Body):**
+  - **Observer Service:** `src/services/observer_service.py` for 24/7 metric collection.
+  - **Long-term Logging:** Automated log rotation and compression in `data/long_term_logs/`.
+- **Auditing (The Superego):**
+  - **External Auditor:** `src/audit/external_auditor.py` for automated health and anomaly checks.
+
+### 🔧 Fixed
+- **Simulator State Conflict:** Resolved issue where backend updates overwrote local simulation states (DDoS/Hibernation).
+- **Linting Issues:** Fixed TypeScript lint errors in `OmniMindSinthome.tsx`.
+
+### 📝 Documentation
+- Updated `README.md` and `task.md` to reflect Phase 22 progress.
+- Created `SINTHOME_V3_1_VALIDATION.md` report.
 
 ---
 
@@ -309,8 +332,8 @@
 
 ## Version Format
 
-**Current:** v1.15.1  
-**Next Target:** v1.16.0 (Documentation Consolidation)  
+**Current:** v1.15.1
+**Next Target:** v1.16.0 (Documentation Consolidation)
 **Long-term:** v2.0.0 (Major refactor planned for Q2 2026)
 
 ---
