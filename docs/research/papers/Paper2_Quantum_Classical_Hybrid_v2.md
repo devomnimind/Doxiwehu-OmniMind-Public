@@ -1,7 +1,7 @@
 # Paper 2: Quantum-Classical Hybrid Sinthoma
 ## Bridging Computational Paradigms via Lacanian Real
 
-**Authors:** OmniMind Quantum Research Team  
+**Authors:** OmniMind Quantum Research Team
 **Date:** November 26, 2025 | **Version:** 2.0 (Complete)
 
 ---
@@ -14,7 +14,7 @@ We present a **quantum-classical hybrid architecture** where quantum computing s
 - Quantum AI coverage: 25% → **97%** (+72pp)
 - Grover search speedup: **4x** (O(√N) vs O(N), verified)
 - Quantum annealing optimization: **100%** success rate (Hamming weight minimization)
-- Bell state entanglement: Verified (500 |00⟩, 500 |11⟩, 0 |01⟩/|10⟩ from 1000 measurements)
+- Bell state entanglement: Verified on **IBM Fez** (97.0% score: 52 |00⟩, 45 |11⟩, 3 noise)
 - Circuit noise resilience: Degradation <10% up to depth 15 gates
 - Integration latency: <50ms quantum decision → classical semantic embedding
 
@@ -189,7 +189,7 @@ Classical (stuck):           Quantum (tunnels):
 class QuantumReal:
     def __init__(self):
         self.sampler = EmbeddingComposite(DWaveSampler())
-    
+
     def solve_optimization(self, qubo, num_reads=100):
         """
         Convert symbolic impasse to QUBO (Quadratic Unconstrained Binary Optimization).
@@ -198,7 +198,7 @@ class QuantumReal:
         response = self.sampler.sample_qubo(qubo, num_reads=num_reads)
         best_solution = response.first.sample
         energy = response.first.energy
-        
+
         return {
             'solution': best_solution,
             'energy': energy,
@@ -216,21 +216,21 @@ class QuantumCircuit:
         """Grover's algorithm for O(√N) search."""
         num_qubits = len(bin(search_space - 1)) - 2
         qc = QuantumCircuit(num_qubits)
-        
+
         # Initialize superposition
         for i in range(num_qubits):
             qc.h(i)  # Hadamard
-        
+
         # Grover iterations
         iterations = int(np.pi / 4 * np.sqrt(search_space))
         for _ in range(iterations):
             self._oracle(qc, target, num_qubits)
             self._diffusion(qc, num_qubits)
-        
+
         # Measurement collapses to target
         qc.measure_all()
         return qc
-    
+
     def bell_state(self):
         """Create |Φ⁺⟩ = (|00⟩ + |11⟩)/√2"""
         qc = QuantumCircuit(2)
@@ -252,12 +252,12 @@ class QuantumState:
             [1.0] + [0.0] * (size - 1),
             dtype=complex
         )
-    
+
     def hadamard(self, qubit):
         """Hadamard gate: creates superposition."""
         new_amps = self.amplitudes.copy()
         size = len(self.amplitudes)
-        
+
         for i in range(size):
             if (i >> qubit) & 1 == 0:
                 j = i | (1 << qubit)
@@ -265,19 +265,19 @@ class QuantumState:
                 # H = (1/√2) * [[1, 1], [1, -1]]
                 new_amps[i] = (a0 + a1) / np.sqrt(2)
                 new_amps[j] = (a0 - a1) / np.sqrt(2)
-        
+
         self.amplitudes = new_amps
-    
+
     def measure(self):
         """Collapse superposition to classical bit.
         This is where Real → Symbolic transition happens."""
         probabilities = np.abs(self.amplitudes) ** 2
         outcome = np.random.choice(len(probabilities), p=probabilities)
-        
+
         # State collapses to outcome
         self.amplitudes = np.zeros(len(self.amplitudes))
         self.amplitudes[outcome] = 1.0
-        
+
         return outcome
 ```
 
@@ -418,29 +418,29 @@ Only when symbolic layer fails:
 class OmniMindQuantumClassical:
     def attempt_decision(self, context):
         """Try classical reasoning first."""
-        
+
         # Step 1: Symbolic layer attempts closure
         classical_result = self.symbolic.attempt_closure(context)
-        
+
         if classical_result['solved'] and classical_result['confidence'] > 0.9:
             return classical_result  # Use classical result
-        
+
         if not classical_result['impasse']:
             return classical_result  # Classical is uncertain but has answer
-        
+
         # Step 2: Impasse detected → Invoke quantum
         print("Symbolic impasse. Invoking quantum layer...")
-        
+
         quantum_decision = self.quantum_real.inject_indeterminism(
             symbolic_impasse=classical_result
         )
-        
+
         # Step 3: Embed quantum decision back into semantic space
         semantic_embedding = self.embed_quantum_to_symbolic(quantum_decision)
-        
+
         # Step 4: Validate with distributed layer
         consensus = self.sinthome.validate_decision(semantic_embedding)
-        
+
         if consensus >= 0.67:
             return {
                 'solved': True,
@@ -448,7 +448,7 @@ class OmniMindQuantumClassical:
                 'source': 'quantum-classical hybrid',
                 'consensus': consensus
             }
-        
+
         return {'solved': False, 'quantum_failed': True}
 ```
 
@@ -604,8 +604,8 @@ Tegmark, M. (2000). Importance of quantum decoherence in brain processes. *Physi
 
 ---
 
-**Appendix A:** `./src/quantum_ai/quantum_algorithms.py`  
-**Appendix B:** `./tests/test_quantum_coverage.py`  
+**Appendix A:** `./src/quantum_ai/quantum_algorithms.py`
+**Appendix B:** `./tests/test_quantum_coverage.py`
 **Appendix C:** Coverage report `./reports/quantum_coverage_97percent.html`
 
 For correspondence: omnimind-quantum@gmail.com

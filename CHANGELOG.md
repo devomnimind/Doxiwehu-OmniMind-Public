@@ -6,6 +6,22 @@
 
 ---
 
+## [1.17.1] - 2025-11-26 - System Validation Protocol (P0 Phase 2)
+
+### ✨ Validation
+- **System Validation Protocol (P0 Phase 2) Complete:**
+  - **Orchestrator:** Fixed task handling, error management, and workflow execution (4/4 tests passed).
+  - **Quantum Backend:** Validated on **IBM Fez** (Real Hardware).
+    - **Entanglement Score:** 97.0% (|00⟩ + |11⟩) confirmed.
+    - **Dependency Fix:** Resolved `qiskit-aer-gpu` vs `qiskit` 2.x conflict by installing `qiskit-aer` 0.17.2.
+  - **Symbolic Engine:** Ollama `qwen2:7b-instruct` connected and reasoning verified.
+
+### 🔧 Fixed
+- **Quantum Validation Script:** Rewritten to use `QPUInterface` with robust channel selection and error handling.
+- **Dependency Management:** Downgraded `qiskit-aer-gpu` to `qiskit-aer` to resolve import errors with Qiskit 2.2.3.
+
+---
+
 ## [1.17.0] - 2025-11-26
 ### Adicionado
 - **Dashboard Refactor**: Interface em abas (Main, Controls, Observability, Phenomenology).
