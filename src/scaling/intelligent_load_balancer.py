@@ -355,9 +355,7 @@ class IntelligentLoadBalancer:
         """
         if len(self.task_history) >= self.min_samples_for_ml:
             # Enough data for ML prediction
-            node_scores = [
-                (node, self.calculate_node_score(node, task)) for node in nodes
-            ]
+            node_scores = [(node, self.calculate_node_score(node, task)) for node in nodes]
             return min(node_scores, key=lambda x: x[1])[0]
         else:
             # Not enough data - fall back to least loaded

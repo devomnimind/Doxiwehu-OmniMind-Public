@@ -553,21 +553,25 @@ ESTIMATED_COMPLEXITY: low
         agent_mode = self._parse_agent_mode(line)
         if agent_mode:
             task_desc = self._extract_task_description(line)
-            plan["subtasks"].append({
-                "agent": agent_mode,
-                "description": task_desc,
-                "status": "pending",
-            })
+            plan["subtasks"].append(
+                {
+                    "agent": agent_mode,
+                    "description": task_desc,
+                    "status": "pending",
+                }
+            )
         else:
             # Try to infer agent from keywords
             inferred_agent = self._infer_agent_from_keywords(line)
             if inferred_agent:
                 task_desc = self._extract_task_description(line)
-                plan["subtasks"].append({
-                    "agent": inferred_agent,
-                    "description": task_desc,
-                    "status": "pending",
-                })
+                plan["subtasks"].append(
+                    {
+                        "agent": inferred_agent,
+                        "description": task_desc,
+                        "status": "pending",
+                    }
+                )
 
     def _parse_agent_mode(self, line: str) -> Optional[str]:
         """Parse explicit agent mode from line.
@@ -580,17 +584,18 @@ ESTIMATED_COMPLEXITY: low
         """
         line_lower = line.lower()
         agent_modes = [
-            "code", "architect", "debug", "reviewer",
-            "psychoanalyst", "security", "mcp", "dbus"
+            "code",
+            "architect",
+            "debug",
+            "reviewer",
+            "psychoanalyst",
+            "security",
+            "mcp",
+            "dbus",
         ]
 
         for mode in agent_modes:
-            patterns = [
-                f"[{mode}]",
-                f"[{mode}_mode]",
-                f"({mode})",
-                f"{mode}_mode"
-            ]
+            patterns = [f"[{mode}]", f"[{mode}_mode]", f"({mode})", f"{mode}_mode"]
 
             if any(pattern in line_lower for pattern in patterns):
                 return mode
@@ -607,10 +612,10 @@ ESTIMATED_COMPLEXITY: low
             Clean task description
         """
         # Remove numbering and bullets
-        task_desc = re.sub(r'^[\d\.\-\)\s]*', '', line)
+        task_desc = re.sub(r"^[\d\.\-\)\s]*", "", line)
 
         # Remove agent mode markers
-        task_desc = re.sub(r'\[.*?\]|\(.*?\)', '', task_desc)
+        task_desc = re.sub(r"\[.*?\]|\(.*?\)", "", task_desc)
 
         # Remove leading/trailing whitespace and colons
         task_desc = task_desc.strip()
@@ -840,14 +845,16 @@ ESTIMATED_COMPLEXITY: low
 
         # Add to results
         summary = result.get("final_result", "")[:200]
-        results["subtask_results"].append({
-            "subtask_id": index + 1,
-            "agent": subtask["agent"],
-            "description": subtask["description"],
-            "completed": result.get("completed", False),
-            "iterations": result.get("iteration", 0),
-            "summary": summary,
-        })
+        results["subtask_results"].append(
+            {
+                "subtask_id": index + 1,
+                "agent": subtask["agent"],
+                "description": subtask["description"],
+                "completed": result.get("completed", False),
+                "iterations": result.get("iteration", 0),
+                "summary": summary,
+            }
+        )
 
         # Update overall success
         if not result.get("completed"):

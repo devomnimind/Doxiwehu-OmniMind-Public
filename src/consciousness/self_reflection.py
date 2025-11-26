@@ -176,7 +176,9 @@ class AdvancedSelfReflection:
 
         return log
 
-    def _introspect_decision_making(self, lookback_hours: int) -> tuple[List[str], List[str], List[str]]:
+    def _introspect_decision_making(
+        self, lookback_hours: int
+    ) -> tuple[List[str], List[str], List[str]]:
         """Introspect on decision making patterns.
 
         Args:
@@ -318,7 +320,7 @@ class AdvancedSelfReflection:
         observations: List[str],
         insights: List[str],
         confidence: float,
-        action_items: List[str]
+        action_items: List[str],
     ) -> IntrospectionLog:
         """Create and store introspection log.
 
