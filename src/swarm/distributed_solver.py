@@ -56,7 +56,6 @@ class TaskDecomposer:
 
     def __init__(self) -> None:
         """Initialize task decomposer."""
-        pass
 
     def decompose(
         self, problem: DistributedProblem, num_agents: int

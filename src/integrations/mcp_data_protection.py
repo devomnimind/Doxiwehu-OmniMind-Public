@@ -56,7 +56,6 @@ class ProtectionResult:
 class DataProtectionError(Exception):
     """Erro na proteção de dados."""
 
-    pass
 
 
 class MCPDataProtection:

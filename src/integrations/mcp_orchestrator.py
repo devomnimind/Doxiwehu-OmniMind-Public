@@ -58,7 +58,6 @@ class MCPServerStatus:
 class MCPOrchestratorError(Exception):
     """Erro no orquestrador de MCPs."""
 
-    pass
 
 
 class MCPOrchestrator:

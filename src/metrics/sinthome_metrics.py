@@ -14,9 +14,8 @@ Date: November 2025
 License: MIT
 """
 
-import math
 import logging
-from typing import Dict, List, Any, Optional
+from typing import Dict, List
 from dataclasses import dataclass
 
 logger = logging.getLogger(__name__)

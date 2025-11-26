@@ -84,17 +84,14 @@ class QPUBackend(ABC):
         Returns:
             Measurement counts
         """
-        pass
 
     @abstractmethod
     def get_info(self) -> BackendInfo:
         """Get backend information."""
-        pass
 
     @abstractmethod
     def is_available(self) -> bool:
         """Check if backend is available."""
-        pass
 
 
 class SimulatorBackend(QPUBackend):

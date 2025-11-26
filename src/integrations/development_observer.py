@@ -19,12 +19,11 @@ import json
 import os
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List
 from collections import defaultdict
 import logging
-import hashlib
 
 import psutil
 import watchfiles
@@ -32,7 +31,6 @@ import watchfiles
 from src.memory.episodic_memory import EpisodicMemory
 from src.memory.semantic_memory import SemanticMemory
 from src.metacognition.pattern_recognition import PatternRecognition
-from src.observability.performance_analyzer import PerformanceAnalyzer
 
 logger = logging.getLogger(__name__)
 

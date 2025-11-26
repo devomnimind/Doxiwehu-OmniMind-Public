@@ -265,7 +265,6 @@ class TestPerformanceBenchmark:
 
         def test_workload() -> None:
             """Test workload."""
-            pass
 
         benchmark.run_benchmark("persist_test", test_workload, iterations=3)
 
@@ -328,7 +327,6 @@ class TestPerformanceBenchmark:
 
         def test_workload() -> None:
             """Test workload."""
-            pass
 
         # Should handle gracefully or raise appropriate error
         try:

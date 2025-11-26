@@ -67,7 +67,6 @@ class CallMetrics:
 class RateLimitExceeded(Exception):
     """Exceção quando rate limit é excedido."""
 
-    pass
 
 
 class EnhancedMCPClient:

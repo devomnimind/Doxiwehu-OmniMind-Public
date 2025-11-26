@@ -7,17 +7,14 @@ Mantém isolamento completo dos dados internos do OmniMind.
 
 from __future__ import annotations
 
-import asyncio
-import json
 import time
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import aiohttp
 import structlog
-from pydantic import BaseModel, Field
 
 logger = structlog.get_logger(__name__)
 
@@ -98,22 +95,18 @@ class ExternalAIProvider(ABC):
     @abstractmethod
     async def initialize(self) -> None:
         """Inicializa o provedor (conexões, autenticação, etc.)"""
-        pass
 
     @abstractmethod
     async def execute_task(self, task: TaskSpec) -> TaskResult:
         """Executa tarefa de forma isolada"""
-        pass
 
     @abstractmethod
     def get_capabilities(self) -> ProviderCapabilities:
         """Retorna capacidades do provedor"""
-        pass
 
     @abstractmethod
     async def check_rate_limits(self) -> Dict[str, Any]:
         """Verifica limites de uso atuais"""
-        pass
 
     async def _ensure_session(self) -> aiohttp.ClientSession:
         """Garante que há uma sessão HTTP ativa"""

@@ -202,10 +202,12 @@ class CodebaseSearchTool(AuditedTool):
         self,
         query: str,
         directory: str = ".",
-        extensions: List[str] = ["*.py", "*.js", "*.ts", "*.md"],
+        extensions: Optional[List[str]] = None,
         max_results: int = 20,
     ) -> List[Dict[str, Any]]:
         """Busca por padrão em código"""
+        if extensions is None:
+            extensions = ["*.py", "*.js", "*.ts", "*.md"]
         try:
             directory = os.path.expanduser(directory)
 
