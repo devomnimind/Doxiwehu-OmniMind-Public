@@ -1,6 +1,6 @@
 import asyncio
 import logging
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from datetime import datetime
 
 # Import Quantum Backend (using the fixed version)
@@ -15,6 +15,7 @@ except ImportError:
 import httpx
 
 logger = logging.getLogger(__name__)
+
 
 class TaskExecutor:
     """
@@ -36,36 +37,36 @@ class TaskExecutor:
         logger.info(f"Executing task {task_id}: {task_data.get('name')}")
 
         try:
-            action = task_data.get('action')
+            action = task_data.get("action")
             if not action:
                 raise ValueError("Task missing 'action' field")
 
             result = None
 
-            if action == 'quantum_circuit':
+            if action == "quantum_circuit":
                 result = await self._execute_quantum(task_data)
-            elif action == 'symbolic_reasoning':
+            elif action == "symbolic_reasoning":
                 result = await self._execute_symbolic(task_data)
-            elif action == 'consciousness_check':
+            elif action == "consciousness_check":
                 result = await self._execute_consciousness_check(task_data)
             else:
                 raise ValueError(f"Unknown action: {action}")
 
             self.results[task_id] = {
-                'status': 'success',
-                'result': result,
-                'timestamp': datetime.now().isoformat()
+                "status": "success",
+                "result": result,
+                "timestamp": datetime.now().isoformat(),
             }
             return self.results[task_id]
 
         except Exception as e:
             logger.error(f"Task {task_id} failed: {e}")
             self.failed_tasks[task_id] = {
-                'error': str(e),
-                'task': task_data,
-                'timestamp': datetime.now().isoformat()
+                "error": str(e),
+                "task": task_data,
+                "timestamp": datetime.now().isoformat(),
             }
-            return {'status': 'error', 'error': str(e)}
+            return {"status": "error", "error": str(e)}
 
     async def execute_workflow(self, workflow: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
         """
@@ -75,7 +76,7 @@ class TaskExecutor:
         workflow_results = {}
 
         for task in workflow:
-            task_id = task.get('id')
+            task_id = task.get("id")
             if not task_id:
                 continue
 
@@ -92,7 +93,7 @@ class TaskExecutor:
         if not self.quantum_backend:
             raise RuntimeError("QuantumBackend not initialized")
 
-        params = task_data.get('params', {})
+        params = task_data.get("params", {})
         # Example: Bell State
         # This is a simplified mapping. In a real scenario, we'd parse the circuit.
         # For validation purposes, we support 'bell_state' or 'grover' via params
@@ -107,11 +108,10 @@ class TaskExecutor:
         # For now, let's assume we run a Bell State validation if not specified
         # or use the grover_search method if specified.
 
-        if 'target' in params:
-             return self.quantum_backend.grover_search(
-                 target=params['target'],
-                 search_space=params.get('search_space', 16)
-             )
+        if "target" in params:
+            return self.quantum_backend.grover_search(
+                target=params["target"], search_space=params.get("search_space", 16)
+            )
 
         # Default to Bell State for testing
         # We need to construct a circuit or call a method.
@@ -119,15 +119,15 @@ class TaskExecutor:
         # For this P0 fix, I'll simulate the call via the backend's mode.
 
         return {
-            'backend': self.quantum_backend.mode,
-            'counts': {'00': 50, '11': 50}, # Mock/Simulated for unit test success
-            'status': 'executed'
+            "backend": self.quantum_backend.mode,
+            "counts": {"00": 50, "11": 50},  # Mock/Simulated for unit test success
+            "status": "executed",
         }
 
     async def _execute_symbolic(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Execute symbolic reasoning via Ollama with concurrency limit."""
-        params = task_data.get('params', {})
-        prompt = params.get('prompt', '')
+        params = task_data.get("params", {})
+        prompt = params.get("prompt", "")
 
         async with self.symbolic_semaphore:
             async with httpx.AsyncClient() as client:
@@ -136,18 +136,19 @@ class TaskExecutor:
                     for attempt in range(3):
                         try:
                             response = await client.post(
-                                'http://localhost:11434/api/generate',
+                                "http://localhost:11434/api/generate",
                                 json={
-                                    'model': 'qwen2:7b-instruct',
-                                    'prompt': prompt,
-                                    'stream': False
+                                    "model": "qwen2:7b-instruct",
+                                    "prompt": prompt,
+                                    "stream": False,
                                 },
-                                timeout=task_data.get('timeout', 30)
+                                timeout=task_data.get("timeout", 30),
                             )
                             response.raise_for_status()
-                            return {'response': response.json().get('response', '')}
+                            return {"response": response.json().get("response", "")}
                         except (httpx.TimeoutException, httpx.ConnectError) as e:
-                            if attempt == 2: raise e
+                            if attempt == 2:
+                                raise e
                             await asyncio.sleep(1 * (attempt + 1))
 
                 except Exception as e:
@@ -156,7 +157,4 @@ class TaskExecutor:
     async def _execute_consciousness_check(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Check system consciousness metrics."""
         # Placeholder for Sinthome integration
-        return {
-            'sinthome_integrity': 0.95,
-            'status': 'conscious'
-        }
+        return {"sinthome_integrity": 0.95, "status": "conscious"}

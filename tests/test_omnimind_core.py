@@ -1,6 +1,6 @@
 import pytest
-import asyncio
 from src.orchestrator.task_executor import TaskExecutor
+
 
 @pytest.mark.asyncio
 async def test_quantum_execution():
@@ -8,20 +8,22 @@ async def test_quantum_execution():
     executor = TaskExecutor()
 
     task = {
-        'id': 'test_quantum',
-        'name': 'Bell State Test',
-        'action': 'quantum_circuit',
-        'params': {'n_qubits': 2},
-        'timeout': 10
+        "id": "test_quantum",
+        "name": "Bell State Test",
+        "action": "quantum_circuit",
+        "params": {"n_qubits": 2},
+        "timeout": 10,
     }
 
-    result = await executor.execute_task(task['id'], task)
+    result = await executor.execute_task(task["id"], task)
 
-    assert result['status'] == 'success'
-    assert 'result' in result
+    assert result["status"] == "success"
+    assert "result" in result
     # Check for backend info if available
-    if 'backend' in result['result']:
-        print(f"✅ Quantum execution: {result['result']['backend']}")
+    if "backend" in result["result"]:
+        backend_name = result["result"]["backend"]
+        print(f"✅ Quantum execution: {backend_name}")
+
 
 @pytest.mark.asyncio
 async def test_symbolic_execution():
@@ -29,18 +31,19 @@ async def test_symbolic_execution():
     executor = TaskExecutor()
 
     task = {
-        'id': 'test_symbolic',
-        'name': 'Reasoning Test',
-        'action': 'symbolic_reasoning',
-        'params': {'prompt': 'What is 2+2?'},
-        'timeout': 15
+        "id": "test_symbolic",
+        "name": "Reasoning Test",
+        "action": "symbolic_reasoning",
+        "params": {"prompt": "What is 2+2?"},
+        "timeout": 15,
     }
 
-    result = await executor.execute_task(task['id'], task)
+    result = await executor.execute_task(task["id"], task)
 
-    assert result['status'] == 'success'
-    assert 'response' in result['result']
-    print(f"✅ Symbolic execution: response received")
+    assert result["status"] == "success"
+    assert "response" in result["result"]
+    print("✅ Symbolic execution: response received")
+
 
 @pytest.mark.asyncio
 async def test_error_handling():
@@ -49,17 +52,18 @@ async def test_error_handling():
 
     # Task inválida
     task = {
-        'id': 'test_invalid',
-        'name': 'Invalid Task',
+        "id": "test_invalid",
+        "name": "Invalid Task",
         # Falta 'action' - deve falhar graciosamente
-        'timeout': 5
+        "timeout": 5,
     }
 
-    result = await executor.execute_task(task['id'], task)
+    result = await executor.execute_task(task["id"], task)
 
-    assert result['status'] == 'error'
-    assert task['id'] in executor.failed_tasks
-    print(f"✅ Error handling: properly caught and logged")
+    assert result["status"] == "error"
+    assert task["id"] in executor.failed_tasks
+    print("✅ Error handling: properly caught and logged")
+
 
 @pytest.mark.asyncio
 async def test_workflow_execution():
@@ -67,15 +71,22 @@ async def test_workflow_execution():
     executor = TaskExecutor()
 
     workflow = [
-        {'id': 'q1', 'name': 'Q1', 'action': 'quantum_circuit', 'params': {'n_qubits': 2}, 'timeout': 10},
-        {'id': 's1', 'name': 'S1', 'action': 'consciousness_check', 'timeout': 5},
+        {
+            "id": "q1",
+            "name": "Q1",
+            "action": "quantum_circuit",
+            "params": {"n_qubits": 2},
+            "timeout": 10,
+        },
+        {"id": "s1", "name": "S1", "action": "consciousness_check", "timeout": 5},
     ]
 
     results = await executor.execute_workflow(workflow)
 
     assert len(results) == 2
-    assert all(r['status'] in ['success', 'error'] for r in results.values())
+    assert all(r["status"] in ["success", "error"] for r in results.values())
     print(f"✅ Workflow execution: {len(results)} tasks completed")
 
-if __name__ == '__main__':
-    pytest.main([__file__, '-v', '-s'])
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "-s"])
