@@ -1,7 +1,7 @@
 import pytest
 import httpx
 import time
-from typing import Dict, Any
+
 
 # Assuming API is running on localhost:8000
 API_URL = "http://localhost:8000"

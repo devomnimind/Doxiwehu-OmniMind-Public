@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from src.api.routes import health, daemon, messages
@@ -43,7 +44,7 @@ class ConnectionManager:
         for connection in self.active_connections:
             try:
                 await connection.send_text(message)
-            except:
+            except Exception:
                 pass
 
 
@@ -139,7 +140,7 @@ async def websocket_endpoint(websocket: WebSocket):
                             {"type": "pong", "id": msg.get("id"), "timestamp": time.time() * 1000}
                         )
                     )
-            except:
+            except Exception:
                 pass
 
     except WebSocketDisconnect:

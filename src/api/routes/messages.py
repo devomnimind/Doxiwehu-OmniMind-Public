@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Request
 from typing import List, Dict, Any
 import time
 
@@ -30,7 +30,7 @@ async def post_message(request: Request):
     """
     Receive messages from clients via polling fallback.
     """
-    data = await request.json()
+    await request.json()
     # Log or process message
     # For now, just acknowledge
     return {"status": "received", "timestamp": time.time()}

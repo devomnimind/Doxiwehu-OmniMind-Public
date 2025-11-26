@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from typing import Dict, Any, List
+from typing import Dict, Any
 import time
-import random
+
 
 router = APIRouter()
 
