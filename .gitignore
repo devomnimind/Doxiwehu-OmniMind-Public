@@ -181,6 +181,7 @@ omnimind_archive_*/
 # IBM Quantum Results (logs de uso, não versionar)
 ibm_results/
 data/long_term_logs/*.log
+data/long_term_logs/*.status
 
 # Requirements lock (gerado, não editar manualmente)
 requirements.lock
