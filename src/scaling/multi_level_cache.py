@@ -545,7 +545,7 @@ class MultiLevelCache:
                     "args": str(args),
                     "kwargs": str(sorted(kwargs.items())),
                 }
-                key = hashlib.md5(json.dumps(key_data).encode()).hexdigest()
+                key = hashlib.sha256(json.dumps(key_data).encode()).hexdigest()
 
                 # Try to get from cache
                 cached_value = self.get(key)

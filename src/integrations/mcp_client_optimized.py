@@ -172,7 +172,7 @@ class EnhancedMCPClient:
     def _get_cache_key(self, method: str, params: Dict[str, Any]) -> str:
         """Gera chave de cache baseada no método e parâmetros."""
         params_str = json.dumps(params, sort_keys=True)
-        return hashlib.md5(f"{method}:{params_str}".encode()).hexdigest()
+        return hashlib.sha256(f"{method}:{params_str}".encode()).hexdigest()
 
     def _get_from_cache(self, cache_key: str) -> Optional[Any]:
         """Obtém valor do cache se válido."""

@@ -15,6 +15,7 @@ import { DashboardSkeleton } from './LoadingSkeletons';
 import { RealtimeAnalytics } from './RealtimeAnalytics';
 import { WorkflowVisualization } from './WorkflowVisualization';
 import { NotificationCenter } from './NotificationCenter';
+import { OmniMindSinthome } from './OmniMindSinthome';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
@@ -79,7 +80,7 @@ export function Dashboard() {
     <div className="min-h-screen bg-dark-300 cyber-grid">
       {/* Animated Background Gradient */}
       <div className="fixed inset-0 bg-gradient-to-br from-dark-300 via-dark-200 to-dark-300 opacity-50 pointer-events-none" />
-      
+
       {/* Header */}
       <header className="glass-card sticky top-0 z-50 border-b border-cyber-500/20 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -140,6 +141,9 @@ export function Dashboard() {
           <div className="lg:col-span-2 space-y-6">
             <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
               <DaemonStatus />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.25s' }}>
+              <OmniMindSinthome />
             </div>
             <div className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
               <AgentStatus />

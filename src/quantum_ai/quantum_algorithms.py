@@ -240,20 +240,12 @@ class GroverSearch:
 
     def _apply_diffusion(self) -> None:
         """Apply Grover diffusion operator."""
-        # Hadamard on all qubits
-        for i in range(self.num_qubits):
-            self.circuit.apply_gate(QuantumGate.HADAMARD, [i])
-
-        # Conditional phase shift
+        # Inversion about the mean
         mean = sum(self.circuit.state.amplitudes) / len(self.circuit.state.amplitudes)
         for i in range(len(self.circuit.state.amplitudes)):
             self.circuit.state.amplitudes[i] = (
                 2 * mean - self.circuit.state.amplitudes[i]
             )
-
-        # Hadamard on all qubits
-        for i in range(self.num_qubits):
-            self.circuit.apply_gate(QuantumGate.HADAMARD, [i])
 
 
 class QuantumAnnealer:

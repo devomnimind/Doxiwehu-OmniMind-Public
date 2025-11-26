@@ -275,7 +275,7 @@ class MCPDataProtection:
             Lista de detecções com detalhes.
         """
         # Cache check
-        content_hash = hashlib.md5(content.encode()).hexdigest()
+        content_hash = hashlib.sha256(content.encode()).hexdigest()
         if self.enable_cache and content_hash in self._detection_cache:
             return self._detection_cache[content_hash]
 
