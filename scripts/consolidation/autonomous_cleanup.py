@@ -91,7 +91,7 @@ def run_tests() -> bool:
 
 def update_audit_report(results: dict) -> None:
     """Update the audit report with execution results."""
-    report_path = PROJECT_ROOT / "docs/reports/AUDIT_CONSOLIDATION_2024-11-24.md"
+    report_path = PROJECT_ROOT / "docs/reports/AUDIT_CONSOLIDATION_2025-11-24.md"
 
     logger.info(f"📝 Updating audit report: {report_path}")
 

@@ -467,7 +467,7 @@ class TestLogAnalyzer:
         2025-11-23 10:00:00 Multiple failed login attempts detected
         2025-11-23 10:01:00 Password guessing behavior observed
         2025-11-23 10:02:00 Port scan detected from 192.168.1.100
-        2025-11-23 10:03:00 Exploit attempt: CVE-2024-1234
+        2025-11-23 10:03:00 Exploit attempt: CVE-2025-1234
         """
 
         analysis = analyzer.analyze_logs(log_content, "security.log")

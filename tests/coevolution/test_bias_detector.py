@@ -91,8 +91,8 @@ class TestBiasDetector:
 
         result = {
             "temporal_data": [
-                {"timestamp": "2024-01-01", "value": 1},
-                {"timestamp": "2024-06-01", "value": 2},
+                {"timestamp": "2025-01-01", "value": 1},
+                {"timestamp": "2025-06-01", "value": 2},
             ],
             "data_weights": {},
         }
@@ -203,7 +203,7 @@ class TestBiasDetector:
             "initial_hypothesis": "hypothesis",
             "external_system_outputs": ["out1", "out2"],
             "validations_performed": [],
-            "temporal_data": [{"timestamp": "2024-01-01"}],
+            "temporal_data": [{"timestamp": "2025-01-01"}],
             "sample_data": [1, 2],
             "population_data": [1, 2, 3, 4, 5],
         }

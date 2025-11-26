@@ -44,7 +44,7 @@ export function formatInterval(seconds: number | null): string {
 
 /**
  * Format ISO timestamp to relative time
- * @example formatRelativeTime("2024-01-01T00:00:00Z") => "2h ago"
+ * @example formatRelativeTime("2025-01-01T00:00:00Z") => "2h ago"
  */
 export function formatRelativeTime(timestamp?: string): string {
   if (!timestamp) return 'Never';
@@ -75,7 +75,7 @@ export function formatRelativeTime(timestamp?: string): string {
 
 /**
  * Format ISO timestamp to locale date string
- * @example formatDate("2024-01-01T00:00:00Z") => "1/1/2024, 12:00:00 AM"
+ * @example formatDate("2025-01-01T00:00:00Z") => "1/1/2024, 12:00:00 AM"
  */
 export function formatDate(timestamp?: string): string {
   if (!timestamp) return 'Never';
