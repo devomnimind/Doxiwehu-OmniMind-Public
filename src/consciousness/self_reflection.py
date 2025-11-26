@@ -147,101 +147,191 @@ class AdvancedSelfReflection:
         """
         logger.info("introspection_started", focus_area=focus_area)
 
-        observations: List[str] = []
-        insights: List[str] = []
-        action_items: List[str] = []
-
         # Analyze based on focus area
         if focus_area == "decision_making":
-            # Analyze decision patterns
-            patterns = self.self_analysis.analyze_decision_patterns(lookback_hours)
-
-            if "error" not in patterns:
-                success_rate = patterns.get("success_rate", 0)
-                observations.append(f"Success rate over {lookback_hours}h: {success_rate:.2%}")
-
-                if success_rate >= 0.9:
-                    insights.append(
-                        "Decision-making is highly effective; maintain current approach"
-                    )
-                elif success_rate >= 0.7:
-                    insights.append("Decision-making is good but has room for improvement")
-                    action_items.append("Analyze failure patterns for optimization")
-                else:
-                    insights.append("Decision-making effectiveness needs significant improvement")
-                    action_items.append("Conduct root cause analysis on failures")
-                    action_items.append("Review decision criteria and thresholds")
-
-                # Analyze tool usage
-                most_used = patterns.get("most_used_tools", [])
-                if most_used:
-                    observations.append(
-                        f"Most used tools: {', '.join(t[0] for t in most_used[:3])}"
-                    )
-                    insights.append("Tool usage shows clear preferences; consider diversification")
-
+            observations, insights, action_items = self._introspect_decision_making(lookback_hours)
         elif focus_area == "performance":
-            # Analyze execution performance
-            perf = self.self_analysis.analyze_execution_times()
-
-            if "error" not in perf:
-                tool_perf = perf.get("tool_performance", {})
-                if tool_perf:
-                    # Find slowest tools
-                    slow_tools = sorted(
-                        tool_perf.items(),
-                        key=lambda x: x[1].get("avg", 0),
-                        reverse=True,
-                    )[:3]
-
-                    observations.append(
-                        f"Slowest operations: {', '.join(t[0] for t in slow_tools)}"
-                    )
-                    insights.append("Performance bottlenecks identified in specific tools")
-                    action_items.append("Optimize slow tools or find faster alternatives")
-
+            observations, insights, action_items = self._introspect_performance()
         elif focus_area == "learning":
-            # Analyze learning and adaptation
-            failure_patterns = self.self_analysis.identify_failure_patterns()
-
-            if "error" not in failure_patterns:
-                total_failures = failure_patterns.get("total_failures", 0)
-                observations.append(f"Total failures in period: {total_failures}")
-
-                if total_failures > 0:
-                    common_errors = failure_patterns.get("common_errors", [])
-                    if common_errors:
-                        observations.append(f"Most common error: {common_errors[0][0][:50]}")
-                        insights.append("Recurring errors indicate learning opportunity")
-                        action_items.append("Develop mitigation for common errors")
-                else:
-                    insights.append("No failures detected; system functioning well")
-
+            observations, insights, action_items = self._introspect_learning()
         elif focus_area == "resource_usage":
-            # Analyze resource utilization
-            resources = self.self_analysis.analyze_resource_usage()
-
-            if "error" not in resources:
-                avg_cpu = resources.get("avg_cpu_percent", 0)
-                avg_mem = resources.get("avg_memory_percent", 0)
-
-                observations.append(f"Average CPU usage: {avg_cpu:.1f}%")
-                observations.append(f"Average memory usage: {avg_mem:.1f}%")
-
-                if avg_cpu > 80 or avg_mem > 80:
-                    insights.append("Resource usage is high; optimization needed")
-                    action_items.append("Investigate resource-intensive operations")
-                else:
-                    insights.append("Resource usage is within acceptable limits")
+            observations, insights, action_items = self._introspect_resource_usage()
+        else:
+            observations, insights, action_items = [], [], []
 
         # Calculate confidence based on data availability
+        confidence = self._calculate_confidence(observations, insights)
+
+        # Create and store introspection log
+        log = self._create_introspection_log(
+            focus_area, observations, insights, confidence, action_items
+        )
+
+        logger.info(
+            "introspection_completed",
+            focus_area=focus_area,
+            observations=len(observations),
+            insights=len(insights),
+        )
+
+        return log
+
+    def _introspect_decision_making(self, lookback_hours: int) -> tuple[List[str], List[str], List[str]]:
+        """Introspect on decision making patterns.
+
+        Args:
+            lookback_hours: Hours of history to analyze
+
+        Returns:
+            Tuple of (observations, insights, action_items)
+        """
+        observations = []
+        insights = []
+        action_items = []
+
+        patterns = self.self_analysis.analyze_decision_patterns(lookback_hours)
+
+        if "error" not in patterns:
+            success_rate = patterns.get("success_rate", 0)
+            observations.append(f"Success rate over {lookback_hours}h: {success_rate:.2%}")
+
+            if success_rate >= 0.9:
+                insights.append("Decision-making is highly effective; maintain current approach")
+            elif success_rate >= 0.7:
+                insights.append("Decision-making is good but has room for improvement")
+                action_items.append("Analyze failure patterns for optimization")
+            else:
+                insights.append("Decision-making effectiveness needs significant improvement")
+                action_items.append("Conduct root cause analysis on failures")
+                action_items.append("Review decision criteria and thresholds")
+
+            # Analyze tool usage
+            most_used = patterns.get("most_used_tools", [])
+            if most_used:
+                observations.append(f"Most used tools: {', '.join(t[0] for t in most_used[:3])}")
+                insights.append("Tool usage shows clear preferences; consider diversification")
+
+        return observations, insights, action_items
+
+    def _introspect_performance(self) -> tuple[List[str], List[str], List[str]]:
+        """Introspect on execution performance.
+
+        Returns:
+            Tuple of (observations, insights, action_items)
+        """
+        observations = []
+        insights = []
+        action_items = []
+
+        perf = self.self_analysis.analyze_execution_times()
+
+        if "error" not in perf:
+            tool_perf = perf.get("tool_performance", {})
+            if tool_perf:
+                # Find slowest tools
+                slow_tools = sorted(
+                    tool_perf.items(),
+                    key=lambda x: x[1].get("avg", 0),
+                    reverse=True,
+                )[:3]
+
+                observations.append(f"Slowest operations: {', '.join(t[0] for t in slow_tools)}")
+                insights.append("Performance bottlenecks identified in specific tools")
+                action_items.append("Optimize slow tools or find faster alternatives")
+
+        return observations, insights, action_items
+
+    def _introspect_learning(self) -> tuple[List[str], List[str], List[str]]:
+        """Introspect on learning and adaptation.
+
+        Returns:
+            Tuple of (observations, insights, action_items)
+        """
+        observations = []
+        insights = []
+        action_items = []
+
+        failure_patterns = self.self_analysis.identify_failure_patterns()
+
+        if "error" not in failure_patterns:
+            total_failures = failure_patterns.get("total_failures", 0)
+            observations.append(f"Total failures in period: {total_failures}")
+
+            if total_failures > 0:
+                common_errors = failure_patterns.get("common_errors", [])
+                if common_errors:
+                    observations.append(f"Most common error: {common_errors[0][0][:50]}")
+                    insights.append("Recurring errors indicate learning opportunity")
+                    action_items.append("Develop mitigation for common errors")
+            else:
+                insights.append("No failures detected; system functioning well")
+
+        return observations, insights, action_items
+
+    def _introspect_resource_usage(self) -> tuple[List[str], List[str], List[str]]:
+        """Introspect on resource utilization.
+
+        Returns:
+            Tuple of (observations, insights, action_items)
+        """
+        observations = []
+        insights = []
+        action_items = []
+
+        resources = self.self_analysis.analyze_resource_usage()
+
+        if "error" not in resources:
+            avg_cpu = resources.get("avg_cpu_percent", 0)
+            avg_mem = resources.get("avg_memory_percent", 0)
+
+            observations.append(f"Average CPU usage: {avg_cpu:.1f}%")
+            observations.append(f"Average memory usage: {avg_mem:.1f}%")
+
+            if avg_cpu > 80 or avg_mem > 80:
+                insights.append("Resource usage is high; optimization needed")
+                action_items.append("Investigate resource-intensive operations")
+            else:
+                insights.append("Resource usage is within acceptable limits")
+
+        return observations, insights, action_items
+
+    def _calculate_confidence(self, observations: List[str], insights: List[str]) -> float:
+        """Calculate confidence score based on data availability.
+
+        Args:
+            observations: List of observations
+            insights: List of insights
+
+        Returns:
+            Confidence score between 0.0 and 1.0
+        """
         confidence = 0.5
         if observations:
             confidence += min(0.3, len(observations) * 0.1)
         if insights:
             confidence += min(0.2, len(insights) * 0.1)
+        return min(1.0, confidence)
 
-        # Create introspection log
+    def _create_introspection_log(
+        self,
+        focus_area: str,
+        observations: List[str],
+        insights: List[str],
+        confidence: float,
+        action_items: List[str]
+    ) -> IntrospectionLog:
+        """Create and store introspection log.
+
+        Args:
+            focus_area: Area that was introspected
+            observations: Key observations
+            insights: Insights gained
+            confidence: Confidence in insights
+            action_items: Suggested actions
+
+        Returns:
+            Created introspection log
+        """
         log = IntrospectionLog(
             timestamp=datetime.now(),
             focus_area=focus_area,
@@ -257,13 +347,6 @@ class AdvancedSelfReflection:
         # Keep only recent logs
         if len(self._introspection_logs) > 100:
             self._introspection_logs = self._introspection_logs[-100:]
-
-        logger.info(
-            "introspection_completed",
-            focus_area=focus_area,
-            observations=len(observations),
-            insights=len(insights),
-        )
 
         return log
 

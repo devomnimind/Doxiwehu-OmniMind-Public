@@ -520,140 +520,147 @@ ESTIMATED_COMPLEXITY: low
             "raw_response": response,
         }
 
+        lines = response.split("\n")
         in_subtasks = False
-        for line in response.split("\n"):
+
+        for line in lines:
             line = line.strip()
 
             if "SUBTASKS:" in line:
                 in_subtasks = True
                 continue
-
-            if "DEPENDENCIES:" in line:
+            elif "DEPENDENCIES:" in line:
                 in_subtasks = False
                 continue
 
-            if in_subtasks and line and (line[0].isdigit() or line.startswith("-")):
-                # Extrair modo e descrição - flexível para [CODE], [CODE_MODE], (code), etc.
-                line_lower = line.lower()
-                matched = False
-                for mode in [
-                    "code",
-                    "architect",
-                    "debug",
-                    "reviewer",
-                    "psychoanalyst",
-                    "security",
-                    "mcp",
-                    "dbus",
-                ]:
-                    # Buscar variações: [code], [code_mode], (code), etc.
-                    if (
-                        f"[{mode}]" in line_lower
-                        or f"[{mode}_mode]" in line_lower
-                        or f"({mode})" in line_lower
-                        or f"{mode}_mode" in line_lower
-                    ):
-                        # Extrair descrição após modo
-                        task_desc = line.split("]", 1)[-1].strip() if "]" in line else line
-                        # Remover padrões como "- Plan Architecture:"
-                        if ":" in task_desc:
-                            task_desc = task_desc.split(":", 1)[-1].strip()
-                        plan["subtasks"].append(  # type: ignore[attr-defined]
-                            {
-                                "agent": mode,
-                                "description": task_desc,
-                                "status": "pending",
-                            }
-                        )
-                        matched = True
-                        break
-
-                # Se não encontrou modo explícito, tentar inferir
-                if not matched:
-                    agent_names = {
-                        "code": [
-                            "codeagent",
-                            "code agent",
-                            "implement",
-                            "write code",
-                        ],
-                        "architect": [
-                            "architectagent",
-                            "architect agent",
-                            "plan",
-                            "design",
-                            "specification",
-                        ],
-                        "debug": [
-                            "debugagent",
-                            "debug agent",
-                            "diagnose",
-                            "fix bug",
-                        ],
-                        "reviewer": [
-                            "revieweragent",
-                            "reviewer agent",
-                            "review",
-                            "quality",
-                        ],
-                        "psychoanalyst": [
-                            "psychoanalytic",
-                            "psychoanalyst",
-                            "analyze session",
-                            "abnt report",
-                        ],
-                        "security": [
-                            "security",
-                            "securityagent",
-                            "incident",
-                            "threat",
-                            "playbook",
-                            "log",
-                        ],
-                        "mcp": [
-                            "mcp",
-                            "model context",
-                            "file access",
-                            "filesystem",
-                        ],
-                        "dbus": [
-                            "dbus",
-                            "session bus",
-                            "media",
-                            "network",
-                        ],
-                    }
-                    if line_lower:  # guard against empty lines
-                        for mode in [
-                            "code",
-                            "architect",
-                            "debug",
-                            "reviewer",
-                            "psychoanalyst",
-                            "security",
-                            "mcp",
-                            "dbus",
-                        ]:
-                            if any(keyword in line_lower for keyword in agent_names[mode]):
-                                task_desc = line.strip("0123456789.-) \t")
-                                if ":" in task_desc:
-                                    task_desc = task_desc.split(":", 1)[-1].strip()
-                                plan["subtasks"].append(  # type: ignore[attr-defined]
-                                    {
-                                        "agent": mode,
-                                        "description": task_desc,
-                                        "status": "pending",
-                                    }
-                                )
-                                break
-
-            if "ESTIMATED_COMPLEXITY:" in line or "complexity:" in line.lower():
-                if "low" in line.lower():
-                    plan["complexity"] = "low"
-                elif "high" in line.lower():
-                    plan["complexity"] = "high"
+            if in_subtasks:
+                self._extract_subtask_from_line(line, plan)
+            else:
+                self._extract_complexity_from_line(line, plan)
 
         return plan
+
+    def _extract_subtask_from_line(self, line: str, plan: Dict[str, Any]) -> None:
+        """Extract subtask from a line of text.
+
+        Args:
+            line: Line to parse
+            plan: Plan dictionary to update
+        """
+        if not line or not (line[0].isdigit() or line.startswith("-")):
+            return
+
+        agent_mode = self._parse_agent_mode(line)
+        if agent_mode:
+            task_desc = self._extract_task_description(line)
+            plan["subtasks"].append({
+                "agent": agent_mode,
+                "description": task_desc,
+                "status": "pending",
+            })
+        else:
+            # Try to infer agent from keywords
+            inferred_agent = self._infer_agent_from_keywords(line)
+            if inferred_agent:
+                task_desc = self._extract_task_description(line)
+                plan["subtasks"].append({
+                    "agent": inferred_agent,
+                    "description": task_desc,
+                    "status": "pending",
+                })
+
+    def _parse_agent_mode(self, line: str) -> Optional[str]:
+        """Parse explicit agent mode from line.
+
+        Args:
+            line: Line to parse
+
+        Returns:
+            Agent mode string or None
+        """
+        line_lower = line.lower()
+        agent_modes = [
+            "code", "architect", "debug", "reviewer",
+            "psychoanalyst", "security", "mcp", "dbus"
+        ]
+
+        for mode in agent_modes:
+            patterns = [
+                f"[{mode}]",
+                f"[{mode}_mode]",
+                f"({mode})",
+                f"{mode}_mode"
+            ]
+
+            if any(pattern in line_lower for pattern in patterns):
+                return mode
+
+        return None
+
+    def _extract_task_description(self, line: str) -> str:
+        """Extract task description from line.
+
+        Args:
+            line: Line to parse
+
+        Returns:
+            Clean task description
+        """
+        # Remove numbering and bullets
+        task_desc = re.sub(r'^[\d\.\-\)\s]*', '', line)
+
+        # Remove agent mode markers
+        task_desc = re.sub(r'\[.*?\]|\(.*?\)', '', task_desc)
+
+        # Remove leading/trailing whitespace and colons
+        task_desc = task_desc.strip()
+        if ":" in task_desc:
+            task_desc = task_desc.split(":", 1)[1].strip()
+
+        return task_desc
+
+    def _infer_agent_from_keywords(self, line: str) -> Optional[str]:
+        """Infer agent type from keywords in line.
+
+        Args:
+            line: Line to analyze
+
+        Returns:
+            Inferred agent type or None
+        """
+        line_lower = line.lower()
+        if not line_lower:
+            return None
+
+        agent_keywords = {
+            "code": ["codeagent", "code agent", "implement", "write code"],
+            "architect": ["architectagent", "architect agent", "plan", "design", "specification"],
+            "debug": ["debugagent", "debug agent", "diagnose", "fix bug"],
+            "reviewer": ["revieweragent", "reviewer agent", "review", "quality"],
+            "psychoanalyst": ["psychoanalytic", "psychoanalyst", "analyze session", "abnt report"],
+            "security": ["security", "securityagent", "incident", "threat", "playbook", "log"],
+            "mcp": ["mcp", "model context", "file access", "filesystem"],
+            "dbus": ["dbus", "session bus", "media", "network"],
+        }
+
+        for agent, keywords in agent_keywords.items():
+            if any(keyword in line_lower for keyword in keywords):
+                return agent
+
+        return None
+
+    def _extract_complexity_from_line(self, line: str, plan: Dict[str, Any]) -> None:
+        """Extract complexity level from line.
+
+        Args:
+            line: Line to parse
+            plan: Plan dictionary to update
+        """
+        if "ESTIMATED_COMPLEXITY:" in line or "complexity:" in line.lower():
+            if "low" in line.lower():
+                plan["complexity"] = "low"
+            elif "high" in line.lower():
+                plan["complexity"] = "high"
 
     def execute_plan(
         self, plan: Optional[Dict[str, Any]] = None, max_iterations_per_task: int = 3

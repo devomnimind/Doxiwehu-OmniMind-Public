@@ -252,78 +252,148 @@ class DatabaseConnectionPool:
         start_time = time.time()
 
         try:
-            # Try to get from pool
-            if self._pool:
-                conn = self._pool.pop()
-            # Try to create overflow connection
-            elif len(self._overflow) < self.config.max_overflow:
-                conn = self._create_connection()
-                if conn:
-                    self._overflow.append(conn)
-            else:
-                # Wait for available connection
-                while time.time() - start_time < self.config.pool_timeout_seconds:
-                    if self._pool:
-                        conn = self._pool.pop()
-                        break
-                    time.sleep(0.1)
-
-            if conn is None:
-                raise TimeoutError("Unable to get connection from pool")
+            conn = self._acquire_connection(start_time)
 
             # Pre-ping if configured
-            if self.config.pool_pre_ping:
-                if not self._ping_connection(conn):
-                    # Connection is bad, create new one
-                    self._close_connection(conn)
-                    conn = self._create_connection()
+            if self.config.pool_pre_ping and not self._ping_connection(conn):
+                # Connection is bad, create new one
+                self._close_connection(conn)
+                conn = self._create_connection()
 
             # Update connection info
             if conn and hasattr(conn, "conn_id"):
-                info = self._connection_info.get(conn.conn_id)
-                if info:
-                    info.mark_used()
+                self._update_connection_info(conn, used=True)
 
             yield conn
 
         except Exception as e:
             logger.error("connection_error", error=str(e))
             if conn and hasattr(conn, "conn_id"):
-                info = self._connection_info.get(conn.conn_id)
-                if info:
-                    info.mark_error()
+                self._update_connection_info(conn, error=True)
             raise
 
         finally:
             # Return connection to pool
             if conn:
-                if hasattr(conn, "conn_id"):
-                    info = self._connection_info.get(conn.conn_id)
-                    if info:
-                        info.mark_idle()
-
-                        # Check if connection should be recycled
-                        if info.is_stale(self.config.max_connection_age_seconds):
-                            self._close_connection(conn)
-                            # Create new connection to maintain pool size
-                            if conn in self._pool or len(self._pool) < self.config.pool_size:
-                                new_conn = self._create_connection()
-                                if new_conn:
-                                    self._pool.append(new_conn)
-                        else:
-                            # Return to pool or overflow
-                            if conn in self._overflow:
-                                self._overflow.remove(conn)
-                                if len(self._pool) < self.config.pool_size:
-                                    self._pool.append(conn)
-                                else:
-                                    self._close_connection(conn)
-                            else:
-                                self._pool.append(conn)
+                self._return_connection_to_pool(conn)
 
             # Run health check if needed
             if self.config.enable_health_checks:
                 self._maybe_run_health_check()
+
+    def _acquire_connection(self, start_time: float) -> Any:
+        """Acquire a connection from pool or create new one.
+
+        Args:
+            start_time: When acquisition started
+
+        Returns:
+            Database connection
+
+        Raises:
+            TimeoutError: If unable to get connection within timeout
+        """
+        # Try to get from pool first
+        if self._pool:
+            return self._pool.pop()
+
+        # Try to create overflow connection
+        if len(self._overflow) < self.config.max_overflow:
+            conn = self._create_connection()
+            if conn:
+                self._overflow.append(conn)
+                return conn
+
+        # Wait for available connection
+        return self._wait_for_connection(start_time)
+
+    def _wait_for_connection(self, start_time: float) -> Any:
+        """Wait for an available connection.
+
+        Args:
+            start_time: When waiting started
+
+        Returns:
+            Database connection
+
+        Raises:
+            TimeoutError: If timeout exceeded
+        """
+        while time.time() - start_time < self.config.pool_timeout_seconds:
+            if self._pool:
+                return self._pool.pop()
+            time.sleep(0.1)
+
+        raise TimeoutError("Unable to get connection from pool")
+
+    def _update_connection_info(self, conn: Any, used: bool = False, error: bool = False) -> None:
+        """Update connection information.
+
+        Args:
+            conn: Connection object
+            used: Whether connection was used
+            error: Whether there was an error
+        """
+        info = self._connection_info.get(conn.conn_id)
+        if not info:
+            return
+
+        if used:
+            info.mark_used()
+        elif error:
+            info.mark_error()
+        else:
+            info.mark_idle()
+
+    def _return_connection_to_pool(self, conn: Any) -> None:
+        """Return connection to appropriate pool location.
+
+        Args:
+            conn: Connection to return
+        """
+        if not hasattr(conn, "conn_id"):
+            return
+
+        info = self._connection_info.get(conn.conn_id)
+        if not info:
+            return
+
+        info.mark_idle()
+
+        # Check if connection should be recycled
+        if info.is_stale(self.config.max_connection_age_seconds):
+            self._recycle_stale_connection(conn)
+        else:
+            self._return_to_pool_or_overflow(conn)
+
+    def _recycle_stale_connection(self, conn: Any) -> None:
+        """Recycle a stale connection and create replacement.
+
+        Args:
+            conn: Stale connection to recycle
+        """
+        self._close_connection(conn)
+
+        # Create new connection to maintain pool size
+        if len(self._pool) < self.config.pool_size:
+            new_conn = self._create_connection()
+            if new_conn:
+                self._pool.append(new_conn)
+
+    def _return_to_pool_or_overflow(self, conn: Any) -> None:
+        """Return connection to pool or overflow based on current state.
+
+        Args:
+            conn: Connection to return
+        """
+        if conn in self._overflow:
+            self._overflow.remove(conn)
+            if len(self._pool) < self.config.pool_size:
+                self._pool.append(conn)
+            else:
+                self._close_connection(conn)
+        else:
+            self._pool.append(conn)
 
     def _ping_connection(self, conn: Any) -> bool:
         """Test if connection is alive.
