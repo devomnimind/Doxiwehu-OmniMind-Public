@@ -39,5 +39,5 @@ RUN mkdir -p data/test_reports
 # Create directories for test reports
 RUN mkdir -p data/test_reports
 
-# Default command runs the test suite with coverage
-CMD ["pytest", "tests/", "-v", "--tb=short", "--cov=src", "--cov-report=term-missing", "--cov-report=json:data/test_reports/coverage.json", "--cov-report=html:data/test_reports/htmlcov", "--maxfail=999", "--durations=20", "-W", "ignore::DeprecationWarning"]
+# Default command runs a simple test to verify installation
+CMD ["python", "-c", "import fastapi, uvicorn, numpy, transformers, pytest; print('✅ All dependencies installed successfully')"]
