@@ -85,7 +85,8 @@ class QuantumBackend:
         self.use_gpu = torch.cuda.is_available()
 
         logger.info(
-            f"Initializing Quantum Backend. Requested provider: {provider}, Prefer Local: {prefer_local}"
+            f"Initializing Quantum Backend. Requested provider: {provider}, "
+            f"Prefer Local: {prefer_local}"
         )
 
         # Auto-selection logic with LOCAL priority

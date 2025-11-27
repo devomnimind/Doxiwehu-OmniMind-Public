@@ -15,7 +15,7 @@ Example:
     >>> webp_bytes = optimizer.to_webp(jpeg_bytes, quality=90)
 """
 
-from typing import Tuple, Optional, Union
+from typing import Optional, Tuple
 import io
 import logging
 

@@ -19,7 +19,7 @@ from src.metrics.consciousness_metrics_legacy import (
 __all__ = [
     "ConsciousnessCorrelates",
     "ConsciousnessMetrics",
-    "EthicsMetrics",
-    "calculate_mfa_score",
-    "calculate_transparency_score",
+    "AgentConnection",
+    "FeedbackLoop",
+    "SelfAwarenessMetrics",
 ]

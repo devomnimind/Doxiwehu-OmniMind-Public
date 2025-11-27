@@ -495,7 +495,8 @@ class MCPOrchestrator:
                                 # Processo ainda está rodando, apenas não saudável
                                 # Não reiniciar imediatamente - pode ser um problema temporário
                                 logger.debug(
-                                    "Servidor %s não saudável mas processo ainda rodando, aguardando próximo check",
+                                    "Servidor %s não saudável mas processo ainda rodando, "
+                                    "aguardando próximo check",
                                     name,
                                 )
                                 continue

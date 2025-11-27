@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Any, Dict, Optional, cast
+from typing import Any, Dict, cast
 from uuid import uuid4
 
 import httpx

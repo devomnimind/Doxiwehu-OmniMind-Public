@@ -133,8 +133,13 @@ security:
         orchestrator = OrchestratorAgent(str(config_path))
         assert orchestrator.security_agent is not None
 
+        # Start monitoring manually as Orchestrator doesn't auto-start it
+        monitoring_task = asyncio.create_task(
+            orchestrator.security_agent.start_continuous_monitoring()
+        )
+
         # Allow the monitoring loop to run a few times
-        await asyncio.sleep(0.2)
+        await asyncio.sleep(0.5)
 
         # Assert that the threat was detected and an event was created
         assert len(orchestrator.security_agent.event_history) > 0
@@ -153,4 +158,9 @@ security:
         # Clean up the monitoring task
         orchestrator.security_agent.request_stop()
         await asyncio.sleep(0.1)  # Give time for shutdown
+        try:
+            await asyncio.wait_for(monitoring_task, timeout=1.0)
+        except asyncio.TimeoutError:
+            monitoring_task.cancel()
+
         assert not orchestrator.security_agent._monitoring_tasks

@@ -63,6 +63,43 @@ class DummyMCPClient:
         return {"requests": 1, "errors": 0}
 
 
+class DummyOrchestrator:
+    def __init__(self, config_path: str):
+        self.security_agent = None
+        self.current_plan = {}
+        self.dashboard_snapshot = {}
+        self.config = {}
+
+    def metrics_summary(self) -> Dict[str, Any]:
+        return {}
+
+    def run_orchestrated_task(self, task: str, max_iterations: int = 3) -> Dict[str, Any]:
+        return {
+            "success": True,
+            "plan": {"subtasks": [{"status": "completed"}]},
+            "execution": {
+                "overall_success": True,
+                "subtask_results": [{"completed": True, "summary": "done"}],
+            },
+        }
+
+    def refresh_dashboard_snapshot(self) -> Dict[str, Any]:
+        return {
+            "plan_summary": {"completed": 1, "failed": 0},
+            "security_status": {"events": 0},
+            "timestamp": "2025-11-27T12:00:00Z",
+        }
+
+    def trigger_mcp_action(self, **kwargs: Any) -> Dict[str, Any]:
+        return {}
+
+    def trigger_dbus_action(self, **kwargs: Any) -> Dict[str, Any]:
+        return {}
+
+    def plan_overview(self) -> Dict[str, Any]:
+        return {}
+
+
 @pytest.fixture()
 def dashboard_client(
     monkeypatch: pytest.MonkeyPatch, tmp_path_factory: pytest.TempPathFactory
@@ -71,6 +108,9 @@ def dashboard_client(
     monkeypatch.setattr("src.agents.react_agent.EpisodicMemory", DummyMemory)
     monkeypatch.setattr("src.agents.react_agent.SystemMonitor", DummyMonitor)
     monkeypatch.setattr("src.agents.orchestrator_agent.MCPClient", DummyMCPClient)
+    # Mock OrchestratorAgent to avoid async initialization delay and dependency issues
+    monkeypatch.setattr("src.agents.orchestrator_agent.OrchestratorAgent", DummyOrchestrator)
+
     monkeypatch.setenv("OMNIMIND_DASHBOARD_USER", "e2e_user")
     monkeypatch.setenv("OMNIMIND_DASHBOARD_PASS", "e2e_secret")
     validation_dir = tmp_path_factory.mktemp("security_validation")
@@ -92,6 +132,10 @@ def dashboard_client(
     import web.backend.main as backend_main
 
     importlib.reload(backend_main)
+
+    # Force set the orchestrator instance to avoid 503
+    backend_main._orchestrator_instance = DummyOrchestrator("config/agent_config.yaml")
+
     client = TestClient(backend_main.app)
     auth_value = base64.b64encode(b"e2e_user:e2e_secret").decode("ascii")
     headers = {"Authorization": f"Basic {auth_value}"}

@@ -17,7 +17,6 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from ..monitoring.health_check_system import (
-    DependencyType,
     HealthCheckResult,
     HealthCheckSystem,
     HealthStatus,

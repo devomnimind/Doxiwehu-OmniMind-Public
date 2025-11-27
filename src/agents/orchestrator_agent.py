@@ -756,7 +756,7 @@ ESTIMATED_COMPLEXITY: low
 
         # Switch mode
         self.tools_framework.execute_tool(
-            "switch_mode", target_mode=subtask["agent"], reason=f"Subtask execution"
+            "switch_mode", target_mode=subtask["agent"], reason="Subtask execution"
         )
 
         # Execute based on agent type

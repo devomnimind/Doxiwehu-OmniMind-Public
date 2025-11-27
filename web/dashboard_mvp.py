@@ -3,19 +3,22 @@ OmniMind Psyche Control Panel (MVP)
 Visualizes internal conflict resolution and audit chain.
 """
 
-import streamlit as st
-import pandas as pd
-import altair as alt
 import json
-import time
-from pathlib import Path
-import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-# Additional imports for IBM Quantum test integration
-import subprocess
 import shlex
+import subprocess
+import sys
+from pathlib import Path
+
+import altair as alt
+import pandas as pd
+import streamlit as st
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from src.agents.psychoanalytic_analyst import PsychoanalyticDecisionSystem
+from src.audit.immutable_audit import get_audit_system
+
 
 def run_quantum_test() -> str:
     """Execute the IBM Quantum verification script and return its stdout.
@@ -35,8 +38,6 @@ def run_quantum_test() -> str:
         return result.stdout if result.returncode == 0 else f"❌ Erro: {result.stderr}"
     except Exception as exc:
         return f"❌ Exceção ao executar teste: {exc}"
-from src.agents.psychoanalytic_analyst import PsychoanalyticDecisionSystem
-from src.audit.immutable_audit import get_audit_system
 
 # Page Config
 st.set_page_config(

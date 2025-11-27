@@ -10,7 +10,6 @@ Provides WebSocket endpoints for:
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 import time
 from contextlib import suppress
@@ -18,7 +17,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set
 
-from fastapi import WebSocket, WebSocketDisconnect
+from fastapi import WebSocket
 
 logger = logging.getLogger(__name__)
 

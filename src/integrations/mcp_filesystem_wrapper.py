@@ -46,7 +46,8 @@ class MCPStdioBridge:
         Inicializa o bridge stdio.
 
         Args:
-            command: Comando completo para executar o MCP (ex: ["uvx", "mcp-server-filesystem", "--root", "."]).
+            command: Comando completo para executar o MCP
+                (ex: ["uvx", "mcp-server-filesystem", "--root", "."]).
             cwd: Diretório de trabalho para o processo.
             env: Variáveis de ambiente customizadas. Se None, usa os.environ.copy().
         """

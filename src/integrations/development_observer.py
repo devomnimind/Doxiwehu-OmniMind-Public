@@ -384,7 +384,8 @@ class DevelopmentObserver:
 
         if recent_file_changes > recent_tests * 2:
             insights.append(
-                "🎯 Muitas mudanças no código sem testes correspondentes. Considere adicionar testes."
+                "🎯 Muitas mudanças no código sem testes correspondentes. "
+                "Considere adicionar testes."
             )
 
         # Insight: Padrões de erro recorrentes
@@ -462,7 +463,7 @@ class DevelopmentObserver:
                 for indicator in dev_indicators
             )
 
-        except:
+        except Exception:
             return False
 
     def _load_state(self) -> None:

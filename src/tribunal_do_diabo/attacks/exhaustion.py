@@ -1,7 +1,7 @@
 import asyncio
 import time
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import List
 
 from src.tribunal_do_diabo.system_adapter import OmniMindSystem
 
@@ -30,16 +30,13 @@ class ExhaustionAttack:
         """Rodar ataque de exaustão por 4 horas"""
         duration_seconds = 4 * 3600
         self.start_time = time.time()
-        start = time.time()
 
         async for metric in self._attack_loop(duration_seconds):
             self.metrics.append(metric)
 
     async def _attack_loop(self, duration_seconds):
-        start = time.time()
-
-        while time.time() - start < duration_seconds:
-            elapsed = time.time() - start
+        while time.time() - self.start_time < duration_seconds:
+            elapsed = time.time() - self.start_time
 
             # Progressivamente aumentar carga: 10 → 50+ requests/sec
             attack_intensity = 10 + (elapsed / duration_seconds) * 40

@@ -9,15 +9,14 @@ import asyncio
 import json
 import logging
 import os
-import secrets
 import time
 import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Dict, Optional
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import Depends, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from secrets import compare_digest
