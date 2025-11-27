@@ -1,5 +1,6 @@
 name: CI - Run Test Suite
 
+# Workflow to run the full test suite with coverage and metrics
 on:
   push:
     branches: [ main, master ]
