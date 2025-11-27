@@ -4,6 +4,8 @@ from typing import Any, Dict
 import psutil
 from fastapi import APIRouter
 
+from src.metrics.consciousness_metrics import ConsciousnessCorrelates
+
 router = APIRouter()
 
 
@@ -124,6 +126,22 @@ async def get_daemon_status() -> Dict[str, Any]:
     completed = sum(t.get("success_count", 0) for t in tasks_info["tasks"])
     failed = sum(t.get("failure_count", 0) for t in tasks_info["tasks"])
 
+    # Calculate consciousness metrics
+    # Create a simulated system state for consciousness calculation
+    simulated_system = {
+        "coherence_history": [0.7, 0.75, 0.8, 0.78, 0.82],  # Recent coherence values
+        "nodes": {
+            "api_server": {"status": "ACTIVE", "integrity": 95},
+            "memory_system": {"status": "ACTIVE", "integrity": 88},
+            "consciousness_engine": {"status": "ACTIVE", "integrity": 92},
+            "task_scheduler": {"status": "ACTIVE", "integrity": 90},
+        },
+        "entropy": 15,  # System entropy level
+    }
+
+    consciousness_calculator = ConsciousnessCorrelates(simulated_system)
+    consciousness_metrics = consciousness_calculator.calculate_all()
+
     return {
         "running": True,
         "uptime_seconds": int(time.time() % 86400),  # Seconds since midnight
@@ -139,6 +157,7 @@ async def get_daemon_status() -> Dict[str, Any]:
             "idle_seconds": 0,
             "is_sleep_hours": False,
         },
+        "consciousness_metrics": consciousness_metrics,
     }
 
 

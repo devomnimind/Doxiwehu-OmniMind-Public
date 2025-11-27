@@ -28,6 +28,28 @@ export interface DaemonTask {
   stats: TaskStats;
 }
 
+export interface ConsciousnessMetrics {
+  ICI: number;
+  PRS: number;
+  details: {
+    ici_components: {
+      temporal_coherence: number;
+      marker_integration: number;
+      resonance: number;
+    };
+    prs_components: {
+      avg_micro_entropy: number;
+      macro_entropy: number;
+    };
+  };
+  interpretation: {
+    message: string;
+    confidence: string;
+    disclaimer: string;
+  };
+  phi?: number;
+}
+
 export interface DaemonStatus {
   running: boolean;
   uptime_seconds: number;
@@ -36,6 +58,7 @@ export interface DaemonStatus {
   completed_tasks: number;
   failed_tasks: number;
   cloud_connected: boolean;
+  consciousness_metrics?: ConsciousnessMetrics;
 }
 
 export interface AddTaskRequest {

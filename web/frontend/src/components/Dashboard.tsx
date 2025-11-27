@@ -16,6 +16,7 @@ import { RealtimeAnalytics } from './RealtimeAnalytics';
 import { WorkflowVisualization } from './WorkflowVisualization';
 import { NotificationCenter } from './NotificationCenter';
 import { OmniMindSinthome } from './OmniMindSinthome';
+import { ConsciousnessMetrics } from './ConsciousnessMetrics';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
@@ -157,6 +158,9 @@ export function Dashboard() {
           <div className="space-y-6">
             <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
               <SystemMetrics />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.55s' }}>
+              <ConsciousnessMetrics />
             </div>
             <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
               <DaemonControls />

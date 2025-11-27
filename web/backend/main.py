@@ -497,15 +497,65 @@ def snapshot(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
 
 
 @app.get("/plan")
-def plan_view(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
-    orch = _get_orchestrator()
-    return orch.plan_overview()
+def _collect_system_metrics() -> Dict[str, Any]:
+    """Collect real-time system metrics (CPU, memory, disk)."""
+    try:
+        import psutil
+
+        # CPU metrics
+        cpu_percent = psutil.cpu_percent(interval=1)
+        cpu_count = psutil.cpu_count()
+
+        # Memory metrics
+        memory = psutil.virtual_memory()
+        memory_info = {
+            "total_gb": round(memory.total / (1024**3), 2),
+            "available_gb": round(memory.available / (1024**3), 2),
+            "used_gb": round(memory.used / (1024**3), 2),
+            "percent": round(memory.percent, 1),
+        }
+
+        # Disk metrics
+        disk = psutil.disk_usage("/")
+        disk_info = {
+            "total_gb": round(disk.total / (1024**3), 2),
+            "free_gb": round(disk.free / (1024**3), 2),
+            "used_gb": round(disk.used / (1024**3), 2),
+            "percent": round(disk.percent, 1),
+        }
+
+        # Network metrics (basic)
+        network = psutil.net_io_counters()
+        network_info = {
+            "bytes_sent_mb": round(network.bytes_sent / (1024**2), 2),
+            "bytes_recv_mb": round(network.bytes_recv / (1024**2), 2),
+        }
+
+        return {
+            "cpu": {
+                "percent": round(cpu_percent, 1),
+                "count": cpu_count,
+            },
+            "memory": memory_info,
+            "disk": disk_info,
+            "network": network_info,
+        }
+
+    except ImportError:
+        logger.warning("psutil not available for system metrics")
+        return {"error": "psutil not available"}
+    except Exception as e:
+        logger.error(f"Error collecting system metrics: {e}")
+        return {"error": str(e)}
 
 
 @app.get("/metrics")
 def metrics(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
     """Get comprehensive system metrics."""
     backend_metrics = metrics_collector.summary()
+
+    # Collect real-time system metrics
+    system_metrics = _collect_system_metrics()
 
     # Try to get enhanced metrics
     try:
@@ -516,12 +566,14 @@ def metrics(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
             "backend": backend_metrics,
             "api": new_collector.get_all_metrics(),
             "performance": performance_tracker.get_performance_summary(),
+            "system": system_metrics,
             "errors": new_collector.get_error_summary(),
             "timestamp": time.time(),
         }
     except ImportError:
         return {
             "backend": backend_metrics,
+            "system": system_metrics,
             "timestamp": time.time(),
         }
 

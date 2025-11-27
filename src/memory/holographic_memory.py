@@ -664,7 +664,8 @@ class EventHorizonMemory:
         for r in range(target_h):
             row: List[float] = []
             for c in range(target_w):
-                if surface and r < len(surface) and surface[r] and c < len(surface[r]):
+                if (surface is not None and r < len(surface) and
+                    surface[r] is not None and c < len(surface[r])):
                     row.append(float(surface[r][c]))
                 else:
                     row.append(0.0)
@@ -881,8 +882,8 @@ class EventHorizonMemory:
         # Find minimum dimensions
         min_h = min(len(surface1), len(surface2))
         min_w = min(
-            len(surface1[0]) if surface1 and len(surface1) > 0 else 0,
-            len(surface2[0]) if surface2 and len(surface2) > 0 else 0,
+            len(surface1[0]) if surface1 is not None and len(surface1) > 0 else 0,
+            len(surface2[0]) if surface2 is not None and len(surface2) > 0 else 0,
         )
 
         # Crop to minimum dimensions
