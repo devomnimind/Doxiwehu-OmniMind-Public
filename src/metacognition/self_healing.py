@@ -201,7 +201,9 @@ class SelfHealingLoop:
             metrics=result,
         )
 
-    async def _attempt_remediation(self, result: Dict[str, Any], issue: Issue) -> List[RemediationAction]:
+    async def _attempt_remediation(
+        self, result: Dict[str, Any], issue: Issue
+    ) -> List[RemediationAction]:
         """Attempt to remediate an issue and return actions taken."""
         actions: List[RemediationAction] = []
         issue_type = result.get("type")
@@ -220,7 +222,9 @@ class SelfHealingLoop:
 
         return actions
 
-    def _process_remediation_result(self, remediation_result: Dict[str, Any], issue_type: str, issue: Issue) -> RemediationAction:
+    def _process_remediation_result(
+        self, remediation_result: Dict[str, Any], issue_type: str, issue: Issue
+    ) -> RemediationAction:
         """Process the result of a remediation attempt."""
         success = remediation_result.get("success", False)
 
