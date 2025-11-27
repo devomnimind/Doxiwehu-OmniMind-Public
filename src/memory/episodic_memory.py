@@ -344,9 +344,8 @@ class EpisodicMemory:
 
         remaining_stats = self.get_stats()
         remaining = remaining_stats["total_episodes"]
-        print(
-            f"⚙️  Consolidated memory: removed {removed} duplicate(s), "
-            f"{remaining} entries remain"
+        logger.info(
+            f"Consolidated memory: removed {removed} duplicate(s), " f"{remaining} entries remain"
         )
 
         return {
