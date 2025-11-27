@@ -180,50 +180,103 @@ class PageCurveLearner:
         Returns:
             Von Neumann entropy (in nats)
         """
-        # Extract numerical data from model state (accept sequences)
-        data_raw: List[float] = []
-        if "weights" in model_state and isinstance(model_state["weights"], Sequence):
-            data_raw = [float(x) for x in model_state["weights"]]
-        elif "parameters" in model_state and isinstance(model_state["parameters"], Sequence):
-            data_raw = [float(x) for x in model_state["parameters"]]
-        elif "activations" in model_state and isinstance(model_state["activations"], Sequence):
-            data_raw = [float(x) for x in model_state["activations"]]
-        else:
-            # Default deterministic fallback using a seeded random generator
-            state_hash = hash(str(model_state))
-            rng = random.Random(state_hash % (2**32))
-            data_raw = [rng.gauss(0, 1) for _ in range(100)]
+        # Extract numerical data from model state
+        data = self._extract_numerical_data(model_state)
 
-        # Ensure we have enough data
-        data = list(data_raw)
+        # Handle edge cases
         if len(data) < 2:
-            return 0.0
+            return MIN_ENTROPY
 
-        # Construct density matrix approximation
-        # Use covariance matrix as proxy for quantum density matrix
-        # Reshape to matrix form
+        # Compute entropy based on data size
+        if self._should_use_simple_entropy(data):
+            return self._compute_simple_entropy(data)
+        else:
+            return self._compute_correlation_entropy(data)
+
+    def _extract_numerical_data(self, model_state: Dict[str, Any]) -> List[float]:
+        """
+        Extract numerical data from model state with fallback.
+
+        Args:
+            model_state: Model state dict
+
+        Returns:
+            List of numerical values
+        """
+        # Try different keys in order of preference
+        for key in ["weights", "parameters", "activations"]:
+            if key in model_state and isinstance(model_state[key], Sequence):
+                try:
+                    return [float(x) for x in model_state[key]]
+                except (ValueError, TypeError):
+                    continue
+
+        # Fallback: deterministic random data based on state hash
+        return self._generate_fallback_data(model_state)
+
+    def _generate_fallback_data(self, model_state: Dict[str, Any]) -> List[float]:
+        """
+        Generate deterministic fallback data when no numerical data available.
+
+        Args:
+            model_state: Model state dict
+
+        Returns:
+            List of pseudo-random values
+        """
+        state_hash = hash(str(model_state))
+        rng = random.Random(state_hash % (2**32))
+        return [rng.gauss(0, 1) for _ in range(100)]
+
+    def _should_use_simple_entropy(self, data: List[float]) -> bool:
+        """
+        Determine if simple entropy calculation should be used.
+
+        Args:
+            data: Numerical data
+
+        Returns:
+            True if simple entropy should be used
+        """
         size = int(math.sqrt(len(data)))
-        if size * size > len(data):
-            size = int(math.sqrt(len(data)))
+        return size < 2 or size * size > len(data)
 
-        if size < 2:
-            # Not enough data, use simple Shannon entropy
-            prob_dist_list = [abs(x) for x in data]
-            total_pd = sum(prob_dist_list) + 1e-10
-            prob_nonzero = [p / total_pd for p in prob_dist_list if p > 1e-10]
-            entropy_small = -sum(p * math.log(p + 1e-10) for p in prob_nonzero)
-            return float(entropy_small)
+    def _compute_simple_entropy(self, data: List[float]) -> float:
+        """
+        Compute simple Shannon entropy on normalized absolute values.
 
-        # Simple, robust approximation: use Shannon entropy on normalized absolute values
+        Args:
+            data: Numerical data
+
+        Returns:
+            Entropy value
+        """
         abs_vals = [abs(x) for x in data]
         total = sum(abs_vals)
+
         if total < 1e-10:
-            return 0.0
+            return MIN_ENTROPY
+
+        # Filter and normalize probabilities
         probs = [v / total for v in abs_vals if v / total > 1e-10]
-        entropy = 0.0
-        for p in probs:
-            entropy -= p * math.log(p + 1e-10)
+
+        # Compute entropy
+        entropy = -sum(p * math.log(p + 1e-10) for p in probs)
         return float(max(MIN_ENTROPY, entropy))
+
+    def _compute_correlation_entropy(self, data: List[float]) -> float:
+        """
+        Compute entropy using correlation matrix approximation.
+
+        Args:
+            data: Numerical data
+
+        Returns:
+            Entropy value
+        """
+        # For now, fall back to simple entropy
+        # TODO: Implement proper correlation matrix entropy calculation
+        return self._compute_simple_entropy(data)
 
     def _is_page_time(self) -> bool:
         """

@@ -56,69 +56,131 @@ class QuantumBackend:
 
     def __init__(self, provider: str = "auto", api_token: Optional[str] = None):
         self.provider = provider
-        # Support both variable names
-        self.token = (
+        self.token = self._resolve_api_token(api_token)
+        self.backend = None
+
+        logger.info(f"Initializing Quantum Backend. Requested provider: {provider}")
+
+        # Auto-select provider if needed
+        if self.provider == "auto":
+            self.provider = self._auto_select_provider()
+
+        # Initialize the selected provider
+        self._initialize_provider()
+
+    def _resolve_api_token(self, api_token: Optional[str]) -> Optional[str]:
+        """
+        Resolve API token from multiple sources.
+
+        Args:
+            api_token: Explicitly provided token
+
+        Returns:
+            Resolved token or None
+        """
+        return (
             api_token
             or os.getenv("QUANTUM_API_TOKEN")
             or os.getenv("IBM_API_KEY")
             or os.getenv("IBMQ_API_TOKEN")
         )
-        self.backend = None
 
-        logger.info(f"Initializing Quantum Backend. Requested provider: {provider}")
+    def _auto_select_provider(self) -> str:
+        """
+        Auto-select the best available provider.
 
-        # Auto-selection logic
-        if self.provider == "auto":
-            if DWAVE_AVAILABLE and os.getenv("DWAVE_API_TOKEN"):
-                self.provider = "dwave"
-            elif QISKIT_AVAILABLE and (os.getenv("IBMQ_API_TOKEN") or os.getenv("IBM_API_KEY")):
-                self.provider = "ibm"
-            elif NEAL_AVAILABLE:
-                self.provider = "neal"
+        Returns:
+            Selected provider name
+        """
+        if self._is_dwave_available():
+            return "dwave"
+        elif self._is_ibm_available():
+            return "ibm"
+        elif NEAL_AVAILABLE:
+            return "neal"
+        else:
+            return "mock"
+
+    def _is_dwave_available(self) -> bool:
+        """Check if D-Wave is available."""
+        return DWAVE_AVAILABLE and bool(os.getenv("DWAVE_API_TOKEN"))
+
+    def _is_ibm_available(self) -> bool:
+        """Check if IBM Quantum is available."""
+        return QISKIT_AVAILABLE and bool(os.getenv("IBMQ_API_TOKEN") or os.getenv("IBM_API_KEY"))
+
+    def _initialize_provider(self) -> None:
+        """Initialize the selected quantum provider."""
+        provider_initializers = {
+            "dwave": self._initialize_dwave,
+            "ibm": self._initialize_ibm,
+            "neal": self._initialize_neal,
+            "mock": self._initialize_mock,
+        }
+
+        initializer = provider_initializers.get(self.provider, self._initialize_mock)
+        initializer()
+
+    def _initialize_dwave(self) -> None:
+        """Initialize D-Wave backend."""
+        if not DWAVE_AVAILABLE:
+            logger.warning("D-Wave not available. Falling back to Neal.")
+            self.provider = "neal"
+            self._initialize_neal()
+            return
+
+        try:
+            self.backend = EmbeddingComposite(DWaveSampler(token=self.token, solver={"qpu": True}))
+            logger.info("Connected to D-Wave QPU.")
+        except Exception as e:
+            logger.error(f"D-Wave connection failed: {e}. Falling back to Neal.")
+            self.provider = "neal"
+            self._initialize_neal()
+
+    def _initialize_ibm(self) -> None:
+        """Initialize IBM Quantum backend."""
+        if not QISKIT_AVAILABLE:
+            logger.warning("Qiskit not available. Falling back to Aer Simulator.")
+            self.backend = AerSimulator()
+            return
+
+        if self.token:
+            self._initialize_ibm_cloud()
+        else:
+            self._initialize_ibm_simulator()
+
+    def _initialize_ibm_cloud(self) -> None:
+        """Initialize IBM Quantum Cloud backend."""
+        try:
+            from src.quantum_consciousness.qpu_interface import IBMQBackend
+
+            self.backend = IBMQBackend(token=self.token)
+            if self.backend.is_available():
+                logger.info("Initialized IBM Quantum Backend (Cloud).")
             else:
-                self.provider = "mock"
-
-        # Initialization
-        if self.provider == "dwave" and DWAVE_AVAILABLE:
-            try:
-                self.backend = EmbeddingComposite(
-                    DWaveSampler(token=self.token, solver={"qpu": True})
-                )
-                logger.info("Connected to D-Wave QPU.")
-            except Exception as e:
-                logger.error(f"D-Wave connection failed: {e}. Falling back to Neal.")
-                self.provider = "neal"
-
-        if self.provider == "ibm" and QISKIT_AVAILABLE:
-            # Initialize real IBM Quantum backend if token is available
-            if self.token:
-                try:
-                    from src.quantum_consciousness.qpu_interface import IBMQBackend
-
-                    self.backend = IBMQBackend(token=self.token)
-                    if self.backend.is_available():
-                        logger.info("Initialized IBM Quantum Backend (Cloud).")
-                    else:
-                        logger.warning(
-                            "IBM Quantum Backend unavailable. Falling back to Aer Simulator."
-                        )
-                        self.backend = AerSimulator()
-                except Exception as e:
-                    logger.error(
-                        f"Failed to initialize IBM Quantum: {e}. Falling back to Aer Simulator."
-                    )
-                    self.backend = AerSimulator()
-            else:
-                # No token, use simulator
+                logger.warning("IBM Quantum Backend unavailable. Falling back to Aer Simulator.")
                 self.backend = AerSimulator()
-                logger.info("Initialized Qiskit Aer Simulator (No IBM Token).")
+        except Exception as e:
+            logger.error(f"Failed to initialize IBM Quantum: {e}. Falling back to Aer Simulator.")
+            self.backend = AerSimulator()
 
-        if self.provider == "neal" and NEAL_AVAILABLE:
+    def _initialize_ibm_simulator(self) -> None:
+        """Initialize IBM Aer Simulator."""
+        self.backend = AerSimulator()
+        logger.info("Initialized Qiskit Aer Simulator (No IBM Token).")
+
+    def _initialize_neal(self) -> None:
+        """Initialize Neal simulated annealing backend."""
+        if NEAL_AVAILABLE:
             self.backend = neal.SimulatedAnnealingSampler()
             logger.info("Initialized Neal Simulated Annealing (Classical Fallback).")
+        else:
+            logger.warning("Neal not available. Falling back to mock.")
+            self._initialize_mock()
 
-        if self.provider == "mock":
-            logger.warning("No quantum/heuristic backend available. Using random mock.")
+    def _initialize_mock(self) -> None:
+        """Initialize mock backend."""
+        logger.warning("No quantum/heuristic backend available. Using random mock.")
 
     def resolve_conflict(
         self, id_energy: float, ego_energy: float, superego_energy: float

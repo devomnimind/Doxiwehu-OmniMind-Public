@@ -181,24 +181,62 @@ class HolographicProjection:
         Returns:
             Numpy array representation
         """
-        # Handle different data types
+        # Try different data type handlers in order
+        handlers = [
+            self._handle_tensor_data,
+            self._handle_array_data,
+            self._handle_embedding_data,
+        ]
+
+        for handler in handlers:
+            result = handler(information)
+            if result is not None:
+                return result
+
+        # Default: create placeholder tensor
+        return self._create_placeholder_tensor()
+
+    def _handle_tensor_data(self, information: Dict[str, Any]) -> Optional[Any]:
+        """Handle tensor data from information dict."""
         if "tensor" in information:
             return information["tensor"]
-        elif "array" in information:
-            return information["array"]
-        elif "embedding" in information:
-            embedding = information["embedding"]
-            if isinstance(embedding, list):
-                return embedding
-            elif TORCH_AVAILABLE and torch is not None:
-                # Only check torch.Tensor if torch is available
-                if hasattr(torch, "Tensor") and isinstance(embedding, torch.Tensor):
-                    return embedding.detach().cpu().numpy().tolist()
+        return None
 
-        # Default: create random tensor (placeholder for unknown data)
-        # In production, this would parse structured data
+    def _handle_array_data(self, information: Dict[str, Any]) -> Optional[Any]:
+        """Handle array data from information dict."""
+        if "array" in information:
+            return information["array"]
+        return None
+
+    def _handle_embedding_data(self, information: Dict[str, Any]) -> Optional[Any]:
+        """Handle embedding data from information dict."""
+        if "embedding" not in information:
+            return None
+
+        embedding = information["embedding"]
+
+        # Handle list embeddings
+        if isinstance(embedding, list):
+            return embedding
+
+        # Handle torch tensors
+        if self._is_torch_tensor(embedding):
+            return embedding.detach().cpu().numpy().tolist()
+
+        return None
+
+    def _is_torch_tensor(self, obj: Any) -> bool:
+        """Check if object is a torch tensor."""
+        return (
+            TORCH_AVAILABLE
+            and torch is not None
+            and hasattr(torch, "Tensor")
+            and isinstance(obj, torch.Tensor)
+        )
+
+    def _create_placeholder_tensor(self) -> List[List[List[float]]]:
+        """Create placeholder 3D tensor for unknown data formats."""
         logger.warning("No recognized data format, generating placeholder tensor")
-        # Simple deterministic placeholder 3D tensor (list-of-lists-of-floats)
         return [[[0.0 for _ in range(16)] for _ in range(16)] for _ in range(16)]
 
     def _ensure_2d(self, arr: Sequence[Any]) -> List[List[float]]:
@@ -211,34 +249,67 @@ class HolographicProjection:
         Returns:
             2D array
         """
-        # Handle numpy arrays
-        if NUMPY_AVAILABLE and np is not None and isinstance(arr, np.ndarray):
-            arr_2d = arr
-            if arr.ndim == 1:  # type: ignore
-                arr_2d = arr.reshape(1, -1)  # type: ignore
-            elif arr.ndim > 2:  # type: ignore
-                # Flatten higher dimensions
-                arr_2d = arr.reshape(arr.shape[0], -1)  # type: ignore
-            return arr_2d.tolist()
+        # Handle numpy arrays first
+        if self._is_numpy_array(arr):
+            return self._handle_numpy_array(arr)
 
-        # Convert nested sequences into flat list and reshape into square-ish 2D
+        # Handle nested sequences
+        if self._is_nested_sequence(arr):
+            return self._handle_nested_sequence(arr)
+
+        # Handle scalar values
+        return self._handle_scalar_value(arr)
+
+    def _is_numpy_array(self, arr: Any) -> bool:
+        """Check if input is a numpy array."""
+        return NUMPY_AVAILABLE and np is not None and isinstance(arr, np.ndarray)
+
+    def _handle_numpy_array(self, arr: Any) -> List[List[float]]:
+        """Handle numpy array conversion to 2D."""
+        arr_2d = arr
+        if arr.ndim == 1:  # type: ignore
+            arr_2d = arr.reshape(1, -1)  # type: ignore
+        elif arr.ndim > 2:  # type: ignore
+            # Flatten higher dimensions
+            arr_2d = arr.reshape(arr.shape[0], -1)  # type: ignore
+        return arr_2d.tolist()
+
+    def _is_nested_sequence(self, arr: Any) -> bool:
+        """Check if input is a nested sequence."""
+        return isinstance(arr, Sequence) and not isinstance(arr, (str, bytes))
+
+    def _handle_nested_sequence(self, arr: Sequence[Any]) -> List[List[float]]:
+        """Handle nested sequence conversion to 2D."""
+        flat = self._flatten_nested_sequence(arr)
+        return self._reshape_to_square_matrix(flat)
+
+    def _handle_scalar_value(self, arr: Any) -> List[List[float]]:
+        """Handle scalar value conversion to 2D."""
+        return [[float(arr)]]
+
+    def _flatten_nested_sequence(self, arr: Sequence[Any]) -> List[float]:
+        """Flatten nested sequence to 1D list."""
         flat: List[float] = []
-        if isinstance(arr, Sequence) and not isinstance(arr, (str, bytes)):
-            for item in arr:
-                if isinstance(item, Sequence) and not isinstance(item, (str, bytes)):
-                    for sub in item:
-                        if isinstance(sub, Sequence) and not isinstance(sub, (str, bytes)):
-                            flat.extend([float(x) for x in sub])
-                        else:
-                            flat.append(float(sub))
-                else:
-                    flat.append(float(item))
-        else:
-            flat = [float(arr)]
+        for item in arr:
+            if isinstance(item, Sequence) and not isinstance(item, (str, bytes)):
+                for sub in item:
+                    if isinstance(sub, Sequence) and not isinstance(sub, (str, bytes)):
+                        flat.extend([float(x) for x in sub])
+                    else:
+                        flat.append(float(sub))
+            else:
+                flat.append(float(item))
+        return flat
+
+    def _reshape_to_square_matrix(self, flat: List[float]) -> List[List[float]]:
+        """Reshape flat list to square-ish 2D matrix."""
+        if not flat:
+            return [[]]
 
         side = max(int(math.sqrt(len(flat))), 1)
         while side * side < len(flat):
             side += 1
+
         padded = flat + [0.0] * (side * side - len(flat))
         return [padded[i * side : (i + 1) * side] for i in range(side)]
 
@@ -256,32 +327,63 @@ class HolographicProjection:
         Returns:
             2D projection on boundary
         """
-        # Simple projection: sum along one axis (like CT scan)
-        # More sophisticated: actual Radon transform
-        # For now: maximum intensity projection (MIP)
-        # Expecting volume as list-of-lists-of-lists; compute max along first axis
-        if not volume:
+        # Validate input
+        if self._is_volume_empty(volume):
             return []
+
+        # Extract volume dimensions
+        dims = self._get_volume_dimensions(volume)
+
+        # Initialize projection matrix
+        projection = self._initialize_projection_matrix(dims)
+
+        # Perform maximum intensity projection
+        self._apply_maximum_intensity_projection(volume, projection, dims)
+
+        # Ensure within size limits
+        return self._ensure_projection_size_limits(projection)
+
+    def _is_volume_empty(self, volume: Sequence[Sequence[Sequence[Any]]]) -> bool:
+        """Check if volume is empty."""
+        return not volume
+
+    def _get_volume_dimensions(
+        self, volume: Sequence[Sequence[Sequence[Any]]]
+    ) -> tuple[int, int, int]:
+        """Extract dimensions from 3D volume."""
         depth = len(volume)
         h = len(volume[0]) if depth > 0 and volume[0] else 0
         w = len(volume[0][0]) if h > 0 and volume[0][0] else 0
-        projection: List[List[float]] = [[0.0 for _ in range(w)] for _ in range(h)]
+        return depth, h, w
+
+    def _initialize_projection_matrix(self, dims: tuple[int, int, int]) -> List[List[float]]:
+        """Initialize 2D projection matrix with zeros."""
+        _, h, w = dims
+        return [[0.0 for _ in range(w)] for _ in range(h)]
+
+    def _apply_maximum_intensity_projection(
+        self,
+        volume: Sequence[Sequence[Sequence[Any]]],
+        projection: List[List[float]],
+        dims: tuple[int, int, int],
+    ) -> None:
+        """Apply maximum intensity projection along z-axis."""
+        depth, h, w = dims
         for z in range(depth):
             layer = volume[z]
             for i in range(h):
                 for j in range(w):
                     projection[i][j] = max(projection[i][j], float(layer[i][j]))
 
-        # Ensure within size limits
-        if (
-            max(
-                len(projection),
-                (len(projection[0]) if projection and projection[0] else 0),
-            )
-            > self.max_surface_dim
-        ):
-            # Downsample using FFT-based method
-            projection = self._downsample_fft(projection, self.max_surface_dim)
+    def _ensure_projection_size_limits(self, projection: List[List[float]]) -> List[List[float]]:
+        """Ensure projection stays within size limits."""
+        max_dim = max(
+            len(projection),
+            (len(projection[0]) if projection and projection[0] else 0),
+        )
+
+        if max_dim > self.max_surface_dim:
+            return self._downsample_fft(projection, self.max_surface_dim)
 
         return projection
 
@@ -514,38 +616,103 @@ class EventHorizonMemory:
         Returns:
             Merged surface
         """
-        # Ensure same shape (pad if necessary)
+        # Calculate target dimensions
+        target_dims = self._calculate_merge_dimensions(surface1, surface2)
+
+        # Pad surfaces to same dimensions
+        s1_padded = self._pad_surface(surface1, target_dims)
+        s2_padded = self._pad_surface(surface2, target_dims)
+
+        # Merge with superposition weights
+        merged = self._superpose_surfaces(s1_padded, s2_padded)
+
+        # Convert to numpy if available
+        return self._convert_to_numpy_if_available(merged)
+
+    def _calculate_merge_dimensions(self, surface1: Any, surface2: Any) -> tuple[int, int]:
+        """
+        Calculate target dimensions for merging surfaces.
+
+        Args:
+            surface1: First surface
+            surface2: Second surface
+
+        Returns:
+            Tuple of (height, width) for merged surface
+        """
         max_h = max(len(surface1), len(surface2))
         max_w = max(
             len(surface1[0]) if surface1 is not None else 0,
             len(surface2[0]) if surface2 is not None else 0,
         )
+        return max_h, max_w
 
-        # pad both surfaces to max_h x max_w
-        s1_padded: List[List[float]] = [
-            [
-                (float(surface1[r][c]) if r < len(surface1) and c < len(surface1[0]) else 0.0)
-                for c in range(max_w)
-            ]
-            for r in range(max_h)
-        ]
-        s2_padded: List[List[float]] = [
-            [
-                (float(surface2[r][c]) if r < len(surface2) and c < len(surface2[0]) else 0.0)
-                for c in range(max_w)
-            ]
-            for r in range(max_h)
-        ]
+    def _pad_surface(self, surface: Any, target_dims: tuple[int, int]) -> List[List[float]]:
+        """
+        Pad surface to target dimensions with zeros.
 
-        merged: List[List[float]] = [
-            [0.7 * s1_padded[r][c] + 0.3 * s2_padded[r][c] for c in range(max_w)]
-            for r in range(max_h)
-        ]
+        Args:
+            surface: Surface to pad
+            target_dims: Target (height, width)
 
-        if NUMPY_AVAILABLE and np is not None:
-            return np.array(merged)  # type: ignore
+        Returns:
+            Padded surface
+        """
+        target_h, target_w = target_dims
+        padded: List[List[float]] = []
+
+        for r in range(target_h):
+            row: List[float] = []
+            for c in range(target_w):
+                if surface and r < len(surface) and surface[r] and c < len(surface[r]):
+                    row.append(float(surface[r][c]))
+                else:
+                    row.append(0.0)
+            padded.append(row)
+
+        return padded
+
+    def _superpose_surfaces(
+        self, surface1: List[List[float]], surface2: List[List[float]]
+    ) -> List[List[float]]:
+        """
+        Superpose two surfaces with quantum-inspired weights.
+
+        Args:
+            surface1: First surface
+            surface2: Second surface
+
+        Returns:
+            Superposed surface
+        """
+        # Quantum superposition weights (can be tuned)
+        weight1, weight2 = 0.7, 0.3
+
+        merged: List[List[float]] = []
+        for r in range(len(surface1)):
+            row: List[float] = []
+            for c in range(len(surface1[r])):
+                value1 = surface1[r][c]
+                value2 = surface2[r][c] if r < len(surface2) and c < len(surface2[r]) else 0.0
+                merged_value = weight1 * value1 + weight2 * value2
+                row.append(merged_value)
+            merged.append(row)
 
         return merged
+
+    def _convert_to_numpy_if_available(self, surface: List[List[float]]) -> List[List[float]]:
+        """
+        Convert surface to numpy array if numpy is available.
+
+        Args:
+            surface: Surface as list of lists
+
+        Returns:
+            Surface (numpy array if available, otherwise list)
+        """
+        if NUMPY_AVAILABLE and np is not None:
+            return np.array(surface)  # type: ignore
+        return surface
 
     def _spawn_child_memory(self) -> EventHorizonMemory:
         """
@@ -591,45 +758,85 @@ class EventHorizonMemory:
         Returns:
             Retrieved surface pattern or None
         """
-        if self.surface is None:
-            if search_children and self.child_memories:
-                # Search in child memories
-                for child in self.child_memories:
-                    result = child.retrieve(query, search_children=True)
-                    if result is not None:
-                        return result
-            return None
+        # Try to find in current surface first
+        if self.surface is not None:
+            result = self._search_current_surface(query)
+            if result is not None:
+                return result
 
+        # Search in child memories if enabled
+        if search_children:
+            return self._search_child_memories(query)
+
+        return None
+
+    def _search_current_surface(
+        self, query: Dict[str, Any]
+    ) -> Optional[Union[List[List[float]], NDArray]]:
+        """
+        Search for query in current surface.
+
+        Args:
+            query: Query pattern to match
+
+        Returns:
+            Retrieved surface pattern or None
+        """
         # Project query to surface
         query_surface = self.surface_encoding.project_to_boundary(query)
 
         # Compute correlation (holographic matching)
         correlation = self._compute_correlation(self.surface.surface_bits, query_surface)
 
-        # Threshold for match
+        # Check if correlation exceeds threshold
         if correlation > 0.5:
-            # Return as numpy array if available, else list
-            if NUMPY_AVAILABLE and np is not None:
-                if isinstance(self.surface.surface_bits, list):
-                    return np.array(self.surface.surface_bits)  # type: ignore
-                return self.surface.surface_bits  # Already ndarray
-
-            # Fallback to list
-            if isinstance(self.surface.surface_bits, list):
-                return self.surface.surface_bits
-            elif hasattr(self.surface.surface_bits, "tolist"):
-                return self.surface.surface_bits.tolist()
-            else:
-                return None
-
-        # Search children if enabled
-        if search_children:
-            for child in self.child_memories:
-                result = child.retrieve(query, search_children=True)
-                if result is not None:
-                    return result
+            return self._format_surface_result(self.surface.surface_bits)
 
         return None
+
+    def _search_child_memories(
+        self, query: Dict[str, Any]
+    ) -> Optional[Union[List[List[float]], NDArray]]:
+        """
+        Search for query in child memories.
+
+        Args:
+            query: Query pattern to match
+
+        Returns:
+            Retrieved surface pattern or None
+        """
+        for child in self.child_memories:
+            result = child.retrieve(query, search_children=True)
+            if result is not None:
+                return result
+        return None
+
+    def _format_surface_result(
+        self, surface_bits: Any
+    ) -> Optional[Union[List[List[float]], NDArray]]:
+        """
+        Format surface result for return.
+
+        Args:
+            surface_bits: Surface data
+
+        Returns:
+            Formatted surface result
+        """
+        # Return as numpy array if available, else list
+        if NUMPY_AVAILABLE and np is not None:
+            if isinstance(surface_bits, list):
+                return np.array(surface_bits)  # type: ignore
+            return surface_bits  # Already ndarray
+
+        # Fallback to list
+        if isinstance(surface_bits, list):
+            return surface_bits
+        elif hasattr(surface_bits, "tolist"):
+            return surface_bits.tolist()
+        else:
+            return None
 
     def _compute_correlation(self, surface1: Any, surface2: Any) -> float:
         """
@@ -642,40 +849,104 @@ class EventHorizonMemory:
         Returns:
             Correlation coefficient (0-1)
         """
-        # Ensure same shape
-        min_h = min(len(surface1), len(surface2))
-        min_w = min(
-            (len(surface1[0]) if surface1 is not None and len(surface1) > 0 else 0),
-            (len(surface2[0]) if surface2 is not None and len(surface2) > 0 else 0),
-        )
+        # Ensure surfaces have compatible shapes
+        s1_crop, s2_crop = self._align_surfaces(surface1, surface2)
 
-        s1_crop = [row[:min_w] for row in surface1[:min_h]]
-        s2_crop = [row[:min_w] for row in surface2[:min_h]]
-
-        # Normalized cross-correlation
-        # Flatten arrays into lists
-        s1_flat: List[float] = [float(x) for row in s1_crop for x in row]
-        s2_flat: List[float] = [float(x) for row in s2_crop for x in row]
+        # Flatten to 1D arrays
+        s1_flat = self._flatten_surface(s1_crop)
+        s2_flat = self._flatten_surface(s2_crop)
 
         if not s1_flat or not s2_flat:
             return 0.0
 
-        mean1 = statistics.mean(s1_flat)
-        mean2 = statistics.mean(s2_flat)
+        # Compute normalized cross-correlation
+        correlation = self._normalized_cross_correlation(s1_flat, s2_flat)
 
-        s1_norm = [x - mean1 for x in s1_flat]
-        s2_norm = [x - mean2 for x in s2_flat]
+        # Clamp to [0, 1] range
+        return self._clamp_correlation(correlation)
 
-        s1_std = statistics.pstdev(s1_flat)
-        s2_std = statistics.pstdev(s2_flat)
+    def _align_surfaces(
+        self, surface1: Any, surface2: Any
+    ) -> tuple[List[List[float]], List[List[float]]]:
+        """
+        Align surfaces to have compatible dimensions.
 
+        Args:
+            surface1: First surface
+            surface2: Second surface
+
+        Returns:
+            Tuple of aligned surfaces
+        """
+        # Find minimum dimensions
+        min_h = min(len(surface1), len(surface2))
+        min_w = min(
+            len(surface1[0]) if surface1 and len(surface1) > 0 else 0,
+            len(surface2[0]) if surface2 and len(surface2) > 0 else 0,
+        )
+
+        # Crop to minimum dimensions
+        s1_crop = [row[:min_w] for row in surface1[:min_h]]
+        s2_crop = [row[:min_w] for row in surface2[:min_h]]
+
+        return s1_crop, s2_crop
+
+    def _flatten_surface(self, surface: List[List[float]]) -> List[float]:
+        """
+        Flatten 2D surface to 1D list.
+
+        Args:
+            surface: 2D surface
+
+        Returns:
+            Flattened 1D list
+        """
+        return [float(x) for row in surface for x in row]
+
+    def _normalized_cross_correlation(self, s1: List[float], s2: List[float]) -> float:
+        """
+        Compute normalized cross-correlation coefficient.
+
+        Args:
+            s1: First signal
+            s2: Second signal
+
+        Returns:
+            Correlation coefficient (-1 to 1)
+        """
+        # Calculate means
+        mean1 = statistics.mean(s1)
+        mean2 = statistics.mean(s2)
+
+        # Center the signals
+        s1_norm = [x - mean1 for x in s1]
+        s2_norm = [x - mean2 for x in s2]
+
+        # Calculate standard deviations
+        s1_std = statistics.pstdev(s1)
+        s2_std = statistics.pstdev(s2)
+
+        # Handle zero variance case
         if s1_std < 1e-10 or s2_std < 1e-10:
             return 0.0
 
+        # Compute dot product
         dot = sum(a * b for a, b in zip(s1_norm, s2_norm))
-        correlation = dot / (s1_std * s2_std * len(s1_flat))
 
-        # Clamp to [0, 1]
+        # Compute correlation
+        correlation = dot / (s1_std * s2_std * len(s1))
+        return correlation
+
+    def _clamp_correlation(self, correlation: float) -> float:
+        """
+        Clamp correlation coefficient to [0, 1] range.
+
+        Args:
+            correlation: Raw correlation (-1 to 1)
+
+        Returns:
+            Clamped correlation (0 to 1)
+        """
         return float(max(0.0, min(1.0, (correlation + 1.0) / 2.0)))
 
     def get_statistics(self) -> Dict[str, Any]:
