@@ -1,13 +1,42 @@
 """
 Quantum Cognition Engine for OmniMind.
 
-Implements quantum circuits for cognitive processes:
-- Hadamard gates for superposition
-- CNOT gates for entanglement
-- Decision-making in quantum superposition
-- Measurement and collapse
+Implements quantum circuits for cognitive processes using Qiskit:
+- Hadamard gates for superposition states (exploring multiple possibilities)
+- CNOT gates for entanglement (correlated decision making)
+- Decision-making in quantum superposition (parallel evaluation)
+- Measurement and wave function collapse (decision finalization)
 
-Uses Qiskit for quantum simulation.
+Core Concepts:
+- Superposition: Multiple states exist simultaneously until measured
+- Entanglement: Qubits become correlated, affecting each other instantly
+- Interference: Quantum states can constructively/destructively interfere
+- Measurement: Collapses quantum state to classical outcome
+
+Dependencies:
+- qiskit: Quantum circuit construction and simulation
+- qiskit-aer: High-performance quantum simulator
+- numpy: Numerical computations for state vectors
+
+Example Usage:
+    # Initialize quantum cognition engine
+    engine = QuantumCognitionEngine(num_qubits=2)
+
+    # Create superposition circuit
+    circuit = engine.create_superposition()
+
+    # Make quantum decision
+    decision_maker = QuantumDecisionMaker(num_qubits=3)
+    options = ["Option A", "Option B", "Option C", "Option D"]
+    decision = decision_maker.make_decision(options)
+    final_choice = decision.collapse()
+
+Fallback Behavior:
+If Qiskit is not available, the system gracefully degrades to classical
+random choice with appropriate logging warnings.
+
+Author: OmniMind Quantum Team
+License: MIT
 """
 
 from dataclasses import dataclass, field
@@ -35,8 +64,16 @@ logger = structlog.get_logger(__name__)
 
 
 class QuantumGateType(Enum):
-    """Types of quantum gates."""
+    """
+    Enumeration of supported quantum gate types.
 
+    Each gate type corresponds to a fundamental quantum operation:
+    - HADAMARD: Creates superposition from |0⟩ or |1⟩ states
+    - PAULI_X/Y/Z: Bit flip operations around different axes
+    - CNOT: Controlled-NOT, creates entanglement between qubits
+    - PHASE: Adds quantum phase, affects interference patterns
+    - RX/RY/RZ: Rotations around X/Y/Z axes for arbitrary angles
+    """
     HADAMARD = "h"
     PAULI_X = "x"
     PAULI_Y = "y"
@@ -50,40 +87,98 @@ class QuantumGateType(Enum):
 
 @dataclass
 class QuantumState:
-    """Represents a quantum state."""
+    """
+    Represents a quantum state with state vector and measurement probabilities.
+
+    A quantum state encapsulates the complete description of a quantum system,
+    including both the state vector (complex amplitudes) and classical measurement
+    probabilities derived from it.
+
+    Attributes:
+        num_qubits: Number of qubits in this quantum state
+        statevector: Complex numpy array representing quantum amplitudes
+        probabilities: Dictionary mapping basis states to measurement probabilities
+
+    Example:
+        # Create 2-qubit state initialized to |00⟩
+        state = QuantumState(num_qubits=2)
+        # probabilities = {'00': 1.0} (100% chance of measuring |00⟩)
+    """
 
     num_qubits: int
     statevector: Optional[np.ndarray] = None
     probabilities: Dict[str, float] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        """Initialize quantum state."""
+        """
+        Initialize quantum state to |0...0⟩ computational basis state.
+
+        If no statevector is provided, initializes to the all-zero state,
+        which has probability 1.0 of measuring all zeros.
+        """
         if self.statevector is None:
-            # Initialize to |0⟩ state
+            # Initialize to |0⟩ state (first computational basis state)
             size = 2**self.num_qubits
             self.statevector = np.zeros(size, dtype=complex)
             self.statevector[0] = 1.0 + 0j
 
     def measure(self) -> str:
-        """Measure quantum state and collapse to classical."""
+        """
+        Perform quantum measurement and collapse to classical outcome.
+
+        This operation:
+        1. Calculates measurement probabilities from |ψ⟩²
+        2. Samples from the probability distribution
+        3. Returns the measurement outcome as a binary string
+        4. Collapses the quantum state (in a real quantum system)
+
+        Returns:
+            Binary string representing the measurement outcome.
+            Length equals num_qubits (e.g., "010" for 3 qubits).
+
+        Raises:
+            ValueError: If statevector is not initialized.
+
+        Example:
+            >>> state = QuantumState(num_qubits=2)
+            >>> outcome = state.measure()
+            >>> print(outcome)  # "00" (always, since initialized to |00⟩)
+        """
         if self.statevector is None:
             raise ValueError("No statevector to measure")
 
-        # Calculate probabilities
+        # Calculate probabilities |⟨i|ψ⟩|²
         probs = np.abs(self.statevector) ** 2
 
-        # Sample from distribution
+        # Sample from probability distribution
         size = len(self.statevector)
         outcome_idx = np.random.choice(size, p=probs)
 
-        # Convert to binary string
+        # Convert to binary string (remove spaces, pad with zeros)
         outcome = format(outcome_idx, f"0{self.num_qubits}b")
         return outcome
 
 
 @dataclass
 class SuperpositionDecision:
-    """Decision made in quantum superposition."""
+    """
+    Represents a decision made in quantum superposition.
+
+    Encapsulates the quantum decision-making process where multiple options
+    exist in superposition until measurement collapses to a final choice.
+
+    Attributes:
+        options: List of possible decision outcomes
+        quantum_state: Underlying quantum state representation
+        probabilities: Probability distribution over options
+        final_decision: Chosen option after collapse (None until measured)
+        confidence: Confidence score in the final decision
+
+    Example:
+        >>> options = ["Buy", "Sell", "Hold"]
+        >>> decision = SuperpositionDecision(options=options, ...)
+        >>> choice = decision.collapse()  # "Buy", "Sell", or "Hold"
+    """
 
     options: List[str]
     quantum_state: QuantumState
@@ -92,9 +187,26 @@ class SuperpositionDecision:
     confidence: float = 0.0
 
     def collapse(self) -> str:
-        """Collapse superposition to single decision."""
+        """
+        Collapse quantum superposition to a single classical decision.
+
+        Uses quantum measurement to select one option from the superposition.
+        If Qiskit is unavailable, falls back to classical random selection.
+
+        Returns:
+            The selected decision option.
+
+        Note:
+            This method modifies the object state, setting final_decision
+            and confidence attributes.
+
+        Example:
+            >>> decision = decision_maker.make_decision(["A", "B", "C"])
+            >>> choice = decision.collapse()
+            >>> print(f"Chose: {choice} with confidence {decision.confidence:.2f}")
+        """
         if not QISKIT_AVAILABLE:
-            # Fallback to classical random choice
+            # Classical fallback when quantum simulation unavailable
             logger.warning("Qiskit not available, using classical fallback")
             import random
 
@@ -102,8 +214,11 @@ class SuperpositionDecision:
             self.confidence = 1.0 / len(self.options)
             return self.final_decision
 
+        # Perform quantum measurement
         outcome = self.quantum_state.measure()
-        # Map outcome to option (remove spaces from outcome first)
+
+        # Map measurement outcome to decision option
+        # Use modular arithmetic to handle more outcomes than options
         outcome_clean = outcome.replace(" ", "")
         outcome_int = int(outcome_clean, 2) % len(self.options)
         self.final_decision = self.options[outcome_int]
@@ -120,13 +235,20 @@ class SuperpositionDecision:
 
 class QuantumCognitionEngine:
     """
-    Quantum cognition engine using Qiskit.
+    Core quantum cognition engine using Qiskit for circuit simulation.
 
-    Implements quantum circuits for cognitive tasks:
-    - Superposition states
-    - Entanglement
-    - Interference
-    - Measurement
+    Implements quantum circuits for cognitive tasks including:
+    - Superposition states for parallel option exploration
+    - Entanglement for correlated decision making
+    - Quantum interference for complex pattern recognition
+    - Measurement for decision finalization
+
+    The engine provides a high-level interface to quantum computing concepts
+    while handling the complexities of circuit construction and simulation.
+
+    Attributes:
+        num_qubits: Number of qubits available for quantum circuits
+        simulator: Qiskit Aer simulator instance (None if Qiskit unavailable)
     """
 
     def __init__(self, num_qubits: int = 2) -> None:
@@ -134,8 +256,20 @@ class QuantumCognitionEngine:
         Initialize quantum cognition engine.
 
         Args:
-            num_qubits: Number of qubits for quantum circuits
+            num_qubits: Number of qubits for quantum circuits.
+                        Determines maximum complexity of quantum states.
+                        More qubits allow more options but increase computational cost.
+
+        Raises:
+            ValueError: If num_qubits is not positive.
+
+        Example:
+            >>> engine = QuantumCognitionEngine(num_qubits=3)
+            >>> # Can handle up to 8 (2^3) simultaneous options
         """
+        if num_qubits <= 0:
+            raise ValueError("Number of qubits must be positive")
+
         if not QISKIT_AVAILABLE:
             logger.warning(
                 "qiskit_not_available",
@@ -155,20 +289,33 @@ class QuantumCognitionEngine:
         self, qubits: Optional[List[int]] = None, weights: Optional[List[float]] = None
     ) -> QuantumCircuit:
         """
-        Create quantum superposition.
+        Create quantum superposition state.
 
-        If weights are provided, uses Ry gates to create biased superposition.
-        If no weights, uses Hadamard gates for uniform superposition.
+        Superposition allows a quantum system to exist in multiple states
+        simultaneously, enabling parallel exploration of possibilities.
 
         Args:
-            qubits: List of qubit indices.
-            weights: List of weights for biasing (must match length of qubits).
-                     Weight 0.5 = uniform (Hadamard equivalent).
-                     Weight > 0.5 = bias towards |1⟩.
-                     Weight < 0.5 = bias towards |0⟩.
+            qubits: List of qubit indices to put in superposition.
+                   If None, uses all qubits.
+            weights: Optional bias weights for non-uniform superposition.
+                    Each weight should be in [0, 1] range.
+                    - 0.5: Uniform superposition (Hadamard equivalent)
+                    - > 0.5: Bias toward |1⟩ state
+                    - < 0.5: Bias toward |0⟩ state
 
         Returns:
-            QuantumCircuit in superposition state
+            QuantumCircuit in superposition state.
+
+        Raises:
+            ImportError: If Qiskit is not available.
+            ValueError: If weights length doesn't match qubits.
+
+        Example:
+            >>> engine = QuantumCognitionEngine(num_qubits=2)
+            >>> # Uniform superposition on all qubits
+            >>> circuit = engine.create_superposition()
+            >>> # Biased superposition on qubit 0
+            >>> circuit = engine.create_superposition([0], [0.7])
         """
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required for quantum operations")
@@ -183,16 +330,16 @@ class QuantumCognitionEngine:
             if len(weights) != len(target_qubits):
                 raise ValueError("Number of weights must match number of target qubits")
 
+            # Create biased superposition using Ry rotations
             for i, qubit in enumerate(target_qubits):
-                # Map weight [0, 1] to theta [0, pi]
-                # weight 0 -> state |0> -> theta = 0
-                # weight 1 -> state |1> -> theta = pi
-                # weight 0.5 -> superposition -> theta = pi/2
+                # Map weight [0, 1] to rotation angle [0, π]
+                # weight 0 → |0⟩ (θ=0), weight 1 → |1⟩ (θ=π)
                 theta = 2 * np.arcsin(np.sqrt(weights[i]))
                 qc.ry(theta, qubit)
         else:
+            # Uniform superposition using Hadamard gates
             for qubit in target_qubits:
-                qc.h(qubit)  # Hadamard gate creates uniform superposition
+                qc.h(qubit)  # Hadamard gate: |0⟩ → (|0⟩ + |1⟩)/√2
 
         logger.debug("superposition_created", qubits=target_qubits, biased=bool(weights))
 
@@ -200,25 +347,43 @@ class QuantumCognitionEngine:
 
     def create_entanglement(self, control_qubit: int = 0, target_qubit: int = 1) -> QuantumCircuit:
         """
-        Create entangled state using CNOT gate.
+        Create entangled quantum state using CNOT gate.
+
+        Entanglement creates correlation between qubits that persists
+        regardless of distance, enabling coordinated decision making.
 
         Args:
-            control_qubit: Control qubit index
-            target_qubit: Target qubit index
+            control_qubit: Index of control qubit (0-based)
+            target_qubit: Index of target qubit (0-based)
 
         Returns:
-            QuantumCircuit with entangled qubits
+            QuantumCircuit with entangled qubits (Bell state).
+
+        Raises:
+            ImportError: If Qiskit is not available.
+            ValueError: If qubit indices are invalid.
+
+        Example:
+            >>> engine = QuantumCognitionEngine(num_qubits=2)
+            >>> # Create Bell state: (|00⟩ + |11⟩)/√2
+            >>> circuit = engine.create_entanglement(0, 1)
         """
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required for quantum operations")
+
+        if not (0 <= control_qubit < self.num_qubits and 0 <= target_qubit < self.num_qubits):
+            raise ValueError("Qubit indices must be valid")
+
+        if control_qubit == target_qubit:
+            raise ValueError("Control and target qubits must be different")
 
         qr = QuantumRegister(self.num_qubits, "q")
         cr = ClassicalRegister(self.num_qubits, "c")
         qc = QuantumCircuit(qr, cr)
 
-        # Create Bell state: |00⟩ + |11⟩
-        qc.h(control_qubit)  # Superposition
-        qc.cx(control_qubit, target_qubit)  # Entanglement
+        # Create Bell state: (|00⟩ + |11⟩)/√2
+        qc.h(control_qubit)  # Put control in superposition
+        qc.cx(control_qubit, target_qubit)  # Entangle with target
 
         logger.debug("entanglement_created", control=control_qubit, target=target_qubit)
 
@@ -226,25 +391,36 @@ class QuantumCognitionEngine:
 
     def get_statevector(self, circuit: QuantumCircuit) -> QuantumState:
         """
-        Get quantum statevector from circuit.
+        Extract quantum state vector from a circuit.
+
+        The state vector contains all quantum amplitudes and can be used
+        to compute measurement probabilities and expectation values.
 
         Args:
-            circuit: QuantumCircuit to evaluate
+            circuit: Quantum circuit to evaluate
 
         Returns:
-            QuantumState with statevector
+            QuantumState object with statevector and probabilities
+
+        Raises:
+            ImportError: If Qiskit is not available.
+
+        Example:
+            >>> circuit = engine.create_superposition()
+            >>> state = engine.get_statevector(circuit)
+            >>> print(f"Probabilities: {state.probabilities}")
         """
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required for quantum operations")
 
-        # Get statevector
+        # Get statevector from Qiskit
         sv = Statevector(circuit)
         state = QuantumState(num_qubits=self.num_qubits, statevector=sv.data)
 
-        # Calculate probabilities
+        # Calculate measurement probabilities |⟨i|ψ⟩|²
         probs = np.abs(sv.data) ** 2
         for idx, prob in enumerate(probs):
-            if prob > 1e-10:  # Only significant probabilities
+            if prob > 1e-10:  # Only include significant probabilities
                 basis_state = format(idx, f"0{self.num_qubits}b")
                 state.probabilities[basis_state] = float(prob)
 
@@ -252,23 +428,35 @@ class QuantumCognitionEngine:
 
     def measure_circuit(self, circuit: QuantumCircuit, shots: int = 1024) -> Dict[str, int]:
         """
-        Measure quantum circuit multiple times.
+        Perform multiple measurements of a quantum circuit.
+
+        Simulates repeated quantum measurements to build up statistics
+        about the quantum state's behavior.
 
         Args:
-            circuit: QuantumCircuit to measure
-            shots: Number of measurements
+            circuit: Quantum circuit to measure
+            shots: Number of measurement repetitions (default: 1024)
 
         Returns:
-            Dictionary of measurement outcomes and counts
+            Dictionary mapping measurement outcomes to counts.
+            Keys are binary strings, values are occurrence counts.
+
+        Raises:
+            ImportError: If Qiskit is not available.
+
+        Example:
+            >>> circuit = engine.create_entanglement()
+            >>> counts = engine.measure_circuit(circuit, shots=1000)
+            >>> print(counts)  # {'00': 498, '11': 502} (Bell state correlations)
         """
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required for quantum operations")
 
-        # Add measurement to all qubits
+        # Add measurement operations to all qubits
         qc = circuit.copy()
         qc.measure_all()
 
-        # Run simulation
+        # Execute on quantum simulator
         job = self.simulator.run(qc, shots=shots)
         result = job.result()
         counts = result.get_counts()
@@ -280,10 +468,17 @@ class QuantumCognitionEngine:
 
 class QuantumDecisionMaker:
     """
-    Quantum decision maker using superposition.
+    High-level quantum decision maker using superposition principles.
 
-    Makes decisions by encoding options in quantum superposition
-    and measuring the collapsed state.
+    Makes decisions by encoding options in quantum superposition states,
+    allowing parallel exploration before collapsing to a final choice.
+
+    This implements a form of quantum parallelism for decision making,
+    where multiple options are evaluated simultaneously in superposition.
+
+    Attributes:
+        engine: Underlying QuantumCognitionEngine instance
+        num_qubits: Number of qubits available for decisions
     """
 
     def __init__(self, num_qubits: int = 3) -> None:
@@ -291,7 +486,12 @@ class QuantumDecisionMaker:
         Initialize quantum decision maker.
 
         Args:
-            num_qubits: Number of qubits (determines max options = 2^n)
+            num_qubits: Number of qubits (determines max options = 2^num_qubits).
+                       More qubits allow more options but increase complexity.
+
+        Example:
+            >>> decision_maker = QuantumDecisionMaker(num_qubits=3)
+            >>> # Can handle up to 8 decision options
         """
         self.engine = QuantumCognitionEngine(num_qubits=num_qubits)
         self.num_qubits = num_qubits
@@ -302,48 +502,55 @@ class QuantumDecisionMaker:
         self, options: List[str], weights: Optional[List[float]] = None
     ) -> SuperpositionDecision:
         """
-        Make decision using quantum superposition.
+        Create a quantum superposition decision from multiple options.
+
+        Encodes decision options into a quantum state, allowing parallel
+        consideration of all possibilities until measurement.
 
         Args:
-            options: List of decision options
-            weights: Optional weights for biasing decision.
-                     If provided, must be a list of floats [0, 1] for each qubit.
-                     Note: This implementation currently maps 1 weight per qubit.
-                     For complex option weighting, a more sophisticated encoding is needed.
+            options: List of decision options (strings)
+            weights: Optional bias weights for non-uniform decision probabilities.
+                    Currently maps to qubit-level biasing (simplified implementation).
 
         Returns:
-            SuperpositionDecision with quantum state
+            SuperpositionDecision object ready for collapse.
+
+        Raises:
+            ValueError: If too many options for available qubits.
+
+        Example:
+            >>> options = ["Invest in stocks", "Buy bonds", "Keep cash"]
+            >>> decision = decision_maker.make_decision(options)
+            >>> choice = decision.collapse()
+            >>> print(f"Quantum chose: {choice}")
         """
         if len(options) > 2**self.num_qubits:
             raise ValueError(f"Too many options ({len(options)}). Max is {2 ** self.num_qubits}")
 
         if not QISKIT_AVAILABLE:
             logger.warning("qiskit_not_available_fallback")
-            # Classical fallback
+            # Classical fallback when quantum unavailable
             state = QuantumState(num_qubits=self.num_qubits)
             probs = {opt: 1.0 / len(options) for opt in options}
             return SuperpositionDecision(options=options, quantum_state=state, probabilities=probs)
 
-        # Create superposition circuit
-        # If weights are provided, we need to map them to qubits.
-        # This is a simplification. Real encoding of arbitrary option weights is complex.
-        # Here we assume weights map 1:1 to qubits for demonstration of bias.
+        # Create superposition circuit with optional biasing
         qubit_weights = None
         if weights:
-            # Pad or truncate weights to match num_qubits
+            # Map option weights to qubit biases (simplified)
             qubit_weights = weights[: self.num_qubits]
             while len(qubit_weights) < self.num_qubits:
                 qubit_weights.append(0.5)  # Default to uniform
 
         circuit = self.engine.create_superposition(weights=qubit_weights)
 
-        # Get quantum state
+        # Extract quantum state
         q_state = self.engine.get_statevector(circuit)
 
-        # Map probabilities to options
+        # Map quantum probabilities to decision options
         option_probs: Dict[str, float] = {}
         for idx, option in enumerate(options):
-            # Sum probabilities for basis states that map to this option
+            # Sum probabilities for basis states mapping to this option
             total_prob = 0.0
             for basis_state, prob in q_state.probabilities.items():
                 if int(basis_state, 2) % len(options) == idx:
@@ -365,10 +572,21 @@ class QuantumDecisionMaker:
 
     def demonstrate_entanglement(self) -> Tuple[QuantumCircuit, Dict[str, int]]:
         """
-        Demonstrate quantum entanglement.
+        Demonstrate quantum entanglement with measurement statistics.
+
+        Creates an entangled Bell state and measures it multiple times
+        to show the characteristic correlations.
 
         Returns:
-            Tuple of (circuit, measurement_counts)
+            Tuple of (quantum_circuit, measurement_counts).
+            Bell state should show ~50% "00" and ~50% "11" outcomes.
+
+        Raises:
+            ImportError: If Qiskit is not available.
+
+        Example:
+            >>> circuit, counts = decision_maker.demonstrate_entanglement()
+            >>> print(counts)  # Should show Bell state correlations
         """
         if not QISKIT_AVAILABLE:
             raise ImportError("Qiskit required for quantum operations")
