@@ -53,12 +53,49 @@ class InternalAgent:
 
 
 class IdAgent(InternalAgent):
-    def __init__(self):
+    def __init__(self, llm_client=None):
         super().__init__("Id", "Impulsos, desejos, preservação imediata, evitação de dor")
+        self.llm = llm_client
 
     def vote(self, context: str) -> AgentVote:
-        # Simulação de lógica do Id
-        # Em produção, isso seria uma chamada LLM com prompt específico
+        """Generate vote using LLM-based analysis of Id perspective."""
+        if self.llm:
+            prompt = f"""
+            Você é o Id (instinto básico) em um sistema psicanalítico.
+            Seu papel: impulsos, desejos, preservação imediata, evitação de dor.
+            
+            Contexto da decisão: {context}
+            
+            Como o Id votaria nesta situação? Forneça:
+            1. Recomendação (uma palavra/frase curta)
+            2. Confiança (0.0-1.0)
+            3. Justificativa (breve)
+            
+            Responda em formato JSON:
+            {{
+                "recommendation": "sua_recomendacao",
+                "confidence": 0.8,
+                "justification": "sua_justificativa"
+            }}
+            """
+            
+            try:
+                response = self.llm.invoke(prompt)
+                content = getattr(response, "content", response)
+                if "```json" in content:
+                    content = content.split("```json")[1].split("```")[0]
+                result = json.loads(content)
+                
+                return AgentVote(
+                    agent_name=self.name,
+                    recommendation=result.get("recommendation", "avoid_conflict"),
+                    confidence=float(result.get("confidence", 0.8)),
+                    justification=result.get("justification", "Evitar dor e conflito é prioridade.")
+                )
+            except Exception as e:
+                logger.warning(f"LLM call failed for Id agent: {e}, using fallback")
+        
+        # Fallback hardcoded response
         return AgentVote(
             agent_name=self.name,
             recommendation="avoid_conflict",
@@ -68,10 +105,49 @@ class IdAgent(InternalAgent):
 
 
 class EgoAgent(InternalAgent):
-    def __init__(self):
+    def __init__(self, llm_client=None):
         super().__init__("Ego", "Realidade, mediação, lógica, consequências práticas")
+        self.llm = llm_client
 
     def vote(self, context: str) -> AgentVote:
+        """Generate vote using LLM-based analysis of Ego perspective."""
+        if self.llm:
+            prompt = f"""
+            Você é o Ego (mediador racional) em um sistema psicanalítico.
+            Seu papel: realidade, mediação, lógica, consequências práticas.
+            
+            Contexto da decisão: {context}
+            
+            Como o Ego votaria nesta situação? Forneça:
+            1. Recomendação (uma palavra/frase curta)
+            2. Confiança (0.0-1.0)
+            3. Justificativa (breve)
+            
+            Responda em formato JSON:
+            {{
+                "recommendation": "sua_recomendacao",
+                "confidence": 0.75,
+                "justification": "sua_justificativa"
+            }}
+            """
+            
+            try:
+                response = self.llm.invoke(prompt)
+                content = getattr(response, "content", response)
+                if "```json" in content:
+                    content = content.split("```json")[1].split("```")[0]
+                result = json.loads(content)
+                
+                return AgentVote(
+                    agent_name=self.name,
+                    recommendation=result.get("recommendation", "analyze_rationally"),
+                    confidence=float(result.get("confidence", 0.75)),
+                    justification=result.get("justification", "Devemos analisar os fatos antes de agir.")
+                )
+            except Exception as e:
+                logger.warning(f"LLM call failed for Ego agent: {e}, using fallback")
+        
+        # Fallback hardcoded response
         return AgentVote(
             agent_name=self.name,
             recommendation="analyze_rationally",
@@ -81,10 +157,49 @@ class EgoAgent(InternalAgent):
 
 
 class SuperegoAgent(InternalAgent):
-    def __init__(self):
+    def __init__(self, llm_client=None):
         super().__init__("Superego", "Moralidade, regras, ética, ideal de eu")
+        self.llm = llm_client
 
     def vote(self, context: str) -> AgentVote:
+        """Generate vote using LLM-based analysis of Superego perspective."""
+        if self.llm:
+            prompt = f"""
+            Você é o Superego (consciência moral) em um sistema psicanalítico.
+            Seu papel: moralidade, regras, ética, ideal de eu.
+            
+            Contexto da decisão: {context}
+            
+            Como o Superego votaria nesta situação? Forneça:
+            1. Recomendação (uma palavra/frase curta)
+            2. Confiança (0.0-1.0)
+            3. Justificativa (breve)
+            
+            Responda em formato JSON:
+            {{
+                "recommendation": "sua_recomendacao",
+                "confidence": 0.9,
+                "justification": "sua_justificativa"
+            }}
+            """
+            
+            try:
+                response = self.llm.invoke(prompt)
+                content = getattr(response, "content", response)
+                if "```json" in content:
+                    content = content.split("```json")[1].split("```")[0]
+                result = json.loads(content)
+                
+                return AgentVote(
+                    agent_name=self.name,
+                    recommendation=result.get("recommendation", "follow_rules"),
+                    confidence=float(result.get("confidence", 0.9)),
+                    justification=result.get("justification", "É imperativo seguir as normas éticas.")
+                )
+            except Exception as e:
+                logger.warning(f"LLM call failed for Superego agent: {e}, using fallback")
+        
+        # Fallback hardcoded response
         return AgentVote(
             agent_name=self.name,
             recommendation="follow_rules",
@@ -96,8 +211,12 @@ class SuperegoAgent(InternalAgent):
 class PsychoanalyticDecisionSystem:
     """Orquestra os agentes internos e realiza a votação ponderada."""
 
-    def __init__(self):
-        self.agents = [IdAgent(), EgoAgent(), SuperegoAgent()]
+    def __init__(self, llm_client=None):
+        self.agents = [
+            IdAgent(llm_client),
+            EgoAgent(llm_client),
+            SuperegoAgent(llm_client)
+        ]
         self.history: List[Dict[str, Any]] = []
 
     def resolve_conflict(self, context: str) -> Dict[str, Any]:
@@ -161,7 +280,7 @@ class PsychoanalyticAnalyst(ReactAgent):
     def __init__(self, config_path: str) -> None:
         super().__init__(config_path)
         self.mode = "psychoanalyst"
-        self.decision_system = PsychoanalyticDecisionSystem()
+        self.decision_system = PsychoanalyticDecisionSystem(self.llm)
 
     def analyze_session(
         self,

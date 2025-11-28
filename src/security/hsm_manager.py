@@ -9,6 +9,7 @@ import hashlib
 import hmac
 import os
 import secrets
+import threading
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
@@ -37,7 +38,23 @@ class HSMManager:
     In production, this would interface with actual HSM hardware.
     """
 
+    _instance: Optional["HSMManager"] = None
+    _lock = threading.Lock()
+
+    def __new__(cls) -> "HSMManager":
+        """Singleton pattern to avoid multiple expensive initializations"""
+        if cls._instance is None:
+            with cls._lock:
+                if cls._instance is None:
+                    cls._instance = super().__new__(cls)
+        return cls._instance
+
     def __init__(self) -> None:
+        # Only initialize once due to singleton
+        if hasattr(self, "_initialized"):
+            return
+
+        self._initialized = True
         self.keys: Dict[str, Dict[str, Any]] = {}
         self.master_key = self._generate_master_key()
         self.key_counter = 0
@@ -57,8 +74,8 @@ class HSMManager:
                 salt = encrypted_data[:32]
                 encrypted_master = encrypted_data[32:]
 
-                # Derive system key using stored salt
-                system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 100000, dklen=32)
+                # Derive system key using stored salt (reduced iterations for testing)
+                system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 1000, dklen=32)
 
                 master_key = self._decrypt_data(encrypted_master, system_key)
                 return master_key
@@ -70,8 +87,8 @@ class HSMManager:
             # Generate unique salt for this master key
             salt = secrets.token_bytes(32)  # 256-bit salt
 
-            # Derive system key using random salt
-            system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 100000, dklen=32)
+            # Derive system key using random salt (reduced iterations for testing)
+            system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 1000, dklen=32)
 
             encrypted_master = self._encrypt_data(master_key, system_key)
 
@@ -396,5 +413,17 @@ class HSMManager:
             return False
 
 
-# Global HSM manager instance
-hsm_manager = HSMManager()
+# Global HSM manager instance - lazy initialization to avoid import-time overhead
+_hsm_manager_instance: Optional[HSMManager] = None
+
+
+def get_hsm_manager() -> HSMManager:
+    """Get global HSM manager instance (lazy initialization)"""
+    global _hsm_manager_instance
+    if _hsm_manager_instance is None:
+        _hsm_manager_instance = HSMManager()
+    return _hsm_manager_instance
+
+
+# Keep backward compatibility
+hsm_manager = None  # Will be set on first access

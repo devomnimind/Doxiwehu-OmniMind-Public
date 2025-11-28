@@ -11,12 +11,15 @@ from typing import Any, Dict, List, Optional
 import pytest
 
 try:
-    from PIL import Image
+    from PIL import Image as PILImage
+    from PIL.Image import Image as PILImageType
     from playwright.sync_api import sync_playwright
 
     VISUAL_TESTING_AVAILABLE = True
 except ImportError:
     VISUAL_TESTING_AVAILABLE = False
+    PILImage = None  # type: ignore
+    PILImageType = None  # type: ignore
     pytest.skip(
         "Visual testing dependencies not installed (playwright, PIL)",
         allow_module_level=True,
@@ -121,8 +124,8 @@ class VisualRegressionTester:
         Returns:
             Difference ratio (0.0 = identical, 1.0 = completely different)
         """
-        baseline = Image.open(baseline_path)
-        screenshot = Image.open(screenshot_path)
+        baseline = PILImage.open(baseline_path)  # type: ignore
+        screenshot = PILImage.open(screenshot_path)  # type: ignore
 
         # Ensure same size
         if baseline.size != screenshot.size:
@@ -133,8 +136,8 @@ class VisualRegressionTester:
         screenshot = screenshot.convert("RGB")
 
         # Calculate pixel-by-pixel difference
-        baseline_pixels = list(baseline.getdata())
-        screenshot_pixels = list(screenshot.getdata())
+        baseline_pixels = list(baseline.getdata())  # type: ignore
+        screenshot_pixels = list(screenshot.getdata())  # type: ignore
 
         total_pixels = len(baseline_pixels)
         different_pixels = 0
@@ -162,16 +165,18 @@ class VisualRegressionTester:
             screenshot_path: Path to screenshot image
             diff_path: Path to save diff image
         """
-        baseline = Image.open(baseline_path).convert("RGB")
-        screenshot = Image.open(screenshot_path).convert("RGB")
+        baseline = PILImage.open(baseline_path).convert("RGB")  # type: ignore
+        screenshot = PILImage.open(screenshot_path).convert("RGB")  # type: ignore
 
         # Ensure same size - resize screenshot to match baseline
         if baseline.size != screenshot.size:
-            screenshot = screenshot.resize(baseline.size, Image.Resampling.LANCZOS)
+            screenshot = screenshot.resize(
+                baseline.size, PILImage.Resampling.LANCZOS  # type: ignore
+            )
 
         # Create diff image
         width, height = baseline.size
-        diff = Image.new("RGB", (width, height))
+        diff = PILImage.new("RGB", (width, height))  # type: ignore
 
         for y in range(height):
             for x in range(width):
