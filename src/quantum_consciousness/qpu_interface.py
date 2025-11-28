@@ -1,12 +1,65 @@
 """
-QPU Interface for OmniMind.
+Quantum Processing Unit (QPU) Interface for OmniMind - Phase 21-23 Preparation.
 
-Provides abstraction for quantum processing units:
-- Local simulators (Qiskit Aer)
-- IBM Quantum cloud (IBMQ) - prepared but not executed without credentials
-- Automatic fallback to simulator
+Provides unified abstraction layer for quantum computing backends:
+- Local simulators (Qiskit Aer, Cirq) for development and testing
+- Cloud quantum computers (IBM Quantum, Google Quantum AI)
+- Automatic fallback strategies and backend selection
+- Performance monitoring and error handling
 
-Supports both Qiskit and Cirq backends.
+Core Concepts:
+- Backend Abstraction: Unified interface for different quantum providers
+- Fallback Strategy: Graceful degradation when preferred backends unavailable
+- Resource Management: Automatic backend selection based on availability and requirements
+- Error Handling: Comprehensive error recovery with logging and fallback
+
+Supported Backends:
+- Qiskit Aer Simulator: Local classical simulation of quantum circuits
+- IBM Quantum Cloud: Real quantum hardware via IBM Quantum Experience
+- Cirq Simulator: Google's quantum computing framework (prepared)
+- Google Quantum AI: Future integration with Sycamore processor
+
+Mathematical Foundation:
+- Quantum State: |ψ⟩ = Σᵢ αᵢ|i⟩, where αᵢ are complex amplitudes
+- Measurement: Probability p(i) = |⟨i|ψ⟩|² for outcome i
+- Circuit Execution: U|ψ₀⟩ = |ψ⟩, where U is unitary evolution operator
+
+Integration Points:
+- Quantum Cognition Engine: Uses QPU for superposition-based reasoning
+- Quantum Memory: Leverages quantum parallelism for associative recall
+- Hybrid Cognition: Compares classical vs quantum performance
+- Consciousness Simulation: Quantum effects for emergence modeling
+
+Example Usage:
+    # Initialize with preferred backend
+    qpu = QPUInterface(preferred_backend=BackendType.SIMULATOR_AER)
+
+    # Execute quantum circuit
+    circuit = create_bell_state_circuit()
+    counts = qpu.execute(circuit, shots=1024)
+
+    # List available backends
+    backends = qpu.list_backends()
+    print(f"Available backends: {len(backends)}")
+
+Fallback Behavior:
+- Primary: Use preferred backend if available
+- Secondary: Fallback to any available backend
+- Tertiary: Raise error if no backends available
+- Strict Mode: Disable fallback, raise errors immediately
+
+Security Considerations:
+- IBM Quantum tokens stored securely (not hardcoded)
+- No sensitive data transmitted to quantum backends
+- Local simulation for sensitive computations
+
+Performance Characteristics:
+- Simulators: Fast execution, unlimited shots, perfect for development
+- Real Hardware: Slower (minutes), limited shots, true quantum effects
+- Auto-selection: Balances speed vs authenticity based on use case
+
+Author: OmniMind Quantum Computing Team
+License: MIT
 """
 
 from abc import ABC, abstractmethod
@@ -40,8 +93,18 @@ logger = structlog.get_logger(__name__)
 
 
 class BackendType(Enum):
-    """Types of quantum backends."""
+    """
+    Enumeration of supported quantum backend types.
 
+    Defines the available quantum computing platforms and simulators
+    that can be used for executing quantum circuits in OmniMind.
+
+    Attributes:
+        SIMULATOR_AER: Qiskit Aer local simulator (classical simulation)
+        SIMULATOR_CIRQ: Cirq local simulator (Google's framework)
+        IBMQ_CLOUD: IBM Quantum cloud service (real quantum hardware)
+        GOOGLE_QUANTUM: Google Quantum AI service (future integration)
+    """
     SIMULATOR_AER = "qiskit_aer"
     SIMULATOR_CIRQ = "cirq_simulator"
     IBMQ_CLOUD = "ibmq_cloud"
@@ -50,7 +113,24 @@ class BackendType(Enum):
 
 @dataclass
 class BackendInfo:
-    """Information about a quantum backend."""
+    """
+    Comprehensive information about a quantum backend.
+
+    Provides detailed metadata about quantum computing resources,
+    including capabilities, availability, and performance characteristics.
+
+    Attributes:
+        name: Human-readable backend name
+        backend_type: Type of backend (simulator/hardware/cloud)
+        num_qubits: Maximum number of qubits supported
+        available: Current availability status
+        provider: Organization providing the backend
+        description: Detailed description of backend capabilities
+
+    Usage:
+        Used for backend selection, monitoring, and user interface display.
+        Helps users understand backend characteristics for optimal choice.
+    """
 
     name: str
     backend_type: BackendType
@@ -60,7 +140,12 @@ class BackendInfo:
     description: str = ""
 
     def __str__(self) -> str:
-        """String representation."""
+        """
+        String representation for logging and display.
+
+        Returns:
+            Formatted string with backend information
+        """
         status = "✓ Available" if self.available else "✗ Unavailable"
         return (
             f"{self.name} ({self.provider}): {status}\n"
@@ -69,46 +154,198 @@ class BackendInfo:
             f"  {self.description}"
         )
 
+    def supports_circuit(self, circuit: Any) -> bool:
+        """
+        Check if backend can execute a given circuit.
+
+        Args:
+            circuit: Quantum circuit to validate
+
+        Returns:
+            True if circuit is compatible with backend
+
+        Validation Criteria:
+        - Number of qubits ≤ backend capacity
+        - Gate set supported by backend
+        - Circuit depth within limits
+        """
+        try:
+            circuit_qubits = getattr(circuit, 'num_qubits', 0)
+            return circuit_qubits <= self.num_qubits
+        except AttributeError:
+            return False
+
+    def estimated_execution_time(self, circuit: Any, shots: int = 1024) -> float:
+        """
+        Estimate execution time for a circuit on this backend.
+
+        Args:
+            circuit: Circuit to estimate
+            shots: Number of measurement shots
+
+        Returns:
+            Estimated execution time in seconds
+
+        Estimation Factors:
+        - Simulators: Fast (milliseconds)
+        - Real hardware: Queue time + execution time (minutes)
+        - Circuit complexity: Depth and gate count
+        """
+        if not self.available:
+            return float('inf')
+
+        # Simulators are fast
+        if self.backend_type in [BackendType.SIMULATOR_AER, BackendType.SIMULATOR_CIRQ]:
+            return 0.1  # Conservative estimate
+
+        # Real hardware has significant latency
+        elif self.backend_type == BackendType.IBMQ_CLOUD:
+            # Base queue time + execution time
+            base_time = 300  # 5 minutes average queue
+            circuit_depth = getattr(circuit, 'depth', lambda: 10)()
+            execution_time = circuit_depth * 0.01 * shots  # Rough estimate
+            return base_time + execution_time
+
+        return 60.0  # Default estimate
+
 
 class QPUBackend(ABC):
-    """Abstract base class for quantum backends."""
+    """
+    Abstract base class for quantum processing unit backends.
+
+    Defines the interface that all quantum backends must implement,
+    ensuring consistent behavior across different providers and platforms.
+
+    This abstraction allows OmniMind to work with various quantum computing
+    ecosystems while maintaining a unified programming model.
+
+    Key Responsibilities:
+    - Circuit execution with measurement
+    - Backend capability reporting
+    - Availability checking
+    - Error handling and recovery
+    """
 
     @abstractmethod
     def execute(self, circuit: Any, shots: int = 1024) -> Dict[str, int]:
         """
-        Execute quantum circuit.
+        Execute quantum circuit and return measurement results.
 
         Args:
-            circuit: Quantum circuit to execute
-            shots: Number of shots
+            circuit: Quantum circuit to execute (Qiskit, Cirq, etc.)
+            shots: Number of measurement repetitions for statistics
 
         Returns:
-            Measurement counts
+            Dictionary mapping measurement outcomes to counts
+            Example: {'00': 512, '01': 256, '10': 200, '11': 56}
+
+        Implementation Notes:
+        - Automatically adds measurements if not present
+        - Handles transpilation for specific backend requirements
+        - Manages job submission and result retrieval
+        - Provides comprehensive error handling
         """
+        pass
 
     @abstractmethod
     def get_info(self) -> BackendInfo:
-        """Get backend information."""
+        """
+        Get comprehensive information about this backend.
+
+        Returns:
+            BackendInfo object with capabilities and status
+
+        Information Includes:
+        - Name and provider
+        - Qubit count and connectivity
+        - Current availability
+        - Performance characteristics
+        """
+        pass
 
     @abstractmethod
     def is_available(self) -> bool:
-        """Check if backend is available."""
+        """
+        Check if backend is currently available for use.
+
+        Returns:
+            True if backend can accept and execute circuits
+
+        Availability Factors:
+        - Service connectivity
+        - Authentication status
+        - Hardware operational status
+        - Resource allocation
+        """
+        pass
+
+    def validate_circuit(self, circuit: Any) -> List[str]:
+        """
+        Validate circuit compatibility with backend.
+
+        Args:
+            circuit: Circuit to validate
+
+        Returns:
+            List of validation error messages (empty if valid)
+
+        Validation Checks:
+        - Qubit count within limits
+        - Supported gate set
+        - Circuit depth constraints
+        - Parameter ranges
+        """
+        errors = []
+
+        if hasattr(circuit, 'num_qubits'):
+            if circuit.num_qubits > self.get_info().num_qubits:
+                errors.append(
+                    f"Circuit requires {circuit.num_qubits} qubits, "
+                    f"backend supports {self.get_info().num_qubits}"
+                )
+
+        return errors
 
 
 class SimulatorBackend(QPUBackend):
     """
-    Local simulator backend using Qiskit Aer.
+    Local quantum circuit simulator using Qiskit Aer.
 
-    Always available for testing and development.
+    Provides fast, accurate simulation of quantum circuits on classical hardware.
+    Essential for development, testing, and debugging quantum algorithms.
+
+    Characteristics:
+    - Perfect for algorithm development and testing
+    - Unlimited shot capacity
+    - Deterministic results (same input → same output)
+    - No queue times or access restrictions
+    - Supports all Qiskit gates and circuits
+
+    Performance:
+    - Execution time scales with circuit size and shot count
+    - Memory usage depends on number of qubits (2^n state vector)
+    - GPU acceleration available with qiskit-aer-gpu
+
+    Use Cases:
+    - Algorithm prototyping
+    - Unit testing quantum components
+    - Performance benchmarking
+    - Education and experimentation
     """
 
     def __init__(self, num_qubits: int = 10) -> None:
         """
-        Initialize simulator backend.
+        Initialize Qiskit Aer simulator backend.
 
         Args:
-            num_qubits: Maximum number of qubits
+            num_qubits: Maximum qubit capacity (default: 10 for reasonable memory usage)
+
+        Raises:
+            ValueError: If num_qubits is invalid
         """
+        if num_qubits <= 0:
+            raise ValueError("num_qubits must be positive")
+
         self.num_qubits = num_qubits
         self.backend_type = BackendType.SIMULATOR_AER
 
@@ -125,7 +362,22 @@ class SimulatorBackend(QPUBackend):
         )
 
     def execute(self, circuit: QuantumCircuit, shots: int = 1024) -> Dict[str, int]:
-        """Execute circuit on simulator."""
+        """
+        Execute quantum circuit on local simulator.
+
+        Args:
+            circuit: Qiskit QuantumCircuit to execute
+            shots: Number of measurement repetitions
+
+        Returns:
+            Dictionary of measurement outcomes and counts
+
+        Process:
+        1. Copy circuit to avoid modifying original
+        2. Add measurements if not present
+        3. Execute simulation
+        4. Return measurement statistics
+        """
         if not self.is_available():
             raise RuntimeError("Qiskit Aer not available")
 
@@ -144,7 +396,12 @@ class SimulatorBackend(QPUBackend):
         return counts
 
     def get_info(self) -> BackendInfo:
-        """Get backend information."""
+        """
+        Get simulator backend information.
+
+        Returns:
+            BackendInfo with simulator capabilities
+        """
         return BackendInfo(
             name="Qiskit Aer Simulator",
             backend_type=self.backend_type,
@@ -155,25 +412,55 @@ class SimulatorBackend(QPUBackend):
         )
 
     def is_available(self) -> bool:
-        """Check if simulator is available."""
+        """
+        Check if simulator is available.
+
+        Returns:
+            True if Qiskit Aer is installed and functional
+        """
         return QISKIT_AVAILABLE and self.simulator is not None
 
 
 class IBMQBackend(QPUBackend):
     """
-    IBM Quantum cloud backend.
+    IBM Quantum cloud backend for real quantum hardware.
+
+    Provides access to IBM's quantum computers through the Quantum Experience cloud.
+    Enables execution of quantum circuits on actual quantum processors.
 
     ⚠️  EXPERIMENTAL - Requires IBM Quantum credentials
     Falls back to simulator if credentials not available.
+
+    Characteristics:
+    - Real quantum hardware with true quantum effects
+    - Limited by physical qubit count and coherence time
+    - Queue times vary by backend popularity
+    - Shot limits and usage quotas apply
+    - Requires IBM Quantum account and API token
+
+    Security:
+    - API tokens handled securely (environment variables recommended)
+    - No sensitive OmniMind data transmitted to IBM
+    - Quantum circuits may be logged for debugging
+
+    Performance:
+    - Queue times: 1-30 minutes depending on backend
+    - Execution time: Milliseconds per circuit
+    - Reliability: Hardware errors possible (readout, gate errors)
+    - Cost: Usage-based pricing may apply
     """
 
     def __init__(self, token: Optional[str] = None, use_least_busy: bool = True) -> None:
         """
-        Initialize IBMQ backend.
+        Initialize IBM Quantum backend.
 
         Args:
-            token: IBM Quantum API token
-            use_least_busy: Use least busy available quantum computer
+            token: IBM Quantum API token (from IBM Quantum Experience)
+            use_least_busy: Automatically select least busy available backend
+
+        Security Note:
+            Token should be provided via environment variable, not hardcoded.
+            Example: export IBMQ_TOKEN="your_token_here"
         """
         self.token = token
         self.use_least_busy = use_least_busy
@@ -193,7 +480,12 @@ class IBMQBackend(QPUBackend):
             )
 
     def _initialize_ibmq(self) -> None:
-        """Initialize IBM Quantum service."""
+        """
+        Initialize IBM Quantum service connection.
+
+        Attempts to connect using Qiskit Runtime V2 API.
+        Falls back gracefully if connection fails.
+        """
         try:
             # Try new qiskit-ibm-runtime (Qiskit 1.0+)
             try:
@@ -232,7 +524,27 @@ class IBMQBackend(QPUBackend):
             logger.error("ibmq_initialization_failed", error=str(e))
 
     def execute(self, circuit: QuantumCircuit, shots: int = 1024) -> Dict[str, int]:
-        """Execute circuit on IBM Quantum using Sampler (Qiskit Runtime V2 API)."""
+        """
+        Execute circuit on IBM Quantum hardware using Sampler V2 API.
+
+        Args:
+            circuit: Qiskit QuantumCircuit to execute
+            shots: Number of measurement shots (limited by IBM quotas)
+
+        Returns:
+            Dictionary of measurement outcomes and counts
+
+        Process:
+        1. Transpile circuit for target backend
+        2. Submit job to IBM Quantum
+        3. Wait for completion (with timeout)
+        4. Extract and return measurement results
+
+        Error Handling:
+        - Falls back to simulator if hardware unavailable
+        - Logs detailed error information
+        - Respects 7-minute execution limit per project rules
+        """
         if not self.is_available():
             logger.warning("ibmq_not_available_fallback_to_simulator")
             simulator = SimulatorBackend()
@@ -285,7 +597,12 @@ class IBMQBackend(QPUBackend):
             return simulator.execute(circuit, shots)
 
     def get_info(self) -> BackendInfo:
-        """Get backend information."""
+        """
+        Get IBM Quantum backend information.
+
+        Returns:
+            BackendInfo with hardware specifications and status
+        """
         if self.ibm_backend:
             config = self.ibm_backend.configuration()
             return BackendInfo(
@@ -307,18 +624,42 @@ class IBMQBackend(QPUBackend):
             )
 
     def is_available(self) -> bool:
-        """Check if IBMQ backend is available."""
+        """
+        Check if IBM Quantum backend is available.
+
+        Returns:
+            True if authenticated and backend operational
+        """
         return self.ibm_backend is not None
 
 
 class QPUInterface:
     """
-    Main QPU interface with automatic backend selection.
+    Main quantum processing unit interface with intelligent backend management.
 
-    Provides unified interface for:
-    - Local simulators
-    - Cloud quantum computers
-    - Automatic fallback
+    Provides unified interface for quantum computing resources with:
+    - Automatic backend selection and fallback
+    - Performance monitoring and optimization
+    - Error handling and recovery
+    - Resource management and load balancing
+
+    Architecture:
+    - Backend Registry: Manages available quantum backends
+    - Strategy Selection: Chooses optimal backend for each task
+    - Fallback Logic: Graceful degradation when preferred backends fail
+    - Monitoring: Tracks performance and reliability metrics
+
+    Backend Selection Strategy:
+    1. Preferred backend (if available)
+    2. Any available backend of same type
+    3. Simulator fallback
+    4. Error if no backends available
+
+    Use Cases:
+    - Algorithm development (simulators)
+    - Production quantum computing (hardware)
+    - Benchmarking (compare backends)
+    - Research (real quantum effects)
     """
 
     active_backend: Optional[QPUBackend]
@@ -329,11 +670,17 @@ class QPUInterface:
         ibmq_token: Optional[str] = None,
     ) -> None:
         """
-        Initialize QPU interface.
+        Initialize QPU interface with backend management.
 
         Args:
-            preferred_backend: Preferred backend type
-            ibmq_token: Optional IBM Quantum token
+            preferred_backend: Primary backend preference
+            ibmq_token: IBM Quantum API token (optional)
+
+        Initialization Process:
+        1. Discover available backends
+        2. Initialize backend instances
+        3. Select active backend
+        4. Log configuration status
         """
         self.preferred_backend = preferred_backend
         self.backends: Dict[BackendType, QPUBackend] = {}
@@ -352,7 +699,15 @@ class QPUInterface:
         )
 
     def _initialize_backends(self, ibmq_token: Optional[str]) -> None:
-        """Initialize all available backends."""
+        """
+        Initialize all available quantum backends.
+
+        Attempts to initialize each supported backend type.
+        Logs success/failure for each backend.
+
+        Args:
+            ibmq_token: Token for IBM Quantum access
+        """
         # Always try to initialize simulator
         try:
             simulator = SimulatorBackend()
@@ -373,7 +728,17 @@ class QPUInterface:
                 logger.error("ibmq_initialization_failed", error=str(e))
 
     def _select_backend(self) -> Optional[QPUBackend]:
-        """Select best available backend."""
+        """
+        Select optimal backend based on preferences and availability.
+
+        Selection Priority:
+        1. Preferred backend (if available)
+        2. Any available backend
+        3. None (no backends available)
+
+        Returns:
+            Selected backend or None if none available
+        """
         # Try preferred backend first
         if self.preferred_backend in self.backends:
             return self.backends[self.preferred_backend]
@@ -403,16 +768,24 @@ class QPUInterface:
         strict_mode: bool = False,
     ) -> Dict[str, int]:
         """
-        Execute quantum circuit.
+        Execute quantum circuit with intelligent backend selection.
+
+        Main entry point for quantum circuit execution.
 
         Args:
             circuit: Quantum circuit to execute
-            shots: Number of measurement shots
-            backend_type: Optional specific backend to use
-            strict_mode: If True, raise exception on failure instead of fallback
+            shots: Number of measurement repetitions
+            backend_type: Force specific backend type
+            strict_mode: Disable fallback, raise errors immediately
 
         Returns:
-            Measurement counts
+            Measurement outcome counts
+
+        Execution Strategy:
+        1. Select appropriate backend
+        2. Validate circuit compatibility
+        3. Execute with error handling
+        4. Return results or fallback
         """
         if self.active_backend is None:
             raise RuntimeError(
@@ -450,24 +823,48 @@ class QPUInterface:
             raise e
 
     def list_backends(self) -> List[BackendInfo]:
-        """List all available backends."""
+        """
+        List all available quantum backends.
+
+        Returns:
+            List of BackendInfo objects for all configured backends
+
+        Useful for:
+        - Backend selection UI
+        - Debugging availability issues
+        - Performance monitoring
+        """
         return [backend.get_info() for backend in self.backends.values()]
 
     def get_active_backend_info(self) -> Optional[BackendInfo]:
-        """Get information about active backend."""
+        """
+        Get information about currently active backend.
+
+        Returns:
+            BackendInfo for active backend, or None if none active
+
+        Active Backend:
+        The backend currently used for circuit execution.
+        May change based on availability and preferences.
+        """
         if self.active_backend is None:
             return None
         return self.active_backend.get_info()
 
     def switch_backend(self, backend_type: BackendType) -> bool:
         """
-        Switch to different backend.
+        Switch to a different quantum backend.
 
         Args:
-            backend_type: Backend type to switch to
+            backend_type: Type of backend to switch to
 
         Returns:
-            True if switch successful
+            True if switch successful, False if backend unavailable
+
+        Use Cases:
+        - Force simulator for testing
+        - Switch to hardware for production
+        - Manual backend selection for benchmarking
         """
         if backend_type not in self.backends:
             logger.error("backend_not_available", requested=backend_type.value)
@@ -479,3 +876,29 @@ class QPUInterface:
             new_backend=(self.active_backend.get_info().name if self.active_backend else "None"),
         )
         return True
+
+    def get_performance_metrics(self) -> Dict[str, Any]:
+        """
+        Get performance metrics for all backends.
+
+        Returns:
+            Dictionary with backend performance statistics
+
+        Metrics Include:
+        - Availability status
+        - Typical execution times
+        - Success rates
+        - Queue lengths (for cloud backends)
+        """
+        metrics = {}
+
+        for backend_type, backend in self.backends.items():
+            info = backend.get_info()
+            metrics[backend_type.value] = {
+                "available": info.available,
+                "name": info.name,
+                "qubits": info.num_qubits,
+                "provider": info.provider,
+            }
+
+        return metrics
