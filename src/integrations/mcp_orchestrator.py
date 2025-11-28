@@ -1,3 +1,10 @@
+"""
+MCP Orchestrator - Gerenciador centralizado de servidores MCP.
+
+Este módulo gerencia o ciclo de vida, health checks, e roteamento de requests
+para múltiplos servidores MCP, integrando com o sistema de auditoria do OmniMind.
+"""
+
 from __future__ import annotations
 
 import asyncio
@@ -9,39 +16,8 @@ import time
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union, cast
+
 from src.audit.immutable_audit import get_audit_system
-                import socket
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
-"""
-MCP Orchestrator - Gerenciador centralizado de servidores MCP.
-
-Este módulo gerencia o ciclo de vida, health checks, e roteamento de requests
-para múltiplos servidores MCP, integrando com o sistema de auditoria do OmniMind.
-"""
-
-
-
 
 logger = logging.getLogger(__name__)
 
@@ -472,6 +448,7 @@ class MCPOrchestrator:
         config = self.servers.get(name)
         if config and config.port:
             try:
+                import socket
 
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sock.settimeout(0.5)

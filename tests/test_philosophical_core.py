@@ -1,4 +1,5 @@
 import random
+
 from src.hibernation.death_drive_wisdom import WiseRefusal
 from src.phenomenology.qualia_engine import QualiaEngine
 from src.philosophy.godel_framework import GodelStructuralGap
@@ -6,26 +7,6 @@ from src.polivalence.multiple_realities import PolivalentExistence
 from src.quantum_real.quantum_indeterminism_injection import QuantumRealInjection
 from src.scars.trauma_integration import TraumaIntegration
 from src.sinthome.emergent_stabilization_rule import SinthomaticStabilizationRule
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
 
 
 # Mock OmniMindSinthome for testing

@@ -1,36 +1,3 @@
-from __future__ import annotations
-
-import pytest
-        from src.coevolution import __version__
-        from src.coevolution import HCHACFramework
-        from src.coevolution import GoalNegotiator
-        from src.coevolution import BiasDetector
-        import src.coevolution as coevolution_module
-from src.coevolution import ( from src.coevolution import TrustMetrics
-from src.coevolution import (
-        import src.coevolution as coevolution_module
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Testes para o módulo __init__.py do coevolution.
 
 Cobertura de:
@@ -39,7 +6,9 @@ Cobertura de:
 - Tratamento de AttributeError para imports inválidos
 """
 
+from __future__ import annotations
 
+import pytest
 
 
 class TestCoevolutionInit:
@@ -47,6 +16,7 @@ class TestCoevolutionInit:
 
     def test_version_attribute(self) -> None:
         """Testa que __version__ está disponível."""
+        from src.coevolution import __version__
 
         assert isinstance(__version__, str)
         assert __version__ == "0.1.0"
@@ -68,6 +38,7 @@ class TestCoevolutionInit:
 
     def test_lazy_import_hchac_framework(self) -> None:
         """Testa lazy import de HCHACFramework."""
+        from src.coevolution import HCHACFramework
 
         assert HCHACFramework is not None
         assert hasattr(HCHACFramework, "__init__")
@@ -81,6 +52,7 @@ class TestCoevolutionInit:
 
     def test_lazy_import_goal_negotiator(self) -> None:
         """Testa lazy import de GoalNegotiator."""
+        from src.coevolution import GoalNegotiator
 
         assert GoalNegotiator is not None
         assert hasattr(GoalNegotiator, "__init__")
@@ -94,6 +66,7 @@ class TestCoevolutionInit:
 
     def test_lazy_import_bias_detector(self) -> None:
         """Testa lazy import de BiasDetector."""
+        from src.coevolution import BiasDetector
 
         assert BiasDetector is not None
         assert hasattr(BiasDetector, "__init__")
@@ -107,6 +80,7 @@ class TestCoevolutionInit:
 
     def test_invalid_attribute_raises_error(self) -> None:
         """Testa que atributo inválido lança AttributeError."""
+        import src.coevolution as coevolution_module
 
         with pytest.raises(AttributeError) as exc_info:
             _ = coevolution_module.NonExistentClass
@@ -127,6 +101,7 @@ class TestCoevolutionInit:
 
     def test_multiple_lazy_imports(self) -> None:
         """Testa múltiplas lazy imports consecutivas."""
+        from src.coevolution import (
             GoalNegotiator,
             HCHACFramework,
             TrustMetrics,
@@ -146,6 +121,7 @@ class TestCoevolutionInit:
 
     def test_instantiate_lazy_imported_class(self) -> None:
         """Testa que classes lazy-imported podem ser instanciadas."""
+        from src.coevolution import TrustMetrics
 
         # Instancia a classe
         metrics = TrustMetrics()
@@ -160,6 +136,7 @@ class TestCoevolutionInit:
 
     def test_import_all_at_once(self) -> None:
         """Testa importação de todas as classes de uma vez."""
+        from src.coevolution import (
             BiasDetector,
             BidirectionalFeedback,
             CoevolutionMemory,
@@ -195,6 +172,7 @@ class TestCoevolutionInit:
 
     def test_getattr_function_exists(self) -> None:
         """Testa que a função __getattr__ está definida no módulo."""
+        import src.coevolution as coevolution_module
 
         assert hasattr(coevolution_module, "__getattr__")
         assert callable(coevolution_module.__getattr__)

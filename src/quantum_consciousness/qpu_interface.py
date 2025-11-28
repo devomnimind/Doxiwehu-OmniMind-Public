@@ -1,36 +1,3 @@
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Dict, List, Optional
-import structlog
-from qiskit import QuantumCircuit
-from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
-from qiskit_aer import AerSimulator
-import cirq
-from qiskit_ibm_runtime import QiskitRuntimeService
-from qiskit import transpile
-from qiskit_ibm_runtime import Sampler
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Quantum Processing Unit (QPU) Interface for OmniMind - Phase 21-23 Preparation.
 
@@ -95,9 +62,17 @@ Author: OmniMind Quantum Computing Team
 License: MIT
 """
 
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any, Dict, List, Optional
 
+import structlog
 
 try:
+    from qiskit import QuantumCircuit
+    from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+    from qiskit_aer import AerSimulator
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -107,6 +82,7 @@ except ImportError:
     generate_preset_pass_manager = Any
 
 try:
+    import cirq
 
     CIRQ_AVAILABLE = True
 except ImportError:
@@ -514,6 +490,7 @@ class IBMQBackend(QPUBackend):
         try:
             # Try new qiskit-ibm-runtime (Qiskit 1.0+)
             try:
+                from qiskit_ibm_runtime import QiskitRuntimeService
 
                 # Use correct channel name for current qiskit-ibm-runtime version
                 # 'ibm_quantum' was deprecated, use 'ibm_cloud' or 'ibm_quantum_platform'
@@ -576,6 +553,8 @@ class IBMQBackend(QPUBackend):
 
         try:
             # Use Sampler V2 with correct mode parameter (backend object)
+            from qiskit import transpile
+            from qiskit_ibm_runtime import Sampler
 
             # Transpile circuit for the backend
             qc_transpiled = transpile(circuit, backend=self.ibm_backend)

@@ -1,48 +1,29 @@
-import json
-import tempfile
-from datetime import datetime, timedelta, timezone
-from pathlib import Path
-import pytest
-from src.audit.alerting_system import ( from src.audit.compliance_reporter import ComplianceReporter
-from src.audit.immutable_audit import ImmutableAuditSystem
-from src.audit.log_analyzer import ( from src.audit.retention_policy import (
-
 #!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Tests for enhanced audit trail features.
 Tests compliance reporting, retention policies, alerting, and log analysis.
 """
 
+import json
+import tempfile
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
+import pytest
 
+from src.audit.alerting_system import (
     Alert,
     AlertCategory,
     AlertingSystem,
     AlertSeverity,
 )
+from src.audit.compliance_reporter import ComplianceReporter
+from src.audit.immutable_audit import ImmutableAuditSystem
+from src.audit.log_analyzer import (
     AuditLogAnalyzer,
     QueryFilter,
 )
+from src.audit.retention_policy import (
     DataCategory,
     RetentionPeriod,
     RetentionPolicyManager,

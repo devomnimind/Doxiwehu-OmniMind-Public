@@ -1,43 +1,4 @@
-from __future__ import annotations
-
-import asyncio
-import hashlib
-import json
-import logging
-import os
-import subprocess
-import threading
-import time
-from datetime import datetime, timezone
-from pathlib import Path
-from typing import Any, Dict, List, Optional
-from .tool_base import AuditedTool, ToolCategory
-            import psutil
-                from ..audit.immutable_audit import get_audit_system
-            from ..security.security_agent import SecurityAgent
-
 #!/usr/bin/env python3
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 OmniMind Tools Framework - Sistema Completo de Ferramentas para IA Autônoma
 Implementa 11 camadas com auditoria P0 conforme tools2.md
@@ -56,8 +17,21 @@ Camadas:
 11. Workflow - Coordination (switch_mode)
 """
 
+from __future__ import annotations
 
+import asyncio
+import hashlib
+import json
+import logging
+import os
+import subprocess
+import threading
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
+from .tool_base import AuditedTool, ToolCategory
 
 logger = logging.getLogger(__name__)
 
@@ -185,6 +159,7 @@ class InspectContextTool(AuditedTool):
     def execute(self) -> Dict[str, Any]:
         """Retorna estado do sistema"""
         try:
+            import psutil
 
             context = {
                 "timestamp": _current_utc_timestamp(),
@@ -767,6 +742,7 @@ class AuditSecurityTool(AuditedTool):
 
             elif check_type == "audit_chain":
                 # Verificar integridade da cadeia de auditoria
+                from ..audit.immutable_audit import get_audit_system
 
                 audit = get_audit_system()
                 if not audit.verify_chain_integrity():
@@ -795,6 +771,7 @@ class SecurityAgentTool(AuditedTool):
     def agent(self) -> Any:
         """Lazy load SecurityAgent to avoid circular imports."""
         if self._agent is None:
+            from ..security.security_agent import SecurityAgent
 
             self._agent = SecurityAgent(self.config_path)
         return self._agent

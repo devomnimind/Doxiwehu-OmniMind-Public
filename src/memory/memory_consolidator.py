@@ -1,31 +1,3 @@
-import logging
-from collections import Counter
-from datetime import datetime
-from typing import Any, Dict, List
-from .semantic_memory import SemanticMemory
-        from collections import defaultdict
-        from itertools import combinations
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Memory Consolidator Module.
 
@@ -34,7 +6,12 @@ to long-term semantic memory ("sleep" consolidation).
 Identifies patterns and abstractions from repeated experiences.
 """
 
+import logging
+from collections import Counter
+from datetime import datetime
+from typing import Any, Dict, List
 
+from .semantic_memory import SemanticMemory
 
 logger = logging.getLogger(__name__)
 
@@ -146,6 +123,8 @@ class MemoryConsolidator:
             return 0
 
         # Track co-occurrences
+        from collections import defaultdict
+        from itertools import combinations
 
         cooccurrence_counts: Dict[tuple, int] = defaultdict(int)
 

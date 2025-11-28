@@ -1,46 +1,3 @@
-import logging
-from copy import deepcopy
-from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
-from src.autopoietic.absurdity_handler import AbsurdityHandler, AbsurdityType
-from src.autopoietic.art_generator import ArtGenerator
-from src.autopoietic.meaning_maker import MeaningMaker
-from src.autopoietic.mortality_simulator import MortalitySimulator
-from src.consciousness.novelty_generator import NoveltyGenerator
-from src.consciousness.qualia_engine import QualiaEngine
-from src.consciousness.serendipity_engine import SerendipityEngine
-from src.embodied_cognition.motor_output import MotorController
-from src.embodied_cognition.proprioception import ProprioceptionModule
-from src.embodied_cognition.sensory_integration import SensoryIntegration
-from src.embodied_cognition.somatic_loop import SomaticLoop
-from src.narrative_consciousness.dialogue_engine import DialogueEngine
-from src.narrative_consciousness.identity_construction import IdentityConstruction
-from src.narrative_consciousness.life_story_model import LifeStory
-from src.neurosymbolic.hybrid_reasoner import NeurosymbolicReasoner
-from src.neurosymbolic.neural_component import NeuralComponent
-from src.neurosymbolic.reconciliation import Reconciliator
-from src.neurosymbolic.symbolic_component import SymbolicComponent
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Phase 16 Integration Module - Neurosymbolic + Embodied Cognition
 
@@ -62,12 +19,35 @@ References:
 - Thompson (2007): Embodied mind thesis
 """
 
+import logging
+from copy import deepcopy
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Tuple
+
+from src.autopoietic.absurdity_handler import AbsurdityHandler, AbsurdityType
+from src.autopoietic.art_generator import ArtGenerator
+from src.autopoietic.meaning_maker import MeaningMaker
 
 # Phase 16.4: Existential Depth
+from src.autopoietic.mortality_simulator import MortalitySimulator
 
 # Phase 16.3: Creative Emergence
+from src.consciousness.novelty_generator import NoveltyGenerator
+from src.consciousness.qualia_engine import QualiaEngine
+from src.consciousness.serendipity_engine import SerendipityEngine
+from src.embodied_cognition.motor_output import MotorController
+from src.embodied_cognition.proprioception import ProprioceptionModule
+from src.embodied_cognition.sensory_integration import SensoryIntegration
+from src.embodied_cognition.somatic_loop import SomaticLoop
+from src.narrative_consciousness.dialogue_engine import DialogueEngine
+from src.narrative_consciousness.identity_construction import IdentityConstruction
 
 # Phase 16.2: Narrative Consciousness
+from src.narrative_consciousness.life_story_model import LifeStory
+from src.neurosymbolic.hybrid_reasoner import NeurosymbolicReasoner
+from src.neurosymbolic.neural_component import NeuralComponent
+from src.neurosymbolic.reconciliation import Reconciliator
+from src.neurosymbolic.symbolic_component import SymbolicComponent
 
 logger = logging.getLogger(__name__)
 

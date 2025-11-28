@@ -1,41 +1,3 @@
-from __future__ import annotations
-
-import tempfile
-from pathlib import Path
-from typing import Any, Dict
-import pytest
-from src.metacognition.intelligent_goal_generation import IntelligentGoalEngine
-from src.metacognition.metacognition_agent import MetacognitionAgent
-from src.metacognition.self_optimization import SelfOptimizationEngine
-        from src.metacognition.self_optimization import Configuration
-        from src.metacognition.self_optimization import Configuration
-        from datetime import datetime
-from src.metacognition.self_optimization import (
-            import json
-        from src.metacognition.self_optimization import Configuration
-        from src.metacognition.self_optimization import Configuration
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Grupo 9 - Meta Learning Tests.
 
@@ -46,9 +8,17 @@ Author: OmniMind Development Team
 Date: November 2025
 """
 
+from __future__ import annotations
 
+import tempfile
+from pathlib import Path
+from typing import Any, Dict
 
+import pytest
 
+from src.metacognition.intelligent_goal_generation import IntelligentGoalEngine
+from src.metacognition.metacognition_agent import MetacognitionAgent
+from src.metacognition.self_optimization import SelfOptimizationEngine
 
 
 class TestMetaLearningBasics:
@@ -99,6 +69,7 @@ class TestAdaptiveLearning:
     def test_optimize_strategy(self, optimizer: SelfOptimizationEngine) -> None:
         """Testa otimização de estratégia via A/B testing."""
         # Setup baseline
+        from src.metacognition.self_optimization import Configuration
 
         baseline = Configuration(
             config_id="baseline",
@@ -150,6 +121,7 @@ class TestAdaptiveLearning:
     def test_learning_rate_adaptation(self, optimizer: SelfOptimizationEngine) -> None:
         """Testa adaptação de learning rate (simulado via auto-tune)."""
         # Setup baseline
+        from src.metacognition.self_optimization import Configuration
 
         baseline = Configuration(
             config_id="baseline",
@@ -182,7 +154,7 @@ class TestStrategyOptimization:
         """Testa avaliação de estratégias (via A/B testing)."""
         from datetime import datetime
 
-from src.metacognition.self_optimization import (
+        from src.metacognition.self_optimization import (
             Configuration,
             PerformanceMetrics,
         )
@@ -215,7 +187,9 @@ from src.metacognition.self_optimization import (
 
     def test_best_strategy_selection(self, optimizer: SelfOptimizationEngine) -> None:
         """Testa seleção da melhor estratégia (via apply_winner)."""
+        from datetime import datetime
 
+        from src.metacognition.self_optimization import (
             Configuration,
             PerformanceMetrics,
         )
@@ -310,6 +284,7 @@ class TestMetaReasoning:
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create dummy hash chain file
             hash_chain = Path(tmpdir) / "hash_chain.json"
+            import json
 
             with open(hash_chain, "w") as f:
                 json.dump([], f)
@@ -425,6 +400,7 @@ class TestMetaLearningIntegration:
     def test_meta_learning_feedback_loop(self) -> None:
         """Testa loop de feedback de meta-aprendizado (simulado)."""
         optimizer = SelfOptimizationEngine()
+        from src.metacognition.self_optimization import Configuration
 
         baseline = Configuration("base", "Base", {"lr": 0.01})
         optimizer.set_baseline_configuration(baseline)
@@ -455,7 +431,7 @@ class TestMetaLearningEdgeCases:
         optimizer = SelfOptimizationEngine()
         from datetime import datetime
 
-from src.metacognition.self_optimization import (
+        from src.metacognition.self_optimization import (
             Configuration,
             PerformanceMetrics,
         )
@@ -488,6 +464,7 @@ from src.metacognition.self_optimization import (
     def test_meta_learning_stability(self) -> None:
         """Testa estabilidade do meta-aprendizado."""
         optimizer = SelfOptimizationEngine()
+        from src.metacognition.self_optimization import Configuration
 
         baseline = Configuration("base", "Base", {"lr": 0.01})
         optimizer.set_baseline_configuration(baseline)

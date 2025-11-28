@@ -1,33 +1,12 @@
-import pytest
-from src.common.types import ( from src.common.types import (
-
 #!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes unitários para o módulo common/types.py
 Garante cobertura e validação de tipos customizados - Grupo 3 - Phase 1.
 """
 
+import pytest
 
+from src.common.types import (
     ID,
     AgentID,
     Config,
@@ -366,6 +345,7 @@ class TestModuleImports:
 
     def test_all_types_importable(self) -> None:
         """Testa que todos os tipos podem ser importados."""
+        from src.common.types import (
             ID,
             AgentID,
             Config,

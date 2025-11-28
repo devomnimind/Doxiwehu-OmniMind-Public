@@ -1,34 +1,6 @@
-from __future__ import annotations
-
-            from web.backend.routes import metacognition
-            from src.metacognition.proactive_goals import ProactiveGoalEngine
-            from src.metacognition.proactive_goals import GoalPriority
-            from src.metacognition.homeostasis import ResourceState
-            from src.metacognition.homeostasis import ResourceMetrics
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Tests for Phase 9.5.2, 9.6, and 9.7 implementations."""
 
+from __future__ import annotations
 
 import pytest
 
@@ -50,6 +22,7 @@ class TestMetacognitionIntegration:
     def test_metacognition_routes_import(self) -> None:
         """Test importing metacognition routes."""
         try:
+            from web.backend.routes import metacognition
 
             assert hasattr(metacognition, "router")
             assert hasattr(metacognition, "set_orchestrator")
@@ -63,6 +36,7 @@ class TestProactiveGoals:
     def test_proactive_goal_engine_import(self) -> None:
         """Test importing proactive goal engine."""
         try:
+            from src.metacognition.proactive_goals import ProactiveGoalEngine
 
             engine = ProactiveGoalEngine(workspace_path=".")
             assert engine is not None
@@ -85,6 +59,7 @@ class TestProactiveGoals:
     def test_goal_priority(self) -> None:
         """Test goal priorities are defined."""
         try:
+            from src.metacognition.proactive_goals import GoalPriority
 
             assert hasattr(GoalPriority, "CRITICAL")
             assert hasattr(GoalPriority, "HIGH")
@@ -96,7 +71,7 @@ class TestProactiveGoals:
     def test_proactive_goal_creation(self) -> None:
         """Test creating a proactive goal."""
         try:
-from src.metacognition.proactive_goals import (
+            from src.metacognition.proactive_goals import (
                 GoalCategory,
                 GoalPriority,
                 ProactiveGoal,
@@ -142,6 +117,7 @@ class TestHomeostasis:
     def test_resource_states(self) -> None:
         """Test resource states are defined."""
         try:
+            from src.metacognition.homeostasis import ResourceState
 
             assert hasattr(ResourceState, "OPTIMAL")
             assert hasattr(ResourceState, "GOOD")
@@ -167,6 +143,7 @@ class TestHomeostasis:
     def test_resource_metrics(self) -> None:
         """Test resource metrics dataclass."""
         try:
+            from src.metacognition.homeostasis import ResourceMetrics
 
             metrics = ResourceMetrics(
                 cpu_percent=50.0,
@@ -194,7 +171,7 @@ class TestHomeostasis:
     def test_homeostatic_methods(self) -> None:
         """Test homeostatic controller methods exist."""
         try:
-from src.metacognition.homeostasis import (
+            from src.metacognition.homeostasis import (
                 HomeostaticController,
                 TaskPriority,
             )

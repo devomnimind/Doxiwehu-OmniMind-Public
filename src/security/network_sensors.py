@@ -1,33 +1,4 @@
-import re
-import subprocess
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum
-from typing import Any, Dict, List, Optional
-from ..audit.alerting_system import AlertCategory, AlertingSystem, AlertSeverity
-from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
-
 #!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Network Sensors Module - Network Eyes for OmniMind
 Implements Wireshark + Nmap integration as sensory organs.
@@ -35,6 +6,16 @@ Implements Wireshark + Nmap integration as sensory organs.
 Based on: docs/Omni-Dev-Integrationforensis.md
 Legal Compliance: 100% legal when used on own systems (GPL v2 licenses)
 """
+
+import re
+import subprocess
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Any, Dict, List, Optional
+
+from ..audit.alerting_system import AlertCategory, AlertingSystem, AlertSeverity
+from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 class ThreatSeverity(Enum):

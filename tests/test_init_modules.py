@@ -1,49 +1,10 @@
-import pytest
-        import src.autopoietic
-        from src.autopoietic import __version__
-        from src.autopoietic import __all__
-        from src.autopoietic import __all__
-        import src.autopoietic
-        from src.autopoietic import __author__
-        from src.autopoietic import __all__
-        import src.kernel_ai
-        from src.kernel_ai import __version__
-        from src.kernel_ai import __all__
-        from src.kernel_ai import __all__
-        import src.kernel_ai
-        from src.kernel_ai import __version__
-        from src.kernel_ai import __all__
-        from src.autopoietic import __version__ as auto_version
-        from src.kernel_ai import __version__ as kernel_version
-        from src.autopoietic import __all__ as auto_all
-        from src.kernel_ai import __all__ as kernel_all
-
 #!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes unitários para módulos __init__.py
 Grupo 4 - Phase 1: autopoietic e kernel_ai
 """
 
+import pytest
 
 
 class TestAutopoieticInit:
@@ -51,6 +12,7 @@ class TestAutopoieticInit:
 
     def test_module_importable(self) -> None:
         """Testa que o módulo pode ser importado."""
+        import src.autopoietic
 
         assert src.autopoietic is not None
 
@@ -64,6 +26,7 @@ class TestAutopoieticInit:
 
     def test_version_format(self) -> None:
         """Testa que __version__ segue formato semântico."""
+        from src.autopoietic import __version__
 
         # Deve ser algo como "1.0.0"
         parts = __version__.split(".")
@@ -80,6 +43,7 @@ class TestAutopoieticInit:
 
     def test_all_defined(self) -> None:
         """Testa que __all__ está definido."""
+        from src.autopoietic import __all__
 
         assert __all__ is not None
         assert isinstance(__all__, list)
@@ -100,6 +64,7 @@ class TestAutopoieticInit:
 
     def test_all_list_not_empty(self) -> None:
         """Testa que __all__ não está vazio."""
+        from src.autopoietic import __all__
 
         assert len(__all__) > 0
 
@@ -113,6 +78,7 @@ class TestAutopoieticInit:
 
     def test_module_attributes(self) -> None:
         """Testa que o módulo tem os atributos esperados."""
+        import src.autopoietic
 
         assert hasattr(src.autopoietic, "__version__")
         assert hasattr(src.autopoietic, "__author__")
@@ -126,6 +92,7 @@ class TestAutopoieticInit:
 
     def test_author_is_string(self) -> None:
         """Testa que author é uma string."""
+        from src.autopoietic import __author__
 
         assert isinstance(__author__, str)
 
@@ -137,6 +104,7 @@ class TestAutopoieticInit:
 
     def test_all_items_are_strings(self) -> None:
         """Testa que todos os itens de __all__ são strings."""
+        from src.autopoietic import __all__
 
         assert all(isinstance(item, str) for item in __all__)
 
@@ -146,6 +114,7 @@ class TestKernelAIInit:
 
     def test_module_importable(self) -> None:
         """Testa que o módulo pode ser importado."""
+        import src.kernel_ai
 
         assert src.kernel_ai is not None
 
@@ -159,6 +128,7 @@ class TestKernelAIInit:
 
     def test_version_format(self) -> None:
         """Testa que __version__ segue formato semântico."""
+        from src.kernel_ai import __version__
 
         # Deve ser algo como "1.0.0"
         parts = __version__.split(".")
@@ -175,6 +145,7 @@ class TestKernelAIInit:
 
     def test_all_defined(self) -> None:
         """Testa que __all__ está definido."""
+        from src.kernel_ai import __all__
 
         assert __all__ is not None
         assert isinstance(__all__, list)
@@ -194,6 +165,7 @@ class TestKernelAIInit:
 
     def test_all_list_not_empty(self) -> None:
         """Testa que __all__ não está vazio."""
+        from src.kernel_ai import __all__
 
         assert len(__all__) > 0
 
@@ -207,6 +179,7 @@ class TestKernelAIInit:
 
     def test_module_docstring_contains_warning(self) -> None:
         """Testa que o módulo contém aviso de segurança."""
+        import src.kernel_ai
 
         assert "IMPORTANT" in src.kernel_ai.__doc__ or "safety" in src.kernel_ai.__doc__
 
@@ -220,6 +193,7 @@ class TestKernelAIInit:
 
     def test_version_is_string(self) -> None:
         """Testa que version é uma string."""
+        from src.kernel_ai import __version__
 
         assert isinstance(__version__, str)
 
@@ -231,6 +205,7 @@ class TestKernelAIInit:
 
     def test_all_is_list(self) -> None:
         """Testa que __all__ é uma lista."""
+        from src.kernel_ai import __all__
 
         assert isinstance(__all__, list)
 
@@ -260,6 +235,8 @@ class TestInitModulesComparison:
 
     def test_version_numbers_are_valid(self) -> None:
         """Testa que os números de versão são válidos."""
+        from src.autopoietic import __version__ as auto_version
+        from src.kernel_ai import __version__ as kernel_version
 
         # Ambos devem ter formato X.Y.Z
         for version in [auto_version, kernel_version]:
@@ -278,6 +255,8 @@ class TestInitModulesComparison:
 
     def test_all_exports_are_unique(self) -> None:
         """Testa que as exportações são únicas em cada módulo."""
+        from src.autopoietic import __all__ as auto_all
+        from src.kernel_ai import __all__ as kernel_all
 
         # Em cada módulo, não deve haver duplicatas
         assert len(auto_all) == len(set(auto_all))

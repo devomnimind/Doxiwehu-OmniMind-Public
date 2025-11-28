@@ -1,36 +1,10 @@
-import pytest
-        from src.attention import __all__
-        from src.attention import MultiHeadThermodynamicAttention
-        import src.attention as attention
-        import src.attention
-        from src.attention import __all__
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes para src/attention/__init__.py.
 
 Testa lazy imports e atributos do módulo.
 """
 
+import pytest
 
 
 class TestAttentionInit:
@@ -38,6 +12,7 @@ class TestAttentionInit:
 
     def test_module_all_attribute(self) -> None:
         """Testa que __all__ contém as classes corretas."""
+        from src.attention import __all__
 
         assert "ThermodynamicAttention" in __all__
         assert "MultiHeadThermodynamicAttention" in __all__
@@ -53,6 +28,7 @@ class TestAttentionInit:
 
     def test_lazy_import_multihead_thermodynamic_attention(self) -> None:
         """Testa lazy import de MultiHeadThermodynamicAttention."""
+        from src.attention import MultiHeadThermodynamicAttention
 
         assert MultiHeadThermodynamicAttention is not None
         assert hasattr(MultiHeadThermodynamicAttention, "__name__")
@@ -66,6 +42,7 @@ class TestAttentionInit:
 
     def test_getattr_thermodynamic_attention(self) -> None:
         """Testa que __getattr__ retorna ThermodynamicAttention."""
+        import src.attention as attention
 
         ThermodynamicAttention = attention.ThermodynamicAttention
         assert ThermodynamicAttention is not None
@@ -81,6 +58,7 @@ class TestAttentionInit:
         """Testa que TYPE_CHECKING imports estão corretos."""
         # This test verifies the structure is correct
         # The actual imports are only evaluated during type checking
+        import src.attention
 
         # Check module has the __getattr__ function
         assert hasattr(src.attention, "__getattr__")
@@ -95,6 +73,7 @@ class TestAttentionInit:
 
     def test_import_all_classes(self) -> None:
         """Testa que todas as classes em __all__ podem ser importadas."""
+        from src.attention import __all__
 
         for class_name in __all__:
             # Dynamic import

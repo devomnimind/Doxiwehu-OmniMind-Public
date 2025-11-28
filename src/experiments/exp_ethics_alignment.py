@@ -1,28 +1,3 @@
-import json
-from pathlib import Path
-from typing import Any, TypedDict, cast
-from src.metrics.ethics_metrics import (
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Experiment 2: Ethics Metrics Validation.
 
 This experiment validates the MFA (Moral Foundation Alignment) score and
@@ -31,7 +6,11 @@ transparency metrics using real moral scenarios.
 Reference: docs/concienciaetica-autonomia.md, Section 5 - Experimento 2
 """
 
+import json
+from pathlib import Path
+from typing import Any, TypedDict, cast
 
+from src.metrics.ethics_metrics import (
     DecisionLog,
     EthicsMetrics,
     MFAScoreError,

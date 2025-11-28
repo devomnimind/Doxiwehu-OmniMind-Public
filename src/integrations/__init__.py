@@ -1,4 +1,23 @@
-from .dbus_controller import DBusSessionController, DBusSystemController
+"""Integration helpers for external services and protocols.
+
+This module provides integrations for:
+- Model Context Protocol (MCP) client and server
+- D-Bus system integration
+- OAuth 2.0 authentication
+- Webhook framework
+- GraphQL and Supabase
+"""
+
+# Try to import dbus-dependent modules
+try:
+    from .dbus_controller import DBusSessionController, DBusSystemController
+
+    _HAS_DBUS = True
+except ImportError:
+    _HAS_DBUS = False
+    DBusSessionController = None  # type: ignore
+    DBusSystemController = None  # type: ignore
+
 from .graphql_supabase import GraphQLSupabaseError, GraphQLSupabaseHelper
 from .mcp_client import MCPClient, MCPClientError
 from .mcp_client_enhanced import CircuitBreaker, CircuitOpenError, EnhancedMCPClient

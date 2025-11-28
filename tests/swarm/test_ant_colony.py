@@ -1,36 +1,14 @@
-import pytest
-from src.swarm.ant_colony import AntColonyOptimizer
-from src.swarm.config import ACOConfig
-from src.swarm.types import Ant
-        import random
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Comprehensive tests for Ant Colony Optimization - Phase 19.
 
 Tests ACO implementation for TSP with elitismo and local search.
 """
 
+import pytest
 
+from src.swarm.ant_colony import AntColonyOptimizer
+from src.swarm.config import ACOConfig
+from src.swarm.types import Ant
 
 
 class TestACOConfig:
@@ -317,6 +295,7 @@ class TestACOIntegration:
 
     def test_larger_tsp_instance(self) -> None:
         """Test ACO on larger TSP instance (10 cities)."""
+        import random
 
         config = ACOConfig(num_ants=50)
         aco = AntColonyOptimizer(config)

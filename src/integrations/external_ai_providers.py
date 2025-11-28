@@ -1,35 +1,3 @@
-from __future__ import annotations
-
-import time
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Dict, List, Optional
-import aiohttp
-import structlog
-        import os
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 External AI Providers Integration - OmniMind
 Integração segura com provedores externos de IA (Gemini, Copilot, OpenRouter)
@@ -37,8 +5,16 @@ Integração segura com provedores externos de IA (Gemini, Copilot, OpenRouter)
 Mantém isolamento completo dos dados internos do OmniMind.
 """
 
+from __future__ import annotations
 
+import time
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any, Dict, List, Optional
 
+import aiohttp
+import structlog
 
 logger = structlog.get_logger(__name__)
 
@@ -534,6 +510,7 @@ class OpenRouterProvider(ExternalAIProvider):
     async def initialize(self) -> None:
         """Inicializa conexão com OpenRouter"""
         await self._ensure_session()
+        import os
 
         api_key_env = self.config.get("api_key_env")
         if not api_key_env:

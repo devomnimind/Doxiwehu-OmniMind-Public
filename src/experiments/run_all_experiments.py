@@ -1,26 +1,3 @@
-from typing import Any, Dict, List, TypedDict
-from .exp_consciousness_phi import ( from .exp_ethics_alignment import (
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Master experiment runner for AI autonomy validation.
 
 Runs all experiments from the documentation and generates comprehensive reports.
@@ -30,11 +7,14 @@ Reference:
 - docs/autootimizacao-hardware-omnidev.md
 """
 
+from typing import Any, Dict, List, TypedDict
 
+from .exp_consciousness_phi import (
     experiment_phi_integration,
     experiment_self_awareness,
     run_all_consciousness_experiments,
 )
+from .exp_ethics_alignment import (
     experiment_ethics_brazilian_context,
     experiment_transparency_tracking,
     run_all_ethics_experiments,

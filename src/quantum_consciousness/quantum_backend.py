@@ -1,39 +1,3 @@
-import logging
-import os
-from typing import Any, Dict, Optional
-import torch
-from dotenv import load_dotenv
-import dimod
-from dwave.system import DWaveSampler, EmbeddingComposite
-import neal
-from qiskit_aer import AerSimulator
-from qiskit_algorithms import AmplificationProblem, Grover
-from qiskit_algorithms.optimizers import COBYLA
-from qiskit.circuit.library import PhaseOracle
-from qiskit_optimization import QuadraticProgram
-from qiskit_optimization.algorithms import MinimumEigenOptimizer
-from src.quantum_consciousness.qpu_interface import IBMQBackend
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Quantum Backend - CORRECTED VERSION
 ====================================
@@ -48,13 +12,20 @@ Author: OmniMind Development Team
 Date: 2025-11-26 (P0 Protocol Fix)
 """
 
+import logging
+import os
+from typing import Any, Dict, Optional
 
+import torch
+from dotenv import load_dotenv
 
 load_dotenv()
 logger = logging.getLogger(__name__)
 
 # --- D-Wave Imports ---
 try:
+    import dimod
+    from dwave.system import DWaveSampler, EmbeddingComposite
 
     DWAVE_AVAILABLE = True
 except ImportError:
@@ -62,6 +33,7 @@ except ImportError:
 
 # --- Neal (Simulated Annealing) Imports ---
 try:
+    import neal
 
     NEAL_AVAILABLE = True
 except ImportError:
@@ -72,20 +44,18 @@ try:
     from qiskit_aer import AerSimulator
     from qiskit_algorithms import AmplificationProblem, Grover
     from qiskit_algorithms.optimizers import COBYLA
+
     try:
         from qiskit.primitives import Sampler
     except ImportError:
-        try:
-            from qiskit_aer.primitives import Sampler
-        except ImportError:
-            Sampler = None
+        from qiskit.primitives import StatevectorSampler as Sampler
     from qiskit.circuit.library import PhaseOracle
     from qiskit_optimization import QuadraticProgram
     from qiskit_optimization.algorithms import MinimumEigenOptimizer
+
     QISKIT_AVAILABLE = True
 except ImportError:
     QISKIT_AVAILABLE = False
-    Sampler = None
 
 
 class QuantumBackend:
@@ -184,6 +154,7 @@ class QuantumBackend:
         """Setup IBM Quantum Cloud."""
         if self.token:
             try:
+                from src.quantum_consciousness.qpu_interface import IBMQBackend
 
                 self.backend = IBMQBackend(token=self.token)
                 if self.backend.is_available():

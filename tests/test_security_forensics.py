@@ -1,45 +1,25 @@
-import tempfile
-import pytest
-from src.audit.immutable_audit import ImmutableAuditSystem
-from src.security.network_sensors import ( from src.security.security_orchestrator import (
-from src.security.web_scanner import ( from src.security.security_agent import SecurityAgent
-
 #!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Tests for security forensics modules.
 Tests network sensors, web scanners, and security orchestrator.
 """
 
+import tempfile
 
+import pytest
 
+from src.audit.immutable_audit import ImmutableAuditSystem
+from src.security.network_sensors import (
     NetworkAnomaly,
     NetworkHost,
     NetworkSensorGanglia,
     ThreatSeverity,
 )
+from src.security.security_orchestrator import (
     SecurityOrchestrator,
     SecurityStatus,
 )
+from src.security.web_scanner import (
     VulnerabilitySeverity,
     VulnerabilityType,
     WebScannerBrain,
@@ -295,6 +275,7 @@ class TestSecurityOrchestrator:
         assert orchestrator.web_scanner is not None
         # SecurityAgent may be None if config not available
         # (Import here to avoid unused import warning)
+        from src.security.security_agent import SecurityAgent
 
         assert orchestrator.security_agent is None or isinstance(
             orchestrator.security_agent, SecurityAgent

@@ -1,37 +1,3 @@
-from __future__ import annotations
-
-import logging
-import math
-from typing import TYPE_CHECKING, Any, Optional, cast
-    import torch
-    import torch.nn as nn
-    import torch.nn.functional as F
-    from torch import Tensor as TorchTensor
-    import torch  # noqa: F811
-    import torch.nn as nn  # noqa: F811
-    import torch.nn.functional as F  # noqa: F811
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Thermodynamic Attention Mechanism - Entropy-Based Attention
 
@@ -50,14 +16,25 @@ Author: OmniMind Development Team
 License: MIT
 """
 
+from __future__ import annotations
 
+import logging
+import math
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 if TYPE_CHECKING:
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    from torch import Tensor as TorchTensor
 else:
     TorchTensor = Any
 
 # Runtime imports
 try:
+    import torch  # noqa: F811
+    import torch.nn as nn  # noqa: F811
+    import torch.nn.functional as F  # noqa: F811
 
     TORCH_AVAILABLE = True
 except (ImportError, OSError):

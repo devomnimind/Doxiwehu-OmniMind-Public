@@ -1,34 +1,3 @@
-from __future__ import annotations
-
-import logging
-import random
-from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Dict, List, Optional, Set, Tuple
-from src.lacanian.encrypted_unconscious import ( from src.quantum_consciousness.quantum_backend import DWaveBackend
-    from src.social.omnimind_network import OmniMindSociety
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Freudian Metapsychology - Id/Ego/Superego Computational Architecture.
 
@@ -53,12 +22,21 @@ Date: November 2025
 License: MIT
 """
 
+from __future__ import annotations
 
+import logging
+import random
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 # Integration of Audit Fixes
 try:
+    from src.lacanian.encrypted_unconscious import (
         EncryptedUnconsciousLayer as EncryptedUnconscious,
     )
+    from src.quantum_consciousness.quantum_backend import DWaveBackend
+    from src.social.omnimind_network import OmniMindSociety
 
     INTEGRATION_AVAILABLE = True
 except ImportError as e:

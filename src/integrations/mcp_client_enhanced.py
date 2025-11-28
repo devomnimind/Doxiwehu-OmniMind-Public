@@ -1,3 +1,12 @@
+"""Enhanced MCP Client with Connection Pooling and Retry Logic.
+
+This module provides production-ready MCP client functionality with advanced
+features like connection pooling, automatic retries, circuit breaker pattern,
+and comprehensive error handling.
+
+Reference: Problem Statement - FRENTE 5: MCP Client Completo
+"""
+
 from __future__ import annotations
 
 import json
@@ -10,38 +19,8 @@ from enum import Enum
 from threading import Lock
 from typing import Any, Callable, Dict, Optional, TypeVar, cast
 from uuid import uuid4
+
 import structlog
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
-"""Enhanced MCP Client with Connection Pooling and Retry Logic.
-
-This module provides production-ready MCP client functionality with advanced
-features like connection pooling, automatic retries, circuit breaker pattern,
-and comprehensive error handling.
-
-Reference: Problem Statement - FRENTE 5: MCP Client Completo
-"""
-
 
 logger = structlog.get_logger(__name__)
 

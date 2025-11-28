@@ -1,39 +1,21 @@
-import shutil
-import tempfile
-from pathlib import Path
-import pytest
-from src.economics.marketplace_agent import MarketplaceAgent
-from src.ethics.ethics_agent import ActionImpact, EthicalFramework, EthicsAgent
-from src.identity.agent_signature import AgentIdentity
-from src.motivation.achievement_system import AchievementEngine
-from src.motivation.intrinsic_rewards import IntrinsicMotivationEngine
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Tests for Phase 9 modules: Motivation, Identity, Economics, Ethics
 
 Validates the core functionality of the intrinsic motivation engine,
 agent identity, marketplace automation, and ethics agent.
 """
+
+import shutil
+import tempfile
+from pathlib import Path
+
+import pytest
+
+from src.economics.marketplace_agent import MarketplaceAgent
+from src.ethics.ethics_agent import ActionImpact, EthicalFramework, EthicsAgent
+from src.identity.agent_signature import AgentIdentity
+from src.motivation.achievement_system import AchievementEngine
+from src.motivation.intrinsic_rewards import IntrinsicMotivationEngine
 
 
 @pytest.fixture

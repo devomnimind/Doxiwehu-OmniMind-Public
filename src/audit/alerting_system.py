@@ -1,33 +1,4 @@
-import asyncio
-import json
-import uuid
-from dataclasses import dataclass, field
-from datetime import datetime, timezone
-from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Set
-from .immutable_audit import ImmutableAuditSystem, get_audit_system
-
 #!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Real-time Alerting System for OmniMind
 WebSocket-based real-time security and compliance alerts.
@@ -38,6 +9,16 @@ Features:
 - Alert history and analytics
 - Integration with audit system
 """
+
+import asyncio
+import json
+import uuid
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Any, Callable, Dict, List, Optional, Set
+
+from .immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 class AlertSeverity(Enum):

@@ -1,26 +1,3 @@
-    import os
-    import os
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Simple health check system tests."""
 
 import pytest
@@ -49,6 +26,7 @@ def test_health_routes_can_be_imported():
 
 def test_health_dashboard_component():
     """Test that HealthDashboard component exists."""
+    import os
 
     health_component_path = "web/frontend/src/components/HealthDashboard.tsx"
     assert os.path.exists(health_component_path), "HealthDashboard.tsx should exist"
@@ -79,6 +57,7 @@ def test_error_boundaries_component():
 
 def test_drag_drop_task_list():
     """Test that DragDropTaskList component exists."""
+    import os
 
     component_path = "web/frontend/src/components/DragDropTaskList.tsx"
     assert os.path.exists(component_path), "DragDropTaskList.tsx should exist"

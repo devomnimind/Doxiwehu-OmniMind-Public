@@ -1,32 +1,3 @@
-import time
-from dataclasses import dataclass
-from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
-import numpy as np
-import structlog
-from .qpu_interface import BackendType, QPUInterface
-from .quantum_cognition import QuantumCognitionEngine, QuantumDecisionMaker
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Hybrid Cognition System for OmniMind - Phase 21-23 Preparation.
 
@@ -75,6 +46,23 @@ Author: OmniMind Hybrid Cognition Team
 License: MIT
 """
 
+import time
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
+import structlog
+
+from .qpu_interface import BackendType, QPUInterface
+
+# ...existing code...
+from .quantum_cognition import (
+    QuantumCognitionEngine,
+    QuantumDecisionMaker,
+)
+
+# ...existing code...
 
 logger = structlog.get_logger(__name__)
 

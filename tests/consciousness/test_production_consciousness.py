@@ -1,33 +1,3 @@
-from __future__ import annotations
-
-import tempfile
-from pathlib import Path
-from typing import List
-import pytest
-from src.consciousness.production_consciousness import ProductionConsciousnessSystem
-from src.metrics.consciousness_metrics_legacy import SelfAwarenessMetrics
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Grupo 6 - Production Consciousness Tests.
 
@@ -37,6 +7,17 @@ incluindo métricas Φ (Phi), self-awareness e integração multi-agente.
 Author: OmniMind Development Team
 Date: November 2025
 """
+
+from __future__ import annotations
+
+import tempfile
+from pathlib import Path
+from typing import List
+
+import pytest
+
+from src.consciousness.production_consciousness import ProductionConsciousnessSystem
+from src.metrics.consciousness_metrics_legacy import SelfAwarenessMetrics
 
 
 class TestProductionConsciousnessSystemInit:

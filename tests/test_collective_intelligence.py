@@ -1,41 +1,16 @@
-import math
-import time
-import pytest
-from src.swarm.collective_learning import ( from src.swarm.distributed_solver import (
-from src.swarm.emergence_detector import EmergenceDetector
-from src.swarm.particle_swarm import ParticleSwarmOptimizer
-from src.swarm.swarm_manager import SwarmManager
-from src.swarm.types import EmergenceType, EmergentPattern, Particle
-
 #!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Smoke tests para módulos de Collective Intelligence (Migrated to Swarm).
 Grupo 5 - Phase 1: Testes básicos de inicialização e métodos principais
 """
 
+import math
+import time
 
+import pytest
 
 # Collective Learning (Migrated)
+from src.swarm.collective_learning import (
     CollectiveLearner,
     ConsensusLearning,
     FederatedLearning,
@@ -45,13 +20,18 @@ Grupo 5 - Phase 1: Testes básicos de inicialização e métodos principais
 )
 
 # Distributed Solver (Migrated)
+from src.swarm.distributed_solver import (
     DistributedProblem,
     DistributedSolver,
 )
 
 # Emergent Behaviors (Migrated)
+from src.swarm.emergence_detector import EmergenceDetector
 
 # Swarm Intelligence (New Architecture)
+from src.swarm.particle_swarm import ParticleSwarmOptimizer
+from src.swarm.swarm_manager import SwarmManager
+from src.swarm.types import EmergenceType, EmergentPattern, Particle
 
 
 class TestSharedExperience:

@@ -2,38 +2,17 @@ import asyncio
 import logging
 from datetime import datetime
 from typing import Any, Dict, List
-    from src.quantum_consciousness.quantum_backend import QuantumBackend
-import httpx
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 
 # Import Quantum Backend (using the fixed version)
 try:
+    from src.quantum_consciousness.quantum_backend import QuantumBackend
 except ImportError:
     # Fallback if not found (should be there based on P0)
     QuantumBackend = None
 
 # Import Symbolic Engine (Ollama)
 # Assuming a simple wrapper or direct request for now
+import httpx
 
 logger = logging.getLogger(__name__)
 

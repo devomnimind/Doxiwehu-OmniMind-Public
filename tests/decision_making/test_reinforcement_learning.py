@@ -1,35 +1,3 @@
-from __future__ import annotations
-
-import numpy as np
-import pytest
-from src.decision_making.reinforcement_learning import ( from src.decision_making.reinforcement_learning import RLAction, RLState
-        from src.decision_making.reinforcement_learning import RLState
-        from src.decision_making.reinforcement_learning import RLState
-        from src.decision_making.reinforcement_learning import RLAction
-        from src.decision_making.reinforcement_learning import RLReward
-from src.decision_making.reinforcement_learning import ( from src.decision_making.reinforcement_learning import (
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes para Reinforcement Learning (reinforcement_learning.py).
 
@@ -41,8 +9,12 @@ Cobertura de:
 - Tratamento de exceções
 """
 
+from __future__ import annotations
 
+import numpy as np
+import pytest
 
+from src.decision_making.reinforcement_learning import (
     QLearningAgent,
     ReinforcementLearningAgent,
 )
@@ -151,6 +123,7 @@ class TestReinforcementLearningAgent:
 
     def test_select_action(self) -> None:
         """Testa seleção de ação."""
+        from src.decision_making.reinforcement_learning import RLAction, RLState
 
         agent = ReinforcementLearningAgent()
         state = RLState(features={"x": 1, "y": 2})
@@ -194,6 +167,7 @@ class TestRLComponents:
 
     def test_rl_state_creation(self) -> None:
         """Testa criação de RLState."""
+        from src.decision_making.reinforcement_learning import RLState
 
         state = RLState(features={"position": 5, "velocity": 2})
 
@@ -210,6 +184,7 @@ class TestRLComponents:
 
     def test_rl_state_hashable(self) -> None:
         """Testa que RLState é hashable."""
+        from src.decision_making.reinforcement_learning import RLState
 
         state1 = RLState(features={"x": 1}, state_id="state1")
         state2 = RLState(features={"x": 2}, state_id="state2")
@@ -230,6 +205,7 @@ class TestRLComponents:
 
     def test_rl_action_creation(self) -> None:
         """Testa criação de RLAction."""
+        from src.decision_making.reinforcement_learning import RLAction
 
         action = RLAction(action_id="move", parameters={"direction": "left"}, cost=0.5)
 
@@ -249,6 +225,7 @@ class TestRLComponents:
 
     def test_rl_reward_creation(self) -> None:
         """Testa criação de RLReward."""
+        from src.decision_making.reinforcement_learning import RLReward
 
         reward = RLReward(
             value=10.0,
@@ -266,7 +243,7 @@ class TestRLComponents:
 
     def test_rl_transition_creation(self) -> None:
         """Testa criação de RLTransition."""
-from src.decision_making.reinforcement_learning import (
+        from src.decision_making.reinforcement_learning import (
             RLAction,
             RLReward,
             RLState,
@@ -311,6 +288,7 @@ class TestPolicyGradientAgent:
 
     def test_compute_action_probabilities(self) -> None:
         """Testa cálculo de probabilidades de ação."""
+        from src.decision_making.reinforcement_learning import (
             PolicyGradientAgent,
             RLAction,
             RLState,
@@ -332,7 +310,7 @@ class TestPolicyGradientAgent:
 
     def test_update_stores_transition(self) -> None:
         """Testa que update armazena transição."""
-from src.decision_making.reinforcement_learning import (
+        from src.decision_making.reinforcement_learning import (
             PolicyGradientAgent,
             RLAction,
             RLReward,
@@ -356,6 +334,7 @@ from src.decision_making.reinforcement_learning import (
 
     def test_update_triggers_policy_update_on_done(self) -> None:
         """Testa que update atualiza política quando episódio termina."""
+        from src.decision_making.reinforcement_learning import (
             PolicyGradientAgent,
             RLAction,
             RLReward,

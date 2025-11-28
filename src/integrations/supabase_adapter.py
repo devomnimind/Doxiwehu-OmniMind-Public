@@ -3,42 +3,28 @@ from __future__ import annotations
 import logging
 import os
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, cast
-
-from postgrest.exceptions import APIError
-from supabase import Client, create_client
-from supabase.lib.client_options import ClientOptions as SyncClientOptions
-
-from .mcp_client import MCPClient, MCPClientError
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    cast,
+)
 
 # Use TYPE_CHECKING to avoid runtime circular dependencies.
 # It also prevents optional imports from executing at runtime.
 if TYPE_CHECKING:
-    pass
+    from postgrest.exceptions import APIError
+    from supabase import Client, create_client
+    from supabase.lib.client_options import ClientOptions as SyncClientOptions
 else:
     # If not type checking, provide dummy objects for runtime if library is missing
     try:
-        pass
+        from postgrest.exceptions import APIError
+        from supabase import Client, create_client
+        from supabase.lib.client_options import ClientOptions as SyncClientOptions
     except ImportError:
         # Define dummy classes and functions to avoid runtime errors if
         # supabase-py is not installed.
@@ -55,6 +41,8 @@ else:
         def create_client(*args: Any, **kwargs: Any) -> Any:
             raise ImportError("Install supabase-py to use SupabaseAdapter")
 
+
+from .mcp_client import MCPClient, MCPClientError
 
 logger = logging.getLogger(__name__)
 

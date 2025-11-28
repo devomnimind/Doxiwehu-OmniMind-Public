@@ -1,3 +1,9 @@
+"""
+End-to-End Integration Tests using Playwright
+
+These tests validate the entire OmniMind system from UI to backend.
+"""
+
 import asyncio
 import json
 import os
@@ -5,49 +11,12 @@ import time
 from pathlib import Path
 from typing import Dict
 from unittest.mock import AsyncMock, Mock, patch
+
 import pytest
-    from playwright.async_api import Page, async_playwright
-        import httpx
-        import websockets
-        from playwright.async_api import Page
-        import httpx
-        import httpx
-        import httpx
-        import websockets
-        import httpx
-        import httpx
-        import httpx
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
-"""
-End-to-End Integration Tests using Playwright
-
-These tests validate the entire OmniMind system from UI to backend.
-"""
-
-
 
 # Check if playwright is installed
 try:
+    from playwright.async_api import Page, async_playwright
 
     PLAYWRIGHT_AVAILABLE = True
 except ImportError:
@@ -198,6 +167,7 @@ class TestMockedAPIEndpoints:
     @pytest.mark.asyncio
     async def test_authenticated_endpoint_mocked(self):
         """Test authenticated endpoint with mocked responses."""
+        import httpx
 
         # Mock unauthenticated response
         mock_unauth_response = Mock()
@@ -307,6 +277,7 @@ class TestMockedWebSocketIntegration:
     @pytest.mark.asyncio
     async def test_websocket_subscription_mocked(self):
         """Test WebSocket channel subscription with mocks."""
+        import websockets
 
         mock_websocket = AsyncMock()
         mock_websocket.recv.side_effect = [
@@ -349,6 +320,7 @@ class TestMockedUIInteraction:
     @pytest.mark.asyncio
     async def test_ui_loads_mocked(self):
         """Test UI loads successfully with mocked Playwright."""
+        from playwright.async_api import Page
 
         mock_page = AsyncMock(spec=Page)
         mock_page.goto = AsyncMock()
@@ -430,6 +402,7 @@ class TestMockedPerformance:
     @pytest.mark.asyncio
     async def test_concurrent_requests_mocked(self):
         """Test handling of concurrent requests with mocks."""
+        import httpx
 
         mock_response = Mock()
         mock_response.status_code = 200
@@ -465,6 +438,7 @@ class TestAPIEndpoints:
     @pytest.mark.asyncio
     async def test_health_endpoint(self, backend_server: str):
         """Test health endpoint is accessible."""
+        import httpx
 
         async with httpx.AsyncClient() as client:
             response = await client.get(f"{backend_server}/health")
@@ -505,6 +479,7 @@ class TestAPIEndpoints:
         self, backend_server: str, auth_credentials: Dict[str, str]
     ):
         """Test complete task orchestration workflow."""
+        import httpx
 
         async with httpx.AsyncClient(timeout=30.0) as client:
             auth = (auth_credentials["username"], auth_credentials["password"])
@@ -539,6 +514,7 @@ class TestWebSocketIntegration:
     @pytest.mark.asyncio
     async def test_websocket_connection(self, backend_server: str):
         """Test WebSocket connection and ping/pong."""
+        import websockets
 
         ws_url = backend_server.replace("http", "ws") + "/ws"
 
@@ -730,6 +706,7 @@ class TestPerformance:
     @pytest.mark.asyncio
     async def test_concurrent_requests(self, backend_server: str, auth_credentials: Dict[str, str]):
         """Test handling of concurrent requests."""
+        import httpx
 
         async def make_request(client: httpx.AsyncClient, i: int):
             response = await client.get(
@@ -757,6 +734,7 @@ class TestSecurityIntegration:
     @pytest.mark.asyncio
     async def test_audit_logging(self, backend_server: str, auth_credentials: Dict[str, str]):
         """Test audit logging is working."""
+        import httpx
 
         async with httpx.AsyncClient() as client:
             auth = (auth_credentials["username"], auth_credentials["password"])
@@ -859,6 +837,7 @@ class TestErrorHandling:
     @pytest.mark.asyncio
     async def test_service_recovery(self, backend_server: str):
         """Test service can recover from errors."""
+        import httpx
 
         async with httpx.AsyncClient() as client:
             # Make request to ensure service is healthy

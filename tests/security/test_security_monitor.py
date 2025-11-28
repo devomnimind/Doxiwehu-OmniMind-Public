@@ -1,36 +1,3 @@
-from __future__ import annotations
-
-from unittest.mock import MagicMock, Mock, patch
-import pytest
-    import psutil
-from src.security.security_monitor import (
-        import time
-        import os
-        import tempfile
-        from src.audit.alerting_system import AlertingSystem
-        import time
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes para Security Monitor (security_monitor.py).
 
@@ -43,13 +10,18 @@ Cobertura de:
 - Tratamento de exceções
 """
 
+from __future__ import annotations
 
+from unittest.mock import MagicMock, Mock, patch
 
+import pytest
 
 try:
+    import psutil
 except ImportError:
     psutil = None
 
+from src.security.security_monitor import (
     AnomalyType,
     ProcessSnapshot,
     SecurityEvent,
@@ -563,6 +535,7 @@ class TestSecurityMonitorAdvanced:
     @patch("src.security.security_monitor.get_audit_system")
     def test_calculate_process_threat_level_high(self, mock_audit: Mock) -> None:
         """Testa cálculo de ameaça alta para processo suspeito."""
+        import time
 
         mock_audit.return_value = MagicMock()
         monitor = SecurityMonitor()
@@ -676,6 +649,8 @@ class TestSecurityMonitorAdvanced:
     @pytest.mark.asyncio
     async def test_monitor_file_system(self, mock_audit: Mock) -> None:
         """Testa monitoramento de sistema de arquivos."""
+        import os
+        import tempfile
 
         mock_audit.return_value = MagicMock()
         monitor = SecurityMonitor()
@@ -725,6 +700,7 @@ class TestSecurityMonitorAdvanced:
         mock_audit_instance = MagicMock()
         mock_audit.return_value = mock_audit_instance
 
+        from src.audit.alerting_system import AlertingSystem
 
         mock_alerting = MagicMock(spec=AlertingSystem)
 
@@ -873,6 +849,7 @@ class TestSecurityMonitorIntegration:
     @patch("src.security.security_monitor.get_audit_system")
     def test_is_suspicious_process_recent_high_usage(self, mock_audit: Mock) -> None:
         """Testa detecção de processo recente com alto uso de recursos."""
+        import time
 
         mock_audit.return_value = MagicMock()
         monitor = SecurityMonitor()

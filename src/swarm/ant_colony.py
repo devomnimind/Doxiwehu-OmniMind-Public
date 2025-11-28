@@ -1,32 +1,3 @@
-import logging
-import random
-import time
-from typing import Dict, List, Optional, Tuple
-from src.swarm.config import ACOConfig
-from src.swarm.types import Ant, SwarmMetrics
-            import os
-            import psutil
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Ant Colony Optimization (ACO) avançado - Phase 19.
 
@@ -37,7 +8,13 @@ Author: OmniMind Project - Phase 19
 License: MIT
 """
 
+import logging
+import random
+import time
+from typing import Dict, List, Optional, Tuple
 
+from src.swarm.config import ACOConfig
+from src.swarm.types import Ant, SwarmMetrics
 
 logger = logging.getLogger(__name__)
 
@@ -125,7 +102,9 @@ class AntColonyOptimizer:
 
         # Calcula uso de memória
         try:
+            import os
 
+            import psutil
 
             process = psutil.Process(os.getpid())
             memory_info = process.memory_info()

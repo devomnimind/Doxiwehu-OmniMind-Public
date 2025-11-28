@@ -1,34 +1,12 @@
-import pytest
-from src.architecture.bekenstein_capacity import BekensteinArchitect
-        from src.architecture.bekenstein_capacity import HBAR, LN2, C
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes para Architecture - Bekenstein Capacity.
 
 Group 11: Core Infrastructure - architecture/
 """
 
+import pytest
 
+from src.architecture.bekenstein_capacity import BekensteinArchitect
 
 
 class TestBekensteinArchitect:
@@ -130,6 +108,7 @@ class TestBekensteinArchitect:
 
     def test_physical_constants_are_realistic(self) -> None:
         """Testa que as constantes físicas usadas são realistas."""
+        from src.architecture.bekenstein_capacity import HBAR, LN2, C
 
         # Planck constant aproximado
         assert 1e-35 < HBAR < 1e-33

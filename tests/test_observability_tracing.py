@@ -1,36 +1,12 @@
-import time
-from src.observability.distributed_tracing import ( from src.observability.distributed_tracing import TraceConfig
-        from src.observability.distributed_tracing import TraceConfig
-        from src.observability.distributed_tracing import TraceConfig
-        from src.observability.distributed_tracing import TraceConfig
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes para Observability - Distributed Tracing.
 
 Group 15: Learning & Monitoring - observability/
 """
 
+import time
 
+from src.observability.distributed_tracing import (
     DistributedTracer,
     Span,
     SpanContext,
@@ -214,6 +190,7 @@ class TestDistributedTracer:
 
     def test_initialization(self) -> None:
         """Testa inicialização de DistributedTracer."""
+        from src.observability.distributed_tracing import TraceConfig
 
         config = TraceConfig(service_name="test_service")
         tracer = DistributedTracer(config)
@@ -236,6 +213,7 @@ class TestDistributedTracer:
 
     def test_start_child_span(self) -> None:
         """Testa início de span filho."""
+        from src.observability.distributed_tracing import TraceConfig
 
         config = TraceConfig(service_name="test_service")
         tracer = DistributedTracer(config)
@@ -263,6 +241,7 @@ class TestDistributedTracer:
 
     def test_span_kinds(self) -> None:
         """Testa diferentes tipos de spans."""
+        from src.observability.distributed_tracing import TraceConfig
 
         config = TraceConfig(service_name="test_service")
         tracer = DistributedTracer(config)
@@ -296,6 +275,7 @@ class TestDistributedTracer:
 
     def test_create_context(self) -> None:
         """Testa criação de contexto."""
+        from src.observability.distributed_tracing import TraceConfig
 
         config = TraceConfig(service_name="test_service")
         tracer = DistributedTracer(config)

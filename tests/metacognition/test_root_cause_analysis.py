@@ -1,26 +1,3 @@
-        import time
-        import time
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Tests for Root Cause Analysis engine."""
 
 from src.metacognition.root_cause_analysis import (
@@ -230,6 +207,7 @@ class TestRootCauseEngine:
         )
 
         # Record failures in sequence (db fails first, then cascade)
+        import time
 
         engine.record_failure("fail-db", "db-1", FailureType.CRASH, "Database crashed")
         time.sleep(0.1)
@@ -510,6 +488,7 @@ class TestRootCauseEngine:
             dependencies=["service-1", "service-2"],
         )
 
+        import time
 
         # Both services fail independently
         engine.record_failure("fail-s1", "service-1", FailureType.CRASH, "S1 crashed")

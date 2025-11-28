@@ -1,48 +1,26 @@
+#!/usr/bin/env python3
+"""
+OmniMind ReactAgent - Fixed version with proper completion detection
+"""
+
 import json
 import logging
 import os
 import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Protocol, TypeAlias, TypedDict, cast
+
 import yaml
 from langchain_ollama import OllamaLLM
 from langgraph.graph import END, StateGraph
+
 from ..consciousness.affective_memory import AffectiveTraceNetwork, JouissanceProfile
 from ..integrations.llm_router import get_llm_router, LLMModelTier, invoke_llm_sync
 from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory import EpisodicMemory
 from ..onboarding import SupabaseMemoryOnboarding
 from ..tools import FileOperations, ShellExecutor, SystemMonitor
-from .agent_protocol import ( from dotenv import load_dotenv
-        import threading
-
-#!/usr/bin/env python3
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
-"""
-OmniMind ReactAgent - Fixed version with proper completion detection
-"""
-
-
-
+from .agent_protocol import (
     AgentMessage,
     MessagePriority,
     MessageType,
@@ -88,6 +66,7 @@ class ReactAgent:
     def __init__(self, config_path: str):
         """Initialize agent with configuration."""
         # Load environment variables from .env file
+        from dotenv import load_dotenv
 
         load_dotenv()
 
@@ -599,6 +578,7 @@ Your response:"""
                 logger.error("Supabase onboarding failed: %s", exc)
 
         # Run in background thread
+        import threading
 
         thread = threading.Thread(target=_onboard, daemon=True, name="SupabaseOnboarding")
         thread.start()

@@ -1,31 +1,4 @@
-import json
-import re
-import statistics
-from collections import Counter, defaultdict
-from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional
-from .immutable_audit import ImmutableAuditSystem, get_audit_system
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
+#!/usr/bin/env python3
 """
 Audit Log Analysis Module for OmniMind
 Provides query interface, pattern detection, and statistical analysis of audit logs.
@@ -37,7 +10,14 @@ Features:
 - Forensic investigation tools
 """
 
+import json
+import re
+from collections import Counter, defaultdict
+from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
+from typing import Any, Dict, List, Optional
 
+from .immutable_audit import ImmutableAuditSystem, get_audit_system
 
 
 @dataclass
@@ -266,6 +246,7 @@ class AuditLogAnalyzer:
             ]
 
             # Calculate mean and std dev
+            import statistics
 
             if len(time_gaps) > 1:
                 mean_gap = statistics.mean(time_gaps)

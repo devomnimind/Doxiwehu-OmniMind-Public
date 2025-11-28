@@ -1,33 +1,3 @@
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
-import numpy as np
-import random
-import structlog
-from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
-from qiskit.quantum_info import Statevector
-from qiskit_aer import AerSimulator
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Quantum Cognition Engine for OmniMind - Phase 21-23 Preparation.
 
@@ -81,9 +51,17 @@ Author: OmniMind Quantum Cognition Team
 License: MIT
 """
 
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional, Tuple
 
+import numpy as np
+import structlog
 
 try:
+    from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
+    from qiskit.quantum_info import Statevector
+    from qiskit_aer import AerSimulator
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -341,6 +319,7 @@ class SuperpositionDecision:
         if not QISKIT_AVAILABLE:
             # Classical fallback when quantum simulation unavailable
             logger.warning("Qiskit not available, using classical fallback")
+            import random
 
             self.final_decision = random.choice(self.options)
             self.confidence = 1.0 / len(self.options)

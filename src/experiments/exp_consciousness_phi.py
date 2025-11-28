@@ -1,28 +1,3 @@
-import json
-from pathlib import Path
-from typing import Any, TypedDict
-from src.metrics.consciousness_metrics_legacy import (
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Experiment 1: Consciousness Metrics Validation.
 
 This experiment validates the Φ (Phi) proxy metric and self-awareness measurements
@@ -31,7 +6,11 @@ by simulating different agent architectures.
 Reference: docs/concienciaetica-autonomia.md, Section 5 - Experimento 1
 """
 
+import json
+from pathlib import Path
+from typing import Any, TypedDict
 
+from src.metrics.consciousness_metrics_legacy import (
     AgentConnection,
     ConsciousnessMetrics,
     FeedbackLoop,

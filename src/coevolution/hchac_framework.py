@@ -1,35 +1,3 @@
-import logging
-from dataclasses import dataclass, field
-from enum import Enum
-from typing import Any, Dict, List, Optional
-        from .bias_detector import BiasDetector
-        from .bidirectional_feedback import BidirectionalFeedback
-        from .coevolution_memory import CoevolutionMemory
-        from .negotiation import GoalNegotiator
-        from .trust_metrics import TrustMetrics
-        from .bidirectional_feedback import FeedbackType
-        from .bidirectional_feedback import FeedbackDirection
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Framework de Colaboração Human-Centered AI (HCHAC).
 
@@ -41,6 +9,10 @@ Orquestra colaboração humano-IA baseada em:
 5. Feedback é diálogo, não comando
 """
 
+import logging
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -91,6 +63,11 @@ class HCHACFramework:
 
     def __init__(self) -> None:
         """Inicializa framework HCHAC."""
+        from .bias_detector import BiasDetector
+        from .bidirectional_feedback import BidirectionalFeedback
+        from .coevolution_memory import CoevolutionMemory
+        from .negotiation import GoalNegotiator
+        from .trust_metrics import TrustMetrics
 
         self.trust = TrustMetrics()
         self.negotiator = GoalNegotiator()
@@ -346,6 +323,7 @@ class HCHACFramework:
             content: Conteúdo do feedback
             context: Contexto adicional
         """
+        from .bidirectional_feedback import FeedbackType
 
         # Converte string para enum
         try:
@@ -366,6 +344,7 @@ class HCHACFramework:
         Returns:
             Lista de feedback
         """
+        from .bidirectional_feedback import FeedbackDirection
 
         items = self.feedback.get_feedback_summary(
             direction=FeedbackDirection.AI_TO_HUMAN, limit=limit

@@ -1,34 +1,3 @@
-import logging
-import time
-from dataclasses import dataclass
-from enum import Enum
-from typing import (
-    import redis.cluster as redis_cluster_module
-    import redis.sentinel as redis_sentinel_module
-    from redis.cluster import ClusterNode as RedisClusterNodeType
-    from redis.cluster import RedisCluster as RedisClusterType
-    from redis.sentinel import Sentinel as SentinelType
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Redis Cluster Manager for distributed caching.
 
@@ -51,6 +20,11 @@ Example:
     >>> value = manager.get("key")
 """
 
+import logging
+import time
+from dataclasses import dataclass
+from enum import Enum
+from typing import (
     TYPE_CHECKING,
     Any,
     Callable,
@@ -70,6 +44,8 @@ SentinelCtor: Type[Any] | None = None
 
 # Redis is optional dependency for local-first operation
 try:
+    import redis.cluster as redis_cluster_module
+    import redis.sentinel as redis_sentinel_module
 
     RedisClusterNodeCtor = redis_cluster_module.ClusterNode
     RedisClusterCtor = redis_cluster_module.RedisCluster
@@ -82,6 +58,9 @@ except ImportError:
     SentinelCtor = None
 
 if TYPE_CHECKING:
+    from redis.cluster import ClusterNode as RedisClusterNodeType
+    from redis.cluster import RedisCluster as RedisClusterType
+    from redis.sentinel import Sentinel as SentinelType
 else:
     RedisClusterType = Any
     SentinelType = Any

@@ -1,26 +1,3 @@
-from .motor_output import ( from .proprioception import (
-from .sensory_integration import ( from .somatic_loop import (
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Embodied Cognition Module - Phase 16.1
 
@@ -37,18 +14,22 @@ References:
 - Lakoff & Johnson (2002): "Metaphors We Live By"
 """
 
+from .motor_output import (
     ActionExecution,
     MotorController,
 )
+from .proprioception import (
     InternalState,
     ProprioceptionModule,
     StateAwareness,
 )
+from .sensory_integration import (
     AudioUnderstanding,
     MultimodalInput,
     SensoryIntegration,
     VisualUnderstanding,
 )
+from .somatic_loop import (
     Emotion,
     EmotionalMarker,
     SomaticLoop,

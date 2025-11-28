@@ -1,31 +1,3 @@
-    import asyncio
-    import asyncio
-    import asyncio
-    import asyncio
-    import asyncio
-    import asyncio
-    import time
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Tests for enhanced security events monitoring."""
 
 import pytest
@@ -53,6 +25,7 @@ def client(app):
 def sample_event(client):
     """Create a sample security event."""
     # Use the internal function to create an event
+    import asyncio
 
     event_id = asyncio.run(
         security.log_security_event(
@@ -111,6 +84,7 @@ def test_get_correlated_events(client, sample_event):
     correlation_id = "test-correlation-2"
 
     # Create and correlate multiple events
+    import asyncio
 
     event_ids = []
     for i in range(3):
@@ -167,6 +141,7 @@ def test_automated_responses(client):
 
 def test_threat_level_critical(client):
     """Test that dashboard shows critical threat level."""
+    import asyncio
 
     # Create a critical unresolved event
     asyncio.run(
@@ -203,6 +178,7 @@ def test_event_resolution_tracking(client, sample_event):
 
 def test_security_metrics_tracking(client):
     """Test that security metrics are properly tracked."""
+    import asyncio
 
     # Create events of different types and severities
     event_types = [
@@ -254,6 +230,7 @@ def test_event_rate_calculation(client):
 
 def test_top_sources_tracking(client):
     """Test tracking of top event sources."""
+    import asyncio
 
     # Create events from different sources
     sources = ["scanner-1", "scanner-2", "scanner-1", "scanner-1"]
@@ -311,6 +288,8 @@ def test_related_events_linking(client):
 
 def test_average_response_time(client):
     """Test average response time calculation."""
+    import asyncio
+    import time
 
     # Create and immediately resolve events
     for _ in range(3):

@@ -1,35 +1,3 @@
-from __future__ import annotations
-
-import logging
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-from src.metacognition.optimization_suggestions import OptimizationSuggestions
-from src.metacognition.pattern_recognition import PatternRecognition
-from src.metacognition.self_analysis import SelfAnalysis
-                from datetime import timedelta
-        from datetime import timedelta
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """Metacognition Agent for OmniMind.
 
 Provides self-reflective AI capabilities including:
@@ -39,8 +7,15 @@ Provides self-reflective AI capabilities including:
 - Bias detection and mitigation
 """
 
+from __future__ import annotations
 
+import logging
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
+from src.metacognition.optimization_suggestions import OptimizationSuggestions
+from src.metacognition.pattern_recognition import PatternRecognition
+from src.metacognition.self_analysis import SelfAnalysis
 
 logger = logging.getLogger(__name__)
 
@@ -102,6 +77,7 @@ class MetacognitionAgent:
             entries = self.self_analysis._load_hash_chain()
             if entries:
                 # Filter recent entries
+                from datetime import timedelta
 
                 cutoff_time = datetime.now() - timedelta(hours=lookback_hours)
                 recent_ops = [
@@ -250,6 +226,7 @@ class MetacognitionAgent:
         if self.last_analysis is None:
             return True
 
+        from datetime import timedelta
 
         elapsed = datetime.now() - self.last_analysis
         return elapsed > timedelta(seconds=self.analysis_interval)

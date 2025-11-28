@@ -1,28 +1,3 @@
-import random
-import time
-from typing import Any, Dict
-    import random
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 # src/stress/tribunal.py
 """Utilities to simulate the four Tribunal do Diabo attacks on the OmniMind system.
 
@@ -31,6 +6,9 @@ framework that the test suite can exercise.  Real‑world stress testing will
 replace the stubs with integration‑level calls to the frontend simulator and
 the distributed network layer.
 """
+import random
+import time
+from typing import Any, Dict
 
 # ---------------------------------------------------------------------------
 # Latency attack – inject artificial network delay and verify quorum handling.
@@ -69,6 +47,7 @@ def corruption_attack(node, bias_strength: float = 0.35) -> Dict[str, Any]:
     """
     # Generate a deterministic corrupted datum based on bias_strength
     # Use a fixed seed for reproducibility in tests
+    import random
 
     random.seed(42)  # Fixed seed for deterministic testing
 

@@ -1,38 +1,3 @@
-from __future__ import annotations
-
-import asyncio
-import os
-import signal
-import time
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from enum import Enum
-from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
-import psutil
-import structlog
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 OmniMind Daemon - 24/7 Autonomous Background Service
 
@@ -48,6 +13,20 @@ Key responsibilities:
 - Provide observability through the dashboard
 """
 
+from __future__ import annotations
+
+import asyncio
+import os
+import signal
+import time
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from enum import Enum
+from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional
+
+import psutil
+import structlog
 
 # Configure structured logging
 structlog.configure(  # type: ignore[attr-defined]

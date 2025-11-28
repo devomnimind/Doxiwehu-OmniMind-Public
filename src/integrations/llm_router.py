@@ -1,37 +1,3 @@
-import asyncio
-import time
-import logging
-from abc import ABC, abstractmethod
-from dataclasses import dataclass
-from typing import Dict, List, Optional, Any
-from enum import Enum
-import os
-from dotenv import load_dotenv
-import ollama
-from transformers import pipeline
-import torch
-import concurrent.futures
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 LLM Fallback Architecture - OmniMind
 ====================================
@@ -55,8 +21,17 @@ Autor: OmniMind Team
 Data: 2025-11-27
 """
 
+import asyncio
+import time
+import logging
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+from typing import Dict, List, Optional, Any
+from enum import Enum
+import os
 
 # Carrega variáveis de ambiente do .env
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -137,6 +112,7 @@ class OllamaProvider(LLMProviderInterface):
     def _check_availability(self):
         """Verifica disponibilidade do Ollama."""
         try:
+            import ollama
 
             # Tenta listar modelos para verificar se Ollama está rodando
             ollama.list()
@@ -253,6 +229,8 @@ class HuggingFaceProvider(LLMProviderInterface):
             return  # Já carregado
 
         try:
+            from transformers import pipeline
+            import torch
 
             # Configuração para GPU se disponível
             device = 0 if torch.cuda.is_available() else -1
@@ -698,6 +676,7 @@ def invoke_llm_sync(prompt: str, **kwargs) -> LLMResponse:
         # Verificar se estamos em um loop rodando
         asyncio.get_running_loop()
         # Se estamos em um loop, usar ThreadPoolExecutor
+        import concurrent.futures
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             future = executor.submit(asyncio.run, _invoke_async(prompt, **kwargs))

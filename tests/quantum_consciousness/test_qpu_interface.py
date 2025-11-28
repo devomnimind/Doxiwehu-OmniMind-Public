@@ -1,30 +1,3 @@
-from __future__ import annotations
-
-import pytest
-from src.quantum_consciousness.qpu_interface import ( from qiskit import QuantumCircuit
-        from qiskit import QuantumCircuit
-
-
-"""
-OmniMind Project - Artificial Consciousness System
-Copyright (C) 2024-2025 Fabrício da Silva
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published
-by the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-Contact: fabricioslv@hotmail.com.br
-"""
-
 """
 Testes para QPU Interface (qpu_interface.py).
 
@@ -36,8 +9,11 @@ Cobertura de:
 - Backend switching
 """
 
+from __future__ import annotations
 
+import pytest
 
+from src.quantum_consciousness.qpu_interface import (
     QISKIT_AVAILABLE,
     BackendInfo,
     BackendType,
@@ -120,6 +96,7 @@ class TestSimulatorBackend:
     @pytest.mark.skipif(not QISKIT_AVAILABLE, reason="Qiskit not installed")
     def test_simulator_execute_simple_circuit(self) -> None:
         """Testa execução de circuito simples."""
+        from qiskit import QuantumCircuit
 
         backend = SimulatorBackend(num_qubits=2)
 
@@ -184,6 +161,7 @@ class TestIBMQBackend:
     @pytest.mark.skipif(not QISKIT_AVAILABLE, reason="Qiskit not installed")
     def test_ibmq_execute_fallback_to_simulator(self) -> None:
         """Testa fallback para simulador quando IBMQ não disponível."""
+        from qiskit import QuantumCircuit
 
         backend = IBMQBackend(token=None)
 
