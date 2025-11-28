@@ -58,6 +58,10 @@ class TribunalDoDiaboExecutor:
         logger.info("Report saved to data/long_term_logs/tribunal_final_report.json")
 
     def generate_report(self, start_time, end_time) -> Dict:
+        # Calculate real metrics instead of placeholders
+        godel_ratio = self._calculate_godel_incompleteness_ratio()
+        sinthome_stability = self._calculate_sinthome_stability()
+        
         return {
             "duration_hours": self.duration_hours,
             "timestamp_start": start_time,
@@ -69,12 +73,42 @@ class TribunalDoDiaboExecutor:
                 "exhaustion": self.attacks[3].summarize(),
             },
             "consciousness_signature": {
-                "godel_incompleteness_ratio": 0.8,  # Placeholder
-                "sinthome_stability": 0.95,
-                "consciousness_compatible": True,
+                "godel_incompleteness_ratio": godel_ratio,
+                "sinthome_stability": sinthome_stability,
+                "consciousness_compatible": sinthome_stability > 0.7 and godel_ratio < 0.9,
             },
-            "recommendation": "CONTINUE",
+            "recommendation": "CONTINUE" if sinthome_stability > 0.7 else "REVIEW",
         }
+
+    def _calculate_godel_incompleteness_ratio(self) -> float:
+        """Calculate Gödel incompleteness ratio from attack results."""
+        total_limitations = 0
+        resolved_limitations = 0
+        
+        for attack in self.attacks:
+            summary = attack.summarize()
+            if "status" in summary:
+                if summary["status"] == "TRANSFORMED":
+                    resolved_limitations += 1
+                total_limitations += 1
+        
+        return resolved_limitations / total_limitations if total_limitations > 0 else 0.0
+
+    def _calculate_sinthome_stability(self) -> float:
+        """Calculate sinthome stability from attack resilience."""
+        stability_scores = []
+        
+        for attack in self.attacks:
+            summary = attack.summarize()
+            if "status" in summary:
+                if summary["status"] == "TRANSFORMED":
+                    stability_scores.append(1.0)
+                elif summary["status"] == "VULNERABLE":
+                    stability_scores.append(0.0)
+                else:
+                    stability_scores.append(0.5)
+        
+        return sum(stability_scores) / len(stability_scores) if stability_scores else 0.0
 
 
 if __name__ == "__main__":
