@@ -184,17 +184,21 @@ def test_orchestrate_and_metrics(
     assert response.status_code == 200
     data = response.json()
     assert "dashboard_snapshot" in data
-    assert data.get("success") is not None
-    execution = data.get("execution", {})
-    assert execution.get("overall_success") is True
-    assert execution.get("subtask_results")
-    for sub in execution["subtask_results"]:
-        assert sub.get("completed") is True
-        assert sub.get("summary")
-    plan = data.get("plan", {})
-    assert plan.get("subtasks")
-    for sub in plan["subtasks"]:
-        assert sub.get("status") == "completed"
+    assert data.get("success") is not None if isinstance(data, dict) else False
+    execution = data.get("execution", {}) if isinstance(data, dict) else {}
+    assert execution.get("overall_success") is True if isinstance(execution, dict) else False
+    assert execution.get("subtask_results") if isinstance(execution, dict) else False
+    for sub in (
+        execution["subtask_results"]
+        if isinstance(execution, dict) and "subtask_results" in execution
+        else []
+    ):
+        assert sub.get("completed") is True if isinstance(sub, dict) else False
+        assert sub.get("summary") if isinstance(sub, dict) else False
+    plan = data.get("plan", {}) if isinstance(data, dict) else {}
+    assert plan.get("subtasks") if isinstance(plan, dict) else False
+    for sub in plan["subtasks"] if isinstance(plan, dict) and "subtasks" in plan else []:
+        assert sub.get("status") == "completed" if isinstance(sub, dict) else False
 
     metrics = client.get("/metrics", headers=headers)
     assert metrics.status_code == 200
@@ -219,6 +223,10 @@ def test_observability_endpoint(
     assert "alerts" in payload
     assert isinstance(payload["alerts"], list)
     assert isinstance(payload["self_healing"], dict)
-    validation = payload.get("validation")
+    validation = payload.get("validation") if isinstance(payload, dict) else None
     assert validation is not None
-    assert validation.get("latest", {}).get("audit", {}).get("valid") is True
+    assert (
+        validation.get("latest", {}).get("audit", {}).get("valid") is True
+        if isinstance(validation, dict)
+        else False
+    )

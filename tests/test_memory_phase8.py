@@ -63,7 +63,14 @@ class DummyQdrantClient:
             payload = record["payload"]
             if query_filter and query_filter.must:
                 condition = query_filter.must[0]
-                if payload.get(condition.key, 0) < condition.range.get("gte", 0):
+                # Handle both dict and range objects for condition.range
+                if isinstance(condition.range, dict):
+                    range_value = condition.range.get("gte", 0)
+                elif isinstance(condition.range, range):
+                    range_value = condition.range.start  # Use start of range
+                else:
+                    range_value = 0  # Fallback
+                if payload.get(condition.key, 0) < range_value:
                     continue
             hits.append(type("Hit", (), {"score": 1.0, "payload": payload}))
             if len(hits) >= limit:

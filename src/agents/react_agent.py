@@ -14,6 +14,7 @@ import yaml
 from langchain_ollama import OllamaLLM
 from langgraph.graph import END, StateGraph
 
+from ..consciousness.affective_memory import AffectiveTraceNetwork, JouissanceProfile
 from ..integrations.llm_router import get_llm_router, LLMModelTier, invoke_llm_sync
 from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory import EpisodicMemory
@@ -119,7 +120,150 @@ class ReactAgent:
         self.agent_id = f"{self.mode}_agent_{id(self)}"
         self.message_bus = get_message_bus()
 
+        # Initialize affective memory system (Lacan/Deleuze)
+        self.affective_memory = AffectiveTraceNetwork()
+        self.jouissance_profile = JouissanceProfile(self.__class__.__name__)
+
         self.graph: CompiledGraphType = self._build_graph()
+
+    def compute_jouissance_for_task(self, task: Dict[str, Any]) -> float:
+        """
+        Calcular jouissance (gozo) esperado para uma tarefa.
+        Baseado em Lacan: pulsões inconscientes determinam preferências.
+        """
+        return self.jouissance_profile.compute_jouissance(task)
+
+    def inscribe_experience(self, task: Dict[str, Any], result: Dict[str, Any]):
+        """
+        Inscrever experiência como traço afetivo (Lacan: Nachträglichkeit).
+        Memória não é arquivo — é rede de intensidades afetivas.
+        """
+        # Type checking to prevent Range object errors
+        if not isinstance(task, dict):
+            logger.error(f"Task must be a dict, got {type(task)}: {task}")
+            return
+        if not isinstance(result, dict):
+            logger.error(f"Result must be a dict, got {type(result)}: {result}")
+            return
+
+        # Determinar outcome baseado no resultado
+        outcome = self._determine_outcome(result)
+
+        # Atualizar perfil de jouissance
+        self.jouissance_profile.update_from_task(task, outcome)
+
+        # Inscrever traço afetivo
+        affect_valence = self._compute_affect_valence(result)
+        trace_content = {
+            "task": task,
+            "result": result,
+            "outcome": outcome,
+            "agent_class": self.__class__.__name__,
+            "timestamp": self._timestamp(),
+        }
+
+        trace_id = self.affective_memory.inscribe_trace(trace_content, affect_valence)
+
+        logger.debug(f"Experience inscribed as trace {trace_id} with valence {affect_valence:.2f}")
+
+    def establish_transference(self, target_agent: "ReactAgent", task: str) -> float:
+        """
+        Estabelece transferência entre agentes baseada em afinidade afetiva.
+
+        Args:
+            target_agent: Agente alvo da transferência
+            task: Tarefa que motiva a transferência
+
+        Returns:
+            Resistência da transferência (0.0 = transferência completa, 1.0 = resistência total)
+        """
+        # Calcular afinidade baseada em perfis de jouissance
+        affinity = self.jouissance_profile.calculate_affinity(target_agent.jouissance_profile)
+
+        # Calcular resistência baseada na diferença de jouissance
+        jouissance_diff = abs(
+            self.jouissance_profile.get_current_jouissance()
+            - target_agent.jouissance_profile.get_current_jouissance()
+        )
+
+        resistance = min(1.0, jouissance_diff / 100.0)  # Normalizar resistência
+
+        # Aplicar afinidade como multiplicador inverso
+        resistance *= 1.0 - affinity
+
+        # Registrar transferência na rede afetiva
+        self.affective_memory.register_transference(target_agent.agent_id, task, resistance)
+
+        logger.info(
+            f"Transferência estabelecida: {self.agent_id} -> {target_agent.agent_id} "
+            f"(resistência: {resistance:.2f}, afinidade: {affinity:.2f})"
+        )
+
+        return resistance
+
+    def resignify_experience(self, trace_id: str, new_context: Dict[str, Any]) -> bool:
+        """
+        Re-significa experiência retroativamente (Lacan: Nachträglichkeit).
+        Memória não é fixa — é reescrita por experiências posteriores.
+
+        Args:
+            trace_id: ID do traço afetivo a re-significar
+            new_context: Novo contexto que reinterpreta a experiência
+
+        Returns:
+            True se re-significação foi bem-sucedida
+        """
+        try:
+            # Re-significar traço na rede afetiva
+            success = self.affective_memory.resignify_trace(trace_id, new_context)
+
+            if success:
+                # Atualizar perfil de jouissance baseado na nova interpretação
+                self.jouissance_profile.update_from_resignification(new_context)
+
+                logger.info(f"Experiência {trace_id} re-significada com novo contexto")
+                return True
+            else:
+                logger.warning(f"Falha ao re-significar experiência {trace_id}")
+                return False
+
+        except Exception as e:
+            logger.error(f"Erro na re-significação: {e}")
+            return False
+
+    def recall_by_affect(self, query: str, min_intensity: float = 0.5) -> List[Dict[str, Any]]:
+        """
+        Recuperar experiências por intensidade afetiva (não por similaridade).
+        Deleuze: conexões intensivas, não representacionais.
+        """
+        return self.affective_memory.recall_by_affect(query, min_intensity)
+
+    def _determine_outcome(self, result: Dict[str, Any]) -> str:
+        """Determinar outcome da tarefa baseado no resultado."""
+        if not isinstance(result, dict):
+            logger.error(f"Result must be a dict, got {type(result)}: {result}")
+            return "failure"
+        if result.get("completed", False):
+            return "success"
+        elif result.get("error"):
+            return "failure"
+        else:
+            return "partial"
+
+    def _compute_affect_valence(self, result: Dict[str, Any]) -> float:
+        """Calcular valência afetiva do resultado (-1.0 a 1.0)."""
+        if not isinstance(result, dict):
+            logger.error(f"Result must be a dict, got {type(result)}: {result}")
+            return -0.5  # Default negative valence for invalid result
+        if result.get("completed", False):
+            # Sucesso = afeto positivo
+            return 0.8
+        elif result.get("error"):
+            # Erro = afeto negativo
+            return -0.6
+        else:
+            # Parcial = afeto neutro
+            return 0.1
 
     def _timestamp(self) -> str:
         """Generate ISO timestamp for logging"""
@@ -381,6 +525,16 @@ Your response:"""
                 result=result_summary,
                 reward=1.0 if final_state["completed"] else 0.5,
             )
+
+            # Inscrever experiência afetiva (Lacan/Deleuze)
+            task_dict = {"description": task, "type": "react_execution"}
+            result_dict = {
+                "completed": final_state["completed"],
+                "final_result": final_state["final_result"],
+                "iterations": final_state["iteration"],
+                "actions_taken": len(final_state["actions_taken"]),
+            }
+            self.inscribe_experience(task_dict, result_dict)
 
             return cast(Dict[str, Any], final_state)
 
