@@ -4,6 +4,8 @@ Testes para Architecture - Bekenstein Capacity.
 Group 11: Core Infrastructure - architecture/
 """
 
+import pytest
+
 from src.architecture.bekenstein_capacity import BekensteinArchitect
 
 
@@ -73,10 +75,8 @@ class TestBekensteinArchitect:
         """Testa recomendação com zero parâmetros."""
         architect = BekensteinArchitect()
 
-        recommendation = architect.recommend_architecture(0)
-
-        assert recommendation["num_layers"] >= 1
-        assert recommendation["total_params"] == 0
+        with pytest.raises(ValueError, match="Target parameters must be positive"):
+            architect.recommend_architecture(0)
 
     def test_recommend_architecture_large_params(self) -> None:
         """Testa recomendação com grande número de parâmetros."""

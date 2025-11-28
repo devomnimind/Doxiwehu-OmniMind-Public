@@ -8,6 +8,11 @@ from src.security.hsm_manager import HSMManager
 class TestHSMManager:
     """Test HSM Manager functionality"""
 
+    def setup_method(self) -> None:
+        """Reset HSM state before each test"""
+        hsm = HSMManager()
+        hsm.reset_for_testing()
+
     def test_hsm_initialization(self) -> None:
         """Test HSM manager initialization"""
         hsm = HSMManager()

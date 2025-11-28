@@ -67,17 +67,13 @@ class TestBekensteinArchitect:
 
     def test_compute_max_parameters_zero_budget(self, architect: BekensteinArchitect) -> None:
         """Testa com budget zero."""
-        max_params = architect.compute_max_parameters(compute_budget=0.0, spatial_extent=1.0)
-
-        # Com budget zero, parâmetros máximos devem ser zero
-        assert max_params == 0
+        with pytest.raises(ValueError, match="Compute budget and spatial extent must be positive"):
+            architect.compute_max_parameters(compute_budget=0.0, spatial_extent=1.0)
 
     def test_compute_max_parameters_zero_extent(self, architect: BekensteinArchitect) -> None:
         """Testa com extent zero."""
-        max_params = architect.compute_max_parameters(compute_budget=1.0, spatial_extent=0.0)
-
-        # Com spatial extent zero, parâmetros devem ser zero
-        assert max_params == 0
+        with pytest.raises(ValueError, match="Compute budget and spatial extent must be positive"):
+            architect.compute_max_parameters(compute_budget=1.0, spatial_extent=0.0)
 
     def test_compute_max_parameters_scaling(self, architect: BekensteinArchitect) -> None:
         """Testa que parâmetros escalam corretamente com inputs."""
@@ -120,11 +116,8 @@ class TestBekensteinArchitect:
 
     def test_recommend_architecture_zero_params(self, architect: BekensteinArchitect) -> None:
         """Testa recomendação com zero parâmetros."""
-        recommendation = architect.recommend_architecture(0)
-
-        assert recommendation["num_layers"] == 1
-        assert recommendation["params_per_layer"] == 0
-        assert recommendation["total_params"] == 0
+        with pytest.raises(ValueError, match="Target parameters must be positive"):
+            architect.recommend_architecture(0)
 
     def test_recommend_architecture_small_params(self, architect: BekensteinArchitect) -> None:
         """Testa com número pequeno de parâmetros."""
@@ -240,15 +233,13 @@ class TestBekensteinEdgeCases:
 
     def test_negative_budget(self, architect: BekensteinArchitect) -> None:
         """Testa comportamento com budget negativo."""
-        # Não deveria quebrar, mas resultado pode ser indefinido
-        result = architect.compute_max_parameters(compute_budget=-1.0, spatial_extent=1.0)
-        # Aceita qualquer resultado válido (incluindo negativo ou zero)
-        assert isinstance(result, int)
+        with pytest.raises(ValueError, match="Compute budget and spatial extent must be positive"):
+            architect.compute_max_parameters(compute_budget=-1.0, spatial_extent=1.0)
 
     def test_negative_extent(self, architect: BekensteinArchitect) -> None:
         """Testa comportamento com extent negativo."""
-        result = architect.compute_max_parameters(compute_budget=1.0, spatial_extent=-1.0)
-        assert isinstance(result, int)
+        with pytest.raises(ValueError, match="Compute budget and spatial extent must be positive"):
+            architect.compute_max_parameters(compute_budget=1.0, spatial_extent=-1.0)
 
     def test_very_small_target(self, architect: BekensteinArchitect) -> None:
         """Testa recomendação com target muito pequeno."""

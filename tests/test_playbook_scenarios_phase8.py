@@ -180,7 +180,7 @@ async def test_intrusion_playbook_blocks_and_preserves_scene(
         description="suspicious session",
     )
     result = await IntrusionPlaybook().execute(None, event)
-    assert result["block"]["command"].startswith("sudo ufw deny")
+    assert result["block"]["command"].startswith("sudo -n ufw deny")
     assert result["scene"]["path"].endswith(".json")
     assert result["scene"]["size"] > 0
 
@@ -229,5 +229,5 @@ async def test_privilege_escalation_playbook_revokes_sessions(
         description="privilege escalation attempt",
     )
     result = await PrivilegeEscalationPlaybook().execute(None, event)
-    assert result["revocation"]["command"].startswith("sudo pkill")
+    assert result["revocation"]["command"].startswith("sudo -n pkill")
     assert result["notification"]["command"].startswith("/bin/echo")

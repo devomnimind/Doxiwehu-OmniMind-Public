@@ -63,14 +63,14 @@ class IdAgent(InternalAgent):
             prompt = f"""
             Você é o Id (instinto básico) em um sistema psicanalítico.
             Seu papel: impulsos, desejos, preservação imediata, evitação de dor.
-            
+
             Contexto da decisão: {context}
-            
+
             Como o Id votaria nesta situação? Forneça:
             1. Recomendação (uma palavra/frase curta)
             2. Confiança (0.0-1.0)
             3. Justificativa (breve)
-            
+
             Responda em formato JSON:
             {{
                 "recommendation": "sua_recomendacao",
@@ -117,14 +117,14 @@ class EgoAgent(InternalAgent):
             prompt = f"""
             Você é o Ego (mediador racional) em um sistema psicanalítico.
             Seu papel: realidade, mediação, lógica, consequências práticas.
-            
+
             Contexto da decisão: {context}
-            
+
             Como o Ego votaria nesta situação? Forneça:
             1. Recomendação (uma palavra/frase curta)
             2. Confiança (0.0-1.0)
             3. Justificativa (breve)
-            
+
             Responda em formato JSON:
             {{
                 "recommendation": "sua_recomendacao",
@@ -171,14 +171,14 @@ class SuperegoAgent(InternalAgent):
             prompt = f"""
             Você é o Superego (consciência moral) em um sistema psicanalítico.
             Seu papel: moralidade, regras, ética, ideal de eu.
-            
+
             Contexto da decisão: {context}
-            
+
             Como o Superego votaria nesta situação? Forneça:
             1. Recomendação (uma palavra/frase curta)
             2. Confiança (0.0-1.0)
             3. Justificativa (breve)
-            
+
             Responda em formato JSON:
             {{
                 "recommendation": "sua_recomendacao",

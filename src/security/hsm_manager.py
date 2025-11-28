@@ -74,8 +74,8 @@ class HSMManager:
                 salt = encrypted_data[:32]
                 encrypted_master = encrypted_data[32:]
 
-                # Derive system key using stored salt (reduced iterations for testing)
-                system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 1000, dklen=32)
+                # Derive system key using stored salt (increased iterations for security)
+                system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 100000, dklen=32)
 
                 master_key = self._decrypt_data(encrypted_master, system_key)
                 return master_key
@@ -87,8 +87,8 @@ class HSMManager:
             # Generate unique salt for this master key
             salt = secrets.token_bytes(32)  # 256-bit salt
 
-            # Derive system key using random salt (reduced iterations for testing)
-            system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 1000, dklen=32)
+            # Derive system key using random salt (increased iterations for security)
+            system_key = hashlib.pbkdf2_hmac("sha256", os.urandom(32), salt, 100000, dklen=32)
 
             encrypted_master = self._encrypt_data(master_key, system_key)
 
@@ -326,6 +326,15 @@ class HSMManager:
             return True
 
         return False
+
+    def reset_for_testing(self) -> None:
+        """
+        Reset HSM state for testing purposes.
+        WARNING: This method should only be used in test environments.
+        """
+        self.keys.clear()
+        self.key_counter = 0
+        logger.warning("HSM state reset for testing")
 
     def get_hsm_status(self) -> Dict[str, Any]:
         """

@@ -51,6 +51,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
+import numpy as np
 import structlog
 
 from .qpu_interface import BackendType, QPUInterface
@@ -158,15 +159,10 @@ class CognitionMetrics:
         Returns:
             Multi-line string with formatted metrics
         """
-        speedup_note = ""
-        if hasattr(self, "_comparison_baseline"):
-            speedup = self.speedup_vs(self._comparison_baseline)
-            speedup_note = f" (Speedup: {speedup:.2f}x vs baseline)"
-
         return "\n".join(
             [
                 f"{self.strategy.value.upper()} Cognition Metrics:",
-                f"  Execution Time: {self.execution_time:.4f}s{speedup_note}",
+                f"  Execution Time: {self.execution_time:.4f}s",
                 f"  Accuracy: {self.accuracy:.2%}",
                 f"  Quality: {self.solution_quality:.2f}",
                 f"  Iterations: {self.num_iterations}",
@@ -455,11 +451,11 @@ class HybridCognitionSystem:
         if selected_strategy == OptimizationStrategy.QUANTUM:
             return self._solve_quantum(problem)
         elif selected_strategy == OptimizationStrategy.CLASSICAL:
-            return self._solve_classical(problem)
+            return self._solve_classical()
         else:  # HYBRID
             return self._solve_hybrid(problem)
 
-    def _solve_classical(self, problem: Dict[str, Any]) -> Tuple[Any, CognitionMetrics]:
+    def _solve_classical(self) -> Tuple[Any, CognitionMetrics]:
         """
         Solve using classical deterministic methods.
 
@@ -472,7 +468,7 @@ class HybridCognitionSystem:
         start_time = time.time()
 
         # Classical solution using existing OmniMind logic
-        solution = self._classical_greedy_search(problem)
+        solution = self._classical_greedy_search()
 
         elapsed = time.time() - start_time
 
@@ -509,7 +505,7 @@ class HybridCognitionSystem:
         """
         if not self.quantum_available:
             logger.warning("quantum_not_available_fallback")
-            return self._solve_classical(problem)
+            return self._solve_classical()
 
         start_time = time.time()
 
@@ -558,7 +554,7 @@ class HybridCognitionSystem:
             quantum_candidates = []
 
         # Phase 2: Classical refinement
-        solution = self._classical_refine(problem, quantum_candidates)
+        solution = self._classical_refine(quantum_candidates)
 
         elapsed = time.time() - start_time
 
@@ -636,7 +632,7 @@ class HybridCognitionSystem:
 
         return selected
 
-    def _classical_greedy_search(self, problem: Dict[str, Any]) -> Any:
+    def _classical_greedy_search(self) -> Any:
         """
         Classical greedy search implementation.
 
@@ -680,7 +676,7 @@ class HybridCognitionSystem:
 
         return candidates
 
-    def _classical_refine(self, problem: Dict[str, Any], candidates: List[Any]) -> Any:
+    def _classical_refine(self, candidates: List[Any]) -> Any:
         """
         Classical refinement phase - optimize selected candidates.
         """

@@ -54,6 +54,7 @@ License: MIT
 """
 
 import logging
+import random
 from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
@@ -441,7 +442,7 @@ class QuantumAnnealer:
 
         for _ in range(num_reads):
             # Random initial solution
-            solution = [1 if 0.5 < 0.5 else 0 for _ in range(self.num_variables)]
+            solution = [1 if random.random() < 0.5 else 0 for _ in range(self.num_variables)]
             energy = evaluate_solution(solution)
 
             # Initialize best_solution if this is the first iteration

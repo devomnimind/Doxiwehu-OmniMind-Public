@@ -124,10 +124,12 @@ class BekensteinArchitect:
 
         logger.info(
             "Bekenstein bound computed",
-            compute_budget=compute_budget,
-            spatial_extent=spatial_extent,
-            entropy_limit=entropy_limit,
-            max_params=max_params,
+            extra={
+                "compute_budget": compute_budget,
+                "spatial_extent": spatial_extent,
+                "entropy_limit": entropy_limit,
+                "max_params": max_params,
+            },
         )
 
         return max_params
@@ -176,7 +178,8 @@ class BekensteinArchitect:
         }
 
         logger.debug(
-            "Architecture recommended", target_params=target_params, architecture=architecture
+            "Architecture recommended",
+            extra={"target_params": target_params, "architecture": architecture},
         )
 
         return architecture

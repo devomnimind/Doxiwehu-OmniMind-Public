@@ -195,3 +195,8 @@ data/**/*.json
 !data/datasets/*.json
 !data/behavioral_markers.json
 
+# ------------------------------------------------------------------
+# SonarQube Analysis Artifacts
+# ------------------------------------------------------------------
+.scannerwork/
+
