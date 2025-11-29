@@ -7,6 +7,7 @@ Mantém isolamento completo dos dados internos do OmniMind.
 
 from __future__ import annotations
 
+import os
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -15,6 +16,10 @@ from typing import Any, Dict, List, Optional
 
 import aiohttp
 import structlog
+from dotenv import load_dotenv
+
+# Load environment variables for token access
+load_dotenv()
 
 logger = structlog.get_logger(__name__)
 
@@ -166,7 +171,6 @@ class GeminiProvider(ExternalAIProvider):
     async def initialize(self) -> None:
         """Inicializa conexão com Gemini API"""
         await self._ensure_session()
-        import os
 
         api_key_env = self.config.get("api_key_env")
         if not api_key_env:
@@ -355,8 +359,6 @@ class CopilotProvider(ExternalAIProvider):
             self.token = await self._get_oauth_token()
         else:
             # Usar PAT diretamente
-            import os
-
             self.token = os.getenv(self.config.get("github_token_env", "GITHUB_TOKEN"))
 
         if not self.token:
@@ -462,8 +464,6 @@ class CopilotProvider(ExternalAIProvider):
         """Obtém token via OAuth flow (placeholder)"""
         # Implementar fluxo OAuth completo
         # Por enquanto, assume que o token já está disponível via env
-        import os
-
         token = os.getenv(self.config.get("github_token_env", "GITHUB_TOKEN"))
         if not token:
             raise ValueError("GitHub OAuth token não disponível")
@@ -510,7 +510,6 @@ class OpenRouterProvider(ExternalAIProvider):
     async def initialize(self) -> None:
         """Inicializa conexão com OpenRouter"""
         await self._ensure_session()
-        import os
 
         api_key_env = self.config.get("api_key_env")
         if not api_key_env:

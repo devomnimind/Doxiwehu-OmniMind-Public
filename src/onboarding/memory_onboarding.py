@@ -57,26 +57,52 @@ class SupabaseMemoryOnboarding:
         after: Optional[str] = None
         page = 0
 
+        logger.debug(
+            "Starting Supabase onboarding: collection=%s, page_size=%s, max_pages=%s",
+            collection,
+            page_size,
+            max_pages,
+        )
+
         while True:
             page += 1
             try:
                 page_data: GraphQLCollectionPage = self.helper.fetch_page(
                     collection, fields, first=page_size, after=after
                 )
+                logger.debug(
+                    "Fetched page %d: %d nodes, has_next=%s",
+                    page,
+                    len(page_data.nodes),
+                    page_data.has_next,
+                )
             except GraphQLSupabaseError as exc:
-                errors.append(str(exc))
+                error_msg = f"GraphQL error on page {page}: {str(exc)}"
+                logger.error(error_msg)
+                errors.append(error_msg)
                 break
 
             for node in page_data.nodes:
                 processed += 1
-                stored += int(self._store_node(node))
+                if self._store_node(node):
+                    stored += 1
                 last_cursor = page_data.cursor
 
             if not page_data.has_next:
+                logger.debug("No more pages to fetch (has_next=False)")
                 break
             if max_pages and page >= max_pages:
+                logger.debug("Reached max_pages limit: %d", max_pages)
                 break
             after = page_data.cursor
+
+        logger.info(
+            "Supabase onboarding complete: processed=%d, stored=%d, errors=%d, last_cursor=%s",
+            processed,
+            stored,
+            len(errors),
+            last_cursor,
+        )
 
         return MemoryOnboardingReport(
             nodes_processed=processed,

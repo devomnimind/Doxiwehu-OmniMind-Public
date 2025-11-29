@@ -557,7 +557,7 @@ class LLMRouter:
         preferred_provider: Optional[LLMProvider] = None,
     ) -> LLMResponse:
         """
-        Invoca LLM com fallback automático.
+        Invoca LLM com fallback automático e retry com exponential backoff.
 
         Args:
             prompt: Texto do prompt
@@ -579,47 +579,91 @@ class LLMRouter:
                     c for c in configs if c.provider != preferred_provider
                 ]
 
-        # Tenta cada configuração em ordem
-        for config in configs:
+        fallback_count = 0
+
+        # Tenta cada configuração em ordem com retry
+        for attempt, config in enumerate(configs):
             provider = self.providers[config.provider]
 
             # Pula se provedor não disponível
             if not provider.is_available():
-                logger.debug(f"Provedor {config.provider.value} não disponível, tentando próximo")
+                logger.debug(
+                    f"[Attempt {attempt + 1}/{len(configs)}] Provedor {config.provider.value} "
+                    f"não disponível, tentando próximo"
+                )
                 continue
 
             logger.debug(
-                f"Tentando provedor {config.provider.value} com modelo {config.model_name}"
+                f"[Attempt {attempt + 1}/{len(configs)}] Tentando {config.provider.value} "
+                f"com modelo {config.model_name}"
             )
 
-            # Invoca provedor
-            response = await provider.invoke(prompt, config)
+            # Invoca provedor com retry
+            for retry_attempt in range(1, config.retry_attempts + 1):
+                try:
+                    response = await asyncio.wait_for(
+                        provider.invoke(prompt, config),
+                        timeout=config.timeout,
+                    )
 
-            # Registra métricas
-            provider_key = config.provider.value
-            if provider_key not in self.metrics["latency_by_provider"]:
-                self.metrics["latency_by_provider"][provider_key] = []
-            self.metrics["latency_by_provider"][provider_key].append(response.latency_ms)
+                    # Registra métricas
+                    provider_key = config.provider.value
+                    if provider_key not in self.metrics["latency_by_provider"]:
+                        self.metrics["latency_by_provider"][provider_key] = []
+                    self.metrics["latency_by_provider"][provider_key].append(response.latency_ms)
 
-            if response.success:
-                self.metrics["requests_success"] += 1
-                if config.provider != configs[0].provider:
-                    # Se não foi o primeiro (fallback usado)
-                    self.metrics["fallback_used"] += 1
-                logger.info(f"LLM request successful via {config.provider.value}")
-                return response
-            else:
-                logger.warning(f"Falha no provedor {config.provider.value}: " f"{response.error}")
+                    if response.success:
+                        self.metrics["requests_success"] += 1
+                        if fallback_count > 0:
+                            self.metrics["fallback_used"] += 1
+                            logger.info(
+                                f"[Fallback #{fallback_count}] LLM request successful via "
+                                f"{config.provider.value} ({response.model}) - "
+                                f"Latency: {response.latency_ms}ms"
+                            )
+                        else:
+                            logger.info(
+                                f"LLM request successful via {config.provider.value} "
+                                f"({response.model}) - Latency: {response.latency_ms}ms"
+                            )
+                        return response
+                    else:
+                        logger.warning(
+                            f"[Attempt {retry_attempt}/{config.retry_attempts}] "
+                            f"Falha no {config.provider.value}: {response.error}"
+                        )
+
+                except asyncio.TimeoutError:
+                    logger.warning(
+                        f"[Attempt {retry_attempt}/{config.retry_attempts}] "
+                        f"Timeout no {config.provider.value} (>{config.timeout}s)"
+                    )
+                except Exception as e:
+                    logger.error(
+                        f"[Attempt {retry_attempt}/{config.retry_attempts}] "
+                        f"Erro no {config.provider.value}: {str(e)}"
+                    )
+
+                # Exponential backoff entre retries
+                if retry_attempt < config.retry_attempts:
+                    backoff_delay = 2 ** (retry_attempt - 1)
+                    logger.debug(f"Aguardando {backoff_delay}s antes de retry...")
+                    await asyncio.sleep(backoff_delay)
+
+            fallback_count += 1
 
         # Todos os provedores falharam
-        logger.error("Todos os provedores LLM falharam")
+        logger.error(
+            f"❌ Todos os {len(configs)} provedores LLM falharam após "
+            f"{fallback_count} fallbacks"
+        )
         return LLMResponse(
             success=False,
             text="",
-            provider=LLMProvider.OLLAMA,  # Default
+            provider=LLMProvider.OLLAMA,
             model="unknown",
             latency_ms=0,
-            error="Todos os provedores " "LLM falharam",
+            error="Todos os provedores LLM falharam após múltiplas tentativas",
         )
 
     def get_metrics(self) -> Dict[str, Any]:
