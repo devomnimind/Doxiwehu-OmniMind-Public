@@ -29,6 +29,22 @@ jobs:
       with:
         python-version: '3.12'
 
+    - name: Load environment variables
+      run: |
+        # Load .env if it exists (for local testing)
+        if [ -f .env ]; then
+          set -a
+          source .env
+          set +a
+          echo "✅ Environment loaded from .env"
+        else
+          echo "⚠️ .env file not found, using default values"
+        fi
+        
+        # For GitHub Actions: use Repository Secrets
+        echo "SONAR_TOKEN=${{ secrets.SONAR_TOKEN }}" >> $GITHUB_ENV
+        echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+
     - name: Cache pip dependencies
       uses: actions/cache@v3
       with:
