@@ -192,6 +192,7 @@ class IdAgent:
             # Cria um vetor de embedding simples baseado no hash do ID
             # Em produção, isso viria de um modelo de embedding real
             import numpy as np
+
             random.seed(action_id)
             embedding = np.array([random.random() for _ in range(10)], dtype=np.float32)
 
