@@ -1,13 +1,14 @@
 #!/bin/bash
-set -euo pipefail
+# DEPRECATED: This script installs the old conflicting omnimind-backend.service
+# Use scripts/systemd/install_all_services.sh instead
 
-echo "🔧 Aplicando correções nos serviços OmniMind..."
-
-# 1. Copiar serviços corrigidos
-echo "1. Copiando serviços para /etc/systemd/system/..."
-sudo cp /home/fahbrain/projects/omnimind/scripts/systemd/omnimind.service /etc/systemd/system/
-sudo cp /home/fahbrain/projects/omnimind/scripts/systemd/omnimind-backend-direct.service /etc/systemd/system/omnimind-backend.service
-echo "✅ Serviços copiados."
+echo "❌ DEPRECATED: This script installs omnimind-backend.service which conflicts with omnimind.service"
+echo "✅ Use: sudo ./scripts/systemd/install_all_services.sh"
+echo ""
+echo "The omnimind-backend.service has been removed to prevent port 8000 conflicts."
+echo "All backend functionality is now in omnimind.service."
+echo ""
+exit 1
 
 # 2. Recarregar daemon
 echo "2. Recarregando daemon systemd..."

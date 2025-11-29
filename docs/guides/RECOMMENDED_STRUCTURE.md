@@ -48,8 +48,8 @@ omnimind/
 │   ├── external_ai_providers.yaml
 │   ├── hardware_profile.json
 │   ├── systemd/
-│   │   ├── omnimind-backend.service
-│   │   └── omnimind-frontend.service
+│   │   ├── omnimind-frontend.service  # ✅ Serviço frontend
+│   │   └── [outros serviços conforme necessário]
 │   ├── redis/
 │   │   └── redis-cluster.conf
 │   └── linting/
@@ -137,7 +137,9 @@ omnimind/
 │   ├── deployment/
 │   │   └── deploy_huggingface.py
 │   ├── systemd/
-│   │   └── install_all_services.sh
+│   │   ├── install_all_services.sh    # ✅ RECOMENDADO
+│   │   ├── cleanup_duplicate_services.sh
+│   │   └── omnimind.service           # Serviço principal
 │   ├── validation/
 │   │   ├── validate_quantum_minimal.py
 │   │   └── validate_quantum_strict.py

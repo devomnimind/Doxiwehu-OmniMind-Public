@@ -608,7 +608,7 @@
 - **Serviços Systemd Duplicados:** `omnimind-backend.service` redundante removido
   - **Causa:** `omnimind.service` já inclui backend
   - **Solução:** Removido da instalação, dependências atualizadas
-  - **Arquivos:** `scripts/systemd/install_all_services.sh`, `scripts/systemd/omnimind-frontend.service`, `scripts/systemd/omnimind-test-suite.service`, `scripts/systemd/omnimind-benchmark.service`
+- **Arquivos:** `scripts/systemd/install_all_services.sh`, `scripts/systemd/cleanup_duplicate_services.sh`, `scripts/README.md`
 - **Health Check MCP:** Servidores reiniciando constantemente
   - **Correção:** Verificação de porta respondendo (não apenas processo rodando)
   - **Correção:** Não reinicia se processo está rodando mas porta não responde

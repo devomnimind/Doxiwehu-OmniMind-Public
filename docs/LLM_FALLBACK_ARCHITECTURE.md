@@ -8,19 +8,24 @@ O sistema de LLM com fallback automático do OmniMind implementa uma arquitetura
 
 ### Hierarquia de Provedores
 
-O sistema implementa uma estratégia de fallback em 3 níveis:
+O sistema implementa uma estratégia de fallback em 4 níveis:
 
 1. **Ollama (Local)** - Prioridade máxima, menor latência
    - Modelo: `qwen2:7b-instruct` (balanced) ou `qwen2:1.5b-instruct` (fast)
    - Vantagens: Privacidade, velocidade, custo zero
    - Desvantagens: Limitado aos modelos locais disponíveis
 
-2. **HuggingFace (Local Inference)** - Fallback quando Ollama falha
+2. **HuggingFace Space (Cloud Inference)** - Fallback quando Ollama falha
+   - Space: `fabricioslv-devbrain-inference`
+   - Vantagens: Modelos hospedados, alta disponibilidade
+   - Desvantagens: Dependência de internet, custo do Space
+
+3. **HuggingFace (Local Inference)** - Fallback quando Space falha
    - Modelos: `microsoft/DialoGPT-*` (conversational)
    - Vantagens: Modelos diversos, execução local
    - Desvantagens: Requer token HF, modelos menores
 
-3. **OpenRouter (Cloud)** - Fallback final com múltiplos modelos
+4. **OpenRouter (Cloud)** - Fallback final com múltiplos modelos
    - Modelos: Claude 3, GPT-4, Gemini, etc.
    - Vantagens: Modelos de ponta, alta confiabilidade
    - Desvantagens: Custo, dependência de internet
@@ -127,7 +132,7 @@ Verificação em tempo real da disponibilidade:
 
 ```python
 status = router.get_provider_status()
-# {'ollama': True, 'huggingface': False, 'openrouter': True}
+# {'ollama': True, 'huggingface_space': True, 'huggingface': False, 'openrouter': True}
 ```
 
 ## Integração com Agentes
@@ -210,9 +215,10 @@ pytest tests/test_agents_core_integration.py
 ### Cenários de Teste
 
 1. **Ollama disponível**: Deve usar Ollama
-2. **Ollama indisponível**: Deve fallback para HuggingFace
-3. **HF indisponível**: Deve usar OpenRouter
-4. **Todos falham**: Deve retornar erro estruturado
+2. **Ollama indisponível**: Deve fallback para HuggingFace Space
+3. **Space indisponível**: Deve usar HuggingFace local
+4. **HF indisponível**: Deve usar OpenRouter
+5. **Todos falham**: Deve retornar erro estruturado
 
 ## Performance e Otimização
 
@@ -255,6 +261,18 @@ curl http://localhost:11434/api/tags
 
 # Instalar modelo
 ollama pull qwen2:7b-instruct
+```
+
+#### HuggingFace Space falha
+```bash
+# Verificar URL do Space
+echo $HF_SPACE_URL
+
+# Testar conectividade
+curl https://fabricioslv-devbrain-inference.hf.space
+
+# Verificar se Space está rodando
+# Acesse: https://huggingface.co/spaces/fabricioslv/devbrain-inference
 ```
 
 #### HuggingFace falha

@@ -9,6 +9,7 @@
 ollama>=0.6.0       # Local LLM server
 openai>=2.8.0       # OpenAI API
 anthropic>=0.40.0   # Claude API (optional)
+aiohttp>=3.9.0      # Async HTTP for HF Spaces
 
 # LangChain Integration
 langchain-ollama>=1.0.0
@@ -20,6 +21,7 @@ opentelemetry-sdk>=1.38.0
 
 # External Databases
 supabase>=2.24.0    # Supabase integration
+psycopg2-binary>=2.9.0  # PostgreSQL adapter for direct connections
 fakeredis>=2.32.0   # Redis testing
 
 # Multimedia Processing

@@ -18,9 +18,12 @@ Configurar Spaces com hardware adequado aproveitando conta PRO.
 ## ⚙️ Configuração por Space
 
 ### 1. **devbrain-inference** (PRIORITÁRIO)
+- **Status:** Recriado após deleção acidental
 - **Hardware:** CPU Upgrade ($0.03/h)
 - **Justificativa:** Produção, baixa latência, uptime 24/7
-- **Status:** README configurado (`suggested_hardware: cpu-upgrade`)
+- **URL:** https://fabricioslv-devbrain-inference.hf.space
+- **Integração:** Configurado no LLM Router como HUGGINGFACE_SPACE provider
+- **Custo Mensal Estimado:** ~$22/mês (730h x $0.03)
 
 **Como Ativar:**
 1. Acesse: https://huggingface.co/spaces/fabricioslv/devbrain-inference/settings
@@ -33,8 +36,10 @@ Configurar Spaces com hardware adequado aproveitando conta PRO.
 ---
 
 ### 2. **dev_brain**, **devbrain-training**, **devbrain-docs**
-- **Status Atual:** CONFIG_ERROR
-- **Ação:** Corrigir erros de configuração ou deletar se não utilizados
+- **Status Atual:** Deletados após identificação como temporários
+- **Ação:** Aguardando recriação se necessários
+- **Recomendação:** Se não estão em uso ativo → Manter deletados (economiza quota)
+- **Se recreados:** Configurar em CPU Free (grátis)
 
 **Recomendação:**
 - Se não estão em uso ativo → **Deletar** (economiza quota)

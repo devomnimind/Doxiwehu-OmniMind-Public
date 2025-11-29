@@ -1,6 +1,6 @@
 [Unit]
 Description=OmniMind Frontend Service
-After=network.target omnimind-backend.service
+After=network.target omnimind.service
 
 [Service]
 User=fahbrain

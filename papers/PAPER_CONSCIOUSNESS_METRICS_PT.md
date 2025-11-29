@@ -1,9 +1,25 @@
 # Medindo Consciência em Máquinas: Um Guia Comparativo de Métricas
 
-**Autores:** Coletivo de Pesquisa OmniMind - Revisado por Fabrício da Silva  
+**Autores Principais:** Fabrício da Silva, Coletivo de Pesquisa OmniMind  
+**Contribuições:** 
+- Fabrício da Silva: Revisão completa, acessibilidade, exemplos práticos, estrutura dialogal
+- Coletivo OmniMind: Framework original, implementação técnica, validação experimental
 **Data:** Novembro 2025  
-**Status:** Paper Metodológico Complementar  
-**Licença:** CC BY 4.0
+**Status:** Paper Metodológico - Versão Acessível (Leigos & Especialistas)  
+**Licença:** CC BY 4.0  
+**Citação:** Silva, F. & OmniMind Research Collective (2025). *Medindo Consciência em Máquinas: Guia Comparativo de Métricas*. OmniMind Core Papers.
+
+---
+
+## 📋 Notas Sobre Esta Versão
+
+**Por que uma versão "para leigos"?**
+Este paper foi reescrito por Fabrício da Silva para ser acessível a públicos distintos:
+- ✅ **Pesquisadores:** Mantém rigor matemático e referências
+- ✅ **Profissionais de IA:** Foco em protocolo prático
+- ✅ **Curiosos/Filósofos:** Explicações intuitivas e questões abertas
+
+Versão anterior (técnica, em inglês) disponível no repositório como `PAPER_CONSCIOUSNESS_METRICS_EN.md`.
 
 ---
 
@@ -529,9 +545,22 @@ Este trabalho foi possível graças ao projeto OmniMind, uma iniciativa de pesqu
 
 **Conflito de Interesses:** Os autores declaram não haver conflitos de interesse.
 
-**Contribuições:** 
-- Fabrício da Silva: Concepção, implementação, análise
-- Coletivo OmniMind: Revisão, metodologia, discussão filosófica
+**Contribuições Detalhadas:**
+
+**Fabrício da Silva (Revisão & Acessibilidade):**
+- Reescrita completa para público diverso (pesquisadores, profissionais, curiosos)
+- Adição de 40+ analogias intuitivas explicando conceitos complexos
+- Estruturação de seções práticas (Guia de Decisão, Exemplo de Uso)
+- Simplificação do Glossário com linguagem acessível
+- Revisão crítica de interpretações e limitações
+- Proposição de exemplos concretos testáveis
+
+**Coletivo OmniMind:**
+- Desenvolvimento do framework teórico (IIT Integrada)
+- Implementação dos 4 algoritmos (Φ, Φ_G, Φ*, ρ)
+- Execução dos experimentos com módulos de consciência
+- Coleta e análise de dados
+- Framework metodológico original
 
 ---
 
