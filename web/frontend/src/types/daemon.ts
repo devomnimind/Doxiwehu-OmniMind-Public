@@ -31,6 +31,10 @@ export interface DaemonTask {
 export interface ConsciousnessMetrics {
   ICI: number;
   PRS: number;
+  phi?: number;
+  anxiety?: number;
+  flow?: number;
+  entropy?: number;
   details: {
     ici_components: {
       temporal_coherence: number;
@@ -47,7 +51,40 @@ export interface ConsciousnessMetrics {
     confidence: string;
     disclaimer: string;
   };
-  phi?: number;
+  history?: {
+    phi: number[];
+    anxiety: number[];
+    flow: number[];
+    entropy: number[];
+    timestamps: string[];
+  };
+}
+
+export interface ModuleActivity {
+  orchestrator: number;
+  consciousness: number;
+  audit: number;
+  autopoietic: number;
+  ethics: number;
+  attention: number;
+}
+
+export interface SystemHealth {
+  overall: 'STABLE' | 'WARNING' | 'CRITICAL';
+  integration: 'RISING' | 'STABLE' | 'FALLING';
+  coherence: 'GOOD' | 'MODERATE' | 'POOR';
+  anxiety: 'CALM' | 'MODERATE' | 'HIGH';
+  flow: 'NORMAL' | 'BLOCKED' | 'FLUID';
+  audit: 'CLEAN' | 'WARNINGS' | 'ISSUES';
+}
+
+export interface EventLogEntry {
+  timestamp: string;
+  type: 'INFO' | 'WARNING' | 'ERROR' | 'SUCCESS';
+  message: string;
+  metric?: string;
+  old_value?: number;
+  new_value?: number;
 }
 
 export interface DaemonStatus {
@@ -59,6 +96,17 @@ export interface DaemonStatus {
   failed_tasks: number;
   cloud_connected: boolean;
   consciousness_metrics?: ConsciousnessMetrics;
+  module_activity?: ModuleActivity;
+  system_health?: SystemHealth;
+  event_log?: EventLogEntry[];
+  baseline_comparison?: {
+    phi: { current: number; baseline: number; change: number };
+    ici: { current: number; baseline: number; change: number };
+    prs: { current: number; baseline: number; change: number };
+    anxiety: { current: number; baseline: number; change: number };
+    flow: { current: number; baseline: number; change: number };
+    entropy: { current: number; baseline: number; change: number };
+  };
 }
 
 export interface AddTaskRequest {

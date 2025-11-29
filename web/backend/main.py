@@ -4,11 +4,15 @@ import asyncio
 import json
 import logging
 import os
+import sys
 import secrets
 import threading
 import time
 import uuid
 from base64 import b64encode
+
+# Add src to path for imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Tuple
@@ -152,42 +156,96 @@ async def lifespan(app_instance: FastAPI):
         logger.warning("Monitoring systems not available")
 
     # Import Sinthome Broadcaster
-    from web.backend.sinthome_broadcaster import sinthome_broadcaster
+    try:
+        from web.backend.sinthome_broadcaster import sinthome_broadcaster
+    except ImportError:
+        logger.warning("Sinthome Broadcaster not available")
+        sinthome_broadcaster = None
 
     # Import Daemon Monitor
-    from src.services.daemon_monitor import daemon_monitor_loop
+    try:
+        from src.services.daemon_monitor import daemon_monitor_loop
+    except ImportError:
+        logger.warning("Daemon Monitor not available")
+        daemon_monitor_loop = None
 
     # Import Realtime Analytics Broadcaster
-    from web.backend.realtime_analytics_broadcaster import realtime_analytics_broadcaster
+    try:
+        from web.backend.realtime_analytics_broadcaster import realtime_analytics_broadcaster
+    except ImportError:
+        logger.warning("Realtime Analytics Broadcaster not available")
+        realtime_analytics_broadcaster = None
 
-    # Start WebSocket manager
-    await ws_manager.start()
+    # Start WebSocket manager with timeout
+    try:
+        await asyncio.wait_for(ws_manager.start(), timeout=3.0)
+    except asyncio.TimeoutError:
+        logger.warning("WebSocket manager startup timed out")
+    except Exception as e:
+        logger.warning(f"Failed to start WebSocket manager: {e}")
 
-    # Start Sinthome Broadcaster
-    await sinthome_broadcaster.start()
+    # Start Sinthome Broadcaster with timeout
+    if sinthome_broadcaster:
+        try:
+            await asyncio.wait_for(sinthome_broadcaster.start(), timeout=3.0)
+        except asyncio.TimeoutError:
+            logger.warning("Sinthome Broadcaster startup timed out")
+        except Exception as e:
+            logger.warning(f"Failed to start Sinthome Broadcaster: {e}")
 
-    # Start Daemon Monitor (background worker)
-    daemon_monitor_task = asyncio.create_task(daemon_monitor_loop(refresh_interval=5))
-    app_instance.state.daemon_monitor_task = daemon_monitor_task
+    # Start Daemon Monitor (background worker) with timeout
+    daemon_monitor_task = None
+    if daemon_monitor_loop:
+        try:
+            daemon_monitor_task = asyncio.create_task(
+                asyncio.wait_for(daemon_monitor_loop(refresh_interval=5), timeout=10.0)
+            )
+            app_instance.state.daemon_monitor_task = daemon_monitor_task
+        except asyncio.TimeoutError:
+            logger.warning("Daemon Monitor startup timed out")
+        except Exception as e:
+            logger.warning(f"Failed to start Daemon Monitor: {e}")
 
-    # Start Realtime Analytics Broadcaster
-    await realtime_analytics_broadcaster.start()
+    # Start Realtime Analytics Broadcaster with timeout
+    if realtime_analytics_broadcaster:
+        try:
+            await asyncio.wait_for(realtime_analytics_broadcaster.start(), timeout=3.0)
+        except asyncio.TimeoutError:
+            logger.warning("Realtime Analytics Broadcaster startup timed out")
+        except Exception as e:
+            logger.warning(f"Failed to start Realtime Analytics Broadcaster: {e}")
 
     # Start agent communication broadcaster
-    broadcaster = get_broadcaster()
-    await broadcaster.start()
+    try:
+        broadcaster = get_broadcaster()
+        await asyncio.wait_for(broadcaster.start(), timeout=3.0)
+    except asyncio.TimeoutError:
+        logger.warning("Agent communication broadcaster startup timed out")
+    except Exception as e:
+        logger.warning(f"Failed to start agent communication broadcaster: {e}")
 
-    # Start monitoring systems
+    # Start monitoring systems with timeout
     if monitoring_available and agent_monitor and metrics_collector and performance_tracker:
-        await agent_monitor.start()
-        await metrics_collector.start()
-        await performance_tracker.start()
-        logger.info("All monitoring systems started")
+        try:
+            await asyncio.wait_for(agent_monitor.start(), timeout=3.0)
+            await asyncio.wait_for(metrics_collector.start(), timeout=3.0)
+            await asyncio.wait_for(performance_tracker.start(), timeout=3.0)
+            logger.info("All monitoring systems started")
+        except asyncio.TimeoutError:
+            logger.warning("One or more monitoring systems startup timed out")
+        except Exception as e:
+            logger.warning(f"Failed to start monitoring systems: {e}")
 
-    # Start SecurityAgent continuous monitoring (if enabled)
-    # Start orchestrator initialization in background
+    # Start orchestrator initialization in background with timeout
     app_instance.state.orchestrator_ready = False
-    asyncio.create_task(_async_init_orchestrator(app_instance))
+    try:
+        asyncio.create_task(
+            asyncio.wait_for(_async_init_orchestrator(app_instance), timeout=10.0)
+        )
+    except asyncio.TimeoutError:
+        logger.warning("Orchestrator initialization timed out")
+    except Exception as e:
+        logger.warning(f"Failed to initialize orchestrator: {e}")
 
     # Start metrics reporter
     app_instance.state.metrics_task = asyncio.create_task(_metrics_reporter())
@@ -587,6 +645,31 @@ def observability(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
         "security": autonomy_observability.get_security_snapshot(),
         "validation": _load_last_validation_entry(),
     }
+
+
+@app.get("/audit/stats")
+def audit_stats(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
+    """Get audit chain statistics for dashboard."""
+    try:
+        from src.audit.immutable_audit import get_audit_system
+        audit_system = get_audit_system()
+        summary = audit_system.get_audit_summary()
+
+        return {
+            "total_events": summary.get("total_events", 0),
+            "chain_integrity": summary.get("chain_integrity", {}).get("valid", False),
+            "last_hash": summary.get("last_hash", ""),
+            "log_size_bytes": summary.get("log_size_bytes", 0),
+        }
+    except Exception as e:
+        logger.error(f"Error getting audit stats: {e}")
+        return {
+            "total_events": 0,
+            "chain_integrity": False,
+            "last_hash": "",
+            "log_size_bytes": 0,
+            "error": str(e),
+        }
 
 
 @app.post("/tasks/orchestrate")

@@ -191,8 +191,9 @@ class IdAgent:
         if self.encrypted_memory:
             # Cria um vetor de embedding simples baseado no hash do ID
             # Em produção, isso viria de um modelo de embedding real
+            import numpy as np
             random.seed(action_id)
-            embedding = [random.random() for _ in range(10)]
+            embedding = np.array([random.random() for _ in range(10)], dtype=np.float32)
 
             self.encrypted_memory.repress_memory(
                 event_vector=embedding,

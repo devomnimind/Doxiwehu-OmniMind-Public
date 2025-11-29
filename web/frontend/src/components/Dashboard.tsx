@@ -17,6 +17,13 @@ import { WorkflowVisualization } from './WorkflowVisualization';
 import { NotificationCenter } from './NotificationCenter';
 import { OmniMindSinthome } from './OmniMindSinthome';
 import { ConsciousnessMetrics } from './ConsciousnessMetrics';
+import { SystemHealthSummary } from './SystemHealthSummary';
+import { EventLog } from './EventLog';
+import { ModuleActivityHeatmap } from './ModuleActivityHeatmap';
+import { QuickStatsCards } from './QuickStatsCards';
+import { MetricsTimeline } from './MetricsTimeline';
+import { BaselineComparison } from './BaselineComparison';
+import { ActionButtons } from './ActionButtons';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
@@ -136,36 +143,73 @@ export function Dashboard() {
           <WorkflowVisualization />
         </div>
 
-        {/* Original Content Grid */}
+        {/* System Health & Quick Stats */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <SystemHealthSummary />
+          </div>
+          <div className="lg:col-span-2 animate-slide-up" style={{ animationDelay: '0.25s' }}>
+            <QuickStatsCards />
+          </div>
+        </div>
+
+        {/* Consciousness Metrics & Timeline */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <ConsciousnessMetrics />
+          </div>
+          <div className="animate-slide-up" style={{ animationDelay: '0.35s' }}>
+            <MetricsTimeline />
+          </div>
+        </div>
+
+        {/* Module Activity & Event Log */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            <ModuleActivityHeatmap />
+          </div>
+          <div className="animate-slide-up" style={{ animationDelay: '0.45s' }}>
+            <EventLog />
+          </div>
+        </div>
+
+        {/* Baseline Comparison & Actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
+            <BaselineComparison />
+          </div>
+          <div className="animate-slide-up" style={{ animationDelay: '0.55s' }}>
+            <ActionButtons />
+          </div>
+        </div>
+
+        {/* Original Content Grid - Legacy Components */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left Column - Status and Tasks */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
+            <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
               <DaemonStatus />
             </div>
-            <div className="animate-slide-up" style={{ animationDelay: '0.25s' }}>
+            <div className="animate-slide-up" style={{ animationDelay: '0.65s' }}>
               <OmniMindSinthome />
             </div>
-            <div className="animate-slide-up" style={{ animationDelay: '0.3s' }}>
+            <div className="animate-slide-up" style={{ animationDelay: '0.7s' }}>
               <AgentStatus />
             </div>
-            <div className="animate-slide-up" style={{ animationDelay: '0.4s' }}>
+            <div className="animate-slide-up" style={{ animationDelay: '0.75s' }}>
               <TaskList />
             </div>
           </div>
 
           {/* Right Column - Metrics, Controls, and Task Form */}
           <div className="space-y-6">
-            <div className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
+            <div className="animate-slide-up" style={{ animationDelay: '0.8s' }}>
               <SystemMetrics />
             </div>
-            <div className="animate-slide-up" style={{ animationDelay: '0.55s' }}>
-              <ConsciousnessMetrics />
-            </div>
-            <div className="animate-slide-up" style={{ animationDelay: '0.6s' }}>
+            <div className="animate-slide-up" style={{ animationDelay: '0.85s' }}>
               <DaemonControls />
             </div>
-            <div className="animate-slide-up" style={{ animationDelay: '0.7s' }}>
+            <div className="animate-slide-up" style={{ animationDelay: '0.9s' }}>
               <TaskForm />
             </div>
           </div>

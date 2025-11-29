@@ -80,6 +80,17 @@ class ApiService {
     return response.json();
   }
 
+  async get<T = any>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: 'GET' });
+  }
+
+  async post<T = any>(endpoint: string, body?: any): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  }
+
   async getDaemonStatus(): Promise<DaemonStatus> {
     return this.request<DaemonStatus>('/daemon/status');
   }
@@ -139,6 +150,10 @@ class ApiService {
 
   async stopDaemon(): Promise<{ message: string }> {
     return this.request('/daemon/stop', { method: 'POST' });
+  }
+
+  async resetMetrics(): Promise<{ message: string }> {
+    return this.request('/daemon/reset-metrics', { method: 'POST' });
   }
 }
 
