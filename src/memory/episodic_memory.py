@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import os
 from datetime import datetime, timezone
 from typing import (
     TYPE_CHECKING,
@@ -53,6 +54,7 @@ class SimilarEpisode(TypedDict):
 
 
 def _load_embedding_model(model_name: str) -> Optional["SentenceTransformer"]:
+    """Load SentenceTransformer with HuggingFace token for model access."""
     try:
         from sentence_transformers import SentenceTransformer
     except Exception as exc:
@@ -63,7 +65,9 @@ def _load_embedding_model(model_name: str) -> Optional["SentenceTransformer"]:
         return None
 
     try:
-        return SentenceTransformer(model_name)
+        # Pass HuggingFace token to access gated models
+        hf_token: Optional[str] = os.getenv("HUGGING_FACE_HUB_TOKEN")
+        return SentenceTransformer(model_name, token=hf_token)
     except Exception as exc:
         logger.warning(
             ("Failed to load SentenceTransformer %s: %s. " "Using deterministic embeddings."),
