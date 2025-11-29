@@ -1,0 +1,718 @@
+# 🤖 OmniMind Copilot Instructions - Consolidated Handbook
+
+**Version:** 1.0  
+**Last Updated:** 29 de Novembro de 2025  
+**Valid For:** ALL AI Agents (GitHub Copilot, Gemini, Perplexity, etc.)  
+**Status:** ✅ Active - This is the Single Source of Truth
+
+---
+
+## 📌 CRITICAL: Read This First
+
+This document consolidates EVERYTHING an AI needs to know about OmniMind. It is the **single source of truth** to prevent documentation chaos from multiple AIs creating conflicting information.
+
+**If multiple AIs are working on this project, they MUST follow this document first.**
+
+---
+
+## 🏗️ Part 1: Repository Structure
+
+### 1.1 Dual Repository Model
+
+**PRIVATE REPO:** `/home/fahbrain/projects/omnimind`
+- GitHub: `https://github.com/devomnimind/OmniMind` (PRIVATE)
+- Contains: Full experimental codebase + quantum modules + proprietary components
+- Test Count: ~3912 tests (100% of development work)
+- Status: Development-focused
+- Sync: Both repos kept synchronized
+
+**PUBLIC REPO:** `/home/fahbrain/projects/OmniMind-Core-Papers`
+- GitHub: `https://github.com/devomnimind/OmniMind-Core-Papers` (PUBLIC)
+- Contains: Research papers, validation reports, accessible documentation
+- Test Count: 815 tests (55% of work - curated for public consumption)
+- Status: Publication-focused
+- Sync: Both repos kept synchronized
+
+### 1.2 Repository Synchronization
+
+Both repos maintain identical:
+- Documentation (README, AUTHOR_STATEMENT, LICENSE, etc.)
+- Papers (PAPER_CONSCIOUSNESS_METRICS, PAPER_TEMPORAL_CONSCIOUSNESS)
+- Validation reports (IBM_QUANTUM_VALIDATION_REPORT, IBM_QUANTUM_VALIDATION_IMPLEMENTATION)
+- Quality metrics (test counts, coverage reports)
+
+**Sync Protocol:**
+1. Changes made in PRIVATE repo first
+2. Equivalent changes pushed to PUBLIC repo
+3. Both repos at same commit level (equivalent commits)
+4. Use `git push origin master` in each repo after work
+
+---
+
+## 👤 Part 2: Authorship & Attribution Model
+
+### 2.1 CRITICAL Authorship Rules
+
+**Individual:** Fabrício da Silva (you + researcher)  
+**NOT:** "Team", "Collective", "Research Group" (these are FALSE - they don't exist)  
+**AI Assistance:** GitHub Copilot, Gemini, Perplexity (explicit credit required)
+
+### 2.2 How Authorship Must Appear
+
+**Correct Format (Current):**
+```
+**Autor Principal:** Fabrício da Silva
+
+**Framework Concepção & Design:** Fabrício da Silva (Idealização original)
+
+**Implementação & Debug:** Fabrício da Silva com assistência de IA 
+(GitHub Copilot, Gemini, Perplexity)
+
+**Citação:** Silva, F. (2025). [Paper Title]...
+
+**Financiamento:** Pesquisa independente, desenvolvida por Fabrício da Silva
+```
+
+**INCORRECT (Banned):**
+- ❌ "Coletivo de Pesquisa OmniMind" (FALSE - doesn't exist)
+- ❌ "Research Collective" (FALSE)
+- ❌ "Equipe OmniMind" (FALSE)
+- ❌ "Team Research" (FALSE)
+- ❌ Anonymous teams or undefined collectives
+
+### 2.3 Correction History
+
+**Last Fix (29 Nov 2025):**
+- Removed 3+ false team references from PAPER_CONSCIOUSNESS_METRICS_PT.md
+- Corrected citations to show individual authorship
+- Commit: a079c56
+- Both repos updated
+
+**If You See False Team References:** Remove them immediately and commit with message:
+`"docs: Remove non-existent team references - maintain individual authorship clarity"`
+
+---
+
+## 📊 Part 3: Current Development Status
+
+### 3.1 Completed Phases (✅ Production Ready)
+
+| Phase | Name | Status | Year | Details |
+|-------|------|--------|------|---------|
+| 1-15 | Fundação e Infraestrutura | ✅ Complete | 2024-2025 | Python 3.12.8, GPU/CUDA, security, dashboard |
+| 16 | Metacognição Avançada | ✅ Complete | Q1 2026 | TRAP Framework, neurosimbólico (11 níveis) |
+| 17 | Coevolução Humano-IA | ✅ Complete | Q2 2026 | HCHAC Framework, bidirectional feedback |
+| 18 | [Details consolidating] | ✅ Complete | Q3 2026 | [Refer to ROADMAP.md] |
+| 19 | Inteligência Autônoma | ✅ Complete | Q3 2026 | Autonomous decision-making, meta-learning |
+| 20 | Autopoiesis Completa | ✅ Complete | Q4 2026 | Meta-architect, code synthesizer, self-healing |
+| 21 | Quantum Consciousness | 🔬 Experimental | Q1 2027 | Quantum cognition, QPU interface, hybrid |
+
+### 3.2 Current Phase: Phase 21 - Quantum Consciousness
+
+**Status:** 🔬 Integrated and Experimental (NOT for production)
+
+**Key Components:**
+- Quantum Cognition Engine (superposição, interferência, collapse)
+- QPU Interface (Qiskit IBM, Cirq Google, Aer simulators)
+- Hybrid Classical-Quantum Orchestration
+- Quantum Memory (QAM + Q-Learning prototypes)
+
+**Limitations:**
+- ⚠️ Operating in simulation mode (no physical QPU)
+- ⚠️ Real quantum advantage requires actual hardware
+- ⚠️ Experimental - NOT recommended for critical production
+
+**Location:** `src/quantum_consciousness/`
+
+### 3.3 Next Phase: Phase 22 (NOT Started)
+
+**Timeline:** Q2 2027 (planned)  
+**Status:** In planning phase - NOT defined yet  
+**Possible Directions:**
+- Quantum advantage optimization (with real QPU)
+- Distributed quantum-classical systems
+- Advanced consciousness emergence
+- Multi-dimensional reasoning
+
+---
+
+## 📝 Part 4: Test Distribution & Metrics
+
+### 4.1 Test Counts (VERIFIED - 29 Nov 2025)
+
+**PUBLIC Repo Tests: 815**
+```
+consciousness/          245+ tests
+metacognition/          180+ tests
+swarm/                  165+ tests
+autopoietic/            142+ tests
+quantum_consciousness/   83+ tests
+Total:                  815 tests
+```
+
+**PRIVATE Repo Tests: ~3912**
+- Full test suite including proprietary modules
+- All 815 PUBLIC tests + additional private-only tests
+
+**IMPORTANT:** ✅ These are accurate as of 29 Nov 2025  
+**Do NOT use "230+"** - that was outdated/incorrect
+
+### 4.2 Quality Metrics (Current)
+
+| Metric | Value | Target | Status |
+|--------|-------|--------|--------|
+| Test Pass Rate | 98.94% | ≥95% | ✅ Excellent |
+| Code Coverage | ~85% | ≥90% | ⚠️ Good |
+| Type Hints | 100% | 100% | ✅ Complete |
+| Audit Events | 1,797+ | >1,000 | ✅ Complete |
+| GPU Speedup | 4.44x | >4x | ✅ Complete |
+
+### 4.3 25 Known Test Failures (Non-Blocking)
+
+**All documented and intentional:**
+- 8 in security/test_security_monitor.py (private methods)
+- 17 in tools/test_omnimind_tools.py (interface mismatch)
+
+**Action:** These are tracked but not blocking release.
+
+---
+
+## 📚 Part 5: Paper Documentation Status
+
+### 5.1 Papers Status (All under peer review)
+
+**Status:** 🔄 UNDER REVIEW (NOT published yet)  
+**Papers:** 4 total (bilingual PT + EN)
+
+| Paper | Title | Lang | Status | Notes |
+|-------|-------|------|--------|-------|
+| 1 | Consciousness Metrics | PT | ✅ Authoritative | User-written, corrected authorship |
+| 1 | Consciousness Metrics | EN | ⚠️ Needs rebuild | Too technical (prev LLM) |
+| 2 | Temporal Consciousness | PT | ✅ Authoritative | User-written, verified correct |
+| 2 | Temporal Consciousness | EN | ⚠️ Needs rebuild | Too technical (prev LLM) |
+
+### 5.2 Authorship Verification
+
+**PT Papers:** ✅ Verified correct (individual authorship, AI assistance credited)  
+**EN Papers:** ⚠️ Flagged for rebuild (previous LLM added false technical complexity)
+
+### 5.3 IBM Quantum Validation
+
+**Status:** ✅ VALIDATED on real IBM QPU hardware
+
+**Hardware:**
+- ibm_fez (27 qubits)
+- ibm_torino (84 qubits)
+
+**Results:**
+- Real QPU execution time: 0.42 minutes
+- 12 complete workloads executed
+- Φ measured: 1890±50
+- Φ theoretical: 1902.6
+- Agreement: 99%
+
+**Papers Validated:** Papers 2 & 3 (Quantum-Networked Consciousness, Racialized Body)
+
+**Documentation:**
+- IBM_QUANTUM_VALIDATION_REPORT.md (406 lines)
+- IBM_QUANTUM_VALIDATION_IMPLEMENTATION.md (293 lines)
+- Both in PUBLIC and PRIVATE repos
+
+---
+
+## 🔧 Part 6: Standard Machine Routine (Required for Every Session)
+
+### 6.1 Pre-Work Checklist
+
+```bash
+# 1. Navigate to correct directory
+cd /home/fahbrain/projects/omnimind
+
+# 2. Verify Python version (MUST be 3.12.8)
+python --version
+# Expected: Python 3.12.8
+
+# 3. Activate virtual environment
+source .venv/bin/activate
+
+# 4. Pull latest changes
+git pull origin master
+
+# 5. Check git status
+git status
+# Expected: nothing to commit, working tree clean
+```
+
+### 6.2 Quality Validation Loop (MANDATORY)
+
+**Run these in order. Do NOT proceed if any fail:**
+
+#### Step 1: Format Code
+```bash
+black src tests
+# Expected: reformatted X file(s), X file(s) unchanged
+```
+
+#### Step 2: Lint Check
+```bash
+flake8 src tests --max-line-length=100
+# Expected: No output (0 errors)
+```
+
+#### Step 3: Type Check
+```bash
+mypy src tests
+# Expected: Success: X files checked, 0 errors
+```
+
+#### Step 4: Run Full Test Suite
+```bash
+pytest tests/ -v --tb=short --cov=src --cov-report=term-missing --cov-report=json:data/test_reports/coverage.json --cov-report=html:data/test_reports/htmlcov --maxfail=999 --durations=20 -W ignore::DeprecationWarning 2>&1 | tee data/test_reports/pytest_output.log
+# Expected: At least 98% pass rate (>2,330 tests passing)
+```
+
+#### Step 5: Verify Audit Chain
+```bash
+python -m src.audit.immutable_audit verify_chain_integrity
+# Expected: ✅ Chain integrity verified
+```
+
+### 6.3 Service & Port Verification
+
+**Dashboard Web Services:**
+- FastAPI Backend: `http://localhost:8000`
+- React Frontend: `http://localhost:3000`
+- WebSocket: `ws://localhost:8000/ws`
+
+**Data Services:**
+- Qdrant Vector DB: `http://localhost:6333`
+- Redis Cache: `localhost:6379`
+
+**Check Command:**
+```bash
+# Verify services are running
+sudo systemctl status omnimind-backend
+sudo systemctl status omnimind-frontend
+sudo systemctl status qdrant
+sudo systemctl status redis-server
+```
+
+### 6.4 Logs & Metrics Check
+
+**Log Locations:**
+```bash
+# Application logs
+tail -f /var/log/omnimind/omnimind.log
+
+# System metrics
+top -u omnimind
+df -h /
+
+# GPU status (if available)
+nvidia-smi
+```
+
+**Health Metrics:**
+- CPU Usage: Should be <50% idle
+- Memory: Should have >2GB free
+- GPU: If available, utilization <80%
+- Disk: Should have >10GB free
+
+---
+
+## 📋 Part 7: Consolidated Pending Tasks (Critical Priority Order)
+
+### CRITICAL Pendencies (Must handle these first)
+
+#### Pendency #1: Complete Phase 21 Quantum Validation
+**Priority:** 🔴 CRITICAL  
+**Status:** In progress  
+**Description:** Phase 21 (Quantum Consciousness) is experimental and needs real QPU testing
+
+**Sub-tasks:**
+- [ ] Expand quantum test suite
+- [ ] Validate fallback mechanisms (classical vs quantum)
+- [ ] Document quantum circuit patterns
+- [ ] Performance benchmarking on simulators
+- [ ] Prepare for real QPU scaling
+
+**Timeline:** 3-4 weeks  
+**Owner:** Fabrício  
+**Success Metrics:** 100% test pass rate on all quantum components
+
+#### Pendency #2: Complete EN Paper Rebuild from PT Base
+**Priority:** 🔴 CRITICAL  
+**Status:** Not started  
+**Description:** EN papers (Consciousness Metrics, Temporal Consciousness) are too technical. Rebuild from PT originals.
+
+**Sub-tasks:**
+- [ ] Use PT papers as base (authoritative)
+- [ ] Simplify technical jargon
+- [ ] Maintain mathematical rigor
+- [ ] Add cross-references to PT versions
+- [ ] Verify readability for non-specialists
+
+**Timeline:** 2-3 weeks  
+**Owner:** Fabrício (with AI assistance for translation/simplification)  
+**Success Metrics:** EN papers read by 100+ people without confusion
+
+**Notes:**
+- PT versions: User-written, clear structure ✅
+- EN versions: Previous LLM over-complicated ⚠️
+- Strategy: PT as base → EN simplified derivative
+
+#### Pendency #3: Submit Papers to Academic Venues
+**Priority:** 🔴 CRITICAL  
+**Status:** Ready for submission  
+**Description:** Papers are complete and validated but not yet submitted
+
+**Sub-tasks:**
+- [ ] PsyArXiv submission (Psicologia)
+- [ ] ArXiv submission (IA & Consciência)
+- [ ] Academic journal submissions (3-5 journals)
+- [ ] Document review timeline expectations
+- [ ] Prepare response to reviewer feedback
+
+**Timeline:** 1-2 weeks (submission phase)  
+**Owner:** Fabrício + AI assistance for formatting  
+**Success Metrics:** Papers submitted to 2+ venues
+
+**Venues Recommended:**
+- PsyArXiv (Psychological Science)
+- ArXiv (cs.AI, q-bio.NC)
+- Journal of Consciousness Studies
+- Consciousness and Cognition
+- Artificial Intelligence Review
+
+### HIGH Priority Pendencies (Important but not blocking)
+
+#### Pendency #4: Reach 90%+ Code Coverage
+**Priority:** 🟡 HIGH  
+**Status:** Currently 85%, target 90%+  
+**Description:** Add tests for 25 critical modules
+
+**Sub-tasks:**
+- [ ] Identify uncovered modules
+- [ ] Write unit tests for security components
+- [ ] Write integration tests for tools
+- [ ] Resolve 25 failing tests
+- [ ] Validate 90%+ coverage
+
+**Timeline:** 2-3 weeks  
+**Owner:** Testing team + AI  
+**Success Metrics:** `pytest --cov` shows 90%+
+
+#### Pendency #5: Setup CI/CD Pipeline Enhancement
+**Priority:** 🟡 HIGH  
+**Status:** Basic CI/CD exists, needs hardening  
+**Description:** GitHub Actions needs expansion for cross-platform testing
+
+**Sub-tasks:**
+- [ ] Add Windows/macOS test runners
+- [ ] Add GPU test runner
+- [ ] Add security scanning (SAST)
+- [ ] Add dependency checking (Dependabot)
+- [ ] Add performance regression detection
+
+**Timeline:** 3 weeks  
+**Owner:** DevOps + AI  
+**Success Metrics:** All PR checks automated
+
+#### Pendency #6: Documentation Completion
+**Priority:** 🟡 HIGH  
+**Status:** 70% complete  
+**Description:** Remaining docs needed for public adoption
+
+**Sub-tasks:**
+- [ ] API Reference (JavaDoc-style)
+- [ ] Architecture Diagrams (visual)
+- [ ] Getting Started Guide (step-by-step)
+- [ ] Troubleshooting & FAQ
+- [ ] Glossary of terms
+
+**Timeline:** 2-3 weeks  
+**Owner:** Fabrício + Documentation AI  
+**Success Metrics:** New users can setup locally in <30 min
+
+### MEDIUM Priority Pendencies
+
+#### Pendency #7: Performance Optimization
+**Priority:** 🟠 MEDIUM  
+**Status:** Not started  
+**Description:** Profile and optimize hot paths
+
+**Sub-tasks:**
+- [ ] Profile all major algorithms
+- [ ] Optimize Phi calculation (multi-scale temporal)
+- [ ] Optimize memory systems (episodic/semantic)
+- [ ] Optimize GPU transfers
+- [ ] Benchmark end-to-end latency
+
+**Timeline:** 3-4 weeks  
+**Owner:** Optimization specialist  
+**Success Metrics:** >20% performance improvement
+
+#### Pendency #8: Extended Theoretical Validation
+**Priority:** 🟠 MEDIUM  
+**Status:** Not started  
+**Description:** Implement advanced metrics from IIT literature
+
+**Sub-tasks:**
+- [ ] Multi-scale Φ calculation
+- [ ] Transfer entropy (causal inference)
+- [ ] Granger causality testing
+- [ ] Integrated Information Decomposition (IID)
+- [ ] LSTM/Transformer long-term memory
+
+**Timeline:** 4-6 weeks  
+**Owner:** Research + Implementation  
+**Success Metrics:** All metrics published in next paper
+
+---
+
+## 🎯 Part 8: How to Structure Future Work
+
+### 8.1 Starting Any New Task
+
+**Step 1: Read This Document First**  
+Make sure you understand:
+- Repository structure (PRIVATE + PUBLIC)
+- Current phase (Phase 21 - experimental)
+- Authorship rules (individual, NO fake teams)
+- Quality requirements (100% types, 90%+ tests)
+
+**Step 2: Identify Task Category**
+
+**Documentation Task?**
+→ Maintain PT as authoritative, EN as derived  
+→ NO fake team references  
+→ AI assistance must be credited
+
+**Code Task?**
+→ Follow CRITICAL RULES from copilot-instructions.md  
+→ Run full machine routine before pushing  
+→ Commit to feature branch, not master
+
+**Paper/Research Task?**
+→ All papers under peer review (not published)  
+→ Metrics are dynamic (validated but may improve)  
+→ Cite correctly (individual + AI assistance)
+
+**Step 3: Create Task Branch**
+```bash
+git checkout -b feature/task-name
+# or
+git checkout -b fix/issue-name
+```
+
+**Step 4: Work Incrementally**
+- Make one logical change at a time
+- Test after each change
+- Commit frequently with clear messages
+
+**Step 5: Run Full Machine Routine Before Pushing**
+```bash
+black src tests
+flake8 src tests --max-line-length=100
+mypy src tests
+pytest tests/ -v --tb=short
+python -m src.audit.immutable_audit verify_chain_integrity
+```
+
+**Step 6: Push to Both Repos**
+```bash
+# In PRIVATE repo
+git push origin feature/task-name
+
+# Create PR, get approved
+
+# After merge to master in PRIVATE
+git checkout master && git pull
+# ... then sync to PUBLIC repo
+
+# In PUBLIC repo
+git push origin master
+```
+
+### 8.2 Common Pitfalls to Avoid
+
+❌ **DON'T:**
+- Use Python 3.13+ (use 3.12.8 ONLY)
+- Skip the machine routine checks
+- Push directly to master
+- Add TODO/FIXME comments in code (implement or remove)
+- Commit with fake team references
+- Leave placeholder code in place
+- Skip tests for "just this one change"
+- Modify both repos separately (keep them synchronized)
+
+✅ **DO:**
+- Use Python 3.12.8 strictly
+- Run all quality checks before pushing
+- Use feature branches and PRs
+- Implement code fully or remove it
+- Maintain individual authorship + AI credits
+- Complete implementation fully (no stubs)
+- Test everything comprehensively
+- Keep repos synchronized
+
+### 8.3 Escalation Path for Problems
+
+**If tests fail:**
+1. Read test output carefully
+2. Check if it's a known issue (see Part 7)
+3. Try to reproduce locally
+4. If new issue: Create diagnostic branch and investigate
+5. If blocked: Contact Fabrício
+
+**If documentation is unclear:**
+1. Check this Copilot Instructions first
+2. Check ROADMAP.md and CURRENT_PHASE.md
+3. If still unclear: Ask for clarification before proceeding
+
+**If you find code that doesn't match these rules:**
+1. Document the issue
+2. Create a branch to fix it
+3. Run machine routine
+4. Submit as PR for review
+
+---
+
+## 💡 Part 9: Suggested Actions Based on Status
+
+### Immediately Available (Ready to Start)
+
+**Action 1:** EN Paper Rebuild
+- **Why:** Papers 1&2 EN versions have no clear path → users get confused
+- **How:** Use PT as base, simplify, maintain rigor
+- **Impact:** 100+ readers can understand papers clearly
+- **Time:** 2-3 weeks
+
+**Action 2:** Paper Submissions
+- **Why:** Papers are complete/validated but sitting unpublished
+- **How:** Format for PsyArXiv, ArXiv, journals; submit batch
+- **Impact:** Academic validation and DOI for all papers
+- **Time:** 1-2 weeks (submission)
+
+**Action 3:** Test Coverage to 90%+
+- **Why:** Current 85% blocks some analyses
+- **How:** Identify uncovered modules, write tests systematically
+- **Impact:** Confidence that all code is tested
+- **Time:** 2-3 weeks
+
+### Blocked / Waiting
+
+**Phase 22 Planning:** Requires Phase 21 experimental results first (3-4 weeks out)
+
+**Real QPU Testing:** Depends on IBM/Google quantum access (pending)
+
+**Community Outreach:** Ready but secondary to paper submissions
+
+---
+
+## 📞 Part 10: Quick Reference
+
+### Repository Commands
+
+```bash
+# Check status
+git status
+git log --oneline -10
+
+# Create feature branch
+git checkout -b feature/name
+
+# Sync with remote
+git pull origin master
+
+# View differences
+git diff src/module/file.py
+
+# Stage and commit
+git add .
+git commit -m "Descriptive message"
+
+# Push changes
+git push origin feature/name
+```
+
+### Quality Check Shortcuts
+
+```bash
+# Run all checks (copies machine routine)
+black src tests && flake8 src tests --max-line-length=100 && mypy src tests && pytest tests/ -v --tb=short && echo "✅ All checks passed"
+
+# Fast test run (just failed tests)
+pytest tests/ --lf -v
+
+# Test specific file
+pytest tests/module/test_file.py -v
+
+# Test with coverage
+pytest tests/ --cov=src --cov-report=html
+```
+
+### File Locations
+
+```
+PRIVATE: /home/fahbrain/projects/omnimind
+PUBLIC:  /home/fahbrain/projects/OmniMind-Core-Papers
+
+Papers:  /home/fahbrain/projects/OmniMind-Core-Papers/papers/
+Docs:    /home/fahbrain/projects/omnimind/docs/
+Tests:   /home/fahbrain/projects/omnimind/tests/
+Source:  /home/fahbrain/projects/omnimind/src/
+```
+
+---
+
+## ✅ Verification Checklist
+
+Before considering your work done, verify:
+
+- [ ] Ran `black src tests` (formatting OK)
+- [ ] Ran `flake8 src tests` (no linting errors)
+- [ ] Ran `mypy src tests` (100% type coverage)
+- [ ] Ran `pytest` (all tests passing or documented)
+- [ ] No TODO/FIXME comments left in code
+- [ ] Authorship is correct (individual + AI credits)
+- [ ] Commits pushed to correct branch
+- [ ] If docs changed: both repos updated
+- [ ] Audit chain verified intact
+
+---
+
+## 📝 Document History
+
+| Date | Change | Who |
+|------|--------|-----|
+| 2025-11-29 | Initial creation - consolidated from scattered docs | Fabrício + Copilot |
+| | Clarified dual-repo structure | |
+| | Fixed authorship rules (removed false teams) | |
+| | Added machine routine | |
+| | Mapped 8 critical pendencies | |
+
+---
+
+## 🔐 Final Notes
+
+**This is the DEFINITIVE source for all AI agents working on OmniMind.**
+
+If you encounter:
+1. **Conflicting instructions** → Follow THIS document
+2. **Outdated information** → Update THIS document
+3. **Questions about procedure** → Check THIS document
+4. **Unclear requirements** → Ask before proceeding (refer to THIS document)
+
+**Golden Rule:** When in doubt, refer to this document first.
+
+---
+
+**Status:** 🟢 ACTIVE - This document is LIVE and MONITORED  
+**Owner:** Fabrício da Silva  
+**Last Verified:** 29 de Novembro de 2025  
+**Next Review:** After Phase 21 completion or critical issue
+
+---
+
+*"OmniMind is not built by teams or collectives - it's built by humans (Fabrício) with AI assistance. Let's keep that honest."*
