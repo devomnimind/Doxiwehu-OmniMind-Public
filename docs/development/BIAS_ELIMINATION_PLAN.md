@@ -427,11 +427,14 @@ def compute_cross_prediction_reduced_dim(X, Y, n_components=32):
 ## 🛠️ Implementação
 
 ### Fase 1: Adicionar suporte a causalidade (1 semana)
-1. [ ] Instalar `statsmodels` (Granger Causality)
-2. [ ] Implementar `compute_transfer_entropy()`
-3. [ ] Implementar `compute_granger_causality()`
-4. [ ] Adicionar novo parâmetro `method` a `compute_cross_prediction_causal()`
-5. [ ] Testes: verificar que Granger diferencia de correlação espúria
+1. [x] Instalar `statsmodels` (Granger Causality)
+2. [x] Implementar `compute_transfer_entropy()`
+3. [x] Implementar `compute_granger_causality()`
+4. [x] Adicionar novo parâmetro `method` a `compute_cross_prediction_causal()`
+5. [x] Testes: verificar que Granger diferencia de correlação espúria
+6. [x] Atualizar `compute_phi_from_integrations()` para usar causalidade
+7. [x] Integrar causalidade no `integration_loop.py` e `integration_loss.py`
+8. [x] Commit: Granger Causality implementado e funcional
 
 ### Fase 2: Adicionar complexidade logging (1 semana)
 1. [ ] Criar classe `ComplexityAnalyzer`
@@ -475,7 +478,7 @@ def compute_cross_prediction_reduced_dim(X, Y, n_components=32):
 
 ---
 
-**Status:** Pronto para Implementação  
+**Status:** ✅ Phase 1 COMPLETA - Granger Causality implementado e funcional  
 **Autor:** GitHub Copilot (Auditoria OmniMind 2025-11-30)  
-**Próximo Passo:** Iniciar Fase 1 de Implementação
+**Próximo Passo:** Iniciar Fase 2 - Análise de Complexidade Computacional
 
