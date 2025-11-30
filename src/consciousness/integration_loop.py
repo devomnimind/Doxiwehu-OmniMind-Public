@@ -315,17 +315,33 @@ class IntegrationLoop:
                     for target_module in result.modules_executed:
                         if source_module != target_module:
                             try:
-                                cross_pred = self.workspace.compute_cross_prediction(
-                                    source_module=source_module,
-                                    target_module=target_module,
-                                )
+                                # Try causal method first (requires more history)
+                                source_history_len = len(self.workspace.get_module_history(source_module))
+                                target_history_len = len(self.workspace.get_module_history(target_module))
+
+                                if source_history_len >= 10 and target_history_len >= 10:
+                                    # Use causal method
+                                    cross_pred = self.workspace.compute_cross_prediction_causal(
+                                        source_module=source_module,
+                                        target_module=target_module,
+                                        method="granger",  # Use Granger for now
+                                    )
+                                    logger.debug(f"Used causal prediction: {source_module}->{target_module}")
+                                else:
+                                    # Fall back to correlation-based method
+                                    cross_pred = self.workspace.compute_cross_prediction(
+                                        source_module=source_module,
+                                        target_module=target_module,
+                                    )
+                                    logger.debug(f"Used correlation prediction: {source_module}->{target_module}")
+
                                 if source_module not in result.cross_prediction_scores:
                                     result.cross_prediction_scores[source_module] = {}
                                 result.cross_prediction_scores[source_module][
                                     target_module
                                 ] = cross_pred.to_dict()
-                            except Exception:
-                                pass
+                            except Exception as e:
+                                logger.debug(f"Cross-prediction failed {source_module}->{target_module}: {e}")
 
                 # Compute Φ from workspace state (which already has cross-predictions)
                 result.phi_estimate = self.workspace.compute_phi_from_integrations()
@@ -356,10 +372,24 @@ class IntegrationLoop:
                     continue
 
                 try:
-                    cross_pred = self.workspace.compute_cross_prediction(
-                        source_module=source_module,
-                        target_module=target_module,
-                    )
+                    # Try causal method first
+                    source_history_len = len(self.workspace.get_module_history(source_module))
+                    target_history_len = len(self.workspace.get_module_history(target_module))
+
+                    if source_history_len >= 10 and target_history_len >= 10:
+                        # Use causal method
+                        cross_pred = self.workspace.compute_cross_prediction_causal(
+                            source_module=source_module,
+                            target_module=target_module,
+                            method="granger",
+                        )
+                    else:
+                        # Fall back to correlation-based method
+                        cross_pred = self.workspace.compute_cross_prediction(
+                            source_module=source_module,
+                            target_module=target_module,
+                        )
+
                     scores[source_module][target_module] = cross_pred.to_dict()
 
                 except Exception as e:

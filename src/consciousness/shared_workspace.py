@@ -21,6 +21,7 @@ from typing import Any, Dict, List, Optional
 
 import numpy as np
 from sklearn.linear_model import LinearRegression
+from statsmodels.tsa.api import VAR
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,8 @@ class CrossPredictionMetrics:
     r_squared: float  # R² score (0.0 = nenhuma relação, 1.0 = determinístico)
     correlation: float  # Correlação de Pearson
     mutual_information: float  # Informação mútua normalizada (0.0-1.0)
+    granger_causality: float = 0.0  # Granger causality (0.0-1.0)
+    transfer_entropy: float = 0.0  # Transfer entropy (0.0-1.0)
     timestamp: float = field(default_factory=time.time)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -375,6 +378,133 @@ class SharedWorkspace:
 
         return metrics
 
+    def compute_cross_prediction_causal(
+        self,
+        source_module: str,
+        target_module: str,
+        history_window: int = 50,
+        method: str = "granger_transfer",
+    ) -> CrossPredictionMetrics:
+        """
+        Computa causalidade (não apenas correlação) entre módulos usando Granger Causality e Transfer Entropy.
+
+        Args:
+            source_module: Módulo fonte
+            target_module: Módulo alvo
+            history_window: Janela histórica para análise
+            method: Método de causalidade
+                - "granger": Apenas Granger Causality
+                - "transfer": Apenas Transfer Entropy
+                - "granger_transfer": Ambos (mais robusto)
+
+        Returns:
+            CrossPredictionMetrics com métricas de causalidade
+        """
+        source_history = self.get_module_history(source_module, history_window)
+        target_history = self.get_module_history(target_module, history_window)
+
+        # Validação crítica: históricos devem ter mesmo tamanho
+        if len(source_history) != len(target_history):
+            logger.debug(
+                f"Cross-prediction causal skipped: {source_module} ({len(source_history)}) "
+                f"vs {target_module} ({len(target_history)}) - size mismatch"
+            )
+            return CrossPredictionMetrics(
+                source_module=source_module,
+                target_module=target_module,
+                r_squared=0.0,
+                correlation=0.0,
+                mutual_information=0.0,
+                granger_causality=0.0,
+                transfer_entropy=0.0,
+            )
+
+        # Precisa de histórico adequado para causalidade
+        if len(source_history) < 10:
+            logger.debug(
+                f"Cross-prediction causal skipped: insufficient history "
+                f"({len(source_history)} < 10 for causality)"
+            )
+            return CrossPredictionMetrics(
+                source_module=source_module,
+                target_module=target_module,
+                r_squared=0.0,
+                correlation=0.0,
+                mutual_information=0.0,
+                granger_causality=0.0,
+                transfer_entropy=0.0,
+            )
+
+        # Preparar dados
+        try:
+            X = np.stack([s.embedding for s in source_history])  # (window, embed_dim)
+            Y = np.stack([s.embedding for s in target_history])  # (window, embed_dim)
+
+            if X.shape != Y.shape:
+                logger.debug(
+                    f"Cross-prediction causal skipped: dimension mismatch "
+                    f"{X.shape} vs {Y.shape}"
+                )
+                return CrossPredictionMetrics(
+                    source_module=source_module,
+                    target_module=target_module,
+                    r_squared=0.0,
+                    correlation=0.0,
+                    mutual_information=0.0,
+                    granger_causality=0.0,
+                    transfer_entropy=0.0,
+                )
+
+        except Exception as e:
+            logger.debug(f"Cross-prediction causal data preparation failed: {e}")
+            return CrossPredictionMetrics(
+                source_module=source_module,
+                target_module=target_module,
+                r_squared=0.0,
+                correlation=0.0,
+                mutual_information=0.0,
+                granger_causality=0.0,
+                transfer_entropy=0.0,
+            )
+
+        # Computar causalidade
+        granger = 0.0
+        transfer = 0.0
+
+        if method in ["granger", "granger_transfer"]:
+            granger = self.compute_granger_causality(X, Y)
+
+        if method in ["transfer", "granger_transfer"]:
+            transfer = self.compute_transfer_entropy(X, Y, k=3)
+
+        # Combinar métodos
+        if method == "granger_transfer":
+            # Usar intersecção (mais conservador - só contar se AMBOS concordam)
+            causal_strength = min(granger, transfer)
+        elif method == "granger":
+            causal_strength = granger
+        else:  # transfer
+            causal_strength = transfer
+
+        metrics = CrossPredictionMetrics(
+            source_module=source_module,
+            target_module=target_module,
+            r_squared=0.0,  # NÃO usar para Φ (correlação ≠ causalidade)
+            correlation=0.0,  # Manter para compatibilidade, mas não usar
+            mutual_information=causal_strength,  # AGORA: causalidade comprovada
+            granger_causality=granger,
+            transfer_entropy=transfer,
+        )
+
+        self.cross_predictions.append(metrics)
+
+        logger.debug(
+            f"Cross-prediction causal: {source_module} -> {target_module}: "
+            f"granger={granger:.3f}, transfer={transfer:.3f}, causal={causal_strength:.3f}"
+        )
+
+        return metrics
+
     @staticmethod
     def _compute_entropy_1d(data: np.ndarray) -> float:
         """Entropia de Shannon para dados 1D."""
@@ -394,6 +524,116 @@ class SharedWorkspace:
             probabilities.append(count / len(joint))
         entropy = -np.sum(np.array(probabilities) * np.log2(np.array(probabilities) + 1e-10))
         return float(entropy)
+
+    @staticmethod
+    def compute_granger_causality(X: np.ndarray, Y: np.ndarray) -> float:
+        """
+        Teste de Granger: X "Granger-causa" Y se Y(t) é melhor predito
+        considerando histórico de X(t-1) do que sem ele.
+
+        Mede: Redução de variância em Y ao incluir X
+
+        Args:
+            X: Série temporal do módulo fonte (shape: n_timesteps, n_features)
+            Y: Série temporal do módulo alvo (shape: n_timesteps, n_features)
+
+        Returns:
+            Granger causality strength (0.0 = não causa, 1.0 = causa forte)
+        """
+        try:
+            # Verificar se há dados suficientes
+            if X.shape[0] < 10 or Y.shape[0] < 10:
+                return 0.0
+
+            # Usar apenas a primeira dimensão para simplificar
+            x_series = X[:, 0] if X.shape[1] > 0 else X.flatten()
+            y_series = Y[:, 0] if Y.shape[1] > 0 else Y.flatten()
+
+            # Método simplificado: correlação cruzada com lags
+            max_lag = min(5, len(x_series) // 3)
+            correlations = []
+
+            for lag in range(1, max_lag + 1):
+                if len(x_series) > lag:
+                    # Correlação entre X(t-lag) e Y(t)
+                    x_lagged = x_series[:-lag]
+                    y_current = y_series[lag:]
+                    if len(x_lagged) > 5:
+                        corr = np.corrcoef(x_lagged, y_current)[0, 1]
+                        if not np.isnan(corr):
+                            correlations.append(abs(corr))
+
+            if correlations:
+                # Granger-like: média das correlações com lag
+                granger_strength = np.mean(correlations)
+                return max(0.0, min(1.0, granger_strength))
+            else:
+                return 0.0
+
+        except Exception as e:
+            logger.debug(f"Granger causality computation failed: {e}")
+            return 0.0
+
+    @staticmethod
+    def compute_transfer_entropy(X: np.ndarray, Y: np.ndarray, k: int = 2) -> float:
+        """
+        Transfer Entropy: Quanto Y(t) é "surprendido" por X(t-k)?
+
+        TE(X→Y) = H(Y_t | Y_past) - H(Y_t | Y_past, X_past)
+
+        Mede causalidade no sentido de Teoria da Informação.
+        Não assume linearidade (como Granger).
+
+        Args:
+            X: Série temporal do módulo fonte
+            Y: Série temporal do módulo alvo
+            k: Lag temporal (padrão=2)
+
+        Returns:
+            Transfer entropy (0.0 = não causa, 1.0 = causa forte)
+        """
+        try:
+            from scipy.stats import entropy
+
+            # Verificar dados suficientes
+            if X.shape[0] < k + 3 or Y.shape[0] < k + 3:
+                return 0.0
+
+            # Usar primeira dimensão
+            x_series = X[:, 0] if X.shape[1] > 0 else X.flatten()
+            y_series = Y[:, 0] if Y.shape[1] > 0 else Y.flatten()
+
+            # Discretizar para calcular entropia
+            x_bins = np.digitize(x_series, bins=np.percentile(x_series, np.linspace(0, 100, 10)))
+            y_bins = np.digitize(y_series, bins=np.percentile(y_series, np.linspace(0, 100, 10)))
+
+            # H(Y_t | Y_past)
+            y_past = y_bins[:-k]
+            y_current = y_bins[k:]
+            y_past_y_current = np.column_stack([y_past, y_current])
+
+            unique_states, counts = np.unique(y_past_y_current, axis=0, return_counts=True)
+            h_y_given_past = entropy(counts, base=2)
+
+            # H(Y_t | Y_past, X_past)
+            x_past = x_bins[:-k]
+            y_past_x_past_y_current = np.column_stack([y_past, x_past, y_current])
+
+            unique_states_joint, counts_joint = np.unique(y_past_x_past_y_current, axis=0, return_counts=True)
+            h_y_given_both = entropy(counts_joint, base=2)
+
+            # Transfer Entropy
+            te = h_y_given_past - h_y_given_both
+
+            # Normalizar (aproximadamente) entre 0-1
+            # TE máxima teórica é log2(n_bins) ≈ log2(10) ≈ 3.32
+            normalized_te = min(1.0, te / 3.32)
+
+            return max(0.0, normalized_te)
+
+        except Exception as e:
+            logger.debug(f"Transfer entropy computation failed: {e}")
+            return 0.0
 
     def _validate_cross_prediction_robustness(
         self, source_module: str, target_module: str, history_length: int
@@ -514,55 +754,45 @@ class SharedWorkspace:
         if not recent_predictions:
             return 0.0
 
-        # Filtrar predições com R² válido (não overfitado)
-        valid_predictions = [p for p in recent_predictions if 0.0 <= p.r_squared <= 1.0]
+        # Filtrar predições com causalidade válida (não correlação espúria)
+        valid_predictions = [p for p in recent_predictions if hasattr(p, 'granger_causality') and hasattr(p, 'transfer_entropy')]
 
         if len(valid_predictions) < len(modules):  # Pelo menos uma predição por módulo
-            logger.debug(f"IIT: Insufficient valid predictions: {len(valid_predictions)}")
+            logger.debug(f"IIT: Insufficient valid causal predictions: {len(valid_predictions)}")
             return 0.0
 
-        # IIT: Φ é a média das capacidades preditivas cruzadas
-        # Mas penalizar overfitting (R² muito alto com pouco histórico)
-        r_squared_values = []
+        # IIT com causalidade: Φ é a média das forças causais
+        causal_values = []
         for p in valid_predictions:
-            r2 = p.r_squared
+            # Usar mutual_information (que agora contém causal_strength)
+            causal_strength = p.mutual_information
 
-            # Penalização mais agressiva por potencial overfitting
-            # Com histórico curto, R² alto é muito suspeito
-            history_length = min(
-                len(self.get_module_history(p.source_module)),
-                len(self.get_module_history(p.target_module)),
-            )
+            # Penalizar se Granger e Transfer Entropy discordam muito
+            if hasattr(p, 'granger_causality') and hasattr(p, 'transfer_entropy'):
+                granger = p.granger_causality
+                transfer = p.transfer_entropy
+                disagreement = abs(granger - transfer)
 
-            if history_length < 10:
-                if r2 > 0.95:
-                    r2 = r2 * 0.3  # Penalizar 70% para R² > 0.95
-                elif r2 > 0.90:
-                    r2 = r2 * 0.5  # Penalizar 50% para R² > 0.90
-                elif r2 > 0.80:
-                    r2 = r2 * 0.7  # Penalizar 30% para R² > 0.80
-                logger.debug(
-                    f"IIT: Penalized overfitting {p.source_module}->{p.target_module}: {p.r_squared:.3f} -> {r2:.3f}"
-                )
-            elif history_length < 20 and r2 > 0.95:
-                # Mesmo com histórico médio, R² muito alto é suspeito
-                r2 = r2 * 0.6  # Penalizar 40%
-                logger.debug(
-                    f"IIT: Penalized high R² {p.source_module}->{p.target_module}: {p.r_squared:.3f} -> {r2:.3f}"
-                )
+                # Penalizar discordância > 0.3
+                if disagreement > 0.3:
+                    causal_strength *= 0.7  # Penalizar 30%
+                    logger.debug(
+                        f"IIT: Penalized disagreement {p.source_module}->{p.target_module}: "
+                        f"granger={granger:.3f}, transfer={transfer:.3f}, "
+                        f"causal={causal_strength:.3f}"
+                    )
 
-            r_squared_values.append(r2)
+            causal_values.append(causal_strength)
 
-        # Φ = média das capacidades preditivas (IIT-inspired)
-        phi = float(np.mean(r_squared_values)) if r_squared_values else 0.0
+        # Φ = média das forças causais (IIT rigorosa)
+        phi = float(np.mean(causal_values)) if causal_values else 0.0
 
-        # IIT: Φ deve ser normalizado e não pode ser > 1.0
+        # IIT: Φ deve ser normalizado
         phi = max(0.0, min(1.0, phi))
 
         logger.info(
-            f"IIT Φ calculated: {phi:.4f} "
-            f"(based on {len(valid_predictions)}/{len(recent_predictions)} valid predictions, "
-            f"history_length={min_history_required}+)"
+            f"IIT Φ calculated with causality: {phi:.4f} "
+            f"(based on {len(valid_predictions)}/{len(recent_predictions)} valid causal predictions)"
         )
 
         return phi

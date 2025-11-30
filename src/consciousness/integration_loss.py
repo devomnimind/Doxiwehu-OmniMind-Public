@@ -198,9 +198,20 @@ class IntegrationTrainer:
                 for target_module in self.loop.executors.keys():
                     if module_name != target_module:
                         key = f"{module_name}→{target_module}"
-                        r2 = self.loop.workspace.compute_cross_prediction(
-                            module_name, target_module
-                        )
+
+                        # Try causal method first
+                        source_history_len = len(self.loop.workspace.get_module_history(module_name))
+                        target_history_len = len(self.loop.workspace.get_module_history(target_module))
+
+                        if source_history_len >= 10 and target_history_len >= 10:
+                            r2 = self.loop.workspace.compute_cross_prediction_causal(
+                                module_name, target_module, method="granger"
+                            )
+                        else:
+                            r2 = self.loop.workspace.compute_cross_prediction(
+                                module_name, target_module
+                            )
+
                         cross_predictions[key] = r2
 
         # Compute auxiliary metrics
@@ -267,7 +278,17 @@ class IntegrationTrainer:
             cross_predictions = {}
             for target_module in self.loop.executors.keys():
                 if module_name != target_module:
-                    r2 = self.loop.workspace.compute_cross_prediction(module_name, target_module)
+                    # Try causal method first
+                    source_history_len = len(self.loop.workspace.get_module_history(module_name))
+                    target_history_len = len(self.loop.workspace.get_module_history(target_module))
+
+                    if source_history_len >= 10 and target_history_len >= 10:
+                        r2 = self.loop.workspace.compute_cross_prediction_causal(
+                            module_name, target_module, method="granger"
+                        )
+                    else:
+                        r2 = self.loop.workspace.compute_cross_prediction(module_name, target_module)
+
                     cross_predictions[f"{module_name}→{target_module}"] = r2
 
             # Extract r_squared values for loss computation
