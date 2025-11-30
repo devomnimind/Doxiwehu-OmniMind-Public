@@ -256,9 +256,16 @@ class IntegrationLoop:
         self.cycle_count = 0
         self.total_cycles_executed = 0
         self.cycle_history: List[LoopCycleResult] = []
+        
+        # Structural ablation flag: silences expectation output (maintains history, blocks flow)
+        self.expectation_silent: bool = False
 
     async def execute_cycle(self, collect_metrics: bool = True) -> LoopCycleResult:
-        """Execute one complete integration loop cycle."""
+        """Execute one complete integration loop cycle.
+        
+        If expectation_silent=True, expectation module maintains history but 
+        blocks output flow (structural ablation: measures falta-a-ser gap).
+        """
         start_time = datetime.now()
         self.cycle_count += 1
         self.total_cycles_executed += 1
@@ -279,11 +286,20 @@ class IntegrationLoop:
         for module_name in self.loop_sequence:
             try:
                 executor = self.executors[module_name]
-                await executor.execute(self.workspace)
-                result.modules_executed.append(module_name)
+                
+                # If expectation_silent, execute but block output from expectation
+                if self.expectation_silent and module_name == "expectation":
+                    # Still execute (maintains history/state) but don't propagate output
+                    _ = await executor.execute(self.workspace)
+                    # Don't add to result.modules_executed to block information flow
+                    if self.enable_logging:
+                        logger.debug(f"Cycle {self.cycle_count}: {module_name} silenced (structural ablation)")
+                else:
+                    await executor.execute(self.workspace)
+                    result.modules_executed.append(module_name)
 
-                if self.enable_logging:
-                    logger.debug(f"Cycle {self.cycle_count}: {module_name} completed")
+                    if self.enable_logging:
+                        logger.debug(f"Cycle {self.cycle_count}: {module_name} completed")
 
             except Exception as e:
                 result.errors_occurred.append((module_name, str(e)))
