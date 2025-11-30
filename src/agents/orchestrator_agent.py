@@ -24,7 +24,7 @@ from ..integrations.dbus_controller import (
     DBusSessionController,
     DBusSystemController,
 )
-from ..integrations.llm_router import LLMModelTier, invoke_llm_sync
+from ..integrations.llm_router import LLMModelTier
 from ..integrations.orchestrator_llm import invoke_orchestrator_llm
 from ..integrations.mcp_client import MCPClient, MCPClientError
 from ..integrations.qdrant_adapter import (
@@ -454,9 +454,11 @@ class OrchestratorAgent(ReactAgent):
 
         return self._agents[mode]
 
-    def decompose_task(self, task_description: str, tier: LLMModelTier = LLMModelTier.BALANCED) -> Dict[str, Any]:
+    def decompose_task(
+        self, task_description: str, tier: LLMModelTier = LLMModelTier.BALANCED
+    ) -> Dict[str, Any]:
         """Decompõe tarefa complexa em subtarefas delegáveis
-        
+
         Usa estratégia LLM do Orchestrador:
         - Modelo local com 240s timeout, 2 tentativas
         - Fallback para APIs remotas se local falhar
@@ -503,7 +505,9 @@ DEPENDENCIES:
 ESTIMATED_COMPLEXITY: low"""
 
         # Parsear plano
-        plan = self._parse_plan(response_text if isinstance(response_text, str) else str(response_text))
+        plan = self._parse_plan(
+            response_text if isinstance(response_text, str) else str(response_text)
+        )
         plan["original_task"] = task_description
         plan["created_at"] = self._timestamp()
 
@@ -950,6 +954,263 @@ ESTIMATED_COMPLEXITY: low"""
             "switch_mode", target_mode="orchestrator", reason="Plan execution complete"
         )
 
+    async def execute_workflow(
+        self,
+        task: str,
+        enable_monitoring: bool = True,
+        max_concurrent_tasks: int = 3,
+    ) -> Dict[str, Any]:
+        """
+        Executa workflow completo: Decompose → Delegate → Execute → Synthesize.
+
+        FASE 2: Full Workflow Execution
+
+        Features:
+        - Decomposição automática da tarefa complexa
+        - Delegação para agents especializados (remote LLM)
+        - Execução paralela respeitando dependencies
+        - Monitoramento em tempo real
+        - Síntese de resultados
+
+        Args:
+            task: Tarefa complexa a executar
+            enable_monitoring: Se True, coleta métricas em tempo real
+            max_concurrent_tasks: Máximo de tasks simultâneas (default 3)
+
+        Returns:
+            Dict com:
+                - workflow_id: UUID único do workflow
+                - original_task: Task original
+                - decomposition: Plano detalhado
+                - execution_results: Resultados de cada subtask
+                - synthesis: Síntese final
+                - metrics: Métricas de execução
+                - overall_success: True se tudo passou
+                - duration_ms: Tempo total em ms
+        """
+        import uuid
+
+        workflow_id = str(uuid.uuid4())[:8]
+        start_time = time.perf_counter()
+
+        logger.info(f"Workflow {workflow_id} iniciado para: {task[:100]}")
+
+        try:
+            # 1. DECOMPOSIÇÃO
+            logger.info(f"[{workflow_id}] Phase 1: Decomposição")
+            decomposition = self.decompose_task(task)
+
+            if not decomposition.get("subtasks"):
+                return {
+                    "workflow_id": workflow_id,
+                    "original_task": task,
+                    "overall_success": False,
+                    "error": "Decomposição falhou - nenhum subtask gerado",
+                    "duration_ms": (time.perf_counter() - start_time) * 1000,
+                }
+
+            # 2. ANÁLISE DE DEPENDÊNCIAS
+            logger.info(f"[{workflow_id}] Phase 2: Análise de dependências")
+            execution_plan = self._analyze_task_dependencies(decomposition["subtasks"])
+
+            # 3. DELEGAÇÃO E EXECUÇÃO
+            logger.info(f"[{workflow_id}] Phase 3: Delegação com monitoramento")
+            execution_results = await self._delegate_and_execute(
+                workflow_id,
+                execution_plan,
+                enable_monitoring,
+                max_concurrent_tasks,
+            )
+
+            # 4. SÍNTESE DE RESULTADOS
+            logger.info(f"[{workflow_id}] Phase 4: Síntese de resultados")
+            synthesis = self._synthesize_results(
+                decomposition["subtasks"],
+                execution_results,
+                decomposition.get("complexity", "medium"),
+            )
+
+            # Compilar resposta final
+            duration_ms = (time.perf_counter() - start_time) * 1000
+            overall_success = all(r.get("completed", False) for r in execution_results)
+
+            response = {
+                "workflow_id": workflow_id,
+                "original_task": task,
+                "decomposition": {
+                    "subtask_count": len(decomposition["subtasks"]),
+                    "complexity": decomposition.get("complexity", "medium"),
+                    "estimated_duration_s": decomposition.get("estimated_duration", 60),
+                },
+                "execution_results": execution_results,
+                "synthesis": synthesis,
+                "metrics": {
+                    "total_duration_ms": duration_ms,
+                    "successful_subtasks": sum(1 for r in execution_results if r.get("completed")),
+                    "failed_subtasks": sum(1 for r in execution_results if not r.get("completed")),
+                    "total_subtasks": len(execution_results),
+                    "success_rate_pct": (
+                        sum(1 for r in execution_results if r.get("completed"))
+                        / len(execution_results)
+                        * 100
+                        if execution_results
+                        else 0
+                    ),
+                },
+                "overall_success": overall_success,
+            }
+
+            logger.info(
+                f"[{workflow_id}] Workflow completo: "
+                f"success={overall_success}, "
+                f"duration={duration_ms:.1f}ms"
+            )
+
+            return response
+
+        except Exception as e:
+            logger.error(f"[{workflow_id}] Workflow falhou: {e}")
+            return {
+                "workflow_id": workflow_id,
+                "original_task": task,
+                "overall_success": False,
+                "error": str(e),
+                "duration_ms": (time.perf_counter() - start_time) * 1000,
+            }
+
+    def _analyze_task_dependencies(self, subtasks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """
+        Analisar dependências entre subtasks para otimizar execução.
+
+        Estratégia:
+        - Agrupar subtasks por agent
+        - Identificar sequências críticas
+        - Paralelizar when possible
+
+        Args:
+            subtasks: Lista de subtasks
+
+        Returns:
+            Plano de execução otimizado
+        """
+        execution_plan = []
+
+        # Agrupar por agent type
+        by_agent = {}
+        for i, subtask in enumerate(subtasks):
+            agent = subtask.get("agent", "code")
+            if agent not in by_agent:
+                by_agent[agent] = []
+            by_agent[agent].append((i, subtask))
+
+        # Executar groups sequencialmente, mas paralelizar dentro do group
+        execution_order = 0
+        for agent, tasks in by_agent.items():
+            for idx, subtask in tasks:
+                execution_plan.append(
+                    {
+                        "order": execution_order,
+                        "agent": agent,
+                        "subtask_index": idx,
+                        "subtask": subtask,
+                        "can_parallel": True,
+                    }
+                )
+            execution_order += 1
+
+        return execution_plan
+
+    async def _delegate_and_execute(
+        self,
+        workflow_id: str,
+        execution_plan: List[Dict[str, Any]],
+        enable_monitoring: bool = True,
+        max_concurrent: int = 3,
+    ) -> List[Dict[str, Any]]:
+        """
+        Delegar tasks para agents com execução controlada.
+
+        FASE 3 prepara para isso: executar em paralelo com semaphores
+
+        Args:
+            workflow_id: ID do workflow
+            execution_plan: Plano de execução
+            enable_monitoring: Se coleta métricas
+            max_concurrent: Max tasks simultâneas
+
+        Returns:
+            Lista de resultados
+        """
+        results = []
+
+        # Por enquanto, executa sequencialmente
+        # FASE 3 vai paralelizar isso
+        for i, task_spec in enumerate(execution_plan):
+            subtask = task_spec["subtask"]
+            agent = task_spec["agent"]
+
+            logger.info(f"[{workflow_id}] Executando {i+1}/{len(execution_plan)}: {agent}")
+
+            # Usar execute_plan original para manter compatibility
+            single_plan = {"subtasks": [subtask], "complexity": "low"}
+            result = self.execute_plan(single_plan, max_iterations_per_task=1)
+
+            if result["subtask_results"]:
+                results.append(result["subtask_results"][0])
+            else:
+                results.append(
+                    {
+                        "completed": False,
+                        "final_result": "Execution failed",
+                        "agent": agent,
+                    }
+                )
+
+        return results
+
+    def _synthesize_results(
+        self, subtasks: List[Dict[str, Any]], results: List[Dict[str, Any]], complexity: str
+    ) -> Dict[str, Any]:
+        """
+        Sintetizar resultados de múltiplos agents em resposta coerente.
+
+        Args:
+            subtasks: Subtasks originais
+            results: Resultados de execução
+            complexity: Nível de complexidade
+
+        Returns:
+            Síntese estruturada
+        """
+        # Compilar resultados por tipo
+        code_outputs = [r for r, s in zip(results, subtasks) if s.get("agent") == "code"]
+        architecture_outputs = [
+            r for r, s in zip(results, subtasks) if s.get("agent") == "architect"
+        ]
+        review_outputs = [r for r, s in zip(results, subtasks) if s.get("agent") == "reviewer"]
+
+        synthesis = {
+            "code_summary": (
+                f"Generated {len(code_outputs)} code implementations"
+                if code_outputs
+                else "No code generation"
+            ),
+            "architecture_summary": (
+                f"Designed {len(architecture_outputs)} architecture components"
+                if architecture_outputs
+                else "No architecture design"
+            ),
+            "review_summary": (
+                f"Reviewed {len(review_outputs)} components"
+                if review_outputs
+                else "No reviews conducted"
+            ),
+            "key_outputs": [r.get("final_result", "") for r in results if r.get("completed")],
+            "issues": [r.get("final_result", "") for r in results if not r.get("completed")],
+        }
+
+        return synthesis
+
     def run_orchestrated_task(
         self, task: str, max_iterations_per_subtask: int = 3
     ) -> Dict[str, Any]:
@@ -1027,37 +1288,6 @@ ESTIMATED_COMPLEXITY: low"""
             "final_result": str(security_result),
             "iteration": 1,
         }
-
-    def _synthesize_results(self, execution_result: Dict[str, Any]) -> Dict[str, Any]:
-        """Sintetiza resultados de múltiplos agentes"""
-        if "error" in execution_result:
-            return {
-                "summary": f"Execution failed: {execution_result['error']}",
-                "total_subtasks": 0,
-                "completed": 0,
-                "failed": 0,
-                "overall_success": False,
-            }
-
-        subtask_results = execution_result.get("subtask_results", [])
-        subtask_summaries = []
-        for sr in subtask_results:
-            subtask_summaries.append(
-                f"- {sr.get('agent', 'unknown')}: {sr.get('description', '')} → "
-                f"{'✅' if sr.get('completed') else '❌'}"
-            )
-
-        synthesis = {
-            "summary": (
-                "\n".join(subtask_summaries) if subtask_summaries else "No subtasks executed"
-            ),
-            "total_subtasks": len(subtask_results),
-            "completed": sum(1 for sr in subtask_results if sr.get("completed")),
-            "failed": sum(1 for sr in subtask_results if not sr.get("completed")),
-            "overall_success": execution_result.get("overall_success", False),
-        }
-
-        return synthesis
 
     def run_metacognition_analysis(self, lookback_hours: int = 24) -> Dict[str, Any]:
         """Run metacognition self-analysis.

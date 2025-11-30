@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 class OrchestratorLLMStrategy:
     """Specialized LLM strategy for Orchestrator (brain of OmniMind).
-    
+
     Key properties:
     - Local-first: Ollama with 240s timeout (complex decompositions)
     - 2 retry attempts on local before fallback
@@ -38,19 +38,19 @@ class OrchestratorLLMStrategy:
 
     def invoke(self, prompt: str) -> LLMResponse:
         """Invoke orchestrator LLM with local-first fallback strategy.
-        
+
         Attempts Ollama locally first with 240s timeout and 2 retries.
         Then falls back to HuggingFace Space and OpenRouter if needed.
         Always returns LLMResponse with non-None text.
-        
+
         Args:
             prompt: Task decomposition prompt
-            
+
         Returns:
             LLMResponse (guaranteed non-None with text)
         """
         logger.info("🪃 [Orchestrator] LLM decomposition starting...")
-        
+
         # Try local Ollama (2 attempts)
         for attempt in range(1, self.max_local_attempts + 1):
             logger.info(
@@ -75,12 +75,12 @@ class OrchestratorLLMStrategy:
 
     def _invoke_ollama(self, prompt: str) -> Optional[LLMResponse]:
         """Invoke Ollama locally using synchronous client.
-        
+
         Direct sync call to Ollama to avoid asyncio deadlocks in pytest context.
-        
+
         Args:
             prompt: Task decomposition prompt
-            
+
         Returns:
             LLMResponse if successful, None on timeout/error
         """
@@ -90,19 +90,19 @@ class OrchestratorLLMStrategy:
 
             # Create sync client (no asyncio)
             client = Client(host=self.ollama_base_url)
-            
+
             logger.debug(f"Calling ollama.Client.generate with timeout={self.local_timeout}s")
             start = time.time()
-            
+
             response = client.generate(
                 model=self.ollama_model,
                 prompt=prompt,
                 stream=False,
             )
-            
+
             elapsed = time.time() - start
             logger.debug(f"Ollama completed in {elapsed:.1f}s")
-            
+
             return LLMResponse(
                 success=True,
                 text=response.get("response", ""),
@@ -118,12 +118,12 @@ class OrchestratorLLMStrategy:
 
     def _invoke_remote_fallback(self, prompt: str) -> LLMResponse:
         """Fallback to remote LLM APIs (HuggingFace Space, OpenRouter).
-        
+
         Always returns a response (never None).
-        
+
         Args:
             prompt: Task decomposition prompt
-            
+
         Returns:
             LLMResponse with text (may be degraded fallback if all fail)
         """
@@ -140,7 +140,7 @@ class OrchestratorLLMStrategy:
                 )
             )
             loop.close()
-            
+
             if response and response.success and response.text:
                 logger.info(f"   ✅ HF Space success: {len(response.text)} chars")
                 return response
@@ -161,7 +161,7 @@ class OrchestratorLLMStrategy:
                 )
             )
             loop.close()
-            
+
             if response and response.success and response.text:
                 logger.info(f"   ✅ OpenRouter success: {len(response.text)} chars")
                 return response
@@ -204,7 +204,7 @@ _orchestrator_llm: Optional[OrchestratorLLMStrategy] = None
 
 def get_orchestrator_llm() -> OrchestratorLLMStrategy:
     """Get or create orchestrator LLM strategy (singleton).
-    
+
     Returns:
         OrchestratorLLMStrategy instance
     """
@@ -216,12 +216,12 @@ def get_orchestrator_llm() -> OrchestratorLLMStrategy:
 
 def invoke_orchestrator_llm(prompt: str) -> LLMResponse:
     """Convenience function to invoke orchestrator LLM.
-    
+
     Orchestrator is the brain - uses local-first strategy with fallback.
-    
+
     Args:
         prompt: Task decomposition prompt
-        
+
     Returns:
         LLMResponse with guaranteed non-None text
     """
