@@ -51,10 +51,15 @@ def test_generate_cert_md(tmp_path: Path) -> None:
     mock_dir = tmp_path / "mock"
     mock_dir.mkdir()
     (mock_dir / "ibm_query_usage.json").write_text(json.dumps({"queries": [{"id": 1}]}))
-    
+
     cert = QuantumCertifier()
     output = tmp_path / "cert.md"
-    cert.generate_cert_md(mock_dir, validation={"validation_results": {"pqk_score": 0.9}}, advantage=True, output_path=output)
+    cert.generate_cert_md(
+        mock_dir,
+        validation={"validation_results": {"pqk_score": 0.9}},
+        advantage=True,
+        output_path=output,
+    )
     assert output.exists()
     with open(output) as f:
         assert "Quantum Advantage" in f.read()
@@ -76,8 +81,10 @@ def test_main_success(monkeypatch: MonkeyPatch, tmp_path: Path) -> None:
     input_dir = tmp_path / "input"
     input_dir.mkdir()
     (input_dir / "ibm_query_usage.json").write_text(json.dumps({"queries": [{"id": 1}]}))
-    (input_dir / "ibm_validation_result.json").write_text(json.dumps({"validation_results": {"pqk_score": 0.9}}))
-    
+    (input_dir / "ibm_validation_result.json").write_text(
+        json.dumps({"validation_results": {"pqk_score": 0.9}})
+    )
+
     monkeypatch.setattr(
         "sys.argv", ["script", "--input", str(input_dir), "--output", str(tmp_path / "out.md")]
     )

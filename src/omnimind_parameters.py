@@ -147,7 +147,9 @@ class ParameterManager:
 
                 # Validar que data é um dicionário
                 if not isinstance(data, dict):
-                    logger.warning(f"Configuração inválida: esperava dict, got {type(data).__name__}")
+                    logger.warning(
+                        f"Configuração inválida: esperava dict, got {type(data).__name__}"
+                    )
                     logger.info("Usando parâmetros padrão")
                     return
 
@@ -157,7 +159,9 @@ class ParameterManager:
                         category_obj = getattr(self, category)
                         # Validar que params é um dicionário
                         if not isinstance(params, dict):
-                            logger.warning(f"Parâmetros de {category} inválidos: {type(params).__name__}")
+                            logger.warning(
+                                f"Parâmetros de {category} inválidos: {type(params).__name__}"
+                            )
                             continue
                         for key, value in params.items():
                             if hasattr(category_obj, key):

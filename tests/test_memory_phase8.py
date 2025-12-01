@@ -121,7 +121,7 @@ class DummyQdrantClient:
         **kwargs: Any,
     ) -> None:
         to_remove = points or ids or []
-        
+
         # Handle PointIdsList wrapper from kwargs
         if "points_selector" in kwargs:
             selector = kwargs["points_selector"]
@@ -129,7 +129,7 @@ class DummyQdrantClient:
                 to_remove = selector.points
             else:
                 to_remove = selector if isinstance(selector, list) else []
-        
+
         for point_id in to_remove:
             key = str(point_id)
             if key in self.store:

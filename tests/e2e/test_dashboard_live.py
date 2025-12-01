@@ -123,17 +123,19 @@ async def test_daemon_endpoints(async_client):
     Requer autenticação (BasicAuth).
     """
     max_retries = 3
-    
+
     for attempt in range(max_retries):
         try:
             # Check /daemon/status
             status_resp = await async_client.get("/daemon/status", timeout=60.0)
-            
+
             # Aceitar 401 se auth não estiver configurada (endpoint existe mas precisa auth)
             if status_resp.status_code == 401:
                 pytest.skip("Dashboard auth required - credenciais não configuradas")
-            
-            assert status_resp.status_code == 200, f"/daemon/status failed: {status_resp.status_code}"
+
+            assert (
+                status_resp.status_code == 200
+            ), f"/daemon/status failed: {status_resp.status_code}"
             status_data = status_resp.json()
             assert "running" in status_data
             assert "system_metrics" in status_data
@@ -148,7 +150,7 @@ async def test_daemon_endpoints(async_client):
             assert "tasks" in tasks_data
             assert isinstance(tasks_data["tasks"], list)
             break
-            
+
         except (httpx.TimeoutException, httpx.ConnectError) as e:
             if attempt < max_retries - 1:
                 await asyncio.sleep(2)  # Máquina sob contenção, esperar mais

@@ -108,7 +108,7 @@ def test_sinthome_as_system_identity():
     HIPÓTESE: O Sinthome é a assinatura única do sistema.
     """
     from src.sinthome.emergent_stabilization_rule import LacanianRegister
-    
+
     sinthome = SinthomaticStabilizationRule(system_name="OmniMind_Test")
 
     test_scenarios = [
@@ -121,12 +121,12 @@ def test_sinthome_as_system_identity():
         sinthome.process_rupture(
             register=LacanianRegister.SYMBOLIC,
             error_context=scenario,
-            error_type="irresolvable_conflict"
+            error_type="irresolvable_conflict",
         )
 
     # Tentar aplicar Sinthome
     sinthomaticDecision = sinthome.apply_sinthome_when_irresolvable(test_scenarios[0])
-    
+
     # Validar decisão (pode ser None se Sinthome não emergiu com pouca história)
     if sinthomaticDecision:
         # API nova retorna 'is_singular' não 'is_arbitrary'

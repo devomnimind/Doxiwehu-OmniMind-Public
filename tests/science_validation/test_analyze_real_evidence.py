@@ -113,7 +113,9 @@ def test_ablation_data_optional_handles_missing(
     assert data.baseline_phi is None if missing_field == "baseline_phi" else 0.9425
 
 
-def test_main_end_to_end(tmp_path: Path, monkeypatch: MonkeyPatch, mock_ablation_json: Dict[str, Any]) -> None:
+def test_main_end_to_end(
+    tmp_path: Path, monkeypatch: MonkeyPatch, mock_ablation_json: Dict[str, Any]
+) -> None:
     """Testa main() completo com mocks."""
     mock_input = tmp_path / "mock_real_evidence"
     mock_input.mkdir()

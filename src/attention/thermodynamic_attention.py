@@ -163,7 +163,7 @@ class ThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):  # type:
         # Project to entropy computation space
         # Ensure entropy_projection is on correct device
         device = representations.device
-        
+
         # Handle meta tensor device issues
         param = next(self.entropy_projection.parameters(), None)
         if param is not None and param.device.type == "meta":
@@ -172,7 +172,7 @@ class ThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):  # type:
         else:
             # Standard device movement
             self.entropy_projection = self.entropy_projection.to(device)
-        
+
         projected = self.entropy_projection(representations)
 
         # Compute probability distribution per position
@@ -311,7 +311,7 @@ class MultiHeadThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):
 
         # Ensure all modules are on the same device as inputs
         device = query.device
-        
+
         # Use to_empty() for modules that may be on meta device
         def safe_move_to_device(module: nn.Module, target_device: torch.device) -> None:
             """Safely move module to target device, handling meta tensors."""
@@ -324,13 +324,13 @@ class MultiHeadThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):
             except RuntimeError:
                 # Fallback: ensure module is properly initialized
                 module.to(target_device)
-        
+
         # Move projection layers
         safe_move_to_device(self.q_proj, device)
         safe_move_to_device(self.k_proj, device)
         safe_move_to_device(self.v_proj, device)
         safe_move_to_device(self.out_proj, device)
-        
+
         # Move attention heads
         for head in self.attention_heads:
             safe_move_to_device(head, device)

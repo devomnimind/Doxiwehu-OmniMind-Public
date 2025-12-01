@@ -238,7 +238,7 @@ def is_command_safe(command: Sequence[str]) -> bool:
     base_cmd = command[0]
     # Extrair nome do comando (ignora caminho completo)
     cmd_name = os.path.basename(base_cmd) if "/" in base_cmd else base_cmd
-    
+
     if cmd_name not in SAFE_COMMANDS:
         logger.warning(f"Comando base não permitido: {base_cmd}")
         return False
