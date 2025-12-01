@@ -155,7 +155,60 @@ class ApiService {
   async resetMetrics(): Promise<{ message: string }> {
     return this.request('/daemon/reset-metrics', { method: 'POST' });
   }
-}
+
+  // ============================================================================
+  // NEW ENDPOINTS (Phase 8.2 Dashboard Integration)
+  // ============================================================================
+
+  async getHealthStatus(): Promise<any> {
+    return this.get('/health/');
+  }
+
+  async getSecurityOverview(): Promise<any> {
+    return this.get('/api/security/');
+  }
+
+  async getSecurityStatus(): Promise<any> {
+    return this.get('/api/security/status');
+  }
+
+  async getSecurityEvents(
+    eventType?: string,
+    severity?: string,
+    limit?: number
+  ): Promise<any> {
+    const params = new URLSearchParams();
+    if (eventType) params.append('event_type', eventType);
+    if (severity) params.append('severity', severity);
+    if (limit) params.append('limit', limit.toString());
+
+    const query = params.toString();
+    return this.get(`/api/security/events${query ? '?' + query : ''}`);
+  }
+
+  async getMetacognitionOverview(): Promise<any> {
+    return this.get('/api/metacognition/');
+  }
+
+  async getMetacognitionInsights(): Promise<any> {
+    return this.get('/api/metacognition/insights');
+  }
+
+  async getMetricsData(): Promise<any> {
+    return this.get('/api/metrics');
+  }
+
+  async getAgents(): Promise<any> {
+    return this.get('/api/agents/');
+  }
+
+  async getTasks(): Promise<any> {
+    return this.get('/api/tasks/');
+  }
+
+  async getWebSocketInfo(): Promise<any> {
+    return this.get('/ws');
+  }
 
 export const apiService = new ApiService();
 apiService.setDefaultCredentials();
