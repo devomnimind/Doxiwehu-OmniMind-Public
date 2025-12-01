@@ -12,8 +12,9 @@ os.environ["PYTEST_DISABLE_PLUGIN_AUTOLOAD"] = "0"
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
-# Import custom timeout retry plugin
+# Import custom plugins
 from pytest_timeout_retry import TimeoutRetryPlugin
+from pytest_server_monitor import ServerMonitorPlugin
 
 # Servidor endpoints
 DASHBOARD_URL = "http://localhost:5173"
@@ -21,7 +22,7 @@ API_URL = "http://localhost:8000"
 
 
 def pytest_configure(config):
-    """Register custom markers and plugin."""
+    """Register custom markers and plugins."""
     config.addinivalue_line(
         "markers", "computational: mark test as computationally intensive (GPU/Quantum/Consciousness)"
     )
@@ -38,21 +39,20 @@ def pytest_configure(config):
         "markers", "e2e: mark test as end-to-end (requer servidor)"
     )
     
-    # Register timeout retry plugin
+    # Register custom plugins
     config.pluginmanager.register(TimeoutRetryPlugin(), "timeout_retry")
+    config.pluginmanager.register(ServerMonitorPlugin(), "server_monitor")
 
 
 def pytest_collection_modifyitems(config, items):
     """
-    Auto-mark tests com timeout progressivo (240s → 800s máximo).
+    Auto-mark tests com TIMEOUT PROGRESSIVO (240s → 800s máximo).
     
-    Estratégia:
-    - Fast tests: 120s
-    - Ollama: 240-400s (progressivo)
-    - Computational: 300-500s (progressivo)
-    - Heavy: 600-800s (progressivo)
-    
-    NUNCA falha por timeout - deixa rodar até máximo.
+    ESTRATÉGIA CRÍTICA:
+    - Timeout NÃO é falha - deixa rodar até máximo
+    - Começa em base, vai aumentando progressivamente
+    - Fast: 120s | Ollama: 240s | Computational: 300s | Heavy: 600s | E2E: 400s
+    - MÁXIMO ABSOLUTO: 800s para qualquer teste
     """
     ollama_paths = [
         "phase16_integration",
@@ -92,24 +92,24 @@ def pytest_collection_modifyitems(config, items):
         if existing_timeout:
             item.own_markers.remove(existing_timeout)
         
-        # Determina timeout apropriado (progressivo para evitar falhas)
+        # Determina timeout PROGRESSIVO
         timeout_value = 120  # default
         
-        # E2E: 400-600s (requer servidor UP)
+        # E2E: começa 400s (vai até 600s via plugin se precisar)
         if any(path in item_path for path in e2e_paths):
             timeout_value = 400
             item.add_marker(pytest.mark.e2e)
-        # Heavy computational: 700-800s
+        # Heavy computational: começa 600s (vai até 800s se precisar)
         elif any(path in item_path for path in heavy_paths):
-            timeout_value = 800
+            timeout_value = 600
             item.add_marker(pytest.mark.computational)
-        # Ollama: 240-400s (progressivo)
+        # Ollama: começa 240s (vai até 400s se precisar)
         elif any(path in item_path or path in test_name for path in ollama_paths):
-            timeout_value = 350  # Começa em 240, pode ir até 400
+            timeout_value = 240
             item.add_marker(pytest.mark.computational)
-        # Regular computational: 300-500s
+        # Regular computational: começa 300s (vai até 500s se precisar)
         elif any(path in item_path for path in computational_paths):
-            timeout_value = 450  # Começa em 300, pode ir até 500
+            timeout_value = 300
             item.add_marker(pytest.mark.computational)
         
         # Aplica timeout
@@ -119,59 +119,23 @@ def pytest_collection_modifyitems(config, items):
 def check_server_health() -> bool:
     """Verifica se servidor está UP."""
     try:
-        # Tenta API
         resp = requests.get(f"{API_URL}/health", timeout=2)
         return resp.status_code in (200, 404)
-    except Exception:
-        pass
-    
-    try:
-        # Tenta Dashboard
-        resp = requests.get(DASHBOARD_URL, timeout=2)
-        return resp.status_code in (200, 304, 404)
     except Exception:
         pass
     
     return False
 
 
-def start_server_if_needed():
-    """Inicia servidor se não estiver UP."""
-    if check_server_health():
-        print("✅ Servidor já está UP")
-        return True
-    
-    print("⏳ Servidor DOWN - tentando iniciar...")
-    try:
-        # Tenta iniciar servidor (docker-compose ou python -m)
-        subprocess.Popen(
-            ["docker-compose", "up", "-d"],
-            cwd="/home/fahbrain/projects/omnimind/deploy",
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
-        
-        # Aguarda 10s
-        for _ in range(10):
-            time.sleep(1)
-            if check_server_health():
-                print("✅ Servidor iniciado com sucesso")
-                return True
-        
-        print("⚠️  Servidor não respondeu (testes E2E podem falhar)")
-        return False
-    except Exception as e:
-        print(f"⚠️  Erro ao iniciar servidor: {e}")
-        return False
-
-
-# Inicia servidor na primeira execução de teste E2E
+# Fixture de conveniência (opcional - plugin já cuida disso)
 @pytest.fixture(scope="session", autouse=False)
 def server_health():
     """Fixture que garante servidor UP para E2E tests."""
-    start_server_if_needed()
+    for _ in range(10):
+        time.sleep(1)
+        if check_server_health():
+            break
     yield
-    # Cleanup (opcional)
 
 
 

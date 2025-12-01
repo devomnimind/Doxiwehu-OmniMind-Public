@@ -1,0 +1,128 @@
+"""
+Pytest plugin para monitorar e auto-recuperar servidor durante testes.
+
+Se servidor cair durante execução:
+1. Detecta queda
+2. Registra qual teste derrubou
+3. Reinicia servidor automaticamente
+4. Testes E2E subsequentes usam servidor novo
+"""
+
+import subprocess
+import requests
+import time
+import pytest
+import os
+
+
+class ServerMonitorPlugin:
+    """Monitora saúde do servidor durante testes."""
+    
+    def __init__(self):
+        self.backend_url = "http://localhost:8000"
+        self.server_process = None
+        self.server_was_down = False
+        self.crashed_tests = []
+    
+    def pytest_configure(self, config):
+        """Inicializa monitoring na configuração."""
+        # Inicia servidor se não estiver UP
+        if not self._is_server_healthy():
+            self._start_server()
+    
+    def pytest_runtest_setup(self, item):
+        """Antes de cada teste: verifica se servidor está UP."""
+        # Apenas para testes que precisam de servidor
+        if self._needs_server(item):
+            if not self._is_server_healthy():
+                print(f"\n⚠️  Servidor DOWN antes de {item.name} - reiniciando...")
+                self._start_server()
+    
+    def pytest_runtest_makereport(self, item, call):
+        """Detecta se teste derrubou servidor."""
+        if call.when == "call":
+            # Verifica se servidor caiu após o teste
+            if not self._is_server_healthy():
+                self.crashed_tests.append(item.name)
+                self.server_was_down = True
+                print(f"\n⚠️  Servidor DOWN após {item.name} - reiniciando...")
+                self._start_server()
+    
+    def pytest_runtest_teardown(self, item):
+        """Após cada teste: garante servidor UP para próximo."""
+        if self._needs_server(item) and self.server_was_down:
+            self._wait_for_server()
+    
+    def _is_server_healthy(self) -> bool:
+        """Verifica se servidor está respondendo."""
+        try:
+            resp = requests.get(f"{self.backend_url}/health", timeout=2)
+            return resp.status_code in (200, 404)
+        except Exception:
+            return False
+    
+    def _needs_server(self, item) -> bool:
+        """Verifica se teste precisa de servidor."""
+        e2e_markers = ["e2e", "endpoint", "dashboard"]
+        item_path = str(item.fspath).lower()
+        
+        return any(marker in item_path for marker in e2e_markers)
+    
+    def _start_server(self):
+        """Inicia servidor via docker-compose ou python."""
+        print("🚀 Iniciando servidor...")
+        
+        try:
+            # Tenta docker-compose primeiro
+            deploy_dir = os.path.join(
+                os.path.dirname(__file__), "deploy"
+            )
+            
+            if os.path.exists(deploy_dir):
+                subprocess.Popen(
+                    ["docker-compose", "up", "-d"],
+                    cwd=deploy_dir,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+            else:
+                # Fallback: python direto
+                subprocess.Popen(
+                    [
+                        "python", "-m", "uvicorn",
+                        "src.api.main:app",
+                        "--host", "0.0.0.0",
+                        "--port", "8000"
+                    ],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+            
+            self._wait_for_server()
+            print("✅ Servidor iniciado com sucesso")
+        
+        except Exception as e:
+            print(f"❌ Erro ao iniciar servidor: {e}")
+    
+    def _wait_for_server(self, max_attempts=10):
+        """Aguarda servidor ficar saudável."""
+        for attempt in range(max_attempts):
+            if self._is_server_healthy():
+                return
+            time.sleep(1)
+        
+        raise RuntimeError(f"Servidor não ficou saudável em {max_attempts}s")
+    
+    def pytest_sessionfinish(self, session):
+        """Ao final: exibe relatório de servidores derrubados."""
+        if self.crashed_tests:
+            print("\n" + "="*60)
+            print("⚠️  TESTES QUE DERRUBARAM O SERVIDOR:")
+            for test_name in self.crashed_tests:
+                print(f"   - {test_name}")
+            print("="*60)
+
+
+def pytest_configure(config):
+    """Registra plugin de monitoramento."""
+    config.pluginmanager.register(ServerMonitorPlugin(), "server_monitor")
