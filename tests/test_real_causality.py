@@ -6,15 +6,21 @@ Verifica se Granger + Transfer Entropy funcionam com dados reais
 do sistema de consciência, não apenas dados sintéticos.
 """
 
-import sys
 import os
+import sys
+from pathlib import Path
+
 import numpy as np
-from datetime import datetime
 
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+sys.path.insert(0, str(Path(__file__).parent / "scripts/science_validation"))
 
-from consciousness.shared_workspace import SharedWorkspace
+try:
+    from src.consciousness.shared_workspace import SharedWorkspace
+except ImportError as e:
+    print(f"Failed to import: {e}")
+    raise
 
 
 def test_real_data_causality():
@@ -129,7 +135,7 @@ def test_real_data_causality():
     total_predictions = len(results)
     accuracy = correct_predictions / total_predictions
 
-    print(f"\n📈 Estatísticas:")
+    print("\n📈 Estatísticas:")
     print(f"   Acurácia: {accuracy:.1%} ({correct_predictions}/{total_predictions})")
     print(f"   Φ final: {phi:.4f}")
 

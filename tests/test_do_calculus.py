@@ -8,23 +8,30 @@ Este teste implementa o critério de Pearl (2009) para causalidade:
 - Aplicado a Φ: intervenção em módulos deve afetar Φ
 """
 
-import numpy as np
-import sys
-import os
-from typing import Dict, List, Tuple, Any
-from pathlib import Path
 import json
-import time
 import logging
+import sys
+import time
+from pathlib import Path
+from typing import Any, Dict, List
 
-# Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+import numpy as np
 
-from consciousness.shared_workspace import SharedWorkspace
-from omnimind_parameters import get_parameter_manager
-
+# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Add src to path
+project_root = Path(__file__).parent.parent
+src_path = project_root / "src"
+sys.path.insert(0, str(src_path))
+
+try:
+    from src.consciousness.shared_workspace import SharedWorkspace
+    from omnimind_parameters import get_parameter_manager  # type: ignore[import-untyped]
+except ImportError as e:
+    logger.error(f"Failed to import: {e}")
+    raise
 
 
 class DoCalculusValidator:
@@ -89,12 +96,10 @@ class DoCalculusValidator:
 
         logger.info("📊 RESULTADO DO-CALCULUS:")
         logger.info(f"   Efeito Causal Médio: {causal_analysis['mean_causal_effect']:.4f}")
-        logger.info(
-            f"   Efeito Significativo: {'✅ SIM' if significance_test['causal_effect_significant'] else '❌ NÃO'}"
-        )
-        logger.info(
-            f"   Critério Causal: {'✅ ATENDIDO' if test_results['causal_criterion_met'] else '❌ NÃO ATENDIDO'}"
-        )
+        sig_str = "✅ SIM" if significance_test["causal_effect_significant"] else "❌ NÃO"
+        logger.info(f"   Efeito Significativo: {sig_str}")
+        crit_str = "✅ ATENDIDO" if test_results["causal_criterion_met"] else "❌ NÃO ATENDIDO"
+        logger.info(f"   Critério Causal: {crit_str}")
 
         return test_results
 
@@ -273,9 +278,8 @@ def main():
 
     print("\n🔬 TESTE 5 DO-CALCULUS CONCLUÍDO")
     print(f"Efeito Causal Médio: {results['causal_analysis']['mean_causal_effect']:.4f}")
-    print(
-        f"Efeito Significativo: {'✅ SIM' if results['significance_test']['causal_effect_significant'] else '❌ NÃO'}"
-    )
+    sig_str = "✅ SIM" if results["significance_test"]["causal_effect_significant"] else "❌ NÃO"
+    print(f"Efeito Significativo: {sig_str}")
     print(
         f"Critério Causal: {'✅ ATENDIDO' if results['causal_criterion_met'] else '❌ NÃO ATENDIDO'}"
     )

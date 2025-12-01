@@ -59,9 +59,13 @@ import numpy as np
 import structlog
 
 try:
-    from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
-    from qiskit.quantum_info import Statevector
-    from qiskit_aer import AerSimulator
+    from qiskit import (  # type: ignore[import-untyped]
+        ClassicalRegister,
+        QuantumCircuit,
+        QuantumRegister,
+    )
+    from qiskit.quantum_info import Statevector  # type: ignore[import-untyped]
+    from qiskit_aer import AerSimulator  # type: ignore[import-untyped]
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -611,6 +615,8 @@ class QuantumCognitionEngine:
         qc.measure_all()
 
         # Execute on quantum simulator
+        if self.simulator is None:
+            raise ImportError(QISKIT_ERROR_MSG)
         job = self.simulator.run(qc, shots=shots)
         result = job.result()
         counts = result.get_counts()
@@ -897,8 +903,8 @@ class QuantumDecisionMaker:
             "total_decisions": len(decisions),
             "avg_entropy": float(np.mean(entropies)) if entropies else 0.0,
             "avg_confidence": float(np.mean(confidences)) if confidences else 0.0,
-            "entropy_std": float(np.std(entropies)) if entropies else 0.0,
-            "confidence_std": float(np.std(confidences)) if confidences else 0.0,
+            "entropy_std": np.std(entropies).astype(float) if entropies else 0.0,
+            "confidence_std": np.std(confidences).astype(float) if confidences else 0.0,
         }
 
         # Check for quantum characteristics

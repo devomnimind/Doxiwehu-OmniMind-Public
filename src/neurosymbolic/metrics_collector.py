@@ -9,7 +9,7 @@ import statistics
 import time
 from collections import deque
 from dataclasses import dataclass, field
-from typing import Dict, Optional
+from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -138,7 +138,7 @@ class NeuralMetricsCollector:
         """Retorna métricas de todos os backends."""
         return self.backends.copy()
 
-    def get_summary(self) -> Dict[str, any]:
+    def get_summary(self) -> Dict[str, Any]:
         """
         Retorna resumo consolidado de métricas.
 

@@ -359,7 +359,8 @@ class CopilotProvider(ExternalAIProvider):
             self.token = await self._get_oauth_token()
         else:
             # Usar PAT diretamente
-            self.token = os.getenv(self.config.get("github_token_env", "GITHUB_TOKEN"))
+            token_env_var = os.getenv(self.config.get("github_token_env", "GITHUB_TOKEN"))
+            self.token = token_env_var if token_env_var else ""
 
         if not self.token:
             raise ValueError("GitHub token não configurada")

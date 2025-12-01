@@ -70,9 +70,11 @@ from typing import Any, Dict, List, Optional
 import structlog
 
 try:
-    from qiskit import QuantumCircuit
-    from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
-    from qiskit_aer import AerSimulator
+    from qiskit import QuantumCircuit  # type: ignore[import-untyped]
+    from qiskit.transpiler.preset_passmanagers import (  # type: ignore[import-untyped]
+        generate_preset_pass_manager,
+    )
+    from qiskit_aer import AerSimulator  # type: ignore[import-untyped]
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -87,7 +89,7 @@ try:
     CIRQ_AVAILABLE = True
 except ImportError:
     CIRQ_AVAILABLE = False
-    cirq = None
+    cirq = None  # type: ignore[assignment]
 
 logger = structlog.get_logger(__name__)
 
@@ -490,7 +492,7 @@ class IBMQBackend(QPUBackend):
         try:
             # Try new qiskit-ibm-runtime (Qiskit 1.0+)
             try:
-                from qiskit_ibm_runtime import QiskitRuntimeService
+                from qiskit_ibm_runtime import QiskitRuntimeService  # type: ignore[import-untyped]
 
                 # Use correct channel name for current qiskit-ibm-runtime version
                 # 'ibm_quantum' was deprecated, use 'ibm_cloud' or 'ibm_quantum_platform'
@@ -584,7 +586,7 @@ class IBMQBackend(QPUBackend):
 
             logger.info(
                 "ibmq_execution_complete",
-                backend=self.ibm_backend.name,
+                backend=self.ibm_backend.name if self.ibm_backend else "unknown",
                 shots=shots,
                 num_outcomes=len(counts),
                 job_id=str(job.job_id()),

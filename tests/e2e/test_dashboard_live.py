@@ -18,10 +18,10 @@ async def test_health_endpoint_availability():
         assert root_resp.status_code == 200, f"Root endpoint failed: {root_resp.status_code}"
 
         # Check health with slash
-        response = await client.get(f"{API_URL}/api/v1/health/")
+        response = await client.get(f"{API_URL}/health/")
         if response.status_code == 404:
             # Try without slash
-            response = await client.get(f"{API_URL}/api/v1/health")
+            response = await client.get(f"{API_URL}/health")
 
         assert response.status_code == 200, f"Health endpoint failed with {response.status_code}"
         data = response.json()
@@ -35,7 +35,7 @@ async def test_health_data_freshness():
     Verify that the health data is fresh (timestamp is recent).
     """
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{API_URL}/api/v1/health/")
+        response = await client.get(f"{API_URL}/health/")
         assert response.status_code == 200
         data = response.json()
 
@@ -55,7 +55,7 @@ async def test_health_checks_structure():
     Verify that specific checks (cpu, memory, disk) are present and structured correctly.
     """
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{API_URL}/api/v1/health/")
+        response = await client.get(f"{API_URL}/health/")
         data = response.json()
         checks = data.get("checks", {})
 
@@ -72,7 +72,7 @@ async def test_health_trend_endpoint():
     Verify the trend endpoint for a specific check.
     """
     async with httpx.AsyncClient() as client:
-        response = await client.get(f"{API_URL}/api/v1/health/cpu/trend")
+        response = await client.get(f"{API_URL}/health/cpu/trend")
         assert response.status_code == 200
         data = response.json()
 
@@ -108,7 +108,7 @@ async def test_tribunal_activity_monitoring():
 
         # Fallback: Check if dashboard is running via health endpoint
         try:
-            health_response = await client.get(f"{API_URL}/api/v1/health/", timeout=5.0)
+            health_response = await client.get(f"{API_URL}/health/", timeout=5.0)
             if health_response.status_code == 200:
                 # Dashboard is running, but tribunal endpoint not available
                 # This is acceptable for CI/CD environments

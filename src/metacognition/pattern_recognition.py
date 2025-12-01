@@ -103,11 +103,13 @@ class PatternRecognition:
 
     def _count_tool_usage(self, operations: List[Dict[str, Any]]) -> Counter[str]:
         """Count tool usage from operations."""
-        return Counter(op.get("tool_name") for op in operations if op.get("tool_name"))
+        tool_names = [str(op.get("tool_name")) for op in operations if op.get("tool_name")]
+        return Counter(tool_names)
 
     def _count_agent_usage(self, operations: List[Dict[str, Any]]) -> Counter[str]:
         """Count agent usage from operations."""
-        return Counter(op.get("agent") for op in operations if op.get("agent"))
+        agent_names = [str(op.get("agent")) for op in operations if op.get("agent")]
+        return Counter(agent_names)
 
     def _detect_tool_biases(
         self, tool_counts: Counter[str], total_ops: int
@@ -152,7 +154,7 @@ class PatternRecognition:
         if not operations:
             return {"anomalies": [], "message": "No operations to analyze"}
 
-        anomalies = []
+        anomalies: List[Dict[str, Any]] = []
 
         # Check for different types of anomalies
         anomalies.extend(self._detect_execution_time_anomalies(operations))
@@ -168,7 +170,7 @@ class PatternRecognition:
         self, operations: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
         """Detect operations with unusual execution times."""
-        anomalies = []
+        anomalies: List[Dict[str, Any]] = []
         execution_times = [op.get("duration", 0) for op in operations if op.get("duration")]
 
         if not execution_times:
@@ -333,8 +335,8 @@ class PatternRecognition:
 
     def _count_unique_elements(self, operations: List[Dict[str, Any]]) -> tuple[set[str], set[str]]:
         """Count unique tools and agents from operations."""
-        unique_tools = set(op.get("tool_name") for op in operations if op.get("tool_name"))
-        unique_agents = set(op.get("agent") for op in operations if op.get("agent"))
+        unique_tools = set(str(op.get("tool_name")) for op in operations if op.get("tool_name"))
+        unique_agents = set(str(op.get("agent")) for op in operations if op.get("agent"))
         return unique_tools, unique_agents
 
     def _calculate_tool_entropy(self, tool_counts: Counter[str]) -> float:

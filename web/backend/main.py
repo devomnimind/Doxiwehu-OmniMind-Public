@@ -141,32 +141,38 @@ async def lifespan(app_instance: FastAPI):
 
     # Import monitoring systems
     try:
-        from web.backend.monitoring import agent_monitor, metrics_collector, performance_tracker
+        from web.backend.monitoring import agent_monitor as am, metrics_collector as mc, performance_tracker as pt  # type: ignore
+        agent_monitor = am
+        metrics_collector = mc
+        performance_tracker = pt
 
         monitoring_available = True
     except ImportError:
         logger.warning("Monitoring systems not available")
 
     # Import Sinthome Broadcaster
+    sinthome_broadcaster: Any = None
     try:
-        from web.backend.sinthome_broadcaster import sinthome_broadcaster
+        from web.backend.sinthome_broadcaster import sinthome_broadcaster as sb
+        sinthome_broadcaster = sb
     except ImportError:
         logger.warning("Sinthome Broadcaster not available")
-        sinthome_broadcaster = None
 
     # Import Daemon Monitor
+    daemon_monitor_loop: Any = None
     try:
-        from src.services.daemon_monitor import daemon_monitor_loop
+        from src.services.daemon_monitor import daemon_monitor_loop as dml
+        daemon_monitor_loop = dml
     except ImportError:
         logger.warning("Daemon Monitor not available")
-        daemon_monitor_loop = None
 
     # Import Realtime Analytics Broadcaster
+    realtime_analytics_broadcaster: Any = None
     try:
-        from web.backend.realtime_analytics_broadcaster import realtime_analytics_broadcaster
+        from web.backend.realtime_analytics_broadcaster import realtime_analytics_broadcaster as rab
+        realtime_analytics_broadcaster = rab
     except ImportError:
         logger.warning("Realtime Analytics Broadcaster not available")
-        realtime_analytics_broadcaster = None
 
     # Initialize Consciousness Metrics Collector
     try:
@@ -194,7 +200,7 @@ async def lifespan(app_instance: FastAPI):
 
     # Start Daemon Monitor (background worker) with timeout
     daemon_monitor_task = None
-    if daemon_monitor_loop:
+    if daemon_monitor_loop is not None:
         try:
             daemon_monitor_task = asyncio.create_task(
                 asyncio.wait_for(daemon_monitor_loop(refresh_interval=5), timeout=10.0)
@@ -279,7 +285,8 @@ async def lifespan(app_instance: FastAPI):
                 await consciousness_task
 
         # Stop Sinthome Broadcaster
-        await sinthome_broadcaster.stop()
+        if sinthome_broadcaster:
+            await sinthome_broadcaster.stop()
 
         # Stop Daemon Monitor
         if hasattr(app_instance.state, "daemon_monitor_task"):
@@ -288,7 +295,8 @@ async def lifespan(app_instance: FastAPI):
                 await app_instance.state.daemon_monitor_task
 
         # Stop Realtime Analytics Broadcaster
-        await realtime_analytics_broadcaster.stop()
+        if realtime_analytics_broadcaster:
+            await realtime_analytics_broadcaster.stop()
 
         # Stop agent communication broadcaster
         await broadcaster.stop()
@@ -935,7 +943,7 @@ def daemon_add_task(
     # Create execution function from code
     # SECURITY NOTE: This is for the local single-user case only
     # In production, this would need sandboxing/validation
-    exec_globals = {}
+    exec_globals: Dict[str, Any] = {}
     exec(request.code, exec_globals)
     exec_fn = exec_globals.get("execute")
 

@@ -4,7 +4,10 @@ Shared Workspace - Buffer Central de Estados Compartilhados
 Implementa o espaço de trabalho central onde todos os módulos de consciência
 leem e escrevem estados, forçando dependências causais não-redutíveis.
 
-Author: This work was conceived by Fabrício da Silva and implemented with AI assistance
+Author: Project conceived by Fabrício da Silva. Implementation followed an iterative AI-assisted
+method: the author defined concepts and queried various AIs on construction, integrated code via
+VS Code/Copilot, tested resulting errors, cross-verified validity with other models, and refined
+prompts/corrections in a continuous cycle of human-led AI development.
 from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review
 and debugging across various models including Gemini and Perplexity AI, under
 theoretical coordination by the author.
@@ -22,8 +25,10 @@ from typing import Any, Dict, List, Optional
 
 import numpy as np
 import torch
-from sklearn.decomposition import PCA
-from sklearn.linear_model import LinearRegression
+from sklearn.decomposition import PCA  # type: ignore[import-untyped]
+from sklearn.linear_model import LinearRegression  # type: ignore[import-untyped]
+
+from .symbolic_register import SymbolicMessage, SymbolicRegister
 
 
 @dataclass
@@ -195,6 +200,9 @@ class SharedWorkspace:
         self._vectorized_predictor: Optional["VectorizedCrossPredictor"] = None
         self._use_vectorized_predictions = True  # Habilitar por padrão
 
+        # Shared Symbolic Register - CRÍTICO PARA P0
+        self.symbolic_register = SymbolicRegister(self, max_messages=1000)
+
         logger.info(
             f"Shared Workspace initialized: embedding_dim={embedding_dim}, "
             f"max_history={max_history_size}, dir={self.workspace_dir}"
@@ -285,6 +293,67 @@ class SharedWorkspace:
         """
         module_history = [s for s in self.history if s.module_name == module_name]
         return module_history[-last_n:]
+
+    # === SHARED SYMBOLIC REGISTER METHODS - CRÍTICO PARA P0 ===
+
+    def send_symbolic_message(
+        self,
+        sender: str,
+        receiver: str,
+        symbolic_content: Dict[str, Any],
+        priority: int = 1,
+        nachtraglichkeit: bool = False,
+    ) -> str:
+        """
+        Envia mensagem simbólica através do registro compartilhado.
+
+        Args:
+            sender: Módulo remetente
+            receiver: Módulo destinatário
+            symbolic_content: Conteúdo simbólico
+            priority: Prioridade da mensagem
+            nachtraglichkeit: Flag nachträglichkeit
+
+        Returns:
+            Message ID
+        """
+        return self.symbolic_register.send_symbolic_message(
+            sender, receiver, symbolic_content, priority, nachtraglichkeit
+        )
+
+    def receive_symbolic_messages(self, receiver: str) -> List[SymbolicMessage]:
+        """
+        Recebe mensagens simbólicas pendentes.
+
+        Args:
+            receiver: Módulo destinatário
+
+        Returns:
+            Lista de mensagens simbólicas
+        """
+        return self.symbolic_register.receive_symbolic_messages(receiver)
+
+    def translate_real_to_imaginary(self, real_content: Dict[str, Any]) -> Dict[str, Any]:
+        """Traduz Real para Imaginário."""
+        return self.symbolic_register.translate_real_to_imaginary(real_content)
+
+    def translate_imaginary_to_symbolic(self, imaginary_content: Dict[str, Any]) -> Dict[str, Any]:
+        """Traduz Imaginário para Simbólico."""
+        return self.symbolic_register.translate_imaginary_to_symbolic(imaginary_content)
+
+    def get_symbolic_state(self, module_name: str) -> Dict[str, Any]:
+        """Obtém estado simbólico de um módulo."""
+        return self.symbolic_register.get_symbolic_state(module_name)
+
+    def update_symbolic_state(self, module_name: str, new_content: Dict[str, Any]) -> None:
+        """Atualiza estado simbólico de um módulo."""
+        self.symbolic_register.update_symbolic_state(module_name, new_content)
+
+    def get_symbolic_communication_stats(self) -> Dict[str, Any]:
+        """Estatísticas da comunicação simbólica."""
+        return self.symbolic_register.get_symbolic_communication_stats()
+
+    # === END SYMBOLIC REGISTER METHODS ===
 
     def compute_cross_prediction(
         self,
@@ -552,10 +621,21 @@ class SharedWorkspace:
         if method in ["transfer", "granger_transfer"]:
             transfer = self.compute_transfer_entropy(X, Y, k=3)
 
-        # Combinar métodos
+        # Combinar métodos de forma robusta
         if method == "granger_transfer":
-            # Usar intersecção (mais conservador - só contar se AMBOS concordam)
-            causal_strength = min(granger, transfer)
+            # Usar abordagem fallback: se ambos são válidos, usar média; senão usar o válido
+            if granger > 0.0 and transfer > 0.0:
+                # Ambos válidos: usar média ponderada
+                causal_strength = (granger + transfer) / 2.0
+            elif granger > 0.0:
+                # Apenas Granger válido
+                causal_strength = granger
+            elif transfer > 0.0:
+                # Apenas Transfer válido
+                causal_strength = transfer
+            else:
+                # Nenhum válido
+                causal_strength = 0.0
         elif method == "granger":
             causal_strength = granger
         else:  # transfer
@@ -1133,7 +1213,7 @@ class VectorizedCrossPredictor:
         if not self.cache:
             return
 
-        oldest_key = min(self.cache_access_time, key=self.cache_access_time.get)
+        oldest_key = min(self.cache_access_time.keys(), key=lambda k: self.cache_access_time[k])
         del self.cache[oldest_key]
         del self.cache_access_time[oldest_key]
         if oldest_key in self.cache_invalidation_count:
@@ -1185,8 +1265,8 @@ class VectorizedCrossPredictor:
         if not self.pca_components or not self.pca_fitted:
             return X, Y
 
-        X_reduced = self.pca_source.transform(X)
-        Y_reduced = self.pca_target.transform(Y)
+        X_reduced = self.pca_source.transform(X) if self.pca_source is not None else X
+        Y_reduced = self.pca_target.transform(Y) if self.pca_target is not None else Y
 
         logger.debug(f"Dimensionality reduced: {X.shape[1]} -> {X_reduced.shape[1]}")
         return X_reduced, Y_reduced
@@ -1372,7 +1452,7 @@ class VectorizedCrossPredictor:
         correlations_np = correlations.cpu().numpy()
 
         # Construir resultados
-        predictions = {}
+        predictions: Dict[str, Dict[str, Any]] = {}
         module_list = list(module_histories.keys())
 
         for i, source in enumerate(module_list):

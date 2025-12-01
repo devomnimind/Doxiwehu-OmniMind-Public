@@ -1,5 +1,5 @@
 import hashlib
-from typing import List
+from typing import List, Dict, Any
 
 import numpy as np
 
@@ -7,7 +7,7 @@ import numpy as np
 # so the code can be analyzed without crashing immediately.
 ts = None
 try:
-    import tenseal as ts_lib
+    import tenseal as ts_lib  # type: ignore[import-untyped]
 
     ts = ts_lib
     TENSEAL_AVAILABLE = True
@@ -43,7 +43,7 @@ class EncryptedUnconsciousLayer:
             self.context.generate_relin_keys()
             self.context.global_scale = 2**40
 
-        self.audit_log = []
+        self.audit_log: List[Dict[str, Any]] = []
 
     def repress_memory(self, event_vector: np.ndarray, metadata: dict) -> bytes:
         """

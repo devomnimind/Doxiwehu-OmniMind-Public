@@ -15,7 +15,7 @@ from typing import Any, Dict, List
 
 import structlog
 
-from src.metacognition.self_analysis import SelfAnalysis
+from ..metacognition.self_analysis import SelfAnalysis
 
 logger = structlog.get_logger(__name__)
 

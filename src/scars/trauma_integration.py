@@ -1,5 +1,15 @@
 import time
-from typing import Any, Dict, List
+from typing import Any, Dict, List, TypedDict
+
+
+class Scar(TypedDict):
+    id: str
+    failure: Dict[str, Any]
+    timestamp: float
+    type: str
+    severity: str
+    defense_rule: Dict[str, Any]
+    status: str
 
 
 class TraumaIntegration:
@@ -11,16 +21,16 @@ class TraumaIntegration:
 
     def __init__(self, system: Any):
         self.system = system
-        self.scars: Dict[str, Any] = {}  # ID → Scar metadata
+        self.scars: Dict[str, Scar] = {}  # ID → Scar metadata
         self.defense_rules_from_scars: List[Dict[str, Any]] = []
 
-    def create_scar(self, failure_event: Dict[str, Any]) -> Dict[str, Any]:
+    def create_scar(self, failure_event: Dict[str, Any]) -> Scar:
         """
         Quando uma falha/viés ocorre, cria uma cicatriz.
         A cicatriz PERSISTE (nunca apagada).
         """
 
-        scar = {
+        scar: Scar = {
             "id": f"scar_{len(self.scars)}",
             "failure": failure_event,
             "timestamp": time.time(),
@@ -72,7 +82,7 @@ class TraumaIntegration:
     def _assess_severity(self, failure_event: Dict[str, Any]) -> str:
         return failure_event.get("severity", "medium")
 
-    def _scar_applies_to_context(self, scar: Dict[str, Any], context: Dict[str, Any]) -> bool:
+    def _scar_applies_to_context(self, scar: Scar, context: Dict[str, Any]) -> bool:
         # Simple matching logic for now
         # If scar trigger is in context action or description
         trigger = scar["defense_rule"]["trigger"]

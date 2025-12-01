@@ -42,6 +42,7 @@ class LLMProvider(Enum):
     """Provedores LLM suportados."""
 
     OLLAMA = "ollama"
+    HUGGINGFACE_LOCAL = "huggingface_local"
     HUGGINGFACE = "huggingface"
     HUGGINGFACE_SPACE = "huggingface_space"
     OPENROUTER = "openrouter"
@@ -188,21 +189,209 @@ class OllamaProvider(LLMProviderInterface):
         return self._available
 
     def get_latency_estimate(self) -> int:
-        """Estimativa de latência Ollama (local)."""
-        return 500  # ~500ms para modelos locais
+        """Estimativa de latência Ollama (local) - ajustada para produção."""
+        return 800  # ~800ms para modelos locais (otimizado)
 
 
-class HuggingFaceProvider(LLMProviderInterface):
-    """Provedor HuggingFace (inferência local)."""
+class HuggingFaceLocalProvider(LLMProviderInterface):
+    """Provedor HuggingFace Local (inferência local com transformers)."""
 
     def __init__(self):
         self._pipeline = None
+        self._current_model = None
         self._available = False
-        self._model_name = None
         self._check_availability()
 
     def _check_availability(self):
-        """Verifica disponibilidade do HuggingFace."""
+        """Verifica disponibilidade do HuggingFace Local."""
+        try:
+            # Verifica se transformers está disponível
+            import transformers
+            import torch
+
+            # Verifica se há GPU disponível
+            if torch.cuda.is_available():
+                logger.info("HuggingFace Local: GPU disponível para inferência")
+            else:
+                logger.info("HuggingFace Local: Usando CPU para inferência")
+
+            self._available = True
+        except ImportError as e:
+            logger.warning(f"HuggingFace Local não disponível: {e}")
+            self._available = False
+        except Exception as e:
+            logger.warning(f"Erro na configuração HuggingFace Local: {e}")
+            self._available = False
+
+    def _load_model(self, model_name: str):
+        """Carrega modelo se necessário."""
+        if self._current_model != model_name or self._pipeline is None:
+            try:
+                from transformers import pipeline
+                import torch
+
+                logger.info(f"Carregando modelo HuggingFace Local: {model_name}")
+
+                # Tenta GPU primeiro, mas com fallback para CPU se houver problemas
+                device = 0 if torch.cuda.is_available() else -1
+
+                # Carrega pipeline de text-generation
+                self._pipeline = pipeline(
+                    "text-generation",
+                    model=model_name,
+                    device=device,
+                    torch_dtype=torch.float16 if device == 0 else torch.float32,
+                    trust_remote_code=True,  # Permite código remoto para alguns modelos
+                )
+
+                self._current_model = model_name
+                logger.info(
+                    f"Modelo {model_name} carregado com sucesso em {'GPU' if device == 0 else 'CPU'}"
+                )
+            except Exception as e:
+                logger.warning(f"Erro ao carregar modelo {model_name} em GPU, tentando CPU: {e}")
+                try:
+                    # Fallback para CPU
+                    self._pipeline = pipeline(
+                        "text-generation",
+                        model=model_name,
+                        device=-1,  # CPU
+                        torch_dtype=torch.float32,
+                        trust_remote_code=True,
+                    )
+                    self._current_model = model_name
+                    logger.info(f"Modelo {model_name} carregado com sucesso em CPU (fallback)")
+                except Exception as e2:
+                    logger.error(f"Erro ao carregar modelo {model_name} mesmo em CPU: {e2}")
+                    self._pipeline = None
+                    raise e2
+
+    async def invoke(self, prompt: str, config: LLMConfig) -> LLMResponse:
+        """Invoca HuggingFace Local."""
+        if not self.is_available():
+            return LLMResponse(
+                success=False,
+                text="",
+                provider=LLMProvider.HUGGINGFACE_LOCAL,
+                model=config.model_name,
+                latency_ms=0,
+                error="HuggingFace Local não disponível",
+            )
+
+        start_time = time.time()
+        try:
+            # Carrega modelo se necessário
+            self._load_model(config.model_name)
+
+            if self._pipeline is None:
+                return LLMResponse(
+                    success=False,
+                    text="",
+                    provider=LLMProvider.HUGGINGFACE_LOCAL,
+                    model=config.model_name,
+                    latency_ms=0,
+                    error="Modelo não pôde ser carregado",
+                )
+
+            # Import necessário para threading
+            import concurrent.futures
+
+            # Função síncrona para gerar texto
+            def _generate_text():
+                try:
+                    logger.debug(f"Gerando texto com prompt: {prompt[:100]}...")
+                    logger.debug(
+                        f"Config: max_new_tokens={config.max_tokens}, temperature={config.temperature}"
+                    )
+
+                    # Gera texto
+                    outputs = self._pipeline(
+                        prompt,
+                        max_new_tokens=config.max_tokens,
+                        temperature=config.temperature,
+                        do_sample=True,
+                        top_p=0.9,
+                        pad_token_id=self._pipeline.tokenizer.eos_token_id,
+                        return_full_text=False,  # Não retorna o prompt
+                    )
+
+                    logger.debug(f"Pipeline output type: {type(outputs)}")
+                    logger.debug(f"Pipeline output: {outputs}")
+
+                    # Extrai texto gerado
+                    if isinstance(outputs, list) and outputs:
+                        generated_text = outputs[0].get("generated_text", "")
+                        logger.debug(f"Texto extraído da lista: {generated_text[:100]}...")
+                    else:
+                        generated_text = str(outputs)
+                        logger.debug(f"Texto convertido para string: {generated_text[:100]}...")
+
+                    return generated_text.strip()
+                except Exception as e:
+                    logger.error(f"Erro durante geração de texto: {e}")
+                    logger.error(f"Tipo do erro: {type(e)}")
+                    import traceback
+
+                    logger.error(f"Traceback: {traceback.format_exc()}")
+                    raise e
+
+            # Executa em thread separada para não bloquear
+            import concurrent.futures
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(_generate_text)
+                response = future.result(timeout=config.timeout)
+
+            latency = int((time.time() - start_time) * 1000)
+            return LLMResponse(
+                success=True,
+                text=response,
+                provider=LLMProvider.HUGGINGFACE_LOCAL,
+                model=config.model_name,
+                latency_ms=latency,
+            )
+
+        except concurrent.futures.TimeoutError:
+            latency = int((time.time() - start_time) * 1000)
+            return LLMResponse(
+                success=False,
+                text="",
+                provider=LLMProvider.HUGGINGFACE_LOCAL,
+                model=config.model_name,
+                latency_ms=latency,
+                error=f"Timeout após {config.timeout}s",
+            )
+        except Exception as e:
+            latency = int((time.time() - start_time) * 1000)
+            logger.error(f"Erro no HuggingFace Local: {e}")
+            return LLMResponse(
+                success=False,
+                text="",
+                provider=LLMProvider.HUGGINGFACE_LOCAL,
+                model=config.model_name,
+                latency_ms=latency,
+                error=str(e),
+            )
+
+    def is_available(self) -> bool:
+        """Verifica se HuggingFace Local está disponível."""
+        return self._available
+
+    def get_latency_estimate(self) -> int:
+        """Estimativa de latência HF Local - ajustada para produção."""
+        return 3000  # ~3s para inferência local (depende do modelo/HW)
+
+
+class HuggingFaceProvider(LLMProviderInterface):
+    """Provedor HuggingFace (Inference API)."""
+
+    def __init__(self):
+        self._client = None
+        self._available = False
+        self._check_availability()
+
+    def _check_availability(self):
+        """Verifica disponibilidade do HuggingFace Inference API."""
         try:
             # Verifica se temos token HF
             token = os.getenv("HF_TOKEN") or os.getenv("HUGGING_FACE_HUB_TOKEN")
@@ -210,48 +399,33 @@ class HuggingFaceProvider(LLMProviderInterface):
                 logger.warning("Token HuggingFace não encontrado")
                 return
 
-            # Verifica se transformers está disponível
+            # Verifica se huggingface_hub está disponível
             try:
-                import transformers  # noqa: F401
-            except ImportError:
-                pass
-            self._available = True
+                from huggingface_hub import InferenceClient
 
-        except ImportError:
-            logger.warning("transformers não disponível")
-            self._available = False
+                self._client = InferenceClient(token=token)
+                # Testa conectividade com um modelo simples
+                try:
+                    # Teste rápido de conectividade
+                    self._client.text_generation("test", model="gpt2", max_new_tokens=1)
+                    self._available = True
+                except Exception:
+                    # Se falhar o teste, ainda marca como disponível pois pode ser temporário
+                    self._available = True
+            except ImportError:
+                logger.warning("huggingface_hub não disponível para HF Inference API")
+                self._available = False
+
         except Exception as e:
             logger.warning(f"Erro na verificação HuggingFace: {e}")
             self._available = False
 
     def _load_model(self, model_name: str):
-        """Carrega modelo sob demanda."""
-        if self._pipeline and self._model_name == model_name:
-            return  # Já carregado
-
-        try:
-            from transformers import pipeline
-            import torch
-
-            # Configuração para GPU se disponível
-            device = 0 if torch.cuda.is_available() else -1
-
-            self._pipeline = pipeline(
-                "text-generation",
-                model=model_name,
-                device=device,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                token=os.getenv("HF_TOKEN") or os.getenv("HUGGING_FACE_HUB_TOKEN"),
-            )
-            self._model_name = model_name
-            logger.info(f"Modelo HF carregado: {model_name}")
-
-        except Exception as e:
-            logger.error(f"Erro carregando modelo HF {model_name}: {e}")
-            self._available = False
+        """Não necessário para Inference API."""
+        pass
 
     async def invoke(self, prompt: str, config: LLMConfig) -> LLMResponse:
-        """Invoca HuggingFace."""
+        """Invoca HuggingFace Inference API."""
         if not self.is_available():
             return LLMResponse(
                 success=False,
@@ -262,49 +436,58 @@ class HuggingFaceProvider(LLMProviderInterface):
                 error="HuggingFace não disponível",
             )
 
-        # Carrega modelo se necessário
-        self._load_model(config.model_name)
-
-        if not self._pipeline:
-            return LLMResponse(
-                success=False,
-                text="",
-                provider=LLMProvider.HUGGINGFACE,
-                model=config.model_name,
-                latency_ms=0,
-                error="Falha ao carregar modelo",
-            )
-
         start_time = time.time()
         try:
-            # Gera resposta
-            pad_token_id = None
-            if self._pipeline and hasattr(self._pipeline, "tokenizer") and self._pipeline.tokenizer:
-                pad_token_id = getattr(self._pipeline.tokenizer, "eos_token_id", None)
+            if self._client is None:
+                return LLMResponse(
+                    success=False,
+                    text="",
+                    provider=LLMProvider.HUGGINGFACE,
+                    model=config.model_name,
+                    latency_ms=0,
+                    error="HF Inference API client not initialized",
+                )
 
-            outputs = self._pipeline(
-                prompt,
-                max_new_tokens=config.max_tokens,
-                temperature=config.temperature,
-                do_sample=True,
-                pad_token_id=pad_token_id,
-            )
+            # Função síncrona para gerar texto
+            def _generate_text():
+                try:
+                    return self._client.text_generation(
+                        prompt=prompt,
+                        model=config.model_name,
+                        max_new_tokens=config.max_tokens,
+                        temperature=config.temperature,
+                        do_sample=True,
+                        top_p=0.9,
+                    )
+                except Exception as e:
+                    raise e
 
-            # Extrai texto gerado
-            generated_text = outputs[0]["generated_text"]
-            # Remove o prompt do início se presente
-            if generated_text.startswith(prompt):
-                generated_text = generated_text[len(prompt) :].strip()
+            # Executa em thread separada para não bloquear
+            import concurrent.futures
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(_generate_text)
+                response = future.result(timeout=config.timeout)
 
             latency = int((time.time() - start_time) * 1000)
             return LLMResponse(
                 success=True,
-                text=generated_text,
+                text=response,
                 provider=LLMProvider.HUGGINGFACE,
                 model=config.model_name,
                 latency_ms=latency,
             )
 
+        except concurrent.futures.TimeoutError:
+            latency = int((time.time() - start_time) * 1000)
+            return LLMResponse(
+                success=False,
+                text="",
+                provider=LLMProvider.HUGGINGFACE,
+                model=config.model_name,
+                latency_ms=latency,
+                error=f"Timeout após {config.timeout}s",
+            )
         except Exception as e:
             latency = int((time.time() - start_time) * 1000)
             logger.error(f"Erro no HuggingFace: {e}")
@@ -322,8 +505,8 @@ class HuggingFaceProvider(LLMProviderInterface):
         return self._available
 
     def get_latency_estimate(self) -> int:
-        """Estimativa de latência HF (local com GPU)."""
-        return 2000  # ~2s para modelos locais
+        """Estimativa de latência HF Inference API (cloud) - ajustada para produção."""
+        return 2000  # ~2s para Inference API (otimizado)
 
 
 class HuggingFaceSpaceProvider(LLMProviderInterface):
@@ -345,12 +528,12 @@ class HuggingFaceSpaceProvider(LLMProviderInterface):
             import requests
 
             self._client = requests.Session()
-            # Testa conectividade
-            response = self._client.get(space_url, timeout=5)
+            # Testa conectividade via endpoint /health
+            response = self._client.get(f"{space_url}/health", timeout=5)
             if response.status_code == 200:
                 self._available = True
             else:
-                logger.warning(f"Space não responde: {response.status_code}")
+                logger.warning(f"Space health check falhou: {response.status_code}")
         except ImportError:
             logger.warning("requests não disponível para HF Space")
             self._available = False
@@ -464,8 +647,8 @@ class HuggingFaceSpaceProvider(LLMProviderInterface):
         return self._available
 
     def get_latency_estimate(self) -> int:
-        """Estimativa de latência HF Space (cloud)."""
-        return 2500  # ~2.5s para Spaces
+        """Estimativa de latência HF Space (cloud) - ajustada para produção."""
+        return 1500  # ~1.5s para Spaces (otimizado)
 
 
 class OpenRouterProvider(LLMProviderInterface):
@@ -563,8 +746,8 @@ class OpenRouterProvider(LLMProviderInterface):
         return self._available
 
     def get_latency_estimate(self) -> int:
-        """Estimativa de latência OpenRouter (cloud)."""
-        return 3000  # ~3s para API cloud
+        """Estimativa de latência OpenRouter (cloud) - ajustada para produção."""
+        return 2000  # ~2s para API cloud (otimizado)
 
 
 class LLMRouter:
@@ -573,15 +756,17 @@ class LLMRouter:
 
     Estratégia de fallback:
     1. Ollama (local, mais rápido)
-    2. HuggingFace Space (cloud inference)
-    3. HuggingFace (local inference)
-    4. OpenRouter (cloud, múltiplos modelos)
+    2. HuggingFace Local (inferência local com transformers)
+    3. HuggingFace Space (cloud inference)
+    4. HuggingFace (Inference API cloud)
+    5. OpenRouter (cloud, múltiplos modelos)
     """
 
     def __init__(self):
         # Inicializa provedores
         self.providers = {
             LLMProvider.OLLAMA: OllamaProvider(),
+            LLMProvider.HUGGINGFACE_LOCAL: HuggingFaceLocalProvider(),
             LLMProvider.HUGGINGFACE: HuggingFaceProvider(),
             LLMProvider.HUGGINGFACE_SPACE: HuggingFaceSpaceProvider(),
             LLMProvider.OPENROUTER: OpenRouterProvider(),
@@ -601,7 +786,7 @@ class LLMRouter:
         logger.info("LLM Router inicializado com fallback automático")
 
     def _load_tier_configs(self) -> Dict[LLMModelTier, List[LLMConfig]]:
-        """Carrega configurações de modelos por tier."""
+        """Carrega configurações de modelos por tier com timeouts realistas para produção."""
         return {
             LLMModelTier.FAST: [
                 LLMConfig(
@@ -609,20 +794,31 @@ class LLMRouter:
                     model_name="qwen2:7b-instruct",  # Modelo disponível localmente
                     temperature=0.7,
                     max_tokens=1024,
-                    tier=LLMModelTier.FAST,
-                ),
-                LLMConfig(
-                    provider=LLMProvider.HUGGINGFACE,
-                    model_name="microsoft/DialoGPT-small",
-                    temperature=0.7,
-                    max_tokens=1024,
+                    timeout=90,  # Timeout reduzido para testes rápidos
                     tier=LLMModelTier.FAST,
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="microsoft/wizardlm-2-8x22b",
+                    model_name="x-ai/grok-4.1-fast:free",  # Novo modelo gratuito e rápido
                     temperature=0.7,
                     max_tokens=1024,
+                    timeout=60,  # Timeout otimizado para API cloud
+                    tier=LLMModelTier.FAST,
+                ),
+                LLMConfig(
+                    provider=LLMProvider.OPENROUTER,
+                    model_name="google/gemini-2.0-flash-exp:free",  # Novo modelo experimental gratuito
+                    temperature=0.7,
+                    max_tokens=1024,
+                    timeout=60,
+                    tier=LLMModelTier.FAST,
+                ),
+                LLMConfig(
+                    provider=LLMProvider.HUGGINGFACE_LOCAL,
+                    model_name="gpt2",  # Modelo leve para inferência local
+                    temperature=0.7,
+                    max_tokens=1024,
+                    timeout=60,
                     tier=LLMModelTier.FAST,
                 ),
             ],
@@ -632,20 +828,31 @@ class LLMRouter:
                     model_name="qwen2:7b-instruct",  # Modelo atual
                     temperature=0.7,
                     max_tokens=2048,
+                    timeout=180,  # Timeout aumentado para produção
                     tier=LLMModelTier.BALANCED,
                 ),
                 LLMConfig(
-                    provider=LLMProvider.HUGGINGFACE_SPACE,
-                    model_name="fabricioslv-devbrain-inference",
+                    provider=LLMProvider.OPENROUTER,
+                    model_name="x-ai/grok-4.1-fast:free",  # Prioridade para modelos gratuitos
                     temperature=0.7,
                     max_tokens=2048,
+                    timeout=90,
                     tier=LLMModelTier.BALANCED,
                 ),
                 LLMConfig(
-                    provider=LLMProvider.HUGGINGFACE,
-                    model_name="microsoft/DialoGPT-small",
+                    provider=LLMProvider.OPENROUTER,
+                    model_name="google/gemini-2.0-flash-exp:free",
                     temperature=0.7,
                     max_tokens=2048,
+                    timeout=90,
+                    tier=LLMModelTier.BALANCED,
+                ),
+                LLMConfig(
+                    provider=LLMProvider.HUGGINGFACE_LOCAL,
+                    model_name="gpt2",  # Modelo leve compatível com GTX 1650
+                    temperature=0.7,
+                    max_tokens=2048,
+                    timeout=90,
                     tier=LLMModelTier.BALANCED,
                 ),
                 LLMConfig(
@@ -653,13 +860,7 @@ class LLMRouter:
                     model_name="anthropic/claude-3-haiku",
                     temperature=0.7,
                     max_tokens=2048,
-                    tier=LLMModelTier.BALANCED,
-                ),
-                LLMConfig(
-                    provider=LLMProvider.OPENROUTER,
-                    model_name="openai/gpt-4o-mini",
-                    temperature=0.7,
-                    max_tokens=2048,
+                    timeout=120,
                     tier=LLMModelTier.BALANCED,
                 ),
             ],
@@ -669,13 +870,7 @@ class LLMRouter:
                     model_name="qwen2:72b-instruct",  # Modelo grande se disponível
                     temperature=0.7,
                     max_tokens=4096,
-                    tier=LLMModelTier.HIGH_QUALITY,
-                ),
-                LLMConfig(
-                    provider=LLMProvider.HUGGINGFACE,
-                    model_name="microsoft/DialoGPT-small",
-                    temperature=0.7,
-                    max_tokens=4096,
+                    timeout=300,  # Timeout estendido para modelos grandes
                     tier=LLMModelTier.HIGH_QUALITY,
                 ),
                 LLMConfig(
@@ -683,6 +878,7 @@ class LLMRouter:
                     model_name="anthropic/claude-3-5-sonnet",
                     temperature=0.7,
                     max_tokens=4096,
+                    timeout=180,
                     tier=LLMModelTier.HIGH_QUALITY,
                 ),
                 LLMConfig(
@@ -690,6 +886,7 @@ class LLMRouter:
                     model_name="openai/gpt-4o",
                     temperature=0.7,
                     max_tokens=4096,
+                    timeout=180,
                     tier=LLMModelTier.HIGH_QUALITY,
                 ),
                 LLMConfig(
@@ -697,6 +894,15 @@ class LLMRouter:
                     model_name="google/gemini-pro-1.5",
                     temperature=0.7,
                     max_tokens=4096,
+                    timeout=180,
+                    tier=LLMModelTier.HIGH_QUALITY,
+                ),
+                LLMConfig(
+                    provider=LLMProvider.HUGGINGFACE_LOCAL,
+                    model_name="gpt2",  # Modelo leve compatível com GTX 1650
+                    temperature=0.7,
+                    max_tokens=4096,
+                    timeout=120,
                     tier=LLMModelTier.HIGH_QUALITY,
                 ),
             ],

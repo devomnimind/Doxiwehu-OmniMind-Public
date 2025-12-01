@@ -5,11 +5,15 @@ Teste Phase 2: Análise de Complexidade Computacional
 
 import asyncio
 import sys
-import os
+from pathlib import Path
+
 import numpy as np
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
-from src.consciousness.integration_loop import IntegrationLoop
+# Add src to path
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
+from src.consciousness.integration_loop import IntegrationLoop  # noqa: E402
 
 
 async def test_complexity():
@@ -32,7 +36,7 @@ async def test_complexity():
     if complexities:
         avg_time = np.mean([c["actual_time_ms"] for c in complexities])
         avg_ops = np.mean([c["theoretical_ops"] for c in complexities])
-        print(f"\n📊 Complexidade média: {avg_time:.1f}ms, {avg_ops/1e6:.1f}M ops")
+        print(f"\n📊 Complexidade média: {avg_time:.1f}ms, {avg_ops / 1e6:.1f}M ops")
 
     stats = loop.get_statistics()
     print(f"Φ médio: {stats['phi_statistics']['mean']:.4f}")

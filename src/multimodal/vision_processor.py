@@ -462,7 +462,7 @@ class VisionProcessor:
 
             obj = DetectedObject(
                 category=category,
-                label=f"{category.value}_{i+1}",
+                label=f"{category.value}_{i + 1}",
                 confidence=confidence,
                 bounding_box=bbox,
                 attributes={"simulated": True},

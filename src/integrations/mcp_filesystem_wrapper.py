@@ -144,6 +144,9 @@ class MCPStdioBridge:
                 logger.error("Erro na comunicação stdio: %s", e)
                 raise
 
+        # This should never be reached, but added for type checker
+        raise RuntimeError("Unexpected code path in send_request")
+
 
 class MCPFilesystemWrapper:
     """Wrapper HTTP para mcp-server-filesystem."""

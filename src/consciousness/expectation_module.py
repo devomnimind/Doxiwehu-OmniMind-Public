@@ -18,7 +18,7 @@ from dataclasses import dataclass
 import structlog
 
 # Importar inconsciente quântico
-from quantum_unconscious import QuantumUnconscious
+from quantum_unconscious import QuantumUnconscious  # type: ignore[import-untyped]
 
 logger = structlog.get_logger(__name__)
 

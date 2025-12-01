@@ -428,7 +428,14 @@ def process_tensor(
     if device is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    tensor_on_device = input_tensor.to(device)
+    # Safe device movement: handles both regular tensors and meta tensors
+    # Use to_empty() if the tensor is on meta device (placeholder state from model compilation)
+    if input_tensor.device.type == "meta":
+        # This shouldn't happen with input tensors, but for nn.Module use to_empty()
+        # For tensors, create new tensor on target device
+        tensor_on_device = input_tensor.clone().to(device)
+    else:
+        tensor_on_device = input_tensor.to(device)
     
     operations = {
         "mean": torch.mean,

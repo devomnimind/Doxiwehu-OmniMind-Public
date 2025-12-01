@@ -6,6 +6,7 @@ Group 13: System Services - economics/
 
 import tempfile
 from pathlib import Path
+from typing import Generator, Dict, Any
 
 import pytest
 
@@ -135,7 +136,7 @@ class TestMarketplaceAgent:
     """Testa MarketplaceAgent para publicação automatizada."""
 
     @pytest.fixture
-    def temp_state_file(self) -> Path:
+    def temp_state_file(self) -> Generator[Path, None, None]:
         """Cria arquivo temporário para estado."""
         temp_dir = Path(tempfile.mkdtemp())
         yield temp_dir / "marketplace_state.json"
@@ -205,7 +206,7 @@ class TestMarketplaceAgent:
 
         # Tool simples sem documentação
         tool_artifact = "def test(): pass"
-        metadata = {}
+        metadata: Dict[str, Any] = {}
         quality = agent.evaluate_tool_quality(tool_artifact, metadata)
 
         assert quality < 0.5
@@ -239,7 +240,7 @@ class TestMarketplaceAgent:
 
         tool_artifact = "def test(): pass\n" * 50  # 50 linhas
         quality_score = 0.8
-        metadata = {}
+        metadata: Dict[str, Any] = {}
 
         price = agent.suggest_pricing(tool_artifact, quality_score, metadata)
 

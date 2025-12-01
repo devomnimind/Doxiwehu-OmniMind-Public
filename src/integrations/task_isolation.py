@@ -277,7 +277,7 @@ class TaskIsolationEngine:
 
     async def _isolate_context_data(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """Isola dados de contexto"""
-        isolated = {}
+        isolated: Dict[str, Any] = {}
 
         # Limita tamanho total do contexto
         max_context_size = (

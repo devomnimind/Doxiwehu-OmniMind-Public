@@ -228,25 +228,23 @@ class CoevolutionMemory:
         Returns:
             Dicionário com estatísticas
         """
-        sessions = self.sessions.values()
+        sessions: List[CollaborationSession] = list(self.sessions.values())
 
         if human_id:
             sessions = [s for s in sessions if s.human_id == human_id]
 
-        sessions_list = list(sessions)
-
-        if not sessions_list:
+        if not sessions:
             return {
                 "total_sessions": 0,
                 "success_rate": 0.0,
                 "average_trust_evolution": 0.0,
             }
 
-        total = len(sessions_list)
-        successes = sum(1 for s in sessions_list if s.outcome.get("success"))
+        total = len(sessions)
+        successes = sum(1 for s in sessions if s.outcome.get("success"))
 
         # Trust evolution
-        trust_deltas = [s.outcome.get("trust_delta", 0.0) for s in sessions_list]
+        trust_deltas = [s.outcome.get("trust_delta", 0.0) for s in sessions]
         avg_trust_evolution = sum(trust_deltas) / len(trust_deltas) if trust_deltas else 0.0
 
         return {

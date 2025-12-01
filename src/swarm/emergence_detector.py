@@ -10,7 +10,7 @@ License: MIT
 
 import logging
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 from src.swarm.config import EmergenceConfig
 from src.swarm.types import EmergenceType, EmergentPattern
@@ -266,10 +266,11 @@ class EmergenceDetector:
         }
 
         # Conta por tipo
+        by_type = cast(Dict[str, int], summary["by_type"])
         for pattern_type in EmergenceType:
             count = sum(1 for p in self.detected_patterns if p.pattern_type == pattern_type)
             if count > 0:
-                summary["by_type"][pattern_type.value] = count
+                by_type[pattern_type.value] = count
 
         # Últimos 5 padrões
         recent = sorted(self.detected_patterns, key=lambda p: p.timestamp, reverse=True)[:5]

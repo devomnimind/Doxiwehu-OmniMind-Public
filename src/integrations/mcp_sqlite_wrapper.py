@@ -141,6 +141,9 @@ class MCPStdioBridge:
                 logger.error("Erro na comunicação stdio: %s", e)
                 raise
 
+        # This should never be reached, but added for type checker
+        raise RuntimeError("Unexpected code path in send_request")
+
 
 class MCPSQLiteWrapper:
     """Wrapper HTTP para mcp-server-sqlite."""
@@ -167,13 +170,14 @@ class MCPSQLiteWrapper:
         self.project_root = Path(__file__).resolve().parents[2]
 
         # Resolver caminho do banco de dados
-        db_path = Path(config.db_path).expanduser()
-        if not db_path.is_absolute():
-            db_path = self.project_root / db_path
-        self.db_path = db_path.resolve()
+        db_path_obj = Path(config.db_path).expanduser()
+        if not db_path_obj.is_absolute():
+            db_path_obj = self.project_root / db_path_obj
+        db_path_obj = db_path_obj.resolve()
+        self.db_path = str(db_path_obj)
 
         # Garantir que o diretório existe
-        self.db_path.parent.mkdir(parents=True, exist_ok=True)
+        db_path_obj.parent.mkdir(parents=True, exist_ok=True)
 
         # Inicializar bridge stdio
         uvx_path = os.environ.get("UVX_PATH", "/home/fahbrain/.local/bin/uvx")

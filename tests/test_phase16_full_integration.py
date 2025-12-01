@@ -56,6 +56,7 @@ class TestPhase16FullIntegration:
         assert isinstance(final_state, CognitiveState)
 
         # 1. Sensory & Qualia
+        assert final_state.sensory_state is not None
         assert final_state.sensory_state["visual_understood"] is True
         assert final_state.existential_state is not None
         assert "qualia" in final_state.existential_state

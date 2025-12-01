@@ -317,7 +317,7 @@ class IntegratedInformationCalculator:
 
         for i in range(num_elements):
             if not visited[i]:
-                component = []
+                component: List[int] = []
                 dfs(i, component)
                 components.append(component)
 

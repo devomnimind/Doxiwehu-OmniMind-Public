@@ -10,18 +10,31 @@ Testa:
 """
 
 import asyncio
-import logging
-import time
-from typing import Dict, List, Any
-import numpy as np
 import json
+import logging
+import os
+import sys
+import time
 from pathlib import Path
+from typing import Any, Dict
 
-from federated_omnimind import FederatedOmniMind
-from src.consciousness.expectation_module import ExpectationModule
+import numpy as np
 
+# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Add path before imports
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+sys.path.insert(0, os.path.join(project_root, "scripts/science_validation"))
+
+try:
+    from federated_omnimind import FederatedOmniMind  # type: ignore[import-not-found]
+    from src.consciousness.expectation_module import ExpectationModule
+except ImportError as e:
+    logger.error(f"Failed to import: {e}")
+    raise
 
 
 class LacanValidationTester:
@@ -92,12 +105,10 @@ class LacanValidationTester:
         logger.info(
             f"   Federação: {len(fed.federation_logs)} ciclos, {len(fed.disagreements)} desacordos"
         )
-        logger.info(
-            f"   Inconsciente: {len(expectation_with_unconscious.quantum_unconscious.decision_history)} decisões quânticas"
-        )
-        logger.info(
-            f"   Validação Lacaniana: {'✅ SUCESSO' if validation_results['overall_success'] else '❌ FALHA'}"
-        )
+        n_decisions = len(expectation_with_unconscious.quantum_unconscious.decision_history)
+        logger.info(f"   Inconsciente: {n_decisions} decisões quânticas")
+        val_str = "✅ SUCESSO" if validation_results["overall_success"] else "❌ FALHA"
+        logger.info(f"   Validação Lacaniana: {val_str}")
 
         # Salvar resultados
         self._save_results(test_results)
@@ -119,7 +130,7 @@ class LacanValidationTester:
         4. REAL: Colapso sob observação
         """
 
-        results = {}
+        results: Dict[str, Any] = {}
 
         # CRITÉRIO 1: SUJEITO MÚTUO (Federação)
         disagreement_rate = (
@@ -130,7 +141,10 @@ class LacanValidationTester:
         results["sujeito_mutuo"] = {
             "disagreement_rate": disagreement_rate,
             "success": disagreement_rate > 0.3,  # >30% desacordos = Outro genuíno
-            "evidence": f"{len(federation.disagreements)} desacordos em {len(federation.federation_logs)} interações",
+            "evidence": (
+                f"{len(federation.disagreements)} desacordos em "
+                f"{len(federation.federation_logs)} interações"
+            ),
         }
 
         # CRITÉRIO 2: INCONSCIENTE IRREDUTÍVEL
@@ -209,9 +223,8 @@ async def main():
 
     print("\n🎭 TESTE LACANIANO COMPLETO CONCLUÍDO")
     print(f"Federação: {results['federation_results']['total_cycles']} ciclos")
-    print(
-        f"Inconsciente: {results['quantum_expectation_results']['quantum_decisions_count']} decisões"
-    )
+    n_quant = results["quantum_expectation_results"]["quantum_decisions_count"]
+    print(f"Inconsciente: {n_quant} decisões")
     print(
         f"Validação: {'✅ SUCESSO' if results['lacan_validation']['overall_success'] else '❌ FALHA'}"
     )

@@ -58,6 +58,7 @@ class AnesthesiaGradientTester:
             logger.info(f"     Φ = {phi_mean:.4f} ± {phi_std:.4f}")
 
         # Análise do gradiente
+        assert baseline_phi is not None
         analysis = self._analyze_gradient(results, baseline_phi)
 
         # Resultados finais

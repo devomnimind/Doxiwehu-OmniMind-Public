@@ -2,7 +2,7 @@
 
 import json
 from pathlib import Path
-from typing import Generator
+from typing import cast
 from unittest.mock import MagicMock
 
 import pytest
@@ -14,7 +14,7 @@ from src.agents.psychoanalytic_analyst import (
 
 
 @pytest.fixture
-def analyst(tmp_path: Path) -> Generator[PsychoanalyticAnalyst, None, None]:
+def analyst(tmp_path: Path) -> PsychoanalyticAnalyst:
     """Fixture to create a PsychoanalyticAnalyst with a mocked LLM."""
     config_path = tmp_path / "agent_config.yaml"
     config_path.write_text(
@@ -77,13 +77,15 @@ def test_analyze_session_freudian(analyst: PsychoanalyticAnalyst) -> None:
     # The LLM response might be a string or an object with a 'content' attribute
     mock_llm_output = MagicMock()
     mock_llm_output.content = json.dumps(mock_response)
-    analyst.llm.invoke = MagicMock(return_value=mock_llm_output)
+
+    # Cast to MagicMock to allow assignment
+    cast(MagicMock, analyst.llm).invoke = MagicMock(return_value=mock_llm_output)
 
     result = analyst.analyze_session(session_notes, framework=PsychoanalyticFramework.FREUDIAN)
 
     # Verify that the correct prompt was built and sent to the LLM
-    analyst.llm.invoke.assert_called_once()
-    prompt_arg = analyst.llm.invoke.call_args[0][0]
+    cast(MagicMock, analyst.llm).invoke.assert_called_once()
+    prompt_arg = cast(MagicMock, analyst.llm).invoke.call_args[0][0]
     assert prompt_arg.strip().startswith("Você é um assistente de IA especializado em psicanálise.")
     assert f"framework {PsychoanalyticFramework.FREUDIAN.value}" in prompt_arg
     assert session_notes in prompt_arg
@@ -123,7 +125,7 @@ def test_parse_analysis_handles_errors(analyst: PsychoanalyticAnalyst) -> None:
     invalid_response = MagicMock()
     invalid_response.content = "This is not a valid JSON."
 
-    analyst.llm.invoke.return_value = invalid_response
+    cast(MagicMock, analyst.llm).invoke.return_value = invalid_response
 
     result = analyst.analyze_session("some notes")
 

@@ -18,7 +18,7 @@ import re
 import time
 from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..integrations.dbus_controller import (
     DBusSessionController,
@@ -734,13 +734,14 @@ ESTIMATED_COMPLEXITY: low"""
         """
         description = subtask.get("description")
         if not description:
-            description = f"Untitled subtask {index+1}"
+            description = f"Untitled subtask {index + 1}"
             subtask["description"] = description
 
         safe_description = description[:80]
         delegation_msg = (
-            f"\n🪃 [Orchestrator] Delegating subtask {index+1}/"
-            f"{len(self.current_plan['subtasks'])}: {safe_description}..."
+            f"\n🪃 [Orchestrator] Delegating subtask {index + 1}/"
+            f"{len(self.current_plan['subtasks']) if self.current_plan else '?'}"
+            f": {safe_description}..."
         )
         print(delegation_msg)
 
@@ -839,7 +840,13 @@ ESTIMATED_COMPLEXITY: low"""
                 result = self._execute_dbus_subtask(subtask)
             elif agent_mode == AgentMode.CODE:
                 agent = self._get_agent(agent_mode)
-                result = agent.run_code_task(subtask["description"], max_iterations=max_iterations)
+                from typing import cast
+                from src.agents.code_agent import CodeAgent
+
+                code_agent = cast(CodeAgent, agent)
+                result = code_agent.run_code_task(
+                    subtask["description"], max_iterations=max_iterations
+                )
             elif agent_mode == AgentMode.REVIEWER:
                 result = {
                     "completed": True,
@@ -848,8 +855,12 @@ ESTIMATED_COMPLEXITY: low"""
                 }
             elif agent_mode == AgentMode.PSYCHOANALYST:
                 agent = self._get_agent(agent_mode)
-                analysis = agent.analyze_session(subtask["description"])
-                report = agent.generate_abnt_report(analysis)
+                from typing import cast
+                from src.agents.psychoanalytic_analyst import PsychoanalyticAnalyst
+
+                psycho_agent = cast(PsychoanalyticAnalyst, agent)
+                analysis = psycho_agent.analyze_session(subtask["description"])
+                report = psycho_agent.generate_abnt_report(analysis)
                 result = {
                     "completed": True,
                     "final_result": report,
@@ -923,10 +934,10 @@ ESTIMATED_COMPLEXITY: low"""
         if not result.get("completed"):
             results["overall_success"] = False
             error_msg = result.get("error", result.get("final_result", "Unknown error"))
-            print(f"❌ Subtask {index+1} failed: {error_msg}")
-            logger.warning(f"Subtask {index+1} failed with agent {subtask['agent']}: {error_msg}")
+            print(f"❌ Subtask {index + 1} failed: {error_msg}")
+            logger.warning(f"Subtask {index + 1} failed with agent {subtask['agent']}: {error_msg}")
         else:
-            print(f"✅ Subtask {index+1} completed")
+            print(f"✅ Subtask {index + 1} completed")
 
     def _handle_subtask_error(self, results: Dict[str, Any], error: Exception, index: int) -> None:
         """Handle subtask execution error.
@@ -937,7 +948,7 @@ ESTIMATED_COMPLEXITY: low"""
             index: Subtask index
         """
         logger.exception("Error executing subtask %d", index + 1)
-        print(f"❌ Error in subtask {index+1}: {error}")
+        print(f"❌ Error in subtask {index + 1}: {error}")
         results["overall_success"] = False
         results["subtask_results"].append({"subtask_id": index + 1, "error": str(error)})
 
@@ -1096,7 +1107,7 @@ ESTIMATED_COMPLEXITY: low"""
         execution_plan = []
 
         # Agrupar por agent type
-        by_agent = {}
+        by_agent: Dict[str, List[Tuple[int, Dict[str, Any]]]] = {}
         for i, subtask in enumerate(subtasks):
             agent = subtask.get("agent", "code")
             if agent not in by_agent:
@@ -1149,7 +1160,7 @@ ESTIMATED_COMPLEXITY: low"""
             subtask = task_spec["subtask"]
             agent = task_spec["agent"]
 
-            logger.info(f"[{workflow_id}] Executando {i+1}/{len(execution_plan)}: {agent}")
+            logger.info(f"[{workflow_id}] Executing {i + 1}/{len(execution_plan)}: {agent}")
 
             # Usar execute_plan original para manter compatibility
             single_plan = {"subtasks": [subtask], "complexity": "low"}
@@ -1238,7 +1249,9 @@ ESTIMATED_COMPLEXITY: low"""
 
         # 3. Sintetizar
         print("\n📝 Synthesizing results...")
-        synthesis = self._synthesize_results(execution_result)
+        synthesis = self._synthesize_results(
+            plan["subtasks"], execution_result["subtask_results"], plan.get("complexity", "medium")
+        )
 
         # 4. Capture MCP/D-Bus context for the dashboard
         dashboard_snapshot = self._build_dashboard_context(plan)

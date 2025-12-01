@@ -251,7 +251,12 @@ class AgentMonitor:
 
     def get_all_metrics(self) -> List[Dict[str, Any]]:
         """Get metrics for all registered agents."""
-        return [self.get_agent_metrics(agent_id) for agent_id in self._agent_metrics.keys()]
+        metrics_list = []
+        for agent_id in self._agent_metrics.keys():
+            m = self.get_agent_metrics(agent_id)
+            if m is not None:
+                metrics_list.append(m)
+        return metrics_list
 
     def get_task_history(self, agent_id: str, limit: int = 50) -> List[Dict[str, Any]]:
         """Get task history for an agent."""

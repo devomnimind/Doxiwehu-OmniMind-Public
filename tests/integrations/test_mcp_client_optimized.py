@@ -253,10 +253,10 @@ class TestEnhancedMCPClient:
         mock_mcp: Mock,
     ) -> None:
         """Testa eviction LRU quando cache está cheio."""
-        # Cache muito pequeno (1 byte)
+        # Cache muito pequeno (1 MB)
         client = EnhancedMCPClient(
             enable_cache=True,
-            max_cache_size_mb=0.000001,  # ~1 byte
+            max_cache_size_mb=1,  # 1 MB
         )
 
         # Adiciona várias entradas

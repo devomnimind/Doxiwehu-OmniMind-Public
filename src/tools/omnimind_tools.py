@@ -1080,7 +1080,7 @@ class ToolsFramework:
 
                 # Verificar se hash anterior corresponde
                 if entry["prev_hash"] != prev_hash:
-                    logger.error(f"Audit chain broken at line {i+1}: {entry}")
+                    logger.error(f"Audit chain broken at line {i + 1}: {entry}")
                     return False
 
                 prev_hash = entry["output_hash"]

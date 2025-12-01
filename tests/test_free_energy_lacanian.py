@@ -201,15 +201,15 @@ class TestDesireVector:
 
     def test_creation(self) -> None:
         """Test desire vector creation."""
-        import numpy as np
+        import torch
 
-        direction = np.array([1.0, 0.0, 0.0])
+        direction = torch.tensor([1.0, 0.0, 0.0])
         desire = DesireVector(
             intensity=0.8, direction=direction, synchronization=0.6, jouissance=0.4
         )
 
         assert desire.intensity == 0.8
-        assert np.array_equal(desire.direction, direction)
+        assert torch.equal(desire.direction, direction)
         assert desire.synchronization == 0.6
         assert desire.jouissance == 0.4
 

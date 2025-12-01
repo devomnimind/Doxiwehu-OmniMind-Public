@@ -248,6 +248,7 @@ class TestTheoryOfMind:
         )
 
         model = tom.get_mental_model("user_1")
+        assert model is not None
         assert len(model.beliefs) == 1
         assert model.beliefs[0].confidence == 0.9
 
@@ -265,6 +266,7 @@ class TestTheoryOfMind:
             )
 
         model = tom.get_mental_model("user_1")
+        assert model is not None
         assert len(model.beliefs) <= 5
 
     def test_get_mental_model(self) -> None:

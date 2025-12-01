@@ -3,6 +3,7 @@ Tests for Freudian Metapsychology module.
 """
 
 import pytest
+from typing import Any, Dict
 
 from src.lacanian.freudian_metapsychology import (
     Action,
@@ -111,7 +112,7 @@ class TestEgoAgent:
             moral_alignment=0.0,
         )
 
-        reality_context = {"time_available": 2.0}
+        reality_context: Dict[str, float] = {"time_available": 2.0}
         value = ego.evaluate_action(action, reality_context)
 
         # Ego should balance pleasure and reality
@@ -256,7 +257,7 @@ class TestFreudianMind:
             Action("a2", 0.3, 0.6, 0.8),
         ]
 
-        reality_context = {}
+        reality_context: Dict[str, Any] = {}
         conflict_severity, preferences = mind.evaluate_conflict(actions, reality_context)
 
         assert conflict_severity >= 0.0
@@ -273,7 +274,7 @@ class TestFreudianMind:
             Action("exercise", 0.3, 0.6, 0.8, "Exercise"),
         ]
 
-        reality_context = {}
+        reality_context: dict[str, Any] = {}
         resolution = mind.resolve_conflict(actions, reality_context)
 
         assert resolution.chosen_action in actions
@@ -289,7 +290,7 @@ class TestFreudianMind:
             Action("a2", 0.4, 0.5, 0.8),
         ]
 
-        reality_context = {}
+        reality_context: dict[str, Any] = {}
         chosen_action, resolution = mind.act(actions, reality_context)
 
         assert chosen_action in actions
@@ -303,7 +304,7 @@ class TestFreudianMind:
             Action("pleasant", 0.9, 0.1, -0.5),  # Pleasant but immoral
         ]
 
-        reality_context = {}
+        reality_context: dict[str, Any] = {}
         mind.act(actions, reality_context)
 
         # State should have changed

@@ -246,7 +246,7 @@ class SwarmManager:
         pso_runs = [m for m in self.metrics_history if m["algorithm"] == "PSO"]
         aco_runs = [m for m in self.metrics_history if m["algorithm"] == "ACO"]
 
-        summary = {
+        summary: Dict[str, Any] = {
             "total_runs": len(self.metrics_history),
             "pso_runs": len(pso_runs),
             "aco_runs": len(aco_runs),

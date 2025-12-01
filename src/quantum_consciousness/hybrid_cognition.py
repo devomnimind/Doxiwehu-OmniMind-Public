@@ -754,7 +754,7 @@ class HybridCognitionSystem:
             return {"error": "No metrics history available"}
 
         # Calculate emergence indicators
-        strategy_performance = {}
+        strategy_performance: dict[OptimizationStrategy, list[float]] = {}
         for metrics in self.metrics_history:
             strategy = metrics.strategy
             if strategy not in strategy_performance:
@@ -770,8 +770,8 @@ class HybridCognitionSystem:
             quantum_scores = strategy_performance.get(OptimizationStrategy.QUANTUM, [])
 
             if hybrid_scores and (classical_scores or quantum_scores):
-                hybrid_avg = np.mean(hybrid_scores)
-                individual_avg = np.mean(classical_scores + quantum_scores)
+                hybrid_avg = float(np.mean(hybrid_scores))
+                individual_avg = float(np.mean(classical_scores + quantum_scores))
                 if hybrid_avg > individual_avg:
                     emergence_score = min(1.0, (hybrid_avg - individual_avg) / individual_avg)
 
@@ -815,7 +815,7 @@ class HybridCognitionSystem:
         summary += f"  Average Efficiency: {avg_efficiency:.4f}\n\n"
 
         # Per-strategy breakdown
-        strategy_stats = {}
+        strategy_stats: dict[OptimizationStrategy, list[CognitionMetrics]] = {}
         for metrics in self.metrics_history:
             strategy = metrics.strategy
             if strategy not in strategy_stats:

@@ -109,7 +109,7 @@ class ArchitectAgent(ReactAgent):
         if similar_episodes:
             memory_str = "\n".join(
                 [
-                    f"{i+1}. {ep['task']} → {ep['result'][:100]}"
+                    f"{i + 1}. {ep['task']} → {ep['result'][:100]}"
                     for i, ep in enumerate(similar_episodes)
                 ]
             )
@@ -226,7 +226,7 @@ Your response:"""
 
         # Adicionar componentes
         for i, comp in enumerate(components):
-            lines.append(f"    {chr(65+i)}[{comp}]")
+            lines.append(f"    {chr(65 + i)}[{comp}]")
 
         # Adicionar conexões
         comp_map = {comp: chr(65 + i) for i, comp in enumerate(components)}

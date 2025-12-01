@@ -2,6 +2,8 @@
 Testes para Bias Detector System.
 """
 
+from typing import Any
+
 import pytest
 
 from src.coevolution.bias_detector import (
@@ -25,7 +27,7 @@ class TestBiasDetector:
         """Testa detecção com resultado vazio."""
         detector = BiasDetector()
 
-        result = {}
+        result: dict[str, Any] = {}
         detections = detector.detect_bias(result)
 
         assert isinstance(detections, list)

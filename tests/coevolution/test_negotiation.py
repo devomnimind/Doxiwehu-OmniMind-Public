@@ -3,6 +3,7 @@ Testes para Goal Negotiation System.
 """
 
 import pytest
+from typing import Any
 
 from src.coevolution.negotiation import (
     GoalNegotiator,
@@ -33,7 +34,7 @@ class TestGoalNegotiator:
         negotiator = GoalNegotiator()
 
         human_intent = {"goal": "implement feature X"}
-        ai_perspective = {"alternative_approaches": ["approach A"]}
+        ai_perspective: dict[str, Any] = {"alternative_approaches": ["approach A"]}
 
         result = negotiator.negotiate(
             human_intent=human_intent, ai_perspective=ai_perspective, trust_level=0.7
@@ -48,7 +49,7 @@ class TestGoalNegotiator:
         negotiator = GoalNegotiator()
 
         human_intent = {"goal": "feature X", "priority": "high"}
-        ai_perspective = {}
+        ai_perspective: dict[str, Any] = {}
 
         result = negotiator.negotiate(
             human_intent=human_intent, ai_perspective=ai_perspective, trust_level=0.95
@@ -64,7 +65,7 @@ class TestGoalNegotiator:
         negotiator = GoalNegotiator(convergence_threshold=0.5)
 
         human_intent = {"goal": "test", "param1": "value1"}
-        ai_perspective = {}
+        ai_perspective: dict[str, Any] = {}
 
         result = negotiator.negotiate(
             human_intent=human_intent, ai_perspective=ai_perspective, trust_level=0.6
@@ -82,7 +83,7 @@ class TestGoalNegotiator:
         negotiator = GoalNegotiator(max_rounds=1, convergence_threshold=0.99)
 
         human_intent = {"goal": "complex task"}
-        ai_perspective = {}
+        ai_perspective: dict[str, Any] = {}
 
         result = negotiator.negotiate(
             human_intent=human_intent, ai_perspective=ai_perspective, trust_level=0.5

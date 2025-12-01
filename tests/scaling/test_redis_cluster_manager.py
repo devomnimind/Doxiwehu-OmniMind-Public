@@ -13,6 +13,7 @@ Cobertura de:
 from __future__ import annotations
 
 from unittest.mock import MagicMock, Mock, patch
+from typing import List
 
 import pytest
 
@@ -22,6 +23,7 @@ from src.scaling.redis_cluster_manager import (
     ClusterNode,
     ClusterState,
     RedisClusterManager,
+    ClusterNodeConfig,
 )
 
 
@@ -206,7 +208,8 @@ class TestRedisClusterManager:
         mock_client = MagicMock()
         mock_redis_cluster.return_value = mock_client
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         assert len(manager.nodes) == 1
 
@@ -217,7 +220,8 @@ class TestRedisClusterManager:
         mock_redis_cluster.return_value = mock_client
         mock_client.get.return_value = None
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
         value = manager.get("nonexistent_key")
 
         assert value is None
@@ -230,7 +234,8 @@ class TestRedisClusterManager:
         mock_client.get.return_value = b"test_value"
         mock_client.set.return_value = True
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         # Set value
         result = manager.set("test_key", "test_value")
@@ -247,7 +252,8 @@ class TestRedisClusterManager:
         mock_redis_cluster.return_value = mock_client
         mock_client.setex.return_value = True
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         result = manager.set("key_with_ttl", "value", ttl=3600)
         assert result is True or result is None
@@ -259,7 +265,8 @@ class TestRedisClusterManager:
         mock_redis_cluster.return_value = mock_client
         mock_client.delete.return_value = 1
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         result = manager.delete("key_to_delete")
         assert result == 1 or result is None
@@ -271,7 +278,8 @@ class TestRedisClusterManager:
         mock_redis_cluster.return_value = mock_client
         mock_client.exists.return_value = 1
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         exists = manager.exists("existing_key")
         assert exists == 1 or exists is None
@@ -288,7 +296,8 @@ class TestRedisClusterManager:
             "cluster_known_nodes": 3,
         }
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
         health = manager.get_cluster_health()
 
         assert health is not None or health is None  # Allow for Redis not available
@@ -300,7 +309,8 @@ class TestRedisClusterManager:
         mock_redis_cluster.return_value = mock_client
         mock_client.ping.side_effect = Exception("Connection timeout")
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         # Should not raise exception, just return None or error info
         health = manager.get_cluster_health()
@@ -312,7 +322,7 @@ class TestRedisClusterManager:
         mock_client = MagicMock()
         mock_redis_cluster.return_value = mock_client
 
-        nodes = [
+        nodes: List[ClusterNodeConfig] = [
             {"host": "localhost", "port": 7000},
             {"host": "localhost", "port": 7001},
             {"host": "localhost", "port": 7002},
@@ -329,7 +339,8 @@ class TestRedisClusterManager:
         mock_redis_cluster.return_value = mock_client
         mock_client.flushall.return_value = True
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         result = manager.flush_all()
         assert result is True or result is None
@@ -341,7 +352,7 @@ class TestRedisClusterManagerWithoutRedis:
     @pytest.mark.skipif(REDIS_AVAILABLE, reason="Redis is available")
     def test_initialization_without_redis(self) -> None:
         """Testa inicialização quando Redis não está disponível."""
-        nodes = [{"host": "localhost", "port": 7000}]
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
 
         # Should work even without Redis (graceful degradation)
         RedisClusterManager(nodes=nodes)
@@ -349,7 +360,7 @@ class TestRedisClusterManagerWithoutRedis:
     @pytest.mark.skipif(REDIS_AVAILABLE, reason="Redis is available")
     def test_operations_without_redis(self) -> None:
         """Testa operações quando Redis não está disponível."""
-        nodes = [{"host": "localhost", "port": 7000}]
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
         manager = RedisClusterManager(nodes=nodes)
 
         # Operations should fail gracefully
@@ -361,7 +372,7 @@ class TestRedisClusterManagerWithoutRedis:
         """Testa tratamento de erro de conexão."""
         mock_redis_cluster.side_effect = Exception("Connection refused")
 
-        nodes = [{"host": "localhost", "port": 7000}]
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
 
         # Should handle connection error gracefully
         try:
@@ -379,7 +390,8 @@ class TestRedisClusterManagerWithoutRedis:
         mock_redis_cluster.return_value = mock_client
         mock_client.get.side_effect = TimeoutError("Operation timed out")
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         # Should handle timeout gracefully
         try:
@@ -399,9 +411,8 @@ class TestRedisClusterManagerAdvanced:
         mock_client = MagicMock()
         mock_redis_cluster.return_value = mock_client
 
-        manager = RedisClusterManager(
-            nodes=[{"host": "localhost", "port": 7000}], max_connections=100
-        )
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes, max_connections=100)
 
         assert manager.max_connections == 100 or hasattr(manager, "max_connections")
 
@@ -413,12 +424,11 @@ class TestRedisClusterManagerAdvanced:
 
         # Sentinel config (if supported)
         try:
-            manager = RedisClusterManager(
-                nodes=[{"host": "localhost", "port": 7000}], use_sentinel=True
-            )
+            nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+            manager = RedisClusterManager(nodes=nodes, sentinel_nodes=[("localhost", 26379)])
             assert manager is not None
         except TypeError:
-            # If use_sentinel is not supported, that's ok
+            # If sentinel_nodes is not supported, that's ok
             pass
 
     @patch("src.scaling.redis_cluster_manager.RedisClusterCtor")
@@ -428,7 +438,8 @@ class TestRedisClusterManagerAdvanced:
         mock_redis_cluster.return_value = mock_client
         mock_client.get.return_value = b"value"
 
-        manager = RedisClusterManager(nodes=[{"host": "localhost", "port": 7000}])
+        nodes: List[ClusterNodeConfig] = [{"host": "localhost", "port": 7000}]
+        manager = RedisClusterManager(nodes=nodes)
 
         # Perform operations
         manager.get("key1")

@@ -11,12 +11,11 @@ Este teste demonstra o verdadeiro speedup da vetorização usando:
 import asyncio
 import logging
 import time
-from typing import Dict, List
 
 import numpy as np
 import torch
 
-from src.consciousness.shared_workspace import SharedWorkspace, CrossPredictionMetrics
+from src.consciousness.shared_workspace import SharedWorkspace
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -89,7 +88,7 @@ async def test_real_speedup():
         for i, source in enumerate(valid_modules):
             for j, target in enumerate(valid_modules):
                 if i != j:  # Não auto-predição
-                    pred = workspace.compute_cross_prediction(source, target, history_window)
+                    workspace.compute_cross_prediction(source, target, history_window)
                     individual_count += 1
 
         individual_time = (time.time() - start_time) * 1000
@@ -115,10 +114,12 @@ async def test_real_speedup():
         # Verificar se mesma quantidade de predições
         if individual_count != vectorized_count:
             logger.warning(
-                f"   ⚠️ Contagem diferente: individual={individual_count}, vetorizado={vectorized_count}"
+                f"   ⚠️ Contagem diferente: individual={individual_count}, "
+                f"vetorizado={vectorized_count}"
             )
             logger.warning(
-                f"   Módulos válidos: {len(valid_modules)}, Predições esperadas: {len(valid_modules) * (len(valid_modules) - 1)}"
+                f"   Módulos válidos: {len(valid_modules)}, "
+                f"Predições esperadas: {len(valid_modules) * (len(valid_modules) - 1)}"
             )
 
         # Métricas por predição
@@ -203,7 +204,7 @@ async def test_real_speedup():
             if workspace._vectorized_predictor is not None:
                 for i in range(0, n_modules, 5):  # Invalidar 20% dos módulos
                     workspace._vectorized_predictor.invalidate_module_cache(modules[i])
-        result = workspace.compute_all_cross_predictions_vectorized(
+        workspace.compute_all_cross_predictions_vectorized(
             history_window=50, force_recompute=force_recompute
         )
         elapsed = (time.time() - start_time) * 1000
@@ -282,8 +283,6 @@ async def test_real_speedup():
 
 if __name__ == "__main__":
     try:
-        import torch
-
         result = asyncio.run(test_real_speedup())
 
         print("\n📊 Resumo Executivo:")

@@ -7,6 +7,7 @@ Total: 29 tests covering all self-analysis capabilities.
 import json
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -64,7 +65,7 @@ class TestLoadHashChain:
     def test_load_empty_entries(self, tmp_path: Path) -> None:
         """Test loading hash chain with no entries."""
         log_file = tmp_path / "empty_chain.json"
-        data = {"entries": []}
+        data: dict[str, Any] = {"entries": []}
 
         with open(log_file, "w") as f:
             json.dump(data, f)
@@ -103,7 +104,7 @@ class TestAnalyzeDecisionPatterns:
         log_file = tmp_path / "old_entries.json"
         # Create entries from 48 hours ago
         old_time = (datetime.now() - timedelta(hours=48)).isoformat()
-        data = {
+        data: dict[str, Any] = {
             "entries": [
                 {"tool_name": "tool1", "timestamp": old_time, "success": True},
             ]
@@ -123,7 +124,7 @@ class TestAnalyzeDecisionPatterns:
         log_file = tmp_path / "recent.json"
         now = datetime.now()
 
-        data = {
+        data: dict[str, Any] = {
             "entries": [
                 {
                     "tool_name": "tool1",
@@ -163,7 +164,7 @@ class TestAnalyzeDecisionPatterns:
         now = datetime.now()
 
         # 3 successes, 1 failure = 75% success rate
-        data = {
+        data: dict[str, Any] = {
             "entries": [
                 {
                     "timestamp": (now - timedelta(minutes=i)).isoformat(),
@@ -186,7 +187,7 @@ class TestAnalyzeDecisionPatterns:
         log_file = tmp_path / "tools.json"
         now = datetime.now()
 
-        data = {
+        data: dict[str, Any] = {
             "entries": [
                 {
                     "tool_name": "tool_a",
@@ -426,7 +427,7 @@ class TestGetHealthSummary:
         now = datetime.now()
 
         # 95% success rate
-        data = {
+        data: dict[str, Any] = {
             "entries": [
                 {
                     "timestamp": (now - timedelta(minutes=i)).isoformat(),
@@ -521,7 +522,7 @@ class TestGetHealthSummary:
         log_file = tmp_path / "summary.json"
         now = datetime.now()
 
-        data = {
+        data: dict[str, Any] = {
             "entries": [
                 {
                     "timestamp": (now - timedelta(minutes=i)).isoformat(),

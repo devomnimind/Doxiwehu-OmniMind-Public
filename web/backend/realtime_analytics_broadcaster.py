@@ -22,11 +22,11 @@ class RealtimeAnalyticsBroadcaster:
         self.running = False
         self._producer_task = None
         self._consumer_task = None
-        self._metrics_queue = asyncio.Queue(maxsize=queue_size)
+        self._metrics_queue: asyncio.Queue[Dict[str, Any]] = asyncio.Queue(maxsize=queue_size)
 
         # Import here to avoid circular imports
         self._ws_manager = None
-        self._get_metrics_fn = None
+        self._get_metrics_fn: Any = None
 
     async def start(self):
         """Start the broadcasting loop."""
@@ -130,11 +130,15 @@ class RealtimeAnalyticsBroadcaster:
 
                 self._get_metrics_fn = (get_task_counts, count_active_agents)
 
-            get_task_counts, count_active_agents = self._get_metrics_fn
-
-            # These are cached/fast operations
-            active_tasks, completed_tasks = get_task_counts()
-            agent_count = count_active_agents()
+            if self._get_metrics_fn:
+                get_task_counts, count_active_agents = self._get_metrics_fn
+                
+                # These are cached/fast operations
+                active_tasks, completed_tasks = get_task_counts()
+                agent_count = count_active_agents()
+            else:
+                active_tasks, completed_tasks = (0, 0)
+                agent_count = 1
 
             return {
                 "cpu_percent": cpu_percent,

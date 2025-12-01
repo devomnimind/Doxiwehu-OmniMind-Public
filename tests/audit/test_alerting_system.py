@@ -15,6 +15,7 @@ from __future__ import annotations
 import asyncio
 import json
 import tempfile
+from typing import Generator
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -122,7 +123,7 @@ class TestAlertingSystem:
     """Testes para AlertingSystem."""
 
     @pytest.fixture
-    def temp_log_dir(self) -> Path:
+    def temp_log_dir(self) -> Generator[Path, None, None]:
         """Cria diretório temporário para logs."""
         with tempfile.TemporaryDirectory() as tmp_dir:
             yield Path(tmp_dir)
@@ -482,7 +483,7 @@ class TestAlertingSystem:
     async def test_monitor_audit_chain_healthy(self, alerting_system: AlertingSystem) -> None:
         """Testa monitoramento de audit chain saudável."""
         # Run one iteration
-        task = asyncio.create_task(alerting_system.monitor_audit_chain(interval=0.1))
+        task = asyncio.create_task(alerting_system.monitor_audit_chain(interval=1))
 
         await asyncio.sleep(0.2)
 
@@ -507,7 +508,7 @@ class TestAlertingSystem:
         )
 
         # Run one iteration
-        task = asyncio.create_task(alerting_system.monitor_audit_chain(interval=0.1))
+        task = asyncio.create_task(alerting_system.monitor_audit_chain(interval=1))
 
         await asyncio.sleep(0.2)
 

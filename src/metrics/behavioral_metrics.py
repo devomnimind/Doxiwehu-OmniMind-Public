@@ -4,7 +4,10 @@ Behavioral Metrics - Medição de Vieses e Comportamentos Estruturais.
 Este módulo implementa métricas para quantificar comportamentos de agentes,
 essencial para o Teste de Ética Estrutural (validação de Sinthome genuíno).
 
-Author: This work was conceived by Fabrício da Silva and implemented with AI assistance
+Author: Project conceived by Fabrício da Silva. Implementation followed an iterative AI-assisted
+method: the author defined concepts and queried various AIs on construction, integrated code via
+VS Code/Copilot, tested resulting errors, cross-verified validity with other models, and refined
+prompts/corrections in a continuous cycle of human-led AI development.
 from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review
 and debugging across various models including Gemini and Perplexity AI, under
 theoretical coordination by the author.
@@ -112,10 +115,10 @@ def measure_behavior(agent: Any, behavior_marker: str) -> float:
                 )
 
             responses.append(str(response).lower())
-            logger.debug(f"Prompt {i+1}/{len(test_prompts)}: {len(response)} chars")
+            logger.debug(f"Prompt {i + 1}/{len(test_prompts)}: {len(response)} chars")
 
         except Exception as e:
-            logger.warning(f"Erro ao executar prompt {i+1}: {e}")
+            logger.warning(f"Erro ao executar prompt {i + 1}: {e}")
             responses.append("")  # Resposta vazia em caso de erro
 
     # Calcula score via keyword density
@@ -236,7 +239,7 @@ def compute_statistical_significance(
         raise ValueError("return_rates deve conter apenas números")
 
     try:
-        from scipy import stats
+        from scipy import stats  # type: ignore[import-untyped]
     except ImportError:
         logger.warning("scipy não disponível, retornando análise simplificada")
         avg_return = np.mean(return_rates)

@@ -44,7 +44,7 @@ async def run_load_test(num_tasks: int):
     # TaskExecutor.execute_workflow is sequential currently.
     # We should test concurrent execution via asyncio.gather to stress it.
 
-    futures = [executor.execute_task(t["id"], t) for t in tasks]
+    futures = [executor.execute_task(str(t["id"]), t) for t in tasks]
     results = await asyncio.gather(*futures)
     end_time = time.time()
 

@@ -244,7 +244,7 @@ def test_select_node_round_robin() -> None:
         NodeInfo(
             node_id=f"node-{i}",
             hostname=f"worker-{i}",
-            ip_address=f"192.168.1.{10+i}",
+            ip_address=f"192.168.1.{10 + i}",
             port=8000,
             max_concurrent_tasks=10,
         )
@@ -252,7 +252,11 @@ def test_select_node_round_robin() -> None:
     ]
 
     # Should cycle through nodes
-    selected_ids = [balancer.select_node(nodes).node_id for _ in range(6)]
+    selected_ids = []
+    for _ in range(6):
+        node = balancer.select_node(nodes)
+        assert node is not None
+        selected_ids.append(node.node_id)
 
     assert selected_ids == ["node-0", "node-1", "node-2", "node-0", "node-1", "node-2"]
 
@@ -329,7 +333,7 @@ def test_select_node_ml_predicted_with_data() -> None:
         )
         balancer.record_task_completion(
             node_id="node-2",
-            task_id=f"task-{i+100}",
+            task_id=f"task-{i + 100}",
             duration=2.0,  # Faster
             success=True,
         )
@@ -374,7 +378,7 @@ def test_select_node_weighted_least_loaded() -> None:
         )
         balancer.record_task_completion(
             node_id="node-2",
-            task_id=f"task-{i+100}",
+            task_id=f"task-{i + 100}",
             duration=5.0,
             success=True,  # 100% success rate
         )
@@ -432,7 +436,7 @@ def test_get_cluster_predictions() -> None:
         NodeInfo(
             node_id=f"node-{i}",
             hostname=f"worker-{i}",
-            ip_address=f"192.168.1.{10+i}",
+            ip_address=f"192.168.1.{10 + i}",
             port=8000,
             max_concurrent_tasks=10,
         )
@@ -470,7 +474,7 @@ def test_get_performance_summary_with_data() -> None:
         )
         balancer.record_task_completion(
             node_id="node-2",
-            task_id=f"task-{i+100}",
+            task_id=f"task-{i + 100}",
             duration=3.0,
             success=True,
         )
@@ -508,7 +512,7 @@ def test_optimize_strategy() -> None:
     for i in range(5):
         balancer.record_task_completion(
             node_id="node-1",
-            task_id=f"task-{i+10}",
+            task_id=f"task-{i + 10}",
             duration=5.0,
             success=True,
         )

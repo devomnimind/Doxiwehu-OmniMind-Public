@@ -9,7 +9,7 @@ import json
 import tempfile
 import time
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Generator
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
@@ -58,7 +58,7 @@ def mock_config() -> Dict[str, Any]:
 
 
 @pytest.fixture
-def temp_config_file(mock_config: Dict[str, Any]) -> Path:
+def temp_config_file(mock_config: Dict[str, Any]) -> Generator[Path, None, None]:
     """Cria arquivo de configuração temporário."""
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f:
         json.dump(mock_config, f)

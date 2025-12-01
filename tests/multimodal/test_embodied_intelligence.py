@@ -144,6 +144,7 @@ class TestGoal:
         )
 
         assert goal.description == "Move to target location"
+        assert goal.target_state is not None
         assert goal.target_state["position"] == target_pos
         assert goal.priority == 0.9
 

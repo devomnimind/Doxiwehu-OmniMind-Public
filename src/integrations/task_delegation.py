@@ -112,7 +112,7 @@ class TaskDelegationManager:
 
     def _initialize_providers(self) -> None:
         """Inicializa provedores configurados"""
-        provider_classes = {
+        provider_classes: Dict[str, type] = {
             "gemini": GeminiProvider,
             "copilot": CopilotProvider,
             "openrouter": OpenRouterProvider,
@@ -124,7 +124,9 @@ class TaskDelegationManager:
 
             try:
                 provider_class = provider_classes.get(provider_name)
-                if provider_class:
+                if provider_class is not None and not hasattr(
+                    provider_class, "__abstractmethods__"
+                ):
                     provider = provider_class(provider_config)
                     self.providers[provider_name] = provider
                     logger.info(f"Provider {provider_name} initialized")
@@ -248,7 +250,7 @@ class TaskDelegationManager:
         )
 
         best_selection = None
-        best_score = -1
+        best_score = -1.0
 
         for provider_name in priority_order:
             if provider_name not in self.providers:
@@ -521,7 +523,7 @@ class TaskDelegationManager:
             1 for entry in self.task_history if entry.get("success", False)
         )
 
-        provider_usage = {}
+        provider_usage: Dict[str, int] = {}
         for entry in self.task_history:
             provider = entry.get("provider_used", "unknown")
             provider_usage[provider] = provider_usage.get(provider, 0) + 1

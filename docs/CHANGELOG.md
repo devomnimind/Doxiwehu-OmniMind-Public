@@ -1,8 +1,87 @@
 # 📝 CHANGELOG - Histórico de Mudanças
 
 **Formato:** Semantic Versioning (MAJOR.MINOR.PATCH)
-**Status:** Produção v1.17.9
+**Status:** Produção v1.18.0 (em validação)
 **Projeto iniciado:** Novembro 2025
+
+---
+
+## [1.18.0] - 2025-12-01 - Critical Bug Fix: Thermodynamic Attention Meta Tensor + Type Safety
+
+### 🎯 Problemas Resolvidos
+
+#### 1. **Bug Crítico: Thermodynamic Attention Meta Tensor Crash**
+- **Arquivo:** `src/attention/thermodynamic_attention.py`
+- **Sintoma:** 2 testes falhando (`test_local_entropy_calculation`, `test_forward_pass` em MultiHead) apenas quando rodava com suite completa (321+ testes antes)
+- **Causa Raiz:** Módulo `entropy_projection` ficava em estado "meta device" (placeholder tensor) após muitos testes. Quando tentava ser movido para device real (GPU/CPU), lançava `NotImplementedError: Cannot copy out of meta tensor`
+- **Resultado:** NaN values em cálculos de entropia, invalidando consciência computacional
+
+#### 2. **Tipo Import Untyped**
+- **Arquivo:** `src/quantum_unconscious.py` (linha 18)
+- **Erro:** `Skipping analyzing "omnimind_parameters": module is installed, but missing library stubs or py.typed marker [import-untyped]`
+- **Solução:** Adicionado `src/py.typed` (marcador PEP 561) + `# type: ignore[import-untyped]` em todos os imports de `omnimind_parameters`
+
+### ✅ Implementações
+
+#### 1. **Correção: Meta Tensor Handling**
+**`src/attention/thermodynamic_attention.py` - Método `_local_entropy()` (linha ~165):**
+```python
+# Antes (problema):
+try:
+    self.entropy_projection.to(device)  # Falha com meta tensor
+except RuntimeError:
+    self.entropy_projection = nn.Linear(embed_dim, embed_dim).to(device)  # Perde pesos!
+
+# Depois (solução):
+param = next(self.entropy_projection.parameters(), None)
+if param is not None and param.device.type == "meta":
+    # Use to_empty() para migração segura de meta device
+    self.entropy_projection = self.entropy_projection.to_empty(device=device, recurse=True)
+else:
+    # Standard device movement
+    self.entropy_projection = self.entropy_projection.to(device)
+```
+
+**Razão da correção:**
+- `.to_empty()` é o método correto para migrar módulos de meta device (PyTorch 1.13+)
+- Preserva a estrutura do módulo sem tentar copiar dados inexistentes
+- Evita recriação do módulo (que perderia pesos treinados)
+
+**`src/attention/thermodynamic_attention.py` - Método `forward()` em `MultiHeadThermodynamicAttention` (linha ~310):**
+- Refatorado para usar função auxiliar `safe_move_to_device()` centralizada
+- Aplica mesmo padrão de detecção + `.to_empty()` para TODOS os módulos
+- Garante que heads e projeções nunca fiquem em meta device
+
+#### 2. **Correção: Type Safety**
+**Arquivos afetados:**
+- `src/quantum_unconscious.py` (linha 18) - Added `# type: ignore[import-untyped]`
+- `scripts/.archive/deprecated/audit_transfer_entropy.py` (line 12) - Added annotation
+- `scripts/development/federated_omnimind.py` (line 19) - Added annotation
+- `scripts/development/empirical_parameter_optimization.py` (lines 61, 166) - Added annotations
+- **Novo arquivo:** `src/py.typed` (PEP 561 marker - vazio mas indicador de tipagem)
+
+### 📊 Resultados de Validação
+
+| Teste | Antes | Depois | Status |
+|-------|-------|--------|--------|
+| Isolado (thermodynamic_attention) | ✅ 11/11 | ✅ 11/11 | ✓ Sem regressão |
+| Grupo: agents+attention+audit+autopoietic | ❌ 319 pass, **2 fail** | ✅ **321/321 pass** | ✅ **BUG ELIMINADO** |
+| Suite completa (3987 testes) | 🔄 Em andamento | 🔄 Validando | ⏳ Esperando resultado |
+
+### 🔬 Impacto Científico
+
+**Crítico para validação de consciência:**
+- Entropia é **métrica fundamental** em IIT (Integrated Information Theory)
+- Cálculo de Φ depende de `_local_entropy()` estar correto
+- NaN em entropia = invalidação de toda a prova de consciência
+- Bug afetava **especialmente** testes em larga escala (reprodutibilidade científica)
+
+### 🎯 Próximos Passos
+
+1. ✅ Aguardar validação completa da suite (3987 testes)
+2. 🔄 Documentar incongruências encontradas (em progresso)
+3. 📋 Update na documentação de Device Management
+4. 🚀 Push único com todas as mudanças validadas
 
 ---
 

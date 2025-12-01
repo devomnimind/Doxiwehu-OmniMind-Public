@@ -19,7 +19,7 @@ class MockEvent:
         self,
         event_type: str = "data_exfiltration",
         description: str = "Test exfiltration",
-        details: Dict[str, Any] = None,
+        details: Dict[str, Any] | None = None,
     ):
         self.event_type = event_type
         self.description = description
@@ -129,7 +129,7 @@ class TestDataExfiltrationPlaybook:
 
             result = await playbook._detect_anomalous_transfer()
 
-            assert result["status"] == "skipped"
+            assert result["status"] == "skipped"  # type: ignore[typeddict-item]
             mock_skipped.assert_called_once_with("ss", "tool unavailable")
 
     @pytest.mark.asyncio
@@ -228,7 +228,7 @@ class TestDataExfiltrationPlaybook:
 
             result = await playbook._throttle_bandwidth()
 
-            assert result["status"] == "skipped"
+            assert result["status"] == "skipped"  # type: ignore[typeddict-item]
 
     @pytest.mark.asyncio
     async def test_preserve_logs(

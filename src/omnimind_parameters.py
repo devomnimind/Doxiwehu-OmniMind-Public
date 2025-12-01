@@ -10,7 +10,7 @@ em validação empírica ou princípios teóricos fundamentados.
 import json
 import numpy as np
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from dataclasses import dataclass, asdict
 import logging
 
@@ -24,11 +24,11 @@ class ConsciousnessParameters:
 
     # IIT Parameters (baseado em Tononi 2016)
     phi_baseline_range: tuple = (0.01, 0.05)  # Range esperado para Φ baseline
-    phi_perturbation_threshold: float = None  # Será determinado empiricamente
+    phi_perturbation_threshold: Optional[float] = None  # Será determinado empiricamente
 
     # Anesthesia Parameters (baseado em literatura anestésica)
-    anesthesia_levels: list = None  # Será determinado por dados reais
-    anesthesia_decay_rate: float = None  # Será determinado empiricamente
+    anesthesia_levels: Optional[List[float]] = None  # Será determinado por dados reais
+    anesthesia_decay_rate: Optional[float] = None  # Será determinado empiricamente
 
     # Timescale Parameters (baseado em psicologia cognitiva)
     optimal_timescale_range: tuple = (5, 50)  # Ciclos (100-1000ms)
@@ -133,7 +133,7 @@ class ParameterManager:
         self.validation = ValidationParameters()
 
         # Histórico de validações
-        self.validation_history = []
+        self.validation_history: List[Dict[str, Any]] = []
 
         # Carregar configuração existente se disponível
         self.load_config()
@@ -179,7 +179,9 @@ class ParameterManager:
         issues = []
 
         # Validar ranges
-        if not (0 < self.consciousness.phi_perturbation_threshold < 1):
+        if self.consciousness.phi_perturbation_threshold is not None and not (
+            0 < self.consciousness.phi_perturbation_threshold < 1
+        ):
             issues.append("phi_perturbation_threshold deve estar entre 0 e 1")
 
         if not (0 < self.lacan.min_disagreement_rate < self.lacan.max_disagreement_rate < 1):

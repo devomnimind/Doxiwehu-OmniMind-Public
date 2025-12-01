@@ -466,7 +466,7 @@ class NoveltyGenerator:
         base = random.choice(concepts)
 
         # Invert or transform attributes
-        transformed_attrs = {}
+        transformed_attrs: Dict[str, Any] = {}
         for key, value in base.attributes.items():
             # Simple transformation: reverse or negate
             if isinstance(value, str):

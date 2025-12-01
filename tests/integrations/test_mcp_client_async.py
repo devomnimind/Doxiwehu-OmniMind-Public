@@ -273,8 +273,7 @@ class TestAsyncMCPClient:
         }
 
         # Should not raise exception
-        validated = client._validate_response(valid_response)
-        assert validated is not None or validated is None
+        client._validate_response(valid_response)
 
     @pytest.mark.asyncio
     @patch("src.integrations.mcp_client_async.httpx")

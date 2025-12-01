@@ -1,6 +1,6 @@
 import os
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import psutil
 from fastapi import APIRouter, HTTPException, status
@@ -10,9 +10,12 @@ from src.metrics.consciousness_metrics import ConsciousnessCorrelates
 router = APIRouter()
 
 
-def _verify_credentials(user: str = None) -> str:
+def _verify_credentials(user: Optional[str] = None) -> str:
     """Verify dashboard credentials from environment or request."""
     expected_user = os.getenv("OMNIMIND_DASHBOARD_USER", "admin")
+
+    if user is None:
+        user = expected_user
 
     if user != expected_user:
         raise HTTPException(

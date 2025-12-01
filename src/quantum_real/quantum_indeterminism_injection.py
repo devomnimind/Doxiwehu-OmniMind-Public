@@ -47,8 +47,8 @@ class QuantumRealInjection:
         """
         try:
             # Tentar D-Wave ou Qiskit
-            from qiskit import QuantumCircuit, transpile
-            from qiskit_aer import AerSimulator
+            from qiskit import QuantumCircuit, transpile  # type: ignore[import-untyped]
+            from qiskit_aer import AerSimulator  # type: ignore[import-untyped]
 
             qc = QuantumCircuit(1)
             qc.h(0)  # Hadamard: superposição

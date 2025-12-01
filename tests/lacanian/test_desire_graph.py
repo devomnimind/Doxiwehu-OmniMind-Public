@@ -9,8 +9,8 @@ Tests components:
 - DesireGraphArchitecture (full integration)
 """
 
-import numpy as np
 import pytest
+from typing import Any
 
 from src.lacanian.desire_graph import (
     DesireGraphArchitecture,
@@ -47,18 +47,18 @@ class TestSignifier:
         s1 = Signifier(
             symbol="S1",
             position=SignifierPosition.S1,
-            meaning_vector=np.array([1.0, 0.0, 0.0]),
+            meaning_vector=[1.0, 0.0, 0.0],
         )
 
         s2 = Signifier(
             symbol="S2",
             position=SignifierPosition.S2,
-            meaning_vector=np.array([0.0, 1.0, 0.0]),
+            meaning_vector=[0.0, 1.0, 0.0],
         )
 
         s1.connections.add("S2")
 
-        context = {"S2": s2}
+        context: dict[str, Signifier] = {"S2": s2}
         meaning = s1.compute_meaning(context)
 
         # Meaning should be influenced by context
@@ -326,7 +326,7 @@ class TestSymbolicMatrix:
         matrix.add_production_rule("actions", gen_behavior)
 
         # With forbidden action
-        context = {}
+        context: dict[str, Any] = {}
         forbidden = {"forbidden_action"}
 
         # Run multiple times (stochastic)
@@ -345,7 +345,7 @@ class TestSymbolicMatrix:
 
         matrix.add_production_rule("actions", gen_forbidden)
 
-        context = {}
+        context: dict[str, Any] = {}
         forbidden = {"transgressive_behavior"}
 
         # Run multiple times

@@ -36,7 +36,7 @@ class OmniMindNode:
 
     def __init__(self, agent_id: str):
         self.id = agent_id
-        self.audit_chain = []
+        self.audit_chain: List[Dict[str, Any]] = []
 
     async def analyze_dilemma(self, dilemma: EthicalDilemma) -> Dict[str, Any]:
         """
@@ -82,7 +82,7 @@ class OmniMindSociety:
             self.nodes = [OmniMindNode(f"agent_{i}") for i in range(5)]
         else:
             self.nodes = nodes
-        self.shared_ledger = []
+        self.shared_ledger: List[Dict[str, Any]] = []
 
     def propose_decision(
         self, description: str, options: List[str], context: Dict[str, Any]

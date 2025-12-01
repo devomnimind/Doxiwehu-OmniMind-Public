@@ -1,18 +1,19 @@
 import asyncio
 import logging
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Type, Optional
+
+import httpx
 
 # Import Quantum Backend (using the fixed version)
+QuantumBackendType: Optional[Type[Any]] = None
 try:
     from src.quantum_consciousness.quantum_backend import QuantumBackend
+
+    QuantumBackendType = QuantumBackend
 except ImportError:
     # Fallback if not found (should be there based on P0)
-    QuantumBackend = None
-
-# Import Symbolic Engine (Ollama)
-# Assuming a simple wrapper or direct request for now
-import httpx
+    QuantumBackendType = None
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,9 @@ class TaskExecutor:
     """
 
     def __init__(self):
-        self.quantum_backend = QuantumBackend(prefer_local=True) if QuantumBackend else None
+        self.quantum_backend = (
+            QuantumBackendType(prefer_local=True) if QuantumBackendType is not None else None
+        )
         self.failed_tasks = {}
         self.results = {}
         # Limit concurrent symbolic requests to prevent Ollama overload
@@ -51,6 +54,9 @@ class TaskExecutor:
                 result = await self._execute_consciousness_check(task_data)
             else:
                 raise ValueError(f"Unknown action: {action}")
+
+            if result is None:
+                result = {"status": "unknown", "message": "No result returned"}
 
             self.results[task_id] = {
                 "status": "success",
@@ -152,7 +158,10 @@ class TaskExecutor:
                             await asyncio.sleep(1 * (attempt + 1))
 
                 except Exception as e:
-                    raise RuntimeError(f"Ollama execution failed: {e}")
+                    raise RuntimeError(f"Ollama execution failed: {e}") from e
+
+        # Fallback return in case all retries fail
+        return {"response": "", "error": "Failed after retries"}
 
     async def _execute_consciousness_check(self, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """Check system consciousness metrics."""

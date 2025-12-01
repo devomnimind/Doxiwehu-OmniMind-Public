@@ -153,7 +153,7 @@ TOOL USAGE EXAMPLES:
         if similar_episodes:
             memory_str = "\n".join(
                 [
-                    f"{i+1}. Task: {ep['task']}\n"
+                    f"{i + 1}. Task: {ep['task']}\n"
                     f"   Action: {ep['action']}\n"
                     f"   Result: {ep['result'][:200]}..."
                     for i, ep in enumerate(similar_episodes)

@@ -67,15 +67,19 @@ License: MIT
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, cast
 
 import numpy as np
 import structlog
 
 try:
-    from qiskit import ClassicalRegister, QuantumCircuit, QuantumRegister
-    from qiskit.quantum_info import Statevector
-    from qiskit_aer import AerSimulator
+    from qiskit import (  # type: ignore[import-untyped]
+        ClassicalRegister,
+        QuantumCircuit,
+        QuantumRegister,
+    )
+    from qiskit.quantum_info import Statevector  # type: ignore[import-untyped]
+    from qiskit_aer import AerSimulator  # type: ignore[import-untyped]
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -545,7 +549,7 @@ class QuantumMemorySystem:
             logger.error(
                 "invalid_memory_index",
                 requested=index,
-                valid_range=f"[0, {len(self.memory_cells)-1}]",
+                valid_range=f"[0, {len(self.memory_cells) - 1}]",
             )
             return None
 
@@ -809,174 +813,6 @@ class QuantumMemorySystem:
             "quantum_memory_cleared", cells_cleared=num_cleared, entanglements_cleared=num_cleared
         )
 
-    def encode(self) -> None:
-        """
-        Encode classical data into quantum state vector.
-
-        The encoding process:
-        1. Convert data to complex numpy array
-        2. Normalize to create valid quantum state (||ψ|| = 1)
-        3. Store in quantum_state attribute
-
-        For amplitude encoding: |ψ⟩ = data / ||data||
-        For single values: Encoded in |00...0⟩ basis state
-
-        Raises:
-            ValueError: If data cannot be converted to numeric array
-        """
-        if not QISKIT_AVAILABLE:
-            logger.warning("qiskit_not_available_for_encoding")
-            return
-
-        try:
-            if isinstance(self.data, (list, np.ndarray)):
-                # Amplitude encoding for vectors
-                data_array = np.array(self.data, dtype=complex)
-
-                # Normalize to create valid quantum state
-                norm = np.linalg.norm(data_array)
-                if norm > 0:
-                    self.quantum_state = data_array / norm
-                else:
-                    # Handle zero vector
-                    self.quantum_state = np.zeros(len(data_array), dtype=complex)
-                    self.quantum_state[0] = 1.0
-
-            elif isinstance(self.data, (int, float)):
-                # Single value encoding
-                size = 2**self.num_qubits
-                self.quantum_state = np.zeros(size, dtype=complex)
-                # Encode in first computational basis state |00...0⟩
-                self.quantum_state[0] = complex(float(self.data), 0)
-
-            else:
-                raise ValueError(f"Unsupported data type for encoding: {type(self.data)}")
-
-        except Exception as e:
-            logger.error(
-                "quantum_encoding_failed", error=str(e), data_type=type(self.data).__name__
-            )
-            # Fallback: keep original data
-            return
-
-        logger.debug(
-            "quantum_memory_encoded",
-            data_type=type(self.data).__name__,
-            encoding=self.encoding_type,
-            state_size=len(self.quantum_state) if self.quantum_state is not None else 0,
-        )
-
-    def decode(self) -> Any:
-        """
-        Decode quantum state back to classical data via measurement.
-
-        The decoding process:
-        1. Calculate measurement probabilities |⟨i|ψ⟩|²
-        2. Sample from probability distribution (wave function collapse)
-        3. Return measured value
-
-        Returns:
-            Decoded classical data (float for single values, collapsed state)
-
-        Note:
-            Quantum measurement is probabilistic - repeated calls may give
-            different results due to superposition collapse.
-        """
-        if self.quantum_state is None:
-            logger.debug("no_quantum_state_fallback_to_classical")
-            return self.data
-
-        # Calculate measurement probabilities
-        probs = np.abs(self.quantum_state) ** 2
-
-        # Ensure probabilities are properly normalized
-        prob_sum = np.sum(probs)
-        if prob_sum > 0:
-            probs = probs / prob_sum  # Renormalize for numerical stability
-
-            # Sample from probability distribution
-            size = len(self.quantum_state)
-            outcome_idx = _rng.choice(size, p=probs)
-
-            # Return real part of measured amplitude
-            measured_value = float(np.real(self.quantum_state[outcome_idx]))
-
-            logger.debug(
-                "quantum_measurement", outcome_idx=outcome_idx, measured_value=measured_value
-            )
-            return measured_value
-        else:
-            logger.warning("invalid_probability_distribution")
-            return 0.0
-
-    def fidelity(self, other: "QuantumMemoryCell") -> float:
-        """
-        Calculate quantum fidelity between two memory cells.
-
-        Fidelity measures how similar two quantum states are:
-        F(ψ,φ) = |⟨ψ|φ⟩|²
-
-        Properties:
-        - F(ψ,ψ) = 1 (identical states)
-        - F(ψ,φ) = 0 (orthogonal states)
-        - F(ψ,φ) ∈ [0,1] (similarity measure)
-
-        Args:
-            other: Another QuantumMemoryCell to compare
-
-        Returns:
-            Fidelity value between 0.0 and 1.0
-
-        Example:
-            >>> cell1 = QuantumMemoryCell([1, 0], 1)
-            >>> cell2 = QuantumMemoryCell([0, 1], 1)
-            >>> cell1.fidelity(cell2)  # Returns 0.0 (orthogonal)
-        """
-        if self.quantum_state is None or other.quantum_state is None:
-            logger.debug("missing_quantum_states_fidelity_zero")
-            return 0.0
-
-        # Handle different sized states (take minimum)
-        min_size = min(len(self.quantum_state), len(other.quantum_state))
-        s1 = self.quantum_state[:min_size]
-        s2 = other.quantum_state[:min_size]
-
-        # Quantum fidelity: |⟨ψ|φ⟩|²
-        inner_product = np.abs(np.vdot(s1, s2))
-        fidelity = float(inner_product**2)
-
-        logger.debug("fidelity_calculated", fidelity=fidelity)
-
-        return fidelity
-
-    def get_state_info(self) -> Dict[str, Any]:
-        """
-        Get detailed information about the quantum state.
-
-        Returns:
-            Dictionary with state metadata and properties
-        """
-        info = {
-            "has_quantum_state": self.quantum_state is not None,
-            "encoding_type": self.encoding_type,
-            "num_qubits": self.num_qubits,
-            "data_type": type(self.data).__name__,
-        }
-
-        if self.quantum_state is not None:
-            info.update(
-                {
-                    "state_size": len(self.quantum_state),
-                    "is_normalized": np.isclose(np.linalg.norm(self.quantum_state), 1.0),
-                    "probabilities": np.abs(self.quantum_state) ** 2,
-                    "purity": float(
-                        np.sum(np.abs(self.quantum_state) ** 4)
-                    ),  # Tr(ρ²) for pure states
-                }
-            )
-
-        return info
-
 
 @dataclass
 class QLearningState:
@@ -1174,7 +1010,7 @@ class HybridQLearning:
         """
         if _rng.random() < epsilon:
             # Exploration: random action
-            action_idx = _rng.integers(0, self.num_actions)
+            action_idx = int(_rng.integers(0, self.num_actions))
             logger.debug("exploration_random_action", state=state, action_idx=action_idx)
         else:
             # Exploitation: best action
@@ -1290,14 +1126,13 @@ class HybridQLearning:
 
         if self.q_table:
             q_values = list(self.q_table.values())
-            stats.update(
-                {
-                    "avg_q_value": float(np.mean(q_values)),
-                    "max_q_value": float(np.max(q_values)),
-                    "min_q_value": float(np.min(q_values)),
-                    "q_value_std": float(np.std(q_values)),
-                }
-            )
+            stats_extra: Dict[str, Any] = {
+                "avg_q_value": cast(float, float(np.mean(q_values))),
+                "max_q_value": cast(float, float(np.max(q_values))),
+                "min_q_value": cast(float, float(np.min(q_values))),
+                "q_value_std": cast(float, float(np.std(q_values))),
+            }
+            stats.update(stats_extra)
 
         return stats
 

@@ -381,7 +381,9 @@ class TestSelfOptimizationEngine:
         engine.apply_winner("test-1")
 
         # Winner should be applied
-        assert engine.get_current_configuration().config_id in ["baseline", "treatment"]
+        current_config = engine.get_current_configuration()
+        assert current_config is not None
+        assert current_config.config_id in ["baseline", "treatment"]
 
     def test_rollback(self) -> None:
         """Test rolling back a test."""

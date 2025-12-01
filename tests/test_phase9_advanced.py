@@ -207,7 +207,9 @@ class TestMetacognitionAPI:
             from web.backend.routes.metacognition import router
 
             # Check that routes exist
-            route_paths = [route.path for route in router.routes]
+            route_paths = [
+                getattr(route, "path") for route in router.routes if hasattr(route, "path")
+            ]
 
             assert "/analyze" in route_paths or any("/analyze" in path for path in route_paths)
             assert "/health" in route_paths or any("/health" in path for path in route_paths)

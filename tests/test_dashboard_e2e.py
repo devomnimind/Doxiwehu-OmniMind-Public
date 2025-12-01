@@ -66,9 +66,9 @@ class DummyMCPClient:
 class DummyOrchestrator:
     def __init__(self, config_path: str):
         self.security_agent = None
-        self.current_plan = {}
-        self.dashboard_snapshot = {}
-        self.config = {}
+        self.current_plan: Dict[str, Any] = {}
+        self.dashboard_snapshot: Dict[str, Any] = {}
+        self.config: Dict[str, Any] = {}
 
     def metrics_summary(self) -> Dict[str, Any]:
         return {}
@@ -134,7 +134,9 @@ def dashboard_client(
     importlib.reload(backend_main)
 
     # Force set the orchestrator instance to avoid 503
-    backend_main._orchestrator_instance = DummyOrchestrator("config/agent_config.yaml")
+    backend_main._orchestrator_instance = DummyOrchestrator(
+        "config/agent_config.yaml"
+    )  # type: ignore[assignment]
 
     client = TestClient(backend_main.app)
     auth_value = base64.b64encode(b"e2e_user:e2e_secret").decode("ascii")

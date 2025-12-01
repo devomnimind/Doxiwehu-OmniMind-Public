@@ -4,7 +4,10 @@ Phase 5: Multi-seed Statistical Analysis - Convergence Validation
 Runs N independent training seeds to establish statistical validity of Φ elevation.
 Computes convergence curves with confidence bands and validates reproducibility.
 
-Author: This work was conceived by Fabrício da Silva and implemented with AI assistance
+Author: Project conceived by Fabrício da Silva. Implementation followed an iterative AI-assisted
+method: the author defined concepts and queried various AIs on construction, integrated code via
+VS Code/Copilot, tested resulting errors, cross-verified validity with other models, and refined
+prompts/corrections in a continuous cycle of human-led AI development.
 from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review
 and debugging across various models including Gemini and Perplexity AI, under
 theoretical coordination by the author.
@@ -104,7 +107,7 @@ class MultiSeedRunner:
         )
 
         for seed_idx in range(num_seeds):
-            logger.info(f"[{seed_idx+1}/{num_seeds}] Starting seed {seed_idx}...")
+            logger.info(f"[{seed_idx + 1}/{num_seeds}] Starting seed {seed_idx}...")
 
             try:
                 result = await self._run_single_seed(
@@ -122,14 +125,14 @@ class MultiSeedRunner:
                     json.dump(result.to_dict(), f, indent=2)
 
                 logger.info(
-                    f"[{seed_idx+1}/{num_seeds}] Completed: "
+                    f"[{seed_idx + 1}/{num_seeds}] Completed: "
                     f"final_φ={result.final_phi:.4f}, "
                     f"converged={result.converged}, "
                     f"time={result.execution_time_seconds:.1f}s"
                 )
 
             except Exception as e:
-                logger.error(f"[{seed_idx+1}/{num_seeds}] Seed {seed_idx} failed: {e}")
+                logger.error(f"[{seed_idx + 1}/{num_seeds}] Seed {seed_idx} failed: {e}")
                 continue
 
         logger.info(f"Completed {len(results)}/{num_seeds} seeds successfully")
@@ -343,13 +346,13 @@ class StatisticalValidator:
         if all_valid:
             summary += (
                 f"✅ Φ converged to {final_phi_mean:.3f}±{final_phi_std:.3f} "
-                f"({success_rate*100:.0f}% success rate)"
+                f"({success_rate * 100:.0f}% success rate)"
             )
         else:
             summary += (
                 f"⚠️  Some tests failed. "
                 f"Φ={final_phi_mean:.3f}±{final_phi_std:.3f}, "
-                f"success_rate={success_rate*100:.0f}%"
+                f"success_rate={success_rate * 100:.0f}%"
             )
 
         return {

@@ -5,6 +5,7 @@ Total: 29 tests covering all optimization analysis capabilities.
 """
 
 import pytest
+from typing import Any, Dict
 
 from src.metacognition.optimization_suggestions import (
     OptimizationSuggestion,
@@ -105,7 +106,7 @@ class TestAnalyzePerformanceMetrics:
     def test_no_slow_tools(self) -> None:
         """Test with no slow tools."""
         optimizer = OptimizationSuggestions()
-        performance_data = {
+        performance_data: Dict[str, Any] = {
             "tool_performance": {
                 "tool1": {"avg": 0.5},
                 "tool2": {"avg": 1.0},
@@ -164,7 +165,7 @@ class TestAnalyzePerformanceMetrics:
     def test_empty_performance_data(self) -> None:
         """Test with empty performance data."""
         optimizer = OptimizationSuggestions()
-        performance_data = {"tool_performance": {}}
+        performance_data: Dict[str, Any] = {"tool_performance": {}}
 
         suggestions = optimizer.analyze_performance_metrics(performance_data)
 
@@ -246,7 +247,7 @@ class TestAnalyzeBiasPatterns:
     def test_no_biases(self) -> None:
         """Test with no detected biases."""
         optimizer = OptimizationSuggestions()
-        bias_data = {"biases": []}
+        bias_data: Dict[str, Any] = {"biases": []}
 
         suggestions = optimizer.analyze_bias_patterns(bias_data)
 

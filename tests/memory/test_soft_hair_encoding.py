@@ -19,7 +19,8 @@ class TestSoftHair:
 
     def test_creation(self) -> None:
         """Test soft hair creation."""
-        soft_modes = np.random.randn(10, 10) + 1j * np.random.randn(10, 10)
+        soft_modes_arr = np.random.randn(10, 10) + 1j * np.random.randn(10, 10)
+        soft_modes = soft_modes_arr.tolist()
         metadata = {"test": "value"}
 
         soft_hair = SoftHair(
@@ -29,7 +30,8 @@ class TestSoftHair:
             original_shape=(50, 50),
         )
 
-        assert soft_hair.soft_modes.shape == (10, 10)
+        assert len(soft_hair.soft_modes) == 10
+        assert len(soft_hair.soft_modes[0]) == 10
         assert soft_hair.compression_ratio == 5.0
         assert soft_hair.original_shape == (50, 50)
 
@@ -48,7 +50,8 @@ class TestSoftHairEncoder:
         """Test encoding 1D data."""
         encoder = SoftHairEncoder()
 
-        data = np.random.randn(100)
+        data_arr = np.random.randn(100)
+        data = data_arr.tolist()
         soft_hair = encoder.encode_to_soft_hair(data)
 
         assert isinstance(soft_hair, SoftHair)
@@ -62,7 +65,8 @@ class TestSoftHairEncoder:
         """Test encoding 2D data."""
         encoder = SoftHairEncoder()
 
-        data = np.random.randn(32, 32)
+        data_arr = np.random.randn(32, 32)
+        data = data_arr.tolist()
         soft_hair = encoder.encode_to_soft_hair(data)
 
         assert isinstance(soft_hair, SoftHair)
@@ -73,7 +77,8 @@ class TestSoftHairEncoder:
         """Test encoding 3D data."""
         encoder = SoftHairEncoder()
 
-        data = np.random.randn(8, 8, 8)
+        data_arr = np.random.randn(8, 8, 8)
+        data = data_arr.tolist()
         soft_hair = encoder.encode_to_soft_hair(data)
 
         assert isinstance(soft_hair, SoftHair)
@@ -83,20 +88,22 @@ class TestSoftHairEncoder:
         """Test that compression actually reduces size."""
         encoder = SoftHairEncoder(soft_mode_cutoff=0.1)
 
-        data = np.random.randn(100, 100)
+        data_arr = np.random.randn(100, 100)
+        data = data_arr.tolist()
         soft_hair = encoder.encode_to_soft_hair(data)
 
         # Should achieve significant compression
         # Calculate size of soft_modes (list of lists of complex)
         soft_modes_size = sum(len(row) for row in soft_hair.soft_modes)
-        assert soft_modes_size < data.size
+        assert soft_modes_size < data_arr.size
         assert soft_hair.compression_ratio > 1.0
 
     def test_metadata_extraction(self) -> None:
         """Test metadata extraction."""
         encoder = SoftHairEncoder()
 
-        data = np.random.randn(50)
+        data_arr = np.random.randn(50)
+        data = data_arr.tolist()
         soft_hair = encoder.encode_to_soft_hair(data)
 
         assert "original_mean" in soft_hair.metadata
@@ -108,28 +115,30 @@ class TestSoftHairEncoder:
         """Test decoding 1D data."""
         encoder = SoftHairEncoder(soft_mode_cutoff=0.3)
 
-        original = np.random.randn(64)
+        original_arr = np.random.randn(64)
+        original = original_arr.tolist()
         soft_hair = encoder.encode_to_soft_hair(original)
         reconstructed = encoder.decode_from_soft_hair(soft_hair)
 
         # Reconstructed is a list, original is numpy array
-        assert len(reconstructed) == original.size
+        assert len(reconstructed) == original_arr.size
         # Reconstruction should be similar (not exact due to compression)
-        assert len(reconstructed) == original.size
+        assert len(reconstructed) == original_arr.size
 
     def test_decode_2d(self) -> None:
         """Test decoding 2D data."""
         encoder = SoftHairEncoder(soft_mode_cutoff=0.3)
 
-        original = np.random.randn(32, 32)
+        original_arr = np.random.randn(32, 32)
+        original = original_arr.tolist()
         soft_hair = encoder.encode_to_soft_hair(original)
         reconstructed = encoder.decode_from_soft_hair(soft_hair)
 
         # Reconstructed is a list of lists (or flat list depending on implementation)
         # The implementation of decode_from_soft_hair returns Sequence[Any]
         # For 2D, it returns List[List[float]]
-        assert len(reconstructed) == original.shape[0]
-        assert len(reconstructed[0]) == original.shape[1]
+        assert len(reconstructed) == original_arr.shape[0]
+        assert len(reconstructed[0]) == original_arr.shape[1]
 
     def test_soft_mode_extraction(self) -> None:
         """Test soft mode extraction from FFT."""
@@ -147,7 +156,8 @@ class TestSoftHairEncoder:
         """Test dominant frequency detection."""
         encoder = SoftHairEncoder()
 
-        soft_modes = np.random.randn(10, 10) + 1j * np.random.randn(10, 10)
+        soft_modes_arr = np.random.randn(10, 10) + 1j * np.random.randn(10, 10)
+        soft_modes = soft_modes_arr.tolist()
         dom_freq = encoder._find_dominant_frequency(soft_modes)
 
         assert dom_freq >= 0
@@ -167,14 +177,15 @@ class TestSoftHairMemory:
         """Test storing and retrieving data."""
         memory = SoftHairMemory()
 
-        data = np.random.randn(50)
+        data_arr = np.random.randn(50)
+        data = data_arr.tolist()
         memory.store("test_key", data)
 
         retrieved = memory.retrieve("test_key")
 
         assert retrieved is not None
         # retrieved is a list
-        assert len(retrieved) == data.size
+        assert len(retrieved) == data_arr.size
 
     def test_retrieve_nonexistent(self) -> None:
         """Test retrieving non-existent key."""
@@ -189,7 +200,8 @@ class TestSoftHairMemory:
         memory = SoftHairMemory()
 
         for i in range(5):
-            data = np.random.randn(64) * (i + 1)
+            data_arr = np.random.randn(64) * (i + 1)
+            data = data_arr.tolist()
             memory.store(f"item_{i}", data)
 
         assert len(memory.memory_bank) == 5
@@ -205,7 +217,8 @@ class TestSoftHairMemory:
 
         # Store some data
         for i in range(3):
-            data = np.random.randn(100)
+            data_arr = np.random.randn(100)
+            data = data_arr.tolist()
             memory.store(f"data_{i}", data)
 
         stats = memory.get_compression_stats()
@@ -233,7 +246,8 @@ class TestIntegration:
 
         # Original data with some structure (smooth signal)
         x = np.linspace(0, 2 * np.pi, 100)
-        original = np.sin(x) + 0.1 * np.random.randn(100)
+        original_arr = np.sin(x) + 0.1 * np.random.randn(100)
+        original = original_arr.tolist()
 
         # Encode
         soft_hair = encoder.encode_to_soft_hair(original)
@@ -250,7 +264,8 @@ class TestIntegration:
     def test_compression_vs_fidelity_tradeoff(self) -> None:
         """Test compression vs fidelity tradeoff."""
         # Use smaller size for naive DFT performance
-        data = np.random.randn(32, 32)
+        data_arr = np.random.randn(32, 32)
+        data = data_arr.tolist()
 
         cutoffs = [0.05, 0.1, 0.2, 0.5]
         compressions = []
@@ -274,13 +289,13 @@ class TestIntegration:
         memory = SoftHairMemory()
 
         # 1D
-        memory.store("1d", np.random.randn(100))
+        memory.store("1d", np.random.randn(100).tolist())
 
         # 2D
-        memory.store("2d", np.random.randn(32, 32))
+        memory.store("2d", np.random.randn(32, 32).tolist())
 
         # 3D
-        memory.store("3d", np.random.randn(8, 8, 8))
+        memory.store("3d", np.random.randn(8, 8, 8).tolist())
 
         # Retrieve all
         assert memory.retrieve("1d") is not None
@@ -300,13 +315,15 @@ class TestIntegration:
         noisy_signal = clean_signal + noise
 
         # Encode noisy signal (should filter out high-freq noise)
-        soft_hair = encoder.encode_to_soft_hair(noisy_signal)
+        noisy_list = noisy_signal.tolist()
+        soft_hair = encoder.encode_to_soft_hair(noisy_list)
         reconstructed = encoder.decode_from_soft_hair(soft_hair)
 
         # Reconstructed should be closer to clean than noisy
         # (soft modes filter high-frequency noise)
-        fidelity_to_clean = encoder.compute_fidelity(clean_signal, reconstructed)
-        fidelity_to_noisy = encoder.compute_fidelity(noisy_signal, reconstructed)
+        clean_list = clean_signal.tolist()
+        fidelity_to_clean = encoder.compute_fidelity(clean_list, reconstructed)
+        fidelity_to_noisy = encoder.compute_fidelity(noisy_list, reconstructed)
 
         # Both should have reasonable fidelity
         assert fidelity_to_clean >= 0

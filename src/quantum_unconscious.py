@@ -11,16 +11,21 @@ O inconsciente é implementado via superposição quântica:
 
 import logging
 import numpy as np
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Optional
 import json
 from pathlib import Path
 import time
-from omnimind_parameters import get_parameter_manager
+from omnimind_parameters import get_parameter_manager  # type: ignore[import-untyped]
 
 # Simulação quântica (usando Qiskit se disponível, senão simulação clássica)
 try:
-    from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, execute
-    from qiskit.providers.aer import QasmSimulator
+    from qiskit import (  # type: ignore[import-untyped]
+        QuantumCircuit,
+        QuantumRegister,
+        ClassicalRegister,
+        execute,
+    )
+    from qiskit.providers.aer import QasmSimulator  # type: ignore[import-untyped]
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -42,7 +47,7 @@ class QuantumUnconscious:
 
     def __init__(self, n_qubits: int = 16):
         self.n_qubits = n_qubits
-        self.decision_history = []
+        self.decision_history: List[Dict[str, Any]] = []
 
         if QISKIT_AVAILABLE:
             self.quantum_core = QuantumRegister(n_qubits, "unconscious")
@@ -52,7 +57,7 @@ class QuantumUnconscious:
         else:
             # Fallback: simulação clássica com matrizes
             self.quantum_state = np.ones(2**n_qubits, dtype=complex) / np.sqrt(2**n_qubits)
-            self.classical_measurements = []
+            self.classical_measurements: List[Any] = []
 
         logger.info(f"🌀 Inconsciente Quântico inicializado: {n_qubits} qubits")
 
@@ -181,7 +186,7 @@ class QuantumUnconscious:
     ) -> np.ndarray:
         """Seleciona decisão baseada nos resultados quânticos"""
         # Encontrar o estado mais provável
-        most_probable_state = max(counts, key=counts.get)
+        most_probable_state = max(counts, key=lambda k: counts[k])
 
         # Converter estado binário para índice
         try:
@@ -201,7 +206,7 @@ class QuantumUnconscious:
         """
         return True  # Heisenberg uncertainty principle
 
-    def get_quantum_state_vector(self) -> np.ndarray:
+    def get_quantum_state_vector(self) -> Optional[np.ndarray]:
         """
         TENTA obter o vetor de estado quântico
         Mas isso causaria colapso! (Heisenberg)

@@ -368,7 +368,7 @@ class TestIntegration:
         for i in range(5):
             engine.add_knowledge(f"k{i}", f"Knowledge {i}")
             if i > 0:
-                engine.add_correlation(f"k{i-1}", f"k{i}")
+                engine.add_correlation(f"k{i - 1}", f"k{i}")
 
         # Make all old
         past = datetime.now(timezone.utc) - timedelta(days=1)

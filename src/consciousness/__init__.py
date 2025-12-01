@@ -7,10 +7,10 @@ This module implements advanced consciousness capabilities including:
 - Advanced Self-Reflection (meta-cognitive self-analysis)
 """
 
-from src.consciousness.creative_problem_solver import CreativeProblemSolver
-from src.consciousness.emotional_intelligence import EmotionalIntelligence
-from src.consciousness.self_reflection import AdvancedSelfReflection
-from src.consciousness.theory_of_mind import TheoryOfMind
+from .creative_problem_solver import CreativeProblemSolver
+from .emotional_intelligence import EmotionalIntelligence
+from .self_reflection import AdvancedSelfReflection
+from .theory_of_mind import TheoryOfMind
 
 __all__ = [
     "TheoryOfMind",

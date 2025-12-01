@@ -534,7 +534,7 @@ class HealthCheckSystem:
 
     def get_summary(self) -> Dict[str, Any]:
         """Get health check summary."""
-        summary = {
+        summary: Dict[str, Any] = {
             "checks_registered": len(self._checks),
             "checks_with_history": len(self._results),
             "total_checks_performed": sum(len(results) for results in self._results.values()),

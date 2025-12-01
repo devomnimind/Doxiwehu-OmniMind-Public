@@ -9,7 +9,7 @@ from typing import Dict, Any, Tuple
 
 
 # Cache for Tribunal detection (updated every 60 seconds)
-_tribunal_cache = {"running": False, "uptime": 0, "last_check": 0}
+_tribunal_cache: Dict[str, Any] = {"running": False, "uptime": 0, "last_check": 0}
 _CACHE_TTL = 60  # seconds
 
 

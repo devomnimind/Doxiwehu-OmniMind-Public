@@ -392,7 +392,7 @@ class EmbodiedIntelligence:
         all_successful = True
 
         for i, action in enumerate(plan.actions):
-            logger.info(f"executing_action_{i+1}_of_{len(plan.actions)}")
+            logger.info(f"executing_action_{i + 1}_of_{len(plan.actions)}")
 
             status = self.execute_action(action)
 

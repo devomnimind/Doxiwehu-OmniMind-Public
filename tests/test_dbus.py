@@ -146,7 +146,7 @@ class TestDBusSessionController:
     @patch("src.integrations.dbus_controller.dbus.Interface")
     def test_control_media_player_dbus_exception(self, mock_interface: MagicMock) -> None:
         """Test DBusException handling."""
-        import dbus
+        import dbus  # type: ignore[import-untyped]
 
         mock_iface = MagicMock()
         mock_iface.Play.side_effect = dbus.DBusException("Connection failed")
@@ -196,7 +196,7 @@ class TestDBusSessionController:
     @patch("src.integrations.dbus_controller.dbus.Interface")
     def test_list_media_players_dbus_exception(self, mock_interface: MagicMock) -> None:
         """Test DBusException in list_media_players."""
-        import dbus
+        import dbus  # type: ignore[import-untyped]
 
         mock_iface = MagicMock()
         mock_iface.ListNames.side_effect = dbus.DBusException("Failed")
@@ -268,7 +268,7 @@ class TestDBusSystemController:
     @patch("src.integrations.dbus_controller.dbus.Interface")
     def test_get_network_status_dbus_exception(self, mock_interface: MagicMock) -> None:
         """Test DBusException in get_network_status."""
-        import dbus
+        import dbus  # type: ignore[import-untyped]
 
         mock_props = MagicMock()
         mock_props.Get.side_effect = dbus.DBusException("Failed")
@@ -306,7 +306,7 @@ class TestDBusSystemController:
     @patch("src.integrations.dbus_controller.dbus.Interface")
     def test_get_power_status_dbus_exception(self, mock_interface: MagicMock) -> None:
         """Test DBusException in get_power_status."""
-        import dbus
+        import dbus  # type: ignore[import-untyped]
 
         mock_props = MagicMock()
         mock_props.Get.side_effect = dbus.DBusException("Failed")

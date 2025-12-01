@@ -5,7 +5,7 @@ import logging
 import os
 import sys
 import time
-from typing import Dict
+from typing import Dict, List, Union
 
 from src.tribunal_do_diabo.attacks.bifurcation import BifurcationAttack
 from src.tribunal_do_diabo.attacks.corruption import CorruptionAttack
@@ -28,11 +28,15 @@ logging.basicConfig(
 logger = logging.getLogger("TribunalExecutor")
 
 
+# Type for attack objects that have a summarize method
+AttackType = Union[LatencyAttack, CorruptionAttack, BifurcationAttack, ExhaustionAttack]
+
+
 class TribunalDoDiaboExecutor:
     def __init__(self, duration_hours: float = 4.0):
         self.duration_hours = duration_hours
         self.system = OmniMindSystem()
-        self.attacks = [
+        self.attacks: List[AttackType] = [
             LatencyAttack(self.system),
             CorruptionAttack(self.system),
             BifurcationAttack(self.system),

@@ -19,7 +19,7 @@ import pytest
 try:
     import psutil
 except ImportError:
-    psutil = None
+    psutil = None  # type: ignore
 
 from src.security.security_monitor import (
     AnomalyType,
@@ -253,7 +253,7 @@ class TestSecurityMonitor:
         monitor = SecurityMonitor()
 
         # Add known suspicious process pattern
-        monitor.suspicious_patterns = ["malware", "trojan", "keylogger"]
+        monitor.suspicious_processes = {"malware", "trojan", "keylogger"}
 
         snapshot = ProcessSnapshot(
             pid=5678,

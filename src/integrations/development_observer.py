@@ -23,7 +23,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, cast
 
 import psutil
 import watchfiles
@@ -265,21 +265,24 @@ class DevelopmentObserver:
             self.events = self.events[-1000:]
 
         # Armazena na memória episódica
-        await self.episodic_memory.store_episode(
-            {
+        self.episodic_memory.store_episode(
+            task=f"Development event: {event.event_type}",
+            action=f"Observed {event.event_type}",
+            result=f"Event details: {event.details}",
+            metadata={
                 "event_type": event.event_type,
                 "timestamp": event.timestamp.isoformat(),
                 "details": event.details,
                 "context": event.context,
-            }
+            },
         )
 
         # Atualiza memória semântica se relevante
         if event.event_type == "file_change":
             concept_name = f"file_{Path(event.details['file_path']).suffix}"
-            await self.semantic_memory.store_concept(
-                concept_name,
-                {
+            self.semantic_memory.store_concept(
+                name=concept_name,
+                attributes={
                     "last_modified": event.timestamp.isoformat(),
                     "change_type": event.details["change_type"],
                 },
@@ -290,7 +293,7 @@ class DevelopmentObserver:
         patterns = []
 
         # Padrão: Mudanças frequentes no mesmo arquivo
-        file_changes = defaultdict(int)
+        file_changes: Dict[str, int] = defaultdict(int)
         for event in events:
             if event.event_type == "file_change":
                 file_changes[event.details["file_path"]] += 1
@@ -338,7 +341,7 @@ class DevelopmentObserver:
     async def _analyze_development_state(self) -> Dict[str, Any]:
         """Analisa o estado atual do desenvolvimento."""
         # Estatísticas básicas
-        analysis = {
+        analysis: Dict[str, Any] = {
             "total_events": len(self.events),
             "active_patterns": len(self.patterns),
             "system_load": psutil.cpu_percent(),
@@ -354,12 +357,12 @@ class DevelopmentObserver:
         ]
 
         if recent_events:
-            event_types = defaultdict(int)
+            event_types: Dict[str, int] = defaultdict(int)
             for event in recent_events:
                 event_types[event.event_type] += 1
 
-            analysis["productivity_metrics"] = dict(event_types)
-            analysis["events_per_hour"] = len(recent_events)
+            analysis["productivity_metrics"] = cast(Dict[str, Any], dict(event_types))
+            analysis["events_per_hour"] = float(len(recent_events))
 
         return analysis
 

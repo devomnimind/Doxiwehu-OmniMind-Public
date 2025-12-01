@@ -124,8 +124,8 @@ class VisualRegressionTester:
         Returns:
             Difference ratio (0.0 = identical, 1.0 = completely different)
         """
-        baseline = PILImage.open(baseline_path)  # type: ignore
-        screenshot = PILImage.open(screenshot_path)  # type: ignore
+        baseline: PILImageType = PILImage.open(baseline_path)  # type: ignore
+        screenshot: PILImageType = PILImage.open(screenshot_path)  # type: ignore
 
         # Ensure same size
         if baseline.size != screenshot.size:

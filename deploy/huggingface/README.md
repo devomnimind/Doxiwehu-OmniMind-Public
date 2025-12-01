@@ -15,6 +15,40 @@ Este script:
 - Cria/atualiza o Space `fabricioslv/omnimind-tests`
 - Faz upload dos arquivos de configuração (Dockerfile, README.md)
 
+## 🤖 Space de Inferência (PRIORITÁRIO)
+
+O Space de inferência `fabricioslv-devbrain-inference` fornece uma API REST para geração de texto usando modelos locais.
+
+### Arquivos do Space
+- `inference/app.py` - API FastAPI para inferência
+- `inference/requirements_space.txt` - Dependências Python
+- `inference/README_space.md` - Documentação da API
+
+### Deploy do Space de Inferência
+
+1. **Acesse o Space:** https://huggingface.co/spaces/fabricioslv/devbrain-inference
+2. **Configure Hardware:** CPU Upgrade ($0.03/h) para produção
+3. **Faça upload dos arquivos:**
+   - `app.py` como arquivo principal
+   - `requirements_space.txt` como requirements.txt
+   - `README_space.md` como README.md
+
+### API Endpoints
+- `GET /` - Informações da API
+- `GET /health` - Health check
+- `POST /generate` - Geração de texto
+
+### Teste da API
+```bash
+# Health check
+curl https://fabricioslv-devbrain-inference.hf.space/health
+
+# Geração de texto
+curl -X POST "https://fabricioslv-devbrain-inference.hf.space/generate" \
+  -H "Content-Type: application/json" \
+  -d '{"inputs": "Olá, mundo!", "parameters": {"max_new_tokens": 50}}'
+```
+
 ## 🔐 Configuração de Secrets (CRÍTICO)
 
 **IMPORTANTE:** Após o deploy, você DEVE configurar os secrets no Space:

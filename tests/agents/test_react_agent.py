@@ -28,8 +28,8 @@ try:
 except ImportError:
     REACT_AGENT_AVAILABLE = False
     # Create dummy types for when module is not available
-    AgentState = dict
-    ReactAgent = object
+    AgentState = dict  # type: ignore[assignment,misc]
+    ReactAgent = object  # type: ignore[assignment,misc]
 
 
 class TestAgentState:

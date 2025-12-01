@@ -96,7 +96,7 @@ def _get_task(task_id: str) -> Dict[str, Any]:
 async def create_task(task: TaskCreate) -> TaskResponse:
     """Create a new task."""
     task_id = str(uuid.uuid4())
-    task_data = {
+    task_data: Dict[str, Any] = {
         "task_id": task_id,
         "description": task.description,
         "status": TaskStatus.PENDING,

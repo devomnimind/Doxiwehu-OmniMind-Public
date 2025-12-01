@@ -310,18 +310,27 @@ class SecurityAgent(AuditedTool):
                         break
                     continue
                 try:
-                    result = await asyncio.to_thread(run_command, ["sudo", "-n", "aide", "--check"])
-                    changes = self._parse_aide_output(result.get("output", ""))
-                    for change in changes:
-                        event = self._create_event(
-                            event_type="file_integrity",
-                            source="aide",
-                            description=f"File change detected: {change.get('path')}",
-                            details=change,
-                            raw_data=result.get("output", ""),
-                            level=ThreatLevel.MEDIUM,
+                    # Validar comando antes de executar
+                    from .playbooks.utils import validate_command_safety
+
+                    validation = validate_command_safety(["sudo", "-n", "aide", "--check"])
+                    if validation.get("status") == "approved":
+                        result = await asyncio.to_thread(
+                            run_command, ["sudo", "-n", "aide", "--check"]
                         )
-                        await self._handle_event(event)
+                        changes = self._parse_aide_output(result.get("output", ""))
+                        for change in changes:
+                            event = self._create_event(
+                                event_type="file_integrity",
+                                source="aide",
+                                description=f"File change detected: {change.get('path')}",
+                                details=change,
+                                raw_data=result.get("output", ""),
+                                level=ThreatLevel.MEDIUM,
+                            )
+                            await self._handle_event(event)
+                    else:
+                        self.logger.warning("AIDE command not approved for execution")
                 except Exception as exc:  # pragma: no cover
                     self.logger.error("File monitor failed: %s", exc)
                 if await self._wait_interval(interval):

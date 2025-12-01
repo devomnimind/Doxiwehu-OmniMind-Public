@@ -65,6 +65,7 @@ class OmniMindEmbeddings:
         qdrant_url: str = "http://localhost:6333",
         collection_name: str = "omnimind_embeddings",
         model_name: str = "all-MiniLM-L6-v2",
+        model: Optional[SentenceTransformer] = None,
         chunk_size_code: int = 100,  # linhas para código
         chunk_size_docs: int = 50,  # linhas para documentos
         overlap: int = 20,  # sobreposição entre chunks
@@ -77,28 +78,21 @@ class OmniMindEmbeddings:
         self.overlap = overlap
 
         # Inicializar modelo
-        logger.info(f"Carregando modelo: {model_name}")
-        self.model = SentenceTransformer(
-            model_name, device="cpu"
-        )  # Forçar CPU para evitar problemas de memória
-        self.embedding_dim = self.model.get_sentence_embedding_dimension()
-        logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}")
+        if model is not None:
+            self.model = model
+            self.embedding_dim = self.model.get_sentence_embedding_dimension()
+        else:
+            logger.info(f"Carregando modelo: {model_name}")
+            self.model = SentenceTransformer(
+                model_name, device="cpu"
+            )  # Forçar CPU para evitar problemas de memória
+            self.embedding_dim = self.model.get_sentence_embedding_dimension()
+            logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}")
 
         # Inicializar Qdrant
         self.client = QdrantClient(qdrant_url)
 
         # Criar coleção se não existir
-        self._ensure_collection()
-
-        # Inicializar cliente Qdrant
-        self.client = QdrantClient(url=qdrant_url)
-
-        # Carregar modelo de embeddings
-        logger.info(f"Carregando modelo de embeddings: {model_name}")
-        self.model = SentenceTransformer(model_name)
-        self.embedding_dim = self.model.get_sentence_embedding_dimension()
-
-        # Garantir que a coleção existe
         self._ensure_collection()
 
     def _ensure_collection(self):
@@ -434,9 +428,9 @@ if __name__ == "__main__":
 
     # Indexar diretório
     print(f"Indexando código em: {directory}")
-    results = embeddings.index_directory(directory)
+    index_results = embeddings.index_directory(directory)
 
-    total_chunks = sum(results.values())
+    total_chunks = sum(index_results.values())
     print(f"Total de chunks indexados: {total_chunks}")
 
     # Mostrar stats
@@ -445,9 +439,9 @@ if __name__ == "__main__":
 
     # Exemplo de busca
     query = "função para conectar banco de dados"
-    results = embeddings.search(query, top_k=3)
+    search_results = embeddings.search(query, top_k=3)
     print(f"\nBusca por: '{query}'")
-    for result in results:
+    for result in search_results:
         print(f"Score: {result['score']:.3f}")
         print(f"Arquivo: {result['file_path']}:{result['start_line']}-{result['end_line']}")
         print(f"Conteúdo: {result['content'][:200]}...")

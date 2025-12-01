@@ -242,7 +242,7 @@ class PsychoanalyticDecisionSystem:
             total_weight += score
 
         # Determine winner
-        winner = max(results, key=results.get)
+        winner = max(results, key=lambda k: results[k])
         winning_score = results[winner]
 
         # Normalize confidence

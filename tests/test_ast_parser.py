@@ -104,7 +104,7 @@ def main():
 
     def test_generate_skeleton(self, parser: ASTParser) -> None:
         """Testa geração de esqueleto de classe"""
-        methods = [
+        methods: list[tuple[str, list[str], str | None]] = [
             ("__init__", ["name: str", "age: int"], "None"),
             ("get_name", [], "str"),
             ("set_age", ["age: int"], "None"),

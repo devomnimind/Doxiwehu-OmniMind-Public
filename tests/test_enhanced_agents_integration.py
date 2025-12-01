@@ -107,7 +107,9 @@ def unsafe():
 
     def test_code_agent_skeleton_generation(self, code_agent: CodeAgent) -> None:
         """Testa geração de esqueleto de código"""
-        methods = [
+        from typing import List, Tuple, Optional
+
+        methods: List[Tuple[str, List[str], Optional[str]]] = [
             ("__init__", ["name: str"], "None"),
             ("process", ["data: dict"], "str"),
         ]

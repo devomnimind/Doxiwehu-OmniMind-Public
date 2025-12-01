@@ -14,11 +14,11 @@ import asyncio
 import logging
 import time
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 
 import numpy as np
 import torch
-from sklearn.decomposition import PCA
+from sklearn.decomposition import PCA  # type: ignore[import-untyped]
 
 from src.consciousness.shared_workspace import SharedWorkspace, CrossPredictionMetrics
 
@@ -99,7 +99,7 @@ class VectorizedCrossPredictor:
         if not self.cache:
             return
 
-        oldest_key = min(self.cache_access_time, key=self.cache_access_time.get)
+        oldest_key = min(self.cache_access_time, key=lambda k: self.cache_access_time[k])
         del self.cache[oldest_key]
         del self.cache_access_time[oldest_key]
         if oldest_key in self.cache_invalidation_count:
@@ -140,7 +140,12 @@ class VectorizedCrossPredictor:
 
     def _reduce_dimensionality(self, X: np.ndarray, Y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Reduz dimensionalidade com PCA se configurado."""
-        if not self.pca_components or not self.pca_fitted:
+        if (
+            not self.pca_components
+            or not self.pca_fitted
+            or self.pca_source is None
+            or self.pca_target is None
+        ):
             return X, Y
 
         X_reduced = self.pca_source.transform(X)
@@ -258,7 +263,7 @@ class VectorizedCrossPredictor:
         correlations_np = correlations.cpu().numpy()
 
         # Construir resultados
-        predictions = {}
+        predictions: Dict[str, Dict[str, CrossPredictionMetrics]] = {}
         module_list = list(module_histories.keys())
 
         for i, source in enumerate(module_list):
@@ -383,7 +388,8 @@ async def test_vectorized_predictions():
             pred = result.predictions[source][target]
             logger.info(
                 f"   {source} -> {target}: "
-                f"R²={pred.r_squared:.3f}, corr={pred.correlation:.3f}, MI={pred.mutual_information:.3f}"
+                f"R²={pred.r_squared:.3f}, corr={pred.correlation:.3f}, "
+                f"MI={pred.mutual_information:.3f}"
             )
 
     # Verificar relações esperadas

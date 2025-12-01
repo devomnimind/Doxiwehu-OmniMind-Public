@@ -5,6 +5,8 @@ Tests the holographic principle-based memory architecture with
 Bekenstein bound constraints and hierarchical memory spawning.
 """
 
+from typing import cast
+
 import numpy as np
 
 from src.memory.holographic_memory import (
@@ -30,8 +32,10 @@ class TestHolographicProjection:
 
         result = proj.project_to_boundary(information)
 
-        assert result.shape == data_2d.shape
-        assert isinstance(result, np.ndarray)
+        # Ensure result is treated as array
+        result_arr = cast(np.ndarray, result)
+        assert isinstance(result_arr, np.ndarray)
+        assert result_arr.shape == data_2d.shape
 
     def test_project_3d_data(self) -> None:
         """Test projection of 3D data to 2D surface."""
@@ -41,8 +45,11 @@ class TestHolographicProjection:
 
         result = proj.project_to_boundary(information)
 
-        assert result.ndim == 2
-        assert max(result.shape) <= proj.max_surface_dim
+        # Ensure result is treated as array
+        result_arr = cast(np.ndarray, result)
+        assert isinstance(result_arr, np.ndarray)
+        assert result_arr.ndim == 2
+        assert max(result_arr.shape) <= proj.max_surface_dim
 
     def test_project_1d_data(self) -> None:
         """Test projection of 1D data."""
@@ -52,8 +59,11 @@ class TestHolographicProjection:
 
         result = proj.project_to_boundary(information)
 
-        assert result.ndim == 2
-        assert result.size >= data_1d.size
+        # Ensure result is treated as array
+        result_arr = cast(np.ndarray, result)
+        assert isinstance(result_arr, np.ndarray)
+        assert result_arr.ndim == 2
+        assert result_arr.shape[0] * result_arr.shape[1] >= data_1d.size
 
     def test_downsample_large_surface(self) -> None:
         """Test downsampling of large surfaces."""
@@ -63,8 +73,10 @@ class TestHolographicProjection:
 
         result = proj.project_to_boundary(information)
 
-        # Should be downsampled
-        assert max(result.shape) <= 64
+        # Ensure result is treated as array
+        result_arr = cast(np.ndarray, result)
+        # Ensure result is treated as array
+        assert max(result_arr.shape) <= 64
 
 
 class TestHolographicSurface:
@@ -287,8 +299,9 @@ class TestEventHorizonMemory:
 
         merged = memory._merge_surfaces(surface1, surface2)
 
-        assert merged.shape[0] >= max(surface1.shape[0], surface2.shape[0])
-        assert merged.shape[1] >= max(surface1.shape[1], surface2.shape[1])
+        merged_arr = cast(np.ndarray, merged)
+        assert merged_arr.shape[0] >= max(surface1.shape[0], surface2.shape[0])
+        assert merged_arr.shape[1] >= max(surface1.shape[1], surface2.shape[1])
 
     def test_surface_merging_different_sizes(self) -> None:
         """Test merging surfaces of different sizes."""
@@ -300,7 +313,8 @@ class TestEventHorizonMemory:
         merged = memory._merge_surfaces(surface1, surface2)
 
         # Should be padded to larger size
-        assert merged.shape == (10, 10)
+        merged_arr = cast(np.ndarray, merged)
+        assert merged_arr.shape == (10, 10)
 
     def test_correlation_computation(self) -> None:
         """Test holographic correlation computation."""

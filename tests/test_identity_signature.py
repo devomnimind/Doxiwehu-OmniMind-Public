@@ -7,6 +7,7 @@ Group 14: Integration Layer - identity/
 import json
 import tempfile
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
@@ -172,7 +173,7 @@ class TestAgentIdentity:
     """Testa AgentIdentity para gerenciamento de identidade digital."""
 
     @pytest.fixture
-    def temp_state_file(self) -> Path:
+    def temp_state_file(self) -> Generator[Path, None, None]:
         """Cria arquivo temporário para estado."""
         temp_dir = Path(tempfile.mkdtemp())
         yield temp_dir / "identity_state.json"

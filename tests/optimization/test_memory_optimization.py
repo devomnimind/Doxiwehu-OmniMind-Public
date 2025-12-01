@@ -3,6 +3,7 @@ Tests for memory optimization module.
 """
 
 import gc
+from typing import Dict, Any, cast
 import time
 
 from src.optimization.memory_optimization import (
@@ -151,7 +152,7 @@ class TestMemoryPool:
         def factory():
             return {"value": 0}
 
-        def reset(obj):
+        def reset(obj: dict) -> None:
             obj["value"] = 0
 
         pool = MemoryPool(factory, initial_size=1, reset_func=reset)
@@ -231,7 +232,7 @@ class TestMemoryAllocator:
 
         pool = allocator.create_pool(
             "test_pool",
-            factory=lambda: {},
+            factory=lambda: cast(Dict[Any, Any], {}),
             initial_size=5,
             max_size=10,
         )
@@ -323,7 +324,7 @@ class TestMemoryLeakDetector:
         """Test that deleted objects are cleaned up."""
         detector = MemoryLeakDetector()
 
-        obj = []
+        obj: list[Any] = []
         detector.track_object(obj)
 
         # Delete object
@@ -495,7 +496,7 @@ class TestMemoryOptimizer:
         """Test tracking objects for leaks."""
         optimizer = MemoryOptimizer()
 
-        obj = []
+        obj: list[Any] = []
         optimizer.track_for_leaks(obj)
 
         assert optimizer.leak_detector.allocation_count == 1

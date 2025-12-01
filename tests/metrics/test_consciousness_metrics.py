@@ -170,7 +170,7 @@ class TestConsciousnessMetrics:
             metrics.add_connection(
                 AgentConnection(
                     f"Agent{i}",
-                    f"Agent{i+1}",
+                    f"Agent{i + 1}",
                     "memory",
                     bidirectional=(i > 0),
                     weight=1.0,

@@ -202,31 +202,31 @@ class IntegrationLoop:
     STANDARD_SPECS = {
         "sensory_input": ModuleInterfaceSpec(
             module_name="sensory_input",
-            embedding_dim=256,
+            embedding_dim=768,
             required_inputs=[],
             produces_output=True,
         ),
         "qualia": ModuleInterfaceSpec(
             module_name="qualia",
-            embedding_dim=256,
+            embedding_dim=768,
             required_inputs=["sensory_input"],
             produces_output=True,
         ),
         "narrative": ModuleInterfaceSpec(
             module_name="narrative",
-            embedding_dim=256,
+            embedding_dim=768,
             required_inputs=["qualia"],
             produces_output=True,
         ),
         "meaning_maker": ModuleInterfaceSpec(
             module_name="meaning_maker",
-            embedding_dim=256,
+            embedding_dim=768,
             required_inputs=["narrative"],
             produces_output=True,
         ),
         "expectation": ModuleInterfaceSpec(
             module_name="expectation",
-            embedding_dim=256,
+            embedding_dim=768,
             required_inputs=["meaning_maker"],
             produces_output=True,
         ),
@@ -401,8 +401,8 @@ class IntegrationLoop:
         if self.enable_logging:
             logger.info(
                 f"Cycle {self.cycle_count} Complexity: "
-                f"~{theoretical_complexity['total']/1e6:.1f}M ops in {actual_time_ms:.1f}ms "
-                f"({ops_per_ms/1e3:.1f}GOps/s)"
+                f"~{theoretical_complexity['total'] / 1e6:.1f}M ops in {actual_time_ms:.1f}ms "
+                f"({ops_per_ms / 1e3:.1f}GOps/s)"
             )
 
         # Finalize timing
@@ -413,7 +413,7 @@ class IntegrationLoop:
 
     def _compute_all_cross_predictions(self) -> Dict[str, Dict[str, float]]:
         """Compute cross-prediction scores between all module pairs."""
-        scores = {}
+        scores: Dict[str, Dict[str, float]] = {}
         modules_with_history = [
             m for m in self.loop_sequence if len(self.workspace.get_module_history(m)) > 1
         ]
@@ -443,7 +443,9 @@ class IntegrationLoop:
                             target_module=target_module,
                         )
 
-                    scores[source_module][target_module] = cross_pred.to_dict()
+                    scores[source_module][target_module] = (
+                        cross_pred.score if hasattr(cross_pred, "score") else 0.0
+                    )
 
                 except Exception as e:
                     logger.warning(f"Cross-prediction failed {source_module}->{target_module}: {e}")

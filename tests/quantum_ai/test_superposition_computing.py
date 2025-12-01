@@ -9,6 +9,7 @@ Cobertura de:
 """
 
 import pytest
+from typing import Any, Callable
 
 from src.quantum_ai.superposition_computing import (
     QuantumParallelism,
@@ -256,16 +257,16 @@ class TestQuantumParallelism:
         """Testa interferência quântica."""
         qp = QuantumParallelism()
 
-        def func1(x: float) -> float:
-            return x * 2
+        def func1(x: Any) -> float:
+            return float(x) * 2
 
-        def func2(x: float) -> float:
-            return x + 10
+        def func2(x: Any) -> float:
+            return float(x) + 10
 
-        def func3(x: float) -> float:
-            return x**2
+        def func3(x: Any) -> float:
+            return float(x) ** 2
 
-        functions = [func1, func2, func3]
+        functions: list[Callable[[Any], float]] = [func1, func2, func3]
 
         result = qp.quantum_interference(functions, 5.0)
 

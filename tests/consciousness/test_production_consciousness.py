@@ -4,7 +4,10 @@ Grupo 6 - Production Consciousness Tests.
 Testes abrangentes para o módulo de consciência production-ready,
 incluindo métricas Φ (Phi), self-awareness e integração multi-agente.
 
-Author: This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.
+Author: Project conceived by Fabrício da Silva. Implementation followed an iterative AI-assisted
+method: the author defined concepts and queried various AIs on construction, integrated code via
+VS Code/Copilot, tested resulting errors, cross-verified validity with other models, and refined
+prompts/corrections in a continuous cycle of human-led AI development.
 Date: November 2025
 """
 
@@ -12,7 +15,7 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
-from typing import List
+from typing import List, Generator
 
 import pytest
 
@@ -60,7 +63,7 @@ class TestMeasurePhi:
     """Testes para medição de Φ (Phi) - integração de informação."""
 
     @pytest.fixture
-    def system(self) -> ProductionConsciousnessSystem:
+    def system(self) -> Generator[ProductionConsciousnessSystem, None, None]:
         """Fixture para sistema de consciência."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionConsciousnessSystem(metrics_dir=Path(tmpdir))
@@ -139,7 +142,7 @@ class TestSelfAwareness:
     """Testes para métricas de auto-consciência."""
 
     @pytest.fixture
-    def system(self) -> ProductionConsciousnessSystem:
+    def system(self) -> Generator[ProductionConsciousnessSystem, None, None]:
         """Fixture para sistema de consciência."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionConsciousnessSystem(metrics_dir=Path(tmpdir))
@@ -211,7 +214,7 @@ class TestIntegratedConsciousness:
     """Testes de integração completa do sistema de consciência."""
 
     @pytest.fixture
-    def system(self) -> ProductionConsciousnessSystem:
+    def system(self) -> Generator[ProductionConsciousnessSystem, None, None]:
         """Fixture para sistema de consciência."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionConsciousnessSystem(metrics_dir=Path(tmpdir))
@@ -291,7 +294,7 @@ class TestConnectionsAndFeedback:
     """Testes para conexões de agentes e feedback loops."""
 
     @pytest.fixture
-    def system(self) -> ProductionConsciousnessSystem:
+    def system(self) -> Generator[ProductionConsciousnessSystem, None, None]:
         """Fixture para sistema de consciência."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionConsciousnessSystem(metrics_dir=Path(tmpdir))
@@ -346,7 +349,7 @@ class TestEdgeCases:
     """Testes de casos extremos e validação de robustez."""
 
     @pytest.fixture
-    def system(self) -> ProductionConsciousnessSystem:
+    def system(self) -> Generator[ProductionConsciousnessSystem, None, None]:
         """Fixture para sistema de consciência."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionConsciousnessSystem(metrics_dir=Path(tmpdir))
@@ -402,7 +405,7 @@ class TestConsciousnessReport:
     """Testes para geração de relatórios de consciência."""
 
     @pytest.fixture
-    def system(self) -> ProductionConsciousnessSystem:
+    def system(self) -> Generator[ProductionConsciousnessSystem, None, None]:
         """Fixture para sistema de consciência."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionConsciousnessSystem(metrics_dir=Path(tmpdir))
@@ -473,7 +476,7 @@ class TestSaveSnapshot:
     """Testes para salvamento de snapshots."""
 
     @pytest.fixture
-    def system(self) -> ProductionConsciousnessSystem:
+    def system(self) -> Generator[ProductionConsciousnessSystem, None, None]:
         """Fixture para sistema de consciência."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionConsciousnessSystem(metrics_dir=Path(tmpdir))

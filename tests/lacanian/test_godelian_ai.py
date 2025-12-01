@@ -186,7 +186,7 @@ class TestImpossibilityMetaStrategy:
         meta_strat = ImpossibilityMetaStrategy()
 
         problem = "solve_halting_problem"
-        attempts = ["approach_1", "approach_2", "approach_3"]
+        attempts: list[str] = ["approach_1", "approach_2", "approach_3"]
 
         result = meta_strat.handle_impossible(problem, attempts)
 
@@ -199,7 +199,7 @@ class TestImpossibilityMetaStrategy:
         meta_strat = ImpossibilityMetaStrategy()
 
         problem = "achieve_perfection"
-        attempts = []
+        attempts: list[str] = []
 
         result = meta_strat.handle_impossible(problem, attempts)
         strategies = result["meta_strategies_applied"]
@@ -214,7 +214,7 @@ class TestImpossibilityMetaStrategy:
         meta_strat = ImpossibilityMetaStrategy()
 
         problem = "understand_everything"
-        attempts = []
+        attempts: list[str] = []
 
         result = meta_strat.handle_impossible(problem, attempts)
         strategies = result["meta_strategies_applied"]
@@ -234,7 +234,7 @@ class TestImpossibilityMetaStrategy:
         meta_strat = ImpossibilityMetaStrategy()
 
         problem = "prove_own_consistency"
-        attempts = []
+        attempts: list[str] = []
 
         result = meta_strat.handle_impossible(problem, attempts)
         strategies = result["meta_strategies_applied"]
@@ -251,7 +251,7 @@ class TestImpossibilityMetaStrategy:
         meta_strat = ImpossibilityMetaStrategy()
 
         problem = "liar_paradox"
-        attempts = []
+        attempts: list[str] = []
 
         result = meta_strat.handle_impossible(problem, attempts)
         strategies = result["meta_strategies_applied"]

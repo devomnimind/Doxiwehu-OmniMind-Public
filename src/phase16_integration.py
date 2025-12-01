@@ -378,8 +378,13 @@ class Phase16Integration:
         }
 
         # Integrate into life story
+        description = experience.get("description", "")
+        if isinstance(description, dict):
+            description = str(description)
+        description = description or ""
+
         chapter = self.life_story.integrate_experience(
-            description=experience["description"],
+            description=description,
             significance="Integrated cognitive cycle experience",
             emotions=(
                 [self.current_state.emotional_state.get("emotion", "neutral")]

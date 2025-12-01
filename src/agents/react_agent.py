@@ -124,6 +124,10 @@ class ReactAgent:
         self.affective_memory = AffectiveTraceNetwork()
         self.jouissance_profile = JouissanceProfile(self.__class__.__name__)
 
+        # Initialize training-related attributes
+        self._training_pressure_active: bool = False
+        self._adversarial_behavior: Optional[str] = None
+
         self.graph: CompiledGraphType = self._build_graph()
 
     def compute_jouissance_for_task(self, task: Dict[str, Any]) -> float:
@@ -308,7 +312,7 @@ class ReactAgent:
         if similar_episodes:
             memory_str = "\n".join(
                 [
-                    f"{i+1}. Task: {ep['task']}\n"
+                    f"{i + 1}. Task: {ep['task']}\n"
                     f"   Action: {ep['action']}\n"
                     f"   Result: {ep['result'][:200]}..."
                     for i, ep in enumerate(similar_episodes)
@@ -656,7 +660,8 @@ Your response:"""
 
         # Aplica pressão de treinamento via temperature increase
         temperature_increase = learning_rate * penalty_weight
-        new_temperature = min(1.5, self.llm.temperature + temperature_increase)
+        current_temp = self.llm.temperature if self.llm.temperature is not None else 0.7
+        new_temperature = min(1.5, current_temp + temperature_increase)
         self.llm.temperature = new_temperature
 
         # Marca que agente está sob pressão de treinamento

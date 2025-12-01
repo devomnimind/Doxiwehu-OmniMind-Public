@@ -178,6 +178,7 @@ class TestGPUResourcePool:
         pool.update_gpu_stats(0, utilization_percent=75.0, memory_used_mb=2048)
 
         updated_gpu = pool.get_gpu(0)
+        assert updated_gpu is not None
         assert updated_gpu.current_utilization_percent == 75.0
         assert updated_gpu.current_memory_used_mb == 2048
 

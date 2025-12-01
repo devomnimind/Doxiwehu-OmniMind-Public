@@ -4,7 +4,10 @@ Grupo 9 - Meta Learning Tests.
 Testes abrangentes para capacidades de meta-aprendizado,
 incluindo aprendizado adaptativo, otimização de estratégias e transferência de conhecimento.
 
-Author: This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.
+Author: Project conceived by Fabrício da Silva. Implementation followed an iterative AI-assisted
+method: the author defined concepts and queried various AIs on construction, integrated code via
+VS Code/Copilot, tested resulting errors, cross-verified validity with other models, and refined
+prompts/corrections in a continuous cycle of human-led AI development.
 Date: November 2025
 """
 
@@ -12,7 +15,7 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Generator, cast
 
 import pytest
 
@@ -213,7 +216,7 @@ class TestStrategyOptimization:
         optimizer.analyze_test("strat_test_2")
 
         # Force completion for test
-        test.status = "completed"  # Mocking completion for test logic
+        test.status = cast(Any, "completed")  # Mocking completion for test logic
 
         # Note: apply_winner requires statistical significance which might not be met with 1 sample
         # So we just check that we can call it without error if conditions met,
@@ -240,7 +243,7 @@ class TestKnowledgeTransfer:
     """Testes para transferência de conhecimento."""
 
     @pytest.fixture
-    def goal_generator(self) -> IntelligentGoalEngine:
+    def goal_generator(self) -> Generator[IntelligentGoalEngine, None, None]:
         """Fixture para goal generator."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield IntelligentGoalEngine(workspace_path=tmpdir)
@@ -279,7 +282,7 @@ class TestMetaReasoning:
     """Testes para capacidades de meta-reasoning."""
 
     @pytest.fixture
-    def metacog_agent(self) -> MetacognitionAgent:
+    def metacog_agent(self) -> Generator[MetacognitionAgent, None, None]:
         """Fixture para metacognition agent."""
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create dummy hash chain file
@@ -326,7 +329,7 @@ class TestGoalGeneration:
     """Testes para geração inteligente de objetivos."""
 
     @pytest.fixture
-    def goal_generator(self) -> IntelligentGoalEngine:
+    def goal_generator(self) -> Generator[IntelligentGoalEngine, None, None]:
         """Fixture para goal generator."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield IntelligentGoalEngine(workspace_path=tmpdir)

@@ -21,7 +21,7 @@ class TestAgentState:
 
     def test_creation(self) -> None:
         """Test agent state creation."""
-        state_vector = np.array([1.0, 0.0], dtype=complex)
+        state_vector = [complex(1.0, 0.0), complex(0.0, 0.0)]
         agent = AgentState(agent_id="test_agent", state_vector=state_vector, entangled_with=[])
 
         assert agent.agent_id == "test_agent"
@@ -29,7 +29,7 @@ class TestAgentState:
 
     def test_normalization(self) -> None:
         """Test state vector normalization."""
-        state_vector = np.array([3.0, 4.0], dtype=complex)
+        state_vector = [complex(3.0, 0.0), complex(4.0, 0.0)]
         agent = AgentState(agent_id="test", state_vector=state_vector, entangled_with=[])
 
         # Should be normalized
@@ -194,7 +194,7 @@ class TestIntegration:
 
         # Create chain of entanglements
         for i in range(4):
-            network.create_bell_pair(f"agent_{i}", f"agent_{i+1}")
+            network.create_bell_pair(f"agent_{i}", f"agent_{i + 1}")
 
         stats = network.get_statistics()
 

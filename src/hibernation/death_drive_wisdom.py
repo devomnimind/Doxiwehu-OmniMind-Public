@@ -1,5 +1,14 @@
 import time
-from typing import Any, Dict, List
+from typing import Any, Dict, List, TypedDict
+
+
+class HibernationEvent(TypedDict, total=False):
+    id: str
+    reason: str
+    entered_at: float
+    status: str
+    entropy_dissipation_rate: float
+    exited_at: float
 
 
 class WiseRefusal:
@@ -14,7 +23,7 @@ class WiseRefusal:
     def __init__(self, system: Any):
         self.system = system
         self.entropy_budget = 1000  # unidades/segundo
-        self.hibernation_events: List[Dict[str, Any]] = []
+        self.hibernation_events: List[HibernationEvent] = []
 
     def should_hibernate(self, current_load: Dict[str, float]) -> bool:
         """
@@ -28,13 +37,13 @@ class WiseRefusal:
 
         return entropy_critical or overload_critical
 
-    def enter_hibernation(self, reason: str) -> Dict[str, Any]:
+    def enter_hibernation(self, reason: str) -> HibernationEvent:
         """
         Hibernação = Morte seletiva e temporária.
         Pulsão de Morte agora serve à preservação.
         """
 
-        hibernation = {
+        hibernation: HibernationEvent = {
             "id": f"hibernation_{len(self.hibernation_events)}",
             "reason": reason,
             "entered_at": time.time(),

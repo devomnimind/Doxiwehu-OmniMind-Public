@@ -12,7 +12,10 @@ Based on:
 
 This enables attention driven by information gain rather than similarity.
 
-Author: This work was conceived by Fabrício da Silva and implemented with AI assistance
+Author: Project conceived by Fabrício da Silva. Implementation followed an iterative AI-assisted
+method: the author defined concepts and queried various AIs on construction, integrated code via
+VS Code/Copilot, tested resulting errors, cross-verified validity with other models, and refined
+prompts/corrections in a continuous cycle of human-led AI development.
 from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review
 and debugging across various models including Gemini and Perplexity AI, under
 theoretical coordination by the author.
@@ -159,14 +162,17 @@ class ThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):  # type:
 
         # Project to entropy computation space
         # Ensure entropy_projection is on correct device
-        # Use to_empty() if module is on meta device (placeholder)
         device = representations.device
-        if next(self.entropy_projection.parameters(), None) is not None:
-            param_device = next(self.entropy_projection.parameters()).device
-            if param_device.type == "meta":
-                self.entropy_projection = self.entropy_projection.to_empty(device=device)
-            else:
-                self.entropy_projection = self.entropy_projection.to(device)
+        
+        # Handle meta tensor device issues
+        param = next(self.entropy_projection.parameters(), None)
+        if param is not None and param.device.type == "meta":
+            # Module is on meta device, use to_empty() for safe migration
+            self.entropy_projection = self.entropy_projection.to_empty(device=device, recurse=True)
+        else:
+            # Standard device movement
+            self.entropy_projection = self.entropy_projection.to(device)
+        
         projected = self.entropy_projection(representations)
 
         # Compute probability distribution per position
@@ -305,12 +311,29 @@ class MultiHeadThermodynamicAttention(nn.Module if TORCH_AVAILABLE else object):
 
         # Ensure all modules are on the same device as inputs
         device = query.device
-        self.q_proj.to(device)
-        self.k_proj.to(device)
-        self.v_proj.to(device)
-        self.out_proj.to(device)
+        
+        # Use to_empty() for modules that may be on meta device
+        def safe_move_to_device(module: nn.Module, target_device: torch.device) -> None:
+            """Safely move module to target device, handling meta tensors."""
+            try:
+                param = next(module.parameters(), None)
+                if param is not None and param.device.type == "meta":
+                    module.to_empty(device=target_device, recurse=True)
+                else:
+                    module.to(target_device)
+            except RuntimeError:
+                # Fallback: ensure module is properly initialized
+                module.to(target_device)
+        
+        # Move projection layers
+        safe_move_to_device(self.q_proj, device)
+        safe_move_to_device(self.k_proj, device)
+        safe_move_to_device(self.v_proj, device)
+        safe_move_to_device(self.out_proj, device)
+        
+        # Move attention heads
         for head in self.attention_heads:
-            head.to(device)
+            safe_move_to_device(head, device)
 
         # Project Q, K, V
         Q = self.q_proj(query)

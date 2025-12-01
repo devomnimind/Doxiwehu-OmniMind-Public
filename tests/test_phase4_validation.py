@@ -18,19 +18,17 @@ import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, Any
 
 import numpy as np
-import torch
+
+from src.consciousness.shared_workspace import SharedWorkspace
 
 # Configuração de logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
-
-# Imports do OmniMind
-from src.consciousness.shared_workspace import SharedWorkspace, CrossPredictionMetrics
 
 
 class Phase4Validator:
@@ -55,7 +53,8 @@ class Phase4Validator:
                 with open(real_evidence_path, "r") as f:
                     data = json.load(f)
                 logger.info(
-                    f"Dados reais carregados: {data['num_cycles']} ciclos, timestamp: {data['timestamp']}"
+                    f"Dados reais carregados: {data['num_cycles']} ciclos, "
+                    f"timestamp: {data['timestamp']}"
                 )
                 return data
             except Exception as e:
@@ -102,7 +101,7 @@ class Phase4Validator:
 
             # 5. Relatório Final
             logger.info("📋 5. Gerando Relatório Final...")
-            final_report = self.generate_final_report(results)
+            self.generate_final_report(results)
 
             # Salvar resultados
             results_file = self.results_dir / f"phase4_validation_{int(time.time())}.json"
@@ -256,9 +255,8 @@ class Phase4Validator:
         logger.info(".3f")
         logger.info(f"   Timestamp real: {summary['timestamp_real']}")
         logger.info(f"   Contribuição total: {summary['total_contribution']:.1f}%")
-        logger.info(
-            f"   Prova de verdade: {'✅ ROBUSTA' if robustness_analysis['is_robust'] else '⚠️ QUESTIONÁVEL'}"
-        )
+        is_robust = "✅ ROBUSTA" if robustness_analysis["is_robust"] else "⚠️ QUESTIONÁVEL"
+        logger.info(f"   Prova de verdade: {is_robust}")
 
         return summary
 
@@ -336,7 +334,7 @@ class Phase4Validator:
         self, phi_baseline: float, module_contributions: Dict, simulated_results: Dict
     ) -> Dict[str, Any]:
         """Analisa prova de verdade: robustez dos dados reais vs simulados."""
-        analysis = {
+        analysis: Dict[str, Any] = {
             "is_robust": False,
             "consistency_score": 0.0,
             "real_vs_simulated": {},
@@ -415,9 +413,8 @@ class Phase4Validator:
         logger.info("Validação de Performance:")
         logger.info(".2f")
         logger.info(".1f")
-        logger.info(
-            f"   Meta atingida: {'✅' if validation['speedup_met'] and validation['score_met'] else '❌'}"
-        )
+        meta = "✅" if validation["speedup_met"] and validation["score_met"] else "❌"
+        logger.info(f"   Meta atingida: {meta}")
 
         return validation
 
@@ -582,9 +579,8 @@ async def main():
     print(f"Comparações: {len(results['comparisons'])} métodos testados")
     print(f"Ablaçoes: {results['ablations']['total_cycles']} ciclos executados")
     print(".2f")
-    print(
-        f"Escalabilidade: {results['scalability']['analysis']['max_tested_modules']}+ módulos testados"
-    )
+    max_mod = results["scalability"]["analysis"]["max_tested_modules"]
+    print(f"Escalabilidade: {max_mod}+ módulos testados")
 
     perf = results["performance"]
     if perf["speedup_met"] and perf["score_met"]:

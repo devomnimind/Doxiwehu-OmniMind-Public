@@ -261,6 +261,7 @@ class RedisClusterManager:
         cluster = self.cluster
         assert cluster is not None
         try:
+            result: Any
             if ttl:
                 result = cluster.setex(key, ttl, value)
             else:

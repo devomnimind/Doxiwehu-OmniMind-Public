@@ -16,11 +16,14 @@ from typing import (
     Set,
     Tuple,
     TypedDict,
+    Union,
     cast,
 )
+from uuid import UUID
 
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qmodels
+from qdrant_client.http.models import PointIdsList
 
 if TYPE_CHECKING:  # pragma: no cover - optional dependency typing only
     from sentence_transformers import SentenceTransformer
@@ -343,7 +346,12 @@ class EpisodicMemory:
 
         removed = 0
         if duplicates:
-            self.client.delete(collection_name=self.collection_name, points_selector=duplicates)
+            # Delete duplicates using PointIdsList with properly typed point IDs
+            points_to_delete: List[Union[int, str, UUID]] = [int(p) for p in duplicates]
+            self.client.delete(
+                collection_name=self.collection_name,
+                points_selector=PointIdsList(points=points_to_delete),
+            )
             removed = len(duplicates)
 
         remaining_stats = self.get_stats()

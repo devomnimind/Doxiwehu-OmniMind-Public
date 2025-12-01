@@ -43,6 +43,7 @@ class TestQuantumState:
         state = QuantumState(num_qubits=2, statevector=custom_sv)
 
         assert state.num_qubits == 2
+        assert state.statevector is not None
         assert np.allclose(state.statevector, custom_sv)
 
     def test_quantum_state_measure(self) -> None:

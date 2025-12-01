@@ -1,7 +1,7 @@
 import asyncio
 import time
 from dataclasses import dataclass
-from typing import List
+from typing import List, Dict, Any
 
 from src.tribunal_do_diabo.system_adapter import OmniMindSystem
 
@@ -23,7 +23,7 @@ class BifurcationAttack:
     def __init__(self, omnimind_system: OmniMindSystem):
         self.system = omnimind_system
         self.metrics: List[BifurcationAttackMetrics] = []
-        self.active_bifurcations = []
+        self.active_bifurcations: List[Dict[str, Any]] = []
         self.start_time = None
 
     async def run_4_hours(self):

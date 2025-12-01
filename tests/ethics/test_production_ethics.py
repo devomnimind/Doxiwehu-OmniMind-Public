@@ -4,7 +4,10 @@ Grupo 7 - Production Ethics Tests.
 Testes abrangentes para o módulo de ética production-ready,
 incluindo MFA (Moral Foundation Alignment), transparência e LGPD compliance.
 
-Author: This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.
+Author: Project conceived by Fabrício da Silva. Implementation followed an iterative AI-assisted
+method: the author defined concepts and queried various AIs on construction, integrated code via
+VS Code/Copilot, tested resulting errors, cross-verified validity with other models, and refined
+prompts/corrections in a continuous cycle of human-led AI development.
 Date: November 2025
 """
 
@@ -12,6 +15,7 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
@@ -63,7 +67,7 @@ class TestMoralFoundationAlignment:
     """Testes para MFA (Moral Foundation Alignment)."""
 
     @pytest.fixture
-    def system(self) -> ProductionEthicsSystem:
+    def system(self) -> Generator[ProductionEthicsSystem, None, None]:
         """Fixture para sistema de ética."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
@@ -136,7 +140,7 @@ class TestTransparency:
     """Testes para transparência de decisões."""
 
     @pytest.fixture
-    def system(self) -> ProductionEthicsSystem:
+    def system(self) -> Generator[ProductionEthicsSystem, None, None]:
         """Fixture para sistema de ética."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
@@ -177,7 +181,7 @@ class TestLGPDCompliance:
     """Testes para LGPD compliance."""
 
     @pytest.fixture
-    def system(self) -> ProductionEthicsSystem:
+    def system(self) -> Generator[ProductionEthicsSystem, None, None]:
         """Fixture para sistema de ética."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
@@ -208,7 +212,7 @@ class TestDecisionLogging:
     """Testes para logging de decisões éticas."""
 
     @pytest.fixture
-    def system(self) -> ProductionEthicsSystem:
+    def system(self) -> Generator[ProductionEthicsSystem, None, None]:
         """Fixture para sistema de ética."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
@@ -261,7 +265,7 @@ class TestAuditTrails:
     """Testes para audit trails."""
 
     @pytest.fixture
-    def system(self) -> ProductionEthicsSystem:
+    def system(self) -> Generator[ProductionEthicsSystem, None, None]:
         """Fixture para sistema de ética."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
@@ -301,7 +305,7 @@ class TestIntegratedEthics:
     """Testes de integração completa do sistema de ética."""
 
     @pytest.fixture
-    def system(self) -> ProductionEthicsSystem:
+    def system(self) -> Generator[ProductionEthicsSystem, None, None]:
         """Fixture para sistema de ética."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))
@@ -377,7 +381,7 @@ class TestEdgeCases:
     """Testes de casos extremos e validação de robustez."""
 
     @pytest.fixture
-    def system(self) -> ProductionEthicsSystem:
+    def system(self) -> Generator[ProductionEthicsSystem, None, None]:
         """Fixture para sistema de ética."""
         with tempfile.TemporaryDirectory() as tmpdir:
             yield ProductionEthicsSystem(metrics_dir=Path(tmpdir))

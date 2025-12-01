@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import tempfile
 from pathlib import Path
+from typing import Generator
 from unittest.mock import Mock, patch
 
 import pytest
@@ -123,7 +124,7 @@ class TestDLPValidator:
     """Testes para DLPValidator."""
 
     @pytest.fixture
-    def temp_policy_file(self) -> Path:
+    def temp_policy_file(self) -> Generator[Path, None, None]:
         """Cria arquivo de políticas temporário."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".yaml", delete=False) as f:
             f.write(

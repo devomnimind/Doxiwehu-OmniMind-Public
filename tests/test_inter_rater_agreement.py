@@ -138,7 +138,7 @@ class InterRaterAgreementTester:
         embedding_dim = 256
 
         # Gerar embeddings com estrutura causal simulada
-        embeddings = []
+        embeddings: List[np.ndarray] = []
         for i in range(n_samples):
             # Simular causalidade: embedding[i+1] depende de embedding[i]
             if i == 0:
@@ -184,17 +184,7 @@ class InterRaterAgreementTester:
         Fórmula: ICC = (MSB - MSW) / (MSB + (k-1)*MSW)
         Onde k = número de raters
         """
-        k = len(values)  # número de raters
-        mean_total = np.mean(values)
-
-        # Mean Square Between (MSB)
-        ssb = k * np.sum((values - mean_total) ** 2)
-        msb = ssb / (k - 1)
-
-        # Mean Square Within (MSW) - neste caso, MSW = 0 pois cada rater dá 1 valor
-        # Para ICC com 1 medida por rater: ICC = (MSB - MSW)/(MSB + (k-1)*MSW)
-        # Mas MSW = 0, então ICC = MSB / (MSB + (k-1)*0) = 1 se MSB > 0
-
+        # Simpificação: usamos correlação como proxy
         # Para este caso específico (1 medida por rater), usamos correlação
         # Como proxy: se variação é baixa, ICC alto
         if np.std(values) < 0.001:  # Muito consistente

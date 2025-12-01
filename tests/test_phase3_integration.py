@@ -12,11 +12,11 @@ Este teste valida a integração completa da Phase 3 no SharedWorkspace:
 import asyncio
 import logging
 import time
-from typing import Dict
 
 import numpy as np
+import torch
 
-from src.consciousness.shared_workspace import SharedWorkspace, CrossPredictionMetrics
+from src.consciousness.shared_workspace import SharedWorkspace
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
@@ -48,14 +48,15 @@ async def test_phase3_integration():
     n_timesteps = 200  # Histórico suficiente para causalidade
 
     # Criar relações causais hierárquicas (como no IIT)
-    causal_chain = {
-        "qualia_engine": [],  # Base da hierarquia
-        "narrative_constructor": ["qualia_engine"],  # Depende de qualia
-        "expectation_module": ["narrative_constructor"],  # Depende de narrativa
-        "working_memory": ["expectation_module", "qualia_engine"],  # Múltiplas dependências
-        "attention_router": ["working_memory"],  # Depende de memória
-        "metacognition_engine": ["attention_router", "narrative_constructor"],  # Topo da hierarquia
-    }
+    # causal_chain = {
+    #     "qualia_engine": [],  # Base da hierarquia
+    #     "narrative_constructor": ["qualia_engine"],  # Depende de qualia
+    #     "expectation_module": ["narrative_constructor"],  # Depende de narrativa
+    #     "working_memory": ["expectation_module", "qualia_engine"],  # Múltiplas dependências
+    #     "attention_router": ["working_memory"],  # Depende de memória
+    #     "metacognition_engine": ["attention_router", "narrative_constructor"],
+    #     # Topo da hierarquia
+    # }
 
     for module in modules:
         logger.info(f"  • Gerando histórico para {module}...")
@@ -166,7 +167,8 @@ async def test_phase3_integration():
 
     detection_rate = len(detected_relations) / len(expected_relations)
     logger.info(
-        f"   Taxa de Detecção: {detection_rate:.1%} ({len(detected_relations)}/{len(expected_relations)})"
+        f"   Taxa de Detecção: {detection_rate:.1%} "
+        f"({len(detected_relations)}/{len(expected_relations)})"
     )
 
     # TESTE 3: Cache inteligente
@@ -175,12 +177,14 @@ async def test_phase3_integration():
 
     # Primeira execução (preencher cache)
     start_time = time.time()
-    result1 = workspace.compute_all_cross_predictions_vectorized(history_window=50)
+    # result1 = workspace.compute_all_cross_predictions_vectorized(history_window=50)
+    workspace.compute_all_cross_predictions_vectorized(history_window=50)
     time1 = (time.time() - start_time) * 1000
 
     # Segunda execução (usar cache)
     start_time = time.time()
-    result2 = workspace.compute_all_cross_predictions_vectorized(history_window=50)
+    # result2 = workspace.compute_all_cross_predictions_vectorized(history_window=50)
+    workspace.compute_all_cross_predictions_vectorized(history_window=50)
     time2 = (time.time() - start_time) * 1000
 
     cache_speedup = time1 / time2 if time2 > 0 else 1.0
@@ -199,7 +203,8 @@ async def test_phase3_integration():
 
     # Executar novamente (deve recálcular predições envolvendo qualia_engine)
     start_time = time.time()
-    result3 = workspace.compute_all_cross_predictions_vectorized(history_window=50)
+    # result3 = workspace.compute_all_cross_predictions_vectorized(history_window=50)
+    workspace.compute_all_cross_predictions_vectorized(history_window=50)
     time3 = (time.time() - start_time) * 1000
 
     logger.info("📊 Invalidação de Cache:")
@@ -260,8 +265,6 @@ async def test_phase3_integration():
 
 if __name__ == "__main__":
     try:
-        import torch
-
         result = asyncio.run(test_phase3_integration())
 
         print("\n📊 Resumo Final:")

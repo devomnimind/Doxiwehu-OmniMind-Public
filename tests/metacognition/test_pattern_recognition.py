@@ -5,6 +5,7 @@ Total: 29 tests covering all pattern recognition capabilities.
 """
 
 from datetime import datetime
+from typing import Any, Dict, List
 
 import pytest
 
@@ -50,7 +51,7 @@ class TestDetectRepetitiveBehavior:
     def test_insufficient_data(self) -> None:
         """Test with insufficient data."""
         pr = PatternRecognition()
-        operations = [
+        operations: List[Dict[str, Any]] = [
             {"tool_name": "tool1"},
             {"tool_name": "tool2"},
         ]
@@ -296,7 +297,7 @@ class TestAnalyzeDecisionTree:
     def test_single_sequence(self) -> None:
         """Test with single decision sequence."""
         pr = PatternRecognition()
-        operations = [
+        operations: List[Dict[str, Any]] = [
             {"tool_name": "A"},
             {"tool_name": "B"},
             {"tool_name": "C", "metadata": {"task_complete": True}},
@@ -312,7 +313,7 @@ class TestAnalyzeDecisionTree:
     def test_multiple_sequences(self) -> None:
         """Test with multiple decision sequences."""
         pr = PatternRecognition()
-        operations = [
+        operations: List[Dict[str, Any]] = [
             {"tool_name": "A"},
             {"tool_name": "B", "metadata": {"task_complete": True}},
             {"tool_name": "C"},
@@ -330,7 +331,7 @@ class TestAnalyzeDecisionTree:
         """Test identification of common decision paths."""
         pr = PatternRecognition()
         # Repeat same sequence 3 times
-        sequence = [
+        sequence: List[Dict[str, Any]] = [
             {"tool_name": "X"},
             {"tool_name": "Y", "metadata": {"task_complete": True}},
         ]

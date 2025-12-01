@@ -6,6 +6,7 @@ Testa sistema de mensagens inter-agentes.
 """
 
 import asyncio
+from typing import AsyncGenerator
 
 import pytest
 
@@ -82,7 +83,7 @@ class TestAgentMessageBus:
     """Testes para AgentMessageBus"""
 
     @pytest.fixture
-    async def message_bus(self) -> AgentMessageBus:
+    async def message_bus(self) -> AsyncGenerator[AgentMessageBus, None]:
         """Fixture para criar message bus"""
         bus = AgentMessageBus()
         await bus.start()

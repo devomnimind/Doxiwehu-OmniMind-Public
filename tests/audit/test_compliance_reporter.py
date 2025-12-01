@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import tempfile
+from typing import Generator
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -44,7 +45,7 @@ class TestComplianceReporter:
     """Testes para ComplianceReporter."""
 
     @pytest.fixture
-    def temp_log_dir(self) -> Path:
+    def temp_log_dir(self) -> Generator[Path, None, None]:
         """Cria diretório temporário para logs."""
         with tempfile.TemporaryDirectory() as tmp_dir:
             yield Path(tmp_dir)

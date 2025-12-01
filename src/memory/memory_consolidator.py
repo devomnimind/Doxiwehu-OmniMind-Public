@@ -52,7 +52,7 @@ class MemoryConsolidator:
         logger.info(f"Consolidating {len(episodes)} episodes...")
 
         # 1. Extract potential concepts (keywords/tags)
-        term_counter = Counter()
+        term_counter: Counter[str] = Counter()
 
         for episode in episodes:
             # Extract from tags if available
@@ -154,11 +154,11 @@ class MemoryConsolidator:
                     concept_a
                 ) and self.semantic_memory.retrieve_concept(concept_b):
                     # Create bidirectional relationship
-                    self.semantic_memory.relate_concepts(
+                    self.semantic_memory.associate_concepts(
                         concept_a,
                         concept_b,
-                        relationship_type="cooccurs_with",
-                        strength=min(count / 10.0, 1.0),  # Normalize strength
+                        relation="cooccurs_with",
+                        bidirectional=True,
                     )
                     relationships_created += 1
 
