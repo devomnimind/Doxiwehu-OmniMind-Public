@@ -16,19 +16,31 @@ import os
 
 
 class ServerMonitorPlugin:
-    """Monitora saúde do servidor durante testes."""
+    """Monitora saúde do servidor durante testes - ESSENCIAL para segurança."""
     
     def __init__(self):
         self.backend_url = "http://localhost:8000"
         self.server_process = None
         self.server_was_down = False
         self.crashed_tests = []
+        self.has_e2e_tests = False
     
     def pytest_configure(self, config):
-        """Inicializa monitoring na configuração."""
-        # Inicia servidor se não estiver UP
-        if not self._is_server_healthy():
-            self._start_server()
+        """Inicializa monitoring na configuração - LAZY INIT."""
+        # NÃO inicia servidor aqui - deixa para pytest_collection_finish
+        pass
+    
+    def pytest_collection_finish(self, session):
+        """Após coletar testes: verifica E INICIA servidor se necessário."""
+        # Verifica se há testes E2E
+        for item in session.items:
+            if self._needs_server(item):
+                self.has_e2e_tests = True
+                break
+        
+        # Se há E2E tests, GARANTE servidor UP
+        if self.has_e2e_tests:
+            self._ensure_server_up()
     
     def pytest_runtest_setup(self, item):
         """Antes de cada teste: verifica se servidor está UP."""
@@ -51,7 +63,7 @@ class ServerMonitorPlugin:
     def pytest_runtest_teardown(self, item):
         """Após cada teste: garante servidor UP para próximo."""
         if self._needs_server(item) and self.server_was_down:
-            self._wait_for_server()
+            self._wait_for_server_with_retry(max_attempts=15)
     
     def _is_server_healthy(self) -> bool:
         """Verifica se servidor está respondendo."""
@@ -60,6 +72,17 @@ class ServerMonitorPlugin:
             return resp.status_code in (200, 404)
         except Exception:
             return False
+    
+    def _ensure_server_up(self):
+        """Garante servidor UP - verifica antes de iniciar."""
+        # Se já está saudável, apenas avisa
+        if self._is_server_healthy():
+            print("✅ Servidor backend já está rodando em http://localhost:8000")
+            return
+        
+        # Servidor DOWN - inicia
+        print("⚠️  Servidor backend DOWN - iniciando...")
+        self._start_server()
     
     def _needs_server(self, item) -> bool:
         """Verifica se teste precisa de servidor."""
@@ -70,7 +93,7 @@ class ServerMonitorPlugin:
     
     def _start_server(self):
         """Inicia servidor via docker-compose ou python."""
-        print("🚀 Iniciando servidor...")
+        print("🚀 Iniciando servidor backend...")
         
         try:
             # Tenta docker-compose primeiro
@@ -79,6 +102,7 @@ class ServerMonitorPlugin:
             )
             
             if os.path.exists(deploy_dir):
+                print(f"   → Tentando docker-compose em {deploy_dir}...")
                 subprocess.Popen(
                     ["docker-compose", "up", "-d"],
                     cwd=deploy_dir,
@@ -87,6 +111,7 @@ class ServerMonitorPlugin:
                 )
             else:
                 # Fallback: python direto
+                print("   → Tentando python -m uvicorn...")
                 subprocess.Popen(
                     [
                         "python", "-m", "uvicorn",
@@ -98,20 +123,26 @@ class ServerMonitorPlugin:
                     stderr=subprocess.DEVNULL
                 )
             
-            self._wait_for_server()
-            print("✅ Servidor iniciado com sucesso")
+            # Aguarda servidor ficar saudável com retry agressivo
+            self._wait_for_server_with_retry(max_attempts=30)
+            print("✅ Servidor backend iniciado com sucesso")
         
         except Exception as e:
-            print(f"❌ Erro ao iniciar servidor: {e}")
+            print(f"❌ ERRO ao iniciar servidor: {e}")
+            print("⚠️  ATENÇÃO: Testes E2E falharão sem servidor!")
+            raise RuntimeError("Servidor backend não conseguiu iniciar")
     
-    def _wait_for_server(self, max_attempts=10):
-        """Aguarda servidor ficar saudável."""
-        for attempt in range(max_attempts):
+    def _wait_for_server_with_retry(self, max_attempts=30):
+        """Aguarda servidor ficar saudável com retry agressivo."""
+        for attempt in range(1, max_attempts + 1):
             if self._is_server_healthy():
+                print(f"   ✅ Servidor respondendo na tentativa {attempt}")
                 return
+            
+            print(f"   ⏳ Tentativa {attempt}/{max_attempts} para conectar ao servidor...")
             time.sleep(1)
         
-        raise RuntimeError(f"Servidor não ficou saudável em {max_attempts}s")
+        raise RuntimeError(f"Servidor não ficou saudável em {max_attempts} tentativas")
     
     def pytest_sessionfinish(self, session):
         """Ao final: exibe relatório de servidores derrubados."""
