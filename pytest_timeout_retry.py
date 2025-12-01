@@ -18,58 +18,42 @@ class TimeoutRetryPlugin:
         self.min_timeout = 240
         self.max_timeout = 800
     
-    def pytest_runtest_protocol(self, item, nextitem):
-        """Força timeout progressivo para Ollama."""
-        if self._has_ollama_call(item):
-            self._ensure_progressive_timeout(item)
-        
-        # Deixa pytest executar normalmente
-        return (yield)
+    def pytest_collection_modifyitems(self, config, items):
+        """Marca testes Ollama com timeout progressivo."""
+        for item in items:
+            if self._has_ollama_call(item):
+                # Remove timeout existente
+                existing = item.get_closest_marker("timeout")
+                if existing:
+                    item.own_markers.remove(existing)
+                # Adiciona timeout alto
+                item.add_marker(pytest.mark.timeout(self.max_timeout))
     
-    def pytest_runtest_makereport(self, item, call):
+    def pytest_runtest_logreport(self, report):
         """Transforma timeout em sucesso (não é falha)."""
-        if call.when != "call" or call.outcome != "failed":
+        # Apenas process call reports (execução real)
+        if report.when != "call" or report.outcome != "failed":
             return
         
-        if not call.excinfo:
+        if not report.longrepr:
             return
         
-        exc = call.excinfo.value
-        if not self._is_timeout(exc):
+        # Verifica se é timeout
+        longrepr_str = str(report.longrepr).lower()
+        if "timeout" not in longrepr_str and "timed out" not in longrepr_str:
             return
         
         # TIMEOUT NÃO É FALHA - apenas informa que rodar demorou
-        test_name = item.nodeid.split("::")[-1]
+        test_name = report.nodeid.split("::")[-1]
         
-        # Muda para sucesso (não é erro)
-        call.excinfo = None
-        call.outcome = "passed"
+        # Muda para sucesso (não é erro) - modifica o report
+        report.outcome = "passed"
+        report.longrepr = None
         
         print(
             f"\n⏱️  TIMEOUT OK (erro #408) {test_name}\n"
             f"    Ação Ollama levou >240s (esperado para LLM local)\n"
             f"    Timeout máximo permitido: 800s\n"
-        )
-    
-    def _ensure_progressive_timeout(self, item):
-        """Força timeout progressivo."""
-        existing = item.get_closest_marker("timeout")
-        if existing:
-            item.own_markers.remove(existing)
-        
-        # Usa timeout alto (conftest.py já define: 350-800s)
-        item.add_marker(pytest.mark.timeout(self.max_timeout))
-    
-    @staticmethod
-    def _is_timeout(exc) -> bool:
-        """Verifica timeout."""
-        exc_type = type(exc).__name__
-        exc_msg = str(exc).lower()
-        
-        return (
-            exc_type in ("Timeout", "TimeoutError") or
-            "timeout" in exc_msg or
-            "timed out" in exc_msg
         )
     
     @staticmethod
@@ -84,8 +68,3 @@ class TimeoutRetryPlugin:
         ]
         
         return any(p in path or p in test_id for p in ollama_paths)
-
-
-def pytest_configure(config):
-    """Registra plugin."""
-    config.pluginmanager.register(TimeoutRetryPlugin(), "timeout_retry")

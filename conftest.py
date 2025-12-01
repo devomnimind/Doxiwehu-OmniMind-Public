@@ -38,6 +38,9 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "e2e: mark test as end-to-end (requer servidor)"
     )
+    config.addinivalue_line(
+        "markers", "timeout(seconds): mark test with timeout in seconds"
+    )
     
     # Register custom plugins
     config.pluginmanager.register(TimeoutRetryPlugin(), "timeout_retry")

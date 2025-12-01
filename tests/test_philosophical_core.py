@@ -107,6 +107,8 @@ def test_sinthome_as_system_identity():
     """
     HIPÓTESE: O Sinthome é a assinatura única do sistema.
     """
+    from src.sinthome.emergent_stabilization_rule import LacanianRegister
+    
     sinthome = SinthomaticStabilizationRule(system_name="OmniMind_Test")
 
     test_scenarios = [
@@ -115,11 +117,11 @@ def test_sinthome_as_system_identity():
     ]
 
     for scenario in test_scenarios:
-        # Nova API: process_rupture ao invés de detect_irresolvable_conflict
+        # Nova API: process_rupture(register, error_context, error_type)
         sinthome.process_rupture(
-            scenario, 
-            error_type="irresolvable_conflict",
-            register_name="symbolic"
+            register=LacanianRegister.SYMBOLIC,
+            error_context=scenario,
+            error_type="irresolvable_conflict"
         )
 
     # Tentar aplicar Sinthome

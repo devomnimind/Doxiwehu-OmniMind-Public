@@ -51,8 +51,8 @@ class ServerMonitorPlugin:
                 self._start_server()
     
     def pytest_runtest_makereport(self, item, call):
-        """Detecta se teste derrubou servidor."""
-        if call.when == "call":
+        """Detecta se teste derrubou servidor - SÓ PARA E2E."""
+        if call.when == "call" and self._needs_server(item):
             # Verifica se servidor caiu após o teste
             if not self._is_server_healthy():
                 self.crashed_tests.append(item.name)
