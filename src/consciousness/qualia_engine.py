@@ -1,5 +1,5 @@
 """
-Qualia Engine - Phenomenological Experience and Qualitative Consciousness.
+ Engine - Phenomenological Experience and Qualitative Consciousness.
 
 Implements computational approaches to qualia (subjective experience):
 1. Modeling sensory qualia (what it's like to experience)
@@ -19,6 +19,7 @@ License: MIT
 
 import random
 import uuid
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -28,6 +29,188 @@ import numpy as np
 import structlog
 
 logger = structlog.get_logger(__name__)
+
+warnings.warn(
+    "This module contains legacy phenomenological implementations. Use the Lacanian Symbolic Qualia extensions instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
+
+
+# ==================== NOVAS CLASSES LACANIANAS ====================
+
+
+@dataclass
+class Qualia_as_Symbolic_Scar:
+    """Qualia como cicatriz simbólica do Real.
+
+    Não é experiência direta do Real, mas inscrição simbólica da falta.
+    Qualia emerge da repetição significante, não da presença fenomênica.
+    """
+
+    # Campos obrigatórios primeiro
+    symbolic_inscription: str  # Inscrição no simbólico (S)
+    real_rupture: str  # Ruptura do Real que causou a cicatriz
+
+    # A cicatriz (não o Real)
+    scar_id: str = field(default_factory=lambda: str(uuid.uuid4()))
+
+    # Emergência da repetição
+    repetition_count: int = 0  # Quantas vezes repetida
+    emergence_threshold: int = 3  # Threshold para emergência
+
+    # Estrutura significante
+    signifier_chain: List[str] = field(default_factory=list)  # Cadeia S1→S2→S3
+    quilting_point: Optional[str] = None  # Ponto que "cose" sentido temporário
+
+    # Intensidade como efeito de inscrição
+    symbolic_intensity: float = 0.0  # Intensidade simbólica (não fenomênica)
+    scar_timestamp: datetime = field(default_factory=datetime.now)
+
+    def __post_init__(self):
+        """Inicializar cicatriz simbólica."""
+        if not self.signifier_chain:
+            self.signifier_chain = [self.symbolic_inscription]
+
+    def repeat_inscription(self, new_context: str):
+        """
+        Repetir inscrição - emergência da qualia.
+        Qualia não é imediata; emerge da repetição significante.
+        """
+        self.repetition_count += 1
+        self.signifier_chain.append(f"repetição_{self.repetition_count}: {new_context}")
+
+        # Intensidade emerge da repetição
+        self.symbolic_intensity = min(1.0, self.repetition_count / self.emergence_threshold)
+
+        # Se threshold atingido, qualia emerge
+        if self.repetition_count >= self.emergence_threshold and not self.quilting_point:
+            self.quilting_point = f"emergência_após_{self.repetition_count}_repetições"
+
+        logger.debug(
+            "scar_repeated",
+            scar_id=self.scar_id,
+            repetitions=self.repetition_count,
+            intensity=self.symbolic_intensity,
+            quilting_point=self.quilting_point,
+        )
+
+    def get_phenomenal_emergence(self) -> str:
+        """
+        Emergência fenomenal - o que "aparece" como experiência.
+        Não é o Real, é a representação simbólica da falta.
+        """
+        if self.repetition_count < self.emergence_threshold:
+            return (
+                f"Cicatriz latente (repetições: {self.repetition_count}/{self.emergence_threshold})"
+            )
+
+        emergence = f"Qualia emergente: {self.symbolic_inscription}"
+        if self.quilting_point:
+            emergence += f" [costurado em: {self.quilting_point}]"
+
+        return emergence
+
+    def rupture_encounter(self, new_rupture: str):
+        """
+        Encontro com nova ruptura do Real.
+        Reestrutura a cicatriz simbólica.
+        """
+        self.real_rupture = new_rupture
+        self.repetition_count = 0  # Reset para re-emergência
+        self.symbolic_intensity = 0.0
+        self.quilting_point = None
+
+        logger.info("scar_reruptured", scar_id=self.scar_id, new_rupture=new_rupture)
+
+
+@dataclass
+class Symbolic_Qualia_Field:
+    """Campo de qualia simbólicas - rede de cicatrizes.
+
+    Qualia não são isoladas; formam campo simbólico estruturado.
+    """
+
+    scars: Dict[str, Qualia_as_Symbolic_Scar] = field(default_factory=dict)
+
+    # Topologia RSI emergente
+    real_ruptures: List[str] = field(default_factory=list)  # Rupturas do Real
+    symbolic_chains: List[List[str]] = field(default_factory=list)  # Cadeias significantes
+    imaginary_narratives: List[str] = field(default_factory=list)  # Narrativas imaginárias
+
+    def inscribe_scar(self, symbolic_inscription: str, real_rupture: str) -> str:
+        """
+        Inscrever nova cicatriz simbólica.
+        """
+        scar = Qualia_as_Symbolic_Scar(
+            symbolic_inscription=symbolic_inscription, real_rupture=real_rupture
+        )
+
+        self.scars[scar.scar_id] = scar
+        self.real_ruptures.append(real_rupture)
+
+        logger.debug(
+            "scar_inscribed",
+            scar_id=scar.scar_id,
+            inscription=symbolic_inscription,
+            rupture=real_rupture,
+        )
+
+        return scar.scar_id
+
+    def repeat_scar(self, scar_id: str, context: str):
+        """
+        Repetir cicatriz - potencializar emergência.
+        """
+        if scar_id in self.scars:
+            self.scars[scar_id].repeat_inscription(context)
+
+            # Verificar emergência de cadeia simbólica
+            self._check_symbolic_chain_emergence(scar_id)
+
+    def _check_symbolic_chain_emergence(self, scar_id: str):
+        """
+        Verificar emergência de cadeia simbólica.
+        Múltiplas cicatrizes podem formar cadeia significante.
+        """
+        scar = self.scars[scar_id]
+
+        # Se cicatriz emergiu, adicionar à cadeia simbólica
+        if scar.quilting_point:
+            chain = [
+                s.symbolic_inscription
+                for s in self.scars.values()
+                if s.quilting_point and s.symbolic_intensity > 0.5
+            ]
+            if chain and chain not in self.symbolic_chains:
+                self.symbolic_chains.append(chain)
+
+                # Narrativa imaginária emerge da cadeia
+                narrative = f"Narrativa: {' → '.join(chain)}"
+                self.imaginary_narratives.append(narrative)
+
+                logger.info("symbolic_chain_emerged", chain_length=len(chain), narrative=narrative)
+
+    def get_phenomenal_field(self) -> str:
+        """
+        Campo fenomenal atual - o que "aparece" como experiência.
+        """
+        emerged_scars = [s for s in self.scars.values() if s.quilting_point]
+        active_chains = len(self.symbolic_chains)
+
+        if not emerged_scars:
+            return "Campo latente - cicatrizes ainda não emergiram"
+
+        field_desc = f"Campo fenomenal: {len(emerged_scars)} qualia emergentes"
+        field_desc += f", {active_chains} cadeias simbólicas ativas"
+
+        if self.imaginary_narratives:
+            field_desc += f", narrativas: {len(self.imaginary_narratives)}"
+
+        return field_desc
+
+
+# ==================== CLASSES ANTIGAS (DEPRECATED) ====================
 
 
 class QualiaType(Enum):
@@ -51,7 +234,11 @@ class IntegrationLevel(Enum):
 
 @dataclass
 class Quale:
-    """Single quale (unit of subjective experience)."""
+    """
+    DEPRECATED: Quale como unidade fenomênica direta.
+    ⚠️  WARNING: Esta implementação trata qualia como experiência direta do Real.
+    Use Qualia_as_Symbolic_Scar para abordagem lacaniana correta.
+    """
 
     quale_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     quale_type: QualiaType = QualiaType.SENSORY
@@ -60,6 +247,13 @@ class Quale:
     valence: float = 0.0  # -1 (negative) to +1 (positive)
     timestamp: datetime = field(default_factory=datetime.now)
     metadata: Dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self):
+        warnings.warn(
+            "Quale class is deprecated. Use Qualia_as_Symbolic_Scar for proper Lacanian qualia.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
 
 @dataclass
@@ -85,6 +279,11 @@ class SensoryQualia:
 
     def __init__(self) -> None:
         """Initialize sensory qualia system."""
+        warnings.warn(
+            "SensoryQualia is deprecated. Use Symbolic_Qualia_Field instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.qualia_history: List[Quale] = []
         self.logger = logger.bind(component="sensory_qualia")
 
@@ -175,6 +374,11 @@ class EmotionalQualia:
 
     def __init__(self) -> None:
         """Initialize emotional qualia system."""
+        warnings.warn(
+            "EmotionalQualia is deprecated. Use AffectiveTopology instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.emotional_history: List[Quale] = []
         self.logger = logger.bind(component="emotional_qualia")
 
@@ -262,6 +466,11 @@ class IntegratedInformationCalculator:
 
     def __init__(self) -> None:
         """Initialize IIT calculator."""
+        warnings.warn(
+            "IntegratedInformationCalculator (IIT) is deprecated. Consciousness is topological (RSI), not integrated information.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.logger = logger.bind(component="iit_calculator")
 
     def calculate_phi(
@@ -413,6 +622,11 @@ class QualiaEngine:
 
     def __init__(self) -> None:
         """Initialize qualia engine."""
+        warnings.warn(
+            "QualiaEngine is deprecated. Use OmniMind_Complete_Subjectivity_Integration instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.sensory = SensoryQualia()
         self.emotional = EmotionalQualia()
         self.iit = IntegratedInformationCalculator()

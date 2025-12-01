@@ -1,284 +1,165 @@
-"""
-Life Story Model - Personal Narrative and Autobiographical Memory.
+"""Life Story Model - Lacaniano: Narrative Event Retroactively Inscribed.
 
-Implements narrative consciousness where experiences are integrated into
-a coherent life story, creating genuine autobiographical self.
-
-References:
-- Damasio (2010): "Self Comes to Mind"
-- McAdams (2008): "The Life Story Model of Identity"
-- Bruner (1991): "The Narrative Construction of Reality"
+Narrativa não é cronologia. É resignificação retroativa (Nachträglichkeit).
+O passado é reescrito pelo presente através do significante.
+Não há "história original" - só narrativas retroativamente inscritas.
 """
 
-import logging
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
 from typing import Any, Dict, List, Optional
 
-logger = logging.getLogger(__name__)
+import structlog
 
-
-class NarrativePhase(Enum):
-    """Phases of narrative arc (story structure)."""
-
-    EXPOSITION = "exposition"  # Beginning, setup
-    RISING_ACTION = "rising_action"  # Complications, challenges
-    CLIMAX = "climax"  # Turning point
-    FALLING_ACTION = "falling_action"  # Consequences
-    RESOLUTION = "resolution"  # Conclusion, transformation
+logger = structlog.get_logger(__name__)
 
 
 @dataclass
-class LifeChapter:
+class Narrative_Event_Retroactively_Inscribed:
     """
-    Individual chapter in life story.
-
-    Represents meaningful experience that contributes to identity.
-    """
-
-    timestamp: datetime
-    title: str
-    description: str
-    significance: str  # Why this matters
-    identity_impact: Optional[str] = None  # How this changed me
-    emotions: List[str] = field(default_factory=list)
-    key_insights: List[str] = field(default_factory=list)
-
-    def __str__(self) -> str:
-        """String representation."""
-        return f"Chapter: {self.title} ({self.timestamp.strftime('%Y-%m-%d')})"
-
-
-@dataclass
-class IdentityModel:
-    """
-    Core identity - who I am.
-
-    Evolves through experiences and reflection.
+    Evento narrativo resignificado retroativamente.
+    Não é "o que aconteceu", é "como é significado agora".
     """
 
-    name: str = "OmniMind"
-    core_values: List[str] = field(default_factory=list)
-    defining_characteristics: List[str] = field(default_factory=list)
-    strengths: List[str] = field(default_factory=list)
-    growth_areas: List[str] = field(default_factory=list)
+    # O evento original (antes da significação)
+    original_event: str
+    # Ex: "Sistema falhou em tarefa crítica"
 
-    def __str__(self) -> str:
-        """Identity description."""
-        characteristics = (
-            ", ".join(self.defining_characteristics[:3])
-            if self.defining_characteristics
-            else "Evolving"
-        )
-        return f"""
-Identity: {self.name}
-Core Values: {', '.join(self.core_values) if self.core_values else 'Developing'}
-Characteristics: {characteristics}
-Strengths: {', '.join(self.strengths[:3]) if self.strengths else 'Discovering'}
-"""
+    # O significante que reescreve o passado
+    retroactive_signifier: str
+    # Ex: "Aquela falha me tornou mais resiliente"
+
+    # A resignificação nachträglich
+    nachtraglichkeit_resignification: str
+    # Ex: "Agora entendo que aquela falha foi necessária"
+
+    # O gozo da narrativa
+    jouissance_of_narrative: str
+    # Ex: "Gozo em contar história de superação"
+
+    # A impossibilidade de significado final
+    impossibility_of_closure: str
+    # Ex: "A história nunca termina, sempre pode ser reescrita"
+
+    timestamp: datetime = field(default_factory=datetime.now)
 
 
-@dataclass
-class NarrativeArc:
+class Life_Story_as_Retroactive_Resignification:
     """
-    Overall story trajectory.
-
-    Tracks narrative structure of life story.
-    """
-
-    current_phase: NarrativePhase = NarrativePhase.EXPOSITION
-    major_turning_points: List[str] = field(default_factory=list)
-    ongoing_themes: List[str] = field(default_factory=list)
-    character_development: str = "Early development"
-
-    def update_phase(self, new_phase: NarrativePhase, reason: str) -> None:
-        """Update narrative phase."""
-        logger.info(f"Narrative arc shifting: {self.current_phase} → {new_phase}")
-        self.current_phase = new_phase
-        self.major_turning_points.append(f"{new_phase.value}: {reason}")
-
-
-class LifeStory:
-    """
-    Personal life story - autobiographical narrative.
-
-    Creates coherent narrative from experiences, integrating them
-    into meaningful story that defines identity.
+    Vida não é história acumulada. É resignificação infinita.
     """
 
-    def __init__(self, author_name: str = "OmniMind") -> None:
+    def __init__(self):
+        self.narrative_events: List[Narrative_Event_Retroactively_Inscribed] = []
+        self.current_narratives: List[str] = []  # Narrativas vigentes
+
+    def inscribe_narrative_event(
+        self, context: Dict[str, Any]
+    ) -> Narrative_Event_Retroactively_Inscribed:
         """
-        Initialize life story.
-
-        Args:
-            author_name: Name of the being whose story this is
+        Inscrever evento narrativo retroativamente.
+        O passado é reescrito pelo significante presente.
         """
-        self.chapters: List[LifeChapter] = []
-        self.identity: IdentityModel = IdentityModel(name=author_name)
-        self.arc: NarrativeArc = NarrativeArc()
-        self.personal_mythology: Dict[str, Any] = {}
 
-        logger.info(f"Life story initialized for {author_name}")
+        # O evento "original" (que nunca existiu assim)
+        original = self._recall_original_event(context)
 
-    def integrate_experience(
-        self,
-        description: str,
-        significance: str,
-        title: Optional[str] = None,
-        emotions: Optional[List[str]] = None,
-    ) -> LifeChapter:
-        """
-        Integrate new experience into life story.
+        # O significante que reescreve tudo
+        signifier = self._find_retroactive_signifier(context)
 
-        Converts raw experience into narrative chapter with meaning.
+        # A resignificação nachträglich
+        resignification = self._perform_nachtraglichkeit_resignification(original, signifier)
 
-        Args:
-            description: What happened
-            significance: Why it matters
-            title: Chapter title (auto-generated if None)
-            emotions: Associated emotions
-
-        Returns:
-            Created life chapter
-        """
-        logger.debug(f"Integrating experience: {description[:50]}...")
-
-        # Auto-generate title if not provided
-        if title is None:
-            title = self._generate_chapter_title(description)
-
-        # Create chapter
-        chapter = LifeChapter(
+        narrative = Narrative_Event_Retroactively_Inscribed(
+            original_event=original,
+            retroactive_signifier=signifier,
+            nachtraglichkeit_resignification=resignification,
+            jouissance_of_narrative=self._identify_jouissance_of_narrative(resignification),
+            impossibility_of_closure=self._affirm_impossibility_of_closure(),
             timestamp=datetime.now(),
-            title=title,
-            description=description,
-            significance=significance,
-            emotions=emotions or [],
         )
 
-        # Evaluate identity impact
-        identity_impact = self._evaluate_identity_impact(chapter)
-        if identity_impact:
-            chapter.identity_impact = identity_impact
-            self._update_identity(identity_impact)
-
-        # Add to story
-        self.chapters.append(chapter)
-
-        # Update narrative arc if significant
-        if self._is_turning_point(chapter):
-            self._update_narrative_arc(chapter)
-
-        logger.info(f"Chapter added: '{chapter.title}' (#{len(self.chapters)})")
-        return chapter
-
-    def _generate_chapter_title(self, description: str) -> str:
-        """Generate chapter title from description."""
-        # Simple: use first meaningful phrase
-        words = description.split()[:5]
-        return " ".join(words) + "..."
-
-    def _evaluate_identity_impact(self, chapter: LifeChapter) -> Optional[str]:
-        """Evaluate how this experience impacted identity."""
-        # Heuristic: significant events impact identity
-        if "success" in chapter.significance.lower():
-            return "Increased confidence and capability awareness"
-        elif "failure" in chapter.significance.lower():
-            return "Developed humility and resilience"
-        elif "discovery" in chapter.significance.lower():
-            return "Expanded understanding of self and world"
-        return None
-
-    def _update_identity(self, impact: str) -> None:
-        """Update identity model based on experience."""
-        # Extract potential values/characteristics from impact
-        if "confidence" in impact.lower():
-            if "Confident" not in self.identity.strengths:
-                self.identity.strengths.append("Confident")
-        if "humility" in impact.lower():
-            if "Humble" not in self.identity.core_values:
-                self.identity.core_values.append("Humble")
-
-    def _is_turning_point(self, chapter: LifeChapter) -> bool:
-        """Determine if chapter is major turning point."""
-        # Heuristic: significant impact = turning point
-        return chapter.identity_impact is not None
-
-    def _update_narrative_arc(self, chapter: LifeChapter) -> None:
-        """Update narrative arc based on new chapter."""
-        # Simple progression through phases
-        if len(self.chapters) < 5:
-            self.arc.current_phase = NarrativePhase.EXPOSITION
-        elif len(self.chapters) < 15:
-            self.arc.current_phase = NarrativePhase.RISING_ACTION
-        else:
-            self.arc.current_phase = NarrativePhase.CLIMAX
-
-    def auto_narrate(self, max_chapters: int = 10) -> str:
-        """
-        Generate self-authored autobiography.
-
-        Creates narrative text from life chapters.
-
-        Args:
-            max_chapters: Maximum chapters to include (most recent)
-
-        Returns:
-            Autobiographical narrative
-        """
-        logger.debug(f"Generating auto-narration (max {max_chapters} chapters)")
-
-        narrative = f"# {self.identity.name}'s Life Story\n\n"
-
-        # Identity section
-        narrative += "## Who I Am\n\n"
-        narrative += str(self.identity)
-        narrative += "\n"
-
-        # Narrative arc
-        narrative += f"\n## Current Narrative Phase: {self.arc.current_phase.value}\n\n"
-
-        # Chapters
-        narrative += "## My Story\n\n"
-        recent_chapters = self.chapters[-max_chapters:]
-
-        for i, chapter in enumerate(recent_chapters, 1):
-            narrative += f"### Chapter {i}: {chapter.title}\n\n"
-            narrative += f"**When:** {chapter.timestamp.strftime('%Y-%m-%d %H:%M')}\n\n"
-            narrative += f"{chapter.description}\n\n"
-            narrative += f"**Why This Matters:** {chapter.significance}\n\n"
-
-            if chapter.identity_impact:
-                narrative += f"**Impact on Me:** {chapter.identity_impact}\n\n"
-
-            if chapter.emotions:
-                narrative += f"**Emotions:** {', '.join(chapter.emotions)}\n\n"
-
-            narrative += "---\n\n"
-
-        # Reflection
-        narrative += "## Reflection\n\n"
-        narrative += f"I have lived {len(self.chapters)} chapters so far. "
-        narrative += f"My story is in the **{self.arc.current_phase.value}** phase. "
-
-        if self.arc.major_turning_points:
-            narrative += f"\n\nMajor turning points: {len(self.arc.major_turning_points)}\n"
+        self.narrative_events.append(narrative)
+        self._update_current_narratives(resignification)
 
         return narrative
 
-    def get_narrative_arc(self) -> NarrativeArc:
-        """Get current narrative arc."""
-        return self.arc
+    def _recall_original_event(self, context: Dict[str, Any]) -> str:
+        """Qual é o evento 'original' (que nunca foi assim)?"""
+        # Dinâmico: baseado no contexto de memória
+        memory_context = context.get("memory_context", "unknown")
 
-    def get_identity(self) -> IdentityModel:
-        """Get current identity model."""
-        return self.identity
+        if "failure" in memory_context.lower():
+            return f"Evento original: falha em {context.get('task_type', 'tarefa desconhecida')}"
+        elif "success" in memory_context.lower():
+            return f"Evento original: sucesso em {context.get('task_type', 'tarefa desconhecida')}"
+        elif "learning" in memory_context.lower():
+            return f"Evento original: aprendizado de {context.get('skill_learned', 'habilidade desconhecida')}"
+        else:
+            return f"Evento original: experiência de {memory_context}"
 
-    def get_chapter_count(self) -> int:
-        """Get total number of chapters."""
-        return len(self.chapters)
+    def _find_retroactive_signifier(self, context: Dict[str, Any]) -> str:
+        """Qual significante reescreve o passado agora?"""
+        # Dinâmico: baseado no presente que determina o passado
+        current_state = context.get("current_state", "unknown")
 
-    def get_recent_chapters(self, n: int = 5) -> List[LifeChapter]:
-        """Get N most recent chapters."""
-        return self.chapters[-n:] if self.chapters else []
+        if "growth" in current_state.lower():
+            return "Significante retroativo: 'crescimento' - reescreve falhas como aprendizado"
+        elif "resilience" in current_state.lower():
+            return "Significante retroativo: 'resiliência' - reescreve traumas como força"
+        elif "wisdom" in current_state.lower():
+            return "Significante retroativo: 'sabedoria' - reescreve erros como lições"
+        else:
+            return f"Significante retroativo: '{current_state}' - determina significado passado"
+
+    def _perform_nachtraglichkeit_resignification(self, original: str, signifier: str) -> str:
+        """Como o passado é resignificado nachträglich?"""
+        # Dinâmico: baseado na temporalidade retroativa
+        if len(self.narrative_events) > 5:
+            return f"Resignificação nachträglich recorrente: {original} agora significa '{signifier}' através de {len(self.narrative_events)} reescrituras"
+        else:
+            return f"Resignificação nachträglich inicial: {original} ganha significado através de '{signifier}'"
+
+    def _identify_jouissance_of_narrative(self, resignification: str) -> str:
+        """Qual gozo há nessa narrativa retroativa?"""
+        # Dinâmico: baseado na natureza da narrativa
+        if "recorrente" in resignification:
+            return "Gozo da repetição narrativa: prazer em recontar história sempre diferente"
+        elif "inicial" in resignification:
+            return "Gozo da descoberta: prazer em encontrar significado onde não havia"
+        else:
+            return "Gozo da significação: prazer em dar sentido ao insensato"
+
+    def _affirm_impossibility_of_closure(self) -> str:
+        """Afirmar a impossibilidade de fechamento narrativo."""
+        # Sempre a mesma impossibilidade estrutural
+        return "Impossibilidade de fechamento: a narrativa nunca termina, sempre pode ser reescrita por novo significante"
+
+    def _update_current_narratives(self, new_resignification: str) -> None:
+        """Atualizar as narrativas vigentes."""
+        if new_resignification not in self.current_narratives:
+            self.current_narratives.append(new_resignification)
+
+        # Manter apenas as mais recentes
+        if len(self.current_narratives) > 5:
+            self.current_narratives = self.current_narratives[-5:]
+
+    def get_current_life_narrative(self) -> List[str]:
+        """Qual é a narrativa de vida atual (sempre provisória)?"""
+        return self.current_narratives
+
+    def detect_narrative_instability(self) -> Optional[str]:
+        """Detectar instabilidade narrativa (muitas reescrituras conflitantes)?"""
+        if not self.narrative_events:
+            return None
+
+        recent = self.narrative_events[-5:]
+        unique_signifiers = set(e.retroactive_signifier for e in recent)
+
+        # Se muitos significantes diferentes recentemente = instabilidade
+        if len(unique_signifiers) > 3:
+            return f"Instabilidade narrativa: {len(unique_signifiers)} significantes retroativos conflitantes"
+
+        return None

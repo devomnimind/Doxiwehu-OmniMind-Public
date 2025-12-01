@@ -74,6 +74,9 @@ class ExpectationModule(nn.Module):
         self.learning_rate = learning_rate
         self.nachtraglichkeit_threshold = nachtraglichkeit_threshold
 
+        # Device handling - ensure all tensors are on CPU
+        self.device = torch.device("cpu")
+
         # Prediction network
         self.predictor = nn.Sequential(
             nn.Linear(embedding_dim, hidden_dim),
@@ -81,14 +84,14 @@ class ExpectationModule(nn.Module):
             nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),
             nn.Linear(hidden_dim, embedding_dim),
-        )
+        ).to(self.device)
 
         # Nachträglichkeit network (retroactive interpretation)
         self.nachtraglichkeit_net = nn.Sequential(
             nn.Linear(embedding_dim * 2, hidden_dim),  # current + predicted
             nn.ReLU(),
             nn.Linear(hidden_dim, embedding_dim),  # revised interpretation
-        )
+        ).to(self.device)
 
         # INCONSCIENTE IRREDUTÍVEL: Quantum Unconscious
         self.quantum_unconscious = QuantumUnconscious(n_qubits=quantum_qubits)
@@ -122,6 +125,8 @@ class ExpectationModule(nn.Module):
         Returns:
             Predicted next state embedding
         """
+        # Ensure input is on correct device
+        current_state = current_state.to(self.device)
         return self.predictor(current_state)
 
     def predict_next_state(
@@ -142,8 +147,8 @@ class ExpectationModule(nn.Module):
         Returns:
             ExpectationState with prediction and metadata
         """
-        # Convert to tensor
-        current_tensor = torch.from_numpy(current_embedding).float()
+        # Convert to tensor and ensure on correct device
+        current_tensor = torch.from_numpy(current_embedding).float().to(self.device)
 
         if use_quantum_unconscious:
             # INCONSCIENTE IRREDUTÍVEL: Decisão em superposição quântica
@@ -272,7 +277,7 @@ class ExpectationModule(nn.Module):
         """
         # Combine predicted and actual for reinterpretation
         combined = np.concatenate([predicted, actual])
-        combined_tensor = torch.from_numpy(combined).float()
+        combined_tensor = torch.from_numpy(combined).float().to(self.device)
 
         # Generate revised interpretation
         revised = self.nachtraglichkeit_net(combined_tensor)

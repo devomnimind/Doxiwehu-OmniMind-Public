@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import logging
 import os
+import warnings
 from datetime import datetime, timezone
 from typing import (
     TYPE_CHECKING,
@@ -30,6 +31,12 @@ if TYPE_CHECKING:  # pragma: no cover - optional dependency typing only
 
 
 logger = logging.getLogger(__name__)
+
+warnings.warn(
+    "EpisodicMemory is deprecated in favor of NarrativeHistory (Lacanian). Memory is retroactive construction, not storage.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 class EpisodePayload(TypedDict):
@@ -70,7 +77,7 @@ def _load_embedding_model(model_name: str) -> Optional["SentenceTransformer"]:
     try:
         # Pass HuggingFace token to access gated models
         hf_token: Optional[str] = os.getenv("HUGGING_FACE_HUB_TOKEN")
-        return SentenceTransformer(model_name, token=hf_token)
+        return SentenceTransformer(model_name, token=hf_token, device="cpu")
     except Exception as exc:
         logger.warning(
             ("Failed to load SentenceTransformer %s: %s. " "Using deterministic embeddings."),
@@ -92,6 +99,11 @@ class EpisodicMemory:
         collection_name: str = "omnimind_episodes",
         embedding_dim: int = 384,
     ) -> None:
+        warnings.warn(
+            "EpisodicMemory is deprecated. Use NarrativeHistory for Lacanian memory construction.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.client: QdrantClient = QdrantClient(url=qdrant_url)
         self.collection_name = collection_name
         self.embedding_dim = embedding_dim

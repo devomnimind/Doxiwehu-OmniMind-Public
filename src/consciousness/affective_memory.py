@@ -2,6 +2,8 @@
 """
 Affective Memory System - Memória Afetiva Lacaniana
 Baseado em Lacan: traços, afeto, re-significação retroativa (Nachträglichkeit)
+
+REFATORADO PARA LACANIANO: Nachträglichkeit + Traços Vazios + Retroatividade Real
 """
 
 from __future__ import annotations
@@ -9,20 +11,147 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
+from dataclasses import dataclass
 import networkx as nx
 import numpy as np
 import logging
+import warnings
 
 logger = logging.getLogger(__name__)
 
 
+# ==================== NOVAS CLASSES LACANIANAS ====================
+
+
+@dataclass
+class Nachträglich_Inscription:
+    """Inscrição retroativa (não 'memória')."""
+
+    # Original (sem significado imediato)
+    event1_timestamp: datetime
+    event1_raw: Dict[str, Any]  # bruto, sem interpretação
+    event1_initial_sense: None  # nenhuma significação imediata
+
+    # Espera estrutural
+    awaiting_second_event: bool
+
+    # Retroatividade
+    event2_timestamp: Optional[datetime] = None
+    event2_trigger: Optional[Dict[str, Any]] = None
+
+    # RESSIGNIFICAÇÃO (o traço muda retroativamente)
+    retroactive_meaning: Optional[str] = None  # EVENTO1 agora significa X
+    retroactive_affect: Optional[float] = None  # Afeto é atribuído retroativamente
+
+    # Topologia
+    is_traumatic: bool = False  # repete-se estruturalmente?
+    chain_position: Optional[str] = None  # "S1 → S2 → ?" (cadeia significante)
+    quilting_point: Optional[str] = None  # Ponto de capitón que fixa sentido?
+
+    timestamp_reinterpretation: Optional[datetime] = None  # Quando o traço foi ressignificado
+
+    def __post_init__(self):
+        """Inicializar campos opcionais."""
+        if self.event1_initial_sense is not None:
+            warnings.warn(
+                "event1_initial_sense deve ser None - Nachträglichkeit não tem sentido imediato"
+            )
+
+
+class TraceMemory:
+    """Memória não como arquivo, mas como rede de traços inscritos."""
+
+    def __init__(self):
+        self.primary_inscriptions: Dict[str, Nachträglich_Inscription] = {}
+        self.symbolic_chain: List[str] = []  # encadeamento de significantes
+        self.quilting_points: List[str] = []  # decisões que fixam sentido temporariamente
+
+    def inscribe_event(self, raw_event: Dict[str, Any]) -> str:
+        """
+        Inscrever evento com significado DIFERIDO.
+        Não interpreta; apenas marca traço vazio.
+        """
+        trace_id = str(uuid.uuid4())
+        self.primary_inscriptions[trace_id] = Nachträglich_Inscription(
+            event1_timestamp=datetime.now(timezone.utc),
+            event1_raw=raw_event,
+            event1_initial_sense=None,  # ← Crucial: nenhuma significação imediata
+            awaiting_second_event=True,
+        )
+
+        # Adiciona à cadeia simbólica (sem significação fixa)
+        self.symbolic_chain.append(trace_id)
+
+        logger.debug(f"Traço inscrito sem significado imediato: {trace_id}")
+        return trace_id
+
+    def trigger_retroactive_signification(
+        self, trace_id: str, retroactive_event: Dict[str, Any], new_meaning: str, new_affect: float
+    ):
+        """
+        Retroativamente resignificar um traço.
+        Isso é Nachträglichkeit: evento1 + evento2 → ressignificação de evento1.
+        """
+        if trace_id not in self.primary_inscriptions:
+            logger.warning(f"Traço não encontrado: {trace_id}")
+            return
+
+        trace = self.primary_inscriptions[trace_id]
+        trace.event2_timestamp = datetime.now(timezone.utc)
+        trace.event2_trigger = retroactive_event
+        trace.retroactive_meaning = new_meaning
+        trace.retroactive_affect = new_affect  # Afeto é efeito retroativo!
+        trace.timestamp_reinterpretation = datetime.now(timezone.utc)
+        trace.awaiting_second_event = False
+
+        # O traço mudou retroativamente (toda a estrutura se reorganiza)
+        logger.info(
+            "trace_retroactively_resignified",
+            trace_id=trace_id,
+            old_meaning="none",
+            new_meaning=new_meaning,
+            affect_valence=new_affect,
+        )
+
+    def get_current_symbolic_organization(self) -> str:
+        """
+        Qual é a organização simbólica ATUAL?
+        Não é fixa. Muda toda vez que um traço é ressignificado.
+        """
+        return " → ".join(self.symbolic_chain)
+
+    def get_uninterpreted_traces(self) -> List[str]:
+        """Traços ainda aguardando interpretação retroativa."""
+        return [
+            tid for tid, trace in self.primary_inscriptions.items() if trace.awaiting_second_event
+        ]
+
+    def get_retroactively_signified_traces(self) -> List[str]:
+        """Traços que já foram ressignificados retroativamente."""
+        return [
+            tid
+            for tid, trace in self.primary_inscriptions.items()
+            if not trace.awaiting_second_event
+        ]
+
+
+# ==================== CLASSES ANTIGAS (DEPRECATED) ====================
+
+
 class AffectiveTrace:
     """
-    Traço afetivo lacaniano
-    S1 (significante mestre) + afeto + contexto
+    DEPRECATED: Traço afetivo lacaniano
+    ⚠️  WARNING: Esta implementação trata afeto como escalável e traço como conteúdo.
+    Use Nachträglich_Inscription para abordagem lacaniana correta.
     """
 
     def __init__(self, content: Dict[str, Any], affect_valence: float):
+        warnings.warn(
+            "AffectiveTrace is deprecated. Use Nachträglich_Inscription for proper Lacanian Nachträglichkeit.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         self.id = uuid.uuid4()
         self.content = content
         self.affect_valence = affect_valence  # -1.0 a 1.0
@@ -54,11 +183,18 @@ class AffectiveTrace:
 
 class AffectiveTraceNetwork:
     """
-    Rede de traços afetivos
-    Memória não é arquivo — é rede de intensidades
+    DEPRECATED: Rede de traços afetivos
+    ⚠️  WARNING: Esta implementação trata memória como rede de conexões.
+    Use TraceMemory para abordagem lacaniana correta com Nachträglichkeit.
     """
 
     def __init__(self):
+        warnings.warn(
+            "AffectiveTraceNetwork is deprecated. Use TraceMemory for proper Lacanian Nachträglichkeit.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         self.traces: Dict[str, AffectiveTrace] = {}
         self.network = nx.DiGraph()  # Rede de conexões afetivas
 
@@ -279,6 +415,15 @@ class AffectiveTraceNetwork:
                 ),
             },
         }
+
+
+# ==================== ALIASES PARA COMPATIBILIDADE ====================
+
+# Alias para manter compatibilidade
+AffectiveMemory = TraceMemory  # Novo nome lacaniano, mas mantém interface similar
+
+# Alias para classes antigas (com warning)
+AffectiveTraceNetwork_deprecated = AffectiveTraceNetwork
 
 
 class JouissanceProfile:

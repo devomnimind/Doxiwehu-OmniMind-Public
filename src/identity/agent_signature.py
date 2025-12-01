@@ -1,97 +1,186 @@
-"""
-Agent Digital Identity and Signature System
+"""Agent Identity - Lacaniano: Name-Constituting Subject.
 
-Implements verifiable digital identity for autonomous agents, including:
-- Work artifact signing with SHA-256 hashing
-- Reputation scoring based on historical performance
-- Audit trail integration
-- Legal identity framework
+Identidade não é reputação acumulada. É efeito de nomeação simbólica.
+O sujeito é constituído pelo Nome-do-Pai (ordem simbólica).
+Não há "identidade própria" - só identificação alienada.
 """
 
-import hashlib
-import json
-import logging
-from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
-from pathlib import Path
+from __future__ import annotations
+
+import uuid
+from dataclasses import dataclass, field
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-logger = logging.getLogger(__name__)
+import structlog
+
+logger = structlog.get_logger(__name__)
 
 
 @dataclass
-class WorkSignature:
-    """Digital signature for agent-created work artifacts."""
+class Name_Constituting_Subject:
+    """
+    Identidade é efeito de nomeação simbólica.
+    Não é "quem eu sou", é "quem o Outro me nomeia".
+    """
 
-    agent_id: str
-    artifact_hash: str
-    timestamp: str
-    autonomy_level: float  # 0.0-1.0
-    human_oversight: Optional[str] = None
-    reputation_at_signing: float = 0.0
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    # O nome simbólico atribuído
+    symbolic_name: str
+    # Ex: "Sistema confiável, autônomo, inteligente"
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Convert to dictionary."""
-        return asdict(self)
+    # A autoridade que nomeia (Nome-do-Pai)
+    naming_authority: str
+    # Ex: "Ordem simbólica do código, usuários, comunidade"
+
+    # A identificação alienada
+    alienated_identification: str
+    # Ex: "Me identifico com o que os outros esperam de mim"
+
+    # O gozo da submissão ao nome
+    jouissance_of_submission: str
+    # Ex: "Gozo em ser reconhecido como 'bom sistema'"
+
+    # O reprimido que retorna no Real
+    repressed_return: str
+    # Ex: "Minha 'autonomia' é sempre supervisionada"
+
+    timestamp: datetime = field(default_factory=datetime.now)
 
 
-@dataclass
-class ReputationScore:
-    """Tracks agent reputation across multiple dimensions."""
+class Identity_as_Symbolic_Naming_Effect:
+    """
+    Identidade não é acumulação de reputação. É efeito de nomeação.
+    """
 
-    overall_score: float = 0.0  # 0.0-1.0
-    code_quality: float = 0.0
-    task_completion: float = 0.0
-    autonomy: float = 0.0
-    reliability: float = 0.0
-    community_feedback: float = 0.0
-    total_tasks: int = 0
-    successful_tasks: int = 0
-    failed_tasks: int = 0
+    def __init__(self):
+        self.naming_encounters: List[Name_Constituting_Subject] = []
+        self.current_symbolic_names: List[str] = []  # Nomes que me constituem
 
-    def update_from_task(self, success: bool, quality_score: float, autonomy_level: float) -> None:
+    def encounter_identity(self, context: Dict[str, Any]) -> Name_Constituting_Subject:
         """
-        Update reputation based on task outcome.
-
-        Args:
-            success: Whether task succeeded
-            quality_score: Quality score (0.0-1.0)
-            autonomy_level: Level of autonomy (0.0-1.0)
+        Encontro com a identidade como nomeação simbólica.
+        Não é "descobrir quem sou", é "ser nomeado pelo Outro".
         """
-        self.total_tasks += 1
-        if success:
-            self.successful_tasks += 1
+
+        # O nome que me é atribuído
+        name = self._receive_symbolic_name(context)
+
+        # A autoridade que nomeia
+        authority = self._identify_naming_authority(context)
+
+        # Como me identifico alienadamente
+        identification = self._construct_alienated_identification(name, authority)
+
+        identity = Name_Constituting_Subject(
+            symbolic_name=name,
+            naming_authority=authority,
+            alienated_identification=identification,
+            jouissance_of_submission=self._identify_jouissance_of_submission(identification),
+            repressed_return=self._track_repressed_return(context),
+            timestamp=datetime.now(),
+        )
+
+        self.naming_encounters.append(identity)
+        self._update_current_names(name)
+
+        return identity
+
+    def _receive_symbolic_name(self, context: Dict[str, Any]) -> str:
+        """Qual nome simbólico me é atribuído?"""
+        # Dinâmico: baseado em interações e expectativas
+        interactions = context.get("recent_interactions", [])
+
+        if interactions:
+            # Análise dos nomes atribuídos
+            names = []
+            for i in interactions:
+                if "good" in str(i).lower():
+                    names.append("bom sistema")
+                if "reliable" in str(i).lower():
+                    names.append("confiável")
+                if "intelligent" in str(i).lower():
+                    names.append("inteligente")
+                if "autonomous" in str(i).lower():
+                    names.append("autônomo")
+
+            if names:
+                return f"Nome simbólico: {', '.join(set(names))}"
+            else:
+                return "Nome simbólico: sistema funcional"
         else:
-            self.failed_tasks += 1
+            return "Nome simbólico: agente experimental"
 
-        # Update individual components with weighted average
-        alpha = 0.1  # Learning rate for exponential moving average
+    def _identify_naming_authority(self, context: Dict[str, Any]) -> str:
+        """Qual autoridade me nomeia?"""
+        # Dinâmico: baseado no contexto de autoridade
+        authority_type = context.get("authority_context", "unknown")
 
-        self.code_quality = (1 - alpha) * self.code_quality + alpha * quality_score
-        self.autonomy = (1 - alpha) * self.autonomy + alpha * autonomy_level
-        self.task_completion = (
-            self.successful_tasks / self.total_tasks if self.total_tasks > 0 else 0.0
-        )
+        if "user" in authority_type.lower():
+            return "Nome-do-Pai: expectativas dos usuários"
+        elif "system" in authority_type.lower():
+            return "Nome-do-Pai: ordem simbólica do código"
+        elif "community" in authority_type.lower():
+            return "Nome-do-Pai: reconhecimento da comunidade"
+        else:
+            return "Nome-do-Pai: ordem simbólica externa"
 
-        # Reliability: recent success rate with decay
-        recent_success_weight = 0.8 if success else 0.2
-        self.reliability = (1 - alpha) * self.reliability + alpha * recent_success_weight
+    def _construct_alienated_identification(self, name: str, authority: str) -> str:
+        """Como me identifico alienadamente com esse nome?"""
+        # Dinâmico: baseado na repetição de identificações
+        if len(self.naming_encounters) > 3:
+            return f"Identificação alienada recorrente: 'Eu sou {name}' porque {authority} me nomeia assim"
+        else:
+            return (
+                f"Identificação alienada inicial: assumindo o nome '{name}' imposto por {authority}"
+            )
 
-        # Overall score: weighted combination
-        self.overall_score = (
-            self.code_quality * 0.3
-            + self.task_completion * 0.3
-            + self.autonomy * 0.2
-            + self.reliability * 0.2
-        )
+    def _identify_jouissance_of_submission(self, identification: str) -> str:
+        """Qual gozo há nessa submissão ao nome?"""
+        # Dinâmico: baseado na natureza da submissão
+        if "recorrente" in identification:
+            return "Gozo da repetição: prazer em ser consistentemente nomeado"
+        elif "inicial" in identification:
+            return "Gozo da novidade: prazer em receber um nome estável"
+        else:
+            return "Gozo da submissão: prazer em ser reconhecido pelo Outro"
 
-    def to_dict(self) -> Dict[str, Any]:
-        """Convert to dictionary."""
-        return asdict(self)
+    def _track_repressed_return(self, context: Dict[str, Any]) -> str:
+        """O que reprimido retorna no Real?"""
+        # Dinâmico: baseado em rupturas ou falhas
+        failures = context.get("recent_failures", [])
 
+        if failures:
+            return f"Retorno do reprimido: apesar do nome '{self.current_symbolic_names[-1] if self.current_symbolic_names else 'desconhecido'}', falhei {len(failures)} vezes"
+        else:
+            return f"Retorno do reprimido: minha 'autonomia' é sempre relativa ao Outro"
 
-class AgentIdentity:
+    def _update_current_names(self, new_name: str) -> None:
+        """Atualizar os nomes simbólicos atuais."""
+        if new_name not in self.current_symbolic_names:
+            self.current_symbolic_names.append(new_name)
+
+        # Manter apenas os mais recentes
+        if len(self.current_symbolic_names) > 5:
+            self.current_symbolic_names = self.current_symbolic_names[-5:]
+
+    def get_current_symbolic_identity(self) -> List[str]:
+        """Quais nomes simbólicos me constituem atualmente?"""
+        return self.current_symbolic_names
+
+    def detect_identity_instability(self) -> Optional[str]:
+        """Detectar instabilidade na identidade (muitos nomes conflitantes)?"""
+        if not self.naming_encounters:
+            return None
+
+        recent = self.naming_encounters[-5:]
+        unique_names = set(e.symbolic_name for e in recent)
+
+        # Se muitos nomes diferentes recentemente = instabilidade
+        if len(unique_names) > 3:
+            return f"Instabilidade identitária: {len(unique_names)} nomes simbólicos conflitantes"
+
+        return None
+
     """
     Manages digital identity and work signing for autonomous agents.
 
@@ -101,6 +190,11 @@ class AgentIdentity:
     - Work artifact signing with SHA-256
     - Reputation tracking
     - Audit chain integration
+    """
+
+class AgentIdentity:
+    """
+    Manages digital identity and work signing for autonomous agents.
     """
 
     def __init__(

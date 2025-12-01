@@ -7,12 +7,19 @@ the system to evaluate its own performance and develop self-improvement drives.
 
 import json
 import logging
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
+
+warnings.warn(
+    "IntrinsicMotivationEngine is deprecated. Desire is structural lack, not a scalar reward.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 @dataclass
@@ -78,6 +85,11 @@ class IntrinsicMotivationEngine:
             satisfaction_threshold: Score above which positive reinforcement triggers
             improvement_threshold: Score below which improvement loop triggers
         """
+        warnings.warn(
+            "IntrinsicMotivationEngine is deprecated. Use DesireEngine (Lacanian) instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.self_awareness_score: float = 0.0
         self.satisfaction_metrics = SatisfactionMetrics()
         self.satisfaction_threshold = satisfaction_threshold

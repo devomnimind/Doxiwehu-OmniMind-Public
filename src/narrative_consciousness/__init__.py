@@ -17,13 +17,10 @@ from .identity_construction import (
     IdentitySnapshot,
     Value,
 )
-from .life_story_model import IdentityModel, LifeChapter, LifeStory, NarrativeArc
+from .life_story_model import Life_Story_as_Retroactive_Resignification
 
 __all__ = [
-    "LifeStory",
-    "LifeChapter",
-    "NarrativeArc",
-    "IdentityModel",
+    "Life_Story_as_Retroactive_Resignification",
     "DialogueEngine",
     "MutualUnderstanding",
     "Relationship",

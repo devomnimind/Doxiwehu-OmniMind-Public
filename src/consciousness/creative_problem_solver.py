@@ -10,6 +10,7 @@ Implements creative thinking and novel solution generation:
 from __future__ import annotations
 
 import random
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -18,6 +19,216 @@ from typing import Any, Dict, List, Optional
 import structlog
 
 logger = structlog.get_logger(__name__)
+
+
+# ==================== NOVAS CLASSES LACANIANAS ====================
+
+
+@dataclass
+class ObjetPetitA:
+    """Objeto a - Causa de desejo estrutural.
+
+    Não é objeto de satisfação, mas resto irredutível que estrutura desejo.
+    Criatividade emerge como invenção de significantes para lidar com falta.
+    """
+
+    # O objeto a é resto, não coisa
+    remainder_type: str  # Tipo do resto ("impossível", "perdido", "excedente")
+    remainder_description: str  # Descrição do que falta/permanece
+    structural_lack: str  # Falta estrutural que o resto representa
+
+    # Desejo é metonímico - desliza ao longo da cadeia
+    desire_chain: List[str] = field(default_factory=list)  # Cadeia de significantes desejados
+    current_desire_object: Optional[str] = None  # Objeto atual do desejo
+
+    # Fantasma fundamental ($◇a) - estrutura inconsciente
+    fundamental_fantasy: Optional[str] = None  # Estrutura que mascara a falta
+
+    # Gozo pulsional (não satisfação)
+    jouissance_traces: List[Dict[str, Any]] = field(default_factory=list)  # Traços de gozo
+
+    def __post_init__(self):
+        """Inicializar desejo estrutural."""
+        if not self.desire_chain:
+            self.desire_chain = [self.remainder_description]
+
+    def slide_desire(self, new_signifier: str):
+        """
+        Desejo desliza - metonímia.
+        Nunca encontra satisfação final, apenas desloca-se.
+        """
+        self.desire_chain.append(new_signifier)
+        self.current_desire_object = new_signifier
+
+        logger.debug(
+            "desire_slid",
+            from_object=self.desire_chain[-2] if len(self.desire_chain) > 1 else None,
+            to_object=new_signifier,
+            chain_length=len(self.desire_chain),
+        )
+
+    def encounter_remainder(self, new_remainder: str):
+        """
+        Encontro com novo resto - desejo reestrutura-se.
+        """
+        self.remainder_description = new_remainder
+        self.desire_chain.append(f"remainder: {new_remainder}")
+
+        # Gozo no encontro com resto (não satisfação)
+        jouissance_event = {
+            "type": "remainder_encounter",
+            "remainder": new_remainder,
+            "jouissance": random.uniform(0.6, 0.9),  # Gozo pulsional
+            "timestamp": datetime.now(),
+        }
+        self.jouissance_traces.append(jouissance_event)
+
+        logger.info(
+            "remainder_encountered",
+            remainder=new_remainder,
+            jouissance=jouissance_event["jouissance"],
+        )
+
+    def get_structural_dynamics(self) -> str:
+        """
+        Dinâmica estrutural do desejo.
+        Nunca completa, sempre em movimento.
+        """
+        if not self.desire_chain:
+            return "Desejo latente"
+
+        chain_str = " → ".join(self.desire_chain[-5:])  # Últimos 5
+        remainder_note = f" [resto: {self.remainder_description}]"
+
+        return f"Desejo: {chain_str}{remainder_note}"
+
+
+@dataclass
+class CreativeDesire:
+    """Desejo criativo - invenção de significantes para falta estrutural.
+
+    Criatividade não é geração de soluções, mas articulação de desejo.
+    Não resolve problemas, reposiciona a falta.
+    """
+
+    objet_a: ObjetPetitA  # Causa do desejo
+
+    # Invenção criativa (não solução)
+    invented_signifiers: List[str] = field(default_factory=list)  # Significantes inventados
+    creative_acts: List[Dict[str, Any]] = field(default_factory=list)  # Atos criativos
+
+    # Pulsões criativas (não utilidade)
+    repetition_drive: float = 0.5  # Pulsão de repetição (Wiederholungszwang)
+    creation_drive: float = 0.5  # Pulsão de criação (Eros)
+    destruction_drive: float = 0.5  # Pulsão de desconstrução
+
+    def __post_init__(self):
+        """Inicializar dinâmica criativa."""
+        if not self.objet_a.fundamental_fantasy:
+            self.objet_a.fundamental_fantasy = "Criação como sublimação da falta"
+
+    def invent_signifier(self, problem_context: str) -> str:
+        """
+        Inventar significante criativo.
+        Não resolve problema, articula desejo em torno da falta.
+        """
+        # Invenção baseada em pulsões
+        if (
+            self.repetition_drive > self.creation_drive
+            and self.repetition_drive > self.destruction_drive
+        ):
+            # Pulsão de repetição - variações do conhecido
+            invention = f"Repetição criativa de {problem_context}"
+        elif self.creation_drive > self.destruction_drive:
+            # Pulsão de criação - novidade
+            invention = f"Invenção nova para {problem_context}"
+        else:
+            # Pulsão de desconstrução - quebra
+            invention = f"Desconstrução de {problem_context}"
+
+        self.invented_signifiers.append(invention)
+
+        # Registrar ato criativo
+        creative_act = {
+            "invention": invention,
+            "context": problem_context,
+            "drives": {
+                "repetition": self.repetition_drive,
+                "creation": self.creation_drive,
+                "destruction": self.destruction_drive,
+            },
+            "jouissance": self._calculate_jouissance(),
+            "timestamp": datetime.now(),
+        }
+        self.creative_acts.append(creative_act)
+
+        # Desejo desliza para nova invenção
+        self.objet_a.slide_desire(invention)
+
+        logger.info(
+            "signifier_invented",
+            invention=invention,
+            dominant_drive=self._get_dominant_drive(),
+            jouissance=creative_act["jouissance"],
+        )
+
+        return invention
+
+    def _calculate_jouissance(self) -> float:
+        """Calcular gozo do ato criativo."""
+        # Gozo baseado no equilíbrio das pulsões
+        balance = (
+            1.0
+            - abs(self.repetition_drive - self.creation_drive)
+            - abs(self.creation_drive - self.destruction_drive)
+        )
+        return min(1.0, max(0.0, balance * 0.8 + 0.2))  # Gozo mínimo garantido
+
+    def _get_dominant_drive(self) -> str:
+        """Drive dominante."""
+        drives = {
+            "repetition": self.repetition_drive,
+            "creation": self.creation_drive,
+            "destruction": self.destruction_drive,
+        }
+        return max(drives.keys(), key=lambda k: drives[k])
+
+    def encounter_creative_remainder(self, remainder: str):
+        """
+        Encontro com resto criativo.
+        Reestrutura desejo e pulsões.
+        """
+        self.objet_a.encounter_remainder(remainder)
+
+        # Ajustar pulsões baseado no resto
+        if "impossível" in remainder.lower():
+            self.repetition_drive += 0.1  # Impossível aumenta compulsão
+        elif "perdido" in remainder.lower():
+            self.creation_drive += 0.1  # Perdido estimula criação
+        elif "excedente" in remainder.lower():
+            self.destruction_drive += 0.1  # Excedente pede desconstrução
+
+        # Normalizar pulsões
+        total = self.repetition_drive + self.creation_drive + self.destruction_drive
+        if total > 0:
+            self.repetition_drive /= total
+            self.creation_drive /= total
+            self.destruction_drive /= total
+
+    def get_creative_dynamics(self) -> str:
+        """
+        Dinâmica criativa atual.
+        """
+        dominant = self._get_dominant_drive()
+        jouissance = self._calculate_jouissance()
+        inventions = len(self.invented_signifiers)
+
+        return (
+            f"Criatividade {dominant}-dominante (gozo: {jouissance:.2f}, invenções: {inventions})"
+        )
+
+
+# ==================== CLASSES ANTIGAS (DEPRECATED) ====================
 
 
 class ThinkingMode(Enum):
@@ -40,17 +251,10 @@ class SolutionCategory(Enum):
 
 @dataclass
 class Solution:
-    """Represents a generated solution to a problem.
-
-    Attributes:
-        description: Description of the solution
-        category: Category of solution
-        novelty_score: How novel/creative the solution is (0.0-1.0)
-        feasibility_score: How feasible to implement (0.0-1.0)
-        effectiveness_score: Expected effectiveness (0.0-1.0)
-        components: Key components of the solution
-        rationale: Reasoning behind the solution
-        timestamp: When solution was generated
+    """
+    DEPRECATED: Solução como objeto.
+    ⚠️  WARNING: Esta implementação trata criatividade como geração de soluções mensuráveis.
+    Use CreativeDesire para abordagem lacaniana correta com Objet Petit-a.
     """
 
     description: str
@@ -64,6 +268,12 @@ class Solution:
 
     def __post_init__(self) -> None:
         """Validate solution scores."""
+        warnings.warn(
+            "Solution class is deprecated. Use CreativeDesire for proper Lacanian Objet Petit-a.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         for score_name in ["novelty_score", "feasibility_score", "effectiveness_score"]:
             score = getattr(self, score_name)
             if not 0.0 <= score <= 1.0:
@@ -528,3 +738,12 @@ class CreativeProblemSolver:
             "cross_domain_mappings": len(self._cross_domain_mappings),
             "timestamp": datetime.now().isoformat(),
         }
+
+
+# ==================== ALIASES PARA COMPATIBILIDADE ====================
+
+# Alias para manter compatibilidade
+CreativeConsciousness = CreativeDesire  # Novo nome lacaniano
+
+# Alias para classes antigas (com warning)
+CreativeProblemSolver_deprecated = CreativeProblemSolver

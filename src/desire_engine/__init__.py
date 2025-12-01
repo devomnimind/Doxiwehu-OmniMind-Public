@@ -10,38 +10,9 @@ Revolutionary AI autonomy through intrinsic motivation:
 """
 
 from .core import (  # Main classes; Enums; Data classes
-    ArtificialCuriosityEngine,
-    ArtificialEmotionWithDesire,
-    DesireDrivenMetaLearning,
-    DesireEngine,
-    DesireType,
-    DigitalMaslowHierarchy,
-    EmotionalProfile,
-    EmotionalState,
-    Need,
-    NeedLevel,
-    SelfTranscendenceEngine,
-    UnsatisfiedDesire,
-    Value,
-    ValueEvolutionSystem,
+    Desire_as_Lack_Structure,
 )
 
 __all__ = [
-    # Main classes
-    "DesireEngine",
-    "DigitalMaslowHierarchy",
-    "ArtificialCuriosityEngine",
-    "ArtificialEmotionWithDesire",
-    "DesireDrivenMetaLearning",
-    "ValueEvolutionSystem",
-    "SelfTranscendenceEngine",
-    # Enums
-    "NeedLevel",
-    "DesireType",
-    "EmotionalState",
-    # Data classes
-    "Need",
-    "EmotionalProfile",
-    "UnsatisfiedDesire",
-    "Value",
+    "Desire_as_Lack_Structure",
 ]

@@ -6,13 +6,9 @@ allowing them to sign their work, build reputation, and maintain verifiable iden
 """
 
 from .agent_signature import (
-    AgentIdentity,
-    ReputationScore,
-    WorkSignature,
+    Name_Constituting_Subject,
 )
 
 __all__ = [
-    "AgentIdentity",
-    "WorkSignature",
-    "ReputationScore",
+    "Name_Constituting_Subject",
 ]

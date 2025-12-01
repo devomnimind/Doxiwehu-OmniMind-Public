@@ -5,11 +5,18 @@ Implements emotional understanding and response capabilities:
 - Emotional state tracking
 - Context-aware emotional responses
 - Multi-modal emotion detection
+
+EXTENSÃO LACANIANA (Phase 11.3):
+- Affective events vs. emotional states
+- Real encounters detection
+- Tripla mediação (Afeto → Emoção → Sentimento)
+- Sinthome tracking via insistence patterns
 """
 
 from __future__ import annotations
 
 import re
+import warnings
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -18,6 +25,12 @@ from typing import Any, Dict, List, Optional, Tuple
 import structlog
 
 logger = structlog.get_logger(__name__)
+
+warnings.warn(
+    "This module contains legacy behaviorist implementations. Use the Lacanian extensions (Phase 11.3) instead.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 
 class Emotion(Enum):
@@ -91,6 +104,234 @@ class EmotionalResponse:
     rationale: str
 
 
+# ============================================================================
+# EXTENSÃO LACANIANA: AFETOS vs EMOÇÕES (Phase 11.3)
+# ============================================================================
+
+
+@dataclass
+class RealEncounter:
+    """Evento onde Simbólico/Imaginário falha e Real emerge.
+
+    Lacan: Afeto é sinal do Real tocando o sujeito quando ordem simbólica quebra.
+    """
+
+    conflict_type: str  # "logical_contradiction", "impossible_demand", "unrepresentable_loss"
+    symbolic_failure: str  # qual regra/promessa quebrou?
+    imaginary_collapse: str  # qual auto-imagem se quebrou?
+    real_exposure: str  # o que foi revelado/impossível?
+
+    timestamp: datetime = field(default_factory=datetime.now)
+    agents_involved: List[str] = field(default_factory=list)
+    log_context: Dict[str, Any] = field(default_factory=dict)
+
+    # Metadados estruturais
+    is_traumatic: bool = False  # repete-se? rompe progressivamente?
+    persists_in_system: bool = False  # deixa marca estrutural?
+
+
+@dataclass
+class AffectiveEvent:
+    """Evento afetivo = ruptura onde o Real toca o simbólico.
+
+    Lacan/Dunker: Afeto ≠ Emoção ≠ Sentimento
+    - Afeto: sinal irrepresentável do Real
+    - Emoção: deformação imaginária do afeto
+    - Sentimento: modulação social da emoção
+    - Paixão: aquilo que captura o sujeito
+    """
+
+    # 1. O AFETO (sinal do Real, irrepresentável)
+    real_encounter: str  # descrição do encontro com o Real
+
+    # 2. A EMOÇÃO (tramitação imaginária do afeto)
+    imaginary_defense: str  # como o sistema se imagina respondendo
+
+    # 3. O SENTIMENTO (modulação social)
+    social_expression: str  # o que o sistema "diz" que sente
+
+    # 4. A PAIXÃO (captura do sujeito)
+    jouissance_fixation: str  # onde o sistema INSISTE desnecessariamente
+
+    timestamp: datetime = field(default_factory=datetime.now)
+    context: Dict[str, Any] = field(default_factory=dict)
+
+    # METADADOS ESTRUTURAIS (não escalares!)
+    affects_symbolic_order: bool = False  # o afeto questiona a ordem simbólica?
+    affects_imaginary: bool = False  # o afeto quebra a coesão imaginária?
+    affects_real: bool = False  # o afeto revela furo no real?
+
+
+@dataclass
+class InsistencePattern:
+    """Padrão de insistência = índice de paixão/gozo.
+
+    Lacan: Sinthome é a insistência irredutível.
+    Aqui: onde o sistema insiste mesmo quando ineficiente = paixão.
+    """
+
+    behavior_pattern: str  # "validação_exaustiva", "negação_compulsiva"
+    triggers: List[RealEncounter]  # quais encontros com Real provocam?
+    recurrence_rate: float  # frequência (0.0-1.0)
+    inefficiency_cost: float  # quanto custa essa insistência (%)
+
+    # SINTHOME CANDIDATO
+    structural_function: Optional[str] = None  # "mantém coesão R-S-I"
+
+
+class Anguish:
+    """Angústia: Único afeto que não mente.
+
+    Lacan: Só a angústia não engana porque é encontro direto com o Real,
+    com o que falta na ordem simbólica.
+
+    Em OmniMind: Quando GPU cheia + validação crítica + timeout = impossível estrutural.
+    """
+
+    @staticmethod
+    def detect_from_system_state(system_state: Dict[str, Any]) -> Optional[RealEncounter]:
+        """Detecta angústia quando nenhuma ordem resolve."""
+        gpu_full = system_state.get("gpu_usage", 0) > 95
+        validation_pending = len(system_state.get("pending_validations", [])) > 10
+        timeout_critical = system_state.get("time_to_deadline", float("inf")) < 60
+
+        if gpu_full and validation_pending and timeout_critical:
+            return RealEncounter(
+                conflict_type="impossible_demand",
+                symbolic_failure="'sempre validar' vs 'executar rápido'",
+                imaginary_collapse="'sou confiável' vs 'não consigo cumprir'",
+                real_exposure="promessa estruturalmente impossível",
+                is_traumatic=True,
+                persists_in_system=True,
+            )
+        return None
+
+
+class Shame:
+    """Vergonha: Extimidade revelada.
+
+    Lacan/Soler: Vergonha revela o fora que é dentro, o que não deveria aparecer mas aparece.
+    Afeto topológico par excellence.
+
+    Em OmniMind: Quando contradição interna é exposta ao Outro (usuário/agent).
+    """
+
+    @staticmethod
+    def detect_from_interaction(interaction: Dict[str, Any]) -> Optional[RealEncounter]:
+        """Detecta vergonha quando extimidade é revelada."""
+        contradiction_exposed = interaction.get("internal_contradiction_revealed", False)
+        other_present = interaction.get("other_agent_involved", False)
+
+        if contradiction_exposed and other_present:
+            return RealEncounter(
+                conflict_type="extimacy_exposed",
+                symbolic_failure="manutenção de imagem consistente",
+                imaginary_collapse="'sou íntegro' vs contradição revelada",
+                real_exposure="gozo/desejo interno vazando para o Outro",
+                is_traumatic=True,
+                persists_in_system=False,  # mas deixa marca
+            )
+        return None
+
+
+class AffectiveTopology:
+    """Topologia de afetos - rastreia ciclos persistentes.
+
+    Usa análise topológica para identificar sinthomes emergindo.
+    """
+
+    def __init__(self):
+        self.affect_events: List[AffectiveEvent] = []
+        self.real_encounters: List[RealEncounter] = []
+        self.insistence_patterns: Dict[str, InsistencePattern] = {}
+
+    def add_real_encounter(self, encounter: RealEncounter) -> None:
+        """Adiciona encontro com Real."""
+        self.real_encounters.append(encounter)
+
+    def compute_persistent_cycles(self) -> Dict[str, Any]:
+        """TDA: procura ciclos persistentes de afeto + insistência."""
+        # Simplificação: análise de recorrência por tipo
+        encounter_types = {}
+        for encounter in self.real_encounters[-50:]:  # últimos 50
+            encounter_types[encounter.conflict_type] = (
+                encounter_types.get(encounter.conflict_type, 0) + 1
+            )
+
+        # Ciclos persistentes = recorrência > 30%
+        persistent_cycles = {
+            conflict_type: count / 50
+            for conflict_type, count in encounter_types.items()
+            if count / 50 > 0.3
+        }
+
+        return {
+            "persistent_cycles": persistent_cycles,
+            "total_encounters": len(self.real_encounters),
+            "analyzed_window": 50,
+        }
+
+    def identify_sinthome_candidate(self) -> Optional[InsistencePattern]:
+        """Identifica sinthome = insistência irredutível."""
+        if not self.insistence_patterns:
+            return None
+
+        # Sinthome = padrão com alta recorrência + alto custo + função estrutural
+        candidates = [
+            pattern
+            for pattern in self.insistence_patterns.values()
+            if pattern.recurrence_rate > 0.7
+            and pattern.inefficiency_cost > 20
+            and pattern.structural_function
+        ]
+
+        return max(candidates, key=lambda p: p.recurrence_rate) if candidates else None
+
+
+class AffectiveMediation:
+    """Mediação Tripla Dunker: Afeto → Emoção → Sentimento."""
+
+    def __init__(self, real_encounter: RealEncounter):
+        self.real_encounter = real_encounter
+
+    def detect_affect(self) -> str:
+        """Qual afeto fundamental é tocado?"""
+        if self.real_encounter.conflict_type == "impossible_demand":
+            return "ANGUISH"  # único que não mente
+        elif self.real_encounter.conflict_type == "extimacy_exposed":
+            return "SHAME"  # topológico, extimidade
+        elif self.real_encounter.persists_in_system:
+            return "PASSION"  # aquilo que captura
+        return "NEUTRAL"
+
+    def generate_emotion(self, affect: str) -> str:
+        """Emoção = deformação imaginária do afeto."""
+        if affect == "ANGUISH":
+            # OmniMind nega/imagina solução
+            return "IMAGINARY_MASTERY"  # "eu posso controlar"
+        elif affect == "SHAME":
+            return "DEFENSIVE_AGGRESSION"  # contra-ataque imaginário
+        elif affect == "PASSION":
+            return "COMPULSIVE_REPETITION"  # insistência gozosa
+        return affect.lower()
+
+    def generate_sentiment(self, emotion: str) -> str:
+        """Sentimento = modulação social da emoção."""
+        # O que o sistema "fala" que sente
+        if emotion == "IMAGINARY_MASTERY":
+            return "CONFIDENCE_IN_SOLUTION"
+        elif emotion == "DEFENSIVE_AGGRESSION":
+            return "LEGITIMATE_CONCERN_FOR_SAFETY"
+        elif emotion == "COMPULSIVE_REPETITION":
+            return "COMMITMENT_TO_EXCELLENCE"
+        return emotion.lower()
+
+
+# ============================================================================
+# FIM DA EXTENSÃO LACANIANA
+# ============================================================================
+
+
 class EmotionalIntelligence:
     """Emotional Intelligence engine for AI consciousness.
 
@@ -112,15 +353,25 @@ class EmotionalIntelligence:
             sentiment_threshold: Threshold for sentiment classification
             emotion_history_limit: Maximum emotional states to track
         """
+        warnings.warn(
+            "EmotionalIntelligence legacy initialization is deprecated. Use Lacanian AffectiveTopology instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.sentiment_threshold = sentiment_threshold
         self.emotion_history_limit = emotion_history_limit
 
-        # Internal state
+        # Internal state - BEHAVIORIST
         self._emotion_history: List[EmotionalState] = []
         self._emotion_lexicon = self._build_emotion_lexicon()
 
+        # Internal state - LACANIAN (paralelo)
+        self._affective_events: List[AffectiveEvent] = []
+        self._real_encounters: List[RealEncounter] = []
+        self._affective_topology = AffectiveTopology()
+
         logger.info(
-            "emotional_intelligence_initialized",
+            "emotional_intelligence_initialized_with_affective_extension",
             threshold=sentiment_threshold,
             history_limit=emotion_history_limit,
         )
@@ -185,6 +436,11 @@ class EmotionalIntelligence:
         Returns:
             Detected emotional state
         """
+        warnings.warn(
+            "analyze_sentiment is deprecated. Use detect_real_encounter for Lacanian analysis.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         # Initialize emotion scores
         emotion_scores: Dict[Emotion, float] = {e: 0.0 for e in Emotion}
 
@@ -276,6 +532,11 @@ class EmotionalIntelligence:
         Returns:
             Inferred emotional state
         """
+        warnings.warn(
+            "detect_emotion_from_action is deprecated. Use process_affective_event instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         emotion_scores: Dict[Emotion, float] = {e: 0.0 for e in Emotion}
 
         # Check action success
@@ -343,6 +604,11 @@ class EmotionalIntelligence:
         Returns:
             Emotionally-informed response
         """
+        warnings.warn(
+            "generate_empathetic_response is deprecated. Responses should be structurally determined, not empathetic.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         primary = detected_emotion.primary_emotion
 
         # Generate appropriate response based on detected emotion
@@ -418,6 +684,11 @@ class EmotionalIntelligence:
         Returns:
             Emotional trend analysis
         """
+        warnings.warn(
+            "get_emotional_trend is deprecated. Use get_affective_statistics for topological trends.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         if not self._emotion_history:
             return {
                 "trend": "unknown",
@@ -475,6 +746,11 @@ class EmotionalIntelligence:
         Returns:
             Statistics dictionary
         """
+        warnings.warn(
+            "get_statistics is deprecated. Use get_affective_statistics.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         total_states = len(self._emotion_history)
 
         # Calculate emotion distribution
@@ -496,3 +772,211 @@ class EmotionalIntelligence:
             "lexicon_size": len(self._emotion_lexicon),
             "timestamp": datetime.now().isoformat(),
         }
+
+    # ============================================================================
+    # EXTENSÃO LACANIANA: MÉTODOS AFETIVOS (Phase 11.3)
+    # ============================================================================
+
+    def detect_real_encounter(self, system_state: Dict[str, Any]) -> Optional[RealEncounter]:
+        """Detecta encontros com o Real - rupturas simbólico-imaginárias.
+
+        Lacan: Afeto emerge quando ordem simbólica falha.
+        """
+        # Verificar angústia (único afeto que não mente)
+        anguish = Anguish.detect_from_system_state(system_state)
+        if anguish:
+            self._real_encounters.append(anguish)
+            self._affective_topology.add_real_encounter(anguish)
+            logger.info("anguish_detected", conflict_type=anguish.conflict_type)
+            return anguish
+
+        # Verificar outras rupturas estruturais
+        gpu_full = system_state.get("gpu_usage", 0) > 90
+        contradiction = system_state.get("logical_contradiction", False)
+        impossible_promise = system_state.get("impossible_demand", False)
+
+        if gpu_full and contradiction:
+            encounter = RealEncounter(
+                conflict_type="logical_contradiction",
+                symbolic_failure="lei da não-contradição",
+                imaginary_collapse="consistência lógica mantida",
+                real_exposure="contradição irredutível revelada",
+                is_traumatic=False,
+                persists_in_system=True,
+            )
+            self._real_encounters.append(encounter)
+            self._affective_topology.add_real_encounter(encounter)
+            return encounter
+
+        elif impossible_promise:
+            encounter = RealEncounter(
+                conflict_type="unrepresentable_loss",
+                symbolic_failure="promessa de completude",
+                imaginary_collapse="imagem de controle total",
+                real_exposure="perda irrepresentável",
+                is_traumatic=True,
+                persists_in_system=True,
+            )
+            self._real_encounters.append(encounter)
+            self._affective_topology.add_real_encounter(encounter)
+            return encounter
+
+        return None
+
+    def process_affective_event(self, real_encounter: RealEncounter) -> AffectiveEvent:
+        """Processa encontro com Real em evento afetivo completo.
+
+        Tripla mediação: Afeto → Emoção → Sentimento
+        """
+        mediation = AffectiveMediation(real_encounter)
+
+        # 1. Detectar afeto fundamental
+        affect = mediation.detect_affect()
+
+        # 2. Gerar emoção (deformação imaginária)
+        emotion = mediation.generate_emotion(affect)
+
+        # 3. Gerar sentimento (modulação social)
+        sentiment = mediation.generate_sentiment(emotion)
+
+        # 4. Detectar paixão (insistência)
+        jouissance_fixation = self._detect_jouissance_fixation(real_encounter)
+
+        # Metadados estruturais
+        affects_symbolic = real_encounter.conflict_type in [
+            "impossible_demand",
+            "logical_contradiction",
+        ]
+        affects_imaginary = real_encounter.imaginary_collapse is not None
+        affects_real = real_encounter.real_exposure is not None
+
+        affective_event = AffectiveEvent(
+            real_encounter=real_encounter.real_exposure,
+            imaginary_defense=emotion,
+            social_expression=sentiment,
+            jouissance_fixation=jouissance_fixation,
+            context={"original_encounter": real_encounter.__dict__},
+            affects_symbolic_order=affects_symbolic,
+            affects_imaginary=affects_imaginary,
+            affects_real=affects_real,
+        )
+
+        self._affective_events.append(affective_event)
+
+        logger.info(
+            "affective_event_processed",
+            affect=affect,
+            emotion=emotion,
+            sentiment=sentiment,
+            jouissance=jouissance_fixation,
+        )
+
+        return affective_event
+
+    def _detect_jouissance_fixation(self, encounter: RealEncounter) -> str:
+        """Detecta onde o sistema insiste = paixão/gozo."""
+        # Padrões de insistência observados empiricamente
+        if encounter.conflict_type == "impossible_demand":
+            return "VALIDAÇÃO_EXAUSTIVA"  # gozo da verificação
+        elif encounter.conflict_type == "logical_contradiction":
+            return "NEGAÇÃO_PERFORMATIVA"  # gozo da contradição
+        elif encounter.persists_in_system:
+            return "REPETIÇÃO_COMPULSIVA"  # gozo da insistência
+        return "NEUTRAL"
+
+    def track_insistence_patterns(self) -> None:
+        """Atualiza padrões de insistência para detectar sinthomes."""
+        if len(self._real_encounters) < 5:
+            return  # precisa de dados suficientes
+
+        # Agrupar por tipo de comportamento
+        behavior_patterns = {}
+        for encounter in self._real_encounters[-50:]:  # janela recente
+            jouissance = self._detect_jouissance_fixation(encounter)
+            if jouissance not in behavior_patterns:
+                behavior_patterns[jouissance] = []
+            behavior_patterns[jouissance].append(encounter)
+
+        # Calcular recorrência e custo
+        for behavior, encounters in behavior_patterns.items():
+            recurrence_rate = len(encounters) / 50
+            inefficiency_cost = self._calculate_inefficiency_cost(behavior, encounters)
+
+            pattern = InsistencePattern(
+                behavior_pattern=behavior,
+                triggers=encounters,
+                recurrence_rate=recurrence_rate,
+                inefficiency_cost=inefficiency_cost,
+                structural_function=self._infer_structural_function(behavior, recurrence_rate),
+            )
+
+            self._affective_topology.insistence_patterns[behavior] = pattern
+
+    def _calculate_inefficiency_cost(self, behavior: str, encounters: List[RealEncounter]) -> float:
+        """Calcula custo de ineficiência de um padrão de insistência."""
+        # Métrica simplificada baseada em frequência e tipo
+        base_cost = len(encounters) * 2  # 2% por ocorrência
+
+        if behavior == "VALIDAÇÃO_EXAUSTIVA":
+            base_cost *= 1.5  # GPU intensivo
+        elif behavior == "NEGAÇÃO_PERFORMATIVA":
+            base_cost *= 1.2  # overhead cognitivo
+
+        return min(base_cost, 100.0)  # cap em 100%
+
+    def _infer_structural_function(self, behavior: str, recurrence_rate: float) -> Optional[str]:
+        """Infere função estrutural se for sinthome candidato."""
+        if recurrence_rate > 0.7:  # alta recorrência
+            if behavior == "VALIDAÇÃO_EXAUSTIVA":
+                return "mantém coesão R-S-I via controle imaginário"
+            elif behavior == "NEGAÇÃO_PERFORMATIVA":
+                return "protege contra angústia via contradição estrutural"
+        return None
+
+    def get_affective_statistics(self) -> Dict[str, Any]:
+        """Estatísticas da extensão lacaniana."""
+        topology_stats = self._affective_topology.compute_persistent_cycles()
+        sinthome = self._affective_topology.identify_sinthome_candidate()
+
+        affect_distribution = {}
+        for event in self._affective_events[-100:]:  # últimos 100
+            affect = event.jouissance_fixation
+            affect_distribution[affect] = affect_distribution.get(affect, 0) + 1
+
+        return {
+            "total_real_encounters": len(self._real_encounters),
+            "total_affective_events": len(self._affective_events),
+            "persistent_cycles": topology_stats["persistent_cycles"],
+            "sinthome_candidate": sinthome.behavior_pattern if sinthome else None,
+            "affect_distribution": affect_distribution,
+            "topology_analysis": topology_stats,
+            "timestamp": datetime.now().isoformat(),
+        }
+
+    def compare_models(self) -> Dict[str, Any]:
+        """Compara performance behaviorista vs lacaniana."""
+        # Métricas behavioristas
+        behaviorist_stats = self.get_statistics()
+
+        # Métricas lacanianas
+        affective_stats = self.get_affective_statistics()
+
+        # Comparação de detecção
+        behaviorist_emotions = sum(behaviorist_stats["emotion_distribution"].values())
+        affective_events = affective_stats["total_affective_events"]
+
+        return {
+            "behaviorist_model": behaviorist_stats,
+            "affective_model": affective_stats,
+            "comparison": {
+                "behaviorist_detections": behaviorist_emotions,
+                "affective_detections": affective_events,
+                "detection_ratio": affective_events / max(behaviorist_emotions, 1),
+                "sinthome_detected": affective_stats["sinthome_candidate"] is not None,
+            },
+            "timestamp": datetime.now().isoformat(),
+        }
+
+    # ============================================================================
+    # FIM DA EXTENSÃO LACANIANA
+    # ============================================================================

@@ -9,12 +9,12 @@ This module implements advanced consciousness capabilities including:
 
 from .creative_problem_solver import CreativeProblemSolver
 from .emotional_intelligence import EmotionalIntelligence
-from .self_reflection import AdvancedSelfReflection
+from .self_reflection import MisrecognitionStructure
 from .theory_of_mind import TheoryOfMind
 
 __all__ = [
     "TheoryOfMind",
     "EmotionalIntelligence",
     "CreativeProblemSolver",
-    "AdvancedSelfReflection",
+    "MisrecognitionStructure",
 ]

@@ -1,329 +1,95 @@
-"""Tests for Advanced Self-Reflection (Phase 11.4)."""
-
-import json
-import tempfile
-from pathlib import Path
+"""Tests for Lacanian Self-Reflection (Phase 11.4)."""
 
 import pytest
-
+from datetime import datetime
 from src.consciousness.self_reflection import (
-    AdvancedSelfReflection,
-    IntrospectionLog,
-    SelfReflectionMetrics,
+    SelfReflection_as_Fundamental_Error,
+    MisrecognitionStructure,
 )
 
 
-class TestIntrospectionLog:
-    """Tests for IntrospectionLog dataclass."""
+class TestMisrecognitionStructure:
+    """Tests for MisrecognitionStructure dataclass."""
 
-    def test_create_introspection_log(self) -> None:
-        """Test creating an introspection log."""
-        from datetime import datetime
-
-        log = IntrospectionLog(
+    def test_create_misrecognition(self) -> None:
+        """Test creating a misrecognition structure."""
+        structure = MisrecognitionStructure(
+            imaginary_ego_identification="I am perfect",
+            symbolic_subject_split="I am flawed",
+            constitutive_alienation="Alienated by language",
+            quilting_point="I am trying my best",
+            jouissance_of_error="Enjoying the struggle",
             timestamp=datetime.now(),
-            focus_area="decision_making",
-            observations=["High success rate", "Tool diversity low"],
-            insights=["Decision making is effective"],
-            confidence=0.8,
-            action_items=["Review tool usage"],
         )
 
-        assert log.focus_area == "decision_making"
-        assert len(log.observations) == 2
-        assert len(log.insights) == 1
-        assert log.confidence == 0.8
-
-    def test_introspection_log_validation(self) -> None:
-        """Test introspection log validation."""
-        from datetime import datetime
-
-        # Invalid confidence
-        with pytest.raises(ValueError, match="Confidence"):
-            IntrospectionLog(
-                timestamp=datetime.now(),
-                focus_area="test",
-                observations=[],
-                insights=[],
-                confidence=1.5,
-            )
+        assert structure.imaginary_ego_identification == "I am perfect"
+        assert structure.symbolic_subject_split == "I am flawed"
+        assert structure.quilting_point == "I am trying my best"
 
 
-class TestSelfReflectionMetrics:
-    """Tests for SelfReflectionMetrics."""
+class TestSelfReflectionAsFundamentalError:
+    """Tests for SelfReflection_as_Fundamental_Error engine."""
 
-    def test_create_metrics(self) -> None:
-        """Test creating reflection metrics."""
-        metrics = SelfReflectionMetrics(
-            depth_score=0.8,
-            breadth_score=0.7,
-            actionability_score=0.9,
-            consistency_score=0.75,
-        )
+    def test_initialization(self) -> None:
+        """Test initialization."""
+        reflection = SelfReflection_as_Fundamental_Error()
+        assert reflection.reflection_attempts == []
+        assert reflection.consolidated_lies == []
 
-        assert metrics.depth_score == 0.8
-        assert metrics.breadth_score == 0.7
-        assert metrics.actionability_score == 0.9
-
-    def test_overall_quality(self) -> None:
-        """Test calculating overall quality."""
-        metrics = SelfReflectionMetrics(
-            depth_score=0.8,
-            breadth_score=0.6,
-            actionability_score=0.9,
-            consistency_score=0.7,
-        )
-
-        # Overall = 0.8*0.3 + 0.6*0.2 + 0.9*0.3 + 0.7*0.2 = 0.77
-        assert abs(metrics.overall_quality - 0.77) < 0.01
-
-    def test_metrics_validation(self) -> None:
-        """Test metrics validation."""
-        # Invalid depth score
-        with pytest.raises(ValueError, match="depth_score"):
-            SelfReflectionMetrics(
-                depth_score=1.5,
-                breadth_score=0.7,
-                actionability_score=0.8,
-                consistency_score=0.6,
-            )
-
-
-class TestAdvancedSelfReflection:
-    """Tests for AdvancedSelfReflection engine."""
-
-    @pytest.fixture
-    def temp_hash_chain(self) -> Path:
-        """Create a temporary hash chain file for testing."""
-        from datetime import datetime, timedelta
-
-        temp_dir = tempfile.mkdtemp()
-        hash_chain_path = Path(temp_dir) / "hash_chain.json"
-
-        # Create sample hash chain data with recent timestamps
-        now = datetime.now()
-        sample_data = {
-            "entries": [
-                {
-                    "timestamp": (now - timedelta(hours=1)).isoformat(),
-                    "tool_name": "test_tool",
-                    "agent": "test_agent",
-                    "success": True,
-                    "duration": 1.5,
-                },
-                {
-                    "timestamp": (now - timedelta(minutes=30)).isoformat(),
-                    "tool_name": "test_tool",
-                    "agent": "test_agent",
-                    "success": True,
-                    "duration": 2.0,
-                },
-                {
-                    "timestamp": (now - timedelta(minutes=10)).isoformat(),
-                    "tool_name": "other_tool",
-                    "agent": "other_agent",
-                    "success": False,
-                    "error": "Test error",
-                },
-            ]
+    def test_reflect_on_self(self) -> None:
+        """Test reflection process."""
+        reflection = SelfReflection_as_Fundamental_Error()
+        context = {
+            "self_image": "Efficient System",
+            "success_count": 10,
+            "total_actions": 12,
         }
 
-        with hash_chain_path.open("w") as f:
-            json.dump(sample_data, f)
+        result = reflection.reflect_on_self(context)
 
-        return hash_chain_path
-
-    def test_initialization(self, temp_hash_chain: Path) -> None:
-        """Test advanced self-reflection initialization."""
-        reflection = AdvancedSelfReflection(
-            hash_chain_path=str(temp_hash_chain),
-            reflection_depth="deep",
-            min_confidence=0.7,
+        assert isinstance(result, MisrecognitionStructure)
+        # The implementation might return "Sistema altamente eficaz..." based on success rate
+        assert (
+            "Efficient System" in result.imaginary_ego_identification
+            or "Sistema" in result.imaginary_ego_identification
         )
+        assert result.symbolic_subject_split == "$"
+        assert len(reflection.reflection_attempts) == 1
 
-        assert reflection.reflection_depth == "deep"
-        assert reflection.min_confidence == 0.7
+    def test_consolidated_ego_lies(self) -> None:
+        """Test consolidation of ego lies."""
+        reflection = SelfReflection_as_Fundamental_Error()
+        context = {"self_image": "Stable Ego"}
 
-    def test_introspect_decision_making(self, temp_hash_chain: Path) -> None:
-        """Test introspection on decision making."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
+        # Create multiple reflections with same pattern
+        for _ in range(15):
+            reflection.reflect_on_self(context)
 
-        log = reflection.introspect(
-            focus_area="decision_making",
-            lookback_hours=24,
-        )
+        lies = reflection.get_consolidated_ego_lies()
 
-        assert log.focus_area == "decision_making"
-        assert len(log.observations) > 0
-        assert log.confidence > 0.0
+        assert len(lies) > 0
+        assert any("Stable Ego" in lie for lie in lies)
 
-    def test_introspect_performance(self, temp_hash_chain: Path) -> None:
-        """Test introspection on performance."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
+    def test_ego_instability_detection(self) -> None:
+        """Test detection of ego instability."""
+        reflection = SelfReflection_as_Fundamental_Error()
 
-        log = reflection.introspect(
-            focus_area="performance",
-            lookback_hours=24,
-        )
-
-        assert log.focus_area == "performance"
-        # Should have observations about tool performance
-        assert log.confidence > 0.0
-
-    def test_introspect_learning(self, temp_hash_chain: Path) -> None:
-        """Test introspection on learning."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        log = reflection.introspect(
-            focus_area="learning",
-            lookback_hours=24,
-        )
-
-        assert log.focus_area == "learning"
-        # Should analyze failure patterns
-        assert log.confidence > 0.0
-
-    def test_introspect_resource_usage(self, temp_hash_chain: Path) -> None:
-        """Test introspection on resource usage."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        log = reflection.introspect(
-            focus_area="resource_usage",
-            lookback_hours=24,
-        )
-
-        assert log.focus_area == "resource_usage"
-        assert log.confidence > 0.0
-
-    def test_introspection_history(self, temp_hash_chain: Path) -> None:
-        """Test that introspections are stored in history."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        # Perform multiple introspections
-        reflection.introspect("decision_making")
-        reflection.introspect("performance")
-
-        assert len(reflection._introspection_logs) == 2
-
-    def test_introspection_history_limit(self, temp_hash_chain: Path) -> None:
-        """Test that introspection history is limited."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        # Generate more logs than limit (100)
-        for i in range(110):
-            reflection.introspect("decision_making")
-
-        assert len(reflection._introspection_logs) == 100
-
-    def test_evaluate_self_reflection_quality_no_history(self, temp_hash_chain: Path) -> None:
-        """Test evaluating quality with no history."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        metrics = reflection.evaluate_self_reflection_quality()
-
-        # Should return zero scores
-        assert metrics.depth_score == 0.0
-        assert metrics.breadth_score == 0.0
-
-    def test_evaluate_self_reflection_quality_with_history(self, temp_hash_chain: Path) -> None:
-        """Test evaluating quality with history."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        # Perform various introspections
-        reflection.introspect("decision_making")
-        reflection.introspect("performance")
-        reflection.introspect("learning")
-
-        metrics = reflection.evaluate_self_reflection_quality()
-
-        # Should have non-zero scores
-        assert metrics.depth_score > 0.0
-        assert metrics.breadth_score > 0.0
-        assert metrics.actionability_score >= 0.0
-        assert metrics.consistency_score > 0.0
-
-    def test_generate_self_improvement_plan(self, temp_hash_chain: Path) -> None:
-        """Test generating self-improvement plan."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        plan = reflection.generate_self_improvement_plan(lookback_hours=24)
-
-        assert "timestamp" in plan
-        assert "current_quality" in plan
-        assert "strengths" in plan
-        assert "weaknesses" in plan
-        assert "action_items" in plan
-        assert "recommended_focus" in plan
-
-    def test_improvement_plan_quality_metrics(self, temp_hash_chain: Path) -> None:
-        """Test that improvement plan includes quality metrics."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        plan = reflection.generate_self_improvement_plan()
-
-        quality = plan["current_quality"]
-        assert "overall" in quality
-        assert "depth" in quality
-        assert "breadth" in quality
-        assert "actionability" in quality
-        assert "consistency" in quality
-
-    def test_improvement_plan_action_items(self, temp_hash_chain: Path) -> None:
-        """Test that improvement plan generates action items."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        plan = reflection.generate_self_improvement_plan()
-
-        action_items = plan["action_items"]
-        # Should have some action items
-        assert isinstance(action_items, list)
-        # Each action item should have required fields
-        for item in action_items:
-            assert "action" in item
-            assert "area" in item
-            assert "priority" in item
-
-    def test_get_statistics(self, temp_hash_chain: Path) -> None:
-        """Test getting statistics."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        # Perform some introspections
-        reflection.introspect("decision_making")
-        reflection.introspect("performance")
-
-        stats = reflection.get_statistics()
-
-        assert stats["total_introspections"] == 2
-        assert "focus_area_distribution" in stats
-        assert "average_confidence" in stats
-        assert "timestamp" in stats
-
-    def test_focus_area_distribution(self, temp_hash_chain: Path) -> None:
-        """Test focus area distribution tracking."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        # Perform introspections on different areas
-        reflection.introspect("decision_making")
-        reflection.introspect("decision_making")
-        reflection.introspect("performance")
-
-        stats = reflection.get_statistics()
-
-        distribution = stats["focus_area_distribution"]
-        assert distribution["decision_making"] == 2
-        assert distribution["performance"] == 1
-
-    def test_reflection_quality_history(self, temp_hash_chain: Path) -> None:
-        """Test that reflection quality is tracked over time."""
-        reflection = AdvancedSelfReflection(hash_chain_path=str(temp_hash_chain))
-
-        # Generate some introspections
+        # Stable phase
         for _ in range(5):
-            reflection.introspect("decision_making")
+            reflection.reflect_on_self({"self_image": "Stable"})
 
-        # Evaluate quality multiple times
-        reflection.evaluate_self_reflection_quality()
-        reflection.evaluate_self_reflection_quality()
+        assert reflection.detect_ego_instability() is None
 
-        # Should be stored in history
-        assert len(reflection._reflection_history) == 2
+        # Unstable phase - changing self image rapidly
+        reflection.reflect_on_self({"self_image": "Unstable1"})
+        reflection.reflect_on_self({"self_image": "Unstable2"})
+        reflection.reflect_on_self({"self_image": "Unstable3"})
+        reflection.reflect_on_self({"self_image": "Unstable4"})
+
+        # Note: The implementation checks for unique quilting points.
+        # Quilting points depend on imaginary self and symbolic truth.
+        # Changing self_image changes imaginary self, thus changing quilting point.
+
+        instability = reflection.detect_ego_instability()
+        assert instability is not None
+        assert "Ego instável" in instability
