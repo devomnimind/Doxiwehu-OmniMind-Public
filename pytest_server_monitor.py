@@ -86,10 +86,19 @@ class ServerMonitorPlugin:
     
     def _needs_server(self, item) -> bool:
         """Verifica se teste precisa de servidor."""
-        e2e_markers = ["e2e", "endpoint", "dashboard"]
+        # Testes E2E são gerenciados por fixture omnimind_server em tests/e2e/conftest.py
+        # ou precisam de servidor explicitamente
         item_path = str(item.fspath).lower()
+        test_name = str(item.nodeid).lower()
         
-        return any(marker in item_path for marker in e2e_markers)
+        # Se está em tests/e2e/, deixa fixture do conftest.py gerenciar
+        if "tests/e2e/" in item_path or "tests\\e2e\\" in item_path:
+            return False
+        
+        # Testes que explicitamente marcam que precisam de servidor
+        e2e_markers = ["e2e", "endpoint", "dashboard", "integration"]
+        
+        return any(marker in item_path or marker in test_name for marker in e2e_markers)
     
     def _start_server(self):
         """Inicia servidor via docker-compose ou python."""
