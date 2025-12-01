@@ -56,6 +56,7 @@ SAFE_COMMANDS: Set[str] = {
     "tail",
     "head",
     "cat",
+    "echo",
     "grep",
     "awk",
     "sed",
@@ -235,7 +236,10 @@ def is_command_safe(command: Sequence[str]) -> bool:
 
     # Verificar se o comando base é permitido
     base_cmd = command[0]
-    if base_cmd not in SAFE_COMMANDS:
+    # Extrair nome do comando (ignora caminho completo)
+    cmd_name = os.path.basename(base_cmd) if "/" in base_cmd else base_cmd
+    
+    if cmd_name not in SAFE_COMMANDS:
         logger.warning(f"Comando base não permitido: {base_cmd}")
         return False
 
@@ -257,13 +261,14 @@ def is_command_safe(command: Sequence[str]) -> bool:
             return False
 
     # Verificações específicas para sudo
-    if base_cmd == "sudo":
+    if cmd_name == "sudo":
         if len(command) < 2:
             return False
 
         # Verificar se é um comando sudo permitido
         sudo_cmd = command[1]
-        if sudo_cmd not in SAFE_COMMANDS:
+        sudo_cmd_name = os.path.basename(sudo_cmd) if "/" in sudo_cmd else sudo_cmd
+        if sudo_cmd_name not in SAFE_COMMANDS:
             logger.warning(f"Comando sudo não permitido: {sudo_cmd}")
             return False
 
@@ -299,20 +304,21 @@ def validate_command_safety(command: Sequence[str]) -> CommandResultWithStatus:
 
 
 def run_command(command: Sequence[str]) -> CommandResult:
-    # Primeiro validar segurança
+    # Primeiro verificar se comando existe
+    if not command or not shutil.which(command[0]):
+        return {
+            "command": " ".join(command) if command else "",
+            "returncode": -1,
+            "output": "command not available",
+        }
+
+    # Depois validar segurança
     validation = validate_command_safety(command)
     if validation.get("status") == "skipped":
         return {
             "command": " ".join(command) if command else "",
             "returncode": -1,
             "output": validation.get("reason", "Comando não autorizado"),
-        }
-
-    if not command or not shutil.which(command[0]):
-        return {
-            "command": " ".join(command) if command else "",
-            "returncode": -1,
-            "output": "command not available",
         }
 
     try:

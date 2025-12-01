@@ -120,7 +120,16 @@ class DummyQdrantClient:
         ids: Optional[List[Any]] = None,
         **kwargs: Any,
     ) -> None:
-        to_remove = points or ids or kwargs.get("points_selector") or []
+        to_remove = points or ids or []
+        
+        # Handle PointIdsList wrapper from kwargs
+        if "points_selector" in kwargs:
+            selector = kwargs["points_selector"]
+            if hasattr(selector, "points"):
+                to_remove = selector.points
+            else:
+                to_remove = selector if isinstance(selector, list) else []
+        
         for point_id in to_remove:
             key = str(point_id)
             if key in self.store:

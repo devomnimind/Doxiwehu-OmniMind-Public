@@ -129,4 +129,5 @@ def test_supabase_onboarding_handles_error() -> None:
 
     assert report.nodes_processed == 0
     assert report.nodes_loaded == 0
-    assert report.errors == ["boom"]
+    assert len(report.errors) == 1
+    assert "boom" in report.errors[0]  # Message format: "GraphQL error on page 1: boom"

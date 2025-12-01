@@ -253,15 +253,16 @@ class TestEnhancedMCPClient:
         mock_mcp: Mock,
     ) -> None:
         """Testa eviction LRU quando cache está cheio."""
-        # Cache muito pequeno (1 MB)
+        # Cache muito pequeno
         client = EnhancedMCPClient(
             enable_cache=True,
-            max_cache_size_mb=1,  # 1 MB
+            max_cache_size_mb=0.001,  # ~1 KB (muito pequeno para forçar eviction)
         )
 
-        # Adiciona várias entradas
+        # Adiciona várias entradas com dados maiores
         for i in range(10):
-            client._add_to_cache(f"key_{i}", f"value_{i}")
+            # Cada valor tem ~100 bytes
+            client._add_to_cache(f"key_{i}", f"value_{i}" * 20)
 
         # Cache deve ter menos de 10 entradas devido a eviction
         assert len(client._context_cache) < 10
