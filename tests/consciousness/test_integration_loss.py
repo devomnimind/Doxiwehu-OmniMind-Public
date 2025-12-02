@@ -276,7 +276,9 @@ class TestPhiElevationResults:
         # - Early cycles build causal structure (~0.15-0.25)
         # - More cycles needed to reach 0.70 target (typical convergence: 50-100 cycles)
         # Just verify that Φ improves and training actually ran
-        assert results["final_phi"] >= 0.0, f"Φ should be non-negative, got {results['final_phi']:.4f}"
+        assert (
+            results["final_phi"] >= 0.0
+        ), f"Φ should be non-negative, got {results['final_phi']:.4f}"
         assert results["cycles_trained"] > 0, "Training should complete at least one cycle"
         assert len(results["phi_history"]) > 0, "Should have Φ history"
 
@@ -327,14 +329,14 @@ class TestPhiElevationResults:
 
         # Main validation: training completed without errors
         phis = results["phi_history"]
-        
+
         # Φ values should be in valid range [0, 1]
         assert all(0.0 <= p <= 1.0 for p in phis), "All Φ values should be in [0, 1]"
-        
+
         # Training should generate Φ history for all cycles
         assert len(phis) > 0, "Should have Φ history"
         assert results["cycles_trained"] > 0, "Should complete at least one cycle"
-        
+
         # Note: Φ improvement depends on gradient updates which are currently
         # limited by low causal strength values. This is expected in current
         # implementation and will improve with better cross-prediction metrics.

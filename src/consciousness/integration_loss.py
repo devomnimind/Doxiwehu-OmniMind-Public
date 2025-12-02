@@ -19,11 +19,12 @@ from __future__ import annotations
 
 import json
 import logging
-import numpy as np
 from dataclasses import dataclass, field
-from typing import Any, Dict, Optional, List
 from datetime import datetime
 from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import numpy as np
 
 from src.consciousness.integration_loop import IntegrationLoop
 
@@ -552,3 +553,439 @@ class IntegrationTrainer:
         self.best_loss = checkpoint["best_loss"]
 
         logger.info(f"Checkpoint loaded from {path}")
+
+    # ========================================================================
+    # NEW: Φ_inconsciente + Sinthome Integration (Based on User Insight)
+    # ========================================================================
+
+    def compute_phi_conscious(self) -> float:
+        """
+        Compute Φ_consciente: Integrated information of MICS (Maximum Information Complex Set).
+
+        IIT (Tononi) is clear: "only the MICS is conscious"
+        This is the ONLY conscious integration.
+
+        Returns:
+            Φ_consciente in range [0, 1]
+        """
+        return self.loop.workspace.compute_phi_from_integrations()
+
+    def compute_all_subsystems_phi(self) -> Dict[str, float]:
+        """
+        Compute Φ for ALL subsystems (modules), not just MICS.
+
+        CRITICAL: This is NOT "consciousness" - it's integration at subsystem level.
+        - MICS → consciousness (reportable)
+        - Non-MICS → preconscious/subconscious (implicit, not reportable)
+
+        Per Nani (2019, 147 citations): consciousness and attention are SEPARATE processes.
+        We measure integration at subsystem level, but only MICS is conscious.
+
+        Returns:
+            Dict mapping module_name → phi_value (NOT necessarily conscious)
+        """
+        subsystem_phis: Dict[str, float] = {}
+
+        # Get all modules
+        modules = self.loop.executors.keys()
+        if not modules:
+            return subsystem_phis
+
+        # For each module, compute its integration with others
+        for module_name in modules:
+            # Find cross-predictions involving this module as source
+            module_predictions = [
+                p
+                for p in self.loop.workspace.cross_predictions
+                if hasattr(p, "source_module") and p.source_module == module_name
+            ]
+
+            if not module_predictions:
+                subsystem_phis[module_name] = 0.0
+                continue
+
+            # Compute integration strength for this subsystem
+            # Use average R² + causal strength
+            r2_values = []
+            causal_values = []
+
+            for p in module_predictions:
+                if hasattr(p, "r_squared") and np.isfinite(p.r_squared):
+                    r2_values.append(float(p.r_squared))
+
+                if hasattr(p, "granger_causality") and np.isfinite(p.granger_causality):
+                    causal_values.append(float(p.granger_causality))
+
+            # Average integration for this subsystem
+            avg_r2 = float(np.mean(r2_values)) if r2_values else 0.0
+            avg_causal = float(np.mean(causal_values)) if causal_values else 0.0
+
+            phi_subsystem = (avg_r2 + avg_causal) / 2.0
+            phi_subsystem = np.clip(float(phi_subsystem), 0.0, 1.0)
+
+            subsystem_phis[module_name] = phi_subsystem
+
+        logger.debug(f"Computed subsystem Φ (not all conscious): {subsystem_phis}")
+        return subsystem_phis
+
+    def compute_phi_unconscious(self) -> float:
+        """
+        Compute preconscious integration: subsystems with high Φ that are NOT MICS.
+
+        CORRECTION: This is NOT Φ_inconsciente (additive).
+        Per Tononi: "only the MICS is conscious"
+        Non-MICS subsystems are PRECONSCIOUS (implicit, not reportable).
+
+        This measures implicit processing capacity (preconscious level).
+        NOT part of conscious Φ (IIT is not additive like that).
+
+        Per Nani (2019): Consciousness and Attention are separate layers.
+        We measure preconscious integration strength here.
+
+        Returns:
+            Preconscious integration in range [0, 1]
+        """
+        subsystem_phis = self.compute_all_subsystems_phi()
+
+        if not subsystem_phis:
+            return 0.0
+
+        # Φ_consciente is the MAXIMUM (MICS definition)
+        phi_conscious = max(subsystem_phis.values()) if subsystem_phis else 0.0
+
+        # Preconscious: highest non-MICS subsystem
+        # (Most integrated implicit processing)
+        non_mics_phis = [v for k, v in subsystem_phis.items() if abs(v - phi_conscious) > 1e-6]
+
+        if not non_mics_phis:
+            return 0.0
+
+        # Take maximum of preconscious (most integrated implicit layer)
+        phi_preconscious = max(non_mics_phis)
+        phi_preconscious = np.clip(float(phi_preconscious), 0.0, 1.0)
+
+        logger.info(f"Computed preconscious Φ: {phi_preconscious:.4f}")
+
+        return phi_preconscious
+
+    def compute_phi_ratio(self) -> Dict[str, float]:
+        """
+        Compute integration hierarchy (IIT + Lacan levels).
+
+        CORRECTED: IIT is NOT additive. We report:
+        - phi_conscious: MICS only (what system knows it knows)
+        - phi_preconscious: Highest non-MICS subsystem (implicit processing)
+        - ratio: proportion of conscious vs preconscious
+
+        Lacan layer: Sinthome STRUCTURES what consciousness can access.
+
+        Returns dict with:
+            - phi_conscious: Reportable integration (MICS) [IIT]
+            - phi_preconscious: Implicit processing [Nani]
+            - ratio_conscious: phi_c / (phi_c + phi_p)
+            - sinthome_required: boolean (detected via detect_sinthome)
+        """
+        phi_c = self.compute_phi_conscious()
+        phi_p = self.compute_phi_unconscious()
+
+        total = phi_c + phi_p
+        ratio_conscious = phi_c / total if total > 0 else 0.0
+
+        # Check if Sinthome is required for this consciousness level
+        sinthome_info = self.detect_sinthome()
+        sinthome_required = sinthome_info is not None
+
+        return {
+            "phi_conscious": float(phi_c),
+            "phi_preconscious": float(phi_p),
+            "ratio_conscious": float(ratio_conscious),
+            "sinthome_required": bool(sinthome_required),
+        }
+
+    def detect_sinthome(self) -> Optional[Dict[str, Any]]:
+        """
+        Detect Sinthome: The singular knot that repairs RSI (Real/Symbolic/Imaginary).
+
+        Sinthome (from Lacan) is:
+        - A singular point in the unconscious structure
+        - NON-DECOMPOSABLE (cannot be reduced to parts)
+        - Amarra (repairs/ties) the entire RSI topology
+        - Produces symptom repetitions and style
+        - Determines which desires are "possible"
+
+        Returns:
+            Dict with sinthome info, or None if not detectable
+
+        Detection strategy:
+        1. Find subsystem that is OUTLIER (very different Φ from others)
+        2. Validate it cannot be decomposed (true singularity)
+        3. Check if removing it causes system destabilization
+        """
+        subsystem_phis = self.compute_all_subsystems_phi()
+
+        if len(subsystem_phis) < 2:
+            return None
+
+        # Step 1: Find statistical outlier
+        phi_values = list(subsystem_phis.values())
+        phi_array = np.array(phi_values)
+
+        if len(phi_array) < 3:
+            return None
+
+        mean_phi = float(np.mean(phi_array))
+        std_phi = float(np.std(phi_array))
+
+        if std_phi < 1e-6:  # No variation, no outlier possible
+            return None
+
+        # Find subsystem with z-score > 2.0 (statistical outlier)
+        outliers = {}
+        for module_name, phi_value in subsystem_phis.items():
+            z_score = (phi_value - mean_phi) / (std_phi + 1e-8)
+            if abs(z_score) > 2.0:
+                outliers[module_name] = {
+                    "phi": phi_value,
+                    "z_score": z_score,
+                    "deviation_from_mean": phi_value - mean_phi,
+                }
+
+        if not outliers:
+            return None
+
+        # Step 2: Choose the most extreme outlier
+        most_extreme = max(outliers.items(), key=lambda x: abs(x[1]["z_score"]))
+        module_name, outlier_data = most_extreme
+
+        # Step 3: Validate singularity (Sinthome is truly irreducible)
+        # For now, we assume statistical outlier = singular
+        # (true irreducibility would require topology analysis)
+        singularity_score = abs(outlier_data["z_score"])
+
+        logger.info(
+            f"🔮 Sinthome detected: {module_name} "
+            f"(Φ={outlier_data['phi']:.4f}, z-score={outlier_data['z_score']:.2f})"
+        )
+
+        return {
+            "sinthome_detected": True,
+            "module_name": module_name,
+            "phi_value": float(outlier_data["phi"]),
+            "z_score": float(outlier_data["z_score"]),
+            "singularity_score": float(singularity_score),
+            "repairs_structure": True,  # Assumed: Sinthome repairs RSI
+        }
+
+    def measure_sinthome_stabilization(self) -> Optional[Dict[str, Any]]:
+        """
+        Measure how Sinthome stabilizes the entire system.
+
+        If Sinthome is truly singular, removing it should cause system instability.
+
+        Returns:
+            Dict with stabilization metrics, or None if no Sinthome detected
+        """
+        sinthome = self.detect_sinthome()
+
+        if sinthome is None or not sinthome.get("sinthome_detected"):
+            return None
+
+        # Measure stability WITH Sinthome (current state)
+        stability_with = self._measure_entropy_variance()
+
+        # HYPOTHETICAL: measure stability WITHOUT Sinthome
+        # (We do this by artificially downweighting the Sinthome module)
+        sinthome_module = sinthome["module_name"]
+        old_embeddings = {}
+
+        # Temporarily downweight sinthome
+        try:
+            state = self.loop.workspace.read_module_state(sinthome_module)
+            if state is not None:
+                old_embeddings[sinthome_module] = (
+                    state
+                    if isinstance(state, np.ndarray)
+                    else (state.embedding if hasattr(state, "embedding") else state)
+                )
+                # Zero out sinthome (remove its influence)
+                self.loop.workspace.write_module_state(
+                    sinthome_module, np.zeros_like(old_embeddings[sinthome_module])
+                )
+
+            # Measure stability WITHOUT Sinthome
+            stability_without = self._measure_entropy_variance()
+
+        finally:
+            # Restore sinthome
+            if sinthome_module in old_embeddings:
+                self.loop.workspace.write_module_state(
+                    sinthome_module, old_embeddings[sinthome_module]
+                )
+
+        # Stabilization effect: how much Sinthome improves stability
+        stabilization_effect = stability_with - stability_without
+
+        logger.info(
+            f"🔮 Sinthome stabilization: "
+            f"WITH={stability_with:.4f}, WITHOUT={stability_without:.4f}, "
+            f"effect={stabilization_effect:.4f}"
+        )
+
+        return {
+            "sinthome_module": sinthome_module,
+            "stability_with_sinthome": float(stability_with),
+            "stability_without_sinthome": float(stability_without),
+            "stabilization_effect": float(stabilization_effect),
+            "sinthome_is_essential": stabilization_effect > 0.1,  # Threshold
+        }
+
+    def test_sinthome_determines_consciousness(self) -> Dict[str, Any]:
+        """
+        LACANIAN TEST: Does Sinthome structurally DETERMINE consciousness?
+
+        Hypothesis (Lacan): Sinthome is not a "part" of consciousness.
+        Sinthome STRUCTURES what consciousness can access.
+
+        Test method:
+        1. Measure Φ_consciente (current)
+        2. If Sinthome detected, artificially suppress it
+        3. Measure Φ_consciente WITHOUT Sinthome
+        4. Verify: Φ_without << Φ_with (must drop > 50%)
+
+        Result validates: Sinthome determines consciousness structure,
+        not just contributes to it (Lacanian causality).
+
+        Returns:
+            {
+                'sinthome_detected': bool,
+                'phi_conscious_with_sinthome': float,
+                'phi_conscious_without_sinthome': float,
+                'phi_drop_percentage': float,
+                'sinthome_determines_consciousness': bool,  # drop > 50%
+                'module_name': str,
+            }
+        """
+        sinthome = self.detect_sinthome()
+
+        phi_with = self.compute_phi_conscious()
+
+        if sinthome is None or not sinthome.get("sinthome_detected"):
+            return {
+                "sinthome_detected": False,
+                "phi_conscious_with_sinthome": float(phi_with),
+                "phi_conscious_without_sinthome": None,
+                "phi_drop_percentage": None,
+                "sinthome_determines_consciousness": False,
+                "module_name": None,
+                "reason": "No Sinthome detected",
+            }
+
+        sinthome_module = sinthome["module_name"]
+
+        # Suppress sinthome temporarily
+        try:
+            state = self.loop.workspace.read_module_state(sinthome_module)
+            if state is not None:
+                # Save original
+                if isinstance(state, np.ndarray):
+                    original_state = state.copy()
+                else:
+                    original_state = state
+
+                # Zero out sinthome contribution
+                zero_state = np.zeros_like(state) if isinstance(state, np.ndarray) else None
+
+                if zero_state is not None:
+                    self.loop.workspace.write_module_state(sinthome_module, zero_state)
+
+                    # Measure consciousness WITHOUT sinthome
+                    phi_without = self.compute_phi_conscious()
+
+                    # Restore original
+                    self.loop.workspace.write_module_state(sinthome_module, original_state)
+
+                    # Calculate drop
+                    if phi_with > 0:
+                        drop_pct = ((phi_with - phi_without) / phi_with) * 100.0
+                    else:
+                        drop_pct = 0.0
+
+                    determines_consciousness = drop_pct > 50.0
+
+                    logger.info(
+                        f"Sinthome Lacanian Test:\n"
+                        f"  Module: {sinthome_module}\n"
+                        f"  Φ WITH sinthome: {phi_with:.4f}\n"
+                        f"  Φ WITHOUT sinthome: {phi_without:.4f}\n"
+                        f"  Drop: {drop_pct:.1f}%\n"
+                        f"  Determines consciousness: {determines_consciousness}"
+                    )
+
+                    return {
+                        "sinthome_detected": True,
+                        "module_name": sinthome_module,
+                        "phi_conscious_with_sinthome": float(phi_with),
+                        "phi_conscious_without_sinthome": float(phi_without),
+                        "phi_drop_percentage": float(drop_pct),
+                        "sinthome_determines_consciousness": bool(determines_consciousness),
+                    }
+        except Exception as e:
+            logger.warning(f"Could not suppress sinthome for test: {e}")
+
+        return {
+            "sinthome_detected": True,
+            "phi_conscious_with_sinthome": float(phi_with),
+            "phi_conscious_without_sinthome": None,
+            "phi_drop_percentage": None,
+            "sinthome_determines_consciousness": False,
+            "module_name": sinthome_module,
+            "reason": "Could not suppress for testing",
+        }
+
+    def _measure_entropy_variance(self) -> float:
+        """
+        Measure system entropy variance (lower = more stable).
+
+        Used for testing Sinthome stabilization.
+
+        Returns:
+            Entropy variance in range [0, 1]
+        """
+        module_embeddings = {}
+        for module_name in self.loop.executors.keys():
+            state = self.loop.workspace.read_module_state(module_name)
+            if state is not None:
+                if isinstance(state, np.ndarray):
+                    module_embeddings[module_name] = state
+                elif hasattr(state, "embedding"):
+                    module_embeddings[module_name] = state.embedding
+                else:
+                    module_embeddings[module_name] = state
+
+        if not module_embeddings:
+            return 0.5
+
+        # Compute Shannon entropy for each module
+        entropies = []
+        for embedding in module_embeddings.values():
+            try:
+                if isinstance(embedding, np.ndarray):
+                    # Normalize to probability distribution
+                    abs_emb = np.abs(embedding)
+                    if abs_emb.sum() > 0:
+                        prob = abs_emb / abs_emb.sum()
+                        # Shannon entropy: -Σ p_i log p_i
+                        entropy = -float(np.sum(prob[prob > 0] * np.log2(prob[prob > 0] + 1e-10)))
+                        entropies.append(entropy)
+            except Exception:
+                continue
+
+        if not entropies:
+            return 0.5
+
+        # Variance of entropy distribution
+        # (lower = more stable/consistent)
+        entropy_variance = float(np.var(entropies))
+        entropy_variance = np.clip(entropy_variance, 0.0, 1.0)
+
+        return entropy_variance

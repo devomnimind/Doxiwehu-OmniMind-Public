@@ -1054,15 +1054,15 @@ class SharedWorkspace:
             # CORRIGIDO: Usar média de Granger e Transfer Entropy (já normalizados [0-1])
             granger = p.granger_causality if hasattr(p, "granger_causality") else 0.0
             transfer = p.transfer_entropy if hasattr(p, "transfer_entropy") else 0.0
-            
+
             # Média simples dos dois métodos causais
             causal_strength = (granger + transfer) / 2.0
-            
+
             # Penalizar discordância (mas SEM redução dupla)
             disagreement = abs(granger - transfer)
             if disagreement > 0.3:
                 # Penalizar ajustando peso, não multiplicando (evita dupla penalização)
-                causal_strength *= (1.0 - disagreement * 0.2)  # Max -20%
+                causal_strength *= 1.0 - disagreement * 0.2  # Max -20%
                 logger.debug(
                     f"IIT: Adjusted for disagreement {p.source_module}->{p.target_module}: "
                     f"granger={granger:.3f}, transfer={transfer:.3f}, "
@@ -1075,11 +1075,11 @@ class SharedWorkspace:
         # Penaliza valores baixos sem destruir a métrica geral
         if not causal_values:
             return 0.0
-        
+
         n = len(causal_values)
         sum_reciprocals = sum(1.0 / (max(c, 0.001) + 0.001) for c in causal_values)
         phi_harmonic = n / sum_reciprocals if sum_reciprocals > 0 else 0.0
-        
+
         # IIT: Φ deve ser normalizado ao range [0-1]
         phi = max(0.0, min(1.0, phi_harmonic))
 
