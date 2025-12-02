@@ -32,19 +32,23 @@ check_server() {
 # Função para reiniciar servidor
 restart_server() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] ⚙️  Reiniciando servidor..." | tee -a "$LOG_FILE"
-    cd /home/fahbrain/projects/omnimind/deploy
-    docker-compose down > /dev/null 2>&1
-    docker-compose up -d > /dev/null 2>&1
+    
+    # Usar subshell para não mudar diretório do script principal
+    (
+        cd /home/fahbrain/projects/omnimind/deploy
+        docker-compose down > /dev/null 2>&1
+        docker-compose up -d > /dev/null 2>&1
+    )
     
     # Aguardar servidor ficar ready
-    for i in {1..30}; do
+    for i in {1..60}; do
         if check_server; then
             echo "[$(date '+%Y-%m-%d %H:%M:%S')] ✅ Servidor restaurado (tentativa $i)" | tee -a "$LOG_FILE"
             return 0
         fi
         sleep 1
     done
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] ❌ Servidor não respondeu após 30s" | tee -a "$LOG_FILE"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] ❌ Servidor não respondeu após 60s" | tee -a "$LOG_FILE"
     return 1
 }
 
@@ -81,3 +85,9 @@ echo "" | tee -a "$LOG_FILE"
 echo "" | tee -a "$LOG_FILE"
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] ========================================" | tee -a "$LOG_FILE"
 echo "[$(date '+%Y-%m-%d %H:%M:%S')] 📁 Log salvo: $LOG_FILE" | tee -a "$LOG_FILE"
+
+# Gerar Assinatura Digital do Log (Validação Científica)
+LOG_HASH=$(sha256sum "$LOG_FILE" | awk '{print $1}')
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] 🔐 Assinatura SHA256: $LOG_HASH" | tee -a "$LOG_FILE"
+echo "$LOG_HASH" > "${LOG_FILE}.sha256"
+echo "[$(date '+%Y-%m-%d %H:%M:%S')] 📄 Arquivo de assinatura gerado: ${LOG_FILE}.sha256" | tee -a "$LOG_FILE"

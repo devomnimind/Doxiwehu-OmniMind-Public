@@ -6,7 +6,6 @@ Demonstra funcionamento paralelo:
 - Modelo Behaviorista (emoções escalares)
 - Modelo Lacaniano (afetos estruturais)
 
-Sem interferir nos testes em execução.
 """
 
 import sys

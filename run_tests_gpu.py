@@ -153,8 +153,11 @@ def main():
     log_and_print(f"Log File: {LOG_FILE}")
     log_and_print("")
 
-    # Rodar testes começando com CPU
-    exit_code, failed_test, _ = run_tests("tests/", "cpu")
+    # Determine default device
+    default_device = "gpu" if CUDA_AVAILABLE else "cpu"
+
+    # Rodar testes
+    exit_code, failed_test, _ = run_tests("tests/", default_device)
 
     if exit_code != 0 and failed_test:
         log_and_print("\n" + "=" * 80)

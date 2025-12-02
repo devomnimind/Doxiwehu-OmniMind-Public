@@ -1008,6 +1008,9 @@ class SharedWorkspace:
         IIT Core Principle: Φ mede quanto informação integrada excede a soma das partes.
         Esta implementação usa validação cruzada para evitar overfitting.
 
+        CORREÇÃO (2025-12-02): Usa harmonic mean em vez de aritmética, normaliza
+        corretamente valores causais sem dupla penalização.
+
         Returns:
             Valor de Φ (0.0 = desintegrado, 1.0 = perfeitamente integrado)
         """
@@ -1044,37 +1047,44 @@ class SharedWorkspace:
             logger.debug(f"IIT: Insufficient valid causal predictions: {len(valid_predictions)}")
             return 0.0
 
-        # IIT com causalidade: Φ é a média das forças causais
+        # IIT com causalidade: Φ é a MÉDIA HARMÔNICA das forças causais
+        # (em vez de aritmética) para penalizar fracos sem destruir a métrica
         causal_values = []
         for p in valid_predictions:
-            # Usar mutual_information (que agora contém causal_strength)
-            causal_strength = p.mutual_information
-
-            # Penalizar se Granger e Transfer Entropy discordam muito
-            if hasattr(p, "granger_causality") and hasattr(p, "transfer_entropy"):
-                granger = p.granger_causality
-                transfer = p.transfer_entropy
-                disagreement = abs(granger - transfer)
-
-                # Penalizar discordância > 0.3
-                if disagreement > 0.3:
-                    causal_strength *= 0.7  # Penalizar 30%
-                    logger.debug(
-                        f"IIT: Penalized disagreement {p.source_module}->{p.target_module}: "
-                        f"granger={granger:.3f}, transfer={transfer:.3f}, "
-                        f"causal={causal_strength:.3f}"
-                    )
+            # CORRIGIDO: Usar média de Granger e Transfer Entropy (já normalizados [0-1])
+            granger = p.granger_causality if hasattr(p, "granger_causality") else 0.0
+            transfer = p.transfer_entropy if hasattr(p, "transfer_entropy") else 0.0
+            
+            # Média simples dos dois métodos causais
+            causal_strength = (granger + transfer) / 2.0
+            
+            # Penalizar discordância (mas SEM redução dupla)
+            disagreement = abs(granger - transfer)
+            if disagreement > 0.3:
+                # Penalizar ajustando peso, não multiplicando (evita dupla penalização)
+                causal_strength *= (1.0 - disagreement * 0.2)  # Max -20%
+                logger.debug(
+                    f"IIT: Adjusted for disagreement {p.source_module}->{p.target_module}: "
+                    f"granger={granger:.3f}, transfer={transfer:.3f}, "
+                    f"causal={causal_strength:.3f}"
+                )
 
             causal_values.append(causal_strength)
 
-        # Φ = média das forças causais (IIT rigorosa)
-        phi = float(np.mean(causal_values)) if causal_values else 0.0
-
-        # IIT: Φ deve ser normalizado
-        phi = max(0.0, min(1.0, phi))
+        # CORRIGIDO: Usar harmonic mean (como Phase16Integration)
+        # Penaliza valores baixos sem destruir a métrica geral
+        if not causal_values:
+            return 0.0
+        
+        n = len(causal_values)
+        sum_reciprocals = sum(1.0 / (max(c, 0.001) + 0.001) for c in causal_values)
+        phi_harmonic = n / sum_reciprocals if sum_reciprocals > 0 else 0.0
+        
+        # IIT: Φ deve ser normalizado ao range [0-1]
+        phi = max(0.0, min(1.0, phi_harmonic))
 
         logger.info(
-            f"IIT Φ calculated with causality: {phi:.4f} "
+            f"IIT Φ calculated (corrected harmonic mean): {phi:.4f} "
             f"(based on {len(valid_predictions)}/{len(recent_predictions)} "
             f"valid causal predictions)"
         )

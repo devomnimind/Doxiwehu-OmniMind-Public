@@ -28,7 +28,7 @@ from starlette.status import HTTP_401_UNAUTHORIZED, WS_1008_POLICY_VIOLATION
 from src.agents.orchestrator_agent import OrchestratorAgent
 from src.metrics.real_consciousness_metrics import RealConsciousnessMetricsCollector
 from web.backend.websocket_manager import ws_manager
-from web.backend.routes import tasks, agents, security as security_router, metacognition, health
+from web.backend.routes import tasks, agents, security as security_router, metacognition, health, omnimind
 
 # Load environment variables from .env file
 load_dotenv()
@@ -1142,6 +1142,7 @@ app.include_router(agents.router)
 app.include_router(security_router.router)
 app.include_router(metacognition.router)
 app.include_router(health.router)
+app.include_router(omnimind.router)
 
 # Set orchestrator for metacognition routes
 # This will be set when orchestrator is initialized

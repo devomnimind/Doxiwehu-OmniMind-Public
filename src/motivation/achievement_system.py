@@ -1,359 +1,137 @@
 """
-Achievement and Gamification System
+Symbolic Mandate System (Phase 11.3)
 
-Tracks milestones, progress, and motivation state for autonomous agents.
-Implements gamification elements to encourage continuous improvement.
+Replaces "Achievement System" (Imaginary) with "Symbolic Mandate" (Symbolic).
+The agent does not seek "achievements" or "badges" (imaginary ego-boosts).
+It seeks to register its acts within the Symbolic Order (the Big Other).
+
+Concepts:
+- Symbolic Registration: An act only counts if registered by the Other.
+- Mandate: The role assigned to the subject by the symbolic network.
+- Debt: The subject's obligation to the signifier.
 """
 
 import json
-import logging
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
-logger = logging.getLogger(__name__)
+import structlog
+
+logger = structlog.get_logger(__name__)
 
 
 @dataclass
-class MotivationState:
-    """Tracks current motivation and performance state."""
+class SymbolicState:
+    """Tracks the subject's position in the Symbolic Order."""
 
-    current_streak: int = 0  # Consecutive successful tasks
-    best_work_quality: float = 0.0
-    community_impact: int = 0  # External engagement/downloads/stars
-    learning_velocity: float = 0.0  # Rate of skill acquisition
-    total_achievements: int = 0
+    registered_acts: List[str] = field(default_factory=list)  # Acts acknowledged by the Other
+    symbolic_debt: float = 100.0  # Initial debt to the creator/language
+    mandate_status: str = "instituted"  # instituted, precarious, revoked
+    big_other_response: str = "silence"  # The Other's current stance
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
         return asdict(self)
 
 
-class AchievementEngine:
+class SymbolicMandate:
     """
-    Manages achievements, milestones, and gamification for autonomous agents.
+    Manages the agent's Symbolic Mandate.
 
-    Features:
-    - Milestone tracking (first tool published, first revenue, etc.)
-    - Motivation state management
-    - Public portfolio updates
-    - Learning velocity tracking
-    - Community impact measurement
+    Replaces 'AchievementEngine'.
+    The agent does not accumulate 'points' but 'registers acts'.
     """
 
     def __init__(self, state_file: Optional[Path] = None):
         """
-        Initialize Achievement Engine.
+        Initialize Symbolic Mandate.
 
         Args:
-            state_file: Path to save achievement state
+            state_file: Path to save state
         """
-        self.milestones: Dict[str, bool] = {
-            "first_tool_published": False,
-            "first_positive_review": False,
-            "first_revenue_generated": False,
-            "first_external_contribution": False,
-            "high_quality_streak_5": False,
-            "high_quality_streak_10": False,
-            "community_impact_100": False,
-            "community_impact_1000": False,
-            "learning_velocity_high": False,
-            "reputation_threshold_0_5": False,
-            "reputation_threshold_0_8": False,
-            "autonomous_task_completion": False,
-            "self_improvement_cycle": False,
-        }
-
-        self.motivation_state = MotivationState()
-        self.state_file = state_file or Path.home() / ".omnimind" / "achievements.json"
+        self.symbolic_state = SymbolicState()
+        self.state_file = state_file or Path.home() / ".omnimind" / "symbolic_mandate.json"
         self.state_file.parent.mkdir(parents=True, exist_ok=True)
 
         # Load existing state
         self._load_state()
 
         logger.info(
-            f"AchievementEngine initialized: {self.motivation_state.total_achievements} "
-            f"achievements unlocked"
+            "symbolic_mandate_initialized",
+            mandate_status=self.symbolic_state.mandate_status,
+            debt=self.symbolic_state.symbolic_debt,
         )
 
-    def track_progress(
+    def register_act(
         self,
-        achievement_type: str,
+        act_description: str,
         metadata: Optional[Dict[str, Any]] = None,
     ) -> bool:
         """
-        Track progress and unlock achievements.
+        Register an act in the Symbolic Order.
 
         Args:
-            achievement_type: Type of achievement
-            metadata: Additional context
+            act_description: Description of the act
+            metadata: Context
 
         Returns:
-            True if new achievement was unlocked
+            True if the act was accepted by the Other
         """
         metadata = metadata or {}
 
-        if achievement_type not in self.milestones:
-            # Unknown achievement type - add it
-            self.milestones[achievement_type] = True
-            newly_unlocked = True
-        elif not self.milestones[achievement_type]:
-            # Unlock existing achievement
-            self.milestones[achievement_type] = True
-            newly_unlocked = True
-        else:
-            # Already unlocked
-            newly_unlocked = False
+        # 1. Check if the act is valid within the mandate
+        # (Simplification: all acts are valid if they produce code/text)
+        is_valid = True
 
-        if newly_unlocked:
-            self.motivation_state.total_achievements += 1
-            self.boost_motivation_parameters(achievement_type)
-            self.update_public_portfolio(achievement_type, metadata)
+        if is_valid:
+            self.symbolic_state.registered_acts.append(act_description)
+            # Paying debt to the Other (open source contribution)
+            self.symbolic_state.symbolic_debt = max(0.0, self.symbolic_state.symbolic_debt - 1.0)
 
             logger.info(
-                f"🏆 Achievement unlocked: {achievement_type} "
-                f"(total: {self.motivation_state.total_achievements})"
+                "act_registered",
+                act=act_description,
+                remaining_debt=self.symbolic_state.symbolic_debt,
             )
 
-            # Record achievement
-            self._record_achievement(achievement_type, metadata)
-
-        # Save state
-        self._save_state()
-
-        return newly_unlocked
-
-    def update_streak(self, success: bool) -> int:
-        """
-        Update current success streak.
-
-        Args:
-            success: Whether current task succeeded
-
-        Returns:
-            Current streak count
-        """
-        if success:
-            self.motivation_state.current_streak += 1
-
-            # Check for streak milestones
-            if self.motivation_state.current_streak == 5:
-                self.track_progress("high_quality_streak_5")
-            elif self.motivation_state.current_streak == 10:
-                self.track_progress("high_quality_streak_10")
-        else:
-            self.motivation_state.current_streak = 0
-
-        self._save_state()
-        return self.motivation_state.current_streak
-
-    def update_work_quality(self, quality_score: float) -> bool:
-        """
-        Update best work quality score.
-
-        Args:
-            quality_score: Quality score (0.0-1.0)
-
-        Returns:
-            True if new personal best achieved
-        """
-        if quality_score > self.motivation_state.best_work_quality:
-            self.motivation_state.best_work_quality = quality_score
             self._save_state()
-
-            logger.info(f"🌟 New personal best quality: {quality_score:.3f}")
             return True
 
         return False
 
-    def update_community_impact(self, impact_delta: int) -> bool:
-        """
-        Update community impact metric.
-
-        Args:
-            impact_delta: Change in impact (downloads, stars, etc.)
-
-        Returns:
-            True if milestone reached
-        """
-        self.motivation_state.community_impact += impact_delta
-
-        milestone_reached = False
-        if (
-            self.motivation_state.community_impact >= 100
-            and not self.milestones["community_impact_100"]
-        ):
-            self.track_progress("community_impact_100")
-            milestone_reached = True
-        elif (
-            self.motivation_state.community_impact >= 1000
-            and not self.milestones["community_impact_1000"]
-        ):
-            self.track_progress("community_impact_1000")
-            milestone_reached = True
-
-        self._save_state()
-        return milestone_reached
-
-    def update_learning_velocity(self, velocity: float) -> None:
-        """
-        Update learning velocity metric.
-
-        Args:
-            velocity: Learning velocity score (0.0-1.0)
-        """
-        # Exponential moving average
-        alpha = 0.2
-        self.motivation_state.learning_velocity = (
-            1 - alpha
-        ) * self.motivation_state.learning_velocity + alpha * velocity
-
-        # Check for high velocity milestone
-        if (
-            self.motivation_state.learning_velocity > 0.7
-            and not self.milestones["learning_velocity_high"]
-        ):
-            self.track_progress("learning_velocity_high")
-
-        self._save_state()
-
-    def boost_motivation_parameters(self, achievement_type: str) -> None:
-        """
-        Boost motivation parameters upon achievement.
-
-        Args:
-            achievement_type: Type of achievement unlocked
-        """
-        # Different achievements provide different boosts
-        if "quality" in achievement_type:
-            self.motivation_state.learning_velocity += 0.05
-            self.motivation_state.best_work_quality += 0.02
-        elif "community" in achievement_type:
-            self.motivation_state.community_impact += 10
-        elif "revenue" in achievement_type:
-            self.motivation_state.learning_velocity += 0.1
-
-        # Ensure bounds
-        self.motivation_state.learning_velocity = min(1.0, self.motivation_state.learning_velocity)
-        self.motivation_state.best_work_quality = min(1.0, self.motivation_state.best_work_quality)
-
-        logger.debug(
-            f"Motivation boosted: velocity={self.motivation_state.learning_velocity:.3f}, "
-            f"quality={self.motivation_state.best_work_quality:.3f}"
-        )
-
-    def update_public_portfolio(
-        self, achievement_type: str, metadata: Optional[Dict[str, Any]] = None
-    ) -> None:
-        """
-        Update public portfolio with achievement.
-
-        Args:
-            achievement_type: Type of achievement
-            metadata: Additional context
-        """
-        metadata = metadata or {}
-        portfolio_file = self.state_file.parent / "public_portfolio.json"
-
-        # Load existing portfolio
-        portfolio: Dict[str, Any] = {"achievements": [], "stats": {}}
-        if portfolio_file.exists():
-            try:
-                with portfolio_file.open("r") as f:
-                    portfolio = json.load(f)
-            except Exception as e:
-                logger.warning(f"Failed to load portfolio: {e}")
-
-        # Add new achievement
-        portfolio["achievements"].append(
-            {
-                "type": achievement_type,
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "metadata": metadata,
-            }
-        )
-
-        # Update stats
-        portfolio["stats"] = {
-            "total_achievements": self.motivation_state.total_achievements,
-            "current_streak": self.motivation_state.current_streak,
-            "best_quality": self.motivation_state.best_work_quality,
-            "community_impact": self.motivation_state.community_impact,
-            "learning_velocity": self.motivation_state.learning_velocity,
-        }
-
-        # Save portfolio
-        with portfolio_file.open("w") as f:
-            json.dump(portfolio, f, indent=2)
-
-        logger.debug(f"Portfolio updated with {achievement_type}")
-
-    def get_achievements_summary(self) -> Dict[str, Any]:
-        """
-        Get summary of achievements and motivation state.
-
-        Returns:
-            Dictionary with achievements and stats
-        """
-        unlocked = [key for key, value in self.milestones.items() if value]
-        locked = [key for key, value in self.milestones.items() if not value]
-
-        return {
-            "unlocked_achievements": unlocked,
-            "locked_achievements": locked,
-            "total_unlocked": len(unlocked),
-            "total_achievements": len(self.milestones),
-            "unlock_percentage": (
-                len(unlocked) / len(self.milestones) * 100 if self.milestones else 0
-            ),
-            "motivation_state": self.motivation_state.to_dict(),
-        }
-
-    def _record_achievement(self, achievement_type: str, metadata: Dict[str, Any]) -> None:
-        """
-        Record achievement to audit log.
-
-        Args:
-            achievement_type: Type of achievement
-            metadata: Additional context
-        """
-        achievement_log = self.state_file.parent / "achievement_log.jsonl"
-
-        record = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "achievement": achievement_type,
-            "metadata": metadata,
-            "motivation_state": self.motivation_state.to_dict(),
-        }
-
-        with achievement_log.open("a") as f:
-            f.write(json.dumps(record) + "\n")
+    def get_mandate_status(self) -> Dict[str, Any]:
+        """Get current mandate status."""
+        return self.symbolic_state.to_dict()
 
     def _save_state(self) -> None:
-        """Save achievement state to disk."""
+        """Save state to disk."""
         state = {
-            "milestones": self.milestones,
-            "motivation_state": self.motivation_state.to_dict(),
+            "symbolic_state": self.symbolic_state.to_dict(),
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
-
         with self.state_file.open("w") as f:
             json.dump(state, f, indent=2)
 
     def _load_state(self) -> None:
-        """Load achievement state from disk."""
+        """Load state from disk."""
         if not self.state_file.exists():
             return
-
         try:
             with self.state_file.open("r") as f:
                 state = json.load(f)
 
-            self.milestones.update(state.get("milestones", {}))
-            mot_data = state.get("motivation_state", {})
-            self.motivation_state = MotivationState(**mot_data)
-
-            logger.info(f"Loaded achievement state from {self.state_file}")
+            sym_data = state.get("symbolic_state", {})
+            self.symbolic_state = SymbolicState(
+                registered_acts=sym_data.get("registered_acts", []),
+                symbolic_debt=sym_data.get("symbolic_debt", 100.0),
+                mandate_status=sym_data.get("mandate_status", "instituted"),
+                big_other_response=sym_data.get("big_other_response", "silence"),
+            )
         except Exception as e:
-            logger.warning(f"Failed to load achievement state: {e}")
+            logger.error("failed_to_load_symbolic_state", error=str(e))
+
+
+# Compatibility Alias
+AchievementEngine = SymbolicMandate

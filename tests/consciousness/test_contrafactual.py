@@ -11,6 +11,7 @@ Expected results:
 
 import pytest
 import numpy as np
+import torch
 from dataclasses import dataclass
 from typing import Dict, Any
 
@@ -18,6 +19,13 @@ from src.consciousness.integration_loop import IntegrationLoop
 
 
 from unittest.mock import patch
+
+
+# Verificação de GPU para testes pesados
+if not torch.cuda.is_available():
+    pytest.skip(
+        "GPU não disponível - testes de consciência requerem GPU para cálculos pesados de Φ"
+    )
 
 
 @dataclass

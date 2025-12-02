@@ -74,8 +74,17 @@ export function Dashboard() {
 
   useEffect(() => {
     fetchData();
-    // Refresh every 5 seconds
-    const interval = setInterval(fetchData, 5000);
+    // Refresh every 15 seconds (reduced from 5s to prevent excessive polling)
+    // Only refresh if there are active agents or tasks
+    const interval = setInterval(() => {
+      const state = useDaemonStore.getState();
+      // Skip refresh if no agents and no active tasks to reduce flickering
+      if (state.agents && state.agents.length > 0) {
+        fetchData();
+      } else if (state.tasks && state.tasks.length > 0) {
+        fetchData();
+      }
+    }, 15000);
     return () => clearInterval(interval);
   }, [fetchData]);
 

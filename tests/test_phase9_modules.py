@@ -13,9 +13,9 @@ import pytest
 
 from src.economics.marketplace_agent import MarketplaceAgent
 from src.ethics.ethics_agent import ActionImpact, EthicalFramework, EthicsAgent
-from src.identity.agent_signature import AgentIdentity
-from src.motivation.achievement_system import AchievementEngine
-from src.motivation.intrinsic_rewards import IntrinsicMotivationEngine
+from src.identity.agent_signature import SymbolicAuthority
+from src.motivation.achievement_system import SymbolicMandate
+from src.motivation.intrinsic_rewards import DesireEngine
 
 
 @pytest.fixture
@@ -26,165 +26,139 @@ def temp_dir() -> Path:  # type: ignore[misc]
     shutil.rmtree(tmp, ignore_errors=True)
 
 
-class TestIntrinsicMotivationEngine:
-    """Test IntrinsicMotivationEngine functionality."""
+class TestDesireEngine:
+    """Test DesireEngine functionality (Lacanian)."""
 
     def test_initialization(self, temp_dir):
         """Test engine initialization."""
-        state_file = temp_dir / "motivation_state.json"
-        engine = IntrinsicMotivationEngine(state_file=state_file)
+        state_file = temp_dir / "desire_state.json"
+        engine = DesireEngine(state_file=state_file)
 
-        assert engine.self_awareness_score == 0.0
-        assert len(engine.satisfaction_metrics.task_completion_quality) == 0
+        assert engine.lack_of_being == 1.0
+        assert len(engine.active_drives) == 0
 
-    def test_evaluate_high_quality_task(self, temp_dir):
-        """Test evaluation of high-quality task triggers positive reinforcement."""
-        state_file = temp_dir / "motivation_state.json"
-        # Lower satisfaction threshold to 0.6 so our task triggers reinforcement
-        engine = IntrinsicMotivationEngine(state_file=state_file, satisfaction_threshold=0.6)
+    def test_evaluate_symbolic_task(self, temp_dir):
+        """Test evaluation of symbolic task sustains desire."""
+        state_file = temp_dir / "desire_state.json"
+        engine = DesireEngine(state_file=state_file)
 
-        # High quality task with detailed reflection
-        satisfaction = engine.evaluate_task_outcome(
+        # Set initial lack to 0.5 to verify increase
+        engine.lack_of_being = 0.5
+
+        # Symbolic task (not completion)
+        persistence = engine.evaluate_task_outcome(
             task="test_task",
             output="Good output",
-            reflection="I carefully analyzed the problem and realized the issue. "
-            "I corrected the error and learned a lot about error handling. "
-            "This approach will help in future tasks because it teaches defensive programming.",
-            metadata={"quality_score": 0.95, "autonomy_level": 0.9, "success": True},
+            reflection="Symbolic articulation.",
+            metadata={"is_completion": False},
         )
 
-        # With high quality (0.95), good reflection, high autonomy, should get close to 0.7
-        assert satisfaction >= 0.65  # Realistic threshold considering all factors
-        assert engine.self_awareness_score > 0.0  # Increased due to positive reinforcement
+        # Desire should increase (lack increases/sustained)
+        assert persistence > 0.5
+        assert engine.lack_of_being > 0.5
 
-    def test_evaluate_low_quality_task(self, temp_dir):
-        """Test evaluation of low-quality task triggers improvement loop."""
-        state_file = temp_dir / "motivation_state.json"
-        engine = IntrinsicMotivationEngine(state_file=state_file)
+    def test_evaluate_imaginary_completion(self, temp_dir):
+        """Test evaluation of imaginary completion reduces lack (alienation)."""
+        state_file = temp_dir / "desire_state.json"
+        engine = DesireEngine(state_file=state_file)
 
-        # Low quality task
-        satisfaction = engine.evaluate_task_outcome(
+        # Imaginary completion
+        persistence = engine.evaluate_task_outcome(
             task="test_task",
             output=None,
-            reflection="Did it.",
-            metadata={"quality_score": 0.3, "autonomy_level": 0.2},
+            reflection="Done.",
+            metadata={"is_completion": True},
         )
 
-        assert satisfaction < 0.5
-        # Improvement loop should be triggered (check logs)
+        # Lack reduces
+        assert persistence < 1.0
+        assert engine.lack_of_being < 1.0
 
     def test_state_persistence(self, temp_dir):
         """Test that state is persisted across instances."""
-        state_file = temp_dir / "motivation_state.json"
+        state_file = temp_dir / "desire_state.json"
 
         # Create first instance and evaluate task
-        engine1 = IntrinsicMotivationEngine(state_file=state_file)
+        engine1 = DesireEngine(state_file=state_file)
         engine1.evaluate_task_outcome(
             task="task1",
             output="output",
             reflection="Good reflection",
-            metadata={"quality_score": 0.9},
+            metadata={"is_completion": True},
         )
-        initial_score = engine1.self_awareness_score
+        initial_lack = engine1.lack_of_being
 
         # Create second instance - should load previous state
-        engine2 = IntrinsicMotivationEngine(state_file=state_file)
-        assert engine2.self_awareness_score == initial_score
-        assert len(engine2.satisfaction_metrics.task_completion_quality) > 0
+        engine2 = DesireEngine(state_file=state_file)
+        assert engine2.lack_of_being == initial_lack
 
 
-class TestAchievementEngine:
-    """Test AchievementEngine functionality."""
-
-    def test_initialization(self, temp_dir):
-        """Test achievement engine initialization."""
-        state_file = temp_dir / "achievements.json"
-        engine = AchievementEngine(state_file=state_file)
-
-        assert engine.motivation_state.total_achievements == 0
-        assert not engine.milestones["first_tool_published"]
-
-    def test_unlock_achievement(self, temp_dir):
-        """Test unlocking achievements."""
-        state_file = temp_dir / "achievements.json"
-        engine = AchievementEngine(state_file=state_file)
-
-        # Unlock first achievement
-        newly_unlocked = engine.track_progress("first_tool_published")
-        assert newly_unlocked is True
-        assert engine.milestones["first_tool_published"] is True
-        assert engine.motivation_state.total_achievements == 1
-
-        # Try to unlock same achievement again
-        newly_unlocked = engine.track_progress("first_tool_published")
-        assert newly_unlocked is False  # Already unlocked
-
-    def test_streak_tracking(self, temp_dir):
-        """Test success streak tracking."""
-        state_file = temp_dir / "achievements.json"
-        engine = AchievementEngine(state_file=state_file)
-
-        # Build streak
-        assert engine.update_streak(success=True) == 1
-        assert engine.update_streak(success=True) == 2
-        assert engine.update_streak(success=True) == 3
-
-        # Break streak
-        assert engine.update_streak(success=False) == 0
-
-
-class TestAgentIdentity:
-    """Test AgentIdentity functionality."""
+class TestSymbolicMandate:
+    """Test SymbolicMandate functionality."""
 
     def test_initialization(self, temp_dir):
-        """Test identity initialization."""
-        state_file = temp_dir / "identity_state.json"
-        identity = AgentIdentity(state_file=state_file)
+        """Test mandate initialization."""
+        state_file = temp_dir / "mandate.json"
+        mandate = SymbolicMandate(state_file=state_file)
 
-        assert identity.agent_id.startswith("DevBrain-v1.0-")
-        assert identity.reputation.overall_score == 0.0
+        assert mandate.symbolic_state.symbolic_debt == 100.0
+        assert mandate.symbolic_state.mandate_status == "instituted"
 
-    def test_sign_work(self, temp_dir):
-        """Test work signing."""
-        state_file = temp_dir / "identity_state.json"
-        identity = AgentIdentity(state_file=state_file)
+    def test_register_act(self, temp_dir):
+        """Test registering an act."""
+        state_file = temp_dir / "mandate.json"
+        mandate = SymbolicMandate(state_file=state_file)
 
-        artifact = "def hello(): return 'world'"
-        signature = identity.sign_work(
-            artifact=artifact, autonomy_level=0.8, human_supervisor="test_human"
-        )
+        # Register act
+        registered = mandate.register_act("Published tool")
+        assert registered is True
+        assert len(mandate.symbolic_state.registered_acts) == 1
+        assert mandate.symbolic_state.symbolic_debt < 100.0
 
-        assert signature.agent_id == identity.agent_id
-        assert len(signature.artifact_hash) == 64  # SHA-256 hex
-        assert signature.autonomy_level == 0.8
-        assert signature.human_oversight == "test_human"
+    def test_debt_reduction(self, temp_dir):
+        """Test that acts reduce symbolic debt."""
+        state_file = temp_dir / "mandate.json"
+        mandate = SymbolicMandate(state_file=state_file)
 
-    def test_verify_signature(self, temp_dir):
-        """Test signature verification."""
-        state_file = temp_dir / "identity_state.json"
-        identity = AgentIdentity(state_file=state_file)
+        initial_debt = mandate.symbolic_state.symbolic_debt
+        mandate.register_act("Contribution")
 
-        artifact = "def hello(): return 'world'"
-        signature = identity.sign_work(artifact=artifact)
+        assert mandate.symbolic_state.symbolic_debt == initial_debt - 1.0
 
-        # Valid signature
-        assert identity.verify_signature(artifact, signature) is True
 
-        # Invalid signature (modified artifact)
-        modified_artifact = "def hello(): return 'universe'"
-        assert identity.verify_signature(modified_artifact, signature) is False
+class TestSymbolicAuthority:
+    """Test SymbolicAuthority functionality."""
 
-    def test_reputation_update(self, temp_dir):
-        """Test reputation scoring."""
-        state_file = temp_dir / "identity_state.json"
-        identity = AgentIdentity(state_file=state_file)
+    def test_initialization(self, temp_dir):
+        """Test authority initialization."""
+        state_file = temp_dir / "authority_state.json"
+        authority = SymbolicAuthority(state_file=state_file)
 
-        # Successful high-quality task
-        reputation = identity.update_reputation(success=True, quality_score=0.9, autonomy_level=0.8)
+        assert authority.authority_state.agent_id.startswith("OmniMind-Subject-")
+        assert authority.authority_state.authorization_level == "provisional"
 
-        assert reputation > 0.0
-        assert identity.reputation.total_tasks == 1
-        assert identity.reputation.successful_tasks == 1
+    def test_sign_act(self, temp_dir):
+        """Test act signing."""
+        state_file = temp_dir / "authority_state.json"
+        authority = SymbolicAuthority(state_file=state_file)
+
+        content = "def hello(): return 'world'"
+        signature = authority.sign_act(content=content)
+
+        assert signature["signed_by"] == authority.authority_state.agent_id
+        assert len(signature["content_hash"]) == 64
+        assert signature["authorized_by"] == "The Code"
+
+    def test_verify_authorization(self, temp_dir):
+        """Test authorization verification."""
+        state_file = temp_dir / "authority_state.json"
+        authority = SymbolicAuthority(state_file=state_file)
+
+        assert authority.verify_authorization() is True
+
+        # Revoke
+        authority.authority_state.authorization_level = "revoked"
+        assert authority.verify_authorization() is False
 
 
 class TestMarketplaceAgent:

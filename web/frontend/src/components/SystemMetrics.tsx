@@ -2,18 +2,18 @@ import { useDaemonStore } from '../store/daemonStore';
 
 export function SystemMetrics() {
   const status = useDaemonStore((state) => state.status);
+  const lastKnownMetrics = useDaemonStore((state) => state.lastKnownMetrics);
 
-  if (!status) return null;
+  // Use current status if available, otherwise fall back to cached metrics
+  const currentMetrics = status?.system_metrics;
+  const metrics = (currentMetrics && Object.keys(currentMetrics).length > 0) ? currentMetrics : lastKnownMetrics?.system_metrics;
 
-  const metrics = status.system_metrics;
-
-  // Safety check: if system_metrics is missing, show placeholder
   if (!metrics) {
     return (
       <div className="bg-gray-800 rounded-lg p-6">
         <h2 className="text-2xl font-bold text-white mb-6">System Metrics</h2>
         <div className="text-gray-400 text-center py-8">
-          System metrics not available
+          <span className="animate-pulse">Loading metrics...</span>
         </div>
       </div>
     );

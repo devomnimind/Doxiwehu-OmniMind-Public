@@ -22,15 +22,17 @@ from .hawking_motivation import (
     KnowledgeItem,
 )
 from .intrinsic_rewards import (
+    DesireEngine,
     IntrinsicMotivationEngine,
-    SatisfactionMetrics,
-    TaskOutcome,
+    JouissanceTopology,
+    DriveCirculation,
 )
 
 __all__ = [
+    "DesireEngine",
     "IntrinsicMotivationEngine",
-    "SatisfactionMetrics",
-    "TaskOutcome",
+    "JouissanceTopology",
+    "DriveCirculation",
     "HawkingMotivationEngine",
     "KnowledgeItem",
     "EvaporationEvent",

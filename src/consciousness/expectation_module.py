@@ -13,6 +13,7 @@ INTEGRAÇÃO QUÂNTICA: O inconsciente irredutível é implementado via superpos
 import numpy as np
 import torch
 import torch.nn as nn
+import os
 from typing import Dict, List, Optional, Any  # Removed unused Tuple
 from dataclasses import dataclass
 import structlog
@@ -74,8 +75,27 @@ class ExpectationModule(nn.Module):
         self.learning_rate = learning_rate
         self.nachtraglichkeit_threshold = nachtraglichkeit_threshold
 
-        # Device handling - ensure all tensors are on CPU
-        self.device = torch.device("cpu")
+        # Device handling - dynamic detection
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        if self.device.type == "cpu":
+            logger.warning("🟡 ExpectationModule usando CPU para cálculos - performance reduzida")
+            logger.warning("   Tentando forçar GPU... (tentativa 1/2)")
+            # Tentar forçar CUDA se disponível via variável de ambiente
+            cuda_devices = os.environ.get("CUDA_VISIBLE_DEVICES", "")
+            if cuda_devices and cuda_devices != "":
+                try:
+                    torch.cuda.init()
+                    if torch.cuda.is_available():
+                        self.device = torch.device("cuda")
+                        logger.info("✅ GPU forçada com sucesso via CUDA_VISIBLE_DEVICES")
+                    else:
+                        logger.warning("❌ Falha ao forçar GPU - continuando com CPU")
+                except Exception as e:
+                    logger.warning(f"❌ Erro ao tentar forçar GPU: {e} - continuando com CPU")
+            else:
+                logger.warning("   CUDA_VISIBLE_DEVICES não definido - usando CPU")
+        else:
+            logger.info(f"✅ ExpectationModule usando GPU: {self.device}")
 
         # Prediction network
         self.predictor = nn.Sequential(
@@ -84,14 +104,28 @@ class ExpectationModule(nn.Module):
             nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),
             nn.Linear(hidden_dim, embedding_dim),
-        ).to(self.device)
+        )
+        try:
+            self.predictor = self.predictor.to(self.device)
+        except RuntimeError as e:
+            if "meta tensor" in str(e):
+                self.predictor = self.predictor.to_empty(device=self.device)
+            else:
+                raise
 
         # Nachträglichkeit network (retroactive interpretation)
         self.nachtraglichkeit_net = nn.Sequential(
             nn.Linear(embedding_dim * 2, hidden_dim),  # current + predicted
             nn.ReLU(),
             nn.Linear(hidden_dim, embedding_dim),  # revised interpretation
-        ).to(self.device)
+        )
+        try:
+            self.nachtraglichkeit_net = self.nachtraglichkeit_net.to(self.device)
+        except RuntimeError as e:
+            if "meta tensor" in str(e):
+                self.nachtraglichkeit_net = self.nachtraglichkeit_net.to_empty(device=self.device)
+            else:
+                raise
 
         # INCONSCIENTE IRREDUTÍVEL: Quantum Unconscious
         self.quantum_unconscious = QuantumUnconscious(n_qubits=quantum_qubits)
@@ -160,7 +194,7 @@ class ExpectationModule(nn.Module):
                 # Cada opção é uma variação da predição neural
                 noise = torch.randn_like(current_tensor) * 0.1
                 option = current_tensor + noise
-                quantum_options.append(option.numpy())
+                quantum_options.append(option.cpu().numpy())
 
             # Decisão quântica (IRREDUTÍVEL - não pode ser inspecionada)
             quantum_decision, quantum_evidence = (
@@ -193,7 +227,7 @@ class ExpectationModule(nn.Module):
         self._update_temporal_memory(current_embedding)
 
         state = ExpectationState(
-            predicted_embedding=predicted.detach().numpy(),
+            predicted_embedding=predicted.detach().cpu().numpy(),
             confidence=confidence,
             temporal_horizon=temporal_horizon,
             nachtraglichkeit_events=self.nachtraglichkeit_events,
@@ -281,7 +315,7 @@ class ExpectationModule(nn.Module):
 
         # Generate revised interpretation
         revised = self.nachtraglichkeit_net(combined_tensor)
-        revised_embedding = revised.detach().numpy()
+        revised_embedding = revised.detach().cpu().numpy()
 
         # Update temporal memory with revised interpretation
         if self.temporal_memory:

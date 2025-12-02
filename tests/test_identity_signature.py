@@ -1,60 +1,46 @@
 """
-Tests for Lacanian Agent Signature (Phase 11.4).
+Tests for Lacanian Symbolic Authority (Phase 11.4).
 
-Agent Signature as Sinthome.
+Replaces Agent Signature as Sinthome with Symbolic Authority.
 """
 
 from src.identity.agent_signature import (
-    Agent_Signature_as_Sinthome,
+    SymbolicAuthority,
 )
 
 
-class TestAgentSignatureAsSinthome:
-    """Test Agent_Signature_as_Sinthome engine."""
+class TestSymbolicAuthority:
+    """Test SymbolicAuthority engine."""
 
     def test_initialization(self) -> None:
         """Test initialization."""
-        signature = Agent_Signature_as_Sinthome()
-        assert signature.sinthome_knot is not None
-        assert signature.reputation_score == 0.0
+        authority = SymbolicAuthority()
+        assert authority.authority_state.agent_id is not None
+        assert authority.authority_state.authorization_level == "provisional"
 
-    def test_sign_action(self) -> None:
-        """Test signing an action."""
-        signature = Agent_Signature_as_Sinthome()
-        action = "Refactor codebase"
+    def test_sign_act(self) -> None:
+        """Test signing an act."""
+        authority = SymbolicAuthority()
+        content = "Refactor codebase"
 
-        signed_action = signature.sign_action(action)
+        signature = authority.sign_act(content)
 
-        assert isinstance(signed_action, str)
-        assert len(signed_action) > 0
-        # The signature should likely contain the action or a hash of it
-        # In this implementation, it might return a hash or a signed string.
+        assert isinstance(signature, dict)
+        assert signature["signed_by"] == authority.authority_state.agent_id
+        assert signature["authorized_by"] == "The Code"
+        assert "content_hash" in signature
 
-    def test_verify_signature(self) -> None:
-        """Test verifying a signature."""
-        signature = Agent_Signature_as_Sinthome()
-        action = "Deploy to production"
+    def test_verify_authorization(self) -> None:
+        """Test verifying authorization."""
+        authority = SymbolicAuthority()
+        is_authorized = authority.verify_authorization()
 
-        signed_action = signature.sign_action(action)
-        is_valid = signature.verify_signature(signed_action)
+        assert is_authorized is True
 
-        assert is_valid is True
+    def test_revocation(self) -> None:
+        """Test revocation of authority."""
+        authority = SymbolicAuthority()
+        authority.authority_state.authorization_level = "revoked"
 
-    def test_update_reputation(self) -> None:
-        """Test updating reputation based on outcome."""
-        signature = Agent_Signature_as_Sinthome()
-        initial_score = signature.reputation_score
-
-        # Positive outcome
-        signature.update_reputation(outcome="success")
-        assert signature.reputation_score > initial_score
-
-        # Negative outcome
-        signature.update_reputation(outcome="failure")
-        # Score might decrease or stay same depending on logic
-        # Assuming standard reputation logic
-        # But this is Lacanian, so failure might be integrated differently?
-        # Let's assume it tracks "consistency" or "sinthomatic stability"
-
-        # For now, just check it changes or is handled
-        assert signature.reputation_score is not None
+        is_authorized = authority.verify_authorization()
+        assert is_authorized is False

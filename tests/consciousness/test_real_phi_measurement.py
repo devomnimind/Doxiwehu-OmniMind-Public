@@ -24,14 +24,13 @@ pytestmark = pytest.mark.real
 
 @pytest.fixture
 async def gpu_device() -> str:
-    """Retorna 'cuda' se disponível, senão 'cpu'."""
+    """Retorna 'cuda' se disponível, senão skip o teste."""
     if torch.cuda.is_available():
         print(f"\n✅ GPU disponível: {torch.cuda.get_device_name(0)}")
         print(f"   VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
         return "cuda"
     else:
-        print("\n⚠️  GPU não disponível, usando CPU (muito mais lento)")
-        return "cpu"
+        pytest.skip("GPU não disponível - teste requer GPU para cálculos pesados de Φ")
 
 
 @pytest.fixture

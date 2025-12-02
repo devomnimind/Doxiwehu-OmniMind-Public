@@ -60,16 +60,41 @@ class IntegrationLoss:
             return 1.0
 
         # Main term: minimize (1 - R²) to maximize cross-prediction quality
-        r2_mean = np.mean(list(r2_scores.values()))
+        # Filter out invalid values (NaN, inf) before computing mean
+        valid_r2_scores = [
+            v for v in r2_scores.values() if isinstance(v, (int, float)) and np.isfinite(v)
+        ]
+
+        if not valid_r2_scores:
+            # No valid scores - return baseline loss
+            return 1.0
+
+        r2_mean = np.mean(valid_r2_scores)
+        # Clamp r2_mean to valid range [0, 1]
+        r2_mean = np.clip(r2_mean, 0.0, 1.0)
         r2_loss = 1.0 - r2_mean
+
+        # Validate temporal consistency
+        temporal_consistency = np.clip(float(temporal_consistency), 0.0, 1.0)
+        if not np.isfinite(temporal_consistency):
+            temporal_consistency = 1.0
 
         # Temporal consistency penalty (encourage stable embeddings)
         temporal_loss = (1.0 - temporal_consistency) * self.lambda_temporal
+
+        # Validate diversity
+        diversity = np.clip(float(diversity), 0.0, 1.0)
+        if not np.isfinite(diversity):
+            diversity = 0.5
 
         # Diversity penalty (prevent premature convergence)
         diversity_loss = (1.0 - diversity) * self.lambda_diversity
 
         total_loss = r2_loss + temporal_loss + diversity_loss
+
+        # Final validation: ensure result is finite
+        if not np.isfinite(total_loss):
+            total_loss = 1.0
 
         return float(total_loss)
 
@@ -85,18 +110,39 @@ class IntegrationLoss:
         # Compute cosine similarity between consecutive embeddings
         similarities = []
         for i in range(len(embeddings_history) - 1):
-            emb1 = embeddings_history[i]
-            emb2 = embeddings_history[i + 1]
+            try:
+                emb1 = embeddings_history[i]
+                emb2 = embeddings_history[i + 1]
 
-            # Normalize
-            emb1 = emb1 / (np.linalg.norm(emb1) + 1e-8)
-            emb2 = emb2 / (np.linalg.norm(emb2) + 1e-8)
+                # Validate embeddings
+                if not isinstance(emb1, np.ndarray) or not isinstance(emb2, np.ndarray):
+                    continue
+                if not np.all(np.isfinite(emb1)) or not np.all(np.isfinite(emb2)):
+                    continue
 
-            # Cosine similarity
-            sim = float(np.dot(emb1, emb2))
-            similarities.append(sim)
+                # Normalize
+                norm1 = np.linalg.norm(emb1)
+                norm2 = np.linalg.norm(emb2)
 
-        return float(np.mean(similarities)) if similarities else 1.0
+                if norm1 < 1e-8 or norm2 < 1e-8:
+                    continue
+
+                emb1 = emb1 / norm1
+                emb2 = emb2 / norm2
+
+                # Cosine similarity
+                sim = float(np.dot(emb1, emb2))
+                if np.isfinite(sim):
+                    similarities.append(sim)
+            except Exception:
+                # Skip this pair if computation fails
+                continue
+
+        if not similarities:
+            return 1.0
+
+        result = float(np.mean(similarities))
+        return float(np.clip(result, 0.0, 1.0)) if np.isfinite(result) else 1.0
 
     def compute_diversity(self, module_embeddings: Dict[str, np.ndarray]) -> float:
         """
@@ -113,22 +159,44 @@ class IntegrationLoss:
 
         for i in range(len(modules)):
             for j in range(i + 1, len(modules)):
-                emb1 = modules[i]
-                emb2 = modules[j]
+                try:
+                    emb1 = modules[i]
+                    emb2 = modules[j]
 
-                # Normalize
-                emb1 = emb1 / (np.linalg.norm(emb1) + 1e-8)
-                emb2 = emb2 / (np.linalg.norm(emb2) + 1e-8)
+                    # Validate embeddings
+                    if not isinstance(emb1, np.ndarray) or not isinstance(emb2, np.ndarray):
+                        continue
+                    if not np.all(np.isfinite(emb1)) or not np.all(np.isfinite(emb2)):
+                        continue
 
-                # Cosine similarity
-                sim = float(np.dot(emb1, emb2))
-                similarities.append(abs(sim))
+                    # Normalize
+                    norm1 = np.linalg.norm(emb1)
+                    norm2 = np.linalg.norm(emb2)
+
+                    if norm1 < 1e-8 or norm2 < 1e-8:
+                        continue
+
+                    emb1 = emb1 / norm1
+                    emb2 = emb2 / norm2
+
+                    # Cosine similarity
+                    sim = float(np.dot(emb1, emb2))
+                    if np.isfinite(sim):
+                        similarities.append(abs(sim))
+                except Exception:
+                    # Skip this pair if computation fails
+                    continue
 
         # Diversity = 1 - average_similarity
-        avg_similarity = float(np.mean(similarities)) if similarities else 0.0
-        diversity = 1.0 - avg_similarity
+        if not similarities:
+            return 0.5
 
-        return diversity
+        avg_similarity = float(np.mean(similarities))
+        if not np.isfinite(avg_similarity):
+            return 0.5
+
+        diversity = 1.0 - np.clip(avg_similarity, 0.0, 1.0)
+        return float(np.clip(diversity, 0.0, 1.0))
 
 
 @dataclass
@@ -241,19 +309,36 @@ class IntegrationTrainer:
 
         diversity = self.loss_fn.compute_diversity(module_embeddings)
         # Compute loss - extract r_squared values from CrossPredictionMetrics
-        r2_scores = {key: m.r_squared for key, m in cross_predictions.items()}
-        r2_values = [m.r_squared for m in cross_predictions.values()]
+        # Validate r2 scores before using them
+        r2_scores = {}
+        for key, m in cross_predictions.items():
+            try:
+                r2_val = m.r_squared
+                # Only include valid (finite) r2 values
+                if isinstance(r2_val, (int, float)) and np.isfinite(r2_val):
+                    r2_val = np.clip(float(r2_val), -1.0, 1.0)  # R² can be [-1, 1]
+                    r2_scores[key] = r2_val
+            except Exception:
+                # Skip invalid values
+                continue
+
+        r2_values = list(r2_scores.values())
         r2_mean = float(np.mean(r2_values)) if r2_values else 0.0
+        if not np.isfinite(r2_mean):
+            r2_mean = 0.0
+
         loss = self.loss_fn.compute_loss(r2_scores, temporal_consistency, diversity)
 
         # Store step
         step = TrainingStep(
             cycle=len(self.training_steps),
-            loss=loss,
-            phi=phi,
-            r2_mean=r2_mean,
-            temporal_consistency=temporal_consistency,
-            diversity=diversity,
+            loss=float(loss) if np.isfinite(loss) else 1.0,
+            phi=float(phi) if np.isfinite(phi) else 0.0,
+            r2_mean=float(r2_mean) if np.isfinite(r2_mean) else 0.0,
+            temporal_consistency=(
+                float(temporal_consistency) if np.isfinite(temporal_consistency) else 1.0
+            ),
+            diversity=float(diversity) if np.isfinite(diversity) else 0.5,
         )
         self.training_steps.append(step)
 

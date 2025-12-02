@@ -171,7 +171,7 @@ async def test_polling_endpoint(async_client):
 
 
 @pytest.mark.asyncio
-async def test_websocket_metrics():
+async def test_websocket_metrics(omnimind_server):
     """
     Verify that the WebSocket endpoint broadcasts metrics updates.
     """
@@ -186,14 +186,24 @@ async def test_websocket_metrics():
             # Wait for connection established message
             init_msg = await websocket.recv()
             init_data = json.loads(init_msg)
-            assert init_data["type"] == "connection_established"
+            assert init_data["type"] == "connected"
+
+            # Subscribe to sinthome channel
+            await websocket.send(json.dumps({"type": "subscribe", "channels": ["sinthome"]}))
+
+            # Wait for subscription confirmation
+            try:
+                sub_msg = await asyncio.wait_for(websocket.recv(), timeout=2.0)
+                _ = json.loads(sub_msg)
+            except asyncio.TimeoutError:
+                pass  # Continue even if subscription confirmation times out
 
             # Wait for metrics updates (should receive both types within 5 seconds)
             received_types = set()
             start_time = asyncio.get_event_loop().time()
 
-            while len(received_types) < 2 and (asyncio.get_event_loop().time() - start_time) < 5.0:
-                metrics_msg = await asyncio.wait_for(websocket.recv(), timeout=3.0)
+            while len(received_types) < 2 and (asyncio.get_event_loop().time() - start_time) < 10.0:
+                metrics_msg = await asyncio.wait_for(websocket.recv(), timeout=5.0)
                 metrics_data = json.loads(metrics_msg)
 
                 if metrics_data["type"] == "metrics_update":

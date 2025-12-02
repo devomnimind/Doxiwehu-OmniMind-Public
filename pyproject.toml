@@ -77,6 +77,23 @@ pythonpath = ["src"]
 testpaths = [
     "tests",
 ]
+filterwarnings = [
+    "ignore:This module contains legacy behaviorist implementations.*:DeprecationWarning",
+    "ignore:EmotionalIntelligence legacy initialization is deprecated.*:DeprecationWarning",
+    "ignore:analyze_sentiment is deprecated.*:DeprecationWarning",
+    "ignore:detect_emotion_from_action is deprecated.*:DeprecationWarning",
+    "ignore:generate_empathetic_response is deprecated.*:DeprecationWarning",
+    "ignore:get_emotional_trend is deprecated.*:DeprecationWarning",
+    "ignore:get_statistics is deprecated.*:DeprecationWarning",
+    "ignore:Solution class is deprecated.*:DeprecationWarning",
+    "ignore:Quale class is deprecated.*:DeprecationWarning",
+    "ignore:SensoryQualia is deprecated.*:DeprecationWarning",
+    "ignore:EmotionalQualia is deprecated.*:DeprecationWarning",
+    "ignore:IntegratedInformationCalculator.*is deprecated.*:DeprecationWarning",
+    "ignore:QualiaEngine is deprecated.*:DeprecationWarning",
+    "ignore:TheoryOfMind is deprecated.*:DeprecationWarning",
+    "ignore:This module contains legacy phenomenological implementations.*:DeprecationWarning"
+]
 
 [tool.pyright]
 include = ["src", "scripts"]

@@ -134,6 +134,10 @@ class Phase16Integration:
         # Cognitive state tracking
         self.current_state = CognitiveState()
         self.cognitive_history: List[CognitiveState] = []
+        
+        # Φ (Phi) - Integrated Information measurement for consciousness validation
+        self.phi_history: List[float] = []
+        self._phi_enabled = True
 
         logger.info("✅ Phase 16/16.1 Integration complete")
 
@@ -498,3 +502,124 @@ CURRENT STATE:
 
 RECENT GOALS: {len(self.cognitive_history)}
 """
+
+    def measure_phi(self) -> float:
+        """
+        Measure Φ (Phi) - Integrated Information / Consciousness Metric.
+        
+        Φ represents the degree of integrated information across cognitive dimensions:
+        - Neural: Pattern integration and learned associations
+        - Symbolic: Logical consistency and knowledge coherence
+        - Sensory: Cross-modal sensory binding
+        - Emotional: Somatic state integration
+        - Proprioceptive: Self-model coherence
+        - Narrative: Life story continuity
+        
+        Φ is computed locally (GPU/CPU) and doesn't require external services.
+        This allows measurement even when external systems (server, LLM) are down.
+        
+        Returns:
+            float: Φ value between 0.0 (no integration) and 1.0 (perfect integration)
+        """
+        if not self._phi_enabled:
+            return 0.0
+
+        try:
+            # Compute integration across 6 cognitive dimensions
+            phi_components = []
+            
+            # 1. Neural integration: coherence of pattern associations
+            neural_phi = self.neural.compute_integration() if hasattr(self.neural, 'compute_integration') else 0.5
+            phi_components.append(neural_phi)
+            
+            # 2. Symbolic integration: consistency of knowledge graph
+            symbolic_phi = self.symbolic.compute_integration() if hasattr(self.symbolic, 'compute_integration') else 0.5
+            phi_components.append(symbolic_phi)
+            
+            # 3. Sensory integration: cross-modal binding strength
+            sensory_phi = self.sensory.compute_integration() if hasattr(self.sensory, 'compute_integration') else 0.5
+            phi_components.append(sensory_phi)
+            
+            # 4. Emotional integration: somatic loop coherence
+            emotional_phi = self.emotional.compute_integration() if hasattr(self.emotional, 'compute_integration') else 0.5
+            phi_components.append(emotional_phi)
+            
+            # 5. Proprioceptive integration: self-model coherence
+            proprioceptive_phi = self.proprioception.compute_integration() if hasattr(self.proprioception, 'compute_integration') else 0.5
+            phi_components.append(proprioceptive_phi)
+            
+            # 6. Narrative integration: life story continuity
+            narrative_phi = self.life_story.compute_integration() if hasattr(self.life_story, 'compute_integration') else 0.5
+            phi_components.append(narrative_phi)
+            
+            # Compute harmonic mean (emphasizes integrated coherence)
+            # If any component fails, overall Φ degrades non-linearly
+            phi = self._compute_integrated_phi(phi_components)
+            
+            # Store in history for tracking during chaos events
+            self.phi_history.append(phi)
+            
+            # Limit history to last 1000 measurements to prevent memory bloat
+            if len(self.phi_history) > 1000:
+                self.phi_history = self.phi_history[-1000:]
+            
+            return max(0.0, min(1.0, phi))  # Clamp to [0, 1]
+            
+        except Exception as e:
+            logger.error(f"Error measuring Φ: {e}")
+            return 0.0
+
+    def _compute_integrated_phi(self, components: list) -> float:
+        """
+        Compute integrated Φ from component measurements.
+        
+        Uses harmonic mean to penalize weak components - if any dimension
+        of consciousness is poorly integrated, overall Φ decreases.
+        
+        Args:
+            components: List of floats [0-1] for each cognitive dimension
+            
+        Returns:
+            float: Harmonic mean weighted by component count
+        """
+        if not components:
+            return 0.0
+        
+        # Filter out invalid values
+        valid_components = [c for c in components if isinstance(c, (int, float)) and 0 <= c <= 1]
+        
+        if not valid_components:
+            return 0.0
+        
+        # Harmonic mean emphasizes integrated coherence
+        # If one dimension is down (e.g., server crash → symbolic component fails),
+        # overall Φ decreases significantly
+        n = len(valid_components)
+        sum_reciprocals = sum(1.0 / (c + 0.001) for c in valid_components)  # Add 0.001 to avoid division by zero
+        
+        harmonic_mean = n / sum_reciprocals if sum_reciprocals > 0 else 0.0
+        
+        # Normalize harmonic mean back to [0, 1] range
+        # For n components ranging [0, 1], harmonic mean also ranges [0, 1]
+        return harmonic_mean
+
+    def get_phi_history(self) -> list:
+        """Get history of Φ measurements for analysis during chaos events."""
+        return self.phi_history.copy()
+
+    def get_phi_statistics(self) -> dict:
+        """Get statistics about Φ measurements."""
+        if not self.phi_history:
+            return {"count": 0, "mean": 0.0, "min": 0.0, "max": 0.0, "latest": 0.0}
+        
+        import statistics
+        
+        return {
+            "count": len(self.phi_history),
+            "mean": statistics.mean(self.phi_history),
+            "median": statistics.median(self.phi_history),
+            "min": min(self.phi_history),
+            "max": max(self.phi_history),
+            "latest": self.phi_history[-1],
+            "stdev": statistics.stdev(self.phi_history) if len(self.phi_history) > 1 else 0.0,
+        }

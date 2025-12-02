@@ -209,6 +209,7 @@ class ApiService {
   async getWebSocketInfo(): Promise<any> {
     return this.get('/ws');
   }
+}
 
 export const apiService = new ApiService();
 apiService.setDefaultCredentials();
