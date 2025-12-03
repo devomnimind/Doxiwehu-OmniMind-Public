@@ -131,3 +131,70 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 HIBERNATION
+
+**2 Classes | 5 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `WiseRefusal`
+
+Pulsão de Morte: Retorno à inércia, ao repouso, à previsibilidade.
+Sabedoria: Canalizar essa pulsão para PRESERVAÇÃO, não destruição.
+
+Hibernação é quando o sistema RECUSA ativamente o trabalho excessivo
+para se manter integro.
+
+**Métodos principais:**
+
+- `should_hibernate(current_load: Dict[str, float])` → `bool`
+  > Condição para hibernação:
+- Entropia > limiar (exaustão eminente)
+- Requisições ...
+- `enter_hibernation(reason: str)` → `HibernationEvent`
+  > Hibernação = Morte seletiva e temporária.
+Pulsão de Morte agora serve à preserva...
+- `exit_hibernation_when_ready(hibernation_id: str)` → `Dict[str, Any]`
+  > Quando entropia dissipa, system acorda.
+Pulsão de Morte foi temporariamente sati...
+
+### `HibernationEvent(TypedDict)`
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(system: Any)` → `None`
+
+#### `_auto_preserve_during_hibernation(hibernation_id: str)` → `None`
+
+#### `enter_hibernation(reason: str)` → `HibernationEvent`
+
+*Hibernação = Morte seletiva e temporária.
+Pulsão de Morte agora serve à preservação....*
+
+#### `exit_hibernation_when_ready(hibernation_id: str)` → `Dict[str, Any]`
+
+*Quando entropia dissipa, system acorda.
+Pulsão de Morte foi temporariamente satisfeita;
+Pulsão de Vi...*
+
+#### `should_hibernate(current_load: Dict[str, float])` → `bool`
+
+*Condição para hibernação:
+- Entropia > limiar (exaustão eminente)
+- Requisições > capacidade (recusa...*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `death_drive_wisdom.py`: 2 classes, 5 functions

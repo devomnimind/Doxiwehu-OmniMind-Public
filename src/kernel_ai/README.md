@@ -131,3 +131,24 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 KERNEL_AI
+
+**0 Classes | 0 Funções | 0 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+
+## ⚙️ Funções Públicas
+
+
+## 📦 Módulos
+
+**Total:** 0 arquivos
+

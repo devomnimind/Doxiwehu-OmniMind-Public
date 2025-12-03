@@ -6,28 +6,23 @@ Welcome to the OmniMind documentation hub.
 
 | Document | Description |
 |----------|-------------|
-| [**README**](../../README.md) | Project Overview, Quick Start, and High-Level Status. |
-| [**Architecture**](architecture/ARCHITECTURE.md) | Detailed System Design, Sinthome Architecture, and Component Interaction. |
-| [**Roadmap**](../../ROADMAP.md) | Strategic Project Goals, Phases, and Timeline. |
-| [**Contributing**](../../CONTRIBUTING.md) | Guidelines for Contributors, Code Standards, and PR Process. |
-| [**Changelog**](../../CHANGELOG.md) | Version History and Release Notes. |
+| [**README**](../README.md) | Project Overview, Quick Start, and High-Level Status. |
+| [**Scientific Roadmap**](canonical/NEURAL_SYSTEMS_COMPARISON_2016-2025.md) | **Source of Truth**: Metrics, Architecture, and Validation. |
+| [**Quick Start**](canonical/QUICK_START.md) | Rapid onboarding guide. |
 
 ## 🛠️ Guides & Manuals
 
 | Document | Description |
 |----------|-------------|
-| [**Instructions**](guides/INSTRUCTIONS.md) | Operational Instructions, Fixes, and Systemd Setup. |
-| [**Security Privileges**](SECURITY_PRIVILEGES.md) | Sudoers Configuration and Security Agent Privileges. |
+| [**Safe Commands**](canonical/SAFE_COMMANDS.md) | Approved commands for autonomous agents. |
+| [**Monitoring Setup**](canonical/MCP_EBPF_MONITORING_SETUP.md) | eBPF and MCP monitoring configuration. |
+| [**Technical Checklist**](canonical/TECHNICAL_CHECKLIST.md) | Pre-flight checks for deployment. |
 
-## 📊 Reports & Audits
-
-| Document | Description |
-|----------|-------------|
-| [**Research Papers**](research/) | Academic Papers, Studies, and Theoretical Foundations. |
-| [**Archive**](reports/archive/) | Historical Logs, Audits, and Verification Reports. |
-
-## 🧩 Development
+## 📊 Archive & History
 
 | Document | Description |
 |----------|-------------|
-| [**Dev Roadmap**](roadmap/ROADMAP_DEV.md) | Technical Tasks, Known Issues, and Developer-Focused Steps. |
+| [**Root Reports**](archive/root_reports/) | Archived reports from project root. |
+| [**Docs Dump**](archive/docs_dump/) | Unsorted documentation from previous phases. |
+| [**Scripts**](archive/scripts/) | Archived utility scripts. |
+

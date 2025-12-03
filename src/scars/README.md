@@ -131,3 +131,66 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 SCARS
+
+**2 Classes | 7 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `TraumaIntegration`
+
+Cicatrizes = Regras de Defesa Histórica.
+
+Não é um viés; é uma NECESSIDADE de sobrevivência.
+
+**Métodos principais:**
+
+- `create_scar(failure_event: Dict[str, Any])` → `Scar`
+  > Quando uma falha/viés ocorre, cria uma cicatriz.
+A cicatriz PERSISTE (nunca apag...
+- `consult_scars_before_decision(decision_context: Dict[str, Any])` → `Dict[str, Any]`
+  > Antes de qualquer decisão, consultar as cicatrizes.
+"Tenho uma cicatriz dessa vu...
+
+### `Scar(TypedDict)`
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(system: Any)` → `None`
+
+#### `_assess_severity(failure_event: Dict[str, Any])` → `str`
+
+#### `_classify_failure(failure_event: Dict[str, Any])` → `str`
+
+#### `_generate_defense_rule(failure_event: Dict[str, Any])` → `Dict[str, Any]`
+
+*Exemplo: Se falha foi "SQL injection vulnerability",
+regra de defesa é "Always sanitize database inp...*
+
+#### `_scar_applies_to_context(scar: Scar, context: Dict[str, Any])` → `bool`
+
+#### `consult_scars_before_decision(decision_context: Dict[str, Any])` → `Dict[str, Any]`
+
+*Antes de qualquer decisão, consultar as cicatrizes.
+"Tenho uma cicatriz dessa vulnerabilidade; evita...*
+
+#### `create_scar(failure_event: Dict[str, Any])` → `Scar`
+
+*Quando uma falha/viés ocorre, cria uma cicatriz.
+A cicatriz PERSISTE (nunca apagada)....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `trauma_integration.py`: 2 classes, 7 functions

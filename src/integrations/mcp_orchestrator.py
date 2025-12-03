@@ -288,7 +288,7 @@ class MCPOrchestrator:
             # Processo parece estar rodando
             self.status[name].running = True
             self.status[name].uptime_seconds = 0.0
-            logger.info("Servidor MCP %s iniciado com sucesso (PID=%d)", name, process.pid)
+            logger.info("Servidor MCP %s iniciado com sucesso (PID=%s)", name, process.pid)
             return True
 
         except FileNotFoundError:
@@ -462,7 +462,7 @@ class MCPOrchestrator:
                 else:
                     # Porta não está respondendo, mas processo está rodando
                     # Marcar como não saudável mas não reiniciar imediatamente
-                    logger.debug("Servidor %s: porta %d não está respondendo", name, config.port)
+                    logger.debug("Servidor %s: porta %s não está respondendo", name, config.port)
                     self.status[name].healthy = False
                     self.status[name].last_health_check = time.time()
                     return False

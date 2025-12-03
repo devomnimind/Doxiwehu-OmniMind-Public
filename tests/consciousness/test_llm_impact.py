@@ -139,7 +139,10 @@ async def test_llm_impact_comparison(
         print(msg)
         logger.info(msg)
     else:
-        msg = f"  ✗ Real LLM DECREASED Φ_conscious by {abs(diffs.get('pct_change_conscious', 0)):.2f}%"
+        msg = (
+            f"  ✗ Real LLM DECREASED Φ_conscious by "
+            f"{abs(diffs.get('pct_change_conscious', 0)):.2f}%"
+        )
         print(msg)
         logger.info(msg)
 

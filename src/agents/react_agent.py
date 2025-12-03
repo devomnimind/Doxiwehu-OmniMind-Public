@@ -15,17 +15,12 @@ from langchain_ollama import OllamaLLM
 from langgraph.graph import END, StateGraph
 
 from ..consciousness.affective_memory import AffectiveTraceNetwork, JouissanceProfile
-from ..integrations.llm_router import get_llm_router, LLMModelTier, invoke_llm_sync
+from ..integrations.llm_router import LLMModelTier, get_llm_router, invoke_llm_sync
 from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory import EpisodicMemory
 from ..onboarding import SupabaseMemoryOnboarding
 from ..tools import FileOperations, ShellExecutor, SystemMonitor
-from .agent_protocol import (
-    AgentMessage,
-    MessagePriority,
-    MessageType,
-    get_message_bus,
-)
+from .agent_protocol import AgentMessage, MessagePriority, MessageType, get_message_bus
 
 logger = logging.getLogger(__name__)
 
@@ -567,6 +562,18 @@ Your response:"""
             return
 
         def _onboard() -> None:
+            try:
+                # Test connection first
+                from ..integrations.supabase_adapter import SupabaseAdapter
+
+                adapter = SupabaseAdapter(config)
+                # Simple test query to check if Supabase is accessible
+                adapter.client.table("memory_consolidations").select("id").limit(1).execute()
+                logger.debug("Supabase connection test successful")
+            except Exception as conn_exc:
+                logger.warning("Supabase connection test failed, skipping onboarding: %s", conn_exc)
+                return
+
             try:
                 onboarding = SupabaseMemoryOnboarding(config=config, memory=self.memory)
                 report = onboarding.seed_collection()

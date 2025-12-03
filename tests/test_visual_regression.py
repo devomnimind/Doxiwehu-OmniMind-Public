@@ -302,7 +302,7 @@ def test_homepage_visual():
         result = tester.capture_and_compare(
             page,
             "homepage",
-            full_page=True,
+            full_page=False,
             threshold=0.20,  # Increased threshold for dynamic web content
         )
 

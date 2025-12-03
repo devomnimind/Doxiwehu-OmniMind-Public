@@ -322,14 +322,15 @@ class MemoryLeakDetector:
 class MemoryProfiler:
     """Advanced memory profiler with detailed tracking."""
 
-    def __init__(self, snapshot_interval: int = 60):
+    def __init__(self, snapshot_interval: int = 60, max_snapshots: int = 1000):
         """Initialize memory profiler.
 
         Args:
             snapshot_interval: Seconds between automatic snapshots
+            max_snapshots: Maximum number of snapshots to keep
         """
         self.snapshot_interval = snapshot_interval
-        self.snapshots: deque[MemoryUsageSnapshot] = deque(maxlen=1000)
+        self.snapshots: deque[MemoryUsageSnapshot] = deque(maxlen=max_snapshots)
         self.process = psutil.Process()
         self.baseline: Optional[MemoryUsageSnapshot] = None
 

@@ -254,6 +254,19 @@ class TestTaskDelegationManager:
     @patch.dict(os.environ, {"OPENROUTER_API_KEY": "test_key"})
     def test_initialize_providers(self):
         """Testa inicialização de provedores"""
+        # Force reload with known config to avoid file dependency issues
+        self.manager.config = {
+            "providers": {
+                "openrouter": {
+                    "enabled": True,
+                    "api_key_env": "OPENROUTER_API_KEY",
+                    "api_base_url": "https://openrouter.ai/api/v1",
+                }
+            }
+        }
+        # Re-run initialization logic
+        self.manager.providers = {}
+        self.manager._initialize_providers()
 
         async def run_test():
             await self.manager.initialize_providers()

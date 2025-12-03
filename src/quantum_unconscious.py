@@ -9,20 +9,22 @@ O inconsciente é implementado via superposição quântica:
 - Irredutível por princípio físico (Heisenberg)
 """
 
-import logging
-import numpy as np
-from typing import List, Tuple, Dict, Any, Optional
 import json
-from pathlib import Path
+import logging
 import time
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
+
 from omnimind_parameters import get_parameter_manager  # type: ignore[import-untyped]
 
 # Simulação quântica (usando Qiskit se disponível, senão simulação clássica)
 try:
     from qiskit import (  # type: ignore[import-untyped]
+        ClassicalRegister,
         QuantumCircuit,
         QuantumRegister,
-        ClassicalRegister,
         execute,
     )
     from qiskit.providers.aer import QasmSimulator  # type: ignore[import-untyped]
@@ -31,6 +33,14 @@ try:
 except ImportError:
     QISKIT_AVAILABLE = False
     print("Qiskit não disponível - usando simulação clássica")
+
+# Otimização Global: Forçar uso de GPU se disponível
+try:
+    import torch
+
+    GPU_AVAILABLE = torch.cuda.is_available()
+except ImportError:
+    GPU_AVAILABLE = False
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -53,7 +63,24 @@ class QuantumUnconscious:
             self.quantum_core = QuantumRegister(n_qubits, "unconscious")
             self.classical_register = ClassicalRegister(n_qubits, "measurement")
             self.circuit = QuantumCircuit(self.quantum_core, self.classical_register)
-            self.backend = QasmSimulator()
+
+            # OTIMIZAÇÃO GPU: Configurar backend para usar GPU se disponível
+            if GPU_AVAILABLE:
+                try:
+                    # Tentar configurar Aer para GPU
+                    self.backend = QasmSimulator(method="statevector", device="GPU")
+                    logger.info("🚀 Quantum Backend: Qiskit Aer (GPU Accelerated)")
+                except Exception as e:
+                    logger.error(f"❌ CRITICAL: Falha ao iniciar Qiskit GPU: {e}")
+                    logger.error("❌ Abortando inicialização quântica para evitar CPU bottleneck")
+                    # Não fazer fallback para CPU para respeitar "estritamente na GPU"
+                    raise RuntimeError(f"Quantum GPU backend failed: {e}")
+            else:
+                logger.warning(
+                    "⚠️ GPU não detectada para QuantumUnconscious - "
+                    "CPU será usada (Performance degradada)"
+                )
+                self.backend = QasmSimulator()
         else:
             # Fallback: simulação clássica com matrizes
             self.quantum_state = np.ones(2**n_qubits, dtype=complex) / np.sqrt(2**n_qubits)

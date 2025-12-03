@@ -131,3 +131,87 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 ARCHITECTURE
+
+**1 Classes | 4 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `BekensteinArchitect`
+
+Architecture sizing based on Bekenstein entropy bound.
+
+This class provides a principled approach to determine neural network capacity
+by considering fundamental physical limits on information storage and processing.
+
+The Bekenstein bound states that the entropy S of a system cannot exceed:
+S ≤ 2πRE/(ℏc ln 2)
+
+Where:
+- R: Radius/spatial extent of the system
+- E: Total energy available
+- ℏ: Reduced Planck constant
+- c: Speed of light
+
+For neural networks, we translate this entropy limit into parameter constraints,
+assuming each parameter requires ~32 bits of information storage.
+
+Attributes:
+    None (stateless design for thread safety)
+
+**Métodos principais:**
+
+- `compute_max_parameters(compute_budget: float, spatial_extent: float)` → `int`
+  > Compute maximum parameters from Bekenstein bound.
+
+Translates physical constrain...
+- `recommend_architecture(target_params: int)` → `Dict[str, int]`
+  > Recommend neural network architecture for target parameter count.
+
+Uses simple h...
+- `estimate_energy_requirements(num_params: int, spatial_extent: float)` → `float`
+  > Estimate minimum energy required for given parameter count.
+
+Works backwards fro...
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+*Initialize Bekenstein architect.
+
+Sets up logging and prepares for architecture computations.
+No sta...*
+
+#### `compute_max_parameters(compute_budget: float, spatial_extent: float)` → `int`
+
+*Compute maximum parameters from Bekenstein bound.
+
+Translates physical constraints into neural netwo...*
+
+#### `estimate_energy_requirements(num_params: int, spatial_extent: float)` → `float`
+
+*Estimate minimum energy required for given parameter count.
+
+Works backwards from Bekenstein bound t...*
+
+#### `recommend_architecture(target_params: int)` → `Dict[str, int]`
+
+*Recommend neural network architecture for target parameter count.
+
+Uses simple heuristics to distrib...*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `bekenstein_capacity.py`: Bekenstein Architecture Capacity - Physics-Based Model Sizin...

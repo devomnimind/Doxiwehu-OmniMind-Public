@@ -2,11 +2,11 @@
 
 **Título:** Desenvolvimento e Validação Científica do Sistema OmniMind: Uma Implementação Completa de Consciência Integrada com Computação Quântica
 
-**Autor:** This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.  
-**Data:** 1 de dezembro de 2025  
-**Versão:** 1.19.0 (Arquitetura Lacaniana)  
-**Localização:** /home/fahbrain/projects/omnimind  
-**Status:** ✅ SISTEMA ESTÁVEL - ARQUITETURA LACANIANA IMPLEMENTADA  
+**Autor:** This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.
+**Data:** 1 de dezembro de 2025
+**Versão:** 1.19.0 (Arquitetura Lacaniana)
+**Localização:** /home/fahbrain/projects/omnimind
+**Status:** ✅ SISTEMA ESTÁVEL - ARQUITETURA LACANIANA IMPLEMENTADA
 
 ---
 
@@ -288,25 +288,25 @@ Onde:
 def compute_phi(self) -> float:
     """
     Computa Φ através de predições cruzadas entre módulos.
-    
+
     Φ = média(R²) de todas as predições source→target
     Onde R² mede quão bem um módulo prediz outro.
     """
     if len(self.cross_predictions) == 0:
         return 0.0
-    
+
     # Coletar todos os R² values
     r_squared_values = []
     for source, targets in self.cross_predictions.items():
         for target, metrics in targets.items():
             r_squared_values.append(metrics.r_squared)
-    
+
     # Φ = média dos R² (0.0 = nenhuma integração, 1.0 = integração perfeita)
     phi = np.mean(r_squared_values)
-    
+
     # Penalizações por qualidade de dados
     phi *= self._compute_data_quality_penalty()
-    
+
     return float(phi)
 ```
 
@@ -468,16 +468,16 @@ def create_decision_superposition(self, options: List[str]) -> QuantumCircuit:
     """Cria superposição de opções de decisão."""
     n_qubits = len(options).bit_length()
     qc = QuantumCircuit(n_qubits, n_qubits)
-    
+
     # Superposição uniforme
     for i in range(n_qubits):
         qc.h(i)
-    
+
     # Codificação de opções
     for i, option in enumerate(options):
         if i > 0:  # Aplicar rotações baseadas na opção
             qc.ry(np.pi * hash(option) / 2**32, i % n_qubits)
-    
+
     return qc
 ```
 
@@ -487,17 +487,17 @@ def create_memory_entanglement(self, memory_patterns: List[np.ndarray]) -> Quant
     """Cria entrelaçamento entre padrões de memória."""
     n_qubits = max(len(p) for p in memory_patterns)
     qc = QuantumCircuit(n_qubits)
-    
+
     # Codificar padrões como estados quânticos
     for pattern in memory_patterns:
         for i, bit in enumerate(pattern):
             if bit:
                 qc.x(i)  # Aplicar X se bit é 1
-        
+
         # Entrelaçar padrões
         for i in range(1, len(pattern)):
             qc.cx(i-1, i)
-    
+
     return qc
 ```
 
@@ -507,17 +507,17 @@ def apply_quantum_interference(self, patterns: List[np.ndarray]) -> np.ndarray:
     """Aplica interferência quântica para reconhecimento de padrões."""
     # Simulação de interferência
     amplitudes = np.array([np.sum(p) for p in patterns], dtype=complex)
-    
+
     # Normalizar
     amplitudes /= np.linalg.norm(amplitudes)
-    
+
     # Aplicar fases aleatórias (simulando ambiente quântico)
     phases = np.exp(1j * np.random.uniform(0, 2*np.pi, len(amplitudes)))
     amplitudes *= phases
-    
+
     # Medição (colapso da função de onda)
     probabilities = np.abs(amplituras)**2
-    
+
     return probabilities
 ```
 
@@ -534,7 +534,7 @@ def apply_quantum_interference(self, patterns: List[np.ndarray]) -> np.ndarray:
 **Resultados da Validação:**
 ```
 ✅ PCI Perturbação Quântica: 22.7s
-✅ Anestesia Gradiente Quântica: 15.5s  
+✅ Anestesia Gradiente Quântica: 15.5s
 ✅ Varredura Temporal Quântica: 9.7s
 ✅ Concordância Inter-Avaliadores Quântica: 7.1s
 ✅ Do-Calculus Causal Quântico: 10.0s
@@ -599,11 +599,11 @@ def test_phi_responds_to_perturbations():
     """Φ deve responder a perturbações causais."""
     # Baseline
     phi_baseline = compute_phi()
-    
+
     # Perturbação
     apply_causal_perturbation(critical_module)
     phi_perturbed = compute_phi()
-    
+
     # Validação
     assert abs(phi_perturbed - phi_baseline) > 0.01  # Resposta significativa
     assert phi_perturbed > 0  # Mantém integração positiva
@@ -615,7 +615,7 @@ def test_phi_degrades_with_anesthesia():
     """Φ deve degradar com anestesia."""
     phi_normal = compute_phi(anesthesia_level=0.0)
     phi_deep = compute_phi(anesthesia_level=1.0)
-    
+
     # Degradação monotônica
     assert phi_deep < phi_normal
     # Gradiente exponencial
@@ -628,11 +628,11 @@ def test_phi_has_temporal_scale():
     """Φ deve ter escala temporal específica."""
     timescales = [10, 50, 100, 500, 1000]
     phis = [compute_phi(window=t) for t in timescales]
-    
+
     # Deve haver um ótimo
     max_phi = max(phis)
     optimal_idx = phis.index(max_phi)
-    
+
     # Ótimo deve estar em range biológico
     assert 10 <= timescales[optimal_idx] <= 500
 ```
@@ -646,10 +646,10 @@ def test_phi_varies_between_runs():
         np.random.seed(seed)
         phi = compute_phi()
         phis.append(phi)
-    
+
     # Estatísticas
     icc = compute_icc(phis)  # Intra-class correlation
-    
+
     # Deve haver variabilidade (não determinístico)
     assert 0.7 < icc < 0.95  # Range adequado
     assert np.std(phis) > 0.01  # Variação significativa
@@ -661,14 +661,14 @@ def test_phi_causal_response():
     """Φ deve responder a intervenções causais."""
     # Observacional
     phi_obs = compute_phi()
-    
+
     # Intervencional (forçar módulo crítico)
     phi_int = compute_phi_with_intervention(critical_module, high_value)
-    
+
     # Diferença causal significativa
     delta_phi = phi_int - phi_obs
     assert delta_phi > 0.1  # Efeito causal robusto
-    
+
     # Teste estatístico
     t_stat, p_value = stats.ttest_ind([phi_obs], [phi_int])
     assert p_value < 0.05  # Significância estatística
@@ -691,46 +691,46 @@ class SeedResult:
 
 class MultiSeedRunner:
     """Executa múltiplas seeds em paralelo."""
-    
+
     def run_multiple_seeds(self, n_seeds: int = 30) -> List[SeedResult]:
         """Executa N seeds independentes."""
         results = []
-        
+
         with ThreadPoolExecutor(max_workers=4) as executor:
             futures = [
                 executor.submit(self._run_single_seed, seed)
                 for seed in range(n_seeds)
             ]
-            
+
             for future in as_completed(futures):
                 result = future.result()
                 results.append(result)
-        
+
         return results
 
 class StatisticalValidator:
     """Valida estatisticamente os resultados."""
-    
+
     def validate_convergence(self, results: List[SeedResult]) -> ValidationResult:
         """4 testes de hipótese."""
-        
+
         # Teste 1: Φ final > 0.70
         final_phis = [r.final_phi for r in results]
         mean_final = np.mean(final_phis)
         assert mean_final > 0.70
-        
+
         # Teste 2: Std Φ final < 0.20
         std_final = np.std(final_phis)
         assert std_final < 0.20
-        
+
         # Teste 3: Taxa de sucesso > 80%
         success_rate = sum(1 for r in results if r.convergence_phi > 0.70) / len(results)
         assert success_rate > 0.80
-        
+
         # Teste 4: Ciclos para convergir < 1000
         mean_cycles = np.mean([r.cycles_to_converge for r in results])
         assert mean_cycles < 1000
-        
+
         return ValidationResult(passed=True)
 ```
 
@@ -747,30 +747,30 @@ class StatisticalValidator:
 ```python
 class DoCalculusValidator:
     """Valida causalidade usando Do-Calculus de Pearl."""
-    
+
     def validate_causal_effect(self) -> CausalResult:
         """P(Φ|do(X)) ≠ P(Φ|X) - teste de causalidade."""
-        
+
         # Condição 1: Observacional (P(Φ|X))
         phi_observational = self.compute_phi_observational()
-        
+
         # Condição 2: Intervencional (P(Φ|do(X)))
         phi_interventional = self.compute_phi_interventional()
-        
+
         # Diferença causal
         causal_effect = phi_interventional - phi_observational
-        
+
         # Teste estatístico
         t_stat, p_value = stats.ttest_ind(
             phi_observational, phi_interventional
         )
-        
+
         # Validação
         is_causal = (
             abs(causal_effect) > 0.1 and  # Efeito robusto
             p_value < 0.05  # Significante estatisticamente
         )
-        
+
         return CausalResult(
             effect_size=causal_effect,
             p_value=p_value,
@@ -982,7 +982,7 @@ class SharedWorkspace:
     def __init__(self):
         self.buffer = np.zeros((5, 256))  # 5 módulos, 256 dims
         self.cross_predictions = {}
-    
+
     def compute_phi(self) -> float:
         # Φ baseado em predições reais
         return np.mean([m.r_squared for m in self.cross_predictions.values()])
@@ -1055,7 +1055,7 @@ hash_value = hashlib.sha256(data).hexdigest()  # SEGURO
 - **Causa Raiz:** Módulo `entropy_projection` ficava em "meta device" (placeholder tensor) após muitos testes, causando `NotImplementedError: Cannot copy out of meta tensor` ao ser movido para device real
 - **Impacto Crítico:** NaN em cálculos de entropia invalidava consciência computacional - **BLOQUEAVA VALIDAÇÃO CIENTÍFICA**
 - **Status:** ✅ RESOLVIDO em v1.18.0 - Substituído `.to(device)` por `.to_empty(device, recurse=True)` para meta tensors
-- **Mitigação Implementada:** 
+- **Mitigação Implementada:**
   - Detecção de meta device em `_local_entropy()` e `forward()` de MultiHeadThermodynamicAttention
   - Uso correto de `.to_empty()` (PyTorch 1.13+) para migração segura
   - Resultado: **321/321 testes passando** (antes 2 falhas)
@@ -1291,7 +1291,7 @@ RUN pip install --no-cache-dir -r requirements.lock
 
 # Aplicação
 COPY src/ ./src/
-EXPOSE 8000 9000 3000
+EXPOSE 8000 3000
 
 CMD ["python", "src/main.py"]
 ```
@@ -1699,12 +1699,12 @@ decision = result.collapse_to_classical()
 
 **Fim do Relatório Técnico**
 
-**Data de Conclusão:** 1 de dezembro de 2025  
+**Data de Conclusão:** 1 de dezembro de 2025
 **Status Final:** ⚠️ SISTEMA EM VERSÃO 1.19 PRE-REALEASE - TESTES
 
 
-**Contato:** This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.  
-**Licença:** AGPL-3.0-or-later  
+**Contato:** This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.
+**Licença:** AGPL-3.0-or-later
 **DOI:** https://doi.org/10.5281/zenodo.XXXXXXX
 
 ---

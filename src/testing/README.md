@@ -131,3 +131,133 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 TESTING
+
+**3 Classes | 17 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `ChaosMonkey`
+
+Chaos Monkey for OmniMind.
+
+Injects failures to test system resilience.
+
+**Métodos principais:**
+
+- `register_experiment(experiment: ChaosExperiment)` → `None`
+  > Register a chaos experiment.
+
+Args:
+    experiment: Experiment configuration...
+- `inject_failure(component: str, operation: str)` → `Optional[Exception]`
+  > Inject failure if chaos is enabled and conditions are met.
+
+Args:
+    component:...
+- `get_failure_report()` → `Dict[str, Any]`
+  > Get report of all failures injected....
+
+### `FailureType(Enum)`
+
+Types of failures to inject.
+
+
+### `ChaosExperiment`
+
+Configuration for a chaos experiment.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(enabled: bool)` → `None`
+
+*Initialize Chaos Monkey.
+
+Args:
+    enabled: Whether chaos engineering is enabled...*
+
+#### `_count_by_component()` → `Dict[str, int]`
+
+*Count failures by component....*
+
+#### `_count_by_type()` → `Dict[str, int]`
+
+*Count failures by type....*
+
+#### `_generate_failure(experiment: ChaosExperiment, operation: str)` → `Optional[Exception]`
+
+*Generate failure based on experiment type....*
+
+#### `chaos_aware(component: str, operation: Optional[str])` → `Callable[..., Any]`
+
+*Decorator to make a function chaos-aware.
+
+Args:
+    component: Component name
+    operation: Operat...*
+
+#### `create_api_timeout_experiment()` → `ChaosExperiment`
+
+*Create experiment for API timeouts....*
+
+#### `create_database_latency_experiment()` → `ChaosExperiment`
+
+*Create experiment for database latency....*
+
+#### `create_llm_failure_experiment()` → `ChaosExperiment`
+
+*Create experiment for LLM failures....*
+
+#### `create_memory_exhaustion_experiment()` → `ChaosExperiment`
+
+*Create experiment for memory exhaustion....*
+
+#### `decorator(func: , Any])` → `Callable[..., Any]`
+
+#### `enable_chaos(enabled: bool)` → `None`
+
+*Enable or disable chaos engineering globally.
+
+Args:
+    enabled: Whether to enable chaos...*
+
+#### `get_failure_report()` → `Dict[str, Any]`
+
+*Get report of all failures injected....*
+
+#### `inject_chaos(component: str, operation: str)` → `None`
+
+*Inject chaos if enabled.
+
+Args:
+    component: Component being tested
+    operation: Operation being...*
+
+#### `inject_failure(component: str, operation: str)` → `Optional[Exception]`
+
+*Inject failure if chaos is enabled and conditions are met.
+
+Args:
+    component: Component being tes...*
+
+#### `register_default_experiments()` → `None`
+
+*Register default chaos experiments....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `chaos_engineering.py`: Chaos Engineering Framework for OmniMind
+
+Implements failure...

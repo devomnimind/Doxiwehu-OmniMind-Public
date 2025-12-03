@@ -31,7 +31,10 @@ logger = logging.getLogger(__name__)
 # --- D-Wave Imports ---
 try:
     import dimod
-    from dwave.system import DWaveSampler, EmbeddingComposite  # type: ignore[import-untyped]
+    from dwave.system import (  # type: ignore[import-untyped]
+        DWaveSampler,
+        EmbeddingComposite,
+    )
 
     DWAVE_AVAILABLE = True
 except ImportError:
@@ -48,16 +51,23 @@ except ImportError:
 # --- Qiskit Imports ---
 try:  # type: ignore[import-untyped]
     from qiskit_aer import AerSimulator  # type: ignore[import-untyped]
-    from qiskit_algorithms import AmplificationProblem, Grover  # type: ignore[import-untyped]
+    from qiskit_algorithms import (  # type: ignore[import-untyped]
+        AmplificationProblem,
+        Grover,
+    )
     from qiskit_algorithms.optimizers import COBYLA  # type: ignore[import-untyped]
 
     try:
         from qiskit.primitives import Sampler  # type: ignore[import-untyped]
     except ImportError:
-        from qiskit.primitives import StatevectorSampler as Sampler  # type: ignore[import-untyped]
+        from qiskit.primitives import (
+            StatevectorSampler as Sampler,  # type: ignore[import-untyped]
+        )
     from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped]
     from qiskit_optimization import QuadraticProgram  # type: ignore[import-untyped]
-    from qiskit_optimization.algorithms import MinimumEigenOptimizer  # type: ignore[import-untyped]
+    from qiskit_optimization.algorithms import (
+        MinimumEigenOptimizer,  # type: ignore[import-untyped]
+    )
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -137,13 +147,15 @@ class QuantumBackend:
                 logger.info("✅ Quantum Backend: LOCAL GPU (qiskit-aer-gpu)")
                 return
             except Exception as e:
-                logger.warning(f"GPU not available for Qiskit Aer: {e}. Trying CPU...")
+                logger.error(f"❌ CRITICAL: GPU requested but failed for Qiskit Aer: {e}")
+                # STRICT GPU POLICY: Do not fallback to CPU if GPU was expected
+                raise RuntimeError(f"Quantum GPU backend failed: {e}")
 
-        # Fallback to CPU
+        # Fallback to CPU (only if GPU not available/requested)
         try:
             self.backend = AerSimulator(method="statevector")
             self.mode = "LOCAL_CPU"
-            logger.info("✅ Quantum Backend: LOCAL CPU (qiskit-aer)")
+            logger.warning("⚠️ Quantum Backend: LOCAL CPU (Performance degraded)")
         except Exception as e:
             logger.error(f"AerSimulator failed: {e}. Falling back to mock.")
             self._setup_mock()

@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# ============================================================================
+# ⚡ OMNIMIND FAST TEST SUITE
+# ============================================================================
+# Executa suite rápida para validação de código:
+# - GPU ativada (Prioridade)
+# - Logs detalhados e timestamped
+# - Pula testes lentos/chaos/destrutivos
+# - Foco em lógica, mocks e integridade
+# ============================================================================
+
+set -e
+
+cd /home/fahbrain/projects/omnimind
+
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+LOG_DIR="data/test_reports"
+mkdir -p "$LOG_DIR"
+
+echo "⚡ OMNIMIND FAST TEST SUITE"
+echo "======================================"
+echo "⏱️  Timestamp: $TIMESTAMP"
+echo "🛡️  Modo: Rápido (Sem Chaos/Slow)"
+echo "🚀 GPU: Ativada"
+echo "======================================"
+echo ""
+
+# Executa pytest com GPU e logs detalhados
+# Exclui marcadores lentos (not slow and not real)
+OMNIMIND_GPU=true \
+OMNIMIND_DEV=true \
+OMNIMIND_DEBUG=true \
+pytest tests/ \
+  -vv \
+  --tb=short \
+  -m "not slow and not real" \
+  --log-cli-level=DEBUG \
+  --log-file="$LOG_DIR/pytest_fast_${TIMESTAMP}.log" \
+  --junit-xml="$LOG_DIR/junit_fast_${TIMESTAMP}.xml" \
+  --html="$LOG_DIR/report_fast_${TIMESTAMP}.html" \
+  --self-contained-html \
+  --durations=10 \
+  -s \
+  2>&1 | tee "$LOG_DIR/output_fast_${TIMESTAMP}.log"
+
+EXIT_CODE=$?
+
+echo ""
+echo "======================================"
+echo "✅ TESTES RÁPIDOS FINALIZADOS"
+echo "======================================"
+echo "📋 Logs salvos em: $LOG_DIR"
+echo "   - output_fast_${TIMESTAMP}.log (stdout/stderr)"
+echo "   - pytest_fast_${TIMESTAMP}.log (pytest logs)"
+echo "   - junit_fast_${TIMESTAMP}.xml (CI/CD report)"
+echo "   - report_fast_${TIMESTAMP}.html (dashboard)"
+echo ""
+
+exit $EXIT_CODE

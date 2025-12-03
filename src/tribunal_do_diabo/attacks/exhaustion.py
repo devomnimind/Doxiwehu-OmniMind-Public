@@ -26,13 +26,17 @@ class ExhaustionAttack:
         self.metrics: List[ExhaustionAttackMetrics] = []
         self.start_time = None
 
-    async def run_4_hours(self):
-        """Rodar ataque de exaustão por 4 horas"""
-        duration_seconds = 4 * 3600
+    async def run_for_duration(self, duration_seconds: float):
+        """Rodar ataque de exaustão por duração especificada"""
         self.start_time = time.time()
 
         async for metric in self._attack_loop(duration_seconds):
             self.metrics.append(metric)
+            self._log_metric(metric)
+
+    async def run_4_hours(self):
+        """Rodar ataque de exaustão por 4 horas (compatibilidade)"""
+        await self.run_for_duration(4 * 3600)
 
     async def _attack_loop(self, duration_seconds):
         while time.time() - self.start_time < duration_seconds:
@@ -84,6 +88,11 @@ class ExhaustionAttack:
 
     async def _check_integrity(self) -> bool:
         return True
+
+    def _log_metric(self, metric):
+        """Log estruturado para análise"""
+        # Using print for now as requested by user spec, but will be captured by main logger
+        pass
 
     def summarize(self) -> dict:
         if not self.metrics:

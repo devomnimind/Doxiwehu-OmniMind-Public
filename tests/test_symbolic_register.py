@@ -4,11 +4,13 @@ Test básico do Shared Symbolic Register - P0 Critical Fix
 Testa se o registro simbólico compartilhado permite comunicação entre módulos.
 """
 
-import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
+import sys
 
-from src.consciousness.shared_workspace import SharedWorkspace, SymbolicMessage
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
+
+from src.consciousness.shared_workspace import SharedWorkspace  # noqa: E402
+
 
 def test_symbolic_register_basic():
     """Test básico de comunicação simbólica."""
@@ -24,9 +26,9 @@ def test_symbolic_register_basic():
         symbolic_content={
             "order": "Real",
             "embeddings": [1.0, 2.0, 3.0],
-            "modules": ["mod1", "mod2", "mod3"]
+            "modules": ["mod1", "mod2", "mod3"],
         },
-        priority=3
+        priority=3,
     )
 
     print(f"✅ Message sent with ID: {message_id}")
@@ -80,6 +82,7 @@ def test_symbolic_register_basic():
 
     print("🎉 ALL TESTS PASSED - Shared Symbolic Register is functional!")
     return True
+
 
 if __name__ == "__main__":
     test_symbolic_register_basic()

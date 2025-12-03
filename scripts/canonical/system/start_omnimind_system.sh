@@ -7,6 +7,15 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}🚀 Iniciando Sistema OmniMind Completo...${NC}"
 
+# 🔧 CRÍTICO: Ativar venv ANTES de qualquer import Python
+PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+if [ -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
+    source "$PROJECT_ROOT/.venv/bin/activate"
+    echo "✅ Venv ativado: $VIRTUAL_ENV"
+else
+    echo "⚠️  Venv não encontrado em $PROJECT_ROOT/.venv"
+fi
+
 # Garantir permissão de execução no run_cluster
 chmod +x scripts/canonical/system/run_cluster.sh
 
@@ -15,6 +24,7 @@ echo "🧹 Limpando processos antigos..."
 pkill -f "python web/backend/main.py"
 pkill -f "uvicorn web.backend.main:app"
 pkill -f "vite"
+pkill -f "bpftrace.*monitor_mcp_bpf" || true
 sleep 2
 
 # 2. Iniciar Backend Cluster
@@ -22,8 +32,10 @@ echo -e "${GREEN}🔌 Iniciando Backend Cluster...${NC}"
 ./scripts/canonical/system/run_cluster.sh
 
 # Aguardar Backend subir
-echo "⏳ Aguardando Backend inicializar (10s)..."
-sleep 10
+# ⚠️ CRÍTICO: Uvicorn + Orchestrator + SecurityAgent podem levar 30-60s
+# Aumentado de 10s para 40s para garantir inicialização completa
+echo "⏳ Aguardando Backend inicializar (40s - Orchestrator + SecurityAgent)..."
+sleep 40
 
 # Verificar Health Check (usando o endpoint /health/ que agora é servido pelo router)
 # Nota: O endpoint raiz /health foi removido do main.py, agora é /health/ (com barra) ou /health (se o router permitir sem barra)
@@ -63,7 +75,26 @@ else
     cat ../../logs/frontend.log
 fi
 
+# 5. Iniciar eBPF Monitor Contínuo
+echo -e "${GREEN}📊 Iniciando eBPF Monitor Contínuo...${NC}"
+if command -v bpftrace &> /dev/null; then
+    EBPF_LOG="logs/ebpf_monitor.log"
+    mkdir -p logs
+    # Parar eBPF anterior
+    python3 scripts/secure_run.py pkill -f "bpftrace.*monitor_mcp_bpf" || true
+    sleep 1
+    # Iniciar em background
+    # Nota: secure_run.py já lida com sudo -n
+    python3 scripts/secure_run.py bpftrace scripts/monitor_mcp_bpf.bt > "${EBPF_LOG}" 2>&1 &
+    sleep 2
+    echo -e "${GREEN}✅ eBPF Monitor ativo${NC}"
+    echo "   Log: tail -f ${EBPF_LOG}"
+else
+    echo -e "${RED}⚠️  bpftrace não encontrado. Instale com: sudo apt install bpftrace${NC}"
+fi
+
 echo -e "${GREEN}✨ Sistema OmniMind Reiniciado!${NC}"
 echo "Backend Cluster: Ports 8000, 8080, 3001"
 echo "Frontend: http://localhost:3000"
+echo "eBPF Monitor: logs/ebpf_monitor.log"
 echo "Logs Directory: logs/"

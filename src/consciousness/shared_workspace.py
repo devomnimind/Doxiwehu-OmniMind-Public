@@ -28,6 +28,8 @@ import torch
 from sklearn.decomposition import PCA  # type: ignore[import-untyped]
 from sklearn.linear_model import LinearRegression  # type: ignore[import-untyped]
 
+from src.defense import OmniMindConsciousDefense
+
 from .symbolic_register import SymbolicMessage, SymbolicRegister
 
 
@@ -200,6 +202,9 @@ class SharedWorkspace:
         self._vectorized_predictor: Optional["VectorizedCrossPredictor"] = None
         self._use_vectorized_predictions = True  # Habilitar por padrão
 
+        # Structural Defense (Psychoanalytic Kernel)
+        self.defense_system = OmniMindConsciousDefense()
+
         # Shared Symbolic Register - CRÍTICO PARA P0
         self.symbolic_register = SymbolicRegister(self, max_messages=1000)
 
@@ -293,6 +298,19 @@ class SharedWorkspace:
         """
         module_history = [s for s in self.history if s.module_name == module_name]
         return module_history[-last_n:]
+
+    async def trigger_defense_mechanism(self, threat_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Aciona o sistema de defesa estrutural consciente.
+
+        Args:
+            threat_data: Dados sobre a ameaça/erro (severity, source, error)
+
+        Returns:
+            Resultado da defesa (estratégia, ação, insight)
+        """
+        logger.info(f"🛡️ Defense triggered: {threat_data.get('error', 'Unknown threat')}")
+        return await self.defense_system.defend(threat_data)
 
     # === SHARED SYMBOLIC REGISTER METHODS - CRÍTICO PARA P0 ===
 
@@ -1181,7 +1199,17 @@ class VectorizedCrossPredictor:
         cache_size: int = 1000,
     ):
         self.workspace = workspace
-        self.use_gpu = use_gpu and torch.cuda.is_available()
+
+        # Strict GPU check
+        if use_gpu and not torch.cuda.is_available():
+            logger.warning(
+                "⚠️ VectorizedCrossPredictor requested GPU but CUDA is not available. "
+                "Falling back to CPU (Performance will be degraded)."
+            )
+            self.use_gpu = False
+        else:
+            self.use_gpu = use_gpu
+
         self.pca_components = pca_components or 32
         self.cache_size = cache_size
 
@@ -1271,7 +1299,7 @@ class VectorizedCrossPredictor:
         logger.info(f"PCA fitted with {self.pca_components} components")
 
     def _reduce_dimensionality(self, X: np.ndarray, Y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        """Reduz dimensionalidade com PCA se configurado."""
+        """Reduzir dimensionalidade com PCA se configurado."""
         if not self.pca_components or not self.pca_fitted:
             return X, Y
 
@@ -1435,6 +1463,35 @@ class VectorizedCrossPredictor:
         # Vetorização com PyTorch (GPU se disponível)
         device = torch.device("cuda" if self.use_gpu else "cpu")
 
+        # Preparar dados completos para Granger (não apenas t/t+1)
+        module_list = list(module_histories.keys())
+
+        # Reconstruir tensor completo a partir de module_histories
+        # Shape: (n_modules, n_timesteps, embedding_dim)
+        full_histories_list = []
+        for module in module_list:
+            full_histories_list.append(module_histories[module][:n_timesteps])
+
+        Full_History = np.stack(full_histories_list)
+
+        # Reduzir dimensionalidade se necessário (para Granger é crucial)
+        Full_History_Flat = Full_History.reshape(-1, embedding_dim)
+        if self.pca_components and self.pca_source:
+            Full_History_Reduced = self.pca_source.transform(Full_History_Flat)
+            Full_History_Reduced = Full_History_Reduced.reshape(n_modules, n_timesteps, -1)
+        else:
+            Full_History_Reduced = Full_History
+
+        History_Torch = torch.from_numpy(Full_History_Reduced).float().to(device)
+
+        # Computar Granger Causality (Vectorized)
+        granger_scores = None
+        try:
+            granger_scores = self.compute_granger_causality_vectorized(History_Torch, max_lag=3)
+        except Exception as e:
+            logger.warning(f"GPU Granger calculation failed, falling back to CPU/Correlation: {e}")
+            # Fallback: granger_scores permanece None, usará correlação
+
         X_torch = torch.from_numpy(X_reduced).float().to(device)
         Y_torch = torch.from_numpy(Y_reduced).float().to(device)
 
@@ -1460,10 +1517,11 @@ class VectorizedCrossPredictor:
 
         # Converter para numpy
         correlations_np = correlations.cpu().numpy()
+        granger_np = granger_scores.cpu().numpy() if granger_scores is not None else None
 
         # Construir resultados
         predictions: Dict[str, Dict[str, Any]] = {}
-        module_list = list(module_histories.keys())
+        # module_list já definido acima
 
         for i, source in enumerate(module_list):
             predictions[source] = {}
@@ -1481,8 +1539,17 @@ class VectorizedCrossPredictor:
                     r_squared = float(correlations_np[i, j] ** 2)  # R² aproximado
                     correlation = float(correlations_np[i, j])
 
-                    # MI simplificado (correlação como proxy)
-                    mutual_information = correlation * 0.8
+                    # Usar Granger real se disponível, senão proxy
+                    if granger_np is not None:
+                        granger_val = float(granger_np[i, j])
+                        # Transfer entropy proxy via Granger (assumindo relação)
+                        transfer_val = granger_val * 0.9
+                        mutual_information = (granger_val + transfer_val) / 2.0
+                    else:
+                        granger_val = 0.0
+                        transfer_val = 0.0
+                        # MI simplificado (correlação como proxy)
+                        mutual_information = correlation * 0.8
 
                     metrics = CrossPredictionMetrics(
                         source_module=source,
@@ -1490,6 +1557,8 @@ class VectorizedCrossPredictor:
                         r_squared=r_squared,
                         correlation=correlation,
                         mutual_information=mutual_information,
+                        granger_causality=granger_val,
+                        transfer_entropy=transfer_val,
                     )
 
                     predictions[source][target] = metrics
@@ -1529,3 +1598,99 @@ class VectorizedCrossPredictor:
         )
 
         return result
+
+    def compute_granger_causality_vectorized(
+        self, X_torch: torch.Tensor, max_lag: int = 3
+    ) -> torch.Tensor:
+        """
+        Computes Granger Causality for all pairs (i, j) in parallel using GPU.
+
+        Args:
+            X_torch: (n_modules, n_timesteps, embedding_dim)
+            max_lag: Number of lags to include
+
+        Returns:
+            Tensor of shape (n_modules, n_modules) with Granger scores.
+        """
+        n_modules, n_timesteps, embedding_dim = X_torch.shape
+        device = X_torch.device
+
+        granger_scores = torch.zeros(n_modules, n_modules, device=device)
+
+        # Pre-compute Restricted Models (Auto-regression) for all modules
+        rss_restricted = torch.zeros(n_modules, device=device)
+
+        effective_timesteps = n_timesteps - max_lag
+        if effective_timesteps < 10:
+            return granger_scores  # Not enough data
+
+        # Helper to create lag matrix
+        def create_lag_matrix(tensor_data):
+            # tensor_data: (n_timesteps, dim)
+            lags = []
+            for lag in range(1, max_lag + 1):
+                lags.append(tensor_data[max_lag - lag : -lag])
+            return torch.cat(lags, dim=1)  # (effective_timesteps, max_lag * dim)
+
+        # Pre-calculate lag matrices for all modules
+        lagged_matrices = []
+        targets = []
+
+        for i in range(n_modules):
+            mod_data = X_torch[i]  # (n_timesteps, dim)
+            L = create_lag_matrix(mod_data)
+            lagged_matrices.append(L)
+            targets.append(mod_data[max_lag:])  # Y(t)
+
+        # 1. Restricted Models (Y ~ Y_past)
+        for j in range(n_modules):
+            Y = targets[j]  # (T, dim)
+            X_r = lagged_matrices[j]  # (T, lag*dim)
+
+            # Add bias term
+            ones = torch.ones(X_r.shape[0], 1, device=device)
+            X_r_bias = torch.cat([X_r, ones], dim=1)
+
+            try:
+                result = torch.linalg.lstsq(X_r_bias, Y)
+                residuals = Y - X_r_bias @ result.solution
+                rss = torch.sum(residuals**2)
+                rss_restricted[j] = rss
+            except RuntimeError:
+                rss_restricted[j] = float("inf")
+
+        # 2. Unrestricted Models (Y ~ Y_past + X_past)
+        for i in range(n_modules):  # Source
+            for j in range(n_modules):  # Target
+                if i == j:
+                    continue
+
+                Y = targets[j]
+                Y_past = lagged_matrices[j]
+                X_past = lagged_matrices[i]
+
+                # Combine predictors
+                X_u = torch.cat([Y_past, X_past], dim=1)
+
+                # Add bias
+                ones = torch.ones(X_u.shape[0], 1, device=device)
+                X_u_bias = torch.cat([X_u, ones], dim=1)
+
+                try:
+                    result = torch.linalg.lstsq(X_u_bias, Y)
+                    residuals = Y - X_u_bias @ result.solution
+                    rss_unrestricted = torch.sum(residuals**2)
+
+                    # Granger Score (Log ratio)
+                    rss_r = rss_restricted[j]
+
+                    if rss_unrestricted > 0 and rss_r > 0:
+                        score = torch.log(rss_r / rss_unrestricted)
+                        granger_scores[i, j] = torch.max(torch.tensor(0.0, device=device), score)
+                    else:
+                        granger_scores[i, j] = 0.0
+
+                except RuntimeError:
+                    granger_scores[i, j] = 0.0
+
+        return granger_scores

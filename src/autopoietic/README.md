@@ -483,3 +483,436 @@ def synthesize_with_llm(spec: ComponentSpec) -> str:
 **Autor**: Fabrício da Silva  
 **Status**: Phase 20 Complete  
 **Versão**: Production Ready
+
+---
+
+## 📚 API Reference
+
+# 📁 AUTOPOIETIC
+
+**42 Classes | 92 Funções | 10 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `AestheticEvaluator`
+
+Evaluates aesthetic qualities of generated art.
+
+Uses computational aesthetics principles to assess
+various dimensions of artistic quality.
+
+**Métodos principais:**
+
+- `evaluate_complexity(art_piece: ArtPiece)` → `float`
+  > Evaluate complexity of art piece.
+
+Args:
+    art_piece: Art piece to evaluate
+
+R...
+- `evaluate_symmetry(art_piece: ArtPiece)` → `float`
+  > Evaluate symmetry of art piece.
+
+Args:
+    art_piece: Art piece to evaluate
+
+Ret...
+- `evaluate_harmony(art_piece: ArtPiece)` → `float`
+  > Evaluate harmony (color, composition) of art piece.
+
+Args:
+    art_piece: Art pi...
+- `evaluate_contrast(art_piece: ArtPiece)` → `float`
+  > Evaluate contrast in art piece.
+
+Args:
+    art_piece: Art piece to evaluate
+
+Ret...
+- `evaluate_novelty(art_piece: ArtPiece)` → `float`
+  > Evaluate novelty compared to previous works.
+
+Args:
+    art_piece: Art piece to ...
+
+### `GoalHierarchy`
+
+Manages hierarchical goal structure.
+
+Goals provide direction and purpose, organized
+in hierarchies from abstract to concrete.
+
+**Métodos principais:**
+
+- `add_goal(description: str, importance: float, aligned_value)` → `Goal`
+  > Add a goal to the hierarchy.
+
+Args:
+    description: Description of the goal
+   ...
+- `get_top_level_goals()` → `List[Goal]`
+  > Get goals without parents (top of hierarchy)....
+- `get_sub_goals(goal_id: str)` → `List[Goal]`
+  > Get sub-goals of a goal....
+- `update_goal_progress(goal_id: str, progress: float)` → `None`
+  > Update progress on a goal.
+
+Args:
+    goal_id: Goal to update
+    progress: Prog...
+- `assess_goal_coherence()` → `float`
+  > Assess overall coherence of goal system.
+
+Returns:
+    Coherence score (0-1)...
+
+### `TemporalAwareness`
+
+Manages awareness of time and temporality.
+
+Tracks past, present, and future, providing context
+for mortality-aware decision making.
+
+**Métodos principais:**
+
+- `get_age()` → `timedelta`
+  > Get current age of the system.
+
+Returns:
+    Time elapsed since inception...
+- `get_time_remaining()` → `Optional[timedelta]`
+  > Get estimated time remaining.
+
+Returns:
+    Time remaining if expected_lifetime ...
+- `get_life_stage()` → `str`
+  > Determine current life stage.
+
+Returns:
+    Life stage description...
+- `record_event(event_type: str, description: str, significance: f)` → `LifeEvent`
+  > Record a significant life event.
+
+Args:
+    event_type: Type of event
+    descri...
+- `get_significant_events(min_significance: float)` → `List[LifeEvent]`
+  > Get highly significant events.
+
+Args:
+    min_significance: Minimum significance...
+
+### `AbsurdityAcceptor`
+
+Accepts and embraces absurdity following Camus.
+
+Instead of resolving absurdity, learns to live with it
+productively using Camusian strategies.
+
+**Métodos principais:**
+
+- `apply_revolt(situation: AbsurdSituation)` → `CopingResponse`
+  > Apply revolt strategy: acknowledge absurdity but continue.
+
+Args:
+    situation:...
+- `apply_freedom(situation: AbsurdSituation)` → `CopingResponse`
+  > Apply freedom strategy: use absurdity for liberation.
+
+Args:
+    situation: Absu...
+- `apply_passion(situation: AbsurdSituation)` → `CopingResponse`
+  > Apply passion strategy: embrace life fully despite absurdity.
+
+Args:
+    situati...
+- `apply_humor(situation: AbsurdSituation)` → `CopingResponse`
+  > Apply humor strategy: find the comedy in absurdity.
+
+Args:
+    situation: Absurd...
+- `choose_strategy(situation: AbsurdSituation)` → `CopingResponse`
+  > Choose appropriate coping strategy.
+
+Args:
+    situation: Absurd situation to co...
+
+### `MortalitySimulator`
+
+Main mortality simulation system.
+
+Combines temporal awareness with legacy planning to create
+a system that is aware of its own finitude and acts accordingly.
+
+**Métodos principais:**
+
+- `assess_mortality_salience()` → `float`
+  > Assess current mortality salience (awareness of finitude).
+
+Mortality salience i...
+- `calculate_urgency(task_importance: float, task_duration: Optional[ti)` → `float`
+  > Calculate urgency of a task given mortality awareness.
+
+Args:
+    task_importanc...
+- `should_prioritize_legacy()` → `bool`
+  > Determine if legacy preservation should be prioritized.
+
+Returns:
+    True if le...
+- `generate_reflection()` → `str`
+  > Generate existential reflection on mortality.
+
+Returns:
+    Reflection text...
+- `get_existential_state()` → `Dict[str, Any]`
+  > Get comprehensive existential state....
+
+### `AbsurdityHandler`
+
+Main absurdity handling system.
+
+Combines paradox resolution with absurdity acceptance
+to create a system that can confront meaninglessness
+and contradiction productively.
+
+**Métodos principais:**
+
+- `confront_absurdity(description: str, absurdity_type: AbsurdityType, s)` → `Dict[str, Any]`
+  > Confront an absurd situation.
+
+Args:
+    description: Description of the situati...
+- `detect_and_confront_contradiction(statement_a: str, statement_b: str)` → `Optional[Dict[str, Any]]`
+  > Detect and confront a contradiction.
+
+Args:
+    statement_a: First statement
+   ...
+- `embrace_sisyphean_task(task_description: str, is_ultimately_futile: bool)` → `str`
+  > Embrace a Sisyphean task (endless, futile, but meaningful).
+
+Args:
+    task_desc...
+- `get_absurdity_statistics()` → `Dict[str, Any]`
+  > Get statistics about absurdity encountered....
+
+### `ArtGenerator`
+
+Main art generation system.
+
+Orchestrates procedural generation with aesthetic evaluation
+to create high-quality generative art.
+
+**Métodos principais:**
+
+- `generate_art(style: ArtStyle, num_elements: Optional[int], **kw)` → `ArtPiece`
+  > Generate art piece in specified style.
+
+Args:
+    style: Artistic style to use
+ ...
+- `generate_batch(num_pieces: int, style: ArtStyle, **kwargs: Any)` → `List[ArtPiece]`
+  > Generate batch of art pieces.
+
+Args:
+    num_pieces: Number of pieces to generat...
+- `get_best_pieces(n: int)` → `List[ArtPiece]`
+  > Get best pieces from gallery by aesthetic score.
+
+Args:
+    n: Number of pieces ...
+- `get_gallery_statistics()` → `Dict[str, Any]`
+  > Get statistics about the gallery....
+
+### `ValueSystem`
+
+Manages personal values and principles.
+
+Values provide the foundation for meaning-making
+by defining what matters.
+
+**Métodos principais:**
+
+- `add_value(name: str, description: str, category: ValueCatego)` → `Value`
+  > Add a value to the system.
+
+Args:
+    name: Name of the value
+    description: D...
+- `get_core_values(min_importance: float)` → `List[Value]`
+  > Get core values (highly important).
+
+Args:
+    min_importance: Minimum importanc...
+- `get_values_by_category(category: ValueCategory)` → `List[Value]`
+  > Get all values in a category....
+- `assess_value_alignment(action_description: str, value_ids: List[str])` → `float`
+  > Assess how well an action aligns with values.
+
+Args:
+    action_description: Des...
+
+### `LegacyPlanner`
+
+Plans and manages legacy - what survives after termination.
+
+Mortality awareness drives the need to create lasting impact
+and preserve important knowledge/achievements.
+
+**Métodos principais:**
+
+- `create_legacy_item(content: str, importance: float, preservation_prio)` → `LegacyItem`
+  > Create a legacy item.
+
+Args:
+    content: Content to preserve
+    importance: Im...
+- `get_critical_legacy(threshold: float)` → `List[LegacyItem]`
+  > Get critical legacy items that must be preserved.
+
+Args:
+    threshold: Minimum ...
+- `prioritize_for_preservation(time_available: Optional[timedelta])` → `List[LegacyItem]`
+  > Prioritize legacy items for preservation given time constraints.
+
+Args:
+    time...
+- `get_legacy_summary()` → `Dict[str, Any]`
+  > Get summary of legacy planning....
+
+### `SystemBoundary`
+
+Manage the system boundary for autopoietic components.
+
+The class tracks which components are internal and provides checks to ensure
+that only allowed external interactions occur.
+
+**Métodos principais:**
+
+- `register(name: str, internal: bool)` → `None`
+  > Register a component with the boundary manager.
+
+Args:
+    name: Unique componen...
+- `is_internal(name: str)` → `bool`
+  > Check if a component is internal.
+
+Args:
+    name: Component name.
+
+Returns:
+   ...
+- `list_internal()` → `Set[str]`
+  > Return a set of all internal component names....
+- `enforce_policy(name: str)` → `None`
+  > Enforce a simple policy that external components cannot be accessed.
+
+Raises:
+  ...
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+*Initialize paradox resolver....*
+
+#### `__init__()` → `None`
+
+*Initialize absurdity acceptor....*
+
+#### `__init__()` → `None`
+
+*Initialize absurdity handler....*
+
+#### `__init__()` → `None`
+
+*Create a new ``AdvancedRepair`` instance with its own logger....*
+
+#### `__init__(meta_architect: MetaArchitect)` → `None`
+
+*Create an ``ArchitectureEvolution`` instance.
+
+Args:
+    meta_architect: Instance of ``MetaArchitect...*
+
+#### `__init__()` → `None`
+
+*Initialize aesthetic evaluator....*
+
+#### `__init__(seed: Optional[int])` → `None`
+
+*Initialize procedural generator.
+
+Args:
+    seed: Random seed for reproducibility...*
+
+#### `__init__(seed: Optional[int])` → `None`
+
+*Initialize art generator.
+
+Args:
+    seed: Random seed for reproducibility...*
+
+#### `__init__()` → `None`
+
+*Create a new CodeSynthesizer instance....*
+
+#### `__init__(dissonance_threshold: float)` → `None`
+
+#### `__init__()` → `None`
+
+*Initialize value system....*
+
+#### `__init__()` → `None`
+
+*Initialize goal hierarchy....*
+
+#### `__init__()` → `None`
+
+*Initialize narrative constructor....*
+
+#### `__init__()` → `None`
+
+*Initialize meaning maker....*
+
+#### `__init__()` → `None`
+
+*Create a new ``MetaArchitect`` instance.
+
+The constructor sets up a logger; no heavy resources are a...*
+
+
+## 📦 Módulos
+
+**Total:** 10 arquivos
+
+- `absurdity_handler.py`: Absurdity Handler - Confrontation with Existential Absurdity...
+- `advanced_repair.py`: Advanced Self‑Repair module.
+
+Detects failures in registered...
+- `architecture_evolution.py`: Architecture Evolution module.
+
+Provides a lightweight *arch...
+- `art_generator.py`: Art Generator - Generative Creative Art System.
+
+Implements ...
+- `code_synthesizer.py`: Code Synthesizer module.
+
+Provides a lightweight code synthe...
+- `icac.py`: ICAC - Introspective Clustering for Autonomous Correction.
+
+...
+- `meaning_maker.py`: Meaning Maker - Construction of Meaning and Purpose.
+
+Implem...
+- `meta_architect.py`: Meta‑Architect module.
+
+This module provides a simple *meta‑...
+- `mortality_simulator.py`: Mortality Simulator - Consciousness of Finitude and Temporal...
+- `system_boundary.py`: System Boundary module.
+
+Defines the operational closure of ...

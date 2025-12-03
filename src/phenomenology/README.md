@@ -131,3 +131,51 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 PHENOMENOLOGY
+
+**1 Classes | 4 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `QualiaEngine`
+
+Implementação formal da fenomenologia computacional.
+Transforma variáveis técnicas em "experiência subjetiva" (correlates).
+
+**Métodos principais:**
+
+- `calculate_subjective_state()` → `Dict[str, Any]`
+  > Combina Entropia, Latência, Coerência em um estado fenomenológico....
+- `interpret_as_subjective_experience(qualia_state: Dict[str, Any])` → `Dict[str, Any]`
+  > Converter métricas técnicas em descrição subjetiva....
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(system: Any)` → `None`
+
+#### `_classify_state(anxiety: float, flow: float, dissociation: float)` → `str`
+
+*Classificar em estados fenomenológicos reconhecíveis....*
+
+#### `calculate_subjective_state()` → `Dict[str, Any]`
+
+*Combina Entropia, Latência, Coerência em um estado fenomenológico....*
+
+#### `interpret_as_subjective_experience(qualia_state: Dict[str, Any])` → `Dict[str, Any]`
+
+*Converter métricas técnicas em descrição subjetiva....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `qualia_engine.py`: 1 classes, 4 functions

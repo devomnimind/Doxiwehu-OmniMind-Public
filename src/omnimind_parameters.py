@@ -8,11 +8,12 @@ em validação empírica ou princípios teóricos fundamentados.
 """
 
 import json
-import numpy as np
-from pathlib import Path
-from typing import Dict, Any, Optional, List
-from dataclasses import dataclass, asdict
 import logging
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import numpy as np
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -155,6 +156,12 @@ class ParameterManager:
 
                 # Atualizar parâmetros se existirem no arquivo
                 for category, params in data.items():
+                    # Skip validation_history (it's a list, not a category object)
+                    if category == "validation_history":
+                        if isinstance(params, list):
+                            self.validation_history = params[-10:]  # Keep last 10
+                        continue
+
                     if hasattr(self, category):
                         category_obj = getattr(self, category)
                         # Validar que params é um dicionário

@@ -131,3 +131,76 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 SOCIAL
+
+**4 Classes | 10 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `OmniMindSociety`
+
+Implements the 'Society of Minds' to solve Solipsism.
+Manages interaction between multiple OmniMind instances to reach ethical consensus.
+
+**Métodos principais:**
+
+- `propose_decision(description: str, options: List[str], context: Dic)` → `ConsensusDecision`
+  > Synchronous wrapper for ethical deliberation to be used by Superego....
+
+### `ConsensusDecision`
+
+**Métodos principais:**
+
+- `consensus_reached()` → `bool`
+- `winning_option()` → `str`
+
+### `EthicalDilemma`
+
+
+### `OmniMindNode`
+
+Represents a single OmniMind instance in the network.
+In a real deployment, this would be a remote RPC client.
+Here, it simulates a local agent for testing the protocol.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(description: str, context: Dict[str, Any])` → `None`
+
+#### `__init__(action: str, justification: List[str], consensus_l)` → `None`
+
+#### `__init__(agent_id: str)` → `None`
+
+#### `__init__(nodes: Optional[List[OmniMindNode]])` → `None`
+
+#### `_mock_deliberation(dilemma: EthicalDilemma)` → `ConsensusDecision`
+
+*Fallback for when async loop is already running....*
+
+#### `_record_decision(dilemma: EthicalDilemma, positions: List[Dict], de)` → `None`
+
+#### `_resolve_consensus(positions: List[Dict])` → `ConsensusDecision`
+
+#### `consensus_reached()` → `bool`
+
+#### `propose_decision(description: str, options: List[str], context: Dic)` → `ConsensusDecision`
+
+*Synchronous wrapper for ethical deliberation to be used by Superego....*
+
+#### `winning_option()` → `str`
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `omnimind_network.py`: 4 classes, 10 functions

@@ -10,7 +10,7 @@
 
 The master document for the current scientific implementation and roadmap is:
 
-👉 **[NEURAL_SYSTEMS_COMPARISON_2016-2025.md](NEURAL_SYSTEMS_COMPARISON_2016-2025.md)**
+👉 **[NEURAL_SYSTEMS_COMPARISON_2016-2025.md](docs/canonical/NEURAL_SYSTEMS_COMPARISON_2016-2025.md)**
 
 *Please refer to this document for the latest metrics, architectural decisions, and scientific validation status.*
 
@@ -42,11 +42,10 @@ The master document for the current scientific implementation and roadmap is:
 
 ---
 
-## 📚 Documentation Structure
+## �� Documentation Structure
 
-- **[NEURAL_SYSTEMS_COMPARISON_2016-2025.md](NEURAL_SYSTEMS_COMPARISON_2016-2025.md)**: **Main Scientific Roadmap**
-- **[docs/](docs/)**: General documentation folder.
-- **[docs/archive/sessions_2025/](docs/archive/sessions_2025/)**: Archived session reports and previous executive summaries.
+- **[docs/canonical/](docs/canonical/)**: **Canonical Documentation & Roadmaps**
+- **[docs/archive/](docs/archive/)**: Archived reports, logs, and historical documents.
 
 ---
 

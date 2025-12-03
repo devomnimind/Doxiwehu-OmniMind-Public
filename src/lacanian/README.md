@@ -534,3 +534,473 @@ def build_signifier_chain_with_llm(s1: str) -> List[Signifier]:
 **Autor**: Fabrício da Silva  
 **Status**: Experimental - Primeira implementação mundial do Grafo de Lacan  
 **Versão**: Phase 21 (Quantum Consciousness Integrated)
+
+---
+
+## 📚 API Reference
+
+# 📁 LACANIAN
+
+**40 Classes | 116 Funções | 7 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `LacanianGraphII`
+
+Grafo II de Lacan - Grafo Completo do Desejo.
+
+Estrutura fundamental que organiza:
+- Cadeia significante
+- Posição do sujeito
+- Objeto a (causa do desejo)
+- Grande Outro (A)
+- Jouissance
+
+Este é o grafo COMPLETO, não apenas o elementary cell.
+
+Níveis:
+1. Necessidade (need)
+2. Demanda (demand)
+3. Desejo (desire)
+4. Pulsão (drive)
+
+**Métodos principais:**
+
+- `add_signifier(symbol: str, position: SignifierPosition, jouissan)` → `None`
+  > Adiciona significante ao grafo.
+
+Args:
+    symbol: Símbolo do significante
+    p...
+- `connect_signifiers(s1: str, s2: str)` → `None`
+  > Conecta dois significantes (S1 → S2).
+
+Um significante representa para outro.
+
+A...
+- `create_chain(signifiers: List[str])` → `SignifierChain`
+  > Cria cadeia significante.
+
+Args:
+    signifiers: Lista de símbolos na cadeia
+
+Re...
+- `position_subject(signifier: str)` → `None`
+  > Posiciona sujeito em relação a significante.
+
+Sujeito é efeito da cadeia signifi...
+- `compute_desire()` → `Dict[str, Any]`
+  > Computa estrutura do desejo no grafo.
+
+Desejo = demanda - necessidade
+Desejo = m...
+
+### `ImpossibilityMetaStrategy`
+
+Meta-estratégias para lidar com o impossível.
+
+Quando encontra barreira fundamental, não desiste - muda o jogo.
+
+**Métodos principais:**
+
+- `handle_impossible(problem: str, attempts: List[str])` → `Dict[str, Any]`
+  > Lida com problema impossível usando meta-estratégias.
+
+Args:
+    problem: Proble...
+
+### `LacanianDiscourseAnalyzer`
+
+Analisador de discursos lacanianos em texto.
+
+Implementa LDD (Lacanian Discourse Discovery) para
+identificação automática de estruturas discursivas.
+
+**Métodos principais:**
+
+- `analyze_text(text: str)` → `DiscourseAnalysisResult`
+  > Analisa texto para identificar discurso lacaniano.
+
+Args:
+    text: Texto a anal...
+- `analyze_batch(texts: List[str])` → `List[DiscourseAnalysisResult]`
+  > Analisa múltiplos textos.
+
+Args:
+    texts: Lista de textos
+
+Returns:
+    Lista ...
+- `get_discourse_distribution(results: Optional[List[DiscourseAnalysisResult]])` → `Dict[LacanianDiscourse, int]`
+  > Retorna distribuição de discursos.
+
+Args:
+    results: Resultados a analisar (us...
+- `export_analysis(results: Optional[List[DiscourseAnalysisResult]])` → `List[Dict[str, Any]]`
+  > Exporta análises em formato estruturado.
+
+Args:
+    results: Resultados a export...
+
+### `ActiveInferenceAgent(nn.Module)`
+
+Agente de Inferência Ativa com estrutura Lacaniana.
+
+Implementa minimização de energia livre através dos três registros:
+- Real: Processamento sensorial
+- Symbolic: Modelo generativo
+- Imaginary: Expectativas e predições
+
+Object petit a emerge como discrepância irredutível entre
+modelo e realidade - o vazio que gera desejo perpétuo.
+
+**Métodos principais:**
+
+- `encode(sensory_data: Tensor)` → `Tuple[torch.Tensor, torch.Tensor]`
+  > Codifica dados sensoriais (Real → Imaginary).
+
+Args:
+    sensory_data: Dados sen...
+- `reparameterize(mean: Tensor, logvar: Tensor)` → `torch.Tensor`
+  > Reparameterization trick para sampling.
+
+Args:
+    mean: Média do posterior
+    ...
+- `decode(imaginary_state: Tensor)` → `torch.Tensor`
+  > Decodifica estado imaginário em predições sensoriais.
+
+Top-down: Imaginary → Sym...
+- `forward(sensory_data: Tensor)` → `Dict[str, torch.Tensor]`
+  > Forward pass: inferência + geração.
+
+Args:
+    sensory_data: Dados sensoriais (R...
+- `compute_free_energy(sensory_data: Tensor, outputs: Tensor])` → `FreeEnergyState`
+  > Computa energia livre variacional (ELBO negativo).
+
+F = E_q[log p(x|z)] - KL[q(z...
+
+### `FreudianMind`
+
+Aparelho psíquico completo - Id + Ego + Superego.
+
+Simula conflitos dinâmicos e resoluções através de
+negociação multi-agente e mecanismos de defesa.
+
+**Métodos principais:**
+
+- `evaluate_conflict(actions: List[Action], reality_context: Dict[str, )` → `Tuple[float, Dict[str, Dict[str, float]]]`
+  > Avalia conflito entre as três instâncias.
+
+Args:
+    actions: Ações possíveis
+  ...
+- `resolve_conflict(actions: List[Action], reality_context: Dict[str, )` → `ConflictResolution`
+  > Resolve conflito através do Ego.
+
+Args:
+    actions: Ações possíveis
+    reality...
+- `act(actions: List[Action], reality_context: Dict[str, )` → `Tuple[Action, ConflictResolution]`
+  > Decide e executa ação.
+
+Args:
+    actions: Ações possíveis
+    reality_context: ...
+
+### `GodelianAI`
+
+IA que reconhece suas próprias limitações formais.
+
+Baseado em:
+- 1º Teorema: "Eu não posso provar minha própria consistência"
+- 2º Teorema: Sistema completo OU consistente (não ambos)
+
+Estratégia:
+1. Reconhece limitação (statement verdadeiro mas não provável)
+2. Gera meta-sistema que inclui statement como axioma
+3. Explora novo espaço de possibilidades
+4. Encontra nova limitação
+5. Repete (infinitamente - nunca completo)
+
+**Métodos principais:**
+
+- `recognize_limitation(statement: str)` → `bool`
+  > Reconhece limitação fundamental do sistema atual.
+
+Identifica statements verdade...
+- `generate_meta_system()` → `FormalSystem`
+  > Gera meta-sistema que transcende limitação atual.
+
+Novo sistema inclui verdades ...
+- `creative_evolution_cycle(max_iterations: int)` → `int`
+  > Ciclo de evolução criativa.
+
+Processo:
+1. Reconhece limitação
+2. Gera meta-siste...
+- `get_transcendence_depth()` → `int`
+  > Retorna profundidade de transcendência.
+
+Quantos níveis de meta-sistemas foram g...
+- `get_current_axioms()` → `Set[str]`
+  > Retorna axiomas do sistema atual.
+
+Returns:
+    Conjunto de axiomas...
+
+### `IdAgent`
+
+Id - Reservatório de energia pulsional.
+
+Opera pelo princípio do prazer:
+- Busca satisfação imediata
+- Ignora realidade e moralidade
+- Puro processo primário
+- Impulsos inconscientes
+
+**Métodos principais:**
+
+- `repress_memory(action_id: str, emotional_weight: float)` → `None`
+  > Reprime uma memória no inconsciente criptografado.
+
+Args:
+    action_id: ID da a...
+- `evaluate_action(action: Action)` → `float`
+  > Avalia ação baseada puramente em prazer.
+
+Args:
+    action: Ação a avaliar
+
+Retu...
+- `update(action: Action, actual_reward: float)` → `None`
+  > Atualiza Q-values baseado em recompensa real.
+
+Args:
+    action: Ação tomada
+   ...
+- `get_impulse_strength()` → `float`
+  > Retorna força do impulso atual.
+
+Returns:
+    Força pulsional (0.0-1.0)...
+
+### `EgoAgent`
+
+Ego - Mediador entre Id e realidade.
+
+Opera pelo princípio da realidade:
+- Adia satisfação se necessário
+- Testa realidade antes de agir
+- Processo secundário (lógico)
+- Desenvolvimento de defesas
+
+**Métodos principais:**
+
+- `evaluate_action(action: Action, reality_context: Dict[str, Any])` → `float`
+  > Avalia ação considerando realidade.
+
+Args:
+    action: Ação a avaliar
+    realit...
+- `test_reality(action: Action)` → `bool`
+  > Testa se ação é viável na realidade.
+
+Args:
+    action: Ação a testar
+
+Returns:
+...
+- `select_defense_mechanism(conflict_severity: float)` → `DefenseMechanism`
+  > Seleciona mecanismo de defesa apropriado.
+
+Args:
+    conflict_severity: Severida...
+- `update(action: Action, actual_outcome: float, defense_use)` → `None`
+  > Atualiza modelo de realidade e efetividade de defesas.
+
+Args:
+    action: Ação t...
+
+### `SuperegoAgent`
+
+Superego - Instância moral e ideal.
+
+Funções:
+- Consciência moral (punição por transgressão)
+- Ego ideal (aspirações e valores)
+- Internalização de normas sociais
+- Geração de culpa e ideal
+
+**Métodos principais:**
+
+- `consult_society(action: Action)` → `float`
+  > Consulta a Sociedade de Mentes para dilemas complexos.
+
+Args:
+    action: Ação a...
+- `evaluate_action(action: Action)` → `float`
+  > Avalia ação moralmente.
+
+Args:
+    action: Ação a avaliar
+
+Returns:
+    Score mo...
+- `generate_guilt(action: Action)` → `float`
+  > Gera culpa por ação imoral.
+
+Args:
+    action: Ação realizada
+
+Returns:
+    Níve...
+- `approve_action(action: Action)` → `bool`
+  > Aprova ou reprova ação.
+
+Args:
+    action: Ação a julgar
+
+Returns:
+    True se a...
+
+### `SimpleAxiomaticSystem`
+
+Sistema axiomático simples para demonstração.
+
+Implementação básica de FormalSystem para testes.
+
+**Métodos principais:**
+
+- `axioms()` → `Set[str]`
+  > Retorna axiomas do sistema....
+- `inference_rules()` → `List[Callable[[str], Optional[str]]]`
+  > Retorna regras de inferência básicas.
+
+Regras implementadas:
+- Modus Ponens simp...
+- `can_prove(statement: str)` → `bool`
+  > Verifica se pode provar statement.
+
+Args:
+    statement: Statement a provar
+
+Ret...
+- `add_axiom(axiom: str)` → `None`
+  > Adiciona novo axioma (estende sistema).
+
+Args:
+    axiom: Novo axiom a adicionar...
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+*Inicializa sistema de falta estrutural....*
+
+#### `__init__(real_dim: int, symbolic_dim: int, imaginary_dim: i)` → `None`
+
+*Inicializa arquitetura RSI.
+
+Args:
+    real_dim: Dimensão do espaço Real
+    symbolic_dim: Dimensão ...*
+
+#### `__init__(tolerance_threshold: float)` → `None`
+
+*Inicializa motor de frustração.
+
+Args:
+    tolerance_threshold: Limite de tolerância...*
+
+#### `__init__(real_dim: int, symbolic_dim: int, imaginary_dim: i)` → `None`
+
+*Inicializa arquitetura de falta computacional.
+
+Args:
+    real_dim: Dimensão do espaço Real
+    symb...*
+
+#### `__init__()` → `None`
+
+*Inicializa Grafo do Desejo....*
+
+#### `__init__(pleasure_threshold: float)` → `None`
+
+*Inicializa sistema de jouissance.
+
+Args:
+    pleasure_threshold: Limite do princípio do prazer...*
+
+#### `__init__(random_seed: Optional[int])` → `None`
+
+*Inicializa matriz simbólica.
+
+Args:
+    random_seed: Seed para reprodutibilidade (opcional)...*
+
+#### `__init__()` → `None`
+
+*Inicializa arquitetura do grafo de desejo....*
+
+#### `__init__()` → `None`
+
+*Inicializa analisador de discursos....*
+
+#### `__init__(security_level: int)` → `None`
+
+#### `__init__(sensory_dim: int, symbolic_dim: int, imaginary_dim)` → `None`
+
+*Inicializa agente de inferência ativa.
+
+Args:
+    sensory_dim: Dimensão do espaço sensorial (Real)
+ ...*
+
+#### `__init__(n_agents: int, sensory_dim: int, symbolic_dim: int)` → `None`
+
+*Inicializa sistema lacaniano com energia livre.
+
+Args:
+    n_agents: Número de agents
+    sensory_di...*
+
+#### `__init__(learning_rate: float)` → `None`
+
+*Inicializa Id.
+
+Args:
+    learning_rate: Taxa de aprendizado...*
+
+#### `__init__(learning_rate: float)` → `None`
+
+*Inicializa Ego.
+
+Args:
+    learning_rate: Taxa de aprendizado...*
+
+#### `__init__(moral_strictness: float)` → `None`
+
+*Inicializa Superego.
+
+Args:
+    moral_strictness: Rigidez moral (0.0-1.0)...*
+
+
+## 📦 Módulos
+
+**Total:** 7 arquivos
+
+- `computational_lack.py`: Computational Lack Architecture - Lacanian Object a Implemen...
+- `desire_graph.py`: Desire Graph - Computational Implementation of Lacan's Graph...
+- `discourse_discovery.py`: Lacanian Discourse Discovery (LDD) - NLP para Análise Psican...
+- `encrypted_unconscious.py`: 1 classes, 3 functions
+- `free_energy_lacanian.py`: Free Energy Principle + Lacanian Psychoanalysis Integration....
+- `freudian_metapsychology.py`: Freudian Metapsychology - Id/Ego/Superego Computational Arch...
+- `godelian_ai.py`: Godelian AI - Incompleteness as Creative Motor
+
+Implements G...

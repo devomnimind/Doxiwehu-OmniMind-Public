@@ -131,3 +131,139 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 COMPLIANCE
+
+**7 Classes | 18 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `GDPRController`
+
+Main GDPR compliance controller
+
+**Métodos principais:**
+
+- `register_data_subject(subject_id: str, email: Optional[str])` → `DataSubject`
+  > Register a new data subject...
+- `process_data(subject_id: str, purpose: DataProcessingPurpose, d)` → `bool`
+  > Process personal data with GDPR compliance check...
+- `handle_data_subject_rights(subject_id: str, right: str, **kwargs: Any)` → `Dict[str, Any]`
+  > Handle data subject rights requests (GDPR Article 15-22)...
+- `enforce_data_retention()` → `int`
+  > Enforce data retention policies - return number of records cleaned...
+- `generate_compliance_report()` → `Dict[str, Any]`
+  > Generate GDPR compliance report...
+
+### `DataSubject`
+
+Represents a data subject (user) in the system
+
+**Métodos principais:**
+
+- `grant_consent(purpose: str, data_categories: List[DataCategory],)` → `str`
+  > Grant consent for data processing...
+- `withdraw_consent(consent_id: str)` → `bool`
+  > Withdraw consent for data processing...
+- `has_consent(purpose: str, data_category: DataCategory)` → `bool`
+  > Check if subject has valid consent for specific processing...
+
+### `DataProcessingRecord`
+
+Record of data processing activities
+
+**Métodos principais:**
+
+- `record_processing(data_hash: str)` → `None`
+  > Record that data processing occurred...
+
+### `DataProcessingPurpose(Enum)`
+
+Legal bases for data processing under GDPR
+
+
+### `DataCategory(Enum)`
+
+Categories of personal data
+
+
+### `RetentionPeriod(Enum)`
+
+Data retention periods
+
+
+### `ConsentStatus(Enum)`
+
+User consent status
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(subject_id: str, email: Optional[str])` → `None`
+
+#### `__init__(subject_id: str, purpose: DataProcessingPurpose, d)` → `None`
+
+#### `__init__()` → `None`
+
+#### `_handle_access_request(subject: DataSubject)` → `Dict[str, Any]`
+
+*Handle right of access request...*
+
+#### `_handle_erasure_request(subject: DataSubject, reason: str)` → `Dict[str, Any]`
+
+*Handle right to erasure (right to be forgotten)...*
+
+#### `_handle_objection_request(subject: DataSubject, reason: str)` → `Dict[str, Any]`
+
+*Handle right to object...*
+
+#### `_handle_portability_request(subject: DataSubject)` → `Dict[str, Any]`
+
+*Handle right to data portability...*
+
+#### `_handle_rectification_request(subject: DataSubject, corrections: Dict[str, Any])` → `Dict[str, Any]`
+
+*Handle right to rectification...*
+
+#### `_handle_restriction_request(subject: DataSubject)` → `Dict[str, Any]`
+
+*Handle right to restriction of processing...*
+
+#### `enforce_data_retention()` → `int`
+
+*Enforce data retention policies - return number of records cleaned...*
+
+#### `generate_compliance_report()` → `Dict[str, Any]`
+
+*Generate GDPR compliance report...*
+
+#### `grant_consent(purpose: str, data_categories: List[DataCategory],)` → `str`
+
+*Grant consent for data processing...*
+
+#### `handle_data_subject_rights(subject_id: str, right: str, **kwargs: Any)` → `Dict[str, Any]`
+
+*Handle data subject rights requests (GDPR Article 15-22)...*
+
+#### `has_consent(purpose: str, data_category: DataCategory)` → `bool`
+
+*Check if subject has valid consent for specific processing...*
+
+#### `process_data(subject_id: str, purpose: DataProcessingPurpose, d)` → `bool`
+
+*Process personal data with GDPR compliance check...*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `gdpr_compliance.py`: GDPR Compliance Framework for OmniMind
+Implements data prote...

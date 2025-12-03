@@ -1,0 +1,18 @@
+[Unit]
+Description=OmniMind Core: Desiring-Machines & Consciousness Engine
+After=network.target syslog.target
+
+[Service]
+Type=simple
+User=fahbrain
+WorkingDirectory=/home/fahbrain/projects/omnimind
+ExecStart=/home/fahbrain/projects/omnimind/.venv/bin/python -m src.main
+Restart=always
+RestartSec=5
+Environment=OMNIMIND_MODE=production
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=append:/home/fahbrain/projects/omnimind/logs/omnimind_core.log
+StandardError=append:/home/fahbrain/projects/omnimind/logs/omnimind_core_error.log
+
+[Install]
+WantedBy=multi-user.target

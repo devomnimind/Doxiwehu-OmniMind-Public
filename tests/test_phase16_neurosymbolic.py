@@ -10,15 +10,8 @@ Testa:
 
 import pytest
 
-from src.neurosymbolic import (
-    NeuralComponent,
-    NeurosymbolicReasoner,
-    SymbolicComponent,
-)
-from src.neurosymbolic.reconciliation import (
-    ReconciliationStrategy,
-    Reconciliator,
-)
+from src.neurosymbolic import NeuralComponent, NeurosymbolicReasoner, SymbolicComponent
+from src.neurosymbolic.reconciliation import ReconciliationStrategy, Reconciliator
 
 
 class TestNeuralComponent:
@@ -64,7 +57,8 @@ class TestSymbolicComponent:
         """Testa inicialização do componente simbólico."""
         symbolic = SymbolicComponent()
         assert symbolic is not None
-        assert len(symbolic.get_all_facts()) == 0
+        # Expect 5 default facts from bootstrap
+        assert len(symbolic.get_all_facts()) == 5
 
     def test_add_fact(self) -> None:
         """Testa adição de fatos."""
@@ -72,8 +66,9 @@ class TestSymbolicComponent:
         symbolic.add_fact("Socrates", "is_a", "Human")
 
         facts = symbolic.get_all_facts()
-        assert len(facts) == 1
-        assert facts[0].subject == "Socrates"
+        # 5 default + 1 new
+        assert len(facts) == 6
+        assert any(f.subject == "Socrates" for f in facts)
 
     def test_add_rule(self) -> None:
         """Testa adição de regras."""
@@ -99,8 +94,8 @@ class TestSymbolicComponent:
 
         # Verificar que o fato foi adicionado
         facts = symbolic.get_all_facts()
-        assert len(facts) == 1
-        assert facts[0].subject == "Socrates"
+        assert len(facts) == 6
+        assert any(f.subject == "Socrates" for f in facts)
 
         # Agora testar inferência
         result = symbolic.infer("Socrates is_a Human")
@@ -190,7 +185,7 @@ class TestNeurosymbolicReasoner:
         reasoner.add_knowledge(("Socrates", "is_a", "Human"))
 
         facts = reasoner.symbolic.get_all_facts()
-        assert len(facts) == 1
+        assert len(facts) == 6
 
     def test_batch_infer(self) -> None:
         """Testa batch de inferências híbridas."""

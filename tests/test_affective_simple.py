@@ -12,11 +12,10 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
 
 # Importar usando o path configurado
-from consciousness.emotional_intelligence import (
+from consciousness.emotional_intelligence import (  # noqa: E402
     AffectiveEvent,
     AffectiveMediation,
     Anguish,
-    RealEncounter,
 )
 
 

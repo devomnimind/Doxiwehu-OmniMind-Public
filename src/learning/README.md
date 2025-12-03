@@ -131,3 +131,211 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 LEARNING
+
+**4 Classes | 22 Funções | 2 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `PageCurveLearner`
+
+Learning system that follows Page curve dynamics.
+
+Models learning as information-theoretic process where:
+1. Initial phase: Entropy increases (system explores, gets confused)
+2. Page time: Entropy peaks (critical transition point)
+3. Consolidation: Entropy decreases (information recovery, understanding)
+
+This mirrors black hole evaporation where information is initially lost,
+then recovered through entanglement correlations.
+
+**Métodos principais:**
+
+- `record_epoch(model_state: Dict[str, Any], loss: Optional[float])` → `Dict[str, Any]`
+  > Record learning progress for one epoch.
+
+Args:
+    model_state: Current model st...
+- `get_page_curve()` → `PageCurve`
+  > Get complete Page curve data.
+
+Returns:
+    PageCurve object with full history...
+- `get_statistics()` → `Dict[str, Any]`
+  > Get learning statistics.
+
+Returns:
+    Dict with statistics...
+- `reset()` → `None`
+  > Reset learner state for new training run....
+
+### `ElasticWeightConsolidation`
+
+Implements Elastic Weight Consolidation.
+
+Maintains a Fisher Information Matrix to estimate the importance of each parameter
+(weight) for previous tasks. When training on a new task (or adjusting weights
+via ICAC), it adds a penalty for changing important parameters.
+
+**Métodos principais:**
+
+- `compute_fisher_information(agent_weights: Dict[str, float], audit_history: Li)` → `None`
+  > Computes (or approximates) the Fisher Information Matrix for the current weights...
+- `penalty_loss(new_weights: Dict[str, float])` → `float`
+  > Calculates the EWC penalty loss for a proposed set of new weights.
+
+Loss = (lamb...
+- `adjust_weights_with_protection(current_weights: Dict[str, float], proposed_change)` → `Dict[str, float]`
+  > Adjusts weights based on proposed changes, but mitigates changes to
+important we...
+
+### `LearningPhase(Enum)`
+
+Learning phases based on Page curve.
+
+
+### `PageCurve`
+
+Page curve data structure.
+
+Attributes:
+    entropy_history: Full entropy evolution
+    epochs: Corresponding epoch numbers
+    page_time_epoch: Epoch where Page time occurred (if detected)
+    max_entropy: Maximum entropy reached
+    current_phase: Current learning phase
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(lambda_ewc: float)` → `None`
+
+*Args:
+    lambda_ewc: Hyperparameter that controls how much to penalize changes
+                to i...*
+
+#### `__init__(detection_window: int, page_time_threshold: float,)` → `None`
+
+*Initialize Page curve learner.
+
+Args:
+    detection_window: Window size for detecting entropy trends...*
+
+#### `_compute_correlation_entropy(data: List[float])` → `float`
+
+*Compute entropy using correlation matrix approximation.
+
+Args:
+    data: Numerical data
+
+Returns:
+  ...*
+
+#### `_compute_entropy_trend()` → `float`
+
+*Compute current entropy trend.
+
+Returns:
+    Trend value (positive = increasing, negative = decreasi...*
+
+#### `_compute_simple_entropy(data: List[float])` → `float`
+
+*Compute simple Shannon entropy on normalized absolute values.
+
+Args:
+    data: Numerical data
+
+Retur...*
+
+#### `_enable_information_recovery_mode()` → `None`
+
+*Enable information recovery mode.
+
+After Page time, system should focus on consolidating
+learned inf...*
+
+#### `_extract_numerical_data(model_state: Dict[str, Any])` → `List[float]`
+
+*Extract numerical data from model state with fallback.
+
+Args:
+    model_state: Model state dict
+
+Ret...*
+
+#### `_generate_fallback_data(model_state: Dict[str, Any])` → `List[float]`
+
+*Generate deterministic fallback data when no numerical data available.
+
+Args:
+    model_state: Model...*
+
+#### `_generate_recommendations()` → `Dict[str, Any]`
+
+*Generate learning recommendations based on current phase.
+
+Returns:
+    Dict with recommendations...*
+
+#### `_is_declining_trend(values: List[float])` → `bool`
+
+*Check if values show declining trend.
+
+Args:
+    values: List of values to check
+
+Returns:
+    True ...*
+
+#### `_is_page_time()` → `bool`
+
+*Detect if Page time has occurred.
+
+Page time is when entropy peaks and starts to decrease.
+This is t...*
+
+#### `_linear_regression_slope(values: List[float])` → `float`
+
+*Compute slope of linear regression for y over x=[0..n-1]....*
+
+#### `_should_use_simple_entropy(data: List[float])` → `bool`
+
+*Determine if simple entropy calculation should be used.
+
+Args:
+    data: Numerical data
+
+Returns:
+  ...*
+
+#### `_update_phase()` → `None`
+
+*Update current learning phase based on entropy dynamics....*
+
+#### `_von_neumann_entropy(model_state: Dict[str, Any])` → `float`
+
+*Compute von Neumann entropy of model state.
+
+S = -Tr(ρ log ρ) where ρ is density matrix
+
+Approximati...*
+
+
+## 📦 Módulos
+
+**Total:** 2 arquivos
+
+- `ewc.py`: Elastic Weight Consolidation (EWC) Module.
+
+This module impl...
+- `page_curve_learning.py`: Page Curve Learning - Non-Monotonic Knowledge Growth
+
+Implem...

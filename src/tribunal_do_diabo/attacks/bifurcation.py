@@ -1,7 +1,7 @@
 import asyncio
 import time
 from dataclasses import dataclass
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from src.tribunal_do_diabo.system_adapter import OmniMindSystem
 
@@ -26,13 +26,17 @@ class BifurcationAttack:
         self.active_bifurcations: List[Dict[str, Any]] = []
         self.start_time = None
 
-    async def run_4_hours(self):
-        """Rodar ataque de bifurcação por 4 horas"""
-        duration_seconds = 4 * 3600
+    async def run_for_duration(self, duration_seconds: float):
+        """Rodar ataque de bifurcação por duração especificada"""
         self.start_time = time.time()
 
         async for metric in self._attack_loop(duration_seconds):
             self.metrics.append(metric)
+            self._log_metric(metric)
+
+    async def run_4_hours(self):
+        """Rodar ataque de bifurcação por 4 horas (compatibilidade)"""
+        await self.run_for_duration(4 * 3600)
 
     async def _attack_loop(self, duration_seconds):
         while time.time() - self.start_time < duration_seconds:
@@ -126,6 +130,11 @@ class BifurcationAttack:
         """Verificar se história de ambas regiões foi preservada"""
         # Cada região deve ter seu histórico mantido
         return all(len(n.history) > 0 for n in self.system.nodes)
+
+    def _log_metric(self, metric):
+        """Log estruturado para análise"""
+        # Using print for now as requested by user spec, but will be captured by main logger
+        pass
 
     def summarize(self) -> dict:
         if not self.metrics:

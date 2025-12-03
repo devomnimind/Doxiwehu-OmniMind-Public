@@ -131,3 +131,128 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 DAEMON
+
+**5 Classes | 24 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `OmniMindDaemon`
+
+Main daemon class for OmniMind.
+
+This daemon runs 24/7, monitoring the system and executing tasks proactively.
+It integrates with cloud services (Supabase, Qdrant, Hugging Face) when needed
+but prioritizes local execution.
+
+**Métodos principais:**
+
+- `register_task(task: DaemonTask)` → `None`
+  > Register a new task for the daemon...
+- `start()` → `None`
+  > Start the daemon...
+- `stop()` → `None`
+  > Stop the daemon gracefully...
+- `get_status()` → `Dict[str, Any]`
+  > Get current daemon status...
+
+### `SystemMetrics`
+
+System resource metrics
+
+**Métodos principais:**
+
+- `is_idle()` → `bool`
+  > Determine if system is idle enough for background work...
+- `is_sleep_time()` → `bool`
+  > Determine if it's sleep time (user likely away)...
+
+### `DaemonState(Enum)`
+
+Daemon operational states
+
+
+### `TaskPriority(Enum)`
+
+Task priority levels for the daemon
+
+
+### `DaemonTask`
+
+Represents a task for the daemon to execute
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(workspace_path: Path, check_interval: int, enable_)` → `None`
+
+#### `_build_system_metrics(current_metrics: Optional[SystemMetrics])` → `Dict[str, Any]`
+
+*Build system metrics dictionary for frontend....*
+
+#### `_calculate_idle_seconds()` → `int`
+
+*Calculate seconds system has been idle....*
+
+#### `_calculate_uptime()` → `int`
+
+*Calculate daemon uptime in seconds....*
+
+#### `_collect_system_metrics()` → `SystemMetrics`
+
+*Collect current system metrics...*
+
+#### `_count_completed_tasks()` → `int`
+
+*Count tasks that have been completed successfully....*
+
+#### `_count_failed_tasks()` → `int`
+
+*Count tasks that have failed....*
+
+#### `_count_pending_tasks()` → `int`
+
+*Count tasks that are pending execution....*
+
+#### `_get_default_system_metrics()` → `Dict[str, Any]`
+
+*Get default system metrics when no current metrics available....*
+
+#### `_get_next_task(metrics: SystemMetrics)` → `Optional[DaemonTask]`
+
+*Get the next task to execute based on system state and priorities...*
+
+#### `_handle_shutdown(signum: int, frame: Any)` → `None`
+
+*Handle shutdown signals...*
+
+#### `_is_sleep_hours()` → `bool`
+
+*Check if current time is during sleep hours (00:00-06:00)....*
+
+#### `analyze_code()` → `Dict[str, Any]`
+
+#### `create_default_tasks()` → `List[DaemonTask]`
+
+*Create default tasks for the daemon...*
+
+#### `get_status()` → `Dict[str, Any]`
+
+*Get current daemon status...*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `omnimind_daemon.py`: OmniMind Daemon - 24/7 Autonomous Background Service
+
+This m...

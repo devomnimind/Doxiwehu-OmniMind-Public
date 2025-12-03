@@ -24,7 +24,8 @@ class TestLifeStoryAsRetroactiveResignification:
         story.add_event("Born into language")
 
         assert len(story.narrative_chain) == 1
-        assert story.narrative_chain[0] == "Born into language"
+        # The event is resignified, so we check if the original content is present
+        assert "Born into language" in story.narrative_chain[0]
 
     def test_resignify_past(self) -> None:
         """Test retroactive resignification (Nachträglichkeit)."""

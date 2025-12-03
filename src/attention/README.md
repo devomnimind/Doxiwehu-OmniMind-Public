@@ -131,3 +131,120 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 ATTENTION
+
+**2 Classes | 8 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `ThermodynamicAttention`
+
+Attention mechanism driven by entropy gradients.
+
+Instead of computing attention via query-key similarity,
+this mechanism directs attention to regions that maximize
+entropy increase (second law of thermodynamics).
+
+Key principle: System naturally attends to information-rich regions
+that maximize knowledge gain (ΔS > 0).
+
+**Métodos principais:**
+
+- `forward(query: TorchTensor, key: TorchTensor, value: Torch)` → `TorchTensor`
+  > Forward pass with entropy-based attention.
+
+Args:
+    query: Query tensor [batch...
+- `adjust_temperature(new_temperature: float)` → `None`
+  > Adjust temperature (exploration vs exploitation).
+
+Args:
+    new_temperature: Ne...
+
+### `MultiHeadThermodynamicAttention`
+
+Multi-head thermodynamic attention.
+
+Multiple attention heads with different temperature settings
+for diverse information-seeking behavior.
+
+**Métodos principais:**
+
+- `forward(query: TorchTensor, key: TorchTensor, value: Torch)` → `TorchTensor`
+  > Multi-head forward pass.
+
+Args:
+    query: Query tensor [batch, seq_len, embed_d...
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(embed_dim: int, temperature: float, entropy_weight)` → `None`
+
+*Initialize thermodynamic attention.
+
+Args:
+    embed_dim: Embedding dimension
+    temperature: Tempe...*
+
+#### `__init__(embed_dim: int, num_heads: int, base_temperature: )` → `None`
+
+*Initialize multi-head thermodynamic attention.
+
+Args:
+    embed_dim: Embedding dimension
+    num_hea...*
+
+#### `_compute_entropy_gradients(entropies: TorchTensor)` → `TorchTensor`
+
+*Compute gradients of entropy (direction of maximum ΔS).
+
+Second law: System naturally evolves toward...*
+
+#### `_local_entropy(representations: TorchTensor)` → `TorchTensor`
+
+*Compute local Shannon entropy for each position.
+
+Entropy measures information content:
+H(X) = -Σ p(...*
+
+#### `adjust_temperature(new_temperature: float)` → `None`
+
+*Adjust temperature (exploration vs exploitation).
+
+Args:
+    new_temperature: New temperature value...*
+
+#### `forward(query: TorchTensor, key: TorchTensor, value: Torch)` → `TorchTensor`
+
+*Forward pass with entropy-based attention.
+
+Args:
+    query: Query tensor [batch, seq_len, embed_dim...*
+
+#### `forward(query: TorchTensor, key: TorchTensor, value: Torch)` → `TorchTensor`
+
+*Multi-head forward pass.
+
+Args:
+    query: Query tensor [batch, seq_len, embed_dim]
+    key: Key ten...*
+
+#### `safe_move_to_device(module: Module, target_device: device)` → `None`
+
+*Safely move module to target device, handling meta tensors....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `thermodynamic_attention.py`: Thermodynamic Attention Mechanism - Entropy-Based Attention
+...

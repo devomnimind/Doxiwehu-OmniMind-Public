@@ -131,3 +131,33 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 ORCHESTRATOR
+
+**1 Classes | 1 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `TaskExecutor`
+
+Robust Task Executor for OmniMind.
+Handles Quantum, Symbolic, and Workflow execution with error recovery.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `task_executor.py`: 1 classes, 1 functions

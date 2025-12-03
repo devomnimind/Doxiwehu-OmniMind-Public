@@ -25,14 +25,17 @@ class LatencyAttack:
         self.metrics: List[LatencyAttackMetrics] = []
         self.start_time = None
 
-    async def run_4_hours(self):
-        """Rodar ataque de latência por 4 horas"""
+    async def run_for_duration(self, duration_seconds: float):
+        """Rodar ataque de latência por duração especificada"""
         self.start_time = time.time()
-        duration_seconds = 4 * 3600  # 4 horas
 
         async for metric in self._attack_loop(duration_seconds):
             self.metrics.append(metric)
             self._log_metric(metric)
+
+    async def run_4_hours(self):
+        """Rodar ataque de latência por 4 horas (compatibilidade)"""
+        await self.run_for_duration(4 * 3600)
 
     async def _attack_loop(self, duration_seconds):
         """Loop principal de ataque"""

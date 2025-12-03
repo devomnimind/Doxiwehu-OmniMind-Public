@@ -11,7 +11,8 @@ Previous implementation was WRONG on key points:
 Three Frameworks Tested:
 1. IIT (Tononi): Only MICS = conscious. Φ_conscious = MICS only.
 2. Lacan (Balzarini): Sinthome STRUCTURES what consciousness can access.
-3. Neuroscience (Nani): Consciousness ≠ Attention. Three layers: preconscious, subconscious, conscious.
+3. Neuroscience (Nani): Consciousness ≠ Attention. Three layers: preconscious,
+   subconscious, conscious.
 
 Critical Tests:
 - TEST 1 (IIT): Φ_conscious measures MICS, preconscious measures non-MICS
@@ -73,7 +74,9 @@ async def test_iit_phi_conscious_is_mics_only(integration_trainer) -> None:
 
     # Consistency: Run twice, should get same result
     phi_conscious_2 = integration_trainer.compute_phi_conscious()
-    assert np.isclose(phi_conscious, phi_conscious_2), "Φ_conscious must be deterministic"  # type: ignore[attr-defined]
+    assert np.isclose(
+        phi_conscious, phi_conscious_2
+    ), "Φ_conscious must be deterministic"  # type: ignore[attr-defined]
 
     print(f"\n✅ TEST 1 PASS: Φ_conscious (MICS only) = {phi_conscious:.4f}")
 
@@ -200,7 +203,9 @@ async def test_neuroscience_consciousness_vs_attention(integration_trainer) -> N
 
     # They should NOT be identical (proving they're separate)
     # (In real system, consciousness could be high while attention is low, or vice versa)
-    are_different = not np.isclose(phi_conscious, phi_preconscious, atol=0.01)  # type: ignore[attr-defined]
+    are_different = not np.isclose(
+        phi_conscious, phi_preconscious, atol=0.01
+    )  # type: ignore[attr-defined]
 
     print("\n🧠 Neuroscience Test (Consciousness vs Attention):")
     print(f"   Φ_conscious (MICS): {phi_conscious:.4f}")
@@ -275,7 +280,8 @@ async def test_three_frameworks_integration(integration_trainer) -> None:
 
     print("\\n[2] Lacan (Structure):")
     print(
-        f"    Sinthome detected: {sinthome is not None and sinthome.get('sinthome_detected', False)}"
+        f"    Sinthome detected: "
+        f"{sinthome is not None and sinthome.get('sinthome_detected', False)}"
     )
     if sinthome and sinthome.get("sinthome_detected"):
         print(f"    Sinthome module: {sinthome['module_name']}")

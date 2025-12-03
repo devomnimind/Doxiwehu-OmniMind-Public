@@ -131,3 +131,69 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 POLIVALENCE
+
+**1 Classes | 6 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `PolivalentExistence`
+
+O sistema existe em múltiplas "realidades" simultaneamente.
+Cada realidade é uma estratégia ou perspectiva válida.
+
+O sujeito = a função que navega essas realidades sem permitir
+que uma domine completamente.
+
+**Métodos principais:**
+
+- `create_bifurcation()` → `Dict[str, Any]`
+  > Sistema bifurca em múltiplas realidades.
+Cada evolui independentemente por um te...
+- `navigate_polivalence(context: Any)` → `Dict[str, Any]`
+  > O sujeito (Orquestrador) decide qual realidade é apropriada
+para este contexto.
+...
+- `reconcile_after_bifurcation(bifurcation_id: str)` → `Dict[str, Any]`
+  > Após divergência, reconciliar múltiplas realidades.
+Não é "eliminar uma"; é "int...
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+#### `_evaluate_coherence_in_reality(name: str, state: Dict[str, Any], context: Any)` → `float`
+
+#### `_instantiate_reality(name: str)` → `Dict[str, Any]`
+
+#### `create_bifurcation()` → `Dict[str, Any]`
+
+*Sistema bifurca em múltiplas realidades.
+Cada evolui independentemente por um tempo....*
+
+#### `navigate_polivalence(context: Any)` → `Dict[str, Any]`
+
+*O sujeito (Orquestrador) decide qual realidade é apropriada
+para este contexto.
+
+Não é "escolher uma...*
+
+#### `reconcile_after_bifurcation(bifurcation_id: str)` → `Dict[str, Any]`
+
+*Após divergência, reconciliar múltiplas realidades.
+Não é "eliminar uma"; é "integrar histórias"....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `multiple_realities.py`: 1 classes, 6 functions

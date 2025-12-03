@@ -19,7 +19,7 @@ except Exception as e:
     logger.debug(f"IBM backend auto-load skipped: {e}")
 
 # Import all LLM fixtures from conftest_llm
-from .conftest_llm import (  # noqa: F401
+from .conftest_llm import (  # noqa: F401, E402
     integration_loop,
     integration_trainer_mock,
     integration_trainer_real,

@@ -57,6 +57,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import structlog
+import torch  # Added for GPU check
 
 try:
     from qiskit import (  # type: ignore[import-untyped]
@@ -419,7 +420,20 @@ class QuantumCognitionEngine:
             )
 
         self.num_qubits = num_qubits
-        self.simulator = AerSimulator() if QISKIT_AVAILABLE else None
+
+        if QISKIT_AVAILABLE:
+            if torch.cuda.is_available():
+                try:
+                    self.simulator = AerSimulator(method="statevector", device="GPU")
+                    logger.info("quantum_cognition_gpu_enabled")
+                except Exception as e:
+                    logger.error(f"quantum_cognition_gpu_failed: {e}")
+                    raise RuntimeError(f"Quantum GPU backend failed: {e}")
+            else:
+                logger.warning("quantum_cognition_cpu_fallback", msg="GPU not available")
+                self.simulator = AerSimulator()
+        else:
+            self.simulator = None
 
         logger.info(
             "quantum_cognition_initialized",

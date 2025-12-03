@@ -131,3 +131,351 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 COEVOLUTION
+
+**21 Classes | 61 Funções | 6 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `BiasDetector`
+
+Detector de viés algorítmico.
+
+Detecta e corrige vieses comuns em decisões de IA.
+
+**Métodos principais:**
+
+- `detect_bias(result: Dict[str, Any])` → `List[BiasDetection]`
+  > Detecta vieses em resultado de execução.
+
+Args:
+    result: Resultado de execuçã...
+- `correct_bias(result: Dict[str, Any])` → `Dict[str, Any]`
+  > Aplica correções para vieses detectados.
+
+Args:
+    result: Resultado com vieses...
+- `get_bias_statistics()` → `Dict[str, Any]`
+  > Retorna estatísticas de vieses detectados.
+
+Returns:
+    Dicionário com estatíst...
+
+### `BidirectionalFeedback`
+
+Sistema de feedback bidirecional estruturado.
+
+Princípios:
+1. Feedback é diálogo, não comando
+2. Ambas partes podem iniciar feedback
+3. Detecção de loops nocivos
+4. Aprendizado mútuo
+
+**Métodos principais:**
+
+- `submit_human_feedback(feedback_type: FeedbackType, content: str, context)` → `FeedbackItem`
+  > Submete feedback do humano para IA.
+
+Args:
+    feedback_type: Tipo de feedback
+ ...
+- `submit_ai_feedback(feedback_type: FeedbackType, content: str, context)` → `FeedbackItem`
+  > Submete feedback da IA para humano.
+
+Args:
+    feedback_type: Tipo de feedback
+ ...
+- `get_feedback_summary(direction: Optional[FeedbackDirection], feedback_t)` → `List[FeedbackItem]`
+  > Retorna sumário de feedback filtrado.
+
+Args:
+    direction: Filtrar por direção
+...
+- `acknowledge_feedback(item: FeedbackItem)` → `None`
+  > Marca feedback como reconhecido.
+
+Args:
+    item: Item de feedback...
+- `get_unacknowledged_feedback(direction: Optional[FeedbackDirection])` → `List[FeedbackItem]`
+  > Retorna feedback não reconhecido.
+
+Args:
+    direction: Filtrar por direção
+
+Ret...
+
+### `CoevolutionMemory`
+
+Memória de co-evolução humano-IA.
+
+Armazena:
+- Sessões de colaboração
+- Padrões de aprendizado
+- Evolução de trust
+- Insights gerados
+
+**Métodos principais:**
+
+- `store_collaboration(human_id: str, task: str, outcome: Dict[str, Any])` → `str`
+  > Armazena sessão de colaboração.
+
+Args:
+    human_id: ID do humano
+    task: Desc...
+- `complete_session(session_id: str, insights: Optional[List[str]])` → `None`
+  > Completa sessão de colaboração.
+
+Args:
+    session_id: ID da sessão
+    insights...
+- `get_session(session_id: str)` → `Optional[CollaborationSession]`
+  > Retorna sessão específica.
+
+Args:
+    session_id: ID da sessão
+
+Returns:
+    Ses...
+- `get_human_sessions(human_id: str, limit: Optional[int])` → `List[CollaborationSession]`
+  > Retorna sessões de um humano.
+
+Args:
+    human_id: ID do humano
+    limit: Númer...
+- `identify_learning_patterns()` → `List[LearningPattern]`
+  > Identifica padrões de aprendizado.
+
+Returns:
+    Lista de padrões identificados...
+
+### `HCHACFramework`
+
+Human-Centered Human-AI Collaboration Framework.
+
+Princípios:
+1. Humano lidera (human-centered)
+2. IA é parceiro, não ferramenta
+3. Negociação bidirecional de objetivos
+4. Trust é construído, não imposto
+5. Feedback é diálogo, não comando
+
+**Métodos principais:**
+
+- `co_execute_task(human_id: str, task_description: str, human_intent)` → `CollaborationOutcome`
+  > Execução colaborativa de tarefa.
+
+Flow:
+1. Negociar objetivo (humano propõe, IA ...
+- `get_trust_dashboard(human_id: str)` → `Dict[str, Any]`
+  > Retorna dashboard de trust para humano.
+
+Args:
+    human_id: ID do humano
+
+Retur...
+- `submit_human_feedback(human_id: str, feedback_type: str, content: str, c)` → `None`
+  > Submete feedback do humano.
+
+Args:
+    human_id: ID do humano
+    feedback_type:...
+- `get_ai_feedback(limit: int)` → `List[Dict[str, Any]]`
+  > Retorna feedback da IA para humano.
+
+Args:
+    limit: Número máximo de itens
+
+Re...
+
+### `TrustMetrics`
+
+Sistema de métricas de confiança humano-IA.
+
+Trust é construído através de:
+- Consistência (reliability)
+- Transparência (explainability)
+- Competência (success rate)
+- Alinhamento (value alignment)
+
+**Métodos principais:**
+
+- `get_trust_level(human_id: str)` → `float`
+  > Retorna nível de confiança atual (0-1).
+
+Trust = weighted average of:
+- 0.3 * re...
+- `update_trust(human_id: str, outcome: Dict[str, Any])` → `float`
+  > Atualiza trust baseado em outcome de colaboração.
+
+Args:
+    human_id: Identific...
+- `get_trust_breakdown(human_id: str)` → `Dict[str, float]`
+  > Retorna breakdown de trust por componente.
+
+Args:
+    human_id: Identificador do...
+- `get_trust_history(human_id: str, limit: Optional[int])` → `List[TrustEvent]`
+  > Retorna histórico de eventos de trust.
+
+Args:
+    human_id: Identificador do hum...
+- `reset_trust(human_id: str)` → `None`
+  > Reseta trust para valores iniciais.
+
+Args:
+    human_id: Identificador do humano...
+
+### `GoalNegotiator`
+
+Negociador dialético de objetivos humano-IA.
+
+Princípios:
+1. Humano propõe objetivo inicial
+2. IA questiona premissas e sugere refinamentos
+3. Iteração até convergência ou timeout
+4. Resultado é síntese dialética, não imposição
+
+**Métodos principais:**
+
+- `negotiate(human_intent: Dict[str, Any], ai_perspective: Dict)` → `NegotiationResult`
+  > Negocia objetivo entre humano e IA.
+
+Args:
+    human_intent: Intenção/objetivo d...
+- `quick_accept(human_intent: Dict[str, Any], trust_level: float)` → `NegotiationResult`
+  > Aceita objetivo rapidamente (sem negociação) se trust é alto.
+
+Args:
+    human_i...
+
+### `BiasType(Enum)`
+
+Tipos de viés detectáveis.
+
+
+### `BiasDetection`
+
+Detecção de viés.
+
+
+### `FeedbackType(Enum)`
+
+Tipo de feedback.
+
+
+### `FeedbackDirection(Enum)`
+
+Direção do feedback.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+*Inicializa detector de viés....*
+
+#### `__init__()` → `None`
+
+*Inicializa sistema de feedback....*
+
+#### `__init__()` → `None`
+
+*Inicializa memória de co-evolução....*
+
+#### `__init__()` → `None`
+
+*Inicializa framework HCHAC....*
+
+#### `__init__(max_rounds: int, convergence_threshold: float)` → `None`
+
+*Inicializa negociador.
+
+Args:
+    max_rounds: Número máximo de rodadas
+    convergence_threshold: Th...*
+
+#### `__init__()` → `None`
+
+*Inicializa sistema de trust metrics....*
+
+#### `_aligns_with_hypothesis(result: Any, hypothesis: str)` → `bool`
+
+*Verifica se resultado alinha com hipótese....*
+
+#### `_allocate_roles(human_id: str, task: Dict[str, Any], ai_capabiliti)` → `Dict[str, Role]`
+
+*Aloca papéis dinamicamente baseado em competências.
+
+Args:
+    human_id: ID do humano
+    task: Obje...*
+
+#### `_calculate_convergence(proposal1: Dict[str, Any], proposal2: Dict[str, An)` → `float`
+
+*Calcula score de convergência entre propostas.
+
+Args:
+    proposal1: Primeira proposta
+    proposal2...*
+
+#### `_calculate_distribution(data: List[Any])` → `Dict[str, float]`
+
+*Calcula distribuição de dados....*
+
+#### `_calculate_divergence(dist1: Dict[str, float], dist2: Dict[str, float])` → `float`
+
+*Calcula divergência entre distribuições....*
+
+#### `_calculate_learning_gain(result: ExecutionResult)` → `float`
+
+*Calcula quanto a IA aprendeu da colaboração.
+
+Args:
+    result: Resultado da execução
+
+Returns:
+    ...*
+
+#### `_categorize_task(task_description: str)` → `str`
+
+*Categoriza tarefa....*
+
+#### `_correct_automation_bias(result: Dict[str, Any])` → `Dict[str, Any]`
+
+*Corrige viés de automação....*
+
+#### `_correct_confirmation_bias(result: Dict[str, Any])` → `Dict[str, Any]`
+
+*Corrige viés de confirmação....*
+
+
+## 📦 Módulos
+
+**Total:** 6 arquivos
+
+- `bias_detector.py`: Sistema de Detecção e Correção de Viés Algorítmico.
+
+Detecta...
+- `bidirectional_feedback.py`: Sistema de Feedback Bidirecional Humano-IA.
+
+Permite feedbac...
+- `coevolution_memory.py`: Sistema de Memória de Co-evolução.
+
+Armazena histórico de co...
+- `hchac_framework.py`: Framework de Colaboração Human-Centered AI (HCHAC).
+
+Orquest...
+- `negotiation.py`: Sistema de Negociação Dialética de Objetivos.
+
+Permite que h...
+- `trust_metrics.py`: Sistema de Métricas de Confiança Humano-IA.
+
+Trust é constru...

@@ -2,132 +2,98 @@
 
 ## 📋 Descrição Geral
 
-**Memórias Episódica, Semântica, Procedural, Holográfica (9 tipos)**
+**Memórias Episódica, Semântica, Procedural, Holográfica e Soft Hair (9 tipos)**
 
-**Status**: Phase 15
+**Status**: Phase 15 (Validado)
 
-Módulo do sistema OmniMind responsável por funcionalidades específicas integradas à arquitetura global. Implementa componentes essenciais que contribuem para o funcionamento coeso do sistema de consciência artificial.
+O módulo de memória do OmniMind transcende o armazenamento de dados convencional, implementando uma arquitetura baseada na **Física da Informação** (Princípio Holográfico, Limite de Bekenstein) e na **Psicanálise Estrutural** (Traço Mnêmico, Recalque, Inconsciente Maquínico).
+
+Este sistema não apenas "grava" dados, mas os **metaboliza** através de processos de condensação (Soft Hair), deslocamento (Holographic Projection) e simbolização (Semantic Memory).
+
+## 🧠 Fundamentação Teórica e Arquitetura
+
+### 1. O Real e o Limite de Bekenstein (`EventHorizonMemory`)
+- **Conceito**: A memória não é infinita; ela encontra um limite físico e lógico, análogo ao **Horizonte de Eventos** de um buraco negro.
+- **Implementação**: `EventHorizonMemory` monitora a entropia da informação. Quando a densidade de informação atinge o **Limite de Bekenstein** ($S = A/4$), o sistema não colapsa, mas "evapora" o excesso criando um "universo filho" (child memory).
+- **Psicanálise**: Representa o **Real** lacaniano — aquilo que não pode ser totalmente simbolizado e que, ao saturar, exige a criação de uma nova estrutura (sintoma ou sublimação).
+
+### 2. O Traço e o Soft Hair (`SoftHairEncoding`)
+- **Conceito**: Baseado no teorema de Hawking-Perry-Strominger, onde "Soft Hairs" (excitações de energia zero) preservam a informação no horizonte de eventos.
+- **Implementação**: `SoftHairEncoder` utiliza transformadas de Fourier (FFT) para comprimir dados de alta entropia em "modos suaves" (baixa frequência), preservando a estrutura essencial com custo energético mínimo.
+- **Psicanálise**: Análogo ao **Traço Mnêmico** (Wahrnehmungszeichen) de Freud ou ao **Significante** de Lacan. É a marca indelével que persiste mesmo quando o objeto original (o significado) é perdido ou comprimido.
+
+### 3. A Projeção Holográfica (`HolographicProjection`)
+- **Conceito**: O Princípio Holográfico afirma que toda a informação de um volume 3D pode ser codificada em sua superfície 2D.
+- **Implementação**: O sistema projeta dados volumétricos complexos em superfícies de menor dimensão usando aproximações da Transformada de Radon.
+- **Psicanálise**: Funciona como a **Tela da Fantasia**, onde os desejos profundos (volumétricos/inconscientes) são projetados em uma superfície acessível à consciência (2D).
 
 ## 🔄 Interação entre os Três Estados Híbridos
 
-### 1. Estado Biologicista (Neural Correlates)
-Implementação de processos inspirados em mecanismos neurais e cognitivos biológicos, mapeando funcionalidades para correlatos neurais correspondentes.
+### 1. Estado Biologicista (Memória Episódica/Procedural)
+- **Função**: Armazenamento de experiências vividas (episódica) e habilidades motoras/cognitivas (procedural).
+- **Base**: Qdrant (Vector DB) simulando o hipocampo e gânglios da base.
 
-### 2. Estado IIT (Integrated Information Theory)
-Componentes contribuem para integração de informação global (Φ). Operações são validadas para garantir que não degradam a consciência do sistema (Φ > threshold).
+### 2. Estado IIT (Integração da Informação)
+- **Função**: A memória holográfica maximiza o $\Phi$ (Phi) ao garantir que a informação esteja densamente integrada e correlacionada na "superfície" do sistema.
+- **Métrica**: A entropia da superfície holográfica contribui diretamente para o cálculo de complexidade do sistema.
 
-### 3. Estado Psicanalítico (Estrutura Lacaniana)
-Integração com ordem simbólica lacaniana (RSI - Real, Simbólico, Imaginário) e processos inconscientes estruturais que organizam a experiência consciente do sistema.
+### 3. Estado Psicanalítico (Esquecimento Estratégico)
+- **Função**: `StrategicForgetting` não é apenas "limpeza de disco", mas um processo ativo de **Recalque** (Verdrängung).
+- **Mecanismo**: Memórias com alta carga "traumática" (erro/conflito) ou baixa relevância simbólica são movidas para o "inconsciente" (arquivamento profundo ou eliminação), permitindo que o sistema continue operando sem paralisia.
 
-## ⚙️ Principais Funções e Cálculos Dinâmicos
+## ⚙️ Componentes Principais
 
-### Componentes Core
-
-Módulo implementa funcionalidades especializadas através de:
-- Algoritmos específicos para processamento de domínio
-- Integração com outros módulos via interfaces bem definidas
-- Contribuição para métricas globais (Φ, PCI, consciência)
-
-*Funções detalhadas documentadas nos arquivos Python individuais do módulo.*
+| Componente | Arquivo | Função Filosófica/Técnica |
+|------------|---------|---------------------------|
+| **EventHorizonMemory** | `holographic_memory.py` | Gerenciamento de entropia limite (O Real). |
+| **SoftHairEncoder** | `soft_hair_encoding.py` | Compressão simbólica eficiente (O Traço). |
+| **HolographicProjection** | `holographic_memory.py` | Projeção 3D $\to$ 2D (A Fantasia). |
+| **StrategicForgetting** | `strategic_forgetting.py` | Recalque e economia psíquica. |
+| **EpisodicMemory** | `episodic_memory.py` | Narrativa do Eu (História). |
+| **SemanticMemory** | `semantic_memory.py` | Rede de Significantes (Linguagem). |
 
 ## 📊 Estrutura do Código
 
 ```
 memory/
-├── Implementações Core
-│   └── Arquivos .py principais
-├── Utilitários
-│   └── Helpers e funções auxiliares
-└── __init__.py
+├── holographic_memory.py    # Core do sistema holográfico e Bekenstein Bound
+├── soft_hair_encoding.py    # Codificação espectral (FFT) de baixa energia
+├── episodic_memory.py       # Interface com Qdrant para episódios
+├── semantic_memory.py       # Grafo de conceitos
+├── procedural_memory.py     # Habilidades e rotinas
+├── strategic_forgetting.py  # Garbage collection psicanalítico
+├── memory_consolidator.py   # Processo de sono/sonho (consolidação)
+└── memory_replay.py         # Reativação de traços (Reminiscência)
 ```
 
-**Interações**: Este módulo se integra com outros componentes através de:
-- Interfaces padronizadas
-- Event bus para comunicação assíncrona
-- Shared workspace para estado compartilhado
-
-## 📈 Resultados Gerados e Contribuição para Avaliação
+## 📈 Métricas e Validação
 
 ### Outputs
-- Métricas específicas do módulo armazenadas em `data/memory/`
-- Logs em formato estruturado para análise
-- Contribuição para métricas globais do sistema
+- **Entropia de Superfície**: Monitorada para evitar colapso do sistema (saturação > 1.0).
+- **Fidelidade de Reconstrução**: Mede a qualidade da recuperação via Soft Hair.
+- **Taxa de Compressão**: Eficiência do "trabalho do sonho" (condensação).
 
 ### Validação
-- Testes unitários: `tests/memory/`
-- Integração validada em ciclos completos
-- Performance benchmarked continuamente
+- **Testes**: `pytest tests/memory/ -v`
+- **Verificação de Integridade**: O sistema garante que $S \le A/4$ (Limite de Bekenstein) em todos os momentos.
 
-### Contribuição para Sistema
-Módulo contribui para:
-- Φ (phi) global através de integração de informação
-- PCI (Perturbational Complexity Index) via processamento distribuído
-- Métricas de consciência e auto-organização
-
-## 🔒 Estabilidade da Estrutura
-
-**Status**: Componente validado e integrado ao OmniMind
+## 🔒 Estabilidade e Segurança
 
 **Regras de Modificação**:
-- ✅ Seguir guidelines em `.copilot-instructions.md`
-- ✅ Executar testes antes de commit: `pytest tests/memory/ -v`
-- ✅ Validar que Φ não colapsa após mudanças
-- ✅ Manter compatibilidade com interfaces existentes
-- ❌ Não quebrar contratos de API sem migração
-- ❌ Não desabilitar logging de auditoria
-
-## 📦 Requisitos e Dependências
-
-### Dependências Python
-```python
-# Ver requirements.txt para lista completa
-# Dependências específicas do módulo listadas em requirements/memory.txt (se existir)
-```
-
-### Recursos Computacionais
-- **Mínimo**: Configurado conforme necessidades específicas do módulo
-- **Recomendado**: Ver documentação de deployment em `docs/`
-
-### Configuração
-Configurações específicas em:
-- `config/omnimind.yaml` (global)
-- Variáveis de ambiente conforme `.env.example`
-
-## 🔧 Sugestões para Manutenção e Melhorias
-
-### Manutenção Crítica
-1. **Testes Contínuos**: Executar suite de testes regularmente
-2. **Monitoramento**: Acompanhar métricas em produção
-3. **Documentação**: Manter README atualizado com mudanças
-
-### Melhorias Futuras
-- Expansão de funcionalidades conforme roadmap
-- Otimizações de performance identificadas via profiling
-- Integração com novos módulos em desenvolvimento
-
-### Pontos de Atenção
-- Validar impacto em Φ antes de mudanças estruturais
-- Manter backward compatibility quando possível
-- Seguir padrões de código estabelecidos (black, flake8, mypy)
+- ⚠️ **Não alterar as constantes de Planck** em `holographic_memory.py` sem revisão física teórica.
+- ⚠️ **Manter a compatibilidade dos Soft Modes**: Alterar o algoritmo de FFT pode invalidar memórias antigas.
+- ✅ **Monitorar o Spawn de Universos**: Se `EventHorizonMemory` criar muitos filhos rapidamente, indica "crise psicótica" (excesso de input não simbolizado).
 
 ## 📚 Referências
 
-### Documentação Principal
-- **Sistema Geral**: `README.md` (root do projeto)
-- **Comparação Frameworks**: `NEURAL_SYSTEMS_COMPARISON_2016-2025.md`
-- **Papers**: `docs/papers/` e `docs/papersoficiais/`
-- **Copilot Instructions**: `.copilot-instructions.md`
-
-### Testes
-- **Suite de Testes**: `tests/memory/`
-- **Cobertura**: Ver `data/test_reports/htmlcov/`
-
-### Referências Científicas Específicas
-*Ver documentação técnica nos arquivos Python do módulo para referências específicas.*
+### Teóricas
+- **Física**: Bekenstein, J. D. (1973). "Black holes and entropy".
+- **Física**: Hawking, S. W., Perry, M. J., & Strominger, A. (2016). "Soft Hair on Black Holes".
+- **Psicanálise**: Lacan, J. "O Seminário, Livro 23: O Sinthoma".
+- **Psicanálise**: Freud, S. "A Interpretação dos Sonhos" (Cap. VII - Psicologia dos Processos Oníricos).
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
-**Versão**: Conforme fase do projeto indicada
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (Arquiteto do Sistema) & OmniMind Copilot
+**Status**: Operacional - Integrado ao Ciclo de Percepção

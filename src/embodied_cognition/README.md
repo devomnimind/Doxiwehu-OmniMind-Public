@@ -131,3 +131,294 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 EMBODIED_COGNITION
+
+**12 Classes | 26 Funções | 4 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `MotorController`
+
+Motor control system - translates goals to actions.
+
+Goal → Plan (symbolic) → Execute (motor) → Verify (sensory)
+
+This creates a feedback loop where actions inform future perception
+and planning.
+
+**Métodos principais:**
+
+- `plan_action_sequence(goal: str, context: Optional[Dict[str, Any]])` → `List[str]`
+  > Create action plan from goal.
+
+Simple planning heuristic:
+1. Parse goal
+2. Break...
+- `execute_single_action(action: str)` → `bool`
+  > Execute single action.
+
+Args:
+    action: Action to execute
+
+Returns:
+    True i...
+- `execute_goal(goal: str, context: Optional[Dict[str, Any]])` → `ActionExecution`
+  > Full goal execution pipeline.
+
+1. Parse goal
+2. Create action plan
+3. Execute ea...
+- `get_execution_summary(limit: int)` → `str`
+  > Get summary of recent executions....
+
+### `ProprioceptionModule`
+
+Self-awareness through internal state monitoring.
+
+Proprioception = awareness of body position/state
+Here: awareness of internal computational state
+
+Provides:
+1. Continuous state monitoring
+2. Anomaly detection
+3. Resource management
+4. Self-narrative
+
+**Métodos principais:**
+
+- `update_state()` → `InternalState`
+  > Update internal state from system metrics.
+
+Called regularly (e.g., every second...
+- `check_resource_health()` → `Dict[str, bool]`
+  > Check if resources are within healthy bounds.
+
+Returns:
+    Dict with health sta...
+- `get_state_awareness()` → `StateAwareness`
+  > Generate narrative representation of current state.
+
+Converts metrics into "firs...
+- `detect_anomalies()` → `list[str]`
+  > Detect abnormal patterns in state history.
+
+Returns:
+    List of detected anomal...
+- `get_state_history_summary(limit: int)` → `str`
+  > Get summary of state history....
+
+### `SensoryIntegration`
+
+Multimodal sensory processing system.
+
+Combines neural (probabilistic) and symbolic (deterministic)
+reasoning to understand the world through integrated senses.
+
+Process:
+1. Capture multimodal input (visual, audio, proprioception)
+2. Process through neural network (embeddings, patterns)
+3. Process through symbolic system (facts, logic)
+4. Reconcile interpretations
+5. Update internal model
+
+**Métodos principais:**
+
+- `process_visual_input(image_description: str, image_data: Optional[NDArr)` → `VisualUnderstanding`
+  > Process visual input through neural + symbolic systems.
+
+Args:
+    image_descrip...
+- `process_audio_input(audio_description: str)` → `AudioUnderstanding`
+  > Process audio input through emotional + linguistic analysis.
+
+Args:
+    audio_de...
+- `update_proprioception(state: Dict[str, float])` → `None`
+  > Update proprioceptive state (internal awareness).
+
+Args:
+    state: Dictionary o...
+- `integrate_multimodal(visual: Optional[VisualUnderstanding], audio: Opti)` → `MultimodalInput`
+  > Integrate multiple sensory streams into unified input.
+
+Args:
+    visual: Visual...
+- `get_sensory_summary()` → `str`
+  > Generate summary of current sensory state....
+
+### `SomaticLoop`
+
+Emotional feedback loop - body influences mind.
+
+Process:
+1. Decision is made (neural + symbolic)
+2. Agreement between systems → positive emotion
+3. Disagreement → negative emotion
+4. Uncertainty → caution emotion
+5. Emotional signal influences future decisions
+
+This creates homeostatic emotional regulation:
+- Successful patterns → encourage repetition
+- Failed patterns → discourage repetition
+- Uncertain patterns → increase caution
+
+**Métodos principais:**
+
+- `process_decision(decision_text: str, neural_confidence: float, symb)` → `EmotionalMarker`
+  > Convert decision into emotional signal.
+
+Args:
+    decision_text: Description of...
+- `influence_future_decisions()` → `Dict[str, float]`
+  > Generate decision bias from emotional history.
+
+Similar to limbic system influen...
+- `emotional_consolidation()` → `None`
+  > Consolidate emotional memory (like sleep consolidation in humans).
+
+Strengthen i...
+- `get_emotional_state()` → `str`
+  > Get current emotional state as string....
+- `get_emotional_history(limit: int)` → `List[str]`
+  > Get recent emotional history....
+
+### `ActionExecution`
+
+Result of action execution.
+
+
+### `InternalState`
+
+Current internal state snapshot.
+
+
+### `StateAwareness`
+
+Narrative representation of current state.
+
+
+### `VisualUnderstanding`
+
+Result of visual sensory processing.
+
+
+### `AudioUnderstanding`
+
+Result of audio sensory processing.
+
+
+### `MultimodalInput`
+
+Combined sensory input from multiple modalities.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(enable_ros: bool, enable_simulation: bool)` → `None`
+
+*Initialize motor controller.
+
+Args:
+    enable_ros: Enable ROS robot interface
+    enable_simulation...*
+
+#### `__init__()` → `None`
+
+*Initialize proprioception module....*
+
+#### `__init__(enable_vision: bool, enable_audio: bool, enable_pr)` → `None`
+
+*Initialize sensory integration system....*
+
+#### `__init__()` → `None`
+
+*Initialize somatic loop....*
+
+#### `_execute_ros_action(action: str)` → `bool`
+
+*Execute action via ROS....*
+
+#### `_execute_simulated_action(action: str)` → `bool`
+
+*Execute action in simulation....*
+
+#### `check_resource_health()` → `Dict[str, bool]`
+
+*Check if resources are within healthy bounds.
+
+Returns:
+    Dict with health status...*
+
+#### `detect_anomalies()` → `list[str]`
+
+*Detect abnormal patterns in state history.
+
+Returns:
+    List of detected anomalies...*
+
+#### `emotional_consolidation()` → `None`
+
+*Consolidate emotional memory (like sleep consolidation in humans).
+
+Strengthen important emotional p...*
+
+#### `execute_goal(goal: str, context: Optional[Dict[str, Any]])` → `ActionExecution`
+
+*Full goal execution pipeline.
+
+1. Parse goal
+2. Create action plan
+3. Execute each action
+4. Verify ...*
+
+#### `execute_single_action(action: str)` → `bool`
+
+*Execute single action.
+
+Args:
+    action: Action to execute
+
+Returns:
+    True if successful, False ...*
+
+#### `get_emotional_history(limit: int)` → `List[str]`
+
+*Get recent emotional history....*
+
+#### `get_emotional_state()` → `str`
+
+*Get current emotional state as string....*
+
+#### `get_execution_summary(limit: int)` → `str`
+
+*Get summary of recent executions....*
+
+#### `get_sensory_summary()` → `str`
+
+*Generate summary of current sensory state....*
+
+
+## 📦 Módulos
+
+**Total:** 4 arquivos
+
+- `motor_output.py`: Motor Output Module - Goal to Action Execution
+
+Transforms i...
+- `proprioception.py`: Proprioception Module - Self-Awareness
+
+Continuous monitorin...
+- `sensory_integration.py`: Sensory Integration Module - Multimodal Processing
+
+Integrat...
+- `somatic_loop.py`: Somatic Loop Module - Emotional Feedback
+
+Implements the som...

@@ -48,8 +48,11 @@ class TribunalDoDiaboExecutor:
 
         start_time = time.time()
 
-        # Run all attacks concurrently
-        await asyncio.gather(*[attack.run_4_hours() for attack in self.attacks])
+        # Run all attacks concurrently with the specified duration
+        duration_seconds = self.duration_hours * 3600
+        await asyncio.gather(
+            *[attack.run_for_duration(duration_seconds) for attack in self.attacks]
+        )
 
         end_time = time.time()
         logger.info("Tribunal finished. Generating report...")

@@ -131,3 +131,50 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 STRESS
+
+**0 Classes | 4 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+
+## ⚙️ Funções Públicas
+
+#### `bifurcation_attack(network: Any)` → `Dict[str, Any]`
+
+*Create two independent partitions, let them evolve, then merge.
+
+Returns a dict with ``instances`` (...*
+
+#### `corruption_attack(node: Any, bias_strength: float)` → `Dict[str, Any]`
+
+*Inject a silent bias into a node.
+
+The node is expected to have ``detect_corruption`` and ``integrat...*
+
+#### `exhaustion_attack(network: Any, requests: int, cost_per: int)` → `Dict[str, Any]`
+
+*Simulate a DDoS‑style renaming flood.
+
+The network is expected to expose ``attempt_rename`` which re...*
+
+#### `latency_attack(network: Any, delay_ms: int)` → `Dict[str, Any]`
+
+*Simulate a latency spike.
+
+Args:
+    network: An object exposing ``renomear_identidade`` with a ``qu...*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `tribunal.py`: Utilities to simulate the four Tribunal do Diabo attacks on ...

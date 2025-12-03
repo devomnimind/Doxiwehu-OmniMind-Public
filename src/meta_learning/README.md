@@ -131,3 +131,91 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 META_LEARNING
+
+**2 Classes | 7 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `BlackHoleMetaLearner`
+
+Meta-learning system triggered by knowledge density.
+
+When knowledge density exceeds Schwarzschild radius,
+system "collapses" to meta-level abstraction.
+
+**Métodos principais:**
+
+- `check_collapse_condition(knowledge_mass: float, knowledge_volume: float)` → `bool`
+  > Check if knowledge density exceeds Schwarzschild radius.
+
+Args:
+    knowledge_ma...
+- `collapse_to_meta_level(knowledge: Dict[str, Any])` → `MetaKnowledge`
+  > Collapse knowledge to meta-level.
+
+Args:
+    knowledge: Knowledge to compress
+
+R...
+- `get_statistics()` → `Dict[str, Any]`
+  > Get meta-learner statistics....
+
+### `MetaKnowledge`
+
+Meta-level knowledge extracted from collapse.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(critical_density: float)` → `None`
+
+*Initialize black hole meta-learner....*
+
+#### `_define_boundary(axioms: List[str])` → `float`
+
+*Define event horizon radius....*
+
+#### `_extract_axioms(knowledge: Dict[str, Any])` → `List[str]`
+
+*Extract core axioms from knowledge....*
+
+#### `_generate_theorems(axioms: List[str])` → `List[str]`
+
+*Generate derived theorems from axioms....*
+
+#### `check_collapse_condition(knowledge_mass: float, knowledge_volume: float)` → `bool`
+
+*Check if knowledge density exceeds Schwarzschild radius.
+
+Args:
+    knowledge_mass: Total knowledge ...*
+
+#### `collapse_to_meta_level(knowledge: Dict[str, Any])` → `MetaKnowledge`
+
+*Collapse knowledge to meta-level.
+
+Args:
+    knowledge: Knowledge to compress
+
+Returns:
+    MetaKnow...*
+
+#### `get_statistics()` → `Dict[str, Any]`
+
+*Get meta-learner statistics....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `black_hole_collapse.py`: Black Hole Meta-Learning - Density-Triggered Meta-Level Tran...

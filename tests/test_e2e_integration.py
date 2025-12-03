@@ -158,7 +158,7 @@ class TestMockedAPIEndpoints:
             mock_client_class.return_value = mock_client
 
             async with httpx.AsyncClient() as client:
-                response = await client.get("http://mock-server/health")
+                response = await client.get("http://mock-server/health/")
                 assert response.status_code == 200
                 data = response.json()
                 assert "status" in data
@@ -392,7 +392,7 @@ class TestMockedPerformance:
             async with httpx.AsyncClient() as client:
                 # Test health endpoint
                 start = time.perf_counter()
-                response = await client.get("http://mock-server/health")
+                response = await client.get("http://mock-server/health/")
                 duration = time.perf_counter() - start
 
                 assert response.status_code == 200
@@ -441,7 +441,7 @@ class TestAPIEndpoints:
         import httpx
 
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"{backend_server}/health")
+            response = await client.get(f"{backend_server}/health/")
             assert response.status_code == 200
             data = response.json()
             assert "status" in data
@@ -693,7 +693,7 @@ class TestPerformance:
         async with httpx.AsyncClient() as client:
             # Test health endpoint
             start = time.perf_counter()
-            response = await client.get(f"{backend_server}/health")
+            response = await client.get(f"{backend_server}/health/")
             duration = time.perf_counter() - start
 
             assert response.status_code == 200
@@ -760,7 +760,7 @@ class TestSecurityIntegration:
             statuses = []
             for _ in range(100):
                 try:
-                    response = await client.get(f"{backend_server}/health")
+                    response = await client.get(f"{backend_server}/health/")
                     statuses.append(response.status_code)
                 except Exception:
                     pass
@@ -841,11 +841,11 @@ class TestErrorHandling:
 
         async with httpx.AsyncClient() as client:
             # Make request to ensure service is healthy
-            response = await client.get(f"{backend_server}/health")
+            response = await client.get(f"{backend_server}/health/")
             assert response.status_code == 200
 
             # Service should continue to work after errors
-            response = await client.get(f"{backend_server}/health")
+            response = await client.get(f"{backend_server}/health/")
             assert response.status_code == 200
 
 

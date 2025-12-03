@@ -56,6 +56,17 @@ class SymbolicComponent:
 
         logger.info(f"Symbolic component initialized (KG: {knowledge_graph_path})")
 
+        if not knowledge_graph_path:
+            self._bootstrap_default_knowledge()
+
+    def _bootstrap_default_knowledge(self) -> None:
+        """Initialize with some basic ontological facts."""
+        self.add_fact("OmniMind", "is_a", "AI")
+        self.add_fact("Goal A", "type", "Goal")
+        self.add_fact("Goal B", "type", "Goal")
+        self.add_fact("Environment", "type", "Context")
+        self.add_fact("Environment", "has_property", "Observable")
+
     def add_fact(
         self,
         subject: str,
@@ -107,15 +118,49 @@ class SymbolicComponent:
         logger.info(f"Symbolic inference: {query}")
 
         try:
-            # Busca simples em facts
+            # Tokenize query for better matching
+            query_lower = query.lower()
+            tokens = set(query_lower.split())
+
+            best_fact = None
+            max_score = 0.0
+
             for fact in self.facts:
-                if query.lower() in str(fact).lower():
+                fact_str = str(fact).lower()
+
+                # Exact match check
+                if query_lower in fact_str:
                     return SymbolicInference(
                         conclusion=f"Proven: {fact}",
                         proof=f"Found in knowledge base: {fact}",
                         certainty=1.0,
                         derived_facts=[fact],
                     )
+
+                # Subject match check (high relevance)
+                if fact.subject.lower() in query_lower:
+                    score = 0.9
+                    if score > max_score:
+                        max_score = score
+                        best_fact = fact
+                    continue
+
+                # Token overlap check (partial relevance)
+                fact_tokens = set(fact_str.split())
+                overlap = len(tokens.intersection(fact_tokens))
+                if overlap > 0:
+                    score = 0.1 * overlap  # Weak signal
+                    if score > max_score:
+                        max_score = score
+                        best_fact = fact
+
+            if best_fact and max_score > 0:
+                return SymbolicInference(
+                    conclusion=f"Relevant fact: {best_fact}",
+                    proof=f"Found relevant fact in KB: {best_fact} (relevance={max_score:.2f})",
+                    certainty=min(1.0, max_score),
+                    derived_facts=[best_fact],
+                )
 
             # Se não encontrado
             return SymbolicInference(
@@ -148,13 +193,14 @@ class SymbolicComponent:
         if len(parts) < 3:
             return []
 
-        subject, predicate = parts[0], parts[1]
+        subject, predicate, obj = parts[0], parts[1], parts[2]
 
         results = [
             fact
             for fact in self.facts
             if (subject == "*" or fact.subject == subject)
             and (predicate == "*" or fact.predicate == predicate)
+            and (obj == "*" or fact.obj == obj)
         ]
 
         return results
@@ -179,7 +225,16 @@ class SymbolicComponent:
         """
         # Extrair query do input
         if isinstance(input_data, dict):
-            query = str(input_data.get("query", str(input_data)))
+            # Extract meaningful values for query
+            relevant_terms = [
+                str(v)
+                for k, v in input_data.items()
+                if isinstance(v, (str, int, float)) and k in ["goal", "visual", "context"]
+            ]
+            if relevant_terms:
+                query = " ".join(relevant_terms)
+            else:
+                query = str(input_data.get("query", str(input_data)))
         else:
             query = str(input_data)
 

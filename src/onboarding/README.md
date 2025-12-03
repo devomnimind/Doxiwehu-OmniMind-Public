@@ -131,3 +131,42 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 ONBOARDING
+
+**2 Classes | 3 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `SupabaseMemoryOnboarding`
+
+Seeds episodic memory using Supabase GraphQL collections.
+
+**Métodos principais:**
+
+- `seed_collection(collection: str, node_fields: Optional[Iterable[st)` → `MemoryOnboardingReport`
+
+### `MemoryOnboardingReport`
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(config: SupabaseConfig, memory: EpisodicMemory, he)` → `None`
+
+#### `_store_node(node: Dict[str, Any])` → `bool`
+
+#### `seed_collection(collection: str, node_fields: Optional[Iterable[st)` → `MemoryOnboardingReport`
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `memory_onboarding.py`: 2 classes, 3 functions

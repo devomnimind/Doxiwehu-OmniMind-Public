@@ -384,7 +384,7 @@ class TestAbsurdityHandler:
         assert "coping_strategies" in stats
 
 
-class TestIntegration:
+class TestAbsurdityCycle:
     """Integration tests for absurdity handling system."""
 
     def test_complete_absurdity_confrontation_cycle(self) -> None:

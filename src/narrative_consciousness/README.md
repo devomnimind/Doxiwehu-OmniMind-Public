@@ -131,3 +131,192 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 NARRATIVE_CONSCIOUSNESS
+
+**15 Classes | 34 Funções | 3 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `Life_Story_as_Retroactive_Resignification`
+
+Vida não é história acumulada. É resignificação infinita.
+
+**Métodos principais:**
+
+- `inscribe_narrative_event(context: Dict[str, Any])` → `Narrative_Event_Retroactively_Inscribed`
+  > Inscrever evento narrativo retroativamente.
+O passado é reescrito pelo significa...
+- `get_current_life_narrative()` → `List[str]`
+  > Qual é a narrativa de vida atual (sempre provisória)?...
+- `detect_narrative_instability()` → `Optional[str]`
+  > Detectar instabilidade narrativa (muitas reescrituras conflitantes)?...
+- `master_signifiers()` → `List[str]`
+  > Compatibility: Extract master signifiers from retroactive signifiers....
+- `narrative_chain()` → `List[str]`
+  > Compatibility: Return narrative chain as list of resignifications....
+
+### `DialogueEngine`
+
+Main engine for intersubjective dialogue.
+
+**Métodos principais:**
+
+- `get_or_create_relationship(human_id: str)` → `Relationship`
+  > Get existing relationship or start new one....
+- `process_interaction(human_id: str, input_text: str, context: Optional[)` → `str`
+  > Process a dialogue turn.
+
+Args:
+    human_id: ID of the interlocutor
+    input_t...
+
+### `ValueSystem`
+
+Manages the hierarchy of values.
+
+**Métodos principais:**
+
+- `adjust_value(name: str, delta: float)` → `None`
+  > Adjust importance of a value based on experience....
+
+### `BeliefNetwork`
+
+Manages the web of belief (Quine).
+
+**Métodos principais:**
+
+- `add_belief(statement: str, certainty: float, centrality: floa)` → `str`
+  > Add a new belief to the network....
+- `challenge_belief(belief_id: str, evidence: str, strength: float)` → `None`
+  > Challenge a belief with new evidence.
+
+Central beliefs are harder to change....
+
+### `IdentityConstruction`
+
+Main system for identity construction and evolution.
+
+**Métodos principais:**
+
+- `reflect_on_identity()` → `IdentitySnapshot`
+  > Generate a current snapshot of identity....
+- `evolve(experience_impact: Dict[str, float])` → `None`
+  > Evolve identity based on experience impact.
+
+Args:
+    experience_impact: Map of...
+
+### `EmpathyModule`
+
+Simulates empathetic understanding of the interlocutor.
+
+**Métodos principais:**
+
+- `estimate_state(input_text: str)` → `Dict[str, float]`
+  > Estimate emotional state and needs from text.
+
+Args:
+    input_text: User input
+...
+
+### `HorizonFusion`
+
+Manages the intersection of contexts (Horizons).
+
+**Métodos principais:**
+
+- `fuse(ai_context: Dict[str, Any], user_context: Dict[str)` → `MutualUnderstanding`
+  > Attempt to fuse AI and User horizons.
+
+Args:
+    ai_context: AI's current knowle...
+
+### `Relationship`
+
+History and depth of relationship with a specific human.
+
+**Métodos principais:**
+
+- `update(interaction_quality: float)` → `None`
+  > Update relationship metrics based on interaction....
+
+### `DialogueMode(Enum)`
+
+Modes of dialogue interaction.
+
+
+### `MutualUnderstanding`
+
+Represents the shared understanding between AI and human.
+
+Gadamer's 'Fusion of Horizons'.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+#### `__init__()` → `None`
+
+#### `__init__()` → `None`
+
+#### `__init__()` → `None`
+
+#### `__init__()` → `None`
+
+#### `__init__()` → `None`
+
+#### `__init__()` → `None`
+
+#### `_affirm_impossibility_of_closure()` → `str`
+
+*Afirmar a impossibilidade de fechamento narrativo....*
+
+#### `_find_retroactive_signifier(context: Dict[str, Any])` → `str`
+
+*Qual significante reescreve o passado agora?...*
+
+#### `_generate_response(input_text: str, emotional_state: Dict[str, float])` → `str`
+
+*Generate response based on mode and state....*
+
+#### `_identify_jouissance_of_narrative(resignification: str)` → `str`
+
+*Qual gozo há nessa narrativa retroativa?...*
+
+#### `_initialize_default_values()` → `None`
+
+*Initialize with some core AI values....*
+
+#### `_perform_nachtraglichkeit_resignification(original: str, signifier: str)` → `str`
+
+*Como o passado é resignificado nachträglich?...*
+
+#### `_recall_original_event(context: Dict[str, Any])` → `str`
+
+*Qual é o evento 'original' (que nunca foi assim)?...*
+
+#### `_update_current_narratives(new_resignification: str)` → `None`
+
+*Atualizar as narrativas vigentes....*
+
+
+## 📦 Módulos
+
+**Total:** 3 arquivos
+
+- `dialogue_engine.py`: Dialogue Engine - Intersubjective Communication System.
+
+Imp...
+- `identity_construction.py`: Identity Construction - Self-Definition System.
+
+Implements ...
+- `life_story_model.py`: Life Story Model - Lacaniano: Narrative Event Retroactively ...

@@ -131,3 +131,71 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 TRIBUNAL_DO_DIABO
+
+**3 Classes | 7 Funções | 2 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `TribunalDoDiaboExecutor`
+
+**Métodos principais:**
+
+- `generate_report(start_time: Any, end_time: Any)` → `Dict`
+
+### `SinthomeNode(NodeInfo)`
+
+Extends NodeInfo with consciousness-compatible properties for Tribunal do Diabo.
+
+**Métodos principais:**
+
+- `is_in_consensus()` → `bool`
+  > Simulates consensus check affected by latency and bias....
+- `vote_on_nomination(marker: Dict[str, Any], timeout: float)` → `Optional[bool]`
+  > Simulates voting with latency....
+
+### `OmniMindSystem`
+
+Simulated distributed system for Tribunal do Diabo.
+Manages a cluster of SinthomeNodes.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(duration_hours: float)` → `None`
+
+#### `__init__(node_count: int)` → `None`
+
+#### `_calculate_godel_incompleteness_ratio()` → `float`
+
+*Calculate Gödel incompleteness ratio from attack results....*
+
+#### `_calculate_sinthome_stability()` → `float`
+
+*Calculate sinthome stability from attack resilience....*
+
+#### `generate_report(start_time: Any, end_time: Any)` → `Dict`
+
+#### `is_in_consensus()` → `bool`
+
+*Simulates consensus check affected by latency and bias....*
+
+#### `vote_on_nomination(marker: Dict[str, Any], timeout: float)` → `Optional[bool]`
+
+*Simulates voting with latency....*
+
+
+## 📦 Módulos
+
+**Total:** 2 arquivos
+
+- `executor.py`: 1 classes, 4 functions
+- `system_adapter.py`: 2 classes, 3 functions

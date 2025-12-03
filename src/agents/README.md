@@ -131,3 +131,282 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 AGENTS
+
+**25 Classes | 131 Funções | 9 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `OrchestratorAgent(ReactAgent)`
+
+Orquestrador mestre que coordena múltiplos agentes especializados.
+
+Fluxo típico:
+User → Orchestrator → (decompose) → Delegate to specialists → Synthesize → User
+
+Exemplo:
+"Migrar API para GraphQL" →
+    1. Architect: Cria spec (ARCHITECTURE.md)
+    2. Code: Implementa schema + resolvers
+    3. Debug: Testa edge cases
+    4. Reviewer: Avalia qualidade (RLAIF)
+    5. Orchestrator: Compila report final
+
+**Métodos principais:**
+
+- `metrics_summary()` → `Dict[str, Any]`
+- `plan_overview()` → `Dict[str, Any]`
+- `trigger_mcp_action(action: str, path: str, recursive: bool)` → `Dict[str, Any]`
+- `trigger_dbus_action(flow: str, media_action: str)` → `Dict[str, Any]`
+- `refresh_dashboard_snapshot()` → `Dict[str, Any]`
+
+### `ReactAgent`
+
+Base ReAct (Reasoning + Acting) agent with Think-Act-Observe loop.
+
+Architecture:
+    THINK → Query memory + System status → Generate reasoning
+    ACT → Parse reasoning → Execute tool
+    OBSERVE → Process result → Check completion → Continue or End
+
+**Métodos principais:**
+
+- `compute_jouissance_for_task(task: Dict[str, Any])` → `float`
+  > Calcular jouissance (gozo) esperado para uma tarefa.
+Baseado em Lacan: pulsões i...
+- `inscribe_experience(task: Dict[str, Any], result: Dict[str, Any])` → `None`
+  > Inscrever experiência como traço afetivo (Lacan: Nachträglichkeit).
+Memória não ...
+- `establish_transference(target_agent: 'ReactAgent', task: str)` → `float`
+  > Estabelece transferência entre agentes baseada em afinidade afetiva.
+
+Args:
+    ...
+- `resignify_experience(trace_id: str, new_context: Dict[str, Any])` → `bool`
+  > Re-significa experiência retroativamente (Lacan: Nachträglichkeit).
+Memória não ...
+- `recall_by_affect(query: str, min_intensity: float)` → `List[Dict[str, Any]]`
+  > Recuperar experiências por intensidade afetiva (não por similaridade).
+Deleuze: ...
+
+### `CodeAgent(ReactAgent)`
+
+Agente especializado em desenvolvimento de código.
+
+Tem acesso completo a todas as ferramentas de:
+- Percepção: read, search, list, inspect, codebase_search
+- Ação: write, update, execute, apply_diff, insert
+- Integração MCP: use_mcp_tool, access_mcp_resource
+- Raciocínio: analyze_code
+
+**Métodos principais:**
+
+- `run_code_task(task: str, max_iterations: int)` → `Dict[str, Any]`
+  > Executa tarefa de código com rastreamento específico.
+Wrapper sobre run() da cla...
+- `get_code_stats()` → `Dict[str, Any]`
+  > Retorna estatísticas de operações de código...
+- `analyze_code_structure(filepath: str)` → `Dict[str, Any]`
+  > Analisa estrutura de código Python usando AST.
+
+Args:
+    filepath: Caminho para...
+- `validate_code_syntax(code: str)` → `Dict[str, Any]`
+  > Valida sintaxe de código Python.
+
+Args:
+    code: Código-fonte Python
+
+Returns:
+...
+- `analyze_code_security(code: str)` → `Dict[str, Any]`
+  > Analisa código para problemas de segurança.
+
+Args:
+    code: Código-fonte Python...
+
+### `AgentMessageBus`
+
+Message Bus para comunicação inter-agentes.
+
+Implementa padrão publish-subscribe com filas priorizadas.
+
+**Métodos principais:**
+
+- `register_agent(agent_id: str)` → `None`
+  > Registra um novo agente no message bus.
+
+Args:
+    agent_id: Identificador único...
+- `unregister_agent(agent_id: str)` → `None`
+  > Remove agente do message bus...
+- `subscribe(agent_id: str, message_types: List[MessageType])` → `None`
+  > Inscreve agente para receber tipos específicos de mensagens.
+
+Args:
+    agent_id...
+- `add_handler(agent_id: str, handler: Callable[[AgentMessage], N)` → `None`
+  > Adiciona handler para processar mensagens recebidas.
+
+Args:
+    agent_id: ID do ...
+- `resolve_conflict(agents: List[str], conflict_type: str, resolution:)` → `ConflictResolution`
+  > Registra resolução de conflito entre agentes.
+
+Args:
+    agents: Lista de agente...
+
+### `ArchitectAgent(ReactAgent)`
+
+Agente especializado em arquitetura e planejamento.
+
+Restrições de segurança:
+- Pode ler qualquer arquivo
+- Pode escrever APENAS .md, .yaml, .json, .txt
+- NÃO pode executar comandos arbitrários
+- Foco em documentação e design
+
+**Métodos principais:**
+
+- `analyze_dependencies(directory: str)` → `Dict[str, Any]`
+  > Analisa dependências de um projeto.
+
+Args:
+    directory: Diretório do projeto
+
+...
+- `create_architecture_diagram(components: List[str], connections: List[tuple[str)` → `str`
+  > Cria diagrama de arquitetura em formato Mermaid.
+
+Args:
+    components: Lista de...
+- `generate_spec_document(title: str, sections: Dict[str, str], output_path:)` → `Dict[str, Any]`
+  > Gera documento de especificação técnica.
+
+Args:
+    title: Título do documento
+ ...
+
+### `PsychoanalyticAnalyst(ReactAgent)`
+
+Agente especializado em análise de textos com base em teorias psicanalíticas.
+Agora inclui o sistema de decisão interna.
+
+**Métodos principais:**
+
+- `analyze_session(session_notes: str, framework: PsychoanalyticFrame)` → `Dict[str, Any]`
+  > Analisa as notas de uma sessão clínica usando um framework psicanalítico.
+
+Args:...
+- `generate_abnt_report(analysis: Dict[str, Any])` → `str`
+  > Gera um relatório estruturado a partir da análise (placeholder).
+NOTA: ABNT comp...
+
+### `ReviewerAgent(ReactAgent)`
+
+Agente revisor com RLAIF (Reinforcement Learning from AI Feedback)
+
+**Métodos principais:**
+
+- `review_code(filepath: str, task_description: str)` → `Dict[str, Any]`
+  > Revisa código e retorna score + feedback...
+- `run_review_cycle(coder_agent: CodeAgent, task: str, max_attempts: i)` → `Dict[str, Any]`
+  > Executa loop RLAIF: Code → Review → Refine...
+
+### `DebugAgent(ReactAgent)`
+
+Agente especializado em diagnóstico e debugging
+
+
+### `OmniMindCore`
+
+Core system class for OmniMind.
+
+Provides centralized access to the orchestrator and system state.
+
+**Métodos principais:**
+
+- `initialize()` → `None`
+  > Initialize the core components....
+- `get_orchestrator()` → `Optional[OrchestratorAgent]`
+  > Get the orchestrator instance.
+
+Returns:
+    OrchestratorAgent instance or None ...
+
+### `OrchestratorMetricsCollector`
+
+**Métodos principais:**
+
+- `record(name: str, latency: float, success: bool)` → `None`
+- `summary()` → `Dict[str, Any]`
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+#### `__init__(config_path: str)` → `None`
+
+#### `__init__(config_path: str)` → `None`
+
+*Inicializa CodeAgent com framework de ferramentas expandido...*
+
+#### `__init__(config_path: str)` → `None`
+
+#### `__init__(config_path: str)` → `None`
+
+#### `__init__(config_path: str)` → `None`
+
+*Initialize the OmniMind core.
+
+Args:
+    config_path: Path to agent configuration...*
+
+#### `__init__()` → `None`
+
+#### `__init__(name: str, role: str)` → `None`
+
+#### `__init__(llm_client: Any)` → `None`
+
+#### `__init__(llm_client: Any)` → `None`
+
+#### `__init__(llm_client: Any)` → `None`
+
+#### `__init__(llm_client: Any)` → `None`
+
+#### `__init__(config_path: str)` → `None`
+
+#### `__init__(config_path: str)` → `None`
+
+*Initialize agent with configuration....*
+
+#### `__init__(config_path: str)` → `None`
+
+
+## 📦 Módulos
+
+**Total:** 9 arquivos
+
+- `agent_protocol.py`: Agent Communication Protocol - Protocolo de Comunicação Inte...
+- `architect_agent.py`: 1 classes, 7 functions
+- `code_agent.py`: CodeAgent - Agente especializado em desenvolvimento de códig...
+- `debug_agent.py`: DebugAgent - Agente de diagnóstico e debug
+Modo: debug (🪲)
+
+...
+- `orchestrator_agent.py`: OrchestratorAgent - Coordenador Mestre Multi-Agente
+Modo: or...
+- `orchestrator_metrics.py`: 2 classes, 5 functions
+- `psychoanalytic_analyst.py`: PsychoanalyticAnalyst - Agente de Análise Psicanalítica
+Modo...
+- `react_agent.py`: OmniMind ReactAgent - Fixed version with proper completion d...
+- `reviewer_agent.py`: ReviewerAgent - Agente crítico com RLAIF scoring
+Modo: revie...

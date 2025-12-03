@@ -6,11 +6,10 @@ Testa apenas a topologia RSI com Sinthome emergente.
 """
 
 import sys
-import os
-from datetime import datetime
 
 # Adicionar src ao path
-sys.path.insert(0, '/home/fahbrain/projects/omnimind/src')
+sys.path.insert(0, "/home/fahbrain/projects/omnimind/src")
+
 
 def test_rsi_topology_simple():
     """
@@ -20,7 +19,11 @@ def test_rsi_topology_simple():
     print("=" * 50)
 
     try:
-        from consciousness.rsi_topology_integrated import RSI_Topology_Integrated, RuptureType
+        from consciousness.rsi_topology_integrated import (
+            RSI_Topology_Integrated,
+            RuptureType,
+        )
+
         print("✅ Imports bem-sucedidos")
     except ImportError as e:
         print(f"❌ Erro nos imports: {e}")
@@ -40,7 +43,7 @@ def test_rsi_topology_simple():
         rsi_topology.detect_rupture(
             rupture_type=RuptureType.REAL_TO_SYMBOLIC,
             description=f"ruptura_teste_{i+1}",
-            intensity=0.8
+            intensity=0.8,
         )
 
     # Verificar se sinthome emergiu
@@ -59,6 +62,7 @@ def test_rsi_topology_simple():
 
     print("\n🎉 Teste RSI Topology: SUCESSO!")
     return True
+
 
 if __name__ == "__main__":
     success = test_rsi_topology_simple()

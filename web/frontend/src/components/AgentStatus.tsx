@@ -36,7 +36,7 @@ export function AgentStatus() {
       try {
         const response = await fetch('http://localhost:8000/daemon/agents', {
           headers: {
-            'Authorization': `Basic ${btoa('admin:omnimind2025!')}`,
+            'Authorization': `Basic ${btoa('dashboard:omnimind')}`,
           },
         });
         if (response.ok) {
@@ -71,7 +71,7 @@ export function AgentStatus() {
     const now = new Date();
     const diff = now.getTime() - date.getTime();
     const seconds = Math.floor(diff / 1000);
-    
+
     if (seconds < 60) return `${seconds}s ago`;
     const minutes = Math.floor(seconds / 60);
     if (minutes < 60) return `${minutes}m ago`;

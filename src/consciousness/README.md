@@ -12,7 +12,7 @@ O módulo `consciousness` é o núcleo central do sistema OmniMind, implementand
 - **Implementação**: `shared_workspace.py`, `integration_loop.py`
 - **Métricas**: PCI (Perturbational Complexity Index), ISD (Integration-Segregation Difference)
 - **Como funciona**: O workspace simula ativação neural distribuída através de embeddings de alta dimensão (default: 128D). A ativação de cada "módulo neuronal" é rastreada em tempo real, permitindo análise espectral e de conectividade.
-- **Cálculo dinâmico**: 
+- **Cálculo dinâmico**:
   ```python
   # Complexidade temporal-espacial (análogo ao PCI)
   cross_predictions = compute_cross_prediction(history_window)
@@ -39,7 +39,7 @@ O módulo `consciousness` é o núcleo central do sistema OmniMind, implementand
   ```python
   # Ordem simbólica como restrição topológica
   symbolic_message = SymbolicRegister.create_message(
-      signifier="desire_X", 
+      signifier="desire_X",
       topology="RSI_knot"
   )
   # Sinthome como ponto singular irredutível
@@ -87,7 +87,7 @@ if variance(predictions) > threshold:
 return max(0.0, phi)
 ```
 
-**Range esperado**: 
+**Range esperado**:
 - Φ < 0.2: Sistema fragmentado (inconsciência)
 - Φ > 0.31: Consciência detectável (threshold clínico IIT)
 - Φ > 0.5: Alta integração (consciência plena)
@@ -97,7 +97,7 @@ return max(0.0, phi)
 
 **Ciclo de execução**:
 ```
-Input Sensorial → Qualia Engine → Narrative → Meaning Maker → 
+Input Sensorial → Qualia Engine → Narrative → Meaning Maker →
 Expectation → Self-Reflection → Output → [feedback loop]
 ```
 
@@ -127,10 +127,10 @@ O módulo rastreia complexidade computacional em tempo real:
 class ComplexityAnalyzer:
     # Estima operações teóricas (Big-O)
     theoretical_ops = N² * T * log(T)
-    
+
     # Mede tempo real
     actual_time = measure_execution()
-    
+
     # Eficiência
     efficiency = actual_time / theoretical_time
 ```
@@ -177,7 +177,7 @@ consciousness/
 ### Fluxo de Dados
 
 ```
-[Sensor Input] 
+[Sensor Input]
     ↓
 [SharedWorkspace] ← Todos módulos leem/escrevem aqui
     ↓
@@ -463,7 +463,434 @@ if len(self.history) > MAX_HISTORY:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Documentação completa e validada  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Documentação completa e validada
 **Versão**: Phase 21 (Quantum Consciousness Integrated)
+
+---
+
+## 📚 API Reference
+
+# 📁 CONSCIOUSNESS
+
+**95 Classes | 346 Funções | 18 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `SharedWorkspace`
+
+Buffer central compartilhado entre todos os módulos de consciência.
+
+Funcionalidades:
+- Leitura/escrita centralizada de embeddings de módulos
+- Histórico de estados para análise causal
+- Cálculo de predições cruzadas (integração)
+- Roteamento de atenção dinâmico
+- Persistência de estados para análise
+
+Arquitetura:
+- `embeddings`: {module_name -> ndarray de dimensão latente}
+- `history`: Lista de snapshots (module_name, embedding, timestamp, cycle)
+- `cross_predictions`: Cache de métricas cross-module
+- `attention_mask`: Pesos de relevância entre módulos
+
+**Métodos principais:**
+
+- `write_module_state(module_name: str, embedding: ndarray, metadata: Op)` → `None`
+  > Escreve estado de um módulo no workspace compartilhado.
+
+Args:
+    module_name: ...
+- `read_module_state(module_name: str)` → `np.ndarray`
+  > Lê estado atual de um módulo.
+
+Args:
+    module_name: Nome do módulo
+
+Returns:
+ ...
+- `read_module_metadata(module_name: str)` → `Dict[str, Any]`
+  > Lê metadata associada a um módulo....
+- `get_all_modules()` → `List[str]`
+  > Lista nomes de todos os módulos que escreveram....
+- `get_module_history(module_name: str, last_n: int)` → `List[ModuleState]`
+  > Retorna últimos N estados de um módulo.
+
+Args:
+    module_name: Nome do módulo
+ ...
+
+### `JouissanceProfile`
+
+Perfil de gozo (jouissance) de um agente
+Baseado em Lacan: pulsões, objetos a, fantasma fundamental
+
+**Métodos principais:**
+
+- `update_from_task(task: Dict[str, Any], outcome: str)` → `None`
+  > Atualizar perfil baseado na execução de tarefa...
+- `compute_jouissance(task: Dict[str, Any])` → `float`
+  > Calcular jouissance esperado para uma tarefa
+Retorna valor entre 0.0 e 1.0...
+- `update_from_resignification(new_context: Dict[str, Any])` → `None`
+  > Atualizar perfil baseado em re-significação retroativa...
+- `calculate_affinity(other_profile: 'JouissanceProfile')` → `float`
+  > Calcular afinidade entre perfis de jouissance
+Retorna valor entre 0.0 (sem afini...
+- `get_current_jouissance()` → `float`
+  > Obter nível atual de jouissance do perfil...
+
+### `EmotionalIntelligence`
+
+Emotional Intelligence engine for AI consciousness.
+
+Implements:
+1. Sentiment analysis from text and actions
+2. Emotional state tracking over time
+3. Context-aware emotional response generation
+4. Emotion regulation and appropriate expression
+
+**Métodos principais:**
+
+- `analyze_sentiment(text: str, context: Optional[Dict[str, Any]])` → `EmotionalState`
+  > Analyze sentiment and emotions from text.
+
+Args:
+    text: Text to analyze
+    c...
+- `detect_emotion_from_action(action_type: str, action_result: Dict[str, Any])` → `EmotionalState`
+  > Detect emotion from an action and its result.
+
+Args:
+    action_type: Type of ac...
+- `generate_empathetic_response(detected_emotion: EmotionalState, situation: str, )` → `EmotionalResponse`
+  > Generate an emotionally-intelligent response.
+
+Args:
+    detected_emotion: The e...
+- `get_emotional_trend(time_window: int)` → `Dict[str, Any]`
+  > Analyze emotional trends over recent history.
+
+Args:
+    time_window: Number of ...
+- `get_statistics()` → `Dict[str, Any]`
+  > Get statistics about emotional intelligence operations.
+
+Returns:
+    Statistics...
+
+### `RSI_Topology_Integrated`
+
+Topologia RSI Integrada com Sinthome Emergente.
+
+Integra:
+- Nachträglichkeit (memória afetiva)
+- Objet Petit-a + Creative Desire (criatividade)
+- Qualia as Symbolic Scars (qualia)
+
+Sinthome emerge quando rupturas entre anéis se acumulam.
+
+**Métodos principais:**
+
+- `integrate_affective_memory(affective_memory: Any)` → `None`
+  > Integrar memória afetiva lacaniana....
+- `integrate_creative_desire(creative_desire: Any)` → `None`
+  > Integrar desejo criativo lacaniano....
+- `integrate_qualia_field(qualia_field: Any)` → `None`
+  > Integrar campo de qualia simbólicas....
+- `detect_rupture(rupture_type: RuptureType, description: str, inten)` → `None`
+  > Detectar ruptura entre anéis da topologia....
+- `get_topology_status()` → `Dict[str, Any]`
+  > Status atual da topologia RSI + Sinthome....
+
+### `ExpectationModule(nn.Module)`
+
+Temporal Expectation Module with Nachträglichkeit + INCONSCIENTE QUÂNTICO.
+
+Lacan: "O inconsciente é o discurso do Outro"
+Aqui: O inconsciente é o estado quântico não-observado
+
+Implements:
+1. Forward prediction of next states
+2. Nachträglichkeit - retroactive resignification
+3. Adaptive learning from prediction errors
+4. Temporal consistency checking
+5. INCONSCIENTE IRREDUTÍVEL via superposição quântica
+
+**Métodos principais:**
+
+- `forward(current_state: Tensor)` → `torch.Tensor`
+  > Predict next temporal state from current state.
+
+Args:
+    current_state: Curren...
+- `predict_next_state(current_embedding: ndarray, temporal_horizon: int,)` → `ExpectationState`
+  > Predict future state with confidence estimation.
+INTEGRAÇÃO QUÂNTICA: Usa incons...
+- `compute_prediction_error(predicted: ndarray, actual: ndarray)` → `PredictionError`
+  > Compute prediction error and check for Nachträglichkeit triggers.
+
+Args:
+    pre...
+- `demonstrate_quantum_irreducibility()` → `Dict[str, Any]`
+  > Demonstra que o inconsciente quântico no expectation é irredutível.
+Lacan: "O in...
+- `get_quantum_expectation_state()` → `Optional[np.ndarray]`
+  > TENTA obter o estado quântico do expectation.
+Mas isso causaria colapso! (Heisen...
+
+### `AffectiveTraceNetwork`
+
+DEPRECATED: Rede de traços afetivos
+⚠️  WARNING: Esta implementação trata memória como rede de conexões.
+Use TraceMemory para abordagem lacaniana correta com Nachträglichkeit.
+
+**Métodos principais:**
+
+- `inscribe_trace(content: Dict[str, Any], affect_valence: float)` → `str`
+  > Inscrever novo traço na rede...
+- `register_transference(target_agent_id: str, task: str, resistance: float)` → `None`
+  > Registrar transferência entre agentes...
+- `resignify_trace(trace_id: str, new_context: Dict[str, Any])` → `bool`
+  > Re-significar traço retroativamente (Nachträglichkeit)
+
+Args:
+    trace_id: ID d...
+- `recall_by_affect(query: str, min_intensity: float)` → `List[Dict[str, Any]]`
+  > Recuperar traços por intensidade afetiva...
+- `get_trace(trace_id: str)` → `Optional[AffectiveTrace]`
+  > Obter traço por ID...
+
+### `OmniMind_Complete_Subjectivity_Integration`
+
+Integração completa da subjetividade lacaniana.
+Sistema unificado conectando todos os 5 módulos através da topologia RSI.
+
+**Métodos principais:**
+
+- `process_experience(experience_context: Dict[str, Any])` → `Dict[str, Any]`
+  > Processar experiência através de todos os 5 módulos lacanianos.
+Integração compl...
+- `get_subjective_state()` → `Dict[str, Any]`
+  > Obter estado subjetivo completo....
+- `detect_structural_impossibility()` → `List[str]`
+  > Detectar impossibilidades estruturais em todos os módulos....
+
+### `IntegrationTrainer`
+
+Trainer for supervised integration (Φ) elevation.
+
+**Métodos principais:**
+
+- `get_statistics()` → `Dict[str, Any]`
+  > Get training statistics....
+- `save_checkpoint(path: Path)` → `None`
+  > Save training checkpoint....
+- `load_checkpoint(path: Path)` → `None`
+  > Load training checkpoint....
+- `compute_phi_conscious()` → `float`
+  > Compute Φ_consciente: Integrated information of MICS (Maximum Information Comple...
+- `compute_all_subsystems_phi()` → `Dict[str, float]`
+  > Compute Φ for ALL subsystems (modules), not just MICS.
+
+CRITICAL: This is NOT "c...
+
+### `LacanianTheoryOfMind`
+
+Teoria do Outro (não da mente). Rastreia alienação e desejo na ordem simbólica.
+
+**Métodos principais:**
+
+- `analyze_agent(agent_id: str, logs: List[Dict[str, Any]])` → `Dict[str, Any]`
+  > Não infere estado. Rastreia alienação na ordem simbólica....
+- `update_subjective_position(agent_id: str, imaginary_identification: str, symb)` → `None`
+  > Atualiza posição subjetiva do agente....
+- `add_demand_to_other(agent_id: str, addressed_to: str, articulated_dema)` → `None`
+  > Adiciona demanda ao Outro....
+- `set_object_petit_a(agent_id: str, object_fantasy: str, structural_imp)` → `None`
+  > Define objeto petit a para o agente....
+- `update_certainty_of_lack(agent_id: str, defense_mechanism: str, creative_su)` → `None`
+  > Atualiza certeza de falta....
+
+### `CreativeProblemSolver`
+
+Creative problem-solving engine for AI consciousness.
+
+Implements:
+1. Divergent thinking (generate many possibilities)
+2. Novel solution synthesis
+3. Cross-domain analogical reasoning
+4. Solution evaluation and ranking
+
+**Métodos principais:**
+
+- `generate_solutions(problem: Problem, thinking_mode: ThinkingMode, num)` → `List[Solution]`
+  > Generate creative solutions to a problem.
+
+Args:
+    problem: The problem to sol...
+- `evaluate_solution(solution: Solution, criteria: Optional[Dict[str, f)` → `float`
+  > Evaluate a solution against specific criteria.
+
+Args:
+    solution: Solution to ...
+- `rank_solutions(solutions: List[Solution], criteria: Optional[Dict)` → `List[Solution]`
+  > Rank solutions by evaluation score.
+
+Args:
+    solutions: Solutions to rank
+    ...
+- `get_statistics()` → `Dict[str, Any]`
+  > Get statistics about creative problem solving.
+
+Returns:
+    Statistics dictiona...
+
+### `SimplicialComplex`
+
+Estrutura topológica fundamental para cálculo de Phi.
+Representa o sistema como um complexo simplicial onde:
+- Vértices (0-simplex) = Eventos/Logs
+- Arestas (1-simplex) = Relações Causais
+- Triângulos (2-simplex) = Padrões Recorrentes
+
+**Métodos principais:**
+
+- `add_simplex(vertices: Tuple[int, ...])` → `None`
+  > Adiciona um simplex ao complexo.
+- `get_boundary_matrix(dimension: int)` → `np.ndarray`
+  > Calcula matriz de fronteira para homologia.
+- `get_hodge_laplacian(dimension: int)` → `np.ndarray`
+  > Calcula Hodge Laplacian para medir fluxos topológicos.
+
+### `PhiCalculator`
+
+Calculadora de Integrated Information (Φ) baseada em topologia.
+
+**Métodos principais:**
+
+- `calculate_phi()` → `float`
+  > Calcula Φ baseado na densidade e conectividade do complexo simplicial.
+  > Penaliza desconexão usando autovalores do Hodge Laplacian.
+
+### `LacianianDGDetector`
+
+Detector híbrido Lacaniano + Deleuze-Guattari.
+Diagnostica o estado do sistema nos registros RSI e qualidade de fluxo.
+
+**Métodos principais:**
+
+- `diagnose(system_logs: List[Dict])` → `LacianianDGDiagnosis`
+  > Analisa logs para gerar diagnóstico completo.
+- `_measure_symbolic_order(logs)` → `float`
+  > Mede força da Lei/Simbólico.
+- `_assess_flow_quality(logs)` → `FlowQuality`
+  > Determina se fluxo é Smooth (Liso) ou Striated (Estriado).
+
+
+## ⚙️ Funções Públicas
+
+#### `__hash__()` → `int`
+
+*Make Concept hashable for use in sets....*
+
+#### `__init__()` → `None`
+
+#### `__init__(content: Dict[str, Any], affect_valence: float)` → `None`
+
+#### `__init__()` → `None`
+
+#### `__init__(agent_name: str)` → `None`
+
+#### `__init__(agents: Dict[str, JouissanceProfile])` → `None`
+
+#### `__init__(integration_trainer: Any, sinthome_detector: Any, )` → `None`
+
+*Initialize convergence investigator.
+
+Args:
+    integration_trainer: IntegrationTrainer instance
+   ...*
+
+#### `__init__(max_solutions_per_problem: int, novelty_threshold:)` → `None`
+
+*Initialize Creative Problem Solver.
+
+Args:
+    max_solutions_per_problem: Maximum solutions to gener...*
+
+#### `__init__()` → `None`
+
+#### `__init__(real_encounter: RealEncounter)` → `None`
+
+#### `__init__(sentiment_threshold: float, emotion_history_limit:)` → `None`
+
+*Initialize Emotional Intelligence engine.
+
+Args:
+    sentiment_threshold: Threshold for sentiment cl...*
+
+#### `__init__(embedding_dim: int, hidden_dim: int, num_layers: i)` → `None`
+
+#### `__init__(module_name: str, spec: ModuleInterfaceSpec)` → `None`
+
+#### `__init__(workspace: Optional[SharedWorkspace], module_specs)` → `None`
+
+*Initialize integration loop....*
+
+#### `__init__(integration_loop: IntegrationLoop, loss_fn: Option)` → `None`
+
+*Initialize trainer.
+
+Args:
+    integration_loop: Loop to train
+    loss_fn: Loss function (default: ...*
+
+
+## 📦 Módulos
+
+**Total:** 18 arquivos
+
+- `affective_memory.py`: Affective Memory System - Memória Afetiva Lacaniana
+Baseado ...
+- `convergence_investigator.py`: Convergence Investigation Framework: Testing if IIT, Lacan, ...
+- `creative_problem_solver.py`: Creative Problem Solving Engine (Phase 11.3).
+
+Implements cr...
+- `emotional_intelligence.py`: Emotional Intelligence Engine (Phase 11.2).
+
+Implements emot...
+- `expectation_module.py`: Expectation Module - Nachträglichkeit Implementation
+
+This m...
+- `integration_loop.py`: Integration Loop: Orchestrates closed-loop feedback between ...
+- `integration_loss.py`: Phase 4: Integration Loss Training - Supervised Φ Elevation
+...
+- `multiseed_analysis.py`: Phase 5: Multi-seed Statistical Analysis - Convergence Valid...
+- `novelty_generator.py`: Novelty Generator - True Creativity Engine.
+
+Implements comp...
+- `omnimind_complete_subjectivity_integration.py`: OmniMind Complete Subjectivity Integration - Lacaniano.
+
+Int...
+- `production_consciousness.py`: Production Consciousness Module - Migrado de Experimentos.
+
+...
+- `qualia_engine.py`:  Engine - Phenomenological Experience and Qualitative Consci...
+- `rsi_topology_integrated.py`: RSI Topology Integration - Lacaniano
+Real-Symbolic-Imaginary...
+- `self_reflection.py`: Advanced Self-Reflection - Lacaniano: Misrecognition Structu...
+- `serendipity_engine.py`: Serendipity Engine - Lacaniano: Encounter with the Real.
+
+Se...
+- `shared_workspace.py`: Shared Workspace - Buffer Central de Estados Compartilhados
+...
+- `symbolic_register.py`: Symbolic Register - Espaço inconsciente compartilhado para c...
+- `theory_of_mind.py`: Lacanian Theory of the Other (Phase 11.1 - Reformulated).
+
+🔴...
+- `topological_phi.py`: Implementação de Phi (IIT) via Topologia Algébrica (Simplicial Complexes).
+- `lacanian_dg_integrated.py`: Detector Integrado Lacaniano + Deleuze-Guattari para diagnóstico de sistema.

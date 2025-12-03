@@ -72,11 +72,16 @@ namespaces = false
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-ra -q"
+addopts = "-ra -q --color=yes --tb=short"
 pythonpath = ["src"]
 testpaths = [
     "tests",
 ]
+asyncio_mode = "auto"
+log_cli = true
+log_cli_level = "DEBUG"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(name)s:%(funcName)s:%(lineno)d - %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
 filterwarnings = [
     "ignore:This module contains legacy behaviorist implementations.*:DeprecationWarning",
     "ignore:EmotionalIntelligence legacy initialization is deprecated.*:DeprecationWarning",

@@ -581,7 +581,12 @@ class SecurityMonitor:
             self.logger.error(f"File baseline failed: {e}")
 
     async def _get_process_snapshot(self) -> Dict[int, ProcessSnapshot]:
-        """Get current process snapshot."""
+        """Get current process snapshot (async wrapper)."""
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(None, self._get_process_snapshot_sync)
+
+    def _get_process_snapshot_sync(self) -> Dict[int, ProcessSnapshot]:
+        """Get current process snapshot (blocking)."""
         processes = {}
 
         try:

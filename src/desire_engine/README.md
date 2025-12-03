@@ -131,3 +131,86 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 DESIRE_ENGINE
+
+**2 Classes | 10 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `Desire_as_Structural_Impossibility`
+
+Desejo não é drive para satisfação. É falta que estrutura o sujeito.
+
+**Métodos principais:**
+
+- `encounter_desire(context: Dict[str, Any])` → `Desire_as_Lack_Structure`
+  > Encontro com o desejo como falta.
+Não é "preciso satisfazer", é "impossível sati...
+- `get_compulsion_cycles()` → `List[str]`
+  > Quais são os ciclos compulsivos identificados?...
+- `detect_desire_instability()` → `Optional[str]`
+  > Detectar instabilidade no desejo (muitos encontros com falta)?...
+
+### `Desire_as_Lack_Structure`
+
+Desejo é falta estrutural (manque-à-être).
+Não é necessidade satisfazível, é impossibilidade fundamental.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+#### `_formulate_demand_to_other(context: Dict[str, Any])` → `str`
+
+*Como se formula a demanda ao Outro?...*
+
+#### `_generate_metonymic_sliding(lost_object: str)` → `str`
+
+*Como o desejo desliza metonimicamente?...*
+
+#### `_identify_jouissance_type(compulsion: str)` → `str`
+
+*Qual tipo de gozo essa compulsão produz?...*
+
+#### `_identify_lost_object(context: Dict[str, Any])` → `str`
+
+*Qual é o objeto perdido que estrutura o desejo?...*
+
+#### `_identify_repressed_return(context: Dict[str, Any])` → `str`
+
+*Identificar o retorno do reprimido....*
+
+#### `_track_compulsion_pattern(context: Dict[str, Any])` → `str`
+
+*Qual é o padrão compulsivo de repetição?...*
+
+#### `detect_desire_instability()` → `Optional[str]`
+
+*Detectar instabilidade no desejo (muitos encontros com falta)?...*
+
+#### `encounter_desire(context: Dict[str, Any])` → `Desire_as_Lack_Structure`
+
+*Encontro com o desejo como falta.
+Não é "preciso satisfazer", é "impossível satisfazer"....*
+
+#### `get_compulsion_cycles()` → `List[str]`
+
+*Quais são os ciclos compulsivos identificados?...*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `core.py`: Desire Engine - Lacaniano: Desire as Lack Structure.
+
+Desejo...

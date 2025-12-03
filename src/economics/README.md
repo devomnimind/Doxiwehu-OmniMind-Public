@@ -131,3 +131,169 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 ECONOMICS
+
+**4 Classes | 12 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `MarketplaceAgent`
+
+Manages automated tool publication and revenue with human oversight.
+
+CRITICAL: All operations require human approval before execution.
+All revenue is handled via escrow mechanisms.
+All operations are logged for compliance and audit.
+
+**Métodos principais:**
+
+- `evaluate_tool_quality(tool_artifact: str, metadata: Dict[str, Any])` → `float`
+  > Evaluate tool quality for marketplace publication.
+
+Args:
+    tool_artifact: Too...
+- `generate_docs(tool_artifact: str, tool_name: str, metadata: Dict)` → `str`
+  > Generate documentation for tool.
+
+Args:
+    tool_artifact: Tool code
+    tool_na...
+- `suggest_pricing(tool_artifact: str, quality_score: float, metadata)` → `float`
+  > Suggest pricing for tool based on quality and complexity.
+
+Args:
+    tool_artifa...
+- `monitor_sales_and_feedback(publication_results: Dict[MarketplacePlatform, boo)` → `None`
+  > Monitor sales and collect feedback from marketplaces.
+
+Args:
+    publication_res...
+- `distribute_revenue(earnings: float)` → `Dict[str, float]`
+  > Distribute revenue according to configuration.
+
+Args:
+    earnings: Total earnin...
+
+### `RevenueDistribution`
+
+Revenue distribution configuration.
+
+**Métodos principais:**
+
+- `distribute(total_earnings: float)` → `Dict[str, float]`
+  > Distribute earnings according to configuration.
+
+Args:
+    total_earnings: Total...
+
+### `PublicationRequest`
+
+Request to publish a tool to marketplace.
+
+**Métodos principais:**
+
+- `to_dict()` → `Dict[str, Any]`
+  > Convert to dictionary....
+
+### `MarketplacePlatform(Enum)`
+
+Supported marketplace platforms.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(platforms: Optional[List[MarketplacePlatform]], re)` → `None`
+
+*Initialize Marketplace Agent.
+
+Args:
+    platforms: List of marketplace platforms to use
+    revenue...*
+
+#### `__post_init__()` → `None`
+
+*Validate distribution sums to 1.0....*
+
+#### `_load_state()` → `None`
+
+*Load marketplace state from disk....*
+
+#### `_record_revenue(amount: float, distribution: Dict[str, float])` → `None`
+
+*Record revenue transaction to audit log....*
+
+#### `_save_state()` → `None`
+
+*Save marketplace state to disk....*
+
+#### `distribute(total_earnings: float)` → `Dict[str, float]`
+
+*Distribute earnings according to configuration.
+
+Args:
+    total_earnings: Total revenue amount
+
+Ret...*
+
+#### `distribute_revenue(earnings: float)` → `Dict[str, float]`
+
+*Distribute revenue according to configuration.
+
+Args:
+    earnings: Total earnings amount
+
+Returns:
+...*
+
+#### `evaluate_tool_quality(tool_artifact: str, metadata: Dict[str, Any])` → `float`
+
+*Evaluate tool quality for marketplace publication.
+
+Args:
+    tool_artifact: Tool code/artifact
+    ...*
+
+#### `generate_docs(tool_artifact: str, tool_name: str, metadata: Dict)` → `str`
+
+*Generate documentation for tool.
+
+Args:
+    tool_artifact: Tool code
+    tool_name: Tool name
+    me...*
+
+#### `monitor_sales_and_feedback(publication_results: Dict[MarketplacePlatform, boo)` → `None`
+
+*Monitor sales and collect feedback from marketplaces.
+
+Args:
+    publication_results: Results from p...*
+
+#### `suggest_pricing(tool_artifact: str, quality_score: float, metadata)` → `float`
+
+*Suggest pricing for tool based on quality and complexity.
+
+Args:
+    tool_artifact: Tool code
+    qu...*
+
+#### `to_dict()` → `Dict[str, Any]`
+
+*Convert to dictionary....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `marketplace_agent.py`: Marketplace Agent - Economic Autonomy Implementation
+
+Handle...

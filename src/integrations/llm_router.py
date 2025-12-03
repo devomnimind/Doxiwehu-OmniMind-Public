@@ -233,38 +233,30 @@ class HuggingFaceLocalProvider(LLMProviderInterface):
                 logger.info(f"Carregando modelo HuggingFace Local: {model_name}")
 
                 # Tenta GPU primeiro, mas com fallback para CPU se houver problemas
-                device = 0 if torch.cuda.is_available() else -1
+                if not torch.cuda.is_available():
+                    raise RuntimeError(
+                        "GPU não disponível para HuggingFace Local (Strict GPU Policy)"
+                    )
+
+                device = 0
 
                 # Carrega pipeline de text-generation
                 self._pipeline = pipeline(
                     "text-generation",
                     model=model_name,
                     device=device,
-                    torch_dtype=torch.float16 if device == 0 else torch.float32,
+                    torch_dtype=torch.float16,
                     trust_remote_code=True,  # Permite código remoto para alguns modelos
                 )
 
                 self._current_model = model_name
-                logger.info(
-                    f"Modelo {model_name} carregado com sucesso em {'GPU' if device == 0 else 'CPU'}"
-                )
+                logger.info(f"Modelo {model_name} carregado com sucesso em GPU")
             except Exception as e:
-                logger.warning(f"Erro ao carregar modelo {model_name} em GPU, tentando CPU: {e}")
-                try:
-                    # Fallback para CPU
-                    self._pipeline = pipeline(
-                        "text-generation",
-                        model=model_name,
-                        device=-1,  # CPU
-                        torch_dtype=torch.float32,
-                        trust_remote_code=True,
-                    )
-                    self._current_model = model_name
-                    logger.info(f"Modelo {model_name} carregado com sucesso em CPU (fallback)")
-                except Exception as e2:
-                    logger.error(f"Erro ao carregar modelo {model_name} mesmo em CPU: {e2}")
-                    self._pipeline = None
-                    raise e2
+                logger.warning(f"Erro ao carregar modelo {model_name} em GPU: {e}")
+                # REMOVIDO FALLBACK PARA CPU - Strict GPU Policy
+                # Se falhar GPU, deve falhar o provider para tentar Cloud
+                self._pipeline = None
+                raise e
 
     async def invoke(self, prompt: str, config: LLMConfig) -> LLMResponse:
         """Invoca HuggingFace Local."""

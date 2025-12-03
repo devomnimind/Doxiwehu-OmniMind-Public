@@ -131,7 +131,7 @@ class TestAsyncMCPClient:
     @patch("httpx.AsyncClient")
     async def test_send_request_success(self, mock_async_client: Mock) -> None:
         """Testa envio de request bem-sucedido."""
-        # Create mock response
+        # Create mock response - usar MagicMock para response pois não precisa await
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
@@ -139,11 +139,12 @@ class TestAsyncMCPClient:
             "id": "test_id",
             "result": {"result": "success"},
         }
-        mock_response.raise_for_status = MagicMock()
+        mock_response.raise_for_status = MagicMock(return_value=None)
 
-        # Create mock client instance
+        # Create mock client instance - usar AsyncMock para post() pois precisa await
         mock_client_instance = AsyncMock()
         mock_client_instance.post.return_value = mock_response
+        mock_client_instance.aclose = AsyncMock(return_value=None)
         mock_async_client.return_value = mock_client_instance
 
         client = AsyncMCPClient()
@@ -194,12 +195,14 @@ class TestAsyncMCPClient:
             "id": "test",
             "result": "success",
         }
+        mock_response_success.raise_for_status.return_value = None
 
         mock_client = AsyncMock()
         mock_client.post.side_effect = [
             mock_response_fail,
             mock_response_success,
         ]
+        mock_client.aclose = AsyncMock(return_value=None)
 
         mock_httpx.AsyncClient.return_value = mock_client
         mock_httpx.Timeout = MagicMock()
@@ -297,12 +300,20 @@ class TestAsyncMCPClient:
     @patch("src.integrations.mcp_client_async.httpx")
     async def test_multiple_concurrent_requests(self, mock_httpx: Mock) -> None:
         """Testa múltiplas requests concorrentes."""
-        mock_response = AsyncMock()
+        # Use MagicMock ao invés de AsyncMock para response (não precisa await)
+        mock_response = MagicMock()
         mock_response.status_code = 200
-        mock_response.json.return_value = {"result": "success"}
+        mock_response.json.return_value = {
+            "jsonrpc": "2.0",
+            "id": "test",
+            "result": {"result": "success"},
+        }
+        mock_response.raise_for_status.return_value = None
 
+        # Use AsyncMock apenas para client.post (precisa await)
         mock_client = AsyncMock()
         mock_client.post.return_value = mock_response
+        mock_client.aclose = AsyncMock(return_value=None)
 
         mock_httpx.AsyncClient.return_value = mock_client
         mock_httpx.Timeout = MagicMock()
@@ -318,6 +329,9 @@ class TestAsyncMCPClient:
 
         # All should complete (success or exception)
         assert len(responses) == 5
+        # Verify at least some succeeded
+        successful = [r for r in responses if not isinstance(r, Exception)]
+        assert len(successful) > 0
 
 
 class TestAsyncMCPClientEdgeCases:

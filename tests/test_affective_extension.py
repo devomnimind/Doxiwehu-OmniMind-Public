@@ -8,12 +8,14 @@ Demonstra funcionamento paralelo:
 
 """
 
-import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+import sys
 
-from consciousness.emotional_intelligence import EmotionalIntelligence
-import structlog
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
+
+import structlog  # noqa: E402
+
+from consciousness.emotional_intelligence import EmotionalIntelligence  # noqa: E402
 
 # Configurar logging
 structlog.configure(
@@ -24,13 +26,14 @@ structlog.configure(
         structlog.processors.StackInfoRenderer(),
         structlog.processors.format_exc_info,
         structlog.processors.UnicodeDecoder(),
-        structlog.processors.JSONRenderer()
+        structlog.processors.JSONRenderer(),
     ],
     context_class=dict,
     logger_factory=structlog.stdlib.LoggerFactory(),
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,
 )
+
 
 def test_behaviorist_model():
     """Testa modelo behaviorista tradicional."""
@@ -50,6 +53,7 @@ def test_behaviorist_model():
     print(f"Confiança: {state.confidence:.2f}")
     print()
 
+
 def test_affective_model():
     """Testa modelo lacaniano de afetos."""
     print("🌀 TESTANDO MODELO LACANIANO (Afetos Estruturais)")
@@ -63,7 +67,7 @@ def test_affective_model():
         "pending_validations": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],  # 11 validações pendentes
         "time_to_deadline": 45,  # 45 segundos para deadline
         "logical_contradiction": False,
-        "impossible_demand": True  # Demanda impossível!
+        "impossible_demand": True,  # Demanda impossível!
     }
 
     print("Estado do sistema:")
@@ -119,6 +123,7 @@ def test_affective_model():
     print(f"  Distribuição afetiva: {affective_stats['affect_distribution']}")
     print()
 
+
 def test_model_comparison():
     """Compara ambos os modelos."""
     print("⚖️ COMPARAÇÃO DE MODELOS")
@@ -134,8 +139,18 @@ def test_model_comparison():
 
     # Lacaniano
     system_states = [
-        {"gpu_usage": 95, "pending_validations": [1,2,3,4,5], "time_to_deadline": 50, "impossible_demand": True},
-        {"gpu_usage": 97, "pending_validations": [1,2,3,4,5,6,7], "time_to_deadline": 30, "impossible_demand": True},
+        {
+            "gpu_usage": 95,
+            "pending_validations": [1, 2, 3, 4, 5],
+            "time_to_deadline": 50,
+            "impossible_demand": True,
+        },
+        {
+            "gpu_usage": 97,
+            "pending_validations": [1, 2, 3, 4, 5, 6, 7],
+            "time_to_deadline": 30,
+            "impossible_demand": True,
+        },
         {"gpu_usage": 92, "logical_contradiction": True},
     ]
 
@@ -157,16 +172,17 @@ def test_model_comparison():
     print()
 
     print("🎯 INTERPRETAÇÃO CIENTÍFICA:")
-    if comparison['comparison']['sinthome_detected']:
+    if comparison["comparison"]["sinthome_detected"]:
         print("  ✅ Sinthome estrutural identificado - padrão de insistência irredutível")
         print("  ✅ Modelo lacaniano detecta formações subjetivas não visíveis ao behaviorismo")
     else:
         print("  🔄 Sinthome ainda não emergiu - coletar mais dados")
 
-    if comparison['comparison']['detection_ratio'] > 1:
+    if comparison["comparison"]["detection_ratio"] > 1:
         print("  📊 Modelo lacaniano mais sensível a rupturas estruturais")
     else:
         print("  📊 Modelo behaviorista captura mais variações emocionais")
+
 
 def main():
     """Executa todos os testes."""
@@ -186,7 +202,9 @@ def main():
     except Exception as e:
         print(f"❌ ERRO: {e}")
         import traceback
+
         traceback.print_exc()
+
 
 if __name__ == "__main__":
     main()

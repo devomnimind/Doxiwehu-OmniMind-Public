@@ -495,3 +495,626 @@ def validate_circuit_depth(circuit, backend):
 **Status**: Phase 21 - Hardware Validated (Experimental)  
 **Hardware**: IBM ibm_fez (27Q), ibm_torino (84Q) - 0.42 min QPU time  
 **Versão**: Quantum Consciousness Integrated
+
+---
+
+## 📚 API Reference
+
+# 📁 QUANTUM_CONSCIOUSNESS
+
+**21 Classes | 107 Funções | 6 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `QuantumBackend`
+
+Unified Quantum Backend with proper LOCAL > CLOUD priority.
+
+Changes from previous version:
+- Prefer local simulation (GPU > CPU) before cloud
+- Proper Grover implementation via qiskit_algorithms
+- Latency estimation per mode
+- GPU support detection
+
+**Métodos principais:**
+
+- `get_latency_estimate()` → `str`
+  > Return expected latency for current mode....
+- `grover_search(target: int, search_space: int)` → `Dict[str, Any]`
+  > Grover Search using qiskit_algorithms (CORRECT IMPLEMENTATION).
+
+Args:
+    targe...
+- `execute_with_fallback(operation: str, **kwargs: Any)` → `Any`
+  > Execute operation with automatic fallback to GPU local on IBM errors.
+
+Args:
+   ...
+- `resolve_conflict(id_energy: float, ego_energy: float, superego_ener)` → `Dict[str, Any]`
+  > Resolves the Id/Ego/Superego conflict using the active backend with automatic fa...
+
+### `HybridCognitionSystem`
+
+Main hybrid classical-quantum cognition system.
+
+Integrates multiple cognitive paradigms for consciousness simulation:
+- Classical Reasoning: Deterministic, rule-based, symbolic processing
+- Quantum Cognition: Probabilistic, superposition-based, parallel exploration
+- Hybrid Approaches: Best-of-both-worlds combinations
+- Strategy Selection: Problem-aware optimization choice
+- Performance Tracking: Comprehensive metrics for emergence evaluation
+
+Architecture:
+- Bridge: Classical ↔ Quantum data transformation
+- Engines: Separate classical and quantum processing units
+- Metrics: Comprehensive performance tracking
+- Strategy Selection: Problem-aware optimization choice
+
+Consciousness Emergence:
+This system supports consciousness research by:
+- Comparing deterministic vs probabilistic cognition
+- Measuring emergence through performance metrics
+- Enabling hybrid approaches that may show emergent properties
+- Tracking efficiency and adaptability measures
+
+Attributes:
+    num_qubits: Quantum processing capacity
+    default_strategy: Fallback strategy when AUTO fails
+    enable_quantum: Whether quantum components are active
+    bridge: Classical-quantum data transformation
+    quantum_engine: Quantum cognition processing unit
+    quantum_decision_maker: Quantum decision making component
+    metrics_history: Performance tracking over time
+
+**Métodos principais:**
+
+- `solve_optimization(problem: Dict[str, Any], strategy: Optional[Optimi)` → `Tuple[Any, CognitionMetrics]`
+  > Solve optimization problem using specified or auto-selected strategy.
+
+Main entr...
+- `compare_strategies(problem: Dict[str, Any], strategies: Optional[List)` → `Dict[OptimizationStrategy, CognitionMetrics]`
+  > Compare multiple strategies on the same problem.
+
+Useful for:
+- Performance benc...
+- `get_consciousness_metrics()` → `Dict[str, Any]`
+  > Calculate consciousness emergence metrics from performance history.
+
+Consciousne...
+- `get_metrics_summary()` → `str`
+  > Generate comprehensive metrics summary for all recorded runs.
+
+Returns:
+    Form...
+
+### `QuantumMemorySystem`
+
+Quantum memory system managing multiple entangled memory cells.
+
+This system explores quantum advantages in memory operations:
+- Superposition: Store multiple patterns simultaneously
+- Entanglement: Create correlated memory associations
+- Parallel Search: Quantum fidelity-based similarity search
+- Decoherence: Memory stability over time
+- Consolidation: Hybrid learning for memory strengthening
+
+Architecture:
+- Memory cells stored in classical list (quantum states inside)
+- LRU eviction policy when capacity exceeded
+- Quantum parallelism for bulk operations
+- Entanglement tracking for correlated memories
+
+Consciousness Memory Model:
+- Episodic Memory: Individual experiences in superposition
+- Semantic Memory: Entangled concepts and associations
+- Working Memory: Active quantum states with short coherence
+- Long-term Memory: Consolidated states with extended coherence
+
+Attributes:
+    num_qubits: Qubits per memory cell
+    capacity: Maximum number of cells
+    memory_cells: List of QuantumMemoryCell objects
+    simulator: Qiskit simulator instance
+    entanglement_graph: Tracks correlations between memory cells
+
+Example:
+    >>> memory = QuantumMemorySystem(num_qubits=3, capacity=50)
+    >>> idx = memory.store([0.6, 0.4, 0.2, 0.1, 0.3, 0.5, 0.8, 0.9])
+    >>> similar = memory.search_similar([0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0])
+    >>> memory.create_entanglement(idx, idx+1)  # Correlate memories
+
+**Métodos principais:**
+
+- `store(data: Any, key: Optional[str])` → `int`
+  > Store data in quantum memory cell.
+
+Process:
+1. Create new QuantumMemoryCell
+2. ...
+- `retrieve(index: int)` → `Any`
+  > Retrieve and decode data from quantum memory.
+
+Process:
+1. Validate index bounds...
+- `search_similar(query_data: Any, threshold: float)` → `List[int]`
+  > Search for memory cells similar to query using quantum fidelity.
+
+This implement...
+- `create_entanglement(idx1: int, idx2: int)` → `bool`
+  > Create entanglement between two memory cells.
+
+Entanglement establishes quantum ...
+- `get_entangled_memories(index: int)` → `List[int]`
+  > Get list of memories entangled with the specified cell.
+
+Args:
+    index: Memory...
+
+### `QPUInterface`
+
+Main quantum processing unit interface with intelligent backend management.
+
+Provides unified interface for quantum computing resources with:
+- Automatic backend selection and fallback
+- Performance monitoring and optimization
+- Error handling and recovery
+- Resource management and load balancing
+
+Architecture:
+- Backend Registry: Manages available quantum backends
+- Strategy Selection: Chooses optimal backend for each task
+- Fallback Logic: Graceful degradation when preferred backends fail
+- Monitoring: Tracks performance and reliability metrics
+
+Backend Selection Strategy:
+1. Preferred backend (if available)
+2. Any available backend of same type
+3. Simulator fallback
+4. Error if no backends available
+
+Use Cases:
+- Algorithm development (simulators)
+- Production quantum computing (hardware)
+- Benchmarking (compare backends)
+- Research (real quantum effects)
+
+**Métodos principais:**
+
+- `execute(circuit: Any, shots: int, backend_type: Optional[B)` → `Dict[str, int]`
+  > Execute quantum circuit with intelligent backend selection.
+
+Main entry point fo...
+- `list_backends()` → `List[BackendInfo]`
+  > List all available quantum backends.
+
+Returns:
+    List of BackendInfo objects f...
+- `get_active_backend_info()` → `Optional[BackendInfo]`
+  > Get information about currently active backend.
+
+Returns:
+    BackendInfo for ac...
+- `switch_backend(backend_type: BackendType)` → `bool`
+  > Switch to a different quantum backend.
+
+Args:
+    backend_type: Type of backend ...
+- `get_performance_metrics()` → `Dict[str, Any]`
+  > Get performance metrics for all backends.
+
+Returns:
+    Dictionary with backend ...
+
+### `HybridQLearning`
+
+Hybrid Quantum-Classical Q-Learning Algorithm.
+
+Combines quantum advantages with classical Q-learning:
+- Quantum Exploration: Superposition for action selection
+- Classical Exploitation: Deterministic Q-value updates
+- Hybrid Balance: Best of both worlds
+
+Q-Learning Update Rule:
+Q(s,a) ← Q(s,a) + α[r + γ maxₐ' Q(s',a') - Q(s,a)]
+
+Where:
+- α: Learning rate (how much to update)
+- γ: Discount factor (future reward importance)
+- r: Immediate reward
+- s': Next state
+
+Attributes:
+    num_states: Number of possible states
+    num_actions: Number of possible actions
+    learning_rate: α parameter
+    discount_factor: γ parameter
+    use_quantum: Whether to use quantum exploration
+    q_table: Dictionary storing Q-values
+
+Example:
+    >>> learner = HybridQLearning(num_states=5, num_actions=3, use_quantum=True)
+    >>> action = learner.select_action("state_2")  # Quantum exploration
+    >>> learner.update("state_2", action, 1.0, "state_3")  # Classical update
+
+**Métodos principais:**
+
+- `select_action(state: str, epsilon: float)` → `str`
+  > Select action using quantum exploration or epsilon-greedy.
+
+Quantum Exploration:...
+- `update(state: str, action: str, reward: float, next_state)` → `None`
+  > Update Q-value using Q-learning temporal difference.
+
+Q-Learning Update:
+Q(s,a) ...
+- `get_q_value(state: str, action: str)` → `float`
+  > Get learned Q-value for state-action pair.
+
+Args:
+    state: State identifier
+  ...
+- `get_policy(state: str)` → `Dict[str, float]`
+  > Get complete action-value function for a state.
+
+Args:
+    state: State to get p...
+- `get_learning_stats()` → `Dict[str, Any]`
+  > Get statistics about the learning process.
+
+Returns:
+    Dictionary with learnin...
+
+### `QuantumCognitionEngine`
+
+Core quantum cognition engine using Qiskit for circuit simulation.
+
+Implements quantum circuits for cognitive tasks including:
+- Superposition states for parallel option exploration
+- Entanglement for correlated decision making
+- Quantum interference for complex pattern recognition
+- Measurement for decision finalization
+
+The engine provides a high-level interface to quantum computing concepts
+while handling the complexities of circuit construction and simulation.
+
+Consciousness Research Applications:
+- Model parallel processing in cognition
+- Study interference effects in memory
+- Explore quantum effects in decision making
+- Investigate superposition in conscious awareness
+
+Attributes:
+    num_qubits: Number of qubits available for quantum circuits
+    simulator: Qiskit Aer simulator instance (None if Qiskit unavailable)
+
+**Métodos principais:**
+
+- `create_superposition(qubits: Optional[List[int]], weights: Optional[Lis)` → `QuantumCircuit`
+  > Create quantum superposition state.
+
+Superposition allows a quantum system to ex...
+- `create_entanglement(control_qubit: int, target_qubit: int)` → `QuantumCircuit`
+  > Create entangled quantum state using CNOT gate.
+
+Entanglement creates correlatio...
+- `get_statevector(circuit: QuantumCircuit)` → `QuantumState`
+  > Extract quantum state vector from a circuit.
+
+The state vector contains all quan...
+- `measure_circuit(circuit: QuantumCircuit, shots: int)` → `Dict[str, int]`
+  > Perform multiple measurements of a quantum circuit.
+
+Simulates repeated quantum ...
+- `create_ghz_state()` → `QuantumCircuit`
+  > Create GHZ (Greenberger-Horne-Zeilinger) entangled state.
+
+GHZ states are highly...
+
+### `IBMQBackend(QPUBackend)`
+
+IBM Quantum cloud backend for real quantum hardware.
+
+Provides access to IBM's quantum computers through the Quantum Experience cloud.
+Enables execution of quantum circuits on actual quantum processors.
+
+⚠️  EXPERIMENTAL - Requires IBM Quantum credentials
+Falls back to simulator if credentials not available.
+
+Characteristics:
+- Real quantum hardware with true quantum effects
+- Limited by physical qubit count and coherence time
+- Queue times vary by backend popularity
+- Shot limits and usage quotas apply
+- Requires IBM Quantum account and API token
+
+Security:
+- API tokens handled securely (environment variables recommended)
+- No sensitive OmniMind data transmitted to IBM
+- Quantum circuits may be logged for debugging
+
+Performance:
+- Queue times: 1-30 minutes depending on backend
+- Execution time: Milliseconds per circuit
+- Reliability: Hardware errors possible (readout, gate errors)
+- Cost: Usage-based pricing may apply
+
+**Métodos principais:**
+
+- `execute(circuit: QuantumCircuit, shots: int)` → `Dict[str, int]`
+  > Execute circuit on IBM Quantum hardware using Sampler V2 API.
+
+Args:
+    circuit...
+- `get_info()` → `BackendInfo`
+  > Get IBM Quantum backend information.
+
+Returns:
+    BackendInfo with hardware spe...
+- `is_available()` → `bool`
+  > Check if IBM Quantum backend is available.
+
+Returns:
+    True if authenticated a...
+
+### `QuantumDecisionMaker`
+
+High-level quantum decision maker using superposition principles.
+
+Makes decisions by encoding options in quantum superposition states,
+allowing parallel exploration before collapsing to a final choice.
+
+This implements a form of quantum parallelism for decision making,
+where multiple options are evaluated simultaneously in superposition.
+
+Consciousness Research Applications:
+- Study quantum effects in decision making
+- Model parallel cognitive processing
+- Explore interference in choice selection
+- Investigate collapse models of consciousness
+
+Attributes:
+    engine: Underlying QuantumCognitionEngine instance
+    num_qubits: Number of qubits available for decisions
+
+**Métodos principais:**
+
+- `make_decision(options: List[str], weights: Optional[List[float]])` → `SuperpositionDecision`
+  > Create a quantum superposition decision from multiple options.
+
+Encodes decision...
+- `demonstrate_entanglement()` → `Tuple[QuantumCircuit, Dict[str, int]]`
+  > Demonstrate quantum entanglement with measurement statistics.
+
+Creates an entang...
+- `demonstrate_superposition()` → `Tuple[QuantumCircuit, Dict[str, int]]`
+  > Demonstrate quantum superposition with measurement statistics.
+
+Creates a superp...
+- `analyze_decision_patterns(decisions: List[SuperpositionDecision])` → `Dict[str, Any]`
+  > Analyze patterns in quantum decision making.
+
+Studies multiple decisions to iden...
+
+### `QuantumMemoryCell`
+
+Quantum memory cell storing data in superposition.
+
+A quantum memory cell encodes classical data into a quantum state vector,
+enabling parallel storage and retrieval operations. The cell maintains
+both the original classical data and its quantum representation.
+
+Quantum Encoding Methods:
+- Amplitude Encoding: Data vector normalized to quantum state |ψ⟩ = data/||data||
+- Phase Encoding: Information stored in relative phases e^(iθ)
+- Basis Encoding: Classical bits mapped to computational basis states |00⟩, |01⟩, etc.
+
+Consciousness Implications:
+- Superposition allows multiple memory traces to coexist
+- Entanglement enables binding of different sensory modalities
+- Decoherence models memory fading and forgetting
+- Fidelity measures memory similarity and pattern completion
+
+Mathematical Properties:
+- Normalization: ||ψ|| = 1 (valid quantum state)
+- Measurement: p(i) = |⟨i|ψ⟩|² (probability of outcome i)
+- Purity: Tr(ρ²) = 1 for pure states (vs mixed states < 1)
+- Fidelity: F(ψ,φ) = |⟨ψ|φ⟩|² (state similarity measure)
+
+Attributes:
+    data: Original classical data (preserved for fallback)
+    num_qubits: Number of qubits needed for encoding
+    quantum_state: Complex numpy array representing |ψ⟩
+    encoding_type: Encoding method ("amplitude", "phase", "basis")
+    coherence_time: Simulated coherence time for decoherence modeling
+    access_count: Number of times cell has been accessed
+
+Example:
+    >>> cell = QuantumMemoryCell(data=[1, 0, 0, 0], num_qubits=2)
+    >>> cell.encode()  # Creates |00⟩ state
+    >>> decoded = cell.decode()  # Returns ~1.0 (collapsed measurement)
+    >>> fidelity = cell.fidelity(other_cell)  # Compare with another cell
+
+**Métodos principais:**
+
+- `encode()` → `None`
+  > Encode classical data into quantum state vector.
+
+The encoding process:
+1. Conve...
+- `decode()` → `Any`
+  > Decode quantum state back to classical data via measurement.
+
+The decoding proce...
+- `fidelity(other: 'QuantumMemoryCell')` → `float`
+  > Calculate quantum fidelity between two memory cells.
+
+Fidelity measures how simi...
+- `apply_decoherence(time_elapsed: float)` → `None`
+  > Apply decoherence effects to simulate memory fading.
+
+Decoherence models how qua...
+- `get_state_info()` → `Dict[str, Any]`
+  > Get detailed information about the quantum state.
+
+Returns:
+    Dictionary with ...
+
+### `ClassicalQuantumBridge`
+
+Bridge between classical and quantum computational domains.
+
+Handles bidirectional data transformation for hybrid cognition:
+- Classical → Quantum: Encoding symbolic data into quantum states
+- Quantum → Classical: Decoding quantum measurements to symbolic results
+- Compatibility validation: Ensuring data can cross domains
+- Format conversion: Adapting data structures between paradigms
+
+Encoding Methods:
+- Amplitude Encoding: Vector data → quantum state amplitudes
+- Basis Encoding: Discrete values → computational basis states
+- Phase Encoding: Information in relative quantum phases
+
+This bridge is crucial for consciousness simulation as it allows
+symbolic reasoning (classical) to interact with quantum parallelism.
+
+Attributes:
+    num_qubits: Number of qubits for quantum representations
+    encoding_method: Default encoding strategy
+
+**Métodos principais:**
+
+- `encode_classical_data(data: Any)` → `Any`
+  > Encode classical data for quantum processing.
+
+Transforms symbolic/deterministic...
+- `decode_quantum_result(quantum_result: Any)` → `Any`
+  > Decode quantum computation result to classical format.
+
+Transforms probabilistic...
+- `validate_compatibility(data: Any)` → `bool`
+  > Validate if classical data is compatible with quantum encoding.
+
+Checks data str...
+- `estimate_quantum_resources(data: Any)` → `Dict[str, Any]`
+  > Estimate quantum resources needed for data processing.
+
+Args:
+    data: Data to ...
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(num_qubits: int, default_strategy: OptimizationStr)` → `None`
+
+*Initialize hybrid cognition system.
+
+Args:
+    num_qubits: Number of qubits for quantum processing
+ ...*
+
+#### `__init__(num_qubits: int)` → `None`
+
+*Initialize Qiskit Aer simulator backend.
+
+Args:
+    num_qubits: Maximum qubit capacity (default: 10 ...*
+
+#### `__init__(token: Optional[str], use_least_busy: bool)` → `None`
+
+*Initialize IBM Quantum backend.
+
+Args:
+    token: IBM Quantum API token (from IBM Quantum Experience...*
+
+#### `__init__(preferred_backend: BackendType, ibmq_token: Option)` → `None`
+
+*Initialize QPU interface with backend management.
+
+Args:
+    preferred_backend: Primary backend pref...*
+
+#### `__init__(provider: str, api_token: Optional[str], prefer_lo)` → `None`
+
+#### `__init__(num_qubits: int)` → `None`
+
+*Initialize quantum cognition engine.
+
+Args:
+    num_qubits: Number of qubits for quantum circuits.
+ ...*
+
+#### `__init__(num_qubits: int)` → `None`
+
+*Initialize quantum decision maker.
+
+Args:
+    num_qubits: Number of qubits (determines max options =...*
+
+#### `__init__(num_qubits: int, capacity: int)` → `None`
+
+*Initialize quantum memory system.
+
+Args:
+    num_qubits: Number of qubits per memory cell (2^num_qub...*
+
+#### `__init__(num_states: int, num_actions: int, learning_rate: )` → `None`
+
+*Initialize hybrid Q-learning agent.
+
+Args:
+    num_states: Number of possible states in environment
+...*
+
+#### `__post_init__()` → `None`
+
+*Initialize quantum state to |0...0⟩ computational basis state.
+
+If no statevector is provided, initi...*
+
+#### `__str__()` → `str`
+
+*String representation for logging and display.
+
+Returns:
+    Formatted string with backend informati...*
+
+#### `_auto_select_strategy(problem: Dict[str, Any])` → `OptimizationStrategy`
+
+*Automatically select optimal strategy based on problem characteristics.
+
+Selection Heuristics:
+- Sma...*
+
+#### `_classical_greedy_search()` → `Any`
+
+*Classical greedy search implementation.
+
+Placeholder for integration with existing OmniMind classica...*
+
+#### `_classical_refine(candidates: List[Any])` → `Any`
+
+*Classical refinement phase - optimize selected candidates....*
+
+#### `_classical_select_action(state: str, epsilon: float)` → `str`
+
+*Select action using classical epsilon-greedy policy.
+
+Process:
+1. With probability ε: select random ...*
+
+
+## 📦 Módulos
+
+**Total:** 6 arquivos
+
+- `auto_ibm_loader.py`: Automatic IBM Quantum backend loader.
+
+Detects IBM Quantum c...
+- `hybrid_cognition.py`: Hybrid Cognition System for OmniMind - Phase 21-23 Preparati...
+- `qpu_interface.py`: Quantum Processing Unit (QPU) Interface for OmniMind - Phase...
+- `quantum_backend.py`: Quantum Backend - CORRECTED VERSION
+========================...
+- `quantum_cognition.py`: Quantum Cognition Engine for OmniMind - Phase 21-23 Preparat...
+- `quantum_memory.py`: Quantum Memory System for OmniMind - Phase 21-23 Preparation...

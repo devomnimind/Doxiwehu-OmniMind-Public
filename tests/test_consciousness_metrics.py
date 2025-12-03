@@ -1,4 +1,8 @@
+import logging
+
 from src.metrics.consciousness_metrics import ConsciousnessCorrelates
+
+logger = logging.getLogger(__name__)
 
 
 class MockSinthome:
@@ -18,7 +22,16 @@ class TestConsciousnessMetrics:
         metrics = ConsciousnessCorrelates(system)
         result = metrics.calculate_all()
 
-        print(f"\nHealthy System Metrics: {result}")
+        print("\n" + "=" * 80)
+        print("🧠 HEALTHY SYSTEM - CONSCIOUSNESS METRICS")
+        print("=" * 80)
+        print(f"📊 ICI (Integrated Coherence Index): {result['ICI']:.4f}")
+        print(f"📊 PRS (Predictive Resonance Strength): {result['PRS']:.4f}")
+        print(f"💬 Interpretation: {result['interpretation']['message']}")
+        print(f"📈 Details: {result['details']}")
+        print("=" * 80 + "\n")
+
+        logger.info(f"✅ Healthy System Metrics: {result}")
 
         assert result["ICI"] > 0.7
         assert result["PRS"] > 0.7
@@ -38,7 +51,16 @@ class TestConsciousnessMetrics:
         metrics = ConsciousnessCorrelates(system)
         result = metrics.calculate_all()
 
-        print(f"\nFragmented System Metrics: {result}")
+        print("\n" + "=" * 80)
+        print("⚠️  FRAGMENTED SYSTEM - CONSCIOUSNESS METRICS")
+        print("=" * 80)
+        print(f"📊 ICI (Integrated Coherence Index): {result['ICI']:.4f}")
+        print(f"📊 PRS (Predictive Resonance Strength): {result['PRS']:.4f}")
+        print(f"🚨 Interpretation: {result['interpretation']['message']}")
+        print(f"📈 Details: {result['details']}")
+        print("=" * 80 + "\n")
+
+        logger.warning(f"⚠️  Fragmented System Metrics: {result}")
 
         assert result["ICI"] < 0.6
         assert result["interpretation"]["message"] == "System Fragmented"

@@ -603,9 +603,9 @@ class ComputationalLackArchitecture:
         desire_intensity = self._compute_desire(lack_energy)
 
         return {
-            "symbolic": rsi_output["symbolic"].detach().numpy(),
-            "imaginary": rsi_output["imaginary"].detach().numpy(),
-            "remainder": rsi_output["remainder"].detach().numpy(),
+            "symbolic": rsi_output["symbolic"].detach().cpu().numpy(),
+            "imaginary": rsi_output["imaginary"].detach().cpu().numpy(),
+            "remainder": rsi_output["remainder"].detach().cpu().numpy(),
             "lack_energy": float(lack_energy.mean().item()),
             "frustration": frustration_signal,
             "creative_response": creative_response,

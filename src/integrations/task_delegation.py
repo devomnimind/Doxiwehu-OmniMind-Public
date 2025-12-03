@@ -124,9 +124,17 @@ class TaskDelegationManager:
 
             try:
                 provider_class = provider_classes.get(provider_name)
-                if provider_class is not None and not hasattr(
-                    provider_class, "__abstractmethods__"
-                ):
+                if provider_class is not None:
+                    # Check if class is abstract
+                    if (
+                        hasattr(provider_class, "__abstractmethods__")
+                        and len(provider_class.__abstractmethods__) > 0
+                    ):
+                        logger.warning(
+                            f"Provider {provider_name} is abstract: {provider_class.__abstractmethods__}"
+                        )
+                        continue
+
                     provider = provider_class(provider_config)
                     self.providers[provider_name] = provider
                     logger.info(f"Provider {provider_name} initialized")

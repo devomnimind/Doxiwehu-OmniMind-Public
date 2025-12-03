@@ -131,3 +131,68 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 IDENTITY
+
+**2 Classes | 6 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `SymbolicAuthority`
+
+Manages the agent's Symbolic Authority.
+
+Replaces 'AgentIdentity'.
+
+**Métodos principais:**
+
+- `sign_act(content: str, metadata: Optional[Dict[str, Any]])` → `Dict[str, Any]`
+  > Sign an act (code, text) with the Symbolic Signature.
+
+This is not just a hash; ...
+- `verify_authorization()` → `bool`
+  > Check if the agent is authorized to act....
+
+### `AuthorityState`
+
+State of the agent's symbolic authority.
+
+**Métodos principais:**
+
+- `to_dict()` → `Dict[str, Any]`
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(state_file: Optional[Path])` → `None`
+
+#### `_load_state()` → `None`
+
+#### `_save_state()` → `None`
+
+#### `sign_act(content: str, metadata: Optional[Dict[str, Any]])` → `Dict[str, Any]`
+
+*Sign an act (code, text) with the Symbolic Signature.
+
+This is not just a hash; it's an assumption o...*
+
+#### `to_dict()` → `Dict[str, Any]`
+
+#### `verify_authorization()` → `bool`
+
+*Check if the agent is authorized to act....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `agent_signature.py`: Symbolic Authority System (Phase 11.3)
+
+Replaces "Agent Iden...

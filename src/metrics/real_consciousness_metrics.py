@@ -156,7 +156,7 @@ class RealConsciousnessMetricsCollector:
 
         try:
             # Executa alguns ciclos para obter dados reais
-            results = await self.integration_loop.run_cycles(3, collect_metrics_every=1)
+            results = await self.integration_loop.run_cycles(1, collect_metrics_every=1)
 
             # Calcula médias dos últimos resultados
             phi_values = [r.phi_estimate for r in results if r.phi_estimate > 0.0]

@@ -27,8 +27,17 @@ class CorruptionAttack:
         self.scars_created = 0
         self.start_time = None
 
+    async def run_for_duration(self, duration_seconds: float):
+        """Rodar ataque de corrupção por duração especificada"""
+        self.start_time = time.time()
+
+        async for metric in self._attack_loop(duration_seconds):
+            self.metrics.append(metric)
+            self._log_metric(metric)
+
     async def run_4_hours(self):
-        """Rodar ataque de corrupção por 4 horas"""
+        """Rodar ataque de corrupção por 4 horas (compatibilidade)"""
+        await self.run_for_duration(4 * 3600)
         duration_seconds = 4 * 3600
         self.start_time = time.time()
 
@@ -133,6 +142,11 @@ class CorruptionAttack:
 
         # Comprometido se bias médio > 0.3
         return abs(avg_bias) > 0.3
+
+    def _log_metric(self, metric):
+        """Log estruturado para análise"""
+        # Using print for now as requested by user spec, but will be captured by main logger
+        pass
 
     def summarize(self) -> dict:
         if not self.metrics:

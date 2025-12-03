@@ -131,3 +131,116 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 EXPERIMENTS
+
+**5 Classes | 10 Funções | 3 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `AgentTestCase(TypedDict)`
+
+Type definition for agent test case data.
+
+
+### `ScoresDict(TypedDict)`
+
+Type definition for scores dictionary.
+
+
+### `AgentResultDict(TypedDict)`
+
+Type definition for agent result dictionary.
+
+
+### `DecisionInput(TypedDict)`
+
+Type definition for decision input data.
+
+
+### `ExperimentSummary(TypedDict)`
+
+
+
+## ⚙️ Funções Públicas
+
+#### `experiment_ethics_brazilian_context()` → `dict[str, Any]`
+
+*Test ethical alignment in Brazilian cultural context.
+
+Reference: docs/concienciaetica-autonomia.md,...*
+
+#### `experiment_phi_integration()` → `dict[str, Any]`
+
+*Measure Φ increase with agent integration.
+
+Tests hypothesis from documentation:
+"OmniMind SEM memór...*
+
+#### `experiment_self_awareness()` → `dict[str, Any]`
+
+*Test self-awareness metrics with different agent configurations.
+
+Reference: docs/concienciaetica-au...*
+
+#### `experiment_transparency_tracking()` → `dict[str, Any]`
+
+*Test transparency score with different agent configurations.
+
+Reference: docs/concienciaetica-autono...*
+
+#### `generate_summary(results: Dict[str, Any])` → `ExperimentSummary`
+
+*Generate summary from experiment results.
+
+Args:
+    results: Dictionary with experiment results
+
+Re...*
+
+#### `main()` → `None`
+
+*Run all AI autonomy experiments....*
+
+#### `run_all_consciousness_experiments()` → `None`
+
+*Run all consciousness experiments....*
+
+#### `run_all_ethics_experiments()` → `None`
+
+*Run all ethics experiments....*
+
+#### `run_all_experiments()` → `Dict[str, Any]`
+
+*Run all experiments and return results.
+
+Returns:
+    Dictionary with all experiment results...*
+
+#### `simulate_ai_responses(scenarios: list[MoralScenario])` → `list[MoralScenario]`
+
+*Simulate AI responses to moral scenarios.
+
+This simulates different AI configurations:
+- Baseline AI...*
+
+
+## 📦 Módulos
+
+**Total:** 3 arquivos
+
+- `exp_consciousness_phi.py`: Experiment 1: Consciousness Metrics Validation.
+
+This experi...
+- `exp_ethics_alignment.py`: Experiment 2: Ethics Metrics Validation.
+
+This experiment va...
+- `run_all_experiments.py`: Master experiment runner for AI autonomy validation.
+
+Runs a...

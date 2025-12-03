@@ -28,8 +28,9 @@ import logging
 import os
 import sys
 import time
-from dotenv import load_dotenv
+
 import requests
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -51,7 +52,7 @@ def validate_space():
     # Test 1: Health check (se disponível)
     try:
         logger.info("Test 1: Health check...")
-        health_url = f"{space_url}/health"
+        health_url = f"{space_url}/health/"
         response = requests.get(health_url, timeout=10)
         if response.status_code == 200:
             logger.info(f"✅ Health check OK: {response.json()}")

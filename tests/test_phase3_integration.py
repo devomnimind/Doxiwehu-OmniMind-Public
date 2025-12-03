@@ -100,7 +100,7 @@ async def test_phase3_integration():
             workspace.write_module_state(module, base_embedding)
 
     # Avançar alguns ciclos para estabilizar
-    for _ in range(5):
+    for _ in range(30):
         workspace.advance_cycle()
 
     logger.info("✅ Dados simulados gerados com hierarquia causal realista")

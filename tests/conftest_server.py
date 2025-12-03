@@ -74,7 +74,7 @@ class ServerManager:
     def is_backend_healthy(self) -> bool:
         """Verifica se backend está respondendo."""
         try:
-            response = requests.get(f"{self.backend_url}/health", timeout=2)
+            response = requests.get(f"{self.backend_url}/health/", timeout=2)
             return response.status_code == 200
         except Exception:
             return False
@@ -83,7 +83,7 @@ class ServerManager:
         """Aguarda serviço ficar saudável."""
         for attempt in range(max_attempts):
             try:
-                response = requests.get(f"{url}/health", timeout=2)
+                response = requests.get(f"{url}/health/", timeout=2)
                 if response.status_code == 200:
                     return
             except Exception:

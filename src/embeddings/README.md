@@ -131,3 +131,99 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 EMBEDDINGS
+
+**3 Classes | 11 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `OmniMindEmbeddings`
+
+Sistema de embeddings abrangente para o projeto OmniMind.
+
+Indexa múltiplos tipos de conteúdo: código, documentação, papers,
+configurações e relatórios de auditoria.
+
+**Métodos principais:**
+
+- `index_file(file_path: str)` → `int`
+  > Indexa um arquivo de qualquer tipo suportado....
+- `index_directory(directory: str, extensions: Optional[List[str]])` → `Dict[str, int]`
+  > Indexa todos os arquivos suportados em um diretório....
+- `index_omnimind_project(project_root: str)` → `Dict[str, Dict[str, int]]`
+  > Indexa todo o projeto OmniMind: código, documentação, papers, auditoria, etc....
+- `search(query: str, top_k: int, content_types: Optional[Li)` → `List[Dict[str, Any]]`
+  > Busca semântica no conteúdo indexado....
+- `get_stats()` → `Dict[str, Any]`
+  > Estatísticas da coleção....
+
+### `ContentType(Enum)`
+
+Tipos de conteúdo suportados.
+
+
+### `ContentChunk`
+
+Chunk de conteúdo com metadados.
+
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(qdrant_url: str, collection_name: str, model_name:)` → `None`
+
+#### `_chunk_file(file_path: str)` → `List[ContentChunk]`
+
+*Divide arquivo em chunks baseado no tipo de conteúdo....*
+
+#### `_detect_content_type(file_path: str)` → `ContentType`
+
+*Detecta tipo de conteúdo baseado no caminho do arquivo....*
+
+#### `_detect_language(file_path: str)` → `str`
+
+*Detecta linguagem baseada na extensão....*
+
+#### `_ensure_collection()` → `None`
+
+*Cria coleção se não existir....*
+
+#### `_index_docs_directory(directory: str)` → `Dict[str, int]`
+
+*Indexa diretório de documentação (suporta .md, .txt, etc.)...*
+
+#### `get_stats()` → `Dict[str, Any]`
+
+*Estatísticas da coleção....*
+
+#### `index_directory(directory: str, extensions: Optional[List[str]])` → `Dict[str, int]`
+
+*Indexa todos os arquivos suportados em um diretório....*
+
+#### `index_file(file_path: str)` → `int`
+
+*Indexa um arquivo de qualquer tipo suportado....*
+
+#### `index_omnimind_project(project_root: str)` → `Dict[str, Dict[str, int]]`
+
+*Indexa todo o projeto OmniMind: código, documentação, papers, auditoria, etc....*
+
+#### `search(query: str, top_k: int, content_types: Optional[Li)` → `List[Dict[str, Any]]`
+
+*Busca semântica no conteúdo indexado....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `code_embeddings.py`: Sistema de Embeddings Locais do OmniMind
+
+Gera embeddings se...

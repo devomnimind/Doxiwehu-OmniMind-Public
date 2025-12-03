@@ -330,8 +330,10 @@ class TestMCPOrchestrator:
 
     @patch("subprocess.Popen")
     @patch("src.integrations.mcp_orchestrator.get_audit_system")
+    @patch("socket.socket")
     def test_check_server_health(
         self,
+        mock_socket_cls: MagicMock,
         mock_audit: MagicMock,
         mock_popen: MagicMock,
         temp_config_file: Path,
@@ -340,6 +342,11 @@ class TestMCPOrchestrator:
         mock_process = Mock()
         mock_process.poll.return_value = None  # Rodando
         mock_popen.return_value = mock_process
+
+        # Mock socket
+        mock_socket = Mock()
+        mock_socket.connect_ex.return_value = 0
+        mock_socket_cls.return_value = mock_socket
 
         mock_audit_system = Mock()
         mock_audit.return_value = mock_audit_system

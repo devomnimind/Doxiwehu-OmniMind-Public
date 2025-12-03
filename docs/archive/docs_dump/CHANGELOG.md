@@ -90,7 +90,7 @@ else:
 ### 🎯 Problema Principal Resolvido
 Dashboard estava mostrando dados **hardcoded/fake** em vez de dados reais do sistema:
 - **Audit Events**: `1797 (fake)` → **`307 (real)`** ✅
-- **Training Data**: Nenhum → **`50 iterações reais`** ✅  
+- **Training Data**: Nenhum → **`50 iterações reais`** ✅
 - **Conflict Quality**: `78% (fixed)` → **`69% (calculado)`** ✅
 - **Repressed Memories**: Nenhum → **`15 (real)`** ✅
 
@@ -111,7 +111,7 @@ GET /metrics/summary     → Resumo completo
 - Novo endpoint `/metrics/summary` - agregação de todos os dados
 - Endpoint `/audit/stats` retorna dados reais da auditoria
 
-#### 2. **Frontend - Consumo de Dados Reais** 
+#### 2. **Frontend - Consumo de Dados Reais**
 **`web/frontend/src/services/api.ts`:**
 - Adicionado método genérico `get<T>(endpoint: string)`
 - Adicionado método genérico `post<T>(endpoint: string, body?: any)`
@@ -193,18 +193,18 @@ Resultado: Todos 5 endpoints retornam dados reais com sucesso ✅
 ### 🚀 Como Usar
 
 ```bash
-# Terminal 1 - Backend (porta 9000)
+# Terminal 1 - Backend (porta 8000)
 cd /home/fahbrain/projects/omnimind
 source .venv/bin/activate
 export PYTHONPATH="./src:."
 python simple_backend.py
 
-# Terminal 2 - Frontend (porta 3001)
+# Terminal 2 - Frontend (porta 3000)
 cd web/frontend
 npm run dev
 
-# Browser: http://localhost:3001
-# Login: admin / omnimind2025!
+# Browser: http://localhost:3000
+# Login: dashboard / omnimind
 ```
 
 ### ✅ Status Final
@@ -221,7 +221,7 @@ npm run dev
 
 ### 🔧 Fixed - Test Loop Infinito Resolvido
 - **Problema**: Teste `test_loop_produces_improving_phi` gerando 29.098 linhas de output (vs. ~9k esperado)
-- **Causa Raiz**: 
+- **Causa Raiz**:
   - Ciclos excessivos em testes de integração (20/50/100 ciclos)
   - Cross-prediction logging verbose do módulo `shared_workspace.py`
   - Computações NumPy lentas (`np.std()`, `np.corrcoef()`, `np.linalg.lstsq()`)

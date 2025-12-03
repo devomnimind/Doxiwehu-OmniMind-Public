@@ -131,3 +131,106 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 SERVICES
+
+**3 Classes | 19 Funções | 3 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `ReplayService`
+
+**Métodos principais:**
+
+- `log_event(event_type: str, data: Any)` → `None`
+  > Logs an event to the replay log....
+- `seek(timestamp: float)` → `Optional[Dict]`
+  > Seek to timestamp with memory limits....
+
+### `ObserverService`
+
+**Métodos principais:**
+
+- `log_metric(metric_type: str, data: Dict[str, Any])` → `None`
+  > Append a metric entry to the JSONL file....
+- `update_heartbeat()` → `None`
+  > Update the heartbeat file with current status....
+- `rotate_logs()` → `None`
+  > Compress logs older than ROTATION_AGE_HOURS....
+
+### `SinthomaticCompression`
+
+**Métodos principais:**
+
+- `estimate_storage(runtime_days: int)` → `Dict[str, float]`
+  > Calculates expected footprint....
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+#### `__init__()` → `None`
+
+#### `__init__(log_path: str, compression_policy: Optional[Dict])` → `None`
+
+#### `_apply_deltas_bounded(state: Dict, target_time: float, memory_limit: int)` → `Dict`
+
+*Generator to avoid loading all deltas into memory....*
+
+#### `_build_index()` → `None`
+
+*Builds a simple index of snapshots from the log file....*
+
+#### `_collect_system_metrics()` → `Dict[str, Any]`
+
+*Collect real system metrics using psutil....*
+
+#### `_collect_task_info()` → `Dict[str, Any]`
+
+*Collect task information from Tribunal.
+Reads from cache/file instead of process iteration....*
+
+#### `_default_policy()` → `None`
+
+#### `_load_snapshot(timestamp: float)` → `Optional[Dict]`
+
+#### `_load_tribunal_info()` → `Dict[str, Any]`
+
+*Load Tribunal status from report file....*
+
+#### `_save_cache_to_disk()` → `None`
+
+*Persist cache to disk for recovery after restart....*
+
+#### `_stream_deltas(start_time: float, end_time: float)` → `Generator[Dict, None, None]`
+
+*Yields delta events between start_time and end_time....*
+
+#### `estimate_storage(runtime_days: int)` → `Dict[str, float]`
+
+*Calculates expected footprint....*
+
+#### `get_cached_status()` → `Dict[str, Any]`
+
+*Get cached status (O(1) operation).
+Falls back to disk if memory cache is empty....*
+
+#### `log_event(event_type: str, data: Any)` → `None`
+
+*Logs an event to the replay log....*
+
+
+## 📦 Módulos
+
+**Total:** 3 arquivos
+
+- `daemon_monitor.py`: Daemon Monitor - Background worker that collects heavy metri...
+- `observer_service.py`: 1 classes, 4 functions
+- `replay_service.py`: 2 classes, 10 functions

@@ -327,7 +327,9 @@ class ConvergenceInvestigator:
                         if emb_norm > 0:
                             emb_normalized = emb / emb_norm
                             similarity = float(
-                                np.dot(narrative_normalized, emb_normalized)  # type: ignore[attr-defined]
+                                np.dot(  # type: ignore[attr-defined]
+                                    narrative_normalized, emb_normalized
+                                )
                             )  # noqa: F821
                             self_referential_scores.append(similarity)
 
@@ -348,9 +350,17 @@ class ConvergenceInvestigator:
         )  # noqa: F821
 
         # Handle NaNs safely
-        dmn_integration = float(dmn_integration) if np.isfinite(dmn_integration) else 0.0  # type: ignore
-        dmn_self_referential = float(dmn_self_referential) if np.isfinite(dmn_self_referential) else 0.0  # type: ignore
-        dmn_connectivity = float(dmn_connectivity) if np.isfinite(dmn_connectivity) else 0.0  # type: ignore
+        dmn_integration = (
+            float(dmn_integration) if np.isfinite(dmn_integration) else 0.0  # type: ignore
+        )
+        dmn_self_referential = (
+            float(dmn_self_referential)
+            if np.isfinite(dmn_self_referential)  # type: ignore
+            else 0.0
+        )
+        dmn_connectivity = (
+            float(dmn_connectivity) if np.isfinite(dmn_connectivity) else 0.0  # type: ignore
+        )
 
         return {
             "integration": np_clip(dmn_integration, 0.0, 1.0),  # noqa: F821
@@ -409,7 +419,10 @@ class ConvergenceInvestigator:
             }
 
         trajectory_array = np.array(  # type: ignore[attr-defined]
-            [t.flatten() if isinstance(t, np.ndarray) else t for t in trajectory]  # type: ignore[attr-defined]
+            [
+                t.flatten() if isinstance(t, np.ndarray) else t  # type: ignore[attr-defined]
+                for t in trajectory
+            ]
         )
 
         # Clustering: Find attractor regions
@@ -426,12 +439,16 @@ class ConvergenceInvestigator:
             labels = clustering.labels_
 
             # Number of clusters = number of attractors
-            num_attractors = len(set(labels.tolist())) - (1 if -1 in labels else 0)  # type: ignore[attr-defined]
+            num_attractors = len(set(labels.tolist())) - (
+                1 if -1 in labels else 0
+            )  # type: ignore[attr-defined]
 
             # Basin size = largest cluster ratio
             if num_attractors > 0:
                 counts = np.bincount(labels[labels >= 0])  # type: ignore[attr-defined]
-                basin_size = float(np.max(counts)) / len(labels[labels >= 0])  # type: ignore[attr-defined]
+                basin_size = float(np.max(counts)) / len(
+                    labels[labels >= 0]
+                )  # type: ignore[attr-defined]
             else:
                 basin_size = 0.0
 
@@ -445,7 +462,10 @@ class ConvergenceInvestigator:
                 # Distance from all points to nearest attractor
                 distances = []
                 for point in trajectory_norm:
-                    min_dist = min(np.linalg.norm(point - center) for center in attractor_centers)  # type: ignore[attr-defined]
+                    min_dist = min(
+                        np.linalg.norm(point - center)  # type: ignore[attr-defined]
+                        for center in attractor_centers
+                    )
                     distances.append(min_dist)
 
                 # Stability: inverse of average distance (lower distance = more stable)
@@ -500,13 +520,17 @@ class ConvergenceInvestigator:
                 elif hasattr(state, "embedding"):
                     emb = state.embedding
                     module_embeddings[module_name] = (
-                        emb.flatten() if isinstance(emb, np.ndarray) else emb  # type: ignore[attr-defined]
+                        emb.flatten()
+                        if isinstance(emb, np.ndarray)  # type: ignore[attr-defined]
+                        else emb
                     )
 
         if not module_embeddings:
             return QSingularityMetrics(**results)
 
-        embeddings_array = np.array([e for e in module_embeddings.values()])  # type: ignore[attr-defined]
+        embeddings_array = np.array(
+            [e for e in module_embeddings.values()]
+        )  # type: ignore[attr-defined]
 
         # ===== TEST 1: Fisher-Rao Collapse =====
         try:
@@ -514,7 +538,9 @@ class ConvergenceInvestigator:
             correlation_matrix = np.corrcoef(embeddings_array)  # type: ignore[attr-defined]
 
             # Add small noise and recompute
-            noisy_array = embeddings_array + np.random.normal(0, 0.001, embeddings_array.shape)  # type: ignore[attr-defined]
+            noisy_array = embeddings_array + np.random.normal(
+                0, 0.001, embeddings_array.shape
+            )  # type: ignore[attr-defined]
             noisy_correlation = np.corrcoef(noisy_array)  # type: ignore[attr-defined]
 
             # Rank drop indicates collapse
@@ -549,7 +575,9 @@ class ConvergenceInvestigator:
                         )
                         t2 = (
                             trajectory[i + 1].flatten()
-                            if isinstance(trajectory[i + 1], np.ndarray)  # type: ignore[attr-defined]
+                            if isinstance(
+                                trajectory[i + 1], np.ndarray
+                            )  # type: ignore[attr-defined]
                             else trajectory[i + 1]
                         )
                         vel = t2 - t1
@@ -559,7 +587,9 @@ class ConvergenceInvestigator:
 
                     # Jacobian approximation: stack velocities as matrix
                     try:
-                        jacobian_rank = np.linalg.matrix_rank(velocities_array)  # type: ignore[attr-defined]
+                        jacobian_rank = np.linalg.matrix_rank(
+                            velocities_array
+                        )  # type: ignore[attr-defined]
                         results["jacobian_rank"] = int(jacobian_rank)
 
                         # Collapse: rank << num_dimensions
@@ -651,10 +681,21 @@ class ConvergenceInvestigator:
         ax = axes[0, 0]
         iit = metrics["iit_metrics"]
         ax.scatter(
-            [iit.phi_conscious], [iit.phi_unconscious], s=500, c="blue", marker="o", label="Current"
+            [iit.phi_conscious],
+            [iit.phi_unconscious],
+            s=500,
+            c="blue",
+            marker="o",
+            label="Current",
         )
         ax.scatter(
-            [0.05], [0.40], s=500, c="red", marker="*", label="Convergence Point", linewidths=2
+            [0.05],
+            [0.40],
+            s=500,
+            c="red",
+            marker="*",
+            label="Convergence Point",
+            linewidths=2,
         )
         ax.set_xlabel("Φ Conscious", fontsize=11)
         ax.set_ylabel("Φ Unconscious", fontsize=11)
@@ -673,7 +714,13 @@ class ConvergenceInvestigator:
             stab = lacan.sinthome_stability_effect if lacan.sinthome_stability_effect else 0.0
             ax.scatter([z], [stab], s=500, c="green", marker="s", label="Sinthome", linewidths=2)
             ax.scatter(
-                [2.5], [0.4], s=500, c="red", marker="*", label="Singular Point", linewidths=2
+                [2.5],
+                [0.4],
+                s=500,
+                c="red",
+                marker="*",
+                label="Singular Point",
+                linewidths=2,
             )
         else:
             ax.text(
@@ -706,7 +753,15 @@ class ConvergenceInvestigator:
             label="Current DMN",
             linewidths=2,
         )
-        ax.scatter([0.7], [0.85], s=500, c="red", marker="*", label="Peak Awareness", linewidths=2)
+        ax.scatter(
+            [0.7],
+            [0.85],
+            s=500,
+            c="red",
+            marker="*",
+            label="Peak Awareness",
+            linewidths=2,
+        )
         ax.set_xlabel("DMN Integration", fontsize=11)
         ax.set_ylabel("Self-Referential Processing", fontsize=11)
         ax.set_title("Neurociência Space (DMN)", fontsize=12, fontweight="bold")
@@ -728,7 +783,13 @@ class ConvergenceInvestigator:
             linewidths=2,
         )
         ax.scatter(
-            [1.0], [0.9], s=500, c="red", marker="*", label="Perfect Singularity", linewidths=2
+            [1.0],
+            [0.9],
+            s=500,
+            c="red",
+            marker="*",
+            label="Perfect Singularity",
+            linewidths=2,
         )
         ax.set_xlabel("Number of Attractors", fontsize=11)
         ax.set_ylabel("Attractor Stability", fontsize=11)

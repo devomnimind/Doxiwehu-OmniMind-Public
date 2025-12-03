@@ -131,3 +131,43 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 API
+
+**1 Classes | 4 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `ConnectionManager`
+
+**Métodos principais:**
+
+- `disconnect(websocket: WebSocket)` → `None`
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__()` → `None`
+
+#### `count_active_agents()` → `int`
+
+*Count active OmniMind agents (Python processes)....*
+
+#### `disconnect(websocket: WebSocket)` → `None`
+
+#### `get_task_counts()` → `tuple`
+
+*Get real task counts from Tribunal....*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `main.py`: 1 classes, 4 functions

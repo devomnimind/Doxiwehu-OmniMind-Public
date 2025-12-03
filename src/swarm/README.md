@@ -584,3 +584,372 @@ if diversity < 0.1:
 **Status**: Phase 19 Complete - Production Ready  
 **Performance**: 1000 agentes @ 20 Hz (GPU)  
 **Versão**: Swarm Intelligence Validated
+
+---
+
+## 📚 API Reference
+
+# 📁 SWARM
+
+**27 Classes | 76 Funções | 9 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `ParticleSwarmOptimizer`
+
+Otimizador PSO escalável para 100-1000 partículas.
+
+Features:
+- Inércia adaptativa
+- Topologia de vizinhança configurável
+- Suporte a GPU (quando disponível)
+- Batching para otimizar VRAM
+- Detecção de convergência
+
+**Métodos principais:**
+
+- `optimize(fitness_function: Callable[[List[float]], float], )` → `Tuple[List[float], float, SwarmMetrics]`
+  > Executa otimização PSO.
+
+Args:
+    fitness_function: Função objetivo a minimizar...
+- `get_swarm_state()` → `SwarmState`
+  > Retorna estado atual do enxame.
+
+Returns:
+    Estado do enxame...
+- `reset()` → `None`
+  > Reinicia o enxame....
+
+### `AntColonyOptimizer`
+
+Otimizador ACO escalável para 100-1000 formigas.
+
+Features:
+- Elitismo (melhores formigas depositam mais feromônio)
+- Evaporação de feromônio eficiente
+- Suporte a busca local opcional
+- Otimizado para TSP e problemas de roteamento
+
+**Métodos principais:**
+
+- `optimize(distance_matrix: List[List[float]], max_iterations)` → `Tuple[List[int], float, SwarmMetrics]`
+  > Resolve problema de TSP usando ACO.
+
+Args:
+    distance_matrix: Matriz de distân...
+- `reset()` → `None`
+  > Reinicia o otimizador....
+
+### `SwarmManager`
+
+Gerenciador centralizado de inteligência de enxame.
+
+Features:
+- Orquestra PSO, ACO e detecção de emergência
+- Gerencia recursos (memória, VRAM)
+- Batching automático para GPU
+- Métricas de performance em tempo real
+- Suporte a 100-1000 agentes
+
+**Métodos principais:**
+
+- `optimize_continuous(fitness_function: Callable[[List[float]], float], )` → `Tuple[List[float], float, SwarmMetrics]`
+  > Otimização contínua usando PSO.
+
+Args:
+    fitness_function: Função objetivo a m...
+- `optimize_combinatorial(distance_matrix: List[List[float]], num_ants: int,)` → `Tuple[List[int], float, SwarmMetrics]`
+  > Otimização combinatorial usando ACO (TSP).
+
+Args:
+    distance_matrix: Matriz de...
+- `get_swarm_state()` → `Optional[SwarmState]`
+  > Retorna estado atual do enxame ativo.
+
+Returns:
+    Estado do enxame ou None se ...
+- `get_metrics_summary()` → `Dict[str, Any]`
+  > Retorna resumo de métricas de todas as execuções.
+
+Returns:
+    Dicionário com e...
+- `reset()` → `None`
+  > Reinicia todos os componentes....
+
+### `EmergenceDetector`
+
+Detector de padrões emergentes em enxames.
+
+Features:
+- Detecção de clustering (formação de grupos)
+- Detecção de sincronização (comportamento coordenado)
+- Detecção de especialização (diferenciação de papéis)
+- Métricas de complexidade emergente
+
+**Métodos principais:**
+
+- `detect_patterns(agent_states: List[Dict[str, Any]])` → `List[EmergentPattern]`
+  > Detecta padrões emergentes a partir de estados de agentes.
+
+Args:
+    agent_stat...
+- `get_pattern_summary()` → `Dict[str, Any]`
+  > Retorna resumo de padrões detectados.
+
+Returns:
+    Dicionário com estatísticas ...
+- `clear_history()` → `None`
+  > Limpa histórico de padrões....
+
+### `SolutionAggregator`
+
+Aggregates solutions from multiple agents.
+
+**Métodos principais:**
+
+- `aggregate(partial_solutions: List[Dict[str, Any]], problem: )` → `DistributedSolution`
+  > Aggregate partial solutions.
+
+Args:
+    partial_solutions: Solutions from indivi...
+
+### `FederatedLearning`
+
+Federated learning for privacy-preserving collective learning.
+
+Features:
+- Local training, global aggregation
+- Privacy preservation
+- Decentralized updates
+
+**Métodos principais:**
+
+- `initialize_global_model(model: Dict[str, Any])` → `None`
+  > Initialize the global model....
+- `get_global_model()` → `Dict[str, Any]`
+  > Get current global model....
+- `submit_local_update(agent_id: str, local_model: Dict[str, Any])` → `None`
+  > Submit local model update from an agent.
+
+Args:
+    agent_id: Agent identifier
+ ...
+- `aggregate_updates()` → `Dict[str, Any]`
+  > Aggregate local updates into global model.
+
+Returns:
+    Updated global model...
+
+### `CollectiveLearner`
+
+High-level collective learning coordinator.
+
+Features:
+- Multiple learning strategies
+- Knowledge base management
+- Performance tracking
+
+**Métodos principais:**
+
+- `learn_from_experience(agent_id: str, experience: SharedExperience)` → `None`
+  > Learn from an agent's experience.
+
+Args:
+    agent_id: Agent identifier
+    expe...
+- `update_model(agent_id: str, model_update: Dict[str, Any])` → `None`
+  > Update model from an agent.
+
+Args:
+    agent_id: Agent identifier
+    model_upda...
+- `get_collective_model()` → `Dict[str, Any]`
+  > Get the current collective model....
+- `synchronize()` → `Dict[str, Any]`
+  > Synchronize collective knowledge.
+
+Returns:
+    Updated collective model...
+
+### `ConsensusLearning`
+
+Learn collectively through consensus mechanisms.
+
+Features:
+- Aggregated model updates
+- Voting on knowledge
+- Collaborative refinement
+
+**Métodos principais:**
+
+- `share_experience(agent_id: str, experience: SharedExperience)` → `None`
+  > Share an experience from an agent.
+
+Args:
+    agent_id: Agent sharing the experi...
+- `get_consensus_model()` → `Dict[str, Any]`
+  > Get consensus model by aggregating agent models.
+
+Returns:
+    Aggregated consen...
+- `update_agent_model(agent_id: str, model: Dict[str, Any])` → `None`
+  > Update an agent's model contribution.
+
+Args:
+    agent_id: Agent identifier
+    ...
+
+### `KnowledgeBase`
+
+Shared knowledge base for collective learning.
+
+**Métodos principais:**
+
+- `add_experience(exp: SharedExperience)` → `None`
+  > Add experience to knowledge base....
+- `add_fact(key: str, value: Any)` → `None`
+  > Add or update a fact....
+- `get_experiences(agent_id: Optional[str], limit: int)` → `List[SharedExperience]`
+  > Get experiences, optionally filtered by agent....
+
+### `MultiAgentTrainer`
+
+Trains multiple agents collectively.
+
+Features:
+- Parallel training
+- Experience sharing
+- Coordinated learning
+
+**Métodos principais:**
+
+- `train_episode(agent_experiences: List[SharedExperience])` → `Dict[str, Any]`
+  > Train on an episode of experiences.
+
+Args:
+    agent_experiences: Experiences fr...
+- `get_metrics()` → `Dict[str, Any]`
+  > Get training metrics....
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(config: Optional[ACOConfig])` → `None`
+
+*Inicializa otimizador ACO.
+
+Args:
+    config: Configuração ACO (usa padrão se None)...*
+
+#### `__init__(num_agents: int)` → `None`
+
+*Initialize consensus learning.
+
+Args:
+    num_agents: Number of participating agents...*
+
+#### `__init__(num_agents: int, aggregation_rounds: int)` → `None`
+
+*Initialize federated learning.
+
+Args:
+    num_agents: Number of participating agents
+    aggregation...*
+
+#### `__init__(num_agents: int, use_federated: bool)` → `None`
+
+*Initialize collective learner.
+
+Args:
+    num_agents: Number of agents
+    use_federated: Use federa...*
+
+#### `__init__(num_agents: int)` → `None`
+
+*Initialize multi-agent trainer....*
+
+#### `__init__()` → `None`
+
+*Initialize task decomposer....*
+
+#### `__init__(protocol: ConsensusProtocol)` → `None`
+
+*Initialize solution aggregator....*
+
+#### `__init__(num_agents: int, consensus_protocol: ConsensusProt)` → `None`
+
+*Initialize distributed solver.
+
+Args:
+    num_agents: Number of participating agents
+    consensus_p...*
+
+#### `__init__(config: Optional[EmergenceConfig])` → `None`
+
+*Inicializa detector de emergência.
+
+Args:
+    config: Configuração de detecção (usa padrão se None)...*
+
+#### `__init__(config: Optional[PSOConfig], dimension: Optional[i)` → `None`
+
+*Inicializa otimizador PSO.
+
+Args:
+    config: Configuração PSO (usa padrão se None)
+    dimension: S...*
+
+#### `__init__(config: Optional[SwarmConfig])` → `None`
+
+*Inicializa gerenciador de enxame.
+
+Args:
+    config: Configuração global (usa padrão se None)...*
+
+#### `__post_init__()` → `None`
+
+*Validação de parâmetros....*
+
+#### `__post_init__()` → `None`
+
+*Validação de parâmetros....*
+
+#### `__post_init__()` → `None`
+
+*Validação de parâmetros....*
+
+#### `__post_init__()` → `None`
+
+*Inicialização de configs padrão....*
+
+
+## 📦 Módulos
+
+**Total:** 9 arquivos
+
+- `ant_colony.py`: Ant Colony Optimization (ACO) avançado - Phase 19.
+
+Implemen...
+- `collective_learning.py`: Collective Learning for Multi-Agent Systems (Phase 19).
+
+Imp...
+- `config.py`: Configuração para módulo de Swarm Intelligence - Phase 19.
+
+...
+- `distributed_solver.py`: Distributed Problem Solving for Multi-Agent Systems (Phase 1...
+- `emergence_detector.py`: Detector de Padrões Emergentes - Phase 19.
+
+Detecta e analis...
+- `particle_swarm.py`: Particle Swarm Optimization (PSO) avançado - Phase 19.
+
+Impl...
+- `swarm_manager.py`: Gerenciador de Enxame - Phase 19.
+
+Orquestra execução de PSO...
+- `types.py`: Tipos de dados para módulo de Swarm Intelligence - Phase 19....
+- `utils.py`: Utilitários para módulo de Swarm Intelligence - Phase 19.
+
+F...

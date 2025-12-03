@@ -23,27 +23,15 @@ import pytest_asyncio
 def omnimind_server() -> Generator[str, None, None]:
     """
     Inicia servidor OmniMind em background para testes E2E.
-    Prioriza servidor de desenvolvimento (9000) se ativo.
+    Usa o servidor principal na porta 8000.
 
     Yields:
-        str: URL do servidor (http://localhost:9000 ou 8000)
+        str: URL do servidor (http://localhost:8000)
 
     Raises:
         RuntimeError: Se servidor não iniciar
     """
-    # 1. Tentar conectar ao servidor de desenvolvimento (9000)
-    dev_port = 9000
-    dev_url = f"http://localhost:{dev_port}"
-    try:
-        response = httpx.get(f"{dev_url}/health/", timeout=2.0)
-        if response.status_code == 200:
-            print(f"✅ Usando servidor de desenvolvimento ativo em {dev_url}")
-            yield dev_url
-            return
-    except (httpx.ConnectError, httpx.TimeoutException):
-        pass
-
-    # 2. Se não houver dev server, usar porta de teste (8000)
+    # Usar porta principal do sistema (8000)
     port = 8000
     url = f"http://localhost:{port}"
 

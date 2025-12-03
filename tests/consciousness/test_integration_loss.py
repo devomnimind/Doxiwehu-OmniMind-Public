@@ -4,14 +4,34 @@ Phase 4: Integration Loss Training Tests
 Comprehensive test suite for supervised Φ elevation through gradient-based training.
 """
 
-import pytest
-import numpy as np
-from pathlib import Path
-import tempfile
 import json
+import tempfile
+import unittest.mock
+from pathlib import Path
+
+import numpy as np
+import pytest
 
 from src.consciousness.integration_loop import IntegrationLoop
-from src.consciousness.integration_loss import IntegrationLoss, IntegrationTrainer, TrainingStep
+from src.consciousness.integration_loss import (
+    IntegrationLoss,
+    IntegrationTrainer,
+    TrainingStep,
+)
+
+
+@pytest.fixture(autouse=True)
+def mock_shared_workspace():
+    """Mock SharedWorkspace to prevent real resource usage."""
+    with unittest.mock.patch("src.consciousness.integration_loop.SharedWorkspace") as MockWorkspace:
+        mock_instance = MockWorkspace.return_value
+        mock_instance.embedding_dim = 256
+        mock_instance.get_all_modules.return_value = ["module1", "module2"]
+        mock_instance.get_module_history.return_value = []
+        mock_instance.compute_phi_from_integrations.return_value = 0.1
+        # Ensure workspace_dir is a Path
+        mock_instance.workspace_dir = Path(tempfile.gettempdir())
+        yield mock_instance
 
 
 class TestIntegrationLoss:

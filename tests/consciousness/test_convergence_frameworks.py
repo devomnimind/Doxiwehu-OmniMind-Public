@@ -107,7 +107,8 @@ async def test_cyber_metrics_computed(convergence_investigator) -> None:
     assert "attractor_is_singular" in attractors
 
     print(
-        f"✓ Cyber metrics: Attractors={attractors['num_attractors']}, singular={attractors['attractor_is_singular']}"
+        f"✓ Cyber metrics: Attractors={attractors['num_attractors']}, "
+        f"singular={attractors['attractor_is_singular']}"
     )
 
 
@@ -125,7 +126,8 @@ async def test_q_singularity_detection(convergence_investigator) -> None:
     assert hasattr(q_sing, "is_q_singularity")
 
     print(
-        f"✓ Q-Singularity detection: ready (Fisher-Rao={q_sing.fisher_rao_collapse}, Jacobian={q_sing.jacobian_collapse})"
+        f"✓ Q-Singularity detection: ready (Fisher-Rao={q_sing.fisher_rao_collapse}, "
+        f"Jacobian={q_sing.jacobian_collapse})"
     )
 
 

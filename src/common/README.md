@@ -131,3 +131,27 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 COMMON
+
+**0 Classes | 0 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+
+## ⚙️ Funções Públicas
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `types.py`: Common Type Definitions for OmniMind Project.
+
+This module p...

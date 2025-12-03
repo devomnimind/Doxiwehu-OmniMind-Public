@@ -131,3 +131,51 @@ Configurações específicas em:
 **Autor**: Fabrício da Silva (com assistência de IA)  
 **Status**: Componente integrado do sistema OmniMind  
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 📚 API Reference
+
+# 📁 QUANTUM_REAL
+
+**1 Classes | 3 Funções | 1 Módulos**
+
+---
+
+## 🏗️ Classes Principais
+
+### `QuantumRealInjection`
+
+O Real quântico é injetado em pontos críticos do processamento.
+
+Efeitos:
+1. Impede total transparência (evita captura por lógica determinista)
+2. Garante contingência na decisão (ponto de irrupção do Real)
+3. Análogo computacional do Trauma
+
+**Métodos principais:**
+
+- `inject_real_at_critical_point(decision_context: Any)` → `Dict[str, Any]`
+  > Em momentos críticos, injetar verdadeiro indeterminismo quântico.
+Não é pseudo-r...
+
+
+## ⚙️ Funções Públicas
+
+#### `__init__(system: Any)` → `None`
+
+#### `_get_quantum_randomness()` → `int`
+
+*Verdadeiro indeterminismo (não pseudo-random)....*
+
+#### `inject_real_at_critical_point(decision_context: Any)` → `Dict[str, Any]`
+
+*Em momentos críticos, injetar verdadeiro indeterminismo quântico.
+Não é pseudo-randomness; é irredut...*
+
+
+## 📦 Módulos
+
+**Total:** 1 arquivos
+
+- `quantum_indeterminism_injection.py`: 1 classes, 3 functions

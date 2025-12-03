@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from datetime import datetime
-from typing import Any, Dict, List, Type, Optional
+from typing import Any, Dict, List, Optional, Type
 
 import httpx
 
@@ -32,6 +32,12 @@ class TaskExecutor:
         self.results = {}
         # Limit concurrent symbolic requests to prevent Ollama overload
         self.symbolic_semaphore = asyncio.Semaphore(5)
+        # Persistent HTTP client for Ollama
+        self.client = httpx.AsyncClient()
+
+    async def shutdown(self):
+        """Close persistent connections."""
+        await self.client.aclose()
 
     async def execute_task(self, task_id: str, task_data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -136,29 +142,28 @@ class TaskExecutor:
         prompt = params.get("prompt", "")
 
         async with self.symbolic_semaphore:
-            async with httpx.AsyncClient() as client:
-                try:
-                    # Add retry logic
-                    for attempt in range(3):
-                        try:
-                            response = await client.post(
-                                "http://localhost:11434/api/generate",
-                                json={
-                                    "model": "qwen2:7b-instruct",
-                                    "prompt": prompt,
-                                    "stream": False,
-                                },
-                                timeout=task_data.get("timeout", 30),
-                            )
-                            response.raise_for_status()
-                            return {"response": response.json().get("response", "")}
-                        except (httpx.TimeoutException, httpx.ConnectError) as e:
-                            if attempt == 2:
-                                raise e
-                            await asyncio.sleep(1 * (attempt + 1))
+            try:
+                # Add retry logic
+                for attempt in range(3):
+                    try:
+                        response = await self.client.post(
+                            "http://localhost:11434/api/generate",
+                            json={
+                                "model": "qwen2:7b-instruct",
+                                "prompt": prompt,
+                                "stream": False,
+                            },
+                            timeout=task_data.get("timeout", 30),
+                        )
+                        response.raise_for_status()
+                        return {"response": response.json().get("response", "")}
+                    except (httpx.TimeoutException, httpx.ConnectError) as e:
+                        if attempt == 2:
+                            raise e
+                        await asyncio.sleep(1 * (attempt + 1))
 
-                except Exception as e:
-                    raise RuntimeError(f"Ollama execution failed: {e}") from e
+            except Exception as e:
+                raise RuntimeError(f"Ollama execution failed: {e}") from e
 
         # Fallback return in case all retries fail
         return {"response": "", "error": "Failed after retries"}
