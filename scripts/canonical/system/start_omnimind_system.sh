@@ -50,7 +50,22 @@ else
     tail -n 10 logs/backend_8000.log
 fi
 
-# 3. Iniciar Frontend
+# 3. Iniciar Daemon (com delay para não sobrecarregar)
+echo -e "${GREEN}⏰ Agendando inicialização do Daemon (em 5 segundos)...${NC}"
+sleep 5
+echo -e "${GREEN}🤖 Inicializando OmniMind Daemon...${NC}"
+cd "$PROJECT_ROOT"
+
+# Usar credenciais padrão do dashboard (admin:omnimind2025!)
+# Fazer requisição com autenticação básica
+curl -X POST http://localhost:8000/daemon/start \
+  -u admin:omnimind2025! \
+  > logs/daemon_start.log 2>&1 &
+DAEMON_START_PID=$!
+echo "✓ Daemon start request enviado (PID $DAEMON_START_PID)"
+sleep 2
+
+# 4. Iniciar Frontend
 echo -e "${GREEN}🎨 Iniciando Frontend...${NC}"
 cd web/frontend
 # Verificar se node_modules existe, se não, instalar
@@ -64,7 +79,7 @@ FRONTEND_PID=$!
 echo $FRONTEND_PID > ../../logs/frontend.pid
 echo "Frontend iniciado com PID $FRONTEND_PID"
 
-# 4. Verificação Final
+# 5. Verificação Final
 echo -e "${GREEN}🔍 Verificando status do sistema...${NC}"
 sleep 5
 
@@ -76,7 +91,7 @@ else
     cat ../../logs/frontend.log
 fi
 
-# 5. Iniciar eBPF Monitor Contínuo
+# 6. Iniciar eBPF Monitor Contínuo
 echo -e "${GREEN}📊 Iniciando eBPF Monitor Contínuo...${NC}"
 
 # Voltar para a raiz do projeto para encontrar scripts/secure_run.py

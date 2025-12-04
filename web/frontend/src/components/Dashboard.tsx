@@ -25,6 +25,7 @@ import { QuickStatsCards } from './QuickStatsCards';
 import { MetricsTimeline } from './MetricsTimeline';
 import { BaselineComparison } from './BaselineComparison';
 import { ActionButtons } from './ActionButtons';
+import { ConversationAssistant } from './ConversationAssistant';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
@@ -244,6 +245,9 @@ export function Dashboard() {
           </div>
         </div>
       </footer>
+
+      {/* Conversation Assistant Panel */}
+      <ConversationAssistant />
     </div>
   );
 }

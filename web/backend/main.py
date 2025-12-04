@@ -19,23 +19,20 @@ from secrets import compare_digest
 from typing import Any, Callable, Dict, Optional, Tuple
 
 from dotenv import load_dotenv
-from fastapi import (
-    Depends,
-    FastAPI,
-    HTTPException,
-    Request,
-    WebSocket,
-    WebSocketDisconnect,
-)
+from fastapi import (Depends, FastAPI, HTTPException, Request, WebSocket,
+                     WebSocketDisconnect)
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from starlette.status import HTTP_401_UNAUTHORIZED, WS_1008_POLICY_VIOLATION
 
 from src.agents.orchestrator_agent import OrchestratorAgent
-from src.metrics.real_consciousness_metrics import RealConsciousnessMetricsCollector
-from web.backend.routes import agents, health, metacognition, omnimind, tasks, tribunal
+from src.metrics.real_consciousness_metrics import \
+    RealConsciousnessMetricsCollector
+from web.backend import chat_api
+from web.backend.routes import agents, health, metacognition, omnimind
 from web.backend.routes import security as security_router
+from web.backend.routes import tasks, tribunal
 from web.backend.websocket_manager import ws_manager
 
 # Load environment variables from .env file
@@ -185,9 +182,8 @@ async def lifespan(app_instance: FastAPI):
     # Import Realtime Analytics Broadcaster
     realtime_analytics_broadcaster: Any = None
     try:
-        from web.backend.realtime_analytics_broadcaster import (
-            realtime_analytics_broadcaster as rab,
-        )
+        from web.backend.realtime_analytics_broadcaster import \
+            realtime_analytics_broadcaster as rab
 
         realtime_analytics_broadcaster = rab
     except ImportError:
@@ -248,12 +244,9 @@ async def lifespan(app_instance: FastAPI):
     alert_system = None
 
     try:
-        from src.monitor import (
-            AlertChannel,
-            get_alert_system,
-            get_progressive_monitor,
-            get_resource_protector,
-        )
+        from src.monitor import (AlertChannel, get_alert_system,
+                                 get_progressive_monitor,
+                                 get_resource_protector)
 
         # Iniciar monitor progressivo
         progressive_monitor = await get_progressive_monitor()
@@ -620,7 +613,8 @@ async def track_metrics(request: Request, call_next: Callable[[Request], Any]) -
 
         # Also record in new metrics collector if available
         try:
-            from web.backend.monitoring import metrics_collector as new_collector
+            from web.backend.monitoring import \
+                metrics_collector as new_collector
 
             new_collector.record_request(
                 path=request.url.path,
@@ -1287,6 +1281,7 @@ app.include_router(security_router.router)
 app.include_router(metacognition.router)
 app.include_router(health.router)
 app.include_router(omnimind.router)
+app.include_router(chat_api.router)
 app.include_router(tribunal.router, dependencies=[Depends(_verify_credentials)])
 
 # Monitoramento e alertas
@@ -1365,6 +1360,14 @@ def training_metrics(user: str = Depends(_verify_credentials)) -> Dict[str, Any]
             "total_iterations": 0,
             "avg_conflict_quality": 0.0,
             "repression_events": 0,
+            "error": str(e),
+        }
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)
             "error": str(e),
         }
 
