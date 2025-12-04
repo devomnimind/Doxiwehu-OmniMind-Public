@@ -206,9 +206,8 @@ class HuggingFaceLocalProvider(LLMProviderInterface):
     def _check_availability(self):
         """Verifica disponibilidade do HuggingFace Local."""
         try:
-            # Verifica se transformers está disponível
+            # Verifica se torch está disponível (transformers será importado quando necessário)
             import torch
-            import transformers
 
             # Verifica se há GPU disponível
             if torch.cuda.is_available():
@@ -330,8 +329,6 @@ class HuggingFaceLocalProvider(LLMProviderInterface):
                     raise e
 
             # Executa em thread separada para não bloquear
-            import concurrent.futures
-
             with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
                 future = executor.submit(_generate_text)
                 response = future.result(timeout=config.timeout)
@@ -460,8 +457,6 @@ class HuggingFaceProvider(LLMProviderInterface):
                     raise e
 
             # Executa em thread separada para não bloquear
-            import concurrent.futures
-
             with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
                 future = executor.submit(_generate_text)
                 response = future.result(timeout=config.timeout)

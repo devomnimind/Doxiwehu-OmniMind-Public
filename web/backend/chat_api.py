@@ -7,20 +7,27 @@ Provides conversational interface for users to interact with system in natural l
 import logging
 from typing import Any, Dict
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from starlette.status import HTTP_401_UNAUTHORIZED
 
-from src.integrations.llm_router import llm_router
+from src.integrations.llm_router import get_llm_router
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/omnimind", tags=["conversation"])
+security = HTTPBasic()
 
 
-def _verify_credentials(user: str = None, password: str = None) -> str:
-    """Simple credential verification for chat endpoint."""
-    if user == "admin" and password == "omnimind2025!":
-        return user
-    raise ValueError("Invalid credentials")
+def _verify_credentials(credentials: HTTPBasicCredentials = Depends(security)) -> str:
+    """Verify HTTP Basic credentials."""
+    if credentials.username == "admin" and credentials.password == "omnimind2025!":
+        return credentials.username
+    raise HTTPException(
+        status_code=HTTP_401_UNAUTHORIZED,
+        detail="Invalid credentials",
+        headers={"WWW-Authenticate": "Basic"},
+    )
 
 
 @router.post("/chat")
@@ -141,6 +148,7 @@ async def _call_llm_for_chat(message: str, system_prompt: str, context: Dict[str
 
     try:
         # Use Ollama via llm_router
+        llm_router = get_llm_router()
         response = llm_router.infer(
             task="chat_completion",
             system_prompt=system_prompt,
