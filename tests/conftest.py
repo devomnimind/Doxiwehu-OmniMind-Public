@@ -74,8 +74,9 @@ class MetricsCollector:
     def _extract_all_metrics(self, test_name: str, output: str) -> dict | None:
         """Extrai todas as métricas do output do teste."""
         import re
+        from typing import Any
 
-        result = {"test_name": test_name, "metrics": {}}
+        result: dict[str, Any] = {"test_name": test_name, "metrics": {}}
 
         # Padrões expandidos para capturar métricas
         patterns = {

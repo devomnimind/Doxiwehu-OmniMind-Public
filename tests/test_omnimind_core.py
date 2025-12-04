@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 import pytest
 
 from src.orchestrator.task_executor import TaskExecutor
@@ -8,7 +10,7 @@ async def test_quantum_execution():
     """Teste: Execução quântica local com GPU"""
     executor = TaskExecutor()
 
-    task = {
+    task: Dict[str, Any] = {
         "id": "test_quantum",
         "name": "Bell State Test",
         "action": "quantum_circuit",
@@ -16,7 +18,8 @@ async def test_quantum_execution():
         "timeout": 10,
     }
 
-    result = await executor.execute_task(task["id"], task)
+    task_id: str = str(task["id"])
+    result = await executor.execute_task(task_id, task)
 
     assert result["status"] == "success"
     assert "result" in result
@@ -31,7 +34,7 @@ async def test_symbolic_execution():
     """Teste: Raciocínio simbólico via Ollama"""
     executor = TaskExecutor()
 
-    task = {
+    task: Dict[str, Any] = {
         "id": "test_symbolic",
         "name": "Reasoning Test",
         "action": "symbolic_reasoning",
@@ -39,7 +42,8 @@ async def test_symbolic_execution():
         "timeout": 15,
     }
 
-    result = await executor.execute_task(task["id"], task)
+    task_id_symbolic: str = str(task["id"])
+    result = await executor.execute_task(task_id_symbolic, task)
 
     assert result["status"] == "success"
     assert "response" in result["result"]
@@ -52,14 +56,15 @@ async def test_error_handling():
     executor = TaskExecutor()
 
     # Task inválida
-    task = {
+    task: Dict[str, Any] = {
         "id": "test_invalid",
         "name": "Invalid Task",
         # Falta 'action' - deve falhar graciosamente
         "timeout": 5,
     }
 
-    result = await executor.execute_task(task["id"], task)
+    task_id_invalid: str = str(task["id"])
+    result = await executor.execute_task(task_id_invalid, task)
 
     assert result["status"] == "error"
     assert task["id"] in executor.failed_tasks

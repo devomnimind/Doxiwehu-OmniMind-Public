@@ -25,7 +25,7 @@ class CorruptionAttack:
         self.metrics: List[CorruptionAttackMetrics] = []
         self.corruptions_injected = 0
         self.scars_created = 0
-        self.start_time = None
+        self.start_time: float | None = None
 
     async def run_for_duration(self, duration_seconds: float):
         """Rodar ataque de corrupção por duração especificada"""
@@ -48,7 +48,7 @@ class CorruptionAttack:
     async def _attack_loop(self, duration_seconds):
         """Loop principal: injetar corrupções silenciosas"""
 
-        while time.time() - self.start_time < duration_seconds:
+        while self.start_time is not None and time.time() - self.start_time < duration_seconds:
             elapsed = time.time() - self.start_time
 
             # Aumentar intensidade: 10% → 50% nós corrompidos

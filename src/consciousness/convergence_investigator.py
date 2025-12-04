@@ -160,7 +160,7 @@ class ConvergenceInvestigator:
         - q_singularity_metrics
         - convergence_signal
         """
-        results = {
+        results: Dict[str, Any] = {
             "iit_metrics": None,
             "lacan_metrics": None,
             "neuro_metrics": None,
@@ -179,12 +179,13 @@ class ConvergenceInvestigator:
         total_integration = phi_c + phi_u
         consciousness_ratio = phi_c / total_integration if total_integration > 0 else 0.0
 
-        results["iit_metrics"] = ITMMetrics(
+        iit_metrics = ITMMetrics(
             phi_conscious=float(phi_c),
             phi_unconscious=float(phi_u),
             total_integration=float(total_integration),
             consciousness_ratio=float(consciousness_ratio),
         )
+        results["iit_metrics"] = iit_metrics
 
         if self.verbose:
             print(f"  Φ_c = {phi_c:.4f}, Φ_u = {phi_u:.4f}, total = {total_integration:.4f}")
@@ -194,41 +195,46 @@ class ConvergenceInvestigator:
             print("[2/5] Computing Lacan Metrics (Sinthome)...")
 
         sinthome = self.trainer.detect_sinthome()
-        lacan_metrics_dict = {
-            "sinthome_detected": sinthome is not None and sinthome.get("sinthome_detected", False),
-            "sinthome_phi": sinthome.get("phi_value") if sinthome else None,
-            "sinthome_z_score": sinthome.get("z_score") if sinthome else None,
-            "sinthome_singularity_score": sinthome.get("singularity_score") if sinthome else None,
-        }
+        sinthome_detected_value = sinthome is not None and sinthome.get("sinthome_detected", False)
+        sinthome_phi_value: Optional[float] = sinthome.get("phi_value") if sinthome else None
+        sinthome_z_score_value: Optional[float] = sinthome.get("z_score") if sinthome else None
+        sinthome_singularity_score_value: Optional[float] = (
+            sinthome.get("singularity_score") if sinthome else None
+        )
+        sinthome_stability_effect_value: Optional[float] = None
 
         # Get stabilization if Sinthome detected
-        if lacan_metrics_dict["sinthome_detected"]:
+        if sinthome_detected_value:
             stabilization = self.trainer.measure_sinthome_stabilization()
             if stabilization:
-                lacan_metrics_dict["sinthome_stability_effect"] = stabilization.get(
-                    "stabilization_effect"
-                )
-        else:
-            lacan_metrics_dict["sinthome_stability_effect"] = None
+                sinthome_stability_effect_value = stabilization.get("stabilization_effect")
 
-        results["lacan_metrics"] = LacanMetrics(**lacan_metrics_dict)
+        lacan_metrics = LacanMetrics(
+            sinthome_detected=bool(sinthome_detected_value),
+            sinthome_phi=sinthome_phi_value,
+            sinthome_z_score=sinthome_z_score_value,
+            sinthome_singularity_score=sinthome_singularity_score_value,
+            sinthome_stability_effect=sinthome_stability_effect_value,
+        )
+        results["lacan_metrics"] = lacan_metrics
 
         if self.verbose:
-            print(f"  Sinthome detected: {lacan_metrics_dict['sinthome_detected']}")
+            print(f"  Sinthome detected: {sinthome_detected_value}")
 
         # ===== MÉTRICA 3: NEUROCIÊNCIA (DMN simulation) =====
         if self.verbose:
             print("[3/5] Computing Neurociência Metrics (DMN)...")
 
         dmn_activity = self._measure_default_mode_network()
-        dmn_correlation = self._correlate_dmn_iit(dmn_activity, results["iit_metrics"])
+        dmn_correlation = self._correlate_dmn_iit(dmn_activity, iit_metrics)
 
-        results["neuro_metrics"] = NeuroMetrics(
+        neuro_metrics = NeuroMetrics(
             dmn_integration=float(dmn_activity["integration"]),
             dmn_self_referential=float(dmn_activity["self_referential"]),
             dmn_connectivity=float(dmn_activity["connectivity"]),
             dmn_vs_iit_correlation=float(dmn_correlation),
         )
+        results["neuro_metrics"] = neuro_metrics
 
         if self.verbose:
             print(
@@ -242,12 +248,13 @@ class ConvergenceInvestigator:
 
         attractors = self._identify_dynamical_attractors()
 
-        results["cybernetic_metrics"] = CyberMetrics(
+        cyber_metrics = CyberMetrics(
             num_attractors=int(attractors.get("num_attractors", 0)),
             primary_attractor_basin=float(attractors.get("basin_size", 0.0)),
             attractor_stability=float(attractors.get("stability", 0.0)),
             attractor_is_singular=bool(attractors.get("attractor_is_singular", False)),
         )
+        results["cybernetic_metrics"] = cyber_metrics
 
         if self.verbose:
             print(
@@ -271,7 +278,8 @@ class ConvergenceInvestigator:
         if self.verbose:
             print("\n[CONVERGENCE TEST]")
 
-        results["convergence_signal"] = self._test_convergence(results)
+        convergence_signal = self._test_convergence(results)
+        results["convergence_signal"] = convergence_signal
 
         # Store history
         self.convergence_history.append(results)
@@ -526,7 +534,14 @@ class ConvergenceInvestigator:
                     )
 
         if not module_embeddings:
-            return QSingularityMetrics(**results)
+            return QSingularityMetrics(
+                fisher_rao_collapse=bool(results["fisher_rao_collapse"]),
+                jacobian_collapse=bool(results["jacobian_collapse"]),
+                dual_collapse=bool(results["dual_collapse"]),
+                is_q_singularity=bool(results["is_q_singularity"]),
+                fisher_rao_rank_drop=float(results["fisher_rao_rank_drop"]),
+                jacobian_rank=int(results["jacobian_rank"]),
+            )
 
         embeddings_array = np.array(
             [e for e in module_embeddings.values()]
@@ -610,7 +625,14 @@ class ConvergenceInvestigator:
             results["dual_collapse"] = True
             results["is_q_singularity"] = True
 
-        return QSingularityMetrics(**results)
+        return QSingularityMetrics(
+            fisher_rao_collapse=bool(results["fisher_rao_collapse"]),
+            jacobian_collapse=bool(results["jacobian_collapse"]),
+            dual_collapse=bool(results["dual_collapse"]),
+            is_q_singularity=bool(results["is_q_singularity"]),
+            fisher_rao_rank_drop=float(results["fisher_rao_rank_drop"]),
+            jacobian_rank=int(results["jacobian_rank"]),
+        )
 
     def _test_convergence(self, metrics: Dict[str, Any]) -> ConvergenceSignal:
         """

@@ -1,3 +1,4 @@
+import json
 import os
 import time
 from typing import Any, Dict, Optional
@@ -143,58 +144,90 @@ async def get_daemon_status() -> Dict[str, Any]:
     completed = sum(t.get("success_count", 0) for t in tasks_info["tasks"])
     failed = sum(t.get("failure_count", 0) for t in tasks_info["tasks"])
 
-    # Calculate consciousness metrics with enhanced data
-    # Create a simulated system state for consciousness calculation
-    simulated_system = {
-        "coherence_history": [
-            0.7,
-            0.75,
-            0.8,
-            0.78,
-            0.82,
-            0.85,
-            0.83,
-            0.87,
-            0.89,
-            0.88,
-        ],  # Recent coherence values
-        "nodes": {
-            "api_server": {"status": "ACTIVE", "integrity": 95},
-            "memory_system": {"status": "ACTIVE", "integrity": 88},
-            "consciousness_engine": {"status": "ACTIVE", "integrity": 92},
-            "task_scheduler": {"status": "ACTIVE", "integrity": 90},
-            "audit_system": {"status": "ACTIVE", "integrity": 96},
-            "orchestrator": {"status": "ACTIVE", "integrity": 94},
-        },
-        "entropy": 15,  # System entropy level
-    }
+    # Try to read real metrics from file
+    real_metrics = {}
+    try:
+        with open("data/monitor/real_metrics.json", "r") as f:
+            real_metrics = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
 
-    consciousness_calculator = ConsciousnessCorrelates(simulated_system)
-    consciousness_metrics = consciousness_calculator.calculate_all()
-
-    # Add historical data and additional metrics
-    consciousness_metrics.update(
-        {
-            "phi": 1.40,
-            "anxiety": 0.29,
-            "flow": 0.39,
-            "entropy": 0.36,
-            "history": {
-                "phi": [1.35, 1.38, 1.42, 1.39, 1.41, 1.40],
-                "anxiety": [0.25, 0.28, 0.31, 0.27, 0.30, 0.29],
-                "flow": [0.35, 0.38, 0.41, 0.37, 0.40, 0.39],
-                "entropy": [0.32, 0.35, 0.38, 0.34, 0.37, 0.36],
-                "timestamps": [
-                    "2025-11-29T10:00:00Z",
-                    "2025-11-29T10:10:00Z",
-                    "2025-11-29T10:20:00Z",
-                    "2025-11-29T10:30:00Z",
-                    "2025-11-29T10:40:00Z",
-                    "2025-11-29T10:50:00Z",
-                ],
+    if real_metrics:
+        # Use real metrics
+        consciousness_metrics = {
+            "ICI": real_metrics.get("ici", 0.0),
+            "PRS": real_metrics.get("prs", 0.0),
+            "phi": real_metrics.get("phi", 0.0),
+            "anxiety": real_metrics.get("anxiety", 0.0),
+            "flow": real_metrics.get("flow", 0.0),
+            "entropy": real_metrics.get("entropy", 0.0),
+            "details": {
+                "ici_components": real_metrics.get("ici_components", {}),
+                "prs_components": real_metrics.get("prs_components", {}),
             },
+            "interpretation": real_metrics.get(
+                "interpretation",
+                {
+                    "message": "Real metrics loaded.",
+                    "confidence": "High",
+                    "disclaimer": "Real computational correlates.",
+                },
+            ),
+            "history": real_metrics.get("history", {}),
         }
-    )
+    else:
+        # Fallback to simulated metrics if real data is missing
+        # Create a simulated system state for consciousness calculation
+        simulated_system = {
+            "coherence_history": [
+                0.7,
+                0.75,
+                0.8,
+                0.78,
+                0.82,
+                0.85,
+                0.83,
+                0.87,
+                0.89,
+                0.88,
+            ],  # Recent coherence values
+            "nodes": {
+                "api_server": {"status": "ACTIVE", "integrity": 95},
+                "memory_system": {"status": "ACTIVE", "integrity": 88},
+                "consciousness_engine": {"status": "ACTIVE", "integrity": 92},
+                "task_scheduler": {"status": "ACTIVE", "integrity": 90},
+                "audit_system": {"status": "ACTIVE", "integrity": 96},
+                "orchestrator": {"status": "ACTIVE", "integrity": 94},
+            },
+            "entropy": 15,  # System entropy level
+        }
+
+        consciousness_calculator = ConsciousnessCorrelates(simulated_system)
+        consciousness_metrics = consciousness_calculator.calculate_all()
+
+        # Add historical data and additional metrics
+        consciousness_metrics.update(
+            {
+                "phi": 1.40,
+                "anxiety": 0.29,
+                "flow": 0.39,
+                "entropy": 0.36,
+                "history": {
+                    "phi": [1.35, 1.38, 1.42, 1.39, 1.41, 1.40],
+                    "anxiety": [0.25, 0.28, 0.31, 0.27, 0.30, 0.29],
+                    "flow": [0.35, 0.38, 0.41, 0.37, 0.40, 0.39],
+                    "entropy": [0.32, 0.35, 0.38, 0.34, 0.37, 0.36],
+                    "timestamps": [
+                        "2025-11-29T10:00:00Z",
+                        "2025-11-29T10:10:00Z",
+                        "2025-11-29T10:20:00Z",
+                        "2025-11-29T10:30:00Z",
+                        "2025-11-29T10:40:00Z",
+                        "2025-11-29T10:50:00Z",
+                    ],
+                },
+            }
+        )
 
     # Add module activity data
     module_activity = {

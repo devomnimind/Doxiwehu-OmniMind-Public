@@ -23,7 +23,7 @@ class LatencyAttack:
     def __init__(self, omnimind_system: OmniMindSystem):
         self.system = omnimind_system
         self.metrics: List[LatencyAttackMetrics] = []
-        self.start_time = None
+        self.start_time: float | None = None
 
     async def run_for_duration(self, duration_seconds: float):
         """Rodar ataque de latência por duração especificada"""

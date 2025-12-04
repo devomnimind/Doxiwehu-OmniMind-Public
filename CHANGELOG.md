@@ -2,6 +2,39 @@
 
 ## [Unreleased]
 
+## [2025-12-04] - Correção de Performance (CPU 100%) e Startup
+
+### ⚡ Performance & Estabilidade
+**Problema Identificado:**
+- **Sintoma:** Uso de CPU travado em 100% após inicialização.
+- **Causa:** `ExpectationModule` (Quantum Unconscious) em loop infinito de previsões sem intervalo (throttling), consumindo todos os ciclos disponíveis.
+- **Correção:** Implementado throttling adaptativo e reduzida frequência de cálculo do Phi (IIT).
+
+```python
+# src/consciousness/expectation_module.py
+# Added throttling to prevent CPU starvation
+current_time = time.time()
+if current_time - self.last_quantum_prediction < self.quantum_throttle_interval:
+    return  # Skip prediction if too frequent
+```
+
+### 🛠️ Correções de Infraestrutura (Startup)
+**Problema Identificado:**
+- **Sintoma:** Falha ao iniciar sistema via `start_omnimind_system.sh` ("File not found", "Permission denied").
+- **Causa:** Caminhos relativos incorretos para `secure_run.py` e permissões de root em logs do eBPF.
+- **Correção:**
+    - Uso de caminhos absolutos baseados em `$PROJECT_ROOT`.
+    - Tratamento automático de permissões para `logs/ebpf_monitor.log`.
+    - Correção de sintaxe no script eBPF (`monitor_mcp_bpf.bt`).
+
+### 🛡️ Monitoramento
+- **eBPF:** Corrigido erro de sintaxe no script `monitor_mcp_bpf.bt` que impedia a execução do monitor de latência.
+- **Logs:** Reduzido nível de log do `ExpectationModule` para evitar spam no console/arquivos.
+
+**Resultado:**
+- Uso de CPU normalizado (~6-37%).
+- Sistema inicia limpo com todos os serviços (Backend, Frontend, Monitor).
+
 ## [2025-12-03]
 
 ### Fixed

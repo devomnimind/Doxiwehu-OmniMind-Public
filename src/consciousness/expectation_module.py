@@ -10,13 +10,14 @@ INTEGRAÇÃO QUÂNTICA: O inconsciente irredutível é implementado via superpos
 - Irredutível por princípio físico (Heisenberg)
 """
 
+import os
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional  # Removed unused Tuple
+
 import numpy as np
+import structlog
 import torch
 import torch.nn as nn
-import os
-from typing import Dict, List, Optional, Any  # Removed unused Tuple
-from dataclasses import dataclass
-import structlog
 
 # Importar inconsciente quântico
 from quantum_unconscious import QuantumUnconscious  # type: ignore[import-untyped]
@@ -138,6 +139,11 @@ class ExpectationModule(nn.Module):
         self.prediction_errors: List[float] = []
         self.nachtraglichkeit_events = 0
 
+        # Throttling for quantum predictions
+        self.last_quantum_prediction_time = 0.0
+        self.cached_quantum_decision: Optional[torch.Tensor] = None
+        self.quantum_throttle_interval = 0.1  # 100ms minimum between quantum calls
+
         # Optimizer
         self.optimizer = torch.optim.Adam(self.parameters(), lr=learning_rate)
 
@@ -184,35 +190,58 @@ class ExpectationModule(nn.Module):
         # Convert to tensor and ensure on correct device
         current_tensor = torch.from_numpy(current_embedding).float().to(self.device)
 
+        import time
+
         if use_quantum_unconscious:
             # INCONSCIENTE IRREDUTÍVEL: Decisão em superposição quântica
-            # Gera múltiplas possibilidades em superposição
-            n_options = 4  # Número de possibilidades quânticas
-            quantum_options = []
+            # Throttling check to prevent CPU saturation
+            current_time = time.time()
+            should_run_quantum = (
+                current_time - self.last_quantum_prediction_time > self.quantum_throttle_interval
+            ) or (self.cached_quantum_decision is None)
 
-            for i in range(n_options):
-                # Cada opção é uma variação da predição neural
-                noise = torch.randn_like(current_tensor) * 0.1
-                option = current_tensor + noise
-                quantum_options.append(option.cpu().numpy())
+            if should_run_quantum:
+                # Gera múltiplas possibilidades em superposição
+                n_options = 4  # Número de possibilidades quânticas
+                quantum_options = []
 
-            # Decisão quântica (IRREDUTÍVEL - não pode ser inspecionada)
-            quantum_decision, quantum_evidence = (
-                self.quantum_unconscious.generate_decision_in_superposition(quantum_options)
-            )
+                for i in range(n_options):
+                    # Cada opção é uma variação da predição neural
+                    noise = torch.randn_like(current_tensor) * 0.1
+                    option = current_tensor + noise
+                    quantum_options.append(option.cpu().numpy())
 
-            # A decisão quântica se torna a base para predição neural
-            predicted = torch.from_numpy(quantum_decision).float()
+                # Decisão quântica (IRREDUTÍVEL - não pode ser inspecionada)
+                quantum_decision, quantum_evidence = (
+                    self.quantum_unconscious.generate_decision_in_superposition(quantum_options)
+                )
+
+                # A decisão quântica se torna a base para predição neural
+                predicted = torch.from_numpy(quantum_decision).float().to(self.device)
+
+                # Update cache and timestamp
+                self.cached_quantum_decision = predicted
+                self.last_quantum_prediction_time = current_time
+
+                # Log at DEBUG level to reduce spam, unless it's a significant event
+                logger.debug(
+                    "quantum_unconscious_prediction",
+                    quantum_options_count=n_options,
+                    quantum_evidence_keys=list(quantum_evidence.keys()),
+                )
+            else:
+                # Use cached decision but add slight variation (simulating temporal evolution)
+                # This avoids the heavy quantum simulation loop
+                if self.cached_quantum_decision is not None:
+                    predicted = self.cached_quantum_decision.to(self.device)
+                    # Small perturbation to avoid static output
+                    predicted = predicted + (torch.randn_like(predicted) * 0.01)
+                else:
+                    predicted = current_tensor  # Fallback
 
             # Multi-step prediction baseado na decisão quântica
             for _ in range(temporal_horizon):
                 predicted = self.forward(predicted)
-
-            logger.info(
-                "quantum_unconscious_prediction",
-                quantum_options_count=n_options,
-                quantum_evidence_keys=list(quantum_evidence.keys()),
-            )
 
         else:
             # Predição neural tradicional
@@ -476,4 +505,5 @@ def predict_next_state(embedding: np.ndarray) -> np.ndarray:
     """
     module = get_expectation_module(embedding.shape[0])
     state = module.predict_next_state(embedding)
+    return state.predicted_embedding
     return state.predicted_embedding

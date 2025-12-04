@@ -363,7 +363,7 @@ class TestAblationRecovery:
         await loop.run_cycles(5, collect_metrics_every=1)
 
         # Re-enable
-        executor._compute_output = original_compute
+        executor._compute_output = original_compute  # type: ignore
         await loop.run_cycles(5, collect_metrics_every=1)
         phi_recovered = np.mean(loop.get_phi_progression()[-5:])
 

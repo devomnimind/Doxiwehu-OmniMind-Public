@@ -146,7 +146,9 @@ class TestSecurityEvent:
             network_info={"connections": 50},
         )
 
+        assert event.process_info is not None, "process_info should not be None"
         assert event.process_info["pid"] == 1234
+        assert event.network_info is not None, "network_info should not be None"
         assert event.network_info["connections"] == 50
 
 

@@ -44,8 +44,7 @@ The master document for the current scientific implementation and roadmap is:
 
 ## �� Documentation Structure
 
-- **[docs/canonical/](docs/canonical/)**: **Canonical Documentation & Roadmaps**
-- **[docs/archive/](docs/archive/)**: Archived reports, logs, and historical documents.
+- **[docs/canonical/](docs/canonical/)**: **Canonical Documentation & Roadmaps**- **[docs/scientific_stimulation_canonical.md](docs/scientific_stimulation_canonical.md)**: 🧠 **Scientific Stimulation & Validation (Portuguese)**- **[docs/archive/](docs/archive/)**: Archived reports, logs, and historical documents.
 
 ---
 

@@ -12,6 +12,7 @@ Este teste valida a integração completa da Phase 3 no SharedWorkspace:
 import asyncio
 import logging
 import time
+from typing import Any, Dict
 
 import numpy as np
 import torch
@@ -111,7 +112,7 @@ async def test_phase3_integration():
 
     # Método individual (baseline)
     start_time = time.time()
-    individual_predictions = {}
+    individual_predictions: Dict[str, Dict[str, Any]] = {}
 
     for source in modules[:4]:  # Testar com 4 módulos para não demorar
         individual_predictions[source] = {}
@@ -199,7 +200,8 @@ async def test_phase3_integration():
     logger.info("-" * 50)
 
     # Invalidar cache para um módulo
-    workspace._vectorized_predictor.invalidate_module_cache("qualia_engine")
+    if workspace._vectorized_predictor is not None:
+        workspace._vectorized_predictor.invalidate_module_cache("qualia_engine")
 
     # Executar novamente (deve recálcular predições envolvendo qualia_engine)
     start_time = time.time()

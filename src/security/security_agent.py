@@ -348,8 +348,16 @@ class SecurityAgent(AuditedTool):
                     connections = psutil.net_connections(kind="inet")
                     summaries: Dict[str, int] = {}
                     for conn in connections:
-                        remote = f"{conn.raddr.ip}:{conn.raddr.port}" if conn.raddr else "unknown"
+                        if not conn.raddr:
+                            continue
+
+                        # Skip localhost
+                        if conn.raddr.ip in ("127.0.0.1", "localhost", "0.0.0.0", "::1"):
+                            continue
+
+                        remote = f"{conn.raddr.ip}:{conn.raddr.port}"
                         local = f"{conn.laddr.ip}:{conn.laddr.port}" if conn.laddr else "unknown"
+
                         if self._is_suspicious_connection(remote, suspicious_ports):
                             event = self._create_event(
                                 event_type="suspicious_network",
@@ -360,8 +368,10 @@ class SecurityAgent(AuditedTool):
                                 level=ThreatLevel.HIGH,
                             )
                             await self._handle_event(event)
+
                         summaries[remote] = summaries.get(remote, 0) + 1
-                        if summaries[remote] > 5:
+                        # Increased threshold to 20 to reduce false positives
+                        if summaries[remote] > 20:
                             event = self._create_event(
                                 event_type="data_exfiltration",
                                 source="network",
@@ -459,16 +469,24 @@ class SecurityAgent(AuditedTool):
         if not playbook:
             self.logger.warning("No playbook registered for %s", event.event_type)
             return
-        sandbox_result = self.sandbox.run(
-            {"event": event.event_type, "playbook": playbook_key},
-            sandbox_name="security_playbook",
-        )
-        if not sandbox_result.success:
-            self.logger.error(
-                "Sandbox execution failed for %s: %s",
-                event.event_type,
-                sandbox_result.output,
+
+        # Only run sandbox if enabled
+        if self.sandbox.enabled:
+            sandbox_result = self.sandbox.run(
+                {"event": event.event_type, "playbook": playbook_key},
+                sandbox_name="security_playbook",
             )
+            if not sandbox_result.success:
+                self.logger.error(
+                    "Sandbox execution failed for %s: %s",
+                    event.event_type,
+                    sandbox_result.output,
+                )
+        else:
+            self.logger.info(
+                "Sandbox disabled, skipping sandbox execution for %s", event.event_type
+            )
+
         try:
             result = await playbook.execute(self, event)
             entry = {
@@ -585,6 +603,23 @@ Provide:
     def _is_suspicious_process(self, proc: Dict[str, Any], patterns: List[str]) -> bool:
         name = (proc.get("name") or "").lower()
         cmdline = " ".join(proc.get("cmdline") or [])
+
+        # Whitelist common development processes
+        whitelist = [
+            "python",
+            "node",
+            "ps",
+            "vscode",
+            "cursor",
+            "code-insiders",
+            "pyright",
+            "black",
+            "flake8",
+            "mypy",
+        ]
+        if any(wl in name for wl in whitelist):
+            return False
+
         for pattern in patterns:
             if pattern.lower() in name or pattern.lower() in cmdline.lower():
                 return True

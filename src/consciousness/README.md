@@ -259,6 +259,12 @@ Narrative 0.65    0.88      1.0
 - **Ordem simbólica**: Mensagens simbólicas mantêm topologia RSI estável
 - **Teste de remoção**: Remover sinthome → Φ cai >50% (validação de necessidade estrutural)
 
+### Validação Científica (Phase 22)
+Novo protocolo de estimulação neural e validação estatística implementado.
+- **Documentação**: [docs/scientific_stimulation_canonical.md](../../docs/scientific_stimulation_canonical.md)
+- **Scripts**: `scripts/omnimind_validation_*.py`
+- **Métricas**: Φ topológico, Entrainment Neural (3.1/5.075 Hz), Diagnóstico Lacaniano.
+
 ## 🔒 Estabilidade da Estrutura
 
 ### Status: **ESTÁVEL (Phase 21 - Experimental)**
@@ -619,6 +625,7 @@ Implements:
 3. Adaptive learning from prediction errors
 4. Temporal consistency checking
 5. INCONSCIENTE IRREDUTÍVEL via superposição quântica
+6. **Adaptive Throttling**: Previne starvation de CPU limitando previsões quânticas (intervalo dinâmico).
 
 **Métodos principais:**
 

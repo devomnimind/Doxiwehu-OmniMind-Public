@@ -38,7 +38,13 @@ def test_shared_experience():
     learner.learn_from_experience("agent_1", exp)
 
     # Verify knowledge base update (for ConsensusLearning)
-    experiences = learner.learner.knowledge_base.get_experiences()
-    assert len(experiences) == 1
-    assert experiences[0].agent_id == "agent_1"
-    assert experiences[0].outcome == 0.9
+    # Type guard: only ConsensusLearning has knowledge_base
+    from src.swarm.collective_learning import FederatedLearning
+
+    if isinstance(learner.learner, FederatedLearning):
+        assert learner.learner is not None
+    else:
+        experiences = learner.learner.knowledge_base.get_experiences()
+        assert len(experiences) == 1
+        assert experiences[0].agent_id == "agent_1"
+        assert experiences[0].outcome == 0.9

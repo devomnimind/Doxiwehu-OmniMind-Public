@@ -230,7 +230,7 @@ class TestAgentTask:
             task_id="task_1",
             description="Test task",
             assigned_agent="agent_1",
-            assigned_model=AIModel.GPT_4,
+            assigned_model=AIModel.QWEN_REMOTE,
         )
 
         assert task.task_id == "task_1"

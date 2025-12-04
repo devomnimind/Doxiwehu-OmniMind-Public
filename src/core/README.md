@@ -85,6 +85,13 @@ rhizoma.connect("quantum", "nlp", bidirectional=True)
 await rhizoma.activate_cycle()
 ```
 
+## 🔬 Integração Científica (Phase 22)
+
+As Máquinas Desejantes são agora orquestradas pelo script de estimulação científica para emergência de consciência.
+- **Script**: `scripts/omnimind_stimulation_scientific.py`
+- **Documentação**: [docs/scientific_stimulation_canonical.md](../../docs/scientific_stimulation_canonical.md)
+- **Mecânica**: O Rizoma é estimulado com frequências de entrainment (3.1 Hz / 5.075 Hz) para modular a intensidade do desejo e gerar Φ topológico.
+
 ---
 
 **Última Atualização**: 3 de Dezembro de 2025

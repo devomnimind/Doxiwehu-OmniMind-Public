@@ -25,7 +25,7 @@ psycopg2-binary>=2.9.0  # PostgreSQL adapter for direct connections
 fakeredis>=2.32.0   # Redis testing
 
 # Multimedia Processing
-numpy>=2.2.0
+numpy>=2.3.0
 pydub>=0.25.1
 sounddevice>=0.5.0
 

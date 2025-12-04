@@ -8,7 +8,8 @@ NC='\033[0m' # No Color
 echo -e "${GREEN}🚀 Iniciando Sistema OmniMind Completo...${NC}"
 
 # 🔧 CRÍTICO: Ativar venv ANTES de qualquer import Python
-PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# PROJECT_ROOT deve apontar para a raiz do projeto (3 níveis acima de scripts/canonical/system)
+PROJECT_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 if [ -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
     source "$PROJECT_ROOT/.venv/bin/activate"
     echo "✅ Venv ativado: $VIRTUAL_ENV"
@@ -77,9 +78,23 @@ fi
 
 # 5. Iniciar eBPF Monitor Contínuo
 echo -e "${GREEN}📊 Iniciando eBPF Monitor Contínuo...${NC}"
+
+# Voltar para a raiz do projeto para encontrar scripts/secure_run.py
+cd "$PROJECT_ROOT"
+
 if command -v bpftrace &> /dev/null; then
     EBPF_LOG="logs/ebpf_monitor.log"
     mkdir -p logs
+
+    # Garantir permissões no arquivo de log se ele existir
+    if [ -f "$EBPF_LOG" ]; then
+        # Tentar mudar dono para usuário atual se possível, ou remover se falhar
+        if ! touch "$EBPF_LOG" 2>/dev/null; then
+            echo "⚠️  Sem permissão de escrita em $EBPF_LOG. Tentando remover com sudo..."
+            sudo rm -f "$EBPF_LOG"
+        fi
+    fi
+
     # Parar eBPF anterior
     python3 scripts/secure_run.py pkill -f "bpftrace.*monitor_mcp_bpf" || true
     sleep 1

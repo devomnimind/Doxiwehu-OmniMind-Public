@@ -32,6 +32,7 @@ tracepoint:raw_syscalls:sys_enter {
 tracepoint:raw_syscalls:sys_exit
 /@start[tid] != 0/ {
     $latency_us = (nsecs - @start[tid]) / 1000;
+    @start[tid] = 0; // Clear the map entry
 
     // Histograma de latência em microsegundos
     @latency_histogram = hist($latency_us);
@@ -46,6 +47,11 @@ tracepoint:raw_syscalls:sys_exit
         if (@high_latency_calls <= 10) {
             printf("⚠️  SLOW SYSCALL: %.0f us (%.1f ms)\n",
                    (double)$latency_us, (double)$latency_us / 1000.0);
+        }
+    }
+}
+
+END {
     print(@latency_histogram);
     printf("Total calls: %lld\n", @total_syscalls);
     printf("High latency: %lld\n", @high_latency_calls);

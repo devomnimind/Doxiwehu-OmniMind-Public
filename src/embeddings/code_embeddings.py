@@ -11,17 +11,17 @@ Gera embeddings semânticos para múltiplos tipos de conteúdo:
 Armazena no Qdrant para busca semântica abrangente do projeto.
 """
 
-import os
 import hashlib
 import logging
-from pathlib import Path
-from typing import List, Dict, Any, Optional
+import os
 from dataclasses import dataclass
 from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
-from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qmodels
+from sentence_transformers import SentenceTransformer
 
 logger = logging.getLogger(__name__)
 
@@ -86,7 +86,9 @@ class OmniMindEmbeddings:
             self.model = SentenceTransformer(
                 model_name, device="cpu"
             )  # Forçar CPU para evitar problemas de memória
-            self.embedding_dim = self.model.get_sentence_embedding_dimension()
+            self.embedding_dim = int(
+                self.model.get_sentence_embedding_dimension() or 384
+            )  # type: ignore
             logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}")
 
         # Inicializar Qdrant
@@ -105,7 +107,7 @@ class OmniMindEmbeddings:
                 self.client.create_collection(
                     collection_name=self.collection_name,
                     vectors_config=qmodels.VectorParams(
-                        size=self.embedding_dim, distance=qmodels.Distance.COSINE
+                        size=int(self.embedding_dim or 384), distance=qmodels.Distance.COSINE
                     ),
                 )
                 logger.info(f"Coleção criada: {self.collection_name} (dim={self.embedding_dim})")
@@ -250,12 +252,14 @@ class OmniMindEmbeddings:
             }
 
             points.append(
-                qmodels.PointStruct(id=point_id, vector=embedding.tolist(), payload=payload)
+                qmodels.PointStruct(
+                    id=point_id, vector=embedding.tolist(), payload=payload  # type: ignore
+                )
             )
 
         # Upsert no Qdrant
         if points:
-            self.client.upsert(collection_name=self.collection_name, points=points)
+            self.client.upsert(collection_name=self.collection_name, points=points)  # type: ignore
             logger.info(f"Indexado {len(points)} chunks de {file_path}")
             return len(points)
 
@@ -365,7 +369,8 @@ class OmniMindEmbeddings:
             query_filter = qmodels.Filter(
                 must=[
                     qmodels.FieldCondition(
-                        key="content_type", match=qmodels.MatchAny(any=content_type_values)
+                        key="content_type",
+                        match=qmodels.MatchAny(any=content_type_values),  # type: ignore
                     )
                 ]
             )
@@ -373,7 +378,7 @@ class OmniMindEmbeddings:
         # Buscar no Qdrant
         search_result = self.client.query_points(
             collection_name=self.collection_name,
-            query=query_embedding.tolist(),
+            query=query_embedding.tolist(),  # type: ignore
             query_filter=query_filter,
             limit=top_k,
             with_payload=True,

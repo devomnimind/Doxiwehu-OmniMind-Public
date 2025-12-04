@@ -41,11 +41,10 @@ Most endpoints require Basic Authentication:
 
 Endpoints are organized by tags:
 
-- **System**: Health checks and system information
-- **Tasks**: Task management and orchestration
-- **Agents**: Agent status and control
-- **Security**: Security events and monitoring
-- **Metacognition**: AI self-reflection insights
+- **Health**: System health checks and trends
+- **Daemon**: Daemon status, tasks, and control
+- **Messages**: Message polling and posting
+- **WebSocket**: Real-time metrics broadcasting
 
 ### 3. Testing Endpoints
 
@@ -117,43 +116,50 @@ Create a Postman environment with these variables:
 ### 1. Health Check
 
 ```bash
-GET /health
+GET /api/v1/health/
 ```
 
 No authentication required. Returns system health status.
 
-### 2. Submit a Task
+### 2. Get Daemon Status
 
 ```bash
-POST /tasks/orchestrate
+GET /daemon/status
+Authorization: Basic <credentials>
+```
+
+Returns comprehensive daemon status with consciousness metrics.
+
+### 3. List Tasks
+
+```bash
+GET /daemon/tasks
+Authorization: Basic <credentials>
+```
+
+Returns list of active tasks from Tribunal.
+
+### 4. Add Task
+
+```bash
+POST /daemon/tasks/add
 Authorization: Basic <credentials>
 
 {
-  "task": "Analyze system performance",
-  "max_iterations": 3
+  "task_id": "example_task",
+  "description": "Example task description",
+  "priority": "NORMAL"
 }
 ```
 
-### 3. Check Task Status
+### 5. Get Messages
 
 ```bash
-GET /tasks/{task_id}
+GET /api/omnimind/messages
 Authorization: Basic <credentials>
 ```
 
-### 4. View Metrics
-
-```bash
-GET /metrics
-Authorization: Basic <credentials>
-```
-
-### 5. Get Security Events
-
-```bash
-GET /security/events
-Authorization: Basic <credentials>
-```
+Returns pending messages for polling clients.
 
 ## API Rate Limits
 
@@ -188,38 +194,31 @@ All responses are in JSON format:
 
 ### WebSocket Testing
 
-For real-time updates, use the WebSocket endpoint:
+For real-time metrics updates, use the WebSocket endpoint:
 
 ```javascript
 const ws = new WebSocket('ws://localhost:8000/ws');
 
 ws.onopen = () => {
-  ws.send(JSON.stringify({
-    type: 'subscribe',
-    channels: ['tasks', 'agents', 'security']
-  }));
+  console.log('Connected to OmniMind WebSocket');
 };
 
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
-  console.log('Update:', data);
+  console.log('Received:', data);
+
+  // Handle different message types
+  if (data.type === 'metrics_update') {
+    console.log('Metrics update:', data.data);
+  } else if (data.type === 'metrics') {
+    console.log('Sinthome metrics:', data.data);
+  }
 };
-```
 
-### Batch Operations
-
-Some endpoints support batch operations:
-
-```bash
-POST /tasks/batch
-Authorization: Basic <credentials>
-
-{
-  "tasks": [
-    {"description": "Task 1", "priority": "high"},
-    {"description": "Task 2", "priority": "medium"}
-  ]
-}
+// Send ping to keep connection alive
+setInterval(() => {
+  ws.send(JSON.stringify({ type: 'ping', id: Date.now() }));
+}, 30000);
 ```
 
 ## Troubleshooting
@@ -247,7 +246,7 @@ Authorization: Basic <credentials>
    ```
 2. Verify server is running:
    ```bash
-   curl http://localhost:8000/health
+   curl http://localhost:8000/api/v1/health/
    ```
 
 ### CORS Errors

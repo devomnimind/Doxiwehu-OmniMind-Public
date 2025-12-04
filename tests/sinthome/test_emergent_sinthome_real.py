@@ -11,12 +11,13 @@ não um teste unitário convencional.
 """
 
 import pytest
+
 from src.sinthome.emergent_stabilization_rule import (
     BorromeanTopology,
     LacanianRegister,
     RuptureEvent,
-    SinthomeEmergence,
     SinthomaticStabilizationRule,
+    SinthomeEmergence,
     StabilizationStrategy,
 )
 
@@ -366,6 +367,7 @@ class TestScientificDiscovery:
         pattern = system.detect_and_emergentize_sinthome()
 
         # Sinthome emergido é "quick_recovery", não hardcoded "Security-First"
+        assert pattern is not None, "Pattern should be detected"
         assert pattern.name == "quick_recovery"
 
     def test_discovery_multiple_systems_different_sinthomes(self):
@@ -385,6 +387,9 @@ class TestScientificDiscovery:
             else:
                 system1.attempt_stabilization(action="quick_recovery", parameters={})
 
+        pattern1 = system1.detect_and_emergentize_sinthome()
+        assert pattern1 is not None, "System1 should have a pattern"
+
         # Sistema 2: prioriza velocidade
         for i in range(10):
             system2.process_rupture(
@@ -397,8 +402,8 @@ class TestScientificDiscovery:
             else:
                 system2.attempt_stabilization(action="exhaustive_validation", parameters={})
 
-        pattern1 = system1.detect_and_emergentize_sinthome()
         pattern2 = system2.detect_and_emergentize_sinthome()
+        assert pattern2 is not None, "System2 should have a pattern"
 
         # Cada sistema tem seu próprio Sinthome singular
         assert pattern1.name == "exhaustive_validation"

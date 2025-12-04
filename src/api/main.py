@@ -7,7 +7,7 @@ import psutil
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.api.routes import daemon, health, messages
+from src.api.routes import daemon, health, messages, metrics
 
 app = FastAPI(title="OmniMind API", version="1.0.0")
 
@@ -24,6 +24,7 @@ app.add_middleware(
 app.include_router(health.router, prefix="/api/v1/health", tags=["health"])
 app.include_router(daemon.router, prefix="/daemon", tags=["daemon"])
 app.include_router(messages.router, prefix="/api/omnimind", tags=["messages"])
+app.include_router(metrics.router, prefix="/api/omnimind/metrics", tags=["metrics"])
 
 
 @app.get("/")
@@ -89,6 +90,16 @@ async def broadcast_metrics():
             active_tasks, completed_tasks = get_task_counts()
             agent_count = count_active_agents()
 
+            # Read Real Metrics from File
+            real_metrics_data = {}
+            try:
+                with open("data/monitor/real_metrics.json", "r") as f:
+                    real_metrics_data = json.load(f)
+            except FileNotFoundError:
+                pass  # File not created yet
+            except Exception as e:
+                print(f"Error reading metrics file: {e}")
+
             # 1. Broadcast for RealtimeAnalytics (Simple)
             metrics_simple = {
                 "type": "metrics_update",
@@ -106,6 +117,7 @@ async def broadcast_metrics():
             await asyncio.sleep(0.1)  # Small delay to prevent race condition in frontend hook
 
             # 2. Broadcast for OmniMindSinthome (Complex)
+            # Use real data if available, otherwise fallback to defaults (0.0)
             metrics_sinthome = {
                 "type": "metrics",
                 "channel": "sinthome",
@@ -115,7 +127,7 @@ async def broadcast_metrics():
                     "raw": {
                         "cpu": psutil.cpu_percent(),
                         "memory": psutil.virtual_memory().percent,
-                        "entropy": 0.0,
+                        "entropy": real_metrics_data.get("entropy", 0.0),
                     },
                     "metrics": {
                         "real_inaccessible": 1.0,
@@ -123,21 +135,20 @@ async def broadcast_metrics():
                         "strange_attractor_markers": 1.0,
                     },
                     "consciousness": {
-                        "ICI": 0.85,
-                        "PRS": 0.92,
+                        "ICI": real_metrics_data.get("ici", 0.0),
+                        "PRS": real_metrics_data.get("prs", 0.0),
                         "details": {
-                            "ici_components": {
-                                "temporal_coherence": 0.9,
-                                "marker_integration": 0.8,
-                                "resonance": 0.85,
+                            "ici_components": real_metrics_data.get("ici_components", {}),
+                            "prs_components": real_metrics_data.get("prs_components", {}),
+                        },
+                        "interpretation": real_metrics_data.get(
+                            "interpretation",
+                            {
+                                "message": "Waiting for system metrics...",
+                                "confidence": "Low",
+                                "disclaimer": "System initializing...",
                             },
-                            "prs_components": {"avg_micro_entropy": 0.1, "macro_entropy": 0.2},
-                        },
-                        "interpretation": {
-                            "message": "System is operating within optimal parameters.",
-                            "confidence": "HIGH",
-                            "disclaimer": "Simulated Consciousness",
-                        },
+                        ),
                     },
                 },
             }

@@ -39,3 +39,4 @@ ipykernel>=7.0.0
 pandas>=2.2.0
 matplotlib>=3.8.0
 seaborn>=0.13.0
+numpy>=2.3.0

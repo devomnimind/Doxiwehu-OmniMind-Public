@@ -4,17 +4,16 @@ import logging
 import os
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import scipy.stats as stats  # type: ignore
+import structlog
 from pydantic import BaseModel, field_validator
 from rich import print as rprint
 from rich.console import Console
-from rich.table import Table
 from rich.markdown import Markdown
-
-import structlog
+from rich.table import Table
 
 # Configuração de logging com structlog (alinhado a pyproject.toml)
 structlog.configure(
@@ -240,7 +239,9 @@ def generate_summary_md(input_dir: Path, stats: Dict[str, Any], output_path: Pat
     for mod, data in expected_data.items():
         actual_contrib = stats["contributions"].get(mod, 0)
         table.add_row(mod, f"{data['phi']:.4f}", f"{actual_contrib:.1f}%", str(data["interp"]))
-        md_table_rows.append(f"| {mod} | {data['phi']:.4f} | {actual_contrib:.1f}% | {data['interp']} |")
+        md_table_rows.append(
+            f"| {mod} | {data['phi']:.4f} | {actual_contrib:.1f}% | {data['interp']} |"
+        )
 
     # Gerar MD com tabela Markdown
     md_table = "| Módulo | Φ Ablated | % Contribuição | Interpretação |\n|--------|-----------|-----------------|----------------|\n"
@@ -307,11 +308,13 @@ def main():
         logger.error("Nenhum JSON de ablação encontrado", dir=str(args.input))
         return 1
 
-    all_results = []
+    all_results: List[Dict[str, Any]] = []
     for af in ablation_files:
         data = load_ablation_json(af)
         if data:
-            all_results.extend(data.results)
+            results = data.results
+            if results is not None:
+                all_results.extend(results)
 
     if quantum_files:
         q_data = load_quantum_json(quantum_files[0])  # Assume primeiro como principal

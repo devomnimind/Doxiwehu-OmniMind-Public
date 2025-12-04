@@ -275,8 +275,10 @@ async def lifespan(app_instance: FastAPI):
         async def _alert_handler(alert_event):
             try:
                 # Enviar via WebSocket (para frontend + VS Code)
+                from web.backend.websocket_manager import MessageType
+
                 await ws_manager.broadcast(
-                    message_type="alert",
+                    message_type=MessageType.SECURITY_EVENT,
                     data=alert_event.to_dict(),
                     channel="monitoring",
                 )

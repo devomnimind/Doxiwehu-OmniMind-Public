@@ -199,7 +199,7 @@ async def test_websocket_metrics(omnimind_server):
                 pass  # Continue even if subscription confirmation times out
 
             # Wait for metrics updates (should receive both types within 60 seconds)
-            received_types = set()
+            received_types: set[str] = set()
             start_time = asyncio.get_event_loop().time()
 
             # Increased total wait time to 60s for heavy load scenarios

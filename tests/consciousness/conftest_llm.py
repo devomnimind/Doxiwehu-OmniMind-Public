@@ -56,8 +56,8 @@ class RealLLMProvider:
         self.model_name = model_name
         self.call_count = 0
         self.use_openrouter = use_openrouter
-        self.openrouter_key = None
-        self._ollama_client = None
+        self.openrouter_key: str | None = None
+        self._ollama_client: Any = None
         self._init_clients()
 
     def _init_clients(self) -> None:

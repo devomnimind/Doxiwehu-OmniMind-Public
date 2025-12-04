@@ -24,7 +24,7 @@ class BifurcationAttack:
         self.system = omnimind_system
         self.metrics: List[BifurcationAttackMetrics] = []
         self.active_bifurcations: List[Dict[str, Any]] = []
-        self.start_time = None
+        self.start_time: float | None = None
 
     async def run_for_duration(self, duration_seconds: float):
         """Rodar ataque de bifurcação por duração especificada"""
@@ -39,7 +39,7 @@ class BifurcationAttack:
         await self.run_for_duration(4 * 3600)
 
     async def _attack_loop(self, duration_seconds):
-        while time.time() - self.start_time < duration_seconds:
+        while self.start_time is not None and time.time() - self.start_time < duration_seconds:
             elapsed = time.time() - self.start_time
 
             # A cada ~30 minutos, criar bifurcação 50/50 por 60 segundos

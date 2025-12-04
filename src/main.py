@@ -4,9 +4,11 @@ Orchestrates the boot sequence and starts the Rhizome.
 """
 
 import asyncio
+import json
 import logging
 import os
 import sys
+from dataclasses import asdict
 
 from src.boot import (
     check_hardware,
@@ -70,8 +72,8 @@ async def main():
             # 1. Rhizome produces desire
             await rhizoma.activate_cycle()
 
-            # 2. Consciousness observes (every 10 cycles)
-            if cycle_count % 10 == 0:
+            # 2. Consciousness observes (every 50 cycles - approx 5 seconds)
+            if cycle_count % 50 == 0:
                 # PERCEPTION CYCLE: Convert Flows -> Topology
                 new_flows = rhizoma.flows_history[last_processed_flow_index:]
 
@@ -111,6 +113,18 @@ async def main():
 
                 # Collect Real Metrics (6 Metrics: Phi, ICI, PRS, Anxiety, Flow, Entropy)
                 real_metrics = await real_metrics_collector.collect_real_metrics()
+
+                # EXPORT METRICS FOR DASHBOARD
+                try:
+                    metrics_dict = asdict(real_metrics)
+                    # Convert datetime to string
+                    if metrics_dict.get("timestamp"):
+                        metrics_dict["timestamp"] = metrics_dict["timestamp"].isoformat()
+
+                    with open("data/monitor/real_metrics.json", "w") as f:
+                        json.dump(metrics_dict, f)
+                except Exception as e:
+                    logger.error(f"Failed to export metrics: {e}")
 
                 logger.info(
                     f"Cycle {cycle_count}: Topological Phi = {phi:.4f} "

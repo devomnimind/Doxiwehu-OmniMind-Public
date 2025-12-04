@@ -28,12 +28,24 @@ from dotenv import load_dotenv
 load_dotenv()
 logger = logging.getLogger(__name__)
 
+# --- Try to fix CUDA initialization issues early ---
+try:
+    from .cuda_init_fix import fix_cuda_init  # type: ignore[import-untyped]
+
+    cuda_fixed, cuda_diagnostic = fix_cuda_init()
+    if cuda_fixed:
+        logger.info(f"CUDA initialization fixed: {cuda_diagnostic}")
+    else:
+        logger.warning(f"CUDA initialization issue: {cuda_diagnostic}")
+except ImportError:
+    logger.warning("cuda_init_fix module not available")
+
 # --- D-Wave Imports ---
 try:
-    import dimod
-    from dwave.system import (  # type: ignore[import-untyped]
-        DWaveSampler,
-        EmbeddingComposite,
+    import dimod  # type: ignore[import-untyped]
+    from dwave.system import (
+        DWaveSampler,  # type: ignore[import-untyped,attr-defined]
+        EmbeddingComposite,  # type: ignore[import-untyped,attr-defined]
     )
 
     DWAVE_AVAILABLE = True
@@ -50,23 +62,31 @@ except ImportError:
 
 # --- Qiskit Imports ---
 try:  # type: ignore[import-untyped]
-    from qiskit_aer import AerSimulator  # type: ignore[import-untyped]
-    from qiskit_algorithms import (  # type: ignore[import-untyped]
-        AmplificationProblem,
-        Grover,
+    from qiskit_aer import AerSimulator  # type: ignore[import-untyped,attr-defined]
+    from qiskit_algorithms import (
+        AmplificationProblem,  # type: ignore[attr-defined]
+        Grover,  # type: ignore[attr-defined]
     )
-    from qiskit_algorithms.optimizers import COBYLA  # type: ignore[import-untyped]
+    from qiskit_algorithms.optimizers import (
+        COBYLA,  # type: ignore[import-untyped,attr-defined]
+    )
 
     try:
-        from qiskit.primitives import Sampler  # type: ignore[import-untyped]
+        from qiskit.primitives import (
+            Sampler,  # type: ignore[import-untyped,attr-defined]
+        )
     except ImportError:
         from qiskit.primitives import (
-            StatevectorSampler as Sampler,  # type: ignore[import-untyped]
+            StatevectorSampler as Sampler,  # type: ignore[import-untyped,attr-defined]
         )
-    from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped]
-    from qiskit_optimization import QuadraticProgram  # type: ignore[import-untyped]
+    from qiskit.circuit.library import (
+        PhaseOracle,  # type: ignore[import-untyped,attr-defined]
+    )
+    from qiskit_optimization import (
+        QuadraticProgram,  # type: ignore[import-untyped,attr-defined]
+    )
     from qiskit_optimization.algorithms import (
-        MinimumEigenOptimizer,  # type: ignore[import-untyped]
+        MinimumEigenOptimizer,  # type: ignore[import-untyped,attr-defined]
     )
 
     QISKIT_AVAILABLE = True
@@ -96,13 +116,34 @@ class QuantumBackend:
             or os.getenv("IBM_API_KEY")
             or os.getenv("IBMQ_API_TOKEN")
         )
-        self.backend = None
+        self.backend: Any = None
         self.mode = "UNKNOWN"  # Will be: LOCAL_GPU, LOCAL_CPU, CLOUD, MOCK
-        self.use_gpu = torch.cuda.is_available()
+
+        # Detect GPU availability (with fallback for CUDA init issues)
+        try:
+            self.use_gpu = torch.cuda.is_available()
+            # Fallback: if is_available() fails but device_count > 0, GPU is present
+            if not self.use_gpu:
+                try:
+                    device_count = torch.cuda.device_count()
+                    if device_count > 0:
+                        # This means GPU hardware exists but PyTorch init failed
+                        # We can still use GPU by being explicit
+                        logger.warning(
+                            f"CUDA is_available() = False but device_count = {device_count}. "
+                            "GPU hardware detected. Will attempt GPU operations anyway."
+                        )
+                        self.use_gpu = True  # Force GPU usage despite is_available() failure
+                except Exception as device_count_error:
+                    logger.warning(f"Could not check device count: {device_count_error}")
+                    self.use_gpu = False
+        except Exception as e:
+            logger.warning(f"CUDA availability check failed: {e}. Assuming no GPU.")
+            self.use_gpu = False
 
         logger.info(
             f"Initializing Quantum Backend. Requested provider: {provider}, "
-            f"Prefer Local: {prefer_local}"
+            f"Prefer Local: {prefer_local}, GPU Available: {self.use_gpu}"
         )
 
         # Auto-selection logic with LOCAL GPU > LOCAL CPU > CLOUD priority
@@ -348,6 +389,11 @@ class QuantumBackend:
         """
         Internal conflict resolution logic.
         """
+        # Ensure energies are floats (handle None if passed dynamically)
+        id_energy = float(id_energy or 0.0)
+        ego_energy = float(ego_energy or 0.0)
+        superego_energy = float(superego_energy or 0.0)
+
         # Define QUBO (Energy Landscape)
         Q = {
             ("id", "id"): -id_energy,
@@ -371,8 +417,8 @@ class QuantumBackend:
             logger.warning("Backend not available, falling back to mock")
             return self._solve_mock(Q)
 
-        bqm = dimod.BinaryQuadraticModel.from_qubo(Q)
-        sampleset = self.backend.sample(bqm, num_reads=100)
+        bqm: Any = dimod.BinaryQuadraticModel.from_qubo(Q)  # type: ignore[attr-defined]
+        sampleset: Any = self.backend.sample(bqm, num_reads=100)  # type: ignore[union-attr]
         best_sample = sampleset.first.sample
         energy = sampleset.first.energy
 
@@ -401,11 +447,13 @@ class QuantumBackend:
 
             # Use local AerSimulator if available
             if self.mode.startswith("LOCAL"):
-                from qiskit_algorithms import QAOA
+                from qiskit_algorithms import QAOA  # type: ignore[import-untyped]
 
-                qaoa = QAOA(sampler=sampler, optimizer=optimizer, reps=1)
-                algorithm = MinimumEigenOptimizer(qaoa)
-                result = algorithm.solve(problem)
+                qaoa: Any = QAOA(  # type: ignore[call-arg,operator]
+                    sampler=sampler, optimizer=optimizer, reps=1
+                )
+                algorithm: Any = MinimumEigenOptimizer(qaoa)  # type: ignore[arg-type]
+                result: Any = algorithm.solve(problem)  # type: ignore[union-attr]
 
                 var_names = [v.name for v in problem.variables]
                 sample = (
@@ -477,4 +525,4 @@ class QuantumBackend:
 
 
 # Alias for backward compatibility
-DWaveBackend = QuantumBackend
+DWaveBackend = QuantumBackend  # type: ignore

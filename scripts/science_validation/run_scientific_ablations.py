@@ -3,15 +3,14 @@ import asyncio
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import psutil
 import scipy.linalg as la  # type: ignore
+import structlog
 from rich import print as rprint
 from rich.progress import Progress
-
-import structlog
 
 # Config full structlog (copiar de analyze)
 structlog.configure(
@@ -76,7 +75,9 @@ class IntegrationLoopSimulator:
                 if mod == "expectation":
                     # Expectation module: adiciona ruído controlado
                     noise_factor = 0.1 if not self.expectation_silent else 0.0
-                    transform_matrix = np.eye(self.embedding_dim) + noise_factor * np.random.randn(self.embedding_dim, self.embedding_dim)
+                    transform_matrix = np.eye(self.embedding_dim) + noise_factor * np.random.randn(
+                        self.embedding_dim, self.embedding_dim
+                    )
                 else:
                     # Outros módulos: transformação randômica
                     transform_matrix = np.random.rand(self.embedding_dim, self.embedding_dim)
@@ -94,7 +95,11 @@ class IntegrationLoopSimulator:
             workspace_matrix = np.array(self.workspace_history)
             if workspace_matrix.shape[0] > 1:
                 cov_matrix = np.cov(workspace_matrix.T, ddof=1)  # Usa ddof=1 para amostra
-                if np.allclose(cov_matrix, 0) or np.isnan(cov_matrix).any() or np.isinf(cov_matrix).any():
+                if (
+                    np.allclose(cov_matrix, 0)
+                    or np.isnan(cov_matrix).any()
+                    or np.isinf(cov_matrix).any()
+                ):
                     phi = 0.0
                 else:
                     try:
@@ -116,7 +121,12 @@ class IntegrationLoopSimulator:
             mem_gb = psutil.virtual_memory().used / (1024**3)
 
             logger.debug(
-                "Ciclo executado", module=ablate_module, phi=phi, cpu=cpu_percent, mem=mem_gb, silent=self.expectation_silent
+                "Ciclo executado",
+                module=ablate_module,
+                phi=phi,
+                cpu=cpu_percent,
+                mem=mem_gb,
+                silent=self.expectation_silent,
             )
             return phi
 
@@ -144,7 +154,9 @@ class IntegrationLoopSimulator:
             logger.warning("Φ baseline fora da faixa Phase 23", actual=mean_phi)
         return phis
 
-    async def run_ablation_standard(self, module: str, num_cycles: int) -> Tuple[List[float], float]:
+    async def run_ablation_standard(
+        self, module: str, num_cycles: int
+    ) -> Tuple[List[float], float]:
         """Ablação standard: remove módulo."""
         phis = []
         with Progress() as progress:
@@ -199,7 +211,7 @@ async def main():
 
     simulator = IntegrationLoopSimulator(expectation_silent=args.silent_expectation)
 
-    overall_results = {"baseline": [], "ablations": {}}
+    overall_results: Dict[str, Any] = {"baseline": [], "ablations": {}}
 
     # Baseline
     baseline_phis = await simulator.run_baseline(args.cycles)
@@ -208,21 +220,23 @@ async def main():
     # Ablações standard
     for module in ["sensory_input", "qualia", "narrative", "meaning_maker"]:
         phis, contrib = await simulator.run_ablation_standard(module, args.cycles)
-        overall_results["ablations"][module] = {
-            "phis": phis,
-            "mean": np.mean(phis),
-            "contrib_percent": contrib,
-        }
+        if isinstance(overall_results["ablations"], dict):
+            overall_results["ablations"][module] = {
+                "phis": phis,
+                "mean": np.mean(phis),
+                "contrib_percent": contrib,
+            }
 
     # Structural se solicitado
     if args.silent_expectation:
         phis, delta = await simulator.run_ablation_structural(args.cycles)
-        overall_results["ablations"]["expectation"] = {
-            "phis": phis,
-            "mean": np.mean(phis),
-            "delta": delta,
-            "note": "Structural falta-a-ser",
-        }
+        if isinstance(overall_results["ablations"], dict):
+            overall_results["ablations"]["expectation"] = {
+                "phis": phis,
+                "mean": np.mean(phis),
+                "delta": delta,
+                "note": "Structural falta-a-ser",
+            }
 
     save_results_to_json(overall_results, args.output)
     rprint(f"[green]Ablaçõs científicas executadas! Salvo em {args.output}[/green]")

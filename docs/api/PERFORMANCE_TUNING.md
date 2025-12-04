@@ -277,7 +277,7 @@ schedule.every(5).minutes.do(gc.collect)
 class LazyModelLoader:
     def __init__(self):
         self._model = None
-    
+
     @property
     def model(self):
         if self._model is None:
@@ -576,3 +576,11 @@ python scripts/compare_benchmarks.py \
 - [GPU Setup Report](../reports/GPU_SETUP_REPORT.md)
 - [Phase 7-9 Implementation](../PHASE7-9_IMPLEMENTATION_SUMMARY.md)
 - [Troubleshooting Guide](./TROUBLESHOOTING.md)
+
+## 📘 Referências Técnicas
+
+- [src/api/main.py](src/api/main.py) expõe os routers e configura o FastAPI usado pelas rotas descritas em Interface e Monitoramento.
+- [web/backend/main.py](web/backend/main.py) define a inicialização de `uvicorn`, broadcasters e o sistema de monitoramento que dita os limites de worker count e timeouts mencionados.
+- [config/omnimind.yaml](config/omnimind.yaml) centraliza variáveis como `hardware.use_gpu`, `orchestrator.max_concurrent_tasks` e thresholds usados nas seções de GPU e orquestração.
+- [src/monitor/resource_protector.py](src/monitor/resource_protector.py) fornece os limites por modo (dev/test/prod) e os handlers de CPU/RAM/DISCO referidos na seção Database/Resource Optimization.
+- [scripts/run_mcp_benchmark.sh](scripts/run_mcp_benchmark.sh) e [scripts/run_tests_fast.sh](scripts/run_tests_fast.sh) são os artefatos ativos utilizados para benchmarks e testes de performance citados em Benchmarks & Monitoring.

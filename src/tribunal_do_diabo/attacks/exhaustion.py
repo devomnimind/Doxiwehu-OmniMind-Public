@@ -24,7 +24,7 @@ class ExhaustionAttack:
     def __init__(self, omnimind_system: OmniMindSystem):
         self.system = omnimind_system
         self.metrics: List[ExhaustionAttackMetrics] = []
-        self.start_time = None
+        self.start_time: float | None = None
 
     async def run_for_duration(self, duration_seconds: float):
         """Rodar ataque de exaustão por duração especificada"""
@@ -39,7 +39,7 @@ class ExhaustionAttack:
         await self.run_for_duration(4 * 3600)
 
     async def _attack_loop(self, duration_seconds):
-        while time.time() - self.start_time < duration_seconds:
+        while self.start_time is not None and time.time() - self.start_time < duration_seconds:
             elapsed = time.time() - self.start_time
 
             # Progressivamente aumentar carga: 10 → 50+ requests/sec

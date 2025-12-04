@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 async def initialize_consciousness(
-    complex_substrate: SimplicialComplex = None,
+    complex_substrate: SimplicialComplex | None = None,
 ) -> Tuple[PhiCalculator, LacianianDGDetector]:
     """
     Initializes the Consciousness monitoring systems.

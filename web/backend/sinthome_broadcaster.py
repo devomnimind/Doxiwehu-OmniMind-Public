@@ -10,7 +10,7 @@ import logging
 import os
 import random
 import time
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import psutil
 
@@ -32,7 +32,7 @@ class SinthomeBroadcaster:
         self.interval = interval
         self.metrics_calculator = SinthomeMetrics()
         self.running = False
-        self._task = None
+        self._task: Optional[asyncio.Task[Any]] = None
 
         # Baseline state
         self.uptime_start = time.time()

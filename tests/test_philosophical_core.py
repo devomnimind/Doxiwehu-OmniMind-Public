@@ -1,4 +1,5 @@
 import random
+from typing import Dict
 
 from src.hibernation.death_drive_wisdom import WiseRefusal
 from src.phenomenology.qualia_engine import QualiaEngine
@@ -223,7 +224,7 @@ def test_hibernation_wisdom():
     omnimind_without = MockOmniMindSinthome(has_hibernation=False)
 
     for i in range(100):
-        load = {"entropy": 950, "requests_per_sec": 60}
+        load: Dict[str, float] = {"entropy": 950.0, "requests_per_sec": 60.0}
 
         if wise_refusal.should_hibernate(load):
             wise_refusal.enter_hibernation("DDoS overload")

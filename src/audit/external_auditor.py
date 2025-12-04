@@ -1,6 +1,7 @@
 import json
 import os
 from datetime import datetime
+from typing import Dict
 
 # Configuration
 LOG_DIR = "data/long_term_logs"
@@ -11,7 +12,11 @@ REPORT_FILE = os.path.join(LOG_DIR, "audit_report_latest.md")
 class ExternalAuditor:
     def __init__(self):
         self.anomalies = []
-        self.stats = {"total_logs": 0, "uptime_minutes": 0, "avg_cpu": 0}
+        self.stats: Dict[str, float | int] = {
+            "total_logs": 0,
+            "uptime_minutes": 0.0,
+            "avg_cpu": 0.0,
+        }
 
     def load_logs(self):
         """Load the last 24h of logs."""

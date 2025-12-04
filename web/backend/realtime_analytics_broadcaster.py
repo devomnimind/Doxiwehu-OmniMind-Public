@@ -6,7 +6,7 @@ Uses producer-consumer pattern to avoid deadlocks.
 import asyncio
 import logging
 import time
-from typing import Dict, Any
+from typing import Any, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -20,12 +20,13 @@ class RealtimeAnalyticsBroadcaster:
     def __init__(self, interval: float = 1.0, queue_size: int = 10):
         self.interval = interval
         self.running = False
-        self._producer_task = None
-        self._consumer_task = None
         self._metrics_queue: asyncio.Queue[Dict[str, Any]] = asyncio.Queue(maxsize=queue_size)
 
-        # Import here to avoid circular imports
-        self._ws_manager = None
+        # Import here to avoid circular imports (will be set in start())
+        self._ws_manager: Optional[Any] = None
+        self._message_type: Optional[Any] = None
+        self._producer_task: Optional[asyncio.Task[Any]] = None
+        self._consumer_task: Optional[asyncio.Task[Any]] = None
         self._get_metrics_fn: Any = None
 
     async def start(self):
@@ -34,7 +35,7 @@ class RealtimeAnalyticsBroadcaster:
             return
 
         # Lazy import to avoid circular dependency
-        from web.backend.websocket_manager import ws_manager, MessageType
+        from web.backend.websocket_manager import MessageType, ws_manager
 
         self._ws_manager = ws_manager
         self._message_type = MessageType.METRICS_UPDATE
@@ -126,13 +127,16 @@ class RealtimeAnalyticsBroadcaster:
 
             # Import task counting functions lazily
             if self._get_metrics_fn is None:
-                from web.backend.metrics_helpers import get_task_counts, count_active_agents
+                from web.backend.metrics_helpers import (
+                    count_active_agents,
+                    get_task_counts,
+                )
 
                 self._get_metrics_fn = (get_task_counts, count_active_agents)
 
             if self._get_metrics_fn:
                 get_task_counts, count_active_agents = self._get_metrics_fn
-                
+
                 # These are cached/fast operations
                 active_tasks, completed_tasks = get_task_counts()
                 agent_count = count_active_agents()

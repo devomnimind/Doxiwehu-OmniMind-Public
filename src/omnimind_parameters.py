@@ -146,6 +146,16 @@ class ParameterManager:
                 with open(self.config_file, "r") as f:
                     data = json.load(f)
 
+                # Handle case where data is a list (legacy or corrupted file)
+                if isinstance(data, list):
+                    logger.warning(
+                        "Configuração carregada como lista. Tentando recuperar dicionário."
+                    )
+                    # If it's a list, it might be just the validation history or a list of configs
+                    # We'll ignore it and use defaults, or try to find a dict inside
+                    logger.info("Usando parâmetros padrão devido a formato inválido (lista)")
+                    return
+
                 # Validar que data é um dicionário
                 if not isinstance(data, dict):
                     logger.warning(

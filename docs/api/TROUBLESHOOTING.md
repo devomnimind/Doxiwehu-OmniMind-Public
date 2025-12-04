@@ -9,7 +9,7 @@ This guide provides comprehensive troubleshooting solutions for common issues an
 Run the automated diagnostic script to check system health:
 
 ```bash
-python scripts/diagnose.py
+python scripts/canonical/diagnose/diagnose.py
 ```
 
 This will check:
@@ -37,7 +37,7 @@ Error: Address already in use
 lsof -i :8000
 
 # Or use diagnostic tool
-python scripts/diagnose.py --check-ports
+python scripts/canonical/diagnose/diagnose.py --check-ports
 ```
 
 #### Solution
@@ -99,7 +99,7 @@ ModuleNotFoundError: No module named 'xxx'
 pip list
 
 # Run diagnostic
-python scripts/diagnose.py --check-dependencies
+python scripts/canonical/diagnose/diagnose.py --check-dependencies
 ```
 
 #### Solution
@@ -161,7 +161,7 @@ nvidia-smi
 nvcc --version
 
 # Run GPU diagnostic
-python scripts/diagnose.py --check-gpu
+python scripts/canonical/diagnose/diagnose.py --check-gpu
 ```
 
 #### Solution
@@ -214,7 +214,7 @@ asyncio.run(test())
 
 1. **Check server is running:**
    ```bash
-   curl http://localhost:8000/health
+   curl http://localhost:8000/api/v1/health/
    ```
 
 2. **Verify WebSocket manager started:**
@@ -240,7 +240,7 @@ System becomes slow
 #### Diagnosis
 ```bash
 # Check memory usage
-python scripts/diagnose.py --check-memory
+python scripts/canonical/diagnose/diagnose.py --check-memory
 
 # Monitor in real-time
 htop
@@ -288,7 +288,7 @@ Tasks timing out
 python benchmarks/PHASE7_COMPLETE_BENCHMARK_AUDIT.py
 
 # Check system resources
-python scripts/diagnose.py --check-performance
+python scripts/canonical/diagnose/diagnose.py --check-performance
 ```
 
 #### Solution
@@ -359,7 +359,7 @@ Import errors in tests
 pytest tests/test_api_documentation.py -vv
 
 # Check test dependencies
-python scripts/diagnose.py --check-test-deps
+python scripts/canonical/diagnose/diagnose.py --check-test-deps
 ```
 
 #### Solution
@@ -384,42 +384,42 @@ pytest --forked tests/
 
 ```bash
 # Full system diagnostic
-python scripts/diagnose.py --full
+python scripts/canonical/diagnose/diagnose.py --full
 
 # Quick health check
-python scripts/diagnose.py --quick
+python scripts/canonical/diagnose/diagnose.py --quick
 ```
 
 ### Component-Specific Diagnostics
 
 ```bash
 # Database connectivity
-python scripts/diagnose.py --check-db
+python scripts/canonical/diagnose/diagnose.py --check-db
 
 # GPU/CUDA status
-python scripts/diagnose.py --check-gpu
+python scripts/canonical/diagnose/diagnose.py --check-gpu
 
 # API endpoints
-python scripts/diagnose.py --check-api
+python scripts/canonical/diagnose/diagnose.py --check-api
 
 # File permissions
-python scripts/diagnose.py --check-permissions
+python scripts/canonical/diagnose/diagnose.py --check-permissions
 
 # Configuration validity
-python scripts/diagnose.py --check-config
+python scripts/canonical/diagnose/diagnose.py --check-config
 ```
 
 ### Log Analysis
 
 ```bash
 # Analyze error logs
-python scripts/analyze_logs.py --errors-only
+python scripts/utilities/analysis/analyze_logs.py --errors-only
 
 # Find performance bottlenecks
-python scripts/analyze_logs.py --slow-requests
+python scripts/utilities/analysis/analyze_logs.py --slow-requests
 
 # Security event summary
-python scripts/analyze_logs.py --security
+python scripts/utilities/analysis/analyze_logs.py --security
 ```
 
 ## Debug Mode
@@ -455,7 +455,7 @@ When reporting bugs, include:
 
 1. **System Information:**
    ```bash
-   python scripts/diagnose.py --system-info > debug_info.txt
+   python scripts/canonical/diagnose/diagnose.py --system-info > debug_info.txt
    ```
 
 2. **Error Logs:**
@@ -502,10 +502,10 @@ Add to crontab for automated monitoring:
 
 ```cron
 # Check system health every hour
-0 * * * * /path/to/omnimind/scripts/diagnose.py --quick --alert-on-failure
+0 * * * * /path/to/omnimind/scripts/canonical/diagnose/diagnose.py --quick --alert-on-failure
 
 # Run full diagnostic daily
-0 3 * * * /path/to/omnimind/scripts/diagnose.py --full > /var/log/omnimind/diagnostic_$(date +\%Y\%m\%d).log
+0 3 * * * /path/to/omnimind/scripts/canonical/diagnose/diagnose.py --full > /var/log/omnimind/diagnostic_$(date +\%Y\%m\%d).log
 ```
 
 ### Log Rotation
@@ -542,6 +542,14 @@ curl -u user:pass http://localhost:8000/ws/stats
 # System observability
 curl -u user:pass http://localhost:8000/observability
 ```
+
+## 📘 Referências Técnicas
+
+- [web/backend/routes/health.py](web/backend/routes/health.py) documenta os endpoints `/health` e `/health/{check}` usados nos exemplos de Health Check.
+- [web/backend/routes/monitoring.py](web/backend/routes/monitoring.py) é a fonte real dos endpoints `/api/monitoring/health`, `/alerts/active`, `/status` e `/snapshots/recent` ilustrados ao longo do guia.
+- [scripts/canonical/diagnose/diagnose.py](scripts/canonical/diagnose/diagnose.py) expõe todas as opções `--check-*`, `--full`, `--quick` e `--system-info` listadas nos blocos de diagnóstico e no cron.
+- [scripts/utilities/analysis/analyze_logs.py](scripts/utilities/analysis/analyze_logs.py) implementa os comandos de análise de logs e performance descritos na seção Log Analysis.
+- `config/dashboard_auth.json` contém as credenciais citadas em Authentication Failures e deve ser verificada sempre que surgirem HTTP 401.
 
 ## Additional Resources
 

@@ -3,6 +3,7 @@ Tests for Phase 18: Tri-Partite Memory.
 """
 
 from datetime import datetime, timedelta
+from typing import Any, Dict, List
 
 from src.memory.memory_consolidator import MemoryConsolidator
 from src.memory.memory_replay import MemoryReplay
@@ -42,6 +43,7 @@ class TestSemanticMemory:
         memory.store_concept("AI", {"subfield": "ML"}, overwrite=False)
 
         concept = memory.retrieve_concept("AI")
+        assert concept is not None, "Concept should be retrieved"
         assert concept.attributes["field"] == "CS"
         assert concept.attributes["subfield"] == "ML"
         assert concept.strength > 0.5  # Should have increased from default
@@ -64,10 +66,14 @@ class TestProceduralMemory:
         memory = ProceduralMemory()
         memory.learn_skill("Jump", ["jump"])
 
-        initial_proficiency = memory.get_skill("Jump").proficiency
+        skill = memory.get_skill("Jump")
+        assert skill is not None, "Skill should be retrieved initially"
+        initial_proficiency = skill.proficiency
         memory.refine_skill("Jump", success=True)
 
-        refined_proficiency = memory.get_skill("Jump").proficiency
+        refined_skill = memory.get_skill("Jump")
+        assert refined_skill is not None, "Skill should be retrieved after refinement"
+        refined_proficiency = refined_skill.proficiency
         assert refined_proficiency > initial_proficiency
 
 
@@ -76,7 +82,7 @@ class TestMemoryConsolidator:
         semantic = SemanticMemory()
         consolidator = MemoryConsolidator(semantic)
 
-        episodes = [
+        episodes: List[Dict[str, Any]] = [
             {"content": "I saw a big dog"},
             {"content": "The dog barked"},
             {"content": "A dog is a pet"},

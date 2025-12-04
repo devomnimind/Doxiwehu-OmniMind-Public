@@ -230,8 +230,9 @@ class ServerMonitorPlugin:
         if "tests/e2e/" in item_path or "tests\\e2e\\" in item_path:
             return False
 
-        # EXCEÇÃO EXPLÍCITA: Testes de integração de consciência são unitários/mockados
-        # e NÃO devem disparar o servidor real. "integration" no nome do arquivo dispara falso positivo.
+        # EXCEÇÃO EXPLÍCITA: Testes de integração de consciência são
+        # unitários/mockados e NÃO devem disparar o servidor real. "integration"
+        # no nome do arquivo dispara falso positivo.
         if "tests/consciousness/test_integration_loss.py" in item_path:
             return False
 

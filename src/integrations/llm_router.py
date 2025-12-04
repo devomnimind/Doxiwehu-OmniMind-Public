@@ -22,6 +22,7 @@ Data: 2025-11-27
 """
 
 import asyncio
+import concurrent.futures
 import logging
 import os
 import time
@@ -285,25 +286,26 @@ class HuggingFaceLocalProvider(LLMProviderInterface):
                     error="Modelo não pôde ser carregado",
                 )
 
-            # Import necessário para threading
-            import concurrent.futures
-
             # Função síncrona para gerar texto
             def _generate_text():
                 try:
+                    pipeline = self._pipeline
+                    if pipeline is None:
+                        raise RuntimeError("Pipeline is None")
+
                     logger.debug(f"Gerando texto com prompt: {prompt[:100]}...")
                     logger.debug(
                         f"Config: max_new_tokens={config.max_tokens}, temperature={config.temperature}"
                     )
 
                     # Gera texto
-                    outputs = self._pipeline(
+                    outputs = pipeline(
                         prompt,
                         max_new_tokens=config.max_tokens,
                         temperature=config.temperature,
                         do_sample=True,
                         top_p=0.9,
-                        pad_token_id=self._pipeline.tokenizer.eos_token_id,
+                        pad_token_id=getattr(pipeline.tokenizer, "eos_token_id", None),
                         return_full_text=False,  # Não retorna o prompt
                     )
 
@@ -443,7 +445,10 @@ class HuggingFaceProvider(LLMProviderInterface):
             # Função síncrona para gerar texto
             def _generate_text():
                 try:
-                    return self._client.text_generation(
+                    client = self._client
+                    if client is None:
+                        raise RuntimeError("Client is None")
+                    return client.text_generation(
                         prompt=prompt,
                         model=config.model_name,
                         max_new_tokens=config.max_tokens,
@@ -595,6 +600,8 @@ class HuggingFaceSpaceProvider(LLMProviderInterface):
                             generated_text = generated_text[0].get("generated_text", "")
 
                         # Garante que é string
+                        if generated_text is None:
+                            generated_text = ""
                         if not isinstance(generated_text, str):
                             generated_text = str(generated_text)
 
@@ -768,7 +775,7 @@ class LLMRouter:
         self.tier_configs = self._load_tier_configs()
 
         # Métricas
-        self.metrics = {
+        self.metrics: Dict[str, Any] = {
             "requests_total": 0,
             "requests_success": 0,
             "latency_by_provider": {},

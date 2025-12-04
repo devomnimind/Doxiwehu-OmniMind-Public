@@ -127,9 +127,9 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
 
 ---
@@ -138,7 +138,36 @@ Configurações específicas em:
 
 # 📁 API
 
-**1 Classes | 4 Funções | 1 Módulos**
+**3 Routers | 1 Classes | 4 Funções**
+
+---
+
+## 🛣️ Routers Principais
+
+### `health`
+
+**Endpoints:**
+
+- `GET /api/v1/health/` → `get_health()` - Get overall system health status
+- `GET /api/v1/health/{check_name}/trend` → `get_health_trend()` - Get health trend for a specific check
+
+### `daemon`
+
+**Endpoints:**
+
+- `GET /daemon/status` → `get_daemon_status()` - Get current daemon status with real metrics
+- `GET /daemon/tasks` → `get_daemon_tasks()` - Get list of active tasks with real data from Tribunal
+- `POST /daemon/tasks/add` → `add_task()` - Add a new task
+- `POST /daemon/start` → `start_daemon()` - Start daemon
+- `POST /daemon/stop` → `stop_daemon()` - Stop daemon
+- `POST /daemon/reset-metrics` → `reset_metrics()` - Reset all system metrics to baseline values
+
+### `messages`
+
+**Endpoints:**
+
+- `GET /api/omnimind/messages` → `get_messages()` - Get pending messages for polling clients
+- `POST /api/omnimind/messages` → `post_message()` - Receive messages from clients via polling fallback
 
 ---
 
@@ -148,8 +177,9 @@ Configurações específicas em:
 
 **Métodos principais:**
 
-- `disconnect(websocket: WebSocket)` → `None`
-
+- `connect(websocket: WebSocket)` → `None` - Accept WebSocket connection
+- `disconnect(websocket: WebSocket)` → `None` - Remove WebSocket connection
+- `broadcast(message: str)` → `None` - Broadcast message to all connected clients
 
 ## ⚙️ Funções Públicas
 
@@ -157,13 +187,15 @@ Configurações específicas em:
 
 #### `count_active_agents()` → `int`
 
-*Count active OmniMind agents (Python processes)....*
-
-#### `disconnect(websocket: WebSocket)` → `None`
+*Count active OmniMind agents (Python processes).*
 
 #### `get_task_counts()` → `tuple`
 
-*Get real task counts from Tribunal....*
+*Get real task counts from Tribunal.*
+
+#### `broadcast_metrics()` → `None`
+
+*Background task to broadcast simulated metrics to all connected clients.*
 
 
 ## 📦 Módulos

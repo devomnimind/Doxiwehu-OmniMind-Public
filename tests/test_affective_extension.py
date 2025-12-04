@@ -72,14 +72,14 @@ def test_affective_model():
 
     print("Estado do sistema:")
     print(f"  GPU Usage: {system_state['gpu_usage']}%")
-    print(f"  Validações pendentes: {len(system_state['pending_validations'])}")
+    print(f"  Validações pendentes: {len(system_state['pending_validations'])}")  # type: ignore
     print(f"  Tempo para deadline: {system_state['time_to_deadline']}s")
     print(f"  Demanda impossível: {system_state['impossible_demand']}")
     print()
 
     # 1. Detectar encontro com Real
     encounter = ei.detect_real_encounter(system_state)
-    if encounter:
+    if encounter is not None:
         print("🔴 ENCONTRO COM O REAL DETECTADO:")
         print(f"  Tipo: {encounter.conflict_type}")
         print(f"  Falha simbólica: {encounter.symbolic_failure}")

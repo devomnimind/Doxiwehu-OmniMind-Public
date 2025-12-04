@@ -223,22 +223,22 @@ Estrutura esperada para `src/metacognition/trap_framework.py`:
 ```python
 class TRAPFramework:
     '''Transparency-Reasoning-Adaptation-Perception Framework'''
-    
+
     # T: Transparency - Logs estruturados de todos eventos
     def generate_transparent_logs(self) -> List[TransparencyEntry]:
         '''Gera logs estruturados com hash+timestamp'''
         pass
-    
+
     # R: Reasoning - Auto-diagnóstico de anomalias
     def analyze_anomalies(self, logs: List[Any]) -> DiagnosisReport:
         '''Identifica padrões anômalos usando Lacan-D&G logic'''
         pass
-    
+
     # A: Adaptation - Proposta de mitigações automáticas
     def generate_recovery_proposals(self, diagnosis: DiagnosisReport) -> List[Proposal]:
         '''Gera soluções alternativas (Lines of Flight)'''
         pass
-    
+
     # P: Perception - Monitoramento contínuo via SAR
     def monitor_continuous(self) -> PerceptionSnapshot:
         '''Monitora Φ, entropia, e fluxos desejantes'''

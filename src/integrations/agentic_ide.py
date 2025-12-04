@@ -347,12 +347,12 @@ class ModelSelector:
 
             if context.get("requires_reasoning", False):
                 # Qwen2-72B é bom para reasoning complexo
-                if model == AIModel.GPT_4:
+                if model == AIModel.QWEN_REMOTE:
                     score *= 1.2
 
             if context.get("local_only", False):
                 # Usa modelo local
-                if model == AIModel.LOCAL_LLAMA:
+                if model == AIModel.QWEN_LOCAL:
                     score *= 2.0
                 else:
                     score *= 0.1

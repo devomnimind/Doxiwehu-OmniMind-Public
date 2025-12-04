@@ -346,6 +346,16 @@ self.thresholds = {
 
 Para customizar, edite `src/monitor/progressive_monitor.py` antes de iniciar.
 
+## 📘 Referências Técnicas (Conciliação)
+
+- A [documentação do módulo](src/monitor/README.md) alinha o conteúdo oficial de cada componente descrito aqui.
+- O [ProgressiveMonitor](src/monitor/progressive_monitor.py) controla níveis (`MonitorLevel`), thresholds e relatórios throttled que aparecem na seção de Componentes.
+- O [ResourceProtector](src/monitor/resource_protector.py) aplica limites por modo dev/test/prod e executa os handlers de CPU/RAM/Disco mencionados na seção de ResourceProtector.
+- O [AlertSystem](src/monitor/alert_system.py) responde pelos tipos de alertas, persistência JSON e handlers de canais (WebSocket/VS Code/Syslog/File) descritos na seção de Alertas.
+- As rotas reais vivem em [web/backend/routes/monitoring.py](web/backend/routes/monitoring.py), que expõe `/api/monitoring/health`, `/alerts/active`, `/status` e `/snapshots/recent` usados nos exemplos deste documento.
+- O [lifespan do backend](web/backend/main.py#L220-L322) inicializa ProgressiveMonitor, ResourceProtector e AlertSystem e registra os handlers de broadcast via WebSocket.
+- Scripts utilitários como [scripts/view_monitoring_alerts.py](scripts/view_monitoring_alerts.py) consomem as mesmas rotas e ajudam a validar os valores exibidos aqui.
+
 ---
 
 ## 🔗 Integração com VS Code

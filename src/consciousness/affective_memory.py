@@ -9,13 +9,14 @@ REFATORADO PARA LACANIANO: Nachträglichkeit + Traços Vazios + Retroatividade R
 from __future__ import annotations
 
 import uuid
-from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
+import warnings
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
+
 import networkx as nx
 import numpy as np
 import structlog
-import warnings
 
 logger = structlog.get_logger(__name__)
 
@@ -197,7 +198,7 @@ class AffectiveTraceNetwork:
         )
 
         self.traces: Dict[str, AffectiveTrace] = {}
-        self.network = nx.DiGraph()  # Rede de conexões afetivas
+        self.network: nx.DiGraph = nx.DiGraph()  # Rede de conexões afetivas
 
     def inscribe_trace(self, content: Dict[str, Any], affect_valence: float) -> str:
         """
@@ -842,4 +843,5 @@ class JouissanceEconomy:
         elif slope < -0.01:
             return "decreasing"
         else:
+            return "stable"
             return "stable"

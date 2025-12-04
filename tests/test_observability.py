@@ -202,6 +202,7 @@ class TestMetricsExporter:
         exporter.record_counter("requests_total", 1)
 
         metric = exporter.get_metric("requests_total")
+        assert metric is not None, "Metric should be found"
         assert metric.get_latest_value() == 2.0
 
     def test_record_gauge(self):
@@ -213,6 +214,7 @@ class TestMetricsExporter:
         exporter.record_gauge("temperature", 26.0)
 
         metric = exporter.get_metric("temperature")
+        assert metric is not None, "Metric should be found"
         assert metric.get_latest_value() == 26.0
 
     def test_record_histogram(self):
@@ -224,6 +226,7 @@ class TestMetricsExporter:
         exporter.record_histogram("latency", 12.3)
 
         metric = exporter.get_metric("latency")
+        assert metric is not None, "Metric should be found"
         assert len(metric.values) == 2
 
     def test_ml_metrics(self):
@@ -275,6 +278,7 @@ class TestMetricsExporter:
         exporter.record_counter("http_requests", 1, {"method": "POST"})
 
         metric = exporter.get_metric("http_requests")
+        assert metric is not None, "Metric should be found"
         assert len(metric.values) == 2
 
 

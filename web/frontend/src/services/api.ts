@@ -198,6 +198,10 @@ class ApiService {
     return this.get('/api/metrics');
   }
 
+  async getRealMetrics(): Promise<any> {
+    return this.get('/api/omnimind/metrics/real');
+  }
+
   async getAgents(): Promise<any> {
     return this.get('/api/agents/');
   }

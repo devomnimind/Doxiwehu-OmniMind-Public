@@ -59,8 +59,8 @@ class DesiringMachine(ABC):
         self.desire_intensity = desire_intensity
         self.incoming_flows: List[DesireFlow] = []
         self.outgoing_connections: List["DesiringMachine"] = []
-        self.state = {}  # Estado interno da máquina
-        self.production_history = []  # Log de produções (BwO residue)
+        self.state: dict[str, Any] = {}  # Estado interno da máquina
+        self.production_history: list[dict[str, Any]] = []  # Log de produções
 
     async def produce(self, inputs: Any = None) -> Any:
         """
@@ -134,8 +134,24 @@ class QuantumDesiringMachine(DesiringMachine):
 
     async def _solve_quantum(self, circuit: Any, incoming_flows: Dict[str, Any]) -> Dict[str, Any]:
         """Produz solução quântica."""
-        # Implementação real: GPU-accelerated quantum simulation
-        return {"result": "quantum_output", "flows": incoming_flows}
+        try:
+            from src.quantum_consciousness.quantum_backend import QuantumBackend
+
+            backend = QuantumBackend(prefer_local=True)
+
+            # Use conflict resolution as a metaphor for desire production
+            id_energy = 0.8
+            ego_energy = 0.5
+            superego_energy = 0.3
+
+            # Modulate based on incoming flows
+            if incoming_flows:
+                id_energy = min(1.0, id_energy + len(incoming_flows) * 0.1)
+
+            result = backend.resolve_conflict(id_energy, ego_energy, superego_energy)
+            return {"result": result, "flows": incoming_flows}
+        except ImportError:
+            return {"result": "quantum_output_stub", "flows": incoming_flows}
 
     def get_desire_description(self) -> str:
         return "Desejo de resolver circuitos quânticos com máxima elegância"

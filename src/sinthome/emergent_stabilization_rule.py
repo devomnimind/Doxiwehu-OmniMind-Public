@@ -94,7 +94,7 @@ class BorromeanTopology:
         self.imaginary_layer: Dict[str, Any] = {}  # Representações, interfaces
 
         # Conexões borromeanas
-        self.links = {
+        self.links: Dict[Tuple[str, str], List[Any]] = {
             ("real", "symbolic"): [],
             ("symbolic", "imaginary"): [],
             ("imaginary", "real"): [],
