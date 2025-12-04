@@ -31,7 +31,8 @@ if cuda_available or cuda_device_count > 0:
     else:
         # Fallback: device detected but is_available() failed
         print(
-            f"⚠️ PyTorch CUDA fallback (device_count={cuda_device_count}): GPU forcing ativado via OMNIMIND_FORCE_GPU=true"
+            f"⚠️ PyTorch CUDA fallback (device_count={cuda_device_count}): "
+            f"GPU forcing ativado via OMNIMIND_FORCE_GPU=true"
         )
 else:
     print("⚠️  CUDA não disponível - usando CPU")

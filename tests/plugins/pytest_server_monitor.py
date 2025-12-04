@@ -279,7 +279,7 @@ class ServerMonitorPlugin:
 
             # ========== TIMEOUTS ADAPTATIVOS COM RESTART INTERMEDIÁRIO ==========
             total_timeout = self._get_adaptive_timeout()
-            cycle_timeout = 150  # Aumentado para 150s (servidor pode levar ~120s)
+            cycle_timeout = 180  # Ciclo: aguarda servidor subir (120-150s + small buffer)
 
             logger.info(
                 f"Aguardando servidor (tentativa {self.startup_attempt_count}, "

@@ -10,7 +10,6 @@ This module provides automated recovery and self-repair capabilities:
 
 from __future__ import annotations
 
-import io
 import logging
 import os
 from dataclasses import dataclass, field

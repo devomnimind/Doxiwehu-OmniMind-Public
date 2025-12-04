@@ -205,13 +205,15 @@ class EpisodicMemory:
                 sorted_accesses = sorted(
                     self._access_timestamps.items(), key=lambda x: x[1]
                 )  # Oldest first
-                ids_to_evict = [int(ep_id) for ep_id, _ in sorted_accesses[:num_to_evict]]
+                ids_to_evict: list[int] = [
+                    int(ep_id) for ep_id, _ in sorted_accesses[:num_to_evict]
+                ]
 
                 # Delete from Qdrant
                 if ids_to_evict:
                     self.client.delete(
                         collection_name=self.collection_name,
-                        points_selector=qmodels.PointIdsList(ids=ids_to_evict),
+                        points_selector=qmodels.PointIdsList(points=ids_to_evict),  # type: ignore
                     )
                     logger.info(f"Evicted {len(ids_to_evict)} episodes to maintain memory cap.")
 
