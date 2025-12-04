@@ -739,7 +739,7 @@ class SharedWorkspace:
             if correlations:
                 # Granger-like: média das correlações com lag
                 granger_strength = np.mean(correlations)
-                return max(0.0, min(1.0, granger_strength))
+                return float(max(0.0, min(1.0, granger_strength)))
             else:
                 return 0.0
 

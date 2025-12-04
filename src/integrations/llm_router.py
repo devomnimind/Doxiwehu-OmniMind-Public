@@ -799,7 +799,7 @@ class LLMRouter:
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="openai/gpt-oss-20b:free",  # GPT-OSS-20B - modelo gratuito alternativo
+                    model_name="qwen/qwen2-7b-instruct",  # Qwen2-7B - modelo leve e rápido
                     temperature=0.7,
                     max_tokens=1024,
                     timeout=60,
@@ -807,7 +807,7 @@ class LLMRouter:
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="qwen/qwen3-4b:free",  # Qwen3-4B - modelo leve gratuito
+                    model_name="qwen/qwen2-1.5b-instruct",  # Qwen2-1.5B - modelo ultra-leve
                     temperature=0.7,
                     max_tokens=1024,
                     timeout=60,
@@ -883,7 +883,7 @@ class LLMRouter:
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="openai/gpt-oss-20b:free",  # GPT-OSS-20B - modelo gratuito alternativo
+                    model_name="qwen/qwen3-max",  # Qwen3-Max - modelo de qualidade máxima
                     temperature=0.7,
                     max_tokens=4096,
                     timeout=180,

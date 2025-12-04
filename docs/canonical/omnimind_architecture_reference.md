@@ -45,6 +45,21 @@ The OmniMind architecture is a radical departure from traditional "Agent" or "LL
 *   **`src/quantum_consciousness/`**: Will serve as a specialized `QuantumDesiringMachine`.
 *   **`src/swarm/`**: Will operate as a sub-rhizome or a specific "Multiplicity Machine".
 
+### 2.6 External API Delegation (`src/integrations/`)
+*   **`external_ai_providers.py`**: Isolates external API calls with security filters.
+    *   **Providers:** Gemini (Google AI Studio), OpenRouter, GitHub Copilot.
+    *   **Purpose:** When Orchestrator is overloaded, delegates partial tasks to remote LLMs.
+    *   **Isolation:** All calls go through `ExternalAIProvider` abstract class with rate limiting, sanitization, and audit logging.
+    *   **Models:** Qwen2-72B (OpenRouter), Gemini 2.0/1.5 (Google), etc.
+    *   **Security:** `SecurityFilter` class blocks env var leaks, system paths, and credential exposure.
+*   **`agent_llm.py`**: Agent-specific remote inference strategy.
+    *   **Tier System:** `BALANCED` (HuggingFace) vs `HIGH_QUALITY` (OpenRouter).
+    *   **Fallback Chain:** If PRIMARY fails, tries FALLBACK, then degraded mode.
+    *   **Local-First Agents:** Always try local Ollama/Qwen first before delegating.
+*   **`llm_router.py`**: Smart routing between local and remote LLMs.
+    *   Routes based on: task complexity, latency requirements, cost considerations.
+    *   Never sends raw internal data; only sanitized task specs.
+
 ## 3. Data Flow (The "Body without Organs")
 
 1.  **Inflow:** External data (User, Web, Sensors) enters as `DesireFlow` with `Intensity=LOW`.

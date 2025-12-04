@@ -302,7 +302,7 @@ class GeminiProvider(ExternalAIProvider):
         model_mapping = {
             TaskType.CODE_GENERATION: "gemini-1.5-pro",
             TaskType.CODE_REVIEW: "gemini-1.5-pro",
-            TaskType.ANALYSIS: "gemini-1.5-flash",
+            TaskType.ANALYSIS: "gemini-2.0-flash",
             TaskType.DOCUMENTATION: "gemini-1.5-flash",
             TaskType.OPTIMIZATION: "gemini-1.5-pro",
         }
@@ -627,14 +627,14 @@ class OpenRouterProvider(ExternalAIProvider):
     def _select_model(self, task_type: TaskType) -> str:
         """Seleciona modelo OpenRouter baseado no tipo de tarefa"""
         model_mapping = {
-            TaskType.CODE_GENERATION: "qwen/qwen3-coder:free",  # Modelo gratuito para código
-            TaskType.CODE_REVIEW: "qwen/qwen3-coder:free",  # Modelo gratuito para código
-            TaskType.ANALYSIS: "openai/gpt-4-turbo",
-            TaskType.DOCUMENTATION: "openai/gpt-4-turbo",
-            TaskType.OPTIMIZATION: "qwen/qwen3-coder:free",  # Modelo gratuito para código
-            TaskType.DEBUGGING: "qwen/qwen3-coder:free",  # Modelo gratuito para código
+            TaskType.CODE_GENERATION: "qwen/qwen2-72b-instruct",
+            TaskType.CODE_REVIEW: "qwen/qwen2-72b-instruct",
+            TaskType.ANALYSIS: "qwen/qwen2-72b-instruct",
+            TaskType.DOCUMENTATION: "qwen/qwen2-72b-instruct",
+            TaskType.OPTIMIZATION: "qwen/qwen2-72b-instruct",
+            TaskType.DEBUGGING: "qwen/qwen2-72b-instruct",
         }
-        return model_mapping.get(task_type, "openai/gpt-4-turbo")
+        return model_mapping.get(task_type, "qwen/qwen2-72b-instruct")
 
     def _prepare_openrouter_payload(self, task: TaskSpec, model: str) -> Dict[str, Any]:
         """Prepara payload para OpenRouter API"""
@@ -667,13 +667,13 @@ class OpenRouterProvider(ExternalAIProvider):
         """Calcula custo estimado baseado no modelo"""
         # Custos aproximados do OpenRouter
         costs = {
-            "qwen/qwen3-coder:free": {"input": 0.0, "output": 0.0},  # Gratuito
+            "qwen/qwen2-72b-instruct": {"input": 0.0001, "output": 0.0001},
             "anthropic/claude-3-opus": {"input": 0.015, "output": 0.075},
-            "openai/gpt-4-turbo": {"input": 0.01, "output": 0.03},
+            "qwen/qwen3-max": {"input": 0.002, "output": 0.006},
             "google/gemini-pro": {"input": 0.000125, "output": 0.000375},
         }
 
-        model_costs = costs.get(model, costs["openai/gpt-4-turbo"])
+        model_costs = costs.get(model, costs["qwen/qwen2-72b-instruct"])
         # Assume 50% input, 50% output como aproximação
         input_cost = (tokens // 2) * model_costs["input"] / 1000
         output_cost = (tokens // 2) * model_costs["output"] / 1000

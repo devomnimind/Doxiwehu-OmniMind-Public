@@ -48,14 +48,14 @@ class AIModel(Enum):
 
     GEMINI_3_PRO: Google Gemini 3 Pro
     CLAUDE_SONNET_4_5: Anthropic Claude Sonnet 4.5
-    GPT_4: OpenAI GPT-4
-    LOCAL_LLAMA: Meta LLama local
+    QWEN_LOCAL: Qwen2 7B Local (Ollama)
+    QWEN_REMOTE: Qwen2 72B Remote (OpenRouter)
     """
 
     GEMINI_3_PRO = "gemini-3-pro"
     CLAUDE_SONNET_4_5 = "claude-sonnet-4.5"
-    GPT_4 = "gpt-4"
-    LOCAL_LLAMA = "llama-3-70b"
+    QWEN_LOCAL = "ollama/qwen2:7b-instruct"
+    QWEN_REMOTE = "qwen/qwen2-72b-instruct"
 
 
 class ArtifactType(Enum):
@@ -346,7 +346,7 @@ class ModelSelector:
                     score *= 1.2
 
             if context.get("requires_reasoning", False):
-                # GPT-4 é bom para reasoning
+                # Qwen2-72B é bom para reasoning complexo
                 if model == AIModel.GPT_4:
                     score *= 1.2
 

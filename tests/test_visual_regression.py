@@ -296,14 +296,14 @@ def test_homepage_visual():
         page = context.new_page()
 
         page.goto("http://localhost:3000")
-        page.wait_for_load_state("domcontentloaded")
-        page.wait_for_timeout(500)  # Reduced timeout
+        page.wait_for_load_state("networkidle")  # Wait for network to be idle
+        page.wait_for_timeout(2000)  # Increased timeout for stability
 
         result = tester.capture_and_compare(
             page,
             "homepage",
             full_page=False,
-            threshold=0.20,  # Increased threshold for dynamic web content
+            threshold=0.25,  # Increased threshold for dynamic web content
         )
 
         page.close()

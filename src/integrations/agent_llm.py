@@ -18,7 +18,7 @@ import logging
 import time
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 import aiohttp
 
@@ -137,7 +137,7 @@ class AgentLLMStrategy:
     Estratégia de LLM para Agents.
 
     Remote-only com fallback chain:
-    1. OpenRouter (HIGH_QUALITY - GPT-4 equivalent)
+    1. OpenRouter (HIGH_QUALITY - Qwen2-72B equivalent)
     2. HuggingFace Space (BALANCED - Free alternative)
     3. Fallback local (se disponível, mas não garantido)
     """
@@ -250,7 +250,7 @@ class AgentLLMStrategy:
                 }
 
                 payload = {
-                    "model": "openai/gpt-4-turbo-preview",
+                    "model": "qwen/qwen2-72b-instruct",
                     "messages": [{"role": "user", "content": prompt}],
                     "temperature": 0.7,
                     "max_tokens": 2048,
@@ -275,7 +275,7 @@ class AgentLLMStrategy:
                             success=True,
                             text=text,
                             provider="openrouter",
-                            model="gpt-4-turbo-preview",
+                            model="qwen2-72b-instruct",
                             latency_ms=latency_ms,
                             tokens_used=data.get("usage", {}).get("total_tokens"),
                         )
@@ -285,7 +285,7 @@ class AgentLLMStrategy:
                             success=False,
                             text="",
                             provider="openrouter",
-                            model="gpt-4-turbo-preview",
+                            model="qwen2-72b-instruct",
                             latency_ms=latency_ms,
                             error=error,
                         )
@@ -296,7 +296,7 @@ class AgentLLMStrategy:
                 success=False,
                 text="",
                 provider="openrouter",
-                model="gpt-4-turbo-preview",
+                model="qwen2-72b-instruct",
                 latency_ms=latency_ms,
                 error="Timeout (60s exceeded)",
             )
@@ -307,7 +307,7 @@ class AgentLLMStrategy:
                 success=False,
                 text="",
                 provider="openrouter",
-                model="gpt-4-turbo-preview",
+                model="qwen2-72b-instruct",
                 latency_ms=latency_ms,
                 error=str(e),
             )
