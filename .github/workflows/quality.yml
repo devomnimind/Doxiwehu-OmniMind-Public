@@ -14,6 +14,7 @@ jobs:
     name: Code Quality & Linting
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: false  # DISABLED: Using ci-pipeline.yml for quality checks
 
     steps:
     - name: Checkout code

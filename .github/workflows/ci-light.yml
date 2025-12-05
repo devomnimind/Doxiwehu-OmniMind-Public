@@ -12,6 +12,7 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: false  # DISABLED: Only using ci-pipeline.yml for quality checks
 
     steps:
     - name: Checkout code
