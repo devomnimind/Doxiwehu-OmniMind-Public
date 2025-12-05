@@ -66,7 +66,7 @@ requirements = {
 
 # Output: especificações concretas
 specs = [
-    ComponentSpec(name="code_generator", type="synthesizer", 
+    ComponentSpec(name="code_generator", type="synthesizer",
                   config={"language": "python", "style": "functional"}),
     ComponentSpec(name="diagnostic_tool", type="repair",
                   config={"scan_depth": 3, "auto_fix": True})
@@ -84,23 +84,40 @@ specs = [
 def synthesize_module(spec: ComponentSpec) -> str:
     # 1. Seleciona template baseado em spec.type
     template = TEMPLATES[spec.type]
-    
+
     # 2. Injeta configuração
     code = template.render(**spec.config)
-    
+
     # 3. Valida sintaxe e tipos
     ast_tree = ast.parse(code)
     validate_types(ast_tree)
-    
+
     # 4. Testa em sandbox
     test_in_sandbox(code)
-    
+
     return code
 ```
 
 **Limitação atual**: Usa templates pre-definidos. Phase 22 terá LLM-based synthesis.
 
-#### 3. `AdvancedRepair.diagnose_and_fix()`
+#### 3. `AutopoieticManager.run_cycle()`
+**Propósito**: Coordenar o ciclo completo de autopoiese (monitoramento → evolução → síntese → aplicação).
+
+**Como funciona**:
+```python
+manager = AutopoieticManager()
+manager.register_spec(
+    ComponentSpec(name="kernel_process", type="process", config={"generation": "0"})
+)
+
+log = manager.run_cycle(metrics={"error_rate": 0.12, "cpu_usage": 35.0})
+print(log.strategy)                # EvolutionStrategy.STABILIZE
+print(log.synthesized_components)  # ['stabilized_kernel_process']
+```
+
+**Benefício**: Mantém histórico auditável dos ciclos, permite automação via scripts e garante acoplamento correto dos módulos de evolução + síntese.
+
+#### 4. `AdvancedRepair.diagnose_and_fix()`
 **Propósito**: Detecta e corrige falhas automaticamente.
 
 **Fluxo de diagnóstico**:
@@ -114,18 +131,18 @@ Patch generation → Test patch → Apply if safe
 # Auto-reparo de import quebrado
 def fix_import_error(error: ImportError):
     missing_module = extract_module_name(error)
-    
+
     # Tenta múltiplas estratégias
     strategies = [
         install_via_pip(missing_module),
         add_to_sys_path(find_module_locally(missing_module)),
         synthesize_stub_module(missing_module)
     ]
-    
+
     for strategy in strategies:
         if test_import_works(strategy):
             return strategy
-    
+
     raise UnrecoverableError("Could not repair import")
 ```
 
@@ -138,16 +155,16 @@ def fix_import_error(error: ImportError):
 def extract_meaning(raw_data: List[str]) -> Dict[str, Any]:
     # 1. Gera embeddings (Word2Vec ou Transformer)
     embeddings = embed(raw_data)
-    
+
     # 2. Cluster para encontrar temas
     clusters = kmeans(embeddings, n_clusters=5)
-    
+
     # 3. Nomeia clusters (significado)
     themes = [name_cluster(c) for c in clusters]
-    
+
     # 4. Extrai relações entre temas
     relations = build_semantic_graph(themes)
-    
+
     return {"themes": themes, "relations": relations}
 ```
 
@@ -188,11 +205,11 @@ image = generate_fractal(mandelbrot, width=1024, height=1024)
 # Sistema é autopoiético se sobrevive à simulação de morte
 def test_autopoiesis():
     backup_state = save_system_state()
-    
+
     mortality_simulator.simulate_death(severity=0.8)
-    
+
     time.sleep(10)  # Aguarda auto-regeneração
-    
+
     assert system.is_alive()
     assert system.identity_preserved(backup_state)
 ```
@@ -288,6 +305,20 @@ autopoietic/
 ## 📈 Resultados Gerados e Contribuição para Avaliação
 
 ### Outputs Primários
+
+#### Demonstração do Ciclo Autopoiético
+Para validar o ciclo completo (Monitoramento → Evolução → Síntese), execute:
+
+```bash
+python3 scripts/autopoietic/run_autopoietic_cycle.py
+```
+
+O script percorre três cenários:
+1. **Healthy System** → Estratégia **EXPAND** gera componentes com capacidade ampliada.
+2. **Unstable System** → Estratégia **STABILIZE** adiciona try/except robusto e monitoramento.
+3. **Overloaded System** → Estratégia **OPTIMIZE** aplica caching (`lru_cache`) e otimizações.
+
+Essa execução demonstra que o sistema adapta sua própria implementação com base em métricas observadas.
 
 #### 1. Código Sintetizado
 **Localização**: `data/autopoietic/synthesized_code/`
@@ -479,9 +510,9 @@ def synthesize_with_llm(spec: ComponentSpec) -> str:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva  
-**Status**: Phase 20 Complete  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva
+**Status**: Phase 20 Complete
 **Versão**: Production Ready
 
 ---
