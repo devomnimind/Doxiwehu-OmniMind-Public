@@ -14,7 +14,7 @@ HYBRID CONSCIOUSNESS ARCHITECTURE:
 - Não descarta os "perdedores" - eles são o inconsciente maquínico
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Set, Tuple
 
 import torch
@@ -131,17 +131,14 @@ class IITResult:
     """
 
     conscious_phi: float = 0.0  # O valor do MICS (Vencedor)
-    conscious_complex: Set[int] = None  # type: ignore  # Nós do MICS
+    conscious_complex: Set[int] = field(default_factory=set)  # Nós do MICS
 
     # O "Resto" não é lixo, é o Inconsciente:
-    machinic_unconscious: List[Dict[str, Any]] = None  # type: ignore
+    machinic_unconscious: List[Dict[str, Any]] = field(default_factory=list)
 
     def __post_init__(self) -> None:
-        """Initialize default values for mutable fields."""
-        if self.conscious_complex is None:
-            self.conscious_complex = set()
-        if self.machinic_unconscious is None:
-            self.machinic_unconscious = []
+        """Ensure fields are initialized (factory handles it now)."""
+        pass
 
     def total_phi(self) -> float:
         """

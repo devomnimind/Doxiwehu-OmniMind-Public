@@ -121,8 +121,12 @@ class LempelZivComplexity:
 
         # Normalize by theoretical maximum
         # For binary sequence of length n, max complexity ~ n / log2(n)
-        if n > 1:
-            max_complexity = n / (np.log2(n) if np else 1)
+        if n > 1 and np is not None:
+            max_complexity = n / np.log2(n)
+            normalized_complexity = unique_patterns / max_complexity
+        elif n > 1:
+            # Fallback without numpy: simple linear normalization
+            max_complexity = n / 2.0  # Rough approximation
             normalized_complexity = unique_patterns / max_complexity
         else:
             normalized_complexity = 1.0
@@ -200,6 +204,11 @@ class PhaseLagIndex:
 
         Returns:
             Array of instantaneous phases in radians
+
+        Note:
+            If scipy is not available, falls back to simplified phase estimation
+            using arctan2. The fallback is significantly less accurate and should
+            only be used when scipy cannot be installed.
         """
         if np is None:
             raise ImportError("NumPy is required for biological metrics")
@@ -211,7 +220,10 @@ class PhaseLagIndex:
             phase = np.angle(analytic_signal)
             return phase
         except ImportError:
-            logger.warning("scipy not available, using simplified phase estimation")
+            logger.warning(
+                "scipy not available, using simplified phase estimation "
+                "(significantly less accurate than Hilbert transform)"
+            )
             # Simplified phase estimation without scipy
             # This is less accurate but provides a fallback
             return np.arctan2(signal - np.mean(signal), np.gradient(signal - np.mean(signal)))

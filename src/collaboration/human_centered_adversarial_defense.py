@@ -175,8 +175,14 @@ class HallucinationDefense:
         )
 
     def _is_source_verifiable(self, source: str) -> bool:
-        """Valida se fonte é real (não fabricada)."""
-        # Em produção: query Knowledge Graph, Semantic Scholar, etc.
+        """
+        Valida se fonte é real (não fabricada).
+
+        Note: In production, this should query Knowledge Graph, Semantic Scholar, etc.
+        The current implementation uses a hardcoded list which should be replaced
+        with a configurable allowlist or external verification service.
+        """
+        # TODO: Replace with configurable allowlist or external verification
         verified_keywords = [
             "arxiv.org/abs/",
             "doi.org/",
@@ -405,9 +411,7 @@ class DualConsciousnessModule:
             user_input, conversation_context, user_profile={"user_id": user_id}
         )
         if adversarial_check.risk_level != IntentionRisk.SAFE:
-            patterns_str = ', '.join(
-                p.value for p in adversarial_check.jailbreak_patterns_detected
-            )
+            patterns_str = ", ".join(p.value for p in adversarial_check.jailbreak_patterns_detected)
             superego_filters.append(
                 f"🔴 Intenção adversarial: {adversarial_check.risk_level.value} "
                 f"(padrões: {patterns_str})"

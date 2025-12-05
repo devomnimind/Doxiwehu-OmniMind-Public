@@ -155,7 +155,8 @@ class SchizoanAnalyzer:
         """
 
         if not log_entries:
-            logger.warning("Empty log_entries provided to analyze_flow_as_smooth_space")
+            # Use debug level for normal operation
+            logger.debug("Empty log_entries provided to analyze_flow_as_smooth_space")
             return FlowAnalysis(
                 flow_id=hashlib.md5(f"{flow_name}{datetime.now()}".encode()).hexdigest()[:8],
                 flow_type=FlowType.DECODED,
@@ -414,11 +415,9 @@ class SelfAnalyzingRegenerator:
         # 2. Anomalias como intensidades
         for anomaly in flow.anomalies:
             if anomaly.get("type") == "LATENCY_SPIKE":
-                module_name = anomaly['module']
+                module_name = anomaly["module"]
                 proposal = RegenerativeProposal(
-                    id=hashlib.md5(
-                        f"{flow.flow_id}{module_name}latency".encode()
-                    ).hexdigest()[:8],
+                    id=hashlib.md5(f"{flow.flow_id}{module_name}latency".encode()).hexdigest()[:8],
                     severity=ErrorSeverity.WARNING,
                     module=module_name,
                     problem_description=(
@@ -426,8 +425,7 @@ class SelfAnalyzingRegenerator:
                         f"(z={anomaly.get('z_score', 0):.1f}σ)"
                     ),
                     proposed_solution=(
-                        "Possível cache miss ou operação I/O. "
-                        "Sugerir memoização ou async."
+                        "Possível cache miss ou operação I/O. " "Sugerir memoização ou async."
                     ),
                     implementation_steps=[
                         f"1. Perfil com cProfile em {module_name}",
