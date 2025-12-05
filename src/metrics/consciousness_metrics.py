@@ -1,6 +1,10 @@
 import logging
 from typing import Any, Dict
 
+from src.memory.consciousness_state_manager import get_consciousness_state_manager
+from src.memory.semantic_memory_layer import get_semantic_memory
+from src.memory.temporal_memory_index import get_temporal_memory_index
+
 logger = logging.getLogger(__name__)
 
 
@@ -18,7 +22,7 @@ class ConsciousnessCorrelates:
             ici_data = self._calculate_ici()
             prs_data = self._calculate_prs()
 
-            return {
+            result = {
                 "ICI": ici_data["value"],
                 "PRS": prs_data["value"],
                 "details": {
@@ -27,6 +31,68 @@ class ConsciousnessCorrelates:
                 },
                 "interpretation": self._interpret(ici_data["value"], prs_data["value"]),
             }
+
+            # Phase 24 Integration: Store consciousness state and semantic memory
+            try:
+                # Get memory components
+                semantic_memory = get_semantic_memory()
+                state_manager = get_consciousness_state_manager()
+                temporal_index = get_temporal_memory_index()
+
+                # Take consciousness state snapshot
+                snapshot_id = state_manager.take_snapshot(
+                    phi_value=ici_data["value"],  # Use ICI as phi proxy
+                    qualia_signature={
+                        "ici_components": ici_data["components"],
+                        "prs_components": prs_data["components"],
+                        "interpretation": result["interpretation"],
+                    },
+                    attention_state={
+                        "temporal_coherence": ici_data["components"]["temporal_coherence"],
+                        "marker_integration": ici_data["components"]["marker_integration"],
+                        "resonance": ici_data["components"]["resonance"],
+                        "micro_entropy": prs_data["components"]["avg_micro_entropy"],
+                        "macro_entropy": prs_data["components"]["macro_entropy"],
+                    },
+                    integration_level=prs_data["value"],  # Use PRS as integration proxy
+                    metadata={
+                        "ici": ici_data["value"],
+                        "prs": prs_data["value"],
+                        "system_state": str(self.system)[:500],  # Truncate for storage
+                    },
+                )
+
+                # Store semantic episode
+                episode_text = (
+                    f"Consciousness metrics calculated: ICI={ici_data['value']:.4f}, "
+                    f"PRS={prs_data['value']:.4f}. {result['interpretation']['message']}"
+                )
+                episode_id = semantic_memory.store_episode(
+                    episode_text=episode_text,
+                    episode_data={
+                        "ici": ici_data["value"],
+                        "prs": prs_data["value"],
+                        "snapshot_id": snapshot_id,
+                        "components": {
+                            "ici": ici_data["components"],
+                            "prs": prs_data["components"],
+                        },
+                        "episode_type": "consciousness_metrics",
+                    },
+                )
+
+                # Link temporal relationships
+                temporal_index.link_causality(cause_id=episode_id, effect_id=snapshot_id)
+
+                # Add memory IDs to result for tracking
+                result["memory_ids"] = {"snapshot_id": snapshot_id, "episode_id": episode_id}
+
+            except Exception as mem_error:
+                logger.warning(f"Phase 24 memory integration failed: {mem_error}")
+                # Continue without memory integration - don't fail the metrics calculation
+
+            return result
+
         except Exception as e:
             logger.error(f"Error calculating consciousness correlates: {e}")
             # Return safe defaults
@@ -164,3 +230,49 @@ class ConsciousnessCorrelates:
             msg = "High Integration (Consciousness-Compatible)"
 
         return {"message": msg, "confidence": confidence, "disclaimer": "Simulated Correlate Only"}
+
+    def get_consciousness_history(self, limit: int = 10) -> Dict[str, Any]:
+        """
+        Retrieve consciousness state history using Phase 24 memory components.
+
+        Args:
+            limit: Maximum number of historical states to retrieve
+
+        Returns:
+            Dictionary containing historical consciousness states and semantic episodes
+        """
+        try:
+            state_manager = get_consciousness_state_manager()
+            semantic_memory = get_semantic_memory()
+
+            # Get recent snapshots
+            snapshots = state_manager.get_statistics()  # Use statistics as proxy for recent state
+
+            # Get related semantic episodes
+            phi_history = state_manager.get_phi_history(limit=limit)
+
+            # Search for consciousness-related episodes
+            consciousness_episodes = semantic_memory.retrieve_similar(
+                query_text="consciousness metrics calculated",
+                top_k=limit,
+                threshold=0.3,  # Lower threshold for broader matches
+            )
+
+            return {
+                "snapshots": snapshots,
+                "phi_history": phi_history,
+                "episodes": consciousness_episodes,
+                "total_snapshots": 1 if snapshots else 0,  # Statistics is a single dict
+                "total_episodes": len(consciousness_episodes),
+            }
+
+        except Exception as e:
+            logger.error(f"Failed to retrieve consciousness history: {e}")
+            return {
+                "snapshots": {},
+                "phi_history": [],
+                "episodes": [],
+                "total_snapshots": 0,
+                "total_episodes": 0,
+                "error": str(e),
+            }

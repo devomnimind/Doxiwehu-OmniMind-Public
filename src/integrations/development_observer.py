@@ -28,7 +28,7 @@ from typing import Any, Dict, List, cast
 import psutil
 import watchfiles
 
-from src.memory.episodic_memory import EpisodicMemory
+from src.memory.narrative_history import NarrativeHistory
 from src.memory.semantic_memory import SemanticMemory
 from src.metacognition.pattern_recognition import PatternRecognition
 
@@ -76,7 +76,7 @@ class DevelopmentObserver:
         self.running = False
 
         # Componentes de memória
-        self.episodic_memory = EpisodicMemory()
+        self.episodic_memory = NarrativeHistory()  # Lacanian memory
         self.semantic_memory = SemanticMemory()
         self.pattern_recognition = PatternRecognition()
 

@@ -53,6 +53,25 @@ monitor/
 - Logs em formato estruturado para análise
 - Contribuição para métricas globais do sistema
 
+### Nightly Metrics (`scripts/nightly_omnimind.py`)
+- Relatórios detalhados por execução em `logs/nightly/nightly_report_YYYYMMDD_HHMMSS.json`:
+  - Status de saúde do Qdrant (local/cloud)
+  - Status de saúde do Supabase
+  - Resultado do teste rápido de memória (Phase 24)
+  - Resultado opcional da consolidação leve de snapshots (`--consolidate`)
+- Resumo agregado em `logs/nightly/nightly_summary.json`:
+  - Últimos N (default: 30) registros com status agregados por tarefa
+  - Útil para inspeção rápida de estabilidade/saúde sem abrir todos os relatórios
+
+### Inspect Helper (`scripts/nightly_summary_inspect.py`)
+- CLI rápido para ler `nightly_summary.json`:
+  - `--limit N`: quantidade de entradas exibidas (default: 10).
+  - `--only-errors`: mostra apenas execuções com algum status não OK (Qdrant, Supabase, testes ou consolidação).
+- Exemplo:
+  ```bash
+  python scripts/nightly_summary_inspect.py --limit 15 --only-errors
+  ```
+
 ### Validação
 - Testes unitários: `tests/monitor/`
 - Integração validada em ciclos completos

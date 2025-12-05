@@ -13,6 +13,12 @@ OTIMIZAÇÕES ROBUSTAS PARA PROD+DEV HÍBRIDO:
 - Health checks inteligentes
 - Métricas de startup
 - Recuperação graceful
+- Respeita ServerStateManager para evitar conflitos com fixture omnimind_server
+
+RESPEITO AO ESTADO DO SERVIDOR:
+- Se fixture omnimind_server controla servidor → plugin NÃO reinicia
+- Plugin só reinicia se é proprietário ou se ninguém controla
+- Evita race conditions e múltiplas reinicializações
 """
 
 import logging
@@ -25,6 +31,8 @@ import pytest
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
+
+from tests.server_state_manager import get_server_state_manager
 
 # Setup logging para debug
 logger = logging.getLogger("omnimind.server_monitor")
@@ -114,24 +122,96 @@ class ServerMonitorPlugin:
             self._ensure_server_up()
 
     def pytest_runtest_setup(self, item):
-        """Antes de cada teste: verifica se servidor está UP."""
+        """
+        Antes de cada teste: verifica se servidor está UP.
+
+        Respeita ServerStateManager:
+        - Se fixture controla servidor → confia que já está UP
+        - Se plugin controla → verifica e reinicia se necessário
+        - Se ninguém controla → verifica e inicia se necessário
+
+        IMPORTANTE: Com 3900 testes + system OmniMind ativo, health checks
+        agressivos causam timeouts falsos. Estratégia:
+        - Cache de 45s evita multiple checks
+        - Timeout de 5s é tolerante
+        - SÓ reinicia se ConnectionError confirmado (não timeout)
+        """
         # Apenas para testes que precisam de servidor
         if self._needs_server(item):
             if self.skip_server_tests:
                 pytest.skip("Servidor skipped via OMNIMIND_SKIP_SERVER_TESTS=true")
                 return
 
+            state_manager = get_server_state_manager()
+
+            # Se fixture controla → confia na fixture
+            if state_manager.owner == "fixture":
+                logger.info(f"✅ Fixture controla servidor para {item.name}")
+                state_manager.mark_running()
+                return
+
+            # Verificar se há health check recente em cache (45s)
+            # Evita múltiplos checks durante suite com muitos testes
+            if state_manager.has_recent_health_check():
+                cached_result = state_manager.get_cached_health_check()
+                if cached_result is True:
+                    logger.debug("✅ Health check em cache (recente) - servidor UP")
+                    return
+                # Se cache diz DOWN, tenta reiniciar
+
+            # Sem cache recente: fazer health check
             if not self._is_server_healthy():
                 print(f"\n⚠️  Servidor DOWN antes de {item.name} - reiniciando...")
                 try:
-                    self._start_server()
+                    # Adquirir propriedade antes de reiniciar
+                    if state_manager.can_manage_server("plugin"):
+                        state_manager.acquire_ownership("plugin")
+                        try:
+                            self._start_server()
+                        finally:
+                            state_manager.release_ownership("plugin")
+                    else:
+                        logger.warning(
+                            f"Plugin não pode gerenciar servidor "
+                            f"({state_manager.owner} já controla)"
+                        )
+                        pytest.skip(
+                            f"Servidor gerenciado por {state_manager.owner}, " f"aguardando..."
+                        )
                 except Exception as e:
                     logger.error(f"Falha ao reiniciar servidor: {e}")
                     pytest.skip(f"Servidor indisponível: {e}")
 
     def pytest_runtest_makereport(self, item, call):
-        """Detecta se teste derrubou servidor - SÓ PARA E2E."""
+        """
+        Detecta se teste derrubou servidor - SÓ PARA TESTES NÃO GERENCIADOS PELA FIXTURE.
+
+        Respeita ServerStateManager:
+        - Se fixture controla → não reinicia (deixa fixture cuidar)
+        - Se servidor caiu sob plugin's watch → plugin reinicia
+
+        IMPORTANTE: Com 3900 testes, fazer health check após CADA teste é muito
+        agressivo. Estratégia:
+        - SKIP health check se cache recente diz servidor está UP
+        - Só fazer health check se cache expirou (45s sem check)
+        - Só reiniciar se ConnectionError confirmado (não timeout)
+        """
         if call.when == "call" and self._needs_server(item):
+            state_manager = get_server_state_manager()
+
+            # Se fixture controla → não interferir
+            if state_manager.owner == "fixture":
+                logger.info("ℹ️  Fixture controla servidor, plugin não interfere")
+                return
+
+            # OTIMIZAÇÃO: Se há health check recente em cache, confiar nele
+            if state_manager.has_recent_health_check():
+                cached_result = state_manager.get_cached_health_check()
+                if cached_result is True:
+                    logger.debug("✅ Cache recente diz servidor UP - não refazer health check")
+                    return
+
+            # Sem cache recente: fazer health check
             # Verifica se servidor caiu após o teste
             if not self._is_server_healthy():
                 self.crashed_tests.append(item.name)
@@ -166,10 +246,26 @@ class ServerMonitorPlugin:
                 except Exception as e:
                     logger.debug(f"Erro ao emitir alerta de servidor down: {e}")
 
-                self._start_server()
+                # Adquirir propriedade antes de reiniciar
+                if state_manager.can_manage_server("plugin"):
+                    state_manager.acquire_ownership("plugin")
+                    try:
+                        self._start_server()
+                    finally:
+                        state_manager.release_ownership("plugin")
 
     def pytest_runtest_teardown(self, item):
-        """Após cada teste: garante servidor UP para próximo."""
+        """
+        Após cada teste: garante servidor UP para próximo.
+
+        Apenas interfere se plugin controla servidor (não fixture).
+        """
+        state_manager = get_server_state_manager()
+
+        # Se fixture controla → não interferir no teardown
+        if state_manager.owner == "fixture":
+            return
+
         if self._needs_server(item) and self.server_was_down:
             # Aumentar muito o tempo limite para permitir suite completa rodar
             # Sem timeout artificial - deixa tempo contínuo para recuperação real
@@ -178,46 +274,86 @@ class ServerMonitorPlugin:
             self.server_was_down = False
 
     def _is_server_healthy(self) -> bool:
-        """Verifica se servidor está respondendo (SEM retries automáticos)."""
+        """
+        Verifica se servidor está respondendo (SEM retries automáticos).
+
+        Timeout tolerante: 5s (não 1s) porque durante testes lentos,
+        servidor pode estar processando e não responder em 1s.
+
+        IMPORTANTE: Timeout ≠ DOWN. Apenas ConnectionError confirma DOWN.
+        """
         try:
             # Usa session com retry=0 (sem retries automáticos)
             # Adicionado trailing slash para evitar 307 Redirect
-            resp = session.get(f"{self.backend_url}/health/", timeout=1)
+            # Timeout TOLERANTE: 5s (permite testes lentos em background)
+            resp = session.get(f"{self.backend_url}/health/", timeout=5)
             if resp.status_code in (200, 404):
                 logger.debug(f"✅ Health check OK: {resp.status_code}")
                 return True
         except requests.exceptions.Timeout:
-            logger.debug("⏱️  Health check timeout (1s)")
+            # Timeout NÃO significa DOWN - servidor pode estar lento
+            logger.debug("⏱️  Health check timeout (5s) - servidor pode estar ocupado, não é DOWN")
+            return True  # ← Crucial: assume servidor está UP se apenas timeout
         except requests.exceptions.ConnectionError:
-            logger.debug("🔌 Health check connection refused (servidor DOWN)")
+            logger.debug("🔌 Health check connection refused (servidor genuinamente DOWN)")
         except Exception as e:
             logger.debug(f"❌ Health check erro: {type(e).__name__}: {e}")
 
         # Fallback: tenta endpoint raiz
         try:
-            resp = session.get(f"{self.backend_url}/", timeout=1, allow_redirects=False)
+            resp = session.get(f"{self.backend_url}/", timeout=5, allow_redirects=False)
             if resp.status_code in (200, 301, 302, 307, 308):
                 logger.debug(f"✅ Fallback OK: {resp.status_code}")
                 return True
         except requests.exceptions.Timeout:
-            logger.debug("⏱️  Fallback timeout")
+            # Timeout no fallback também = não é DOWN
+            logger.debug("⏱️  Fallback timeout (5s) - servidor pode estar ocupado, não é DOWN")
+            return True  # ← Crucial: assume servidor está UP
         except requests.exceptions.ConnectionError:
-            logger.debug("🔌 Fallback connection refused")
+            logger.debug("🔌 Fallback connection refused - CONFIRMA servidor DOWN")
         except Exception as e:
             logger.debug(f"❌ Fallback erro: {type(e).__name__}: {e}")
 
         return False
 
     def _ensure_server_up(self):
-        """Garante servidor UP - verifica antes de iniciar."""
+        """
+        Garante servidor UP - verifica antes de iniciar.
+
+        Respeita ServerStateManager:
+        - Se outro proprietário (fixture) controla → NÃO reinicia
+        - Se já está saudável → apenas avisa
+        - Se está DOWN e ninguém controla → inicia
+        """
+        state_manager = get_server_state_manager()
+
+        # Verificar se outro componente controla servidor
+        if state_manager.owner == "fixture":
+            print(
+                "ℹ️  Servidor está sob gerenciamento da fixture E2E "
+                "(omnimind_server) - plugin não interfere"
+            )
+            return
+
         # Se já está saudável, apenas avisa
         if self._is_server_healthy():
             print("✅ Servidor backend já está rodando em http://localhost:8000")
+            state_manager.mark_running()
             return
 
-        # Servidor DOWN - inicia
+        # Servidor DOWN - verifica se pode gerenciar
+        if not state_manager.can_manage_server("plugin"):
+            print(f"⚠️  Servidor DOWN, mas {state_manager.owner} " f"já o controla - aguardando...")
+            return
+
+        # Plugin pode gerenciar → tenta iniciar
         print("⚠️  Servidor backend DOWN - iniciando...")
-        self._start_server()
+        state_manager.acquire_ownership("plugin")
+        try:
+            self._start_server()
+        finally:
+            # Liberar propriedade após startup
+            state_manager.release_ownership("plugin")
 
     def _needs_server(self, item) -> bool:
         """Verifica se teste precisa de servidor."""

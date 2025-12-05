@@ -89,7 +89,7 @@ system:
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -112,7 +112,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -156,7 +156,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -192,7 +192,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -228,7 +228,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -256,7 +256,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -292,7 +292,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -318,7 +318,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -340,7 +340,7 @@ system:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @patch("src.agents.react_agent.SystemMonitor")
@@ -379,7 +379,7 @@ class TestReactAgentEdgeCases:
 
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")
     @patch("src.agents.react_agent.OllamaLLM")
-    @patch("src.agents.react_agent.EpisodicMemory")
+    @patch("src.agents.react_agent.NarrativeHistory")
     @patch("src.agents.react_agent.FileOperations")
     @patch("src.agents.react_agent.ShellExecutor")
     @pytest.mark.skipif(not REACT_AGENT_AVAILABLE, reason="React agent dependencies not available")

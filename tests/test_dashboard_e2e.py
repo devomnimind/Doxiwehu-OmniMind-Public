@@ -105,7 +105,8 @@ def dashboard_client(
     monkeypatch: pytest.MonkeyPatch, tmp_path_factory: pytest.TempPathFactory
 ) -> Tuple[TestClient, Dict[str, str]]:
     monkeypatch.setattr("src.agents.react_agent.OllamaLLM", DummyLLM)
-    monkeypatch.setattr("src.agents.react_agent.EpisodicMemory", DummyMemory)
+    # Mock NarrativeHistory instead of EpisodicMemory (Phase 24 migration)
+    monkeypatch.setattr("src.agents.react_agent.NarrativeHistory", DummyMemory)
     monkeypatch.setattr("src.agents.react_agent.SystemMonitor", DummyMonitor)
     monkeypatch.setattr("src.agents.orchestrator_agent.MCPClient", DummyMCPClient)
     # Mock OrchestratorAgent to avoid async initialization delay and dependency issues

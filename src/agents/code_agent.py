@@ -13,7 +13,6 @@ Integração: Recebe comandos do Orchestrator e resultados de Debug/Ask
 import json
 from typing import Any, Dict, List, Optional
 
-from ..memory.episodic_memory import SimilarEpisode
 from ..tools.ast_parser import ASTParser, CodeStructure
 from ..tools.omnimind_tools import ToolCategory, ToolsFramework
 from .react_agent import AgentState, ReactAgent
@@ -140,8 +139,11 @@ TOOL USAGE EXAMPLES:
         Sobrescreve para adicionar contexto de CodeAgent.
         """
         # Buscar experiências similares
-        similar_episodes: List[SimilarEpisode] = self.memory.search_similar(
+        similar_episodes_raw = self.memory.search_similar(
             state["current_task"], top_k=3, min_reward=0.5
+        )
+        similar_episodes: List[Dict[str, Any]] = (
+            similar_episodes_raw if isinstance(similar_episodes_raw, list) else []
         )
 
         # Obter status do sistema

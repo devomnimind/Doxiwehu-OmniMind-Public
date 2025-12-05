@@ -15,7 +15,8 @@ from typing import Any, Dict, List, Optional
 
 from ..audit.alerting_system import AlertCategory, AlertingSystem, AlertSeverity
 from ..audit.immutable_audit import ImmutableAuditSystem, get_audit_system
-from .network_sensors import NetworkSensorGanglia
+from .network_sensors import NetworkSensorGanglia, ThreatSeverity
+from .security_agent import SecurityAgent, SecurityEvent, ThreatLevel
 from .web_scanner import WebScannerBrain
 
 
@@ -86,7 +87,7 @@ class SecurityOrchestrator:
             self.alerting_system,
         )
         # SecurityAgent requires config file, make it optional for testing
-        self.security_agent = None
+        self.security_agent: Optional[SecurityAgent] = None
 
         # Monitoring state
         self.monitoring_active = False
@@ -183,6 +184,62 @@ class SecurityOrchestrator:
                         },
                         category="security",
                     )
+
+                    # Convert NetworkAnomaly to SecurityEvent and send to SecurityAgent
+                    # Only for HIGH/CRITICAL anomalies if SecurityAgent is available and auto_response is enabled
+                    if self.security_agent:
+                        config = self.security_agent.config
+                        auto_response = config.get("security_agent", {}).get("auto_response", False)
+
+                        if auto_response:
+                            for anomaly in anomalies:
+                                # Only process HIGH/CRITICAL anomalies
+                                if anomaly.severity in [ThreatSeverity.HIGH, ThreatSeverity.CRITICAL]:
+                                    # Convert ThreatSeverity to ThreatLevel
+                                    threat_level_map = {
+                                        ThreatSeverity.LOW: ThreatLevel.LOW,
+                                        ThreatSeverity.MEDIUM: ThreatLevel.MEDIUM,
+                                        ThreatSeverity.HIGH: ThreatLevel.HIGH,
+                                        ThreatSeverity.CRITICAL: ThreatLevel.CRITICAL,
+                                    }
+
+                                    # Map anomaly type to event type
+                                    event_type_map = {
+                                        "new_ports_opened": "new_ports_opened",
+                                        "suspicious_ports": "suspicious_port",
+                                        "new_host_detected": "suspicious_network",
+                                    }
+                                    event_type = event_type_map.get(anomaly.type, "suspicious_network")
+
+                                    # Create SecurityEvent
+                                    security_event = SecurityEvent(
+                                        timestamp=anomaly.timestamp,
+                                        event_type=event_type,
+                                        source="network_sensors",
+                                        description=anomaly.description,
+                                        details={
+                                            "anomaly_type": anomaly.type,
+                                            "source_ip": anomaly.source_ip,
+                                            "destination_ip": anomaly.destination_ip,
+                                            **anomaly.details,
+                                        },
+                                        threat_level=threat_level_map[anomaly.severity],
+                                        raw_data=anomaly.description,
+                                    )
+
+                                    # Send to SecurityAgent for automatic response
+                                    try:
+                                        await self.security_agent._handle_event(security_event)
+                                    except Exception as e:
+                                        self.audit_system.log_action(
+                                            "security_agent_event_handling_error",
+                                            {
+                                                "error": str(e),
+                                                "event_type": event_type,
+                                                "anomaly_type": anomaly.type,
+                                            },
+                                            category="security",
+                                        )
 
         except Exception as e:
             self.audit_system.log_action(

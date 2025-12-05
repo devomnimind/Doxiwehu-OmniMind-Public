@@ -67,13 +67,55 @@ pip install -r requirements.txt
 
 ### Running Tests
 
+**Test Suite Configuration:**
+- **Global timeout**: 800s per test (progressive, thread-based)
+- **GPU**: Forced to CUDA device 0 (with fallback)
+- **Total tests**: 3996 (daily) + 8 chaos engineering (weekly)
+- **Server Management**: Centralized via `ServerStateManager` (prevents race conditions)
+
 ```bash
-# Run full test suite
-pytest tests/
+# Run fast daily test suite (3996 tests, no server destruction)
+# Includes: unit tests, integration tests, @pytest.mark.real without @pytest.mark.chaos
+./scripts/run_tests_fast.sh
+
+# Run complete weekly suite with chaos engineering (3996 + 8 chaos tests)
+# WARNING: Intentionally destroys server to validate Φ resilience
+./scripts/run_tests_with_defense.sh
 
 # Run specific module tests
 pytest tests/consciousness/
+
+# Run tests with specific markers
+pytest tests/ -m "real"      # Full GPU+LLM+Network tests (non-destructive)
+pytest tests/ -m "chaos"     # Server destruction tests (weekly only)
+pytest tests/ -m "slow"      # Long-running tests (>30s timeout)
 ```
+
+**Marker Categories:**
+| Marker | Purpose | run_tests_fast.sh | run_tests_with_defense.sh |
+|--------|---------|---|---|
+| `@pytest.mark.real` (no chaos) | GPU+LLM+Network logic tests | ✅ Included | ✅ Included |
+| `@pytest.mark.real + @pytest.mark.chaos` | Server destruction tests | ❌ Excluded | ✅ Included |
+| `@pytest.mark.slow` | Tests taking >30s | ❌ Excluded | ❌ Excluded |
+| (no markers) | Unit/integration mocked tests | ✅ Included | ✅ Included |
+
+---
+
+## 📋 Configuration Files
+
+**Test Configuration** (`config/pytest.ini`):
+- Per-test timeout: 800 seconds (independent, not cumulative)
+- Timeout method: thread-based (safe interrupt)
+- Markers: Custom pytest markers for organization
+- Max failures: 100 (show all issues, don't stop early)
+
+**Environment Variables** (used in test scripts):
+- `CUDA_VISIBLE_DEVICES=0` - Force GPU device 0
+- `OMNIMIND_GPU=true` - Enable GPU
+- `OMNIMIND_FORCE_GPU=true` - Force GPU detection with fallback
+- `OMNIMIND_DEV=true` - Development mode
+- `OMNIMIND_DEBUG=true` - Debug logging
+- `PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512` - GPU memory optimization
 
 ---
 

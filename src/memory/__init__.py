@@ -1,6 +1,7 @@
 """Memory module for OmniMind agent system."""
 
 # Lazy imports to avoid dependency issues
+import warnings
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -16,6 +17,13 @@ if TYPE_CHECKING:
 def __getattr__(name: str):  # type: ignore
     """Lazy import to avoid loading all dependencies."""
     if name == "EpisodicMemory":
+        warnings.warn(
+            "⚠️ DEPRECATED: EpisodicMemory is deprecated. "
+            "Use NarrativeHistory for Lacanian memory construction. "
+            "EpisodicMemory is only kept as internal backend for NarrativeHistory.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         from .episodic_memory import EpisodicMemory
 
         return EpisodicMemory

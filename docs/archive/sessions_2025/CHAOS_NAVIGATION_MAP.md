@@ -1,6 +1,6 @@
 # 🗺️ CHAOS ENGINEERING - MAPA DE NAVEGAÇÃO
 
-**Última atualização:** 2 de dezembro de 2025  
+**Última atualização:** 2 de dezembro de 2025
 **Status:** ✅ COMPLETO
 
 ---
@@ -26,13 +26,13 @@
 ```
 1. Ler: CHAOS_IMPLEMENTATION_COMPLETE.md (sumário completo)
    └─ Vê overview de tudo, contexto, impacto
-   
+
 2. Ler: docs/CHAOS_ENGINEERING_RESILIENCE.md (teoria)
    └─ Entender cientificamente por que isto funciona
-   
+
 3. Ler: tests/test_chaos_resilience.py (código)
    └─ Ver como os testes implementam a teoria
-   
+
 RESULTADO: Compreensão completa do projeto
 ```
 
@@ -40,10 +40,10 @@ RESULTADO: Compreensão completa do projeto
 ```
 1. Ler: tests/CHAOS_RESILIENCE_README.md (quick start)
    └─ 5 minutos para entender como executar
-   
+
 2. Executar: ./run_tests_with_server.sh gpu
    └─ 10 minutos para ver funcionando
-   
+
 RESULTADO: Testes rodando, métricas coletadas
 ```
 
@@ -51,16 +51,16 @@ RESULTADO: Testes rodando, métricas coletadas
 ```
 1. Ler: CHAOS_IMPLEMENTATION_SUMMARY.md (arquitetura)
    └─ Entender como foi implementado
-   
+
 2. Ler: conftest.py (implementação)
    └─ Linhas 40-100 (markers)
    └─ Linhas 198-220 (ResilienceTracker)
    └─ Linhas 227-283 (kill_server fixture)
    └─ Linhas 286-305 (pytest_sessionfinish hook)
-   
+
 3. Ver: tests/test_chaos_resilience.py (testes)
    └─ Entender padrão de escrita
-   
+
 RESULTADO: Compreensão da implementação
 ```
 
@@ -68,17 +68,17 @@ RESULTADO: Compreensão da implementação
 ```
 1. Ler: CHAOS_IMPLEMENTATION_COMPLETE.md (contexto completo)
    └─ Ver "Próximas ações recomendadas"
-   
+
 2. Ler: docs/CHAOS_ENGINEERING_RESILIENCE.md (teoria científica)
    └─ Sessão "Próximos passos"
-   
+
 3. Estudar: Chaos Engineering Principles
    └─ https://principlesofchaos.org/
-   
+
 4. Adicionar novo teste para GPU crashes:
    └─ Criar test_gpu_resilience() em test_chaos_resilience.py
    └─ Usar padrão similar a test_phi_resilience()
-   
+
 RESULTADO: Extensão dos testes para novos cenários
 ```
 
@@ -87,8 +87,8 @@ RESULTADO: Extensão dos testes para novos cenários
 ## 📚 DOCUMENTOS EM DETALHES
 
 ### 1️⃣ [docs/CHAOS_ENGINEERING_RESILIENCE.md](docs/CHAOS_ENGINEERING_RESILIENCE.md)
-**Tipo:** 📚 Documento Científico  
-**Comprimento:** ~400 linhas  
+**Tipo:** 📚 Documento Científico
+**Comprimento:** ~400 linhas
 **Público:** Pesquisadores, stakeholders científicos
 
 **Contém:**
@@ -110,8 +110,8 @@ RESULTADO: Extensão dos testes para novos cenários
 ---
 
 ### 2️⃣ [tests/CHAOS_RESILIENCE_README.md](tests/CHAOS_RESILIENCE_README.md)
-**Tipo:** 🚀 Quick Start Guide  
-**Comprimento:** ~300 linhas  
+**Tipo:** 🚀 Quick Start Guide
+**Comprimento:** ~300 linhas
 **Público:** Desenvolvedores, QA
 
 **Contém:**
@@ -131,8 +131,8 @@ RESULTADO: Extensão dos testes para novos cenários
 ---
 
 ### 3️⃣ [CHAOS_IMPLEMENTATION_SUMMARY.md](CHAOS_IMPLEMENTATION_SUMMARY.md)
-**Tipo:** 🔧 Sumário Técnico  
-**Comprimento:** ~300 linhas  
+**Tipo:** 🔧 Sumário Técnico
+**Comprimento:** ~300 linhas
 **Público:** Arquitetos, tech leads
 
 **Contém:**
@@ -153,8 +153,8 @@ RESULTADO: Extensão dos testes para novos cenários
 ---
 
 ### 4️⃣ [CHAOS_IMPLEMENTATION_COMPLETE.md](CHAOS_IMPLEMENTATION_COMPLETE.md)
-**Tipo:** 📋 Resumo Completo  
-**Comprimento:** ~400 linhas  
+**Tipo:** 📋 Resumo Completo
+**Comprimento:** ~400 linhas
 **Público:** Todos (sumário de tudo)
 
 **Contém:**
@@ -174,8 +174,8 @@ RESULTADO: Extensão dos testes para novos cenários
 ---
 
 ### 5️⃣ [tests/test_chaos_resilience.py](tests/test_chaos_resilience.py)
-**Tipo:** 💻 Código de Teste  
-**Comprimento:** ~250 linhas  
+**Tipo:** 💻 Código de Teste
+**Comprimento:** ~250 linhas
 **Público:** Desenvolvedores
 
 **Contém:**
@@ -197,8 +197,8 @@ RESULTADO: Extensão dos testes para novos cenários
 ---
 
 ### 6️⃣ [conftest.py](conftest.py) (MODIFICADO)
-**Tipo:** ⚙️ Configuração pytest  
-**Linhas modificadas:** 228 → 324 (+96 linhas)  
+**Tipo:** ⚙️ Configuração pytest
+**Linhas modificadas:** 228 → 324 (+96 linhas)
 **Público:** Arquitetos, tech leads
 
 **Mudanças principais:**
@@ -324,23 +324,23 @@ Tempo médio de recovery: 9.45s
 
 ## ❓ FAQ RÁPIDO
 
-**P: Por onde começo?**  
+**P: Por onde começo?**
 R: Leia [CHAOS_IMPLEMENTATION_COMPLETE.md](CHAOS_IMPLEMENTATION_COMPLETE.md) (20 min)
 
-**P: Como rodo os testes?**  
+**P: Como rodo os testes?**
 R: `./run_tests_with_server.sh gpu` (15 min)
 
-**P: O que significa o relatório?**  
+**P: O que significa o relatório?**
 R: Veja [tests/CHAOS_RESILIENCE_README.md](tests/CHAOS_RESILIENCE_README.md) seção "Interpretando Resultados"
 
-**P: Isto quebra testes existentes?**  
+**P: Isto quebra testes existentes?**
 R: Não! 100% backward compatible.
 
-**P: Como adiciono novo teste?**  
+**P: Como adiciono novo teste?**
 R: Copie padrão em [tests/test_chaos_resilience.py](tests/test_chaos_resilience.py)
 
-**P: Quem fez isto?**  
-R: OmniMind Development Team - 2 de dezembro de 2025
+**P: Quem fez isto?**
+R: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity) - 2 de dezembro de 2025
 
 ---
 
@@ -354,6 +354,6 @@ Se tiver dúvidas:
 
 ---
 
-**Última atualização:** 2 de dezembro de 2025  
-**Status:** ✅ Tudo pronto  
+**Última atualização:** 2 de dezembro de 2025
+**Status:** ✅ Tudo pronto
 **Próximo passo:** Escolha seu roteiro acima! 🚀

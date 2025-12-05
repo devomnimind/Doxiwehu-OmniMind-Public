@@ -1,559 +1,559 @@
-# OmniMind Troubleshooting Guide
+# 🔧 Guia de Troubleshooting - OmniMind
 
-## Overview
+**Última Atualização**: 5 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
 
-This guide provides comprehensive troubleshooting solutions for common issues and automated diagnostic tools to help identify and resolve problems quickly.
+---
 
-## Quick Diagnostic Tool
+## Visão Geral
 
-Run the automated diagnostic script to check system health:
+Este guia fornece soluções de troubleshooting para problemas comuns e ferramentas de diagnóstico automatizadas para identificar e resolver problemas rapidamente.
+
+---
+
+## 🚀 Ferramenta de Diagnóstico Rápido
+
+Execute o script de diagnóstico automatizado para verificar a saúde do sistema:
 
 ```bash
 python scripts/canonical/diagnose/diagnose.py
 ```
 
-This will check:
-- ✓ Python version compatibility
-- ✓ Required dependencies installed
-- ✓ Configuration files present
-- ✓ Service availability (Qdrant, Ollama)
-- ✓ GPU/CUDA availability (if applicable)
-- ✓ Network connectivity
-- ✓ File permissions
-- ✓ Log file integrity
+Isso verificará:
+- ✓ Compatibilidade da versão Python (3.12.8 obrigatório)
+- ✓ Dependências necessárias instaladas
+- ✓ Arquivos de configuração presentes
+- ✓ Disponibilidade de serviços (Qdrant, Ollama)
+- ✓ GPU/CUDA disponível (se aplicável)
+- ✓ Conectividade de rede
+- ✓ Permissões de arquivo
+- ✓ Integridade de logs
 
-## Common Issues
+**Opções disponíveis**:
+```bash
+# Diagnóstico completo
+python scripts/canonical/diagnose/diagnose.py --full
 
-### 1. Server Won't Start
+# Diagnóstico rápido
+python scripts/canonical/diagnose/diagnose.py --quick
 
-#### Symptom
+# Verificações específicas
+python scripts/canonical/diagnose/diagnose.py --check-db
+python scripts/canonical/diagnose/diagnose.py --check-gpu
+python scripts/canonical/diagnose/diagnose.py --check-ports
+python scripts/canonical/diagnose/diagnose.py --check-memory
+python scripts/canonical/diagnose/diagnose.py --check-performance
+```
+
+---
+
+## Problemas Comuns
+
+### 1. Servidor Não Inicia
+
+#### Sintoma
 ```
 Error: Address already in use
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Check if port 8000 is already in use
+# Verificar se porta 8000 está em uso
 lsof -i :8000
 
-# Or use diagnostic tool
+# Ou usar ferramenta de diagnóstico
 python scripts/canonical/diagnose/diagnose.py --check-ports
 ```
 
-#### Solution
+#### Solução
 ```bash
-# Find and kill the process using port 8000
+# Encontrar e matar processo usando porta 8000
 kill $(lsof -t -i:8000)
 
-# Or use a different port
-OMNIMIND_PORT=8001 uvicorn web.backend.main:app
+# Ou usar porta diferente
+OMNIMIND_PORT=8001 uvicorn web.backend.main:app --reload
 ```
 
-### 2. Authentication Failures
+---
 
-#### Symptom
+### 2. Falhas de Autenticação
+
+#### Sintoma
 ```
 401 Unauthorized
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Check credentials file
+# Verificar arquivo de credenciais
 cat config/dashboard_auth.json
 
-# Verify environment variables
+# Verificar variáveis de ambiente
 echo $OMNIMIND_DASHBOARD_USER
 echo $OMNIMIND_DASHBOARD_PASS
 ```
 
-#### Solution
+#### Solução
 
-**Option 1: Use existing credentials**
+**Opção 1: Usar credenciais existentes**
 ```bash
-# Check the credentials file
+# Verificar arquivo de credenciais
 cat config/dashboard_auth.json
 ```
 
-**Option 2: Set environment variables**
+**Opção 2: Definir variáveis de ambiente**
 ```bash
-export OMNIMIND_DASHBOARD_USER="your_username"
-export OMNIMIND_DASHBOARD_PASS="your_password"
+export OMNIMIND_DASHBOARD_USER="seu_usuario"
+export OMNIMIND_DASHBOARD_PASS="sua_senha"
 ```
 
-**Option 3: Regenerate credentials**
+**Opção 3: Regenerar credenciais**
 ```bash
 rm config/dashboard_auth.json
-# Restart server to auto-generate new credentials
+# Reiniciar servidor para auto-gerar novas credenciais
 ```
 
-### 3. Module Import Errors
+**Nota**: As credenciais são geradas automaticamente na primeira execução e salvas em `config/dashboard_auth.json` com permissão `600`.
 
-#### Symptom
+---
+
+### 3. Erros de Importação de Módulos
+
+#### Sintoma
 ```
 ModuleNotFoundError: No module named 'xxx'
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Check installed packages
+# Verificar pacotes instalados
 pip list
 
-# Run diagnostic
+# Executar diagnóstico
 python scripts/canonical/diagnose/diagnose.py --check-dependencies
 ```
 
-#### Solution
+#### Solução
 ```bash
-# Install missing dependencies
+# Instalar dependências faltantes
 pip install -r requirements.txt
 
-# For GPU support
-pip install -r requirements.txt torch torchvision --index-url https://download.pytorch.org/whl/cu124
+# Para suporte GPU
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
 
-# For CPU-only
+# Para CPU-only
 pip install -r requirements-cpu.txt
 ```
 
-### 4. Database Connection Errors
+---
 
-#### Symptom
+### 4. Erros de Conexão com Banco de Dados
+
+#### Sintoma
 ```
 Connection refused: Qdrant
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Check if Qdrant is running
+# Verificar se Qdrant está rodando
 docker ps | grep qdrant
 
-# Or
+# Ou
 curl http://localhost:6333/health
 ```
 
-#### Solution
+#### Solução
 
-**Start Qdrant with Docker:**
+**Iniciar Qdrant com Docker:**
 ```bash
 docker run -d -p 6333:6333 -p 6334:6334 \
   -v $(pwd)/data/qdrant:/qdrant/storage \
   qdrant/qdrant
 ```
 
-**Or start with docker-compose:**
+**Ou iniciar com docker-compose:**
 ```bash
 docker-compose up -d qdrant
 ```
 
-### 5. GPU/CUDA Not Detected
+**Verificar variável de ambiente:**
+```bash
+# Verificar URL do Qdrant
+echo $OMNIMIND_QDRANT_URL
 
-#### Symptom
+# Ou verificar em .env
+grep QDRANT_URL .env
+```
+
+---
+
+### 5. GPU/CUDA Não Detectado
+
+#### Sintoma
 ```
 CUDA not available
-torch.cuda.is_available() returns False
+GPU not detected
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Check NVIDIA driver
+# Verificar GPU
+python scripts/canonical/diagnose/diagnose.py --check-gpu
+
+# Verificar CUDA
 nvidia-smi
 
-# Check CUDA installation
-nvcc --version
-
-# Run GPU diagnostic
-python scripts/canonical/diagnose/diagnose.py --check-gpu
-```
-
-#### Solution
-
-**Reload nvidia_uvm module:**
-```bash
-# Kill processes using the module
-sudo fuser --kill /dev/nvidia-uvm 2>/dev/null || true
-
-# Reload module
-sudo modprobe -r nvidia_uvm 2>/dev/null || true
-sudo modprobe nvidia_uvm
-
-# Verify
+# Verificar PyTorch
 python -c "import torch; print(torch.cuda.is_available())"
 ```
 
-**Reinstall CUDA-enabled PyTorch:**
+#### Solução
+
+**Configurar variáveis de ambiente CUDA:**
 ```bash
-pip uninstall torch torchvision
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu124
+# Definir variáveis CUDA (via shell/script, não em código Python)
+export CUDA_HOME=/usr
+export CUDA_PATH=/usr
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
 ```
 
-### 6. WebSocket Connection Failures
+**Verificar instalação PyTorch:**
+```bash
+# PyTorch atual: 2.5.1+cu124
+python -c "import torch; print(torch.__version__)"
+```
 
-#### Symptom
+**Forçar GPU em testes:**
+```bash
+# Scripts de teste já forçam GPU automaticamente
+./scripts/run_tests_fast.sh  # GPU forçada com fallback
+```
+
+---
+
+### 6. Problemas com WebSocket
+
+#### Sintoma
 ```
 WebSocket connection failed
+Connection timeout
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Test WebSocket endpoint
-wscat -c ws://localhost:8000/ws
+# Verificar servidor está rodando
+curl http://localhost:8000/api/v1/health/
 
-# Or use Python
-python -c "
-import websockets
-import asyncio
-async def test():
-    async with websockets.connect('ws://localhost:8000/ws') as ws:
-        await ws.send('{\"type\": \"ping\"}')
-        response = await ws.recv()
-        print(response)
-asyncio.run(test())
-"
+# Verificar WebSocket endpoint
+curl http://localhost:8000/ws
 ```
 
-#### Solution
+#### Solução
 
-1. **Check server is running:**
+1. **Verificar servidor está rodando:**
    ```bash
    curl http://localhost:8000/api/v1/health/
    ```
 
-2. **Verify WebSocket manager started:**
+2. **Verificar WebSocket manager iniciou:**
    ```bash
-   # Check logs
+   # Verificar logs
    tail -f logs/backend.log | grep "WebSocket"
    ```
 
-3. **Check firewall:**
+3. **Verificar firewall:**
    ```bash
-   # Allow WebSocket connections
+   # Permitir conexões WebSocket
    sudo ufw allow 8000/tcp
    ```
 
-### 7. High Memory Usage
+4. **Testar conexão WebSocket:**
+   ```javascript
+   // JavaScript
+   const ws = new WebSocket('ws://localhost:8000/ws');
+   ws.onopen = () => console.log('Conectado');
+   ws.onmessage = (event) => console.log('Recebido:', event.data);
+   ```
 
-#### Symptom
+---
+
+### 7. Uso Alto de Memória
+
+#### Sintoma
 ```
 Out of memory errors
-System becomes slow
+Sistema fica lento
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Check memory usage
+# Verificar uso de memória
 python scripts/canonical/diagnose/diagnose.py --check-memory
 
-# Monitor in real-time
+# Monitorar em tempo real
 htop
 
-# Check OmniMind processes
+# Verificar processos OmniMind
 ps aux | grep omnimind
 ```
 
-#### Solution
+#### Solução
 
-**Reduce batch sizes:**
+**Reduzir tamanhos de batch:**
 ```yaml
 # config/agent_config.yaml
 orchestrator:
-  max_concurrent_tasks: 5  # Reduce from 10
-  max_iterations: 3  # Reduce from 5
+  max_concurrent_tasks: 5  # Reduzir de 10
+  max_iterations: 3  # Reduzir de 5
 ```
 
-**Clear cache:**
+**Limpar cache:**
 ```bash
-# Clear Python cache
+# Limpar cache Python
 find . -type d -name __pycache__ -exec rm -rf {} +
 
-# Clear model cache
+# Limpar cache de modelos
 rm -rf ~/.cache/huggingface
 ```
 
-**Restart with limited memory:**
+**Reiniciar com memória limitada:**
 ```bash
-# Limit memory for the process
+# Limitar memória para o processo
 systemd-run --scope -p MemoryLimit=8G uvicorn web.backend.main:app
 ```
 
-### 8. Slow Performance
+---
 
-#### Symptom
+### 8. Performance Lenta
+
+#### Sintoma
 ```
-API responses taking > 5 seconds
-Tasks timing out
+Respostas de API levando > 5 segundos
+Tarefas dando timeout
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Run performance benchmark
+# Executar benchmark de performance
 python benchmarks/PHASE7_COMPLETE_BENCHMARK_AUDIT.py
 
-# Check system resources
+# Verificar recursos do sistema
 python scripts/canonical/diagnose/diagnose.py --check-performance
 ```
 
-#### Solution
+#### Solução
 
-See [Performance Tuning Guide](./PERFORMANCE_TUNING.md) for detailed optimization steps.
+Veja [Guia de Performance Tuning](./PERFORMANCE_TUNING.md) para passos detalhados de otimização.
 
-**Quick fixes:**
+**Correções rápidas:**
 ```bash
-# 1. Reduce logging verbosity
+# 1. Reduzir verbosidade de logs
 export LOG_LEVEL=WARNING
 
-# 2. Disable debug mode
+# 2. Desabilitar modo debug
 export OMNIMIND_DEBUG=false
 
-# 3. Use GPU if available
+# 3. Usar GPU se disponível
 export OMNIMIND_USE_GPU=true
 
-# 4. Increase worker count
+# 4. Aumentar número de workers
 uvicorn web.backend.main:app --workers 4
 ```
 
-### 9. Audit Chain Integrity Errors
+---
 
-#### Symptom
+### 9. Erros de Integridade da Cadeia de Auditoria
+
+#### Sintoma
 ```
 Audit chain verification failed
 Hash mismatch detected
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Verify audit chain
-python -c "from src.audit.immutable_audit import verify_chain; print(verify_chain())"
+# Verificar cadeia de auditoria
+python -c "from src.audit.immutable_audit import verify_chain_integrity; print(verify_chain_integrity())"
 
-# Check logs
+# Verificar logs
 cat logs/audit_chain.log
 ```
 
-#### Solution
+#### Solução
 
-**Rebuild audit chain:**
+**Reconstruir cadeia de auditoria:**
 ```bash
-# Backup existing chain
+# Fazer backup da cadeia existente
 cp logs/audit_chain.log logs/audit_chain.log.backup
 
-# Verify and fix
-python scripts/repair_audit_chain.py
+# Verificar e corrigir
+python scripts/canonical/diagnose/diagnose_audit.py
 ```
 
-**If chain is corrupted beyond repair:**
+**Se cadeia estiver corrompida além de reparo:**
 ```bash
-# Start fresh (only if acceptable to lose audit history)
+# Iniciar do zero (apenas se aceitável perder histórico de auditoria)
 rm logs/audit_chain.log logs/hash_chain.json
-# Restart server to create new chain
+# Reiniciar servidor para criar nova cadeia
 ```
 
-### 10. Test Failures
+---
 
-#### Symptom
+### 10. Falhas de Testes
+
+#### Sintoma
 ```
 pytest failures
-Import errors in tests
+Import errors em testes
 ```
 
-#### Diagnosis
+#### Diagnóstico
 ```bash
-# Run specific test with verbose output
+# Executar teste específico com saída verbosa
 pytest tests/test_api_documentation.py -vv
 
-# Check test dependencies
+# Verificar dependências de teste
 python scripts/canonical/diagnose/diagnose.py --check-test-deps
 ```
 
-#### Solution
+#### Solução
 
-**Install test dependencies:**
+**Instalar dependências de teste:**
 ```bash
-pip install pytest pytest-cov pytest-asyncio
+pip install pytest pytest-cov pytest-asyncio pytest-timeout
 ```
 
-**Run tests in isolation:**
+**Executar testes em isolamento:**
 ```bash
-# Clear cache
+# Limpar cache
 pytest --cache-clear
 
-# Run with fresh imports
+# Executar com imports frescos
 pytest --forked tests/
 ```
 
-## Automated Diagnostic Tools
+**Scripts de teste oficiais:**
+```bash
+# Suite rápida diária (sem slow/chaos)
+./scripts/run_tests_fast.sh
 
-### System Health Check
+# Suite completa semanal (inclui slow/chaos)
+./scripts/run_tests_with_defense.sh
+```
+
+---
+
+## Ferramentas de Diagnóstico Automatizadas
+
+### Verificação de Saúde do Sistema
 
 ```bash
-# Full system diagnostic
+# Diagnóstico completo do sistema
 python scripts/canonical/diagnose/diagnose.py --full
 
-# Quick health check
+# Verificação rápida de saúde
 python scripts/canonical/diagnose/diagnose.py --quick
 ```
 
-### Component-Specific Diagnostics
+### Diagnósticos Específicos por Componente
 
 ```bash
-# Database connectivity
+# Conectividade de banco de dados
 python scripts/canonical/diagnose/diagnose.py --check-db
 
-# GPU/CUDA status
+# Status GPU/CUDA
 python scripts/canonical/diagnose/diagnose.py --check-gpu
 
-# API endpoints
-python scripts/canonical/diagnose/diagnose.py --check-api
+# Portas em uso
+python scripts/canonical/diagnose/diagnose.py --check-ports
 
-# File permissions
-python scripts/canonical/diagnose/diagnose.py --check-permissions
+# Uso de memória
+python scripts/canonical/diagnose/diagnose.py --check-memory
 
-# Configuration validity
-python scripts/canonical/diagnose/diagnose.py --check-config
+# Performance
+python scripts/canonical/diagnose/diagnose.py --check-performance
+
+# Dependências
+python scripts/canonical/diagnose/diagnose.py --check-dependencies
 ```
 
-### Log Analysis
+### Health Check via API
 
 ```bash
-# Analyze error logs
-python scripts/utilities/analysis/analyze_logs.py --errors-only
+# Health check geral (sem autenticação)
+curl http://localhost:8000/api/v1/health/
 
-# Find performance bottlenecks
-python scripts/utilities/analysis/analyze_logs.py --slow-requests
+# Health check específico
+curl http://localhost:8000/api/v1/health/database
+curl http://localhost:8000/api/v1/health/gpu
+curl http://localhost:8000/api/v1/health/redis
 
-# Security event summary
-python scripts/utilities/analysis/analyze_logs.py --security
+# Health check com tendência
+curl http://localhost:8000/api/v1/health/database/trend?window_size=10
 ```
 
-## Debug Mode
+---
 
-Enable debug mode for detailed logging:
+## Endpoints de Troubleshooting
+
+### Health Check Endpoints
+
+- **`GET /api/v1/health/`** - Status geral de saúde do sistema
+- **`GET /api/v1/health/{check_name}`** - Status de componente específico
+  - `check_name`: `database`, `redis`, `gpu`, `filesystem`, `memory`, `cpu`
+- **`GET /api/v1/health/{check_name}/trend`** - Tendência de saúde
+- **`GET /api/v1/health/summary`** - Resumo do sistema de health check
+- **`POST /api/v1/health/start-monitoring`** - Iniciar monitoramento contínuo
+- **`POST /api/v1/health/stop-monitoring`** - Parar monitoramento contínuo
+
+### Monitoring Endpoints
+
+- **`GET /api/v1/monitoring/health`** - Status do monitoramento
+- **`GET /api/v1/monitoring/alerts/active`** - Alertas ativos
+- **`POST /api/v1/monitoring/alerts/acknowledge/{alert_id}`** - Reconhecer alerta
+- **`GET /api/v1/monitoring/snapshots/recent`** - Snapshots recentes
+- **`GET /api/v1/monitoring/status`** - Status do sistema de monitoramento
+
+---
+
+## Logs e Debugging
+
+### Localização de Logs
 
 ```bash
-# Set environment variable
-export OMNIMIND_DEBUG=true
+# Logs do backend
+tail -f logs/backend.log
 
-# Or in config/omnimind.yaml
-debug:
-  enabled: true
-  log_level: DEBUG
-  trace_requests: true
+# Logs de auditoria
+tail -f logs/audit_chain.log
+
+# Logs de testes
+tail -f data/test_reports/junit_*.xml
+
+# Logs do sistema
+journalctl -u omnimind -f
 ```
 
-View debug logs:
-```bash
-tail -f logs/debug.log
-```
-
-## Getting Help
-
-### Community Support
-
-- GitHub Issues: https://github.com/fabs-devbrain/OmniMind/issues
-- Discussions: https://github.com/fabs-devbrain/OmniMind/discussions
-
-### Bug Reports
-
-When reporting bugs, include:
-
-1. **System Information:**
-   ```bash
-   python scripts/canonical/diagnose/diagnose.py --system-info > debug_info.txt
-   ```
-
-2. **Error Logs:**
-   ```bash
-   tail -n 100 logs/backend.log > error_logs.txt
-   ```
-
-3. **Steps to Reproduce:**
-   - Exact commands run
-   - Configuration used
-   - Expected vs actual behavior
-
-### Emergency Recovery
-
-If system is completely broken:
+### Níveis de Log
 
 ```bash
-# 1. Stop all services
-pkill -f omnimind
-docker-compose down
+# Configurar nível de log
+export LOG_LEVEL=DEBUG  # DEBUG, INFO, WARNING, ERROR
 
-# 2. Backup data
-tar -czf omnimind_backup_$(date +%Y%m%d).tar.gz \
-  config/ logs/ data/
-
-# 3. Clean installation
-rm -rf .venv/
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-
-# 4. Restore configuration
-# (restore from backup if needed)
-
-# 5. Restart services
-source scripts/start_dashboard.sh
+# Ou via variável de ambiente
+export OMNIMIND_LOG_LEVEL=INFO
 ```
 
-## Preventive Maintenance
+---
 
-### Regular Health Checks
+## Recursos Adicionais
 
-Add to crontab for automated monitoring:
+- [Guia de Performance Tuning](./PERFORMANCE_TUNING.md)
+- [Interactive API Playground](./INTERACTIVE_API_PLAYGROUND.md)
+- [Quick Start Guide](../canonical/QUICK_START.md)
+- [Technical Checklist](../canonical/TECHNICAL_CHECKLIST.md)
 
-```cron
-# Check system health every hour
-0 * * * * /path/to/omnimind/scripts/canonical/diagnose/diagnose.py --quick --alert-on-failure
+---
 
-# Run full diagnostic daily
-0 3 * * * /path/to/omnimind/scripts/canonical/diagnose/diagnose.py --full > /var/log/omnimind/diagnostic_$(date +\%Y\%m\%d).log
-```
-
-### Log Rotation
-
-Configure log rotation to prevent disk space issues:
-
-```bash
-# /etc/logrotate.d/omnimind
-/path/to/omnimind/logs/*.log {
-    daily
-    rotate 30
-    compress
-    delaycompress
-    notifempty
-    create 0640 omnimind omnimind
-    sharedscripts
-    postrotate
-        systemctl reload omnimind-daemon
-    endscript
-}
-```
-
-## Performance Monitoring
-
-Use built-in monitoring:
-
-```bash
-# Real-time metrics
-curl -u user:pass http://localhost:8000/metrics
-
-# WebSocket stats
-curl -u user:pass http://localhost:8000/ws/stats
-
-# System observability
-curl -u user:pass http://localhost:8000/observability
-```
-
-## 📘 Referências Técnicas
-
-- [web/backend/routes/health.py](web/backend/routes/health.py) documenta os endpoints `/health` e `/health/{check}` usados nos exemplos de Health Check.
-- [web/backend/routes/monitoring.py](web/backend/routes/monitoring.py) é a fonte real dos endpoints `/api/monitoring/health`, `/alerts/active`, `/status` e `/snapshots/recent` ilustrados ao longo do guia.
-- [scripts/canonical/diagnose/diagnose.py](scripts/canonical/diagnose/diagnose.py) expõe todas as opções `--check-*`, `--full`, `--quick` e `--system-info` listadas nos blocos de diagnóstico e no cron.
-- [scripts/utilities/analysis/analyze_logs.py](scripts/utilities/analysis/analyze_logs.py) implementa os comandos de análise de logs e performance descritos na seção Log Analysis.
-- `config/dashboard_auth.json` contém as credenciais citadas em Authentication Failures e deve ser verificada sempre que surgirem HTTP 401.
-
-## Additional Resources
-
-- [Performance Tuning Guide](./PERFORMANCE_TUNING.md)
-- [API Playground](./INTERACTIVE_API_PLAYGROUND.md)
-- [System Architecture](../PHASE8_9_IMPLEMENTATION_COMPLETE.md)
-- [Hardware Optimization](../HARDWARE_OPTIMIZATION_SUMMARY.md)
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)

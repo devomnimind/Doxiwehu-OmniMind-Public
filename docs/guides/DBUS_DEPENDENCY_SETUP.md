@@ -1,16 +1,28 @@
 # D-Bus Dependency Setup Guide
 
-## Overview
+**Última Atualização**: 5 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
 
-The OmniMind project uses `dbus-python` for system integration features (media player control, network monitoring, power management, etc.). This requires the D-Bus development libraries to be installed at the system level.
+---
+
+## Visão Geral
+
+O projeto OmniMind usa `dbus-python` para integração com o sistema (controle de media player, monitoramento de rede, gerenciamento de energia, etc.). Isso requer que as bibliotecas de desenvolvimento D-Bus sejam instaladas no nível do sistema.
+
+**Módulo**: `src/integrations/dbus_controller.py`
+- `DBusSessionController`: Controle de sessão D-Bus
+- `DBusSystemController`: Controle de sistema D-Bus
 
 ## Required System Dependencies
 
-### Linux (Debian/Ubuntu)
+### Linux (Debian/Ubuntu/Kali)
 ```bash
 sudo apt-get update
 sudo apt-get install -y libdbus-1-dev pkg-config
 ```
+
+**Nota**: No Kali Linux, as bibliotecas D-Bus geralmente já estão instaladas, mas é recomendado verificar.
 
 ### Linux (Fedora/RHEL/CentOS)
 ```bash
@@ -27,18 +39,20 @@ sudo pacman -S dbus pkgconfig
 brew install dbus pkg-config
 ```
 
-## Installation Order
+## Ordem de Instalação
 
-**IMPORTANT**: System dependencies must be installed **before** Python dependencies.
+**CRÍTICO**: Dependências do sistema devem ser instaladas **antes** das dependências Python.
 
-### Correct Order:
+### Ordem Correta:
 ```bash
-# 1. Install system dependencies first
+# 1. Instalar dependências do sistema primeiro
 sudo apt-get install -y libdbus-1-dev pkg-config
 
-# 2. Then install Python dependencies
-pip install -r requirements.txt
+# 2. Depois instalar dependências Python
+pip install -r requirements/requirements-core.txt
 ```
+
+**Nota**: Se instalar dependências Python antes das dependências do sistema, o `dbus-python` falhará na compilação.
 
 ### Common Error
 If you see this error:
@@ -49,20 +63,28 @@ ERROR: Dependency "dbus-1" not found, tried pkgconfig and cmake
 
 This means you forgot to install the system dependencies first.
 
-## CI/CD Integration
+## Verificação de Instalação
 
-### GitHub Actions
-The workflow already includes the required system dependencies:
+### Verificar se D-Bus está disponível
 
-```yaml
-- name: Install system dependencies
-  run: |
-    sudo apt-get update
-    sudo apt-get install -y libdbus-1-dev pkg-config
+```bash
+# Verificar bibliotecas do sistema
+pkg-config --modversion dbus-1
 
-- name: Install Python dependencies
-  run: |
-    pip install -r requirements.txt
+# Verificar se dbus-python está instalado
+python3 -c "import dbus; print('D-Bus disponível')"
+```
+
+### Testar Integração
+
+```python
+from src.integrations.dbus_controller import DBusSessionController
+
+try:
+    controller = DBusSessionController()
+    print("✅ D-Bus funcionando corretamente")
+except Exception as e:
+    print(f"❌ Erro ao inicializar D-Bus: {e}")
 ```
 
 ### Docker
@@ -88,15 +110,37 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ## Troubleshooting
 
-### Problem: pip install fails with dbus-1 not found
+### Problema: pip install falha com "dbus-1 not found"
 
-**Solution**: Install system dependencies first
+**Solução**: Instalar dependências do sistema primeiro
 ```bash
-# Ubuntu/Debian
+# Ubuntu/Debian/Kali
 sudo apt-get install -y libdbus-1-dev pkg-config
 
-# Then retry pip install
-pip install -r requirements.txt
+# Depois tentar novamente pip install
+pip install -r requirements/requirements-core.txt
+```
+
+### Problema: ImportError ao importar dbus
+
+**Solução**: Verificar se dbus-python está instalado
+```bash
+# Verificar instalação
+pip list | grep dbus-python
+
+# Se não estiver, instalar
+pip install dbus-python
+```
+
+### Problema: D-Bus não disponível no sistema
+
+**Solução**: Verificar se D-Bus está rodando
+```bash
+# Verificar serviço D-Bus
+systemctl status dbus
+
+# Se não estiver rodando, iniciar
+sudo systemctl start dbus
 ```
 
 ### Problem: Docker build fails

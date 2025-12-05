@@ -9,7 +9,7 @@ import pytest
 
 torch = pytest.importorskip("torch")
 
-from src.consciousness.topological_phi import (
+from src.consciousness.topological_phi import (  # noqa: E402
     IITResult,
     PhiCalculator,
     SimplicialComplex,

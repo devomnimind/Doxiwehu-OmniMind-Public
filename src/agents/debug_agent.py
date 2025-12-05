@@ -11,7 +11,6 @@ Quando usar: Build quebrado, edge cases, race conditions
 import json
 from typing import Any, Dict, List
 
-from ..memory.episodic_memory import SimilarEpisode
 from ..tools.omnimind_tools import ToolCategory, ToolsFramework
 from .react_agent import AgentState, ReactAgent
 
@@ -61,8 +60,9 @@ class DebugAgent(ReactAgent):
             return f"Error: {str(exc)}"
 
     def _think_node(self, state: AgentState) -> AgentState:
-        similar_episodes: List[SimilarEpisode] = self.memory.search_similar(
-            state["current_task"], top_k=3
+        similar_episodes_raw = self.memory.search_similar(state["current_task"], top_k=3)
+        similar_episodes: List[Dict[str, Any]] = (
+            similar_episodes_raw if isinstance(similar_episodes_raw, list) else []
         )
         system_status = self.tools_framework.execute_tool("inspect_context")
         system_status_str = (

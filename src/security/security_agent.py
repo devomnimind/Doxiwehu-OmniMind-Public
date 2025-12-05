@@ -25,6 +25,7 @@ from .playbooks.intrusion_response import IntrusionPlaybook
 from .playbooks.malware_response import MalwarePlaybook
 from .playbooks.privilege_escalation_response import PrivilegeEscalationPlaybook
 from .playbooks.rootkit_response import RootkitPlaybook
+from .playbooks.suspicious_port_response import SuspiciousPortPlaybook
 from .playbooks.utils import run_command
 
 logger = logging.getLogger(__name__)
@@ -201,6 +202,7 @@ class SecurityAgent(AuditedTool):
             "malware": MalwarePlaybook(),
             "privilege_escalation": PrivilegeEscalationPlaybook(),
             "data_exfiltration": DataExfiltrationPlaybook(),
+            "suspicious_port": SuspiciousPortPlaybook(),
         }
 
     @staticmethod
@@ -578,6 +580,8 @@ Provide:
             "data_exfiltration": "data_exfiltration",
             "log_anomaly": "privilege_escalation",
             "file_integrity": "malware",
+            "new_ports_opened": "suspicious_port",
+            "suspicious_port": "suspicious_port",
         }
         return mapping.get(event_type, "intrusion")
 

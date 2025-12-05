@@ -56,13 +56,15 @@ class TestOrchestratorAgent:
             agent_type="code",
         )
 
-    @patch("src.agents.orchestrator_agent.OmniMindCore")
-    def test_orchestrate_workflow(self, mock_core: Mock) -> None:
-        """Testa decomposição de tarefa pelo orchestrador (real LLM).
+    @pytest.mark.real
+    def test_orchestrate_workflow(self) -> None:
+        """Testa decomposição de tarefa pelo orchestrador (real LLM, produção, sem mock).
 
         Testa que o orchestrador consegue decompor uma tarefa complexa
         em subtarefas usando o modelo Ollama local com fallback.
+        Sistema core em produção - não usar mock.
         """
+        # Sistema real, sem mock - OrchestratorAgent é módulo core
         agent = OrchestratorAgent(config_path="config/agent_config.yaml")
 
         # Apenas testa decomposição (não executa as subtarefas)

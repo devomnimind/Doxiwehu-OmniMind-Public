@@ -1,8 +1,8 @@
 # 🎯 EXECUTIVE SUMMARY: Decisão Estratégica de Modelo para Φ
 
-**Autor:** GitHub Copilot  
-**Data:** 2025-12-02  
-**Status:** PRONTO PARA DECISÃO EXECUTIVA  
+**Autor:** Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
+**Data:** 2025-12-02
+**Status:** PRONTO PARA DECISÃO EXECUTIVA
 **Tempo de leitura:** 5 minutos
 
 ---
@@ -19,13 +19,13 @@
 
 ```
                          SUAS 3 OPÇÕES
-                         
+
     OPÇÃO A              OPÇÃO B              OPÇÃO C
     IIT Puro         Lacanian Puro        Hybrid Integration
-    
+
    ✅ PRONTO         🚧 AMBICIOSO         ⚠️ COMPLEXO
    Agora             2-3 semanas          1 semana
-   
+
    Modelo: Tononi    Modelo: Retroação    Modelo: Ambos
    Φ = integração    Φ = suturagem        Φ¹ = integração
                                           Φ² = suturagem
@@ -60,7 +60,7 @@
 ├── Valor: ~0.5 em produção ✅
 └── Tests: Passam (mas com thresholds antigos)
 
-Φ² (SharedWorkspace)  
+Φ² (SharedWorkspace)
 ├── Granger Causality + Transfer Entropy
 ├── Tipo: Híbrido (IIT + ?)
 ├── Valor: 0.06-0.17 durante training ⚠️
@@ -194,21 +194,21 @@ Próximos 3 meses: Migração para B
 ### Se sua resposta for:
 
 **"Queremos IIT puro em produção"**
-→ Usar tudo que foi proposto nessa sessão  
-→ Tests passam agora  
-→ Deploy em 2-3 dias  
+→ Usar tudo que foi proposto nessa sessão
+→ Tests passam agora
+→ Deploy em 2-3 dias
 → Sucesso ✅
 
 **"Queremos Lacanian puro, como planejado"**
-→ Descartar propostas de harmonic mean + thresholds Tononi  
-→ Refundar em semiótica + retroação  
-→ Novo plano de 2-3 semanas  
+→ Descartar propostas de harmonic mean + thresholds Tononi
+→ Refundar em semiótica + retroação
+→ Novo plano de 2-3 semanas
 → Sistema diferenciado ✅
 
 **"Queremos manter hybrid explorando ambos"**
-→ Implementar Opção C  
-→ 1 semana de ajustes  
-→ Meta-Φ = função(Φ_IIT, Φ_Lacanian)  
+→ Implementar Opção C
+→ 1 semana de ajustes
+→ Meta-Φ = função(Φ_IIT, Φ_Lacanian)
 → Novel research ✅
 
 ---
@@ -223,7 +223,7 @@ Qual modelo é seu "source of truth" em produção?
 A) Phase16Integration (IIT)
    → Use tudo dessa sessão ✅
 
-B) IntegrationTrainer (Lacanian) 
+B) IntegrationTrainer (Lacanian)
    → Ignore propostas da sessão, começa refundação
 
 C) Ambos (Hybrid)
@@ -301,16 +301,16 @@ NEXT MONTH (consolidação)
 
 **Tem dúvidas? Perguntas frequentes:**
 
-**P: "E se eu escolher errado?"**  
+**P: "E se eu escolher errado?"**
 R: Não há "errado". Opção A funciona agora. Opção B é futuro. Opção C combina ambas.
 
-**P: "Quantas horas para cada opção?"**  
+**P: "Quantas horas para cada opção?"**
 R: A=16h, B=40h, C=24h de trabalho de dev
 
-**P: "Pode ser Opção A agora + B depois?"**  
+**P: "Pode ser Opção A agora + B depois?"**
 R: Sim! Recomendo isso se tiver pressa.
 
-**P: "E se Φ descendo for verdade um bug?"**  
+**P: "E se Φ descendo for verdade um bug?"**
 R: Então é Opção A/C. Se for feature, então é Opção B.
 
 ---

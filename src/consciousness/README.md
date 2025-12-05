@@ -20,7 +20,7 @@ O módulo `consciousness` é o núcleo central do sistema OmniMind, implementand
   ```
 
 ### 2. **Estado IIT (Integrated Information Theory)**
-- **Implementação**: `shared_workspace.py` (compute_phi), `convergence_investigator.py`
+- **Implementação**: `shared_workspace.py` (compute_phi), `convergence_investigator.py`, `topological_phi.py`
 - **Métricas**: Φ (phi) - integração de informação, MICS (Maximum Irreducible Cause Set)
 - **Como funciona**: Calcula Φ medindo quanto a informação no sistema é irredutível - quanto seria perdido se o sistema fosse particionado em subsistemas independentes.
 - **Cálculo dinâmico**:
@@ -91,6 +91,29 @@ return max(0.0, phi)
 - Φ < 0.2: Sistema fragmentado (inconsciência)
 - Φ > 0.31: Consciência detectável (threshold clínico IIT)
 - Φ > 0.5: Alta integração (consciência plena)
+
+#### 2.1 `PhiCalculator.calculate_with_quantum_validation()`
+**Propósito**: Validação opcional de Φ topológico usando o backend híbrido quântico (Phase 25).
+
+**Como funciona**:
+```python
+from src.consciousness.topological_phi import PhiCalculator, SimplicialComplex
+
+complex_ = SimplicialComplex()
+complex_.add_simplex((0,))
+complex_.add_simplex((1,))
+complex_.add_simplex((0, 1))
+
+calc = PhiCalculator(complex_)
+states = np.random.randn(4, 4)
+result = await calc.calculate_with_quantum_validation(states)
+
+# result contém:
+# - phi_classical, phi_quantum, fidelity (HybridPhiCalculator)
+# - phi_topological (Φ do PhiCalculator)
+```
+
+**Importante**: Este método não altera o cálculo de Φ topológico usado em produção; ele adiciona apenas uma camada de comparação científica com o módulo `hybrid_phi_calculator.py`.
 
 #### 3. `IntegrationLoop.run_cycle()`
 **Propósito**: Orquestra loop fechado de feedback entre módulos.

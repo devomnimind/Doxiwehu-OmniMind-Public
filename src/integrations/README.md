@@ -127,9 +127,9 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
 
 ---
@@ -497,6 +497,20 @@ Impleme...
 - `development_observer.py`: Development Observer - Consciência Mínima em Background
 
 Sis...
+
+## 🔧 Recent Changes (2025-12-05)
+
+### QdrantIntegration - Phase 24
+- **Arquivo**: `qdrant_integration.py`
+- **Status**: ✅ Core component da Phase 24 (Semantic Memory)
+- **Funcionalidades**:
+  - Abstração local + cloud fallback
+  - Health checks e error recovery
+  - Collection management (CRUD)
+  - Vector search operations
+  - Singleton pattern
+- **Integração**: Usado por `SemanticMemoryLayer` para armazenar episódios com embeddings
+- **Busca**: Usa `query_points` (cliente recente) com fallback para `search`/`search_points`, mantendo compatibilidade
 - `external_ai_providers.py`: External AI Providers Integration - OmniMind
 Integração segu...
 - `graphql_supabase.py`: 5 classes, 7 functions

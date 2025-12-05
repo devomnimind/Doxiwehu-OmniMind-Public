@@ -28,6 +28,12 @@ from .qpu_interface import (
     QPUInterface,
     SimulatorBackend,
 )
+from .hybrid_phi_calculator import HybridPhiCalculator
+from .phi_trajectory_transformer import (
+    PhiTrajectoryPoint,
+    PhiTrajectoryTransformer,
+    QuantumInputFeatures,
+)
 from .quantum_backend import DWaveBackend, QuantumBackend
 from .quantum_cognition import (
     QuantumCognitionEngine,
@@ -68,6 +74,11 @@ __all__ = [
     "ClassicalQuantumBridge",
     "CognitionMetrics",
     "OptimizationStrategy",
+    # Phase 24 → Phase 25 Bridge
+    "PhiTrajectoryTransformer",
+    "PhiTrajectoryPoint",
+    "QuantumInputFeatures",
+    "HybridPhiCalculator",
 ]
 # ...existing code...
 

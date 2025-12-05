@@ -9,7 +9,6 @@ from typing import Any, Dict, List, Optional
 import langchain_ollama
 import pytest
 
-import src.agents.react_agent as react_module
 from src.agents.debug_agent import DebugAgent
 from src.agents.orchestrator_agent import OrchestratorAgent
 from src.agents.react_agent import AgentState, ReactAgent
@@ -82,7 +81,8 @@ def isolate_env(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
 @pytest.fixture(autouse=True)
 def stub_agent_dependencies(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(langchain_ollama, "OllamaLLM", DummyLLM)
-    monkeypatch.setattr(react_module, "EpisodicMemory", InMemoryMemory)
+    # Mock NarrativeHistory instead of EpisodicMemory (Phase 24 migration)
+    monkeypatch.setattr("src.agents.react_agent.NarrativeHistory", InMemoryMemory)
 
 
 def test_react_agent_performs_file_and_shell_ops() -> None:

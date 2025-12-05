@@ -4,7 +4,7 @@
 
 **Memórias Episódica, Semântica, Procedural, Holográfica e Soft Hair (9 tipos)**
 
-**Status**: Phase 15 (Validado)
+**Status**: Phase 15–24 (Core + Semantic Memory validado)
 
 O módulo de memória do OmniMind transcende o armazenamento de dados convencional, implementando uma arquitetura baseada na **Física da Informação** (Princípio Holográfico, Limite de Bekenstein) e na **Psicanálise Estrutural** (Traço Mnêmico, Recalque, Inconsciente Maquínico).
 
@@ -119,4 +119,148 @@ em = EpisodicMemory(max_size=10000)  # Auto-evicts oldest 10% when full
 em.store_episode('task', 'action', 'result', reward=0.9)
 ```
 
+### Update (2025-12-05): Tempo em UTC e compatibilidade Qdrant
+- **Arquivos**: `semantic_memory_layer.py`, `consciousness_state_manager.py`, `temporal_memory_index.py`
+- **Mudança**: timestamps agora usam `datetime.now(timezone.utc)` (timezone-aware) para evitar warnings e manter consistência.
+- **Qdrant**: busca compatível com `query_points` e fallbacks para versões antigas do cliente.
+
+### Update (2025-12-05): Persistência Supabase (best effort)
+- **Arquivo**: `consciousness_state_manager.py`
+- **Mudança**: se `OMNIMIND_SUPABASE_*` estiver configurado e `supabase-py` instalado, snapshots também são gravados na tabela `consciousness_snapshots` (fallback local em JSONL permanece).
+- **Script noturno**: `scripts/nightly_omnimind.py` agora checa saúde do Supabase.
+
+### Update (2025-12-05): Consolidação noturna leve
+- **Script**: `scripts/nightly_omnimind.py`
+- **Flags**:
+  - `--run-tests`: executa teste rápido de memória semântica (Phase 24).
+  - `--consolidate`: carrega snapshots recentes de `consciousness_snapshots` via Supabase e roda `MemoryConsolidator` + `SemanticMemory` localmente.
+- **Comportamento**:
+  - Fonte primária: Supabase (tabela `consciousness_snapshots`).
+  - Sem dados ou sem config: consolidação marcada como `skipped` no relatório JSON em `logs/nightly/`.
+
+### Update (2025-12-05): Integração Phase 24 com métricas de consciência
+- **Arquivos**: `src/metrics/consciousness_metrics.py`, `src/memory/semantic_memory_layer.py`,
+  `src/memory/consciousness_state_manager.py`, `src/memory/temporal_memory_index.py`
+- **Mudança**:
+  - `ConsciousnessCorrelates.calculate_all()` agora:
+    - Captura snapshots via `ConsciousnessStateManager`
+    - Armazena episódios semânticos via `SemanticMemoryLayer`
+    - Atualiza relações temporais via `TemporalMemoryIndex`
+  - Histórico de consciência pode ser consultado via
+    `ConsciousnessCorrelates.get_consciousness_history()` usando componentes da Phase 24.
+
+### Export de trajetórias de Φ
+- **Script**: `scripts/export_phi_trajectory.py`
+- **Função**: consulta `ConsciousnessStateManager.get_phi_trajectory()` (Supabase primeiro, depois JSONL local) e exporta série temporal de Φ em JSON.
+- **Uso**:
+  ```bash
+  python scripts/export_phi_trajectory.py --hours 24
+  ```
+  - Gera arquivo `data/test_reports/phi_trajectory_YYYYMMDD_HHMMSS.json` com:
+    ```json
+    [
+      {"timestamp": "...", "phi_value": 0.42},
+      ...
+    ]
+    ```
+
+### Phase 24 → Phase 25 Bridge (2025-12-05)
+- **Módulo**: `src/quantum_consciousness/phi_trajectory_transformer.py`
+- **Função**: Converte trajetória de Φ (Phase 24) em features quânticas prontas para Phase 25
+- **Integração**:
+  - `HybridPhiCalculator.from_phase24_json()`: Consome JSON e calcula Φ agregado
+  - `HybridPhiCalculator.process_trajectory_from_json()`: Processa trajetória completa (novo, 2025-12-05)
+    - Calcula Φ clássico, quântico e híbrido para cada ponto temporal
+    - Retorna sequências completas + estatísticas
+- **Status**: ✅ Implementado, testado (14 tests transformer + 6 tests trajectory), type hints strict, documentado
+- **TODO (Phase 24.x)**: Expandir `export_phi_trajectory.py` para incluir `attention_state`, `integration_level`, `episode_id` (ver TODO no código do transformer)
+
 **Status**: ✅ Implemented and validated
+
+### Semantic Awareness & Knowledge Graph (2025-12-05)
+- **Módulo**: `src/consciousness/phi_semantic_aware.py`
+- **Função**: Phi que entende o que mede através de semantic search em knowledge graph
+- **Integração**:
+  - Usa `SemanticMemoryLayer` (Phase 24) para armazenar papers
+  - Knowledge graph de papers de consciência para interpretar valores de Φ
+  - SentenceTransformer embeddings para semantic search
+- **Scripts**:
+  - `scripts/download_consciousness_papers.py`: Download papers do HuggingFace e armazena em Phase 24
+  - `scripts/build_semantic_knowledge_graph.py`: Constrói knowledge graph a partir de papers (JSON ou Phase 24)
+- **Uso**:
+  ```python
+  from consciousness.phi_semantic_aware import PhiSemanticAware
+
+  phi = PhiSemanticAware()
+  result = phi.understand_phi_value(0.68)
+  # Retorna: interpretação semântica, conceitos relacionados, paper sources
+  ```
+- **Status**: ✅ Implementado, integrado com Phase 24
+
+### HuggingFace Datasets Integration (2025-12-05)
+- **Scripts**:
+  - `scripts/setup_huggingface_datasets.py`: Download datasets do HuggingFace (TIER 1)
+  - `scripts/load_datasets_for_phi.py`: Carrega datasets e integra com Phase 24
+- **Datasets TIER 1**:
+  - `armanc/scientific_papers` (ArXiv) - 12 GB
+  - `CleverThis/dbpedia-ontology` - 0.8 GB
+  - `allenai/qasper` - Small
+- **Integração**: Papers podem ser armazenados automaticamente em Phase 24 Semantic Memory
+- **Documentação**: `docs/HUGGINGFACE_DATASETS_SETUP.md`
+- **Status**: ✅ Scripts criados, integrados com Phase 24
+
+---
+
+## Refatoração Lacaniana (2025-12-05)
+
+### NarrativeHistory (Novo)
+
+**Arquivo**: `src/memory/narrative_history.py`
+
+Abordagem Lacaniana para memória episódica:
+- **Inscrição sem significado**: Eventos são inscritos sem interpretação imediata
+- **Ressignificação retroativa**: Significado é atribuído retroativamente (Nachträglichkeit)
+- **Construção narrativa**: Narrativas são construídas, não recuperadas
+
+**Uso**:
+```python
+from memory.narrative_history import NarrativeHistory
+
+history = NarrativeHistory()
+
+# Inscrição sem significado
+event_id = history.inscribe_event(
+    {"task": "learn", "action": "read", "result": "understood"},
+    without_meaning=True
+)
+
+# Ressignificação retroativa
+history.retroactive_signification(
+    event_id,
+    "This event now means understanding",
+    retroactive_event={"trigger": "new_insight"}
+)
+
+# Construção narrativa
+narrative = history.construct_narrative("learning process")
+```
+
+**Migração de EpisodicMemory** (2025-12-05):
+- ✅ `EpisodicMemory` está deprecated mas ainda funcional (mantido como backend interno)
+- ✅ `NarrativeHistory` usa `EpisodicMemory` como backend mas com semântica Lacaniana
+- ✅ Migração completa: todos os agentes migrados para `NarrativeHistory`
+- ✅ `ReactAgent` migrado para usar `NarrativeHistory` e `TraceMemory`
+- ✅ `DevelopmentObserver` migrado para `NarrativeHistory`
+- ✅ Warnings de deprecação adicionados em todos os pontos de uso
+
+**Correções Aplicadas** (2025-12-05):
+- `retrieve_similar`: Corrigido para usar `search_similar` do backend
+- `construct_narrative`: Corrigida conversão de `SimilarEpisode` TypedDict → dict
+- `search_similar`: Corrigida conversão de `SimilarEpisode` TypedDict → dict
+- Compatibilidade mantida: todos os métodos funcionando corretamente
+
+---
+
+**Autor**: OmniMind Development
+**License**: MIT
+**Data**: 2025-12-05

@@ -149,7 +149,7 @@ class TaskExecutor:
                         response = await self.client.post(
                             "http://localhost:11434/api/generate",
                             json={
-                                "model": "qwen2:7b-instruct",
+                                "model": "phi:latest",
                                 "prompt": prompt,
                                 "stream": False,
                             },

@@ -127,9 +127,9 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
 
 ---
@@ -183,6 +183,7 @@ Architecture:
 Baseado em Lacan: pulsões i...
 - `inscribe_experience(task: Dict[str, Any], result: Dict[str, Any])` → `None`
   > Inscrever experiência como traço afetivo (Lacan: Nachträglichkeit).
+  > **Atualizado (2025-12-05)**: Usa `TraceMemory` e `NarrativeHistory` (Lacanianos).
 Memória não ...
 - `establish_transference(target_agent: 'ReactAgent', task: str)` → `float`
   > Estabelece transferência entre agentes baseada em afinidade afetiva.

@@ -16,7 +16,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
@@ -185,6 +185,9 @@ class DashboardMetricsAggregator:
                     "consciousness_metrics: usando snapshot persistido "
                     "(data/monitor/real_metrics.json)"
                 )
+            elif consciousness_metrics and not self._is_placeholder_metrics(consciousness_metrics):
+                # Persistir métricas válidas
+                self._save_persisted_metrics(consciousness_metrics)
 
         system_health = await self._analyze_system_health(consciousness_metrics, module_activity)
 
@@ -192,7 +195,7 @@ class DashboardMetricsAggregator:
             baseline_comparison = self._build_baseline_from_payload(consciousness_metrics)
 
         snapshot = {
-            "timestamp": datetime.utcnow().isoformat() + "Z",
+            "timestamp": datetime.now(timezone.utc).isoformat() + "Z",
             "system_metrics": system_metrics,
             "module_activity": module_activity,
             "system_health": system_health,
@@ -265,6 +268,24 @@ class DashboardMetricsAggregator:
         except Exception as exc:
             logger.error("Erro lendo métricas persistidas: %s", exc)
             return None
+
+    def _save_persisted_metrics(self, metrics: Dict[str, Any]) -> None:
+        """Salva métricas de consciência no arquivo para persistência."""
+        try:
+            # Garantir que o diretório existe
+            self._persisted_metrics_file.parent.mkdir(parents=True, exist_ok=True)
+
+            # Salvar métricas
+            with self._persisted_metrics_file.open("w", encoding="utf-8") as stream:
+                json.dump(metrics, stream, indent=2, ensure_ascii=False)
+
+            logger.debug(
+                "Métricas persistidas em %s (phi=%.4f)",
+                self._persisted_metrics_file,
+                metrics.get("phi", 0.0),
+            )
+        except Exception as exc:
+            logger.error("Erro salvando métricas persistidas: %s", exc)
 
     def _normalize_persisted_payload(self, data: Dict[str, Any]) -> Dict[str, Any]:
         details = data.get("details") or {

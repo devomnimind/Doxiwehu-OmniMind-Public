@@ -4,7 +4,7 @@
 **Data:** 04 de Dezembro de 2025
 **Status:** Validado
 **Versão:** 1.0
-**Autor:** OmniMind System (Módulo de Auto-Validação)
+**Autor:** Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
 
 ---
 

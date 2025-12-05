@@ -11,10 +11,12 @@
 #
 # 🚫 EXCLUÍDOS:
 #   - Testes @pytest.mark.slow (timeout > 30s)
-#   - Testes @pytest.mark.real (full LLM+Network)
-#   - Testes @pytest.mark.chaos (destroem servidor)
+#   - Testes @pytest.mark.chaos (destroem servidor - WEEKLY ONLY)
 #
-# ⏳ DURAÇÃO: ~10-15 min
+# ✅ INCLUÍDOS:
+#   - Testes @pytest.mark.real SEM @pytest.mark.chaos (GPU+LLM+Network, não destroem servidor)
+#
+# ⏳ DURAÇÃO: ~15-20 min
 # 🎯 RODAS: Diárias (CI/CD automático)
 #
 # Para suite SEMANAL com todos os testes, use:
@@ -32,7 +34,8 @@ mkdir -p "$LOG_DIR"
 echo "⚡ OMNIMIND FAST TEST SUITE"
 echo "======================================"
 echo "⏱️  Timestamp: $TIMESTAMP"
-echo "🛡️  Modo: Rápido (Sem Chaos/Slow)"
+echo "� Testes esperados: 3996 (incluindo @pytest.mark.real sem @pytest.mark.chaos)"
+echo "�🛡️  Modo: Rápido (Sem Chaos/Slow)"
 echo "🚀 GPU: FORÇADA (com fallback)"
 echo "======================================"
 echo ""
@@ -63,7 +66,7 @@ PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512 \
 pytest tests/ \
   -vv \
   --tb=short \
-  -m "not slow and not real and not chaos" \
+  -m "not slow and not chaos" \
   --log-cli-level=DEBUG \
   --log-file="$LOG_DIR/pytest_fast_${TIMESTAMP}.log" \
   --junit-xml="$LOG_DIR/junit_fast_${TIMESTAMP}.xml" \

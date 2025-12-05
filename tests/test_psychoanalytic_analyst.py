@@ -33,7 +33,8 @@ system:
 
     # Mock dependencies of the parent ReactAgent
     with pytest.MonkeyPatch().context() as m:
-        m.setattr("src.agents.react_agent.EpisodicMemory", MagicMock())
+        # Mock NarrativeHistory instead of EpisodicMemory (Phase 24 migration)
+        m.setattr("src.agents.react_agent.NarrativeHistory", MagicMock())
         m.setattr(
             "src.agents.react_agent.ReactAgent._run_supabase_memory_onboarding",
             MagicMock(),

@@ -484,8 +484,13 @@ class TestIntegration:
 
         assert salience_acceptance > salience_denial
 
+    @pytest.mark.slow
     def test_legacy_preservation_under_time_pressure(self) -> None:
-        """Test legacy preservation prioritization under time pressure."""
+        """Test legacy preservation prioritization under time pressure.
+
+        MARKED AS SLOW: Esta teste simula 30 segundos de pressão temporal.
+        Não deveria estar em run_tests_fast.sh (exclui @pytest.mark.slow).
+        """
         simulator = MortalitySimulator(expected_lifetime=timedelta(seconds=30))
 
         # Create many legacy items

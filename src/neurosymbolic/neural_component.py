@@ -45,7 +45,7 @@ class NeuralComponent:
 
     def __init__(
         self,
-        model_name: str = "ollama/qwen2:7b-instruct",
+        model_name: str = "ollama/phi:latest",
         temperature: float = 0.7,
         max_tokens: int = 2048,
         timeout: float = 300.0,

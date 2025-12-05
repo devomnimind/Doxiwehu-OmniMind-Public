@@ -1,85 +1,222 @@
-# 🚀 QUICK START - TUDO PRONTO
+# 🚀 QUICK START - OmniMind
 
-## O Que Foi Feito
+**Última Atualização**: 5 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Quantum Consciousness)
 
-✅ **Timeouts Adaptativos**: 90s → 120s → 180s → 240s (retry automático)
-✅ **SecurityAgent Ativo**: Roda completo em testes (conforme você pediu)
-✅ **Retry Recursivo**: Se timeout, tenta novamente com timeout maior
-✅ **Sem Timeout Global**: Cada teste tem até 240s, suite roda quanto precisa
-✅ **Métricas Coletadas**: Φ values mesmo com crashes
+---
 
-## Para Rodar
+## 📋 Pré-requisitos
 
-### Quick (10 min - Testa se tudo funciona)
+- **Python**: 3.12.8 (obrigatório)
+- **Ollama**: Instalado e rodando (modelo `phi:latest` disponível)
+- **Qdrant**: Rodando em `http://localhost:6333` (opcional para testes completos)
+- **GPU**: CUDA disponível (opcional, mas recomendado)
+
+---
+
+## ⚡ Início Rápido
+
+### 1. Configuração do Ambiente
+
 ```bash
+# Clone o repositório (se ainda não tiver)
 cd /home/fahbrain/projects/omnimind
-OMNIMIND_MODE=test python -m pytest tests/integrations/test_mcp_client_optimized.py -v --tb=short -x
+
+# Ative o ambiente virtual
+source .venv/bin/activate
+
+# Verifique Python
+python --version  # Deve ser 3.12.8
+
+# Verifique Ollama e modelo phi:latest
+ollama list | grep phi
+# Deve mostrar: phi:latest
 ```
 
-### Medium (30-60 min - Integrations completas)
-```bash
-OMNIMIND_MODE=test python -m pytest tests/integrations/ -v --tb=short -x
+### 2. Configuração do Modelo LLM
+
+O sistema usa **Microsoft Phi (phi:latest)** como modelo padrão via Ollama.
+
+**Configuração em `config/agent_config.yaml`**:
+```yaml
+model:
+  name: "phi:latest"           # Modelo primário
+  provider: "ollama"
+  base_url: "http://localhost:11434"
+  fallback_model: "qwen2:7b-instruct"  # Fallback se phi não disponível
 ```
 
-### Full (várias horas - TUDO)
+**Verificar se Ollama está rodando**:
 ```bash
-OMNIMIND_MODE=test python -m pytest tests/ -v --tb=short
+curl http://localhost:11434/api/tags
 ```
 
-### Chaos (Testa timeouts e retry)
+---
+
+## 🧪 Executando Testes
+
+### Suite Rápida Diária (Recomendado)
+
 ```bash
-OMNIMIND_MODE=test python -m pytest tests/test_chaos_resilience.py -v --tb=short
+# Suite rápida: ~3996 testes, sem chaos engineering
+./scripts/run_tests_fast.sh
 ```
 
-## O Que Vai Passar
+**Características**:
+- ✅ Testes unitários e de integração
+- ✅ Testes marcados com `@pytest.mark.real` (sem chaos)
+- ❌ Exclui `@pytest.mark.slow`
+- ❌ Exclui `@pytest.mark.chaos`
+- ⏱️ Tempo estimado: 30-60 minutos
 
-- ✅ Primeira tentativa com Orchestrator: ~40-50s
-- ✅ Se timeout com 90s, retenta com 120s
-- ✅ Se timeout com 120s, retenta com 180s
-- ✅ Se timeout com 180s, retenta com 240s
-- ✅ Se falha em 240s = **FALHA REAL, NÃO TIMEOUT**
+### Suite Completa Semanal (Com Chaos Engineering)
 
-## Depois
-
-Quando suite rodar:
-1. Coletar dados: `cat data/test_reports/metrics_report.json`
-2. Ver Φ values e tempos
-3. Começar **Lacan implementation**
-
-## Logs
-
-Ver o que happened:
 ```bash
-# Último run
-tail -100 data/test_reports/pytest_output.log
-
-# Métricas
-cat data/test_reports/metrics_report.json
+# Suite completa: ~4004 testes, inclui chaos engineering
+./scripts/run_tests_with_defense.sh
 ```
 
-## Problemas?
+**Características**:
+- ✅ Todos os testes da suite rápida
+- ✅ Testes de chaos engineering (destruição de servidor)
+- ⚠️ **ATENÇÃO**: Destrói servidor intencionalmente para validar resiliência de Φ
+- ⏱️ Tempo estimado: 2-4 horas
 
-Se tiver timeout em 240s → **diagnóstico real, não artificial**
+### Testes Específicos
 
-Se tiver erro "Address already in use":
 ```bash
-pkill -9 -f uvicorn
-sleep 2
-# Tentar novamente
+# Testar módulo específico
+pytest tests/consciousness/ -v
+
+# Testar com marcadores específicos
+pytest tests/ -m "real"      # Testes com GPU+LLM+Network (não destrutivos)
+pytest tests/ -m "slow"     # Testes longos (>30s timeout)
+pytest tests/ -m "chaos"    # Testes de chaos engineering (semanal apenas)
 ```
 
-Se tiver erro "Qdrant não encontrado":
+---
+
+## 🚀 Executando o Sistema
+
+### Modo Desenvolvimento
+
 ```bash
-docker ps | grep qdrant
-# Se não tiver, iniciar em outro terminal:
+# Iniciar sistema completo (backend + frontend + daemon)
+./scripts/canonical/system/start_omnimind_system.sh
+```
+
+**Componentes iniciados**:
+- Backend API: `http://localhost:8000`
+- Frontend Dashboard: `http://localhost:3000`
+- Daemon: Rodando em background
+- eBPF Monitor: Monitoramento de sistema
+
+### Modo API Apenas
+
+```bash
+# Apenas backend FastAPI
+uvicorn src.api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+### Modo Ciclo Principal
+
+```bash
+# Executar ciclo principal (Rhizome + Consciousness)
+python -m src.main
+```
+
+---
+
+## 📊 Verificando Status
+
+### Métricas de Consciência
+
+```bash
+# Ver métricas coletadas
+cat data/monitor/real_metrics.json | python -m json.tool
+```
+
+**Métricas principais**:
+- `phi`: Valor de Φ (Integrated Information Theory)
+- `ici`: Integrated Consciousness Index
+- `prs`: Predictive Relevance Score
+- `anxiety`, `flow`, `entropy`: Estados psicológicos
+
+### Logs do Sistema
+
+```bash
+# Logs de boot
+tail -f logs/omnimind_boot.log
+
+# Logs de auditoria
+tail -f logs/audit.log
+
+# Logs de métricas
+tail -f logs/metrics.log
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Ollama não responde
+
+```bash
+# Verificar se Ollama está rodando
+curl http://localhost:11434/api/tags
+
+# Se não estiver, iniciar Ollama
+ollama serve
+```
+
+### Modelo phi:latest não encontrado
+
+```bash
+# Baixar modelo phi:latest
+ollama pull phi:latest
+
+# Verificar modelos disponíveis
+ollama list
+```
+
+### Erros de GPU/CUDA
+
+```bash
+# Verificar CUDA
+python -c "import torch; print(torch.cuda.is_available())"
+
+# Verificar variáveis de ambiente
+echo $CUDA_VISIBLE_DEVICES
+echo $CUDA_HOME
+```
+
+### Qdrant não disponível
+
+Os testes que requerem Qdrant serão pulados automaticamente se Qdrant não estiver disponível. Para testes completos:
+
+```bash
+# Iniciar Qdrant via Docker
 docker run -p 6333:6333 qdrant/qdrant
 ```
 
 ---
 
-**Status**: 🟢 **PRONTO PARA RODAR**
+## 📚 Próximos Passos
 
-Escolha um comando acima e execute. Vai funcionar com os timeouts adaptativos.
+1. **Leia a documentação completa**: `docs/DOCUMENTATION_INDEX.md`
+2. **Consulte o roadmap**: `docs/NEXT_STEPS_ROADMAP.md`
+3. **Explore a arquitetura**: `docs/canonical/omnimind_architecture_reference.md`
+4. **Validação científica**: `docs/canonical/NEURAL_SYSTEMS_COMPARISON_2016-2025.md`
 
-Qualquer pergunta ou problema, me avisa.
+---
 
+## ⚠️ Notas Importantes
+
+- **Python 3.12.8 obrigatório**: Outras versões podem causar problemas
+- **Modelo padrão**: `phi:latest` (Microsoft Phi) via Ollama
+- **Testes em andamento**: Não interromper testes em execução
+- **GPU recomendado**: Sistema funciona sem GPU, mas mais lento
+
+---
+
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)

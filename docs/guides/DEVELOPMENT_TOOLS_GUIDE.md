@@ -1,6 +1,12 @@
 # OmniMind Development Tools & Automation
 
-Complete guide to OmniMind's advanced development and setup automation features.
+**Última Atualização**: 5 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
+
+---
+
+Guia completo das ferramentas de desenvolvimento e automação do OmniMind.
 
 ## Table of Contents
 
@@ -33,12 +39,19 @@ Fully automated installation script that sets up OmniMind with a single command.
 
 ```bash
 # Clone repository
-git clone https://github.com/fabs-devbrain/OmniMind.git
-cd OmniMind
+cd /home/fahbrain/projects
+git clone <repository-url> omnimind
+cd omnimind
 
 # Run one-click installer
-./scripts/install_omnimind.sh
+./scripts/canonical/install/install_omnimind.sh
 ```
+
+**Nota**: O script de instalação está localizado em `scripts/canonical/install/install_omnimind.sh` e detecta automaticamente:
+- Sistema operacional (Ubuntu, Fedora, Arch, Kali Linux)
+- Gerenciador de pacotes (apt, dnf, yum, pacman)
+- GPU NVIDIA e CUDA
+- Python 3.12.8 (obrigatório)
 
 ### What It Does
 
@@ -94,22 +107,26 @@ Automatic hardware and environment detection with optimized configuration genera
 
 ### Usage
 
-```python
-from src.optimization.hardware_detector import auto_configure
+A detecção automática de hardware é feita via variáveis de ambiente no script de inicialização:
 
-# Auto-detect and configure
-profile, config = auto_configure(save=True, prefer_local=True)
-
-print(f"Device: {config.device}")
-print(f"GPU: {profile.gpu_name}")
-print(f"Batch Size: {config.llm_batch_size}")
+```bash
+# Configuração GPU (Kali Linux Native Paths)
+export CUDA_HOME="/usr"
+export CUDA_PATH="/usr"
+export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
+export CUDA_VISIBLE_DEVICES="0"
+export OMNIMIND_GPU=true
+export OMNIMIND_FORCE_GPU=true
 ```
 
-### Configuration Files
+**Nota**: O sistema OmniMind usa detecção de GPU via PyTorch (`torch.cuda.is_available()` e `torch.cuda.device_count()`). O script `start_omnimind_system.sh` força GPU via variáveis de ambiente.
 
-After detection, configuration is saved to:
-- `config/hardware_profile.json` - Hardware capabilities
-- `config/optimization_config.json` - Optimized settings
+### Verificação de GPU
+
+```bash
+# Verificar GPU status
+python3 -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'Device count: {torch.cuda.device_count()}')"
+```
 
 ### Sample Output
 
@@ -131,36 +148,43 @@ After detection, configuration is saved to:
 ## Dependency Management
 
 ### Overview
-Advanced dependency management with security scanning and version locking.
+Gerenciamento de dependências com múltiplos arquivos de requirements por categoria.
 
-### Features
-- **Dependency Locking**: SHA-256 hash verification
-- **Security Scanning**: OSV API and Safety DB integration
-- **Conflict Detection**: Automatic dependency conflict resolution
-- **Update Suggestions**: Compatible version updates
-- **Security Reports**: Detailed vulnerability reports
+### Estrutura de Requirements
 
-### Usage
+O projeto OmniMind usa múltiplos arquivos de requirements:
 
-```python
-from src.tools.dependency_manager import DependencyManager
+- **`requirements/requirements-core.txt`**: Dependências principais do sistema
+- **`requirements/requirements-dev.txt`**: Ferramentas de desenvolvimento
+- **`requirements/requirements-gpu.txt`**: Dependências específicas de GPU (PyTorch com CUDA)
+- **`requirements/requirements-cpu.txt`**: Dependências para CPU-only
 
-# Initialize manager
-manager = DependencyManager()
+### Instalação
 
-# Generate lockfile
-lockfile = manager.generate_lockfile()
-print(f"Locked {len(lockfile.packages)} packages")
+```bash
+# Instalar dependências principais
+pip install -r requirements/requirements-core.txt
 
-# Scan for vulnerabilities
-vulnerabilities = manager.scan_vulnerabilities()
-print(f"Found {len(vulnerabilities)} vulnerabilities")
+# Instalar ferramentas de desenvolvimento
+pip install -r requirements/requirements-dev.txt
 
-# Generate security report
-report = manager.generate_security_report(
-    Path("logs/security_report.md")
-)
+# Se GPU disponível
+pip install -r requirements/requirements-gpu.txt
+
+# Ou instalar tudo de uma vez (se requirements.txt existir)
+pip install -r requirements.txt
 ```
+
+### Ferramentas de Desenvolvimento
+
+As ferramentas de desenvolvimento estão em `requirements/requirements-dev.txt`:
+
+- **Black** (>=25.0.0): Formatação de código
+- **Flake8** (>=7.0.0): Linting
+- **MyPy** (>=1.15.0): Verificação de tipos
+- **Isort** (>=7.0.0): Ordenação de imports
+- **Pytest** e plugins: Testes
+- **Pre-commit**: Hooks de pré-commit
 
 ### Lockfile Format
 
@@ -198,45 +222,39 @@ Scans dependencies against:
 ## Configuration Validation
 
 ### Overview
-Pre-deployment configuration validation with health checks.
+Validação de código e configuração usando scripts canônicos.
 
-### Features
-- **Schema Validation**: JSON schema validation
-- **Dependency Checking**: Required dependency verification
-- **Environment Validation**: Environment-specific checks
-- **Health Checks**: Pre-deployment validation
-- **Auto-fixes**: Automatic configuration corrections
+### Scripts de Validação
 
-### Usage
+#### 1. Validação de Código (`scripts/canonical/validate/validate_code.sh`)
 
-```python
-from src.security.config_validator import (
-    ConfigurationValidator,
-    ConfigEnvironment
-)
+Valida formatação, linting, tipagem e testes:
 
-# Initialize validator
-validator = ConfigurationValidator(
-    environment=ConfigEnvironment.PRODUCTION
-)
-
-# Validate configuration
-with open("config/omnimind.yaml") as f:
-    config = yaml.safe_load(f)
-
-result = validator.validate_config(config)
-
-if result.valid:
-    print("✅ Configuration valid")
-else:
-    print(f"❌ {len(result.issues)} issues found")
-    for issue in result.issues:
-        print(f"  - {issue.message}")
-
-# Run health checks
-health = validator.run_health_checks(config)
-print(f"Overall: {health['overall_status']}")
+```bash
+./scripts/canonical/validate/validate_code.sh
 ```
+
+**Verificações realizadas:**
+- ✅ Formatação (Black)
+- ✅ Linting (Flake8) - erros críticos (E9, F63, F7, F82)
+- ✅ Tipagem (MyPy) - máximo 25 erros aceitáveis
+- ✅ Testes (Pytest)
+- ✅ Integridade de arquivos
+- ✅ Cadeia de auditoria
+
+#### 2. Pre-Commit Hook (`scripts/dev/pre_commit_check.sh`)
+
+Executado automaticamente antes de commits:
+
+```bash
+# Instalar hook
+./scripts/dev/pre_commit_check.sh
+```
+
+**Verificações:**
+- Formatação (Black) - corrige automaticamente
+- Ordenação de imports (Isort) - corrige automaticamente
+- Testes unitários essenciais (pytest -m "not integration")
 
 ### Health Checks
 
@@ -249,58 +267,40 @@ Pre-deployment checks include:
 
 ---
 
-## Code Generation Tools
+## IDE Setup e Configuração
 
 ### Overview
-AI-assisted code generation with intelligent templates.
+Configuração automática do ambiente de desenvolvimento (VS Code / Cursor).
 
-### Features
-- **Template Types**: Agent, Tool, Test, API Endpoint, Data Model
-- **Smart Generation**: Context-aware code generation
-- **Boilerplate Reduction**: Reduces repetitive coding
-- **Test Generation**: Automatic test case generation
-- **Type Hints**: Automatic type hint addition
-- **Docstrings**: Google-style docstring generation
+### Script de Setup (`scripts/dev/setup_ide.sh`)
 
-### Usage
-
-```python
-from src.tools.code_generator import CodeGenerator
-
-generator = CodeGenerator()
-
-# Generate an agent
-agent_code = generator.generate_agent(
-    agent_name="DataProcessorAgent",
-    description="Agent for processing data",
-    purpose="Process and analyze data",
-    capabilities=[
-        "- Data validation",
-        "- Data transformation"
-    ],
-    output_file=Path("src/agents/data_processor.py")
-)
-
-# Generate tests
-test_code = generator.generate_test(
-    module_name="data_processor",
-    module_path="src.agents.data_processor",
-    class_name="DataProcessorAgent",
-    methods=["execute", "validate"],
-    output_file=Path("tests/test_data_processor.py")
-)
-
-# Generate API endpoint
-api_code = generator.generate_api_endpoint(
-    endpoint_name="process_data",
-    description="Process data endpoint",
-    prefix="/api/v1",
-    tag="Data",
-    path="/process",
-    method="post",
-    output_file=Path("web/backend/api/data.py")
-)
+```bash
+./scripts/dev/setup_ide.sh
 ```
+
+**O que o script faz:**
+1. Cria ambiente virtual (se não existir)
+2. Instala ferramentas de desenvolvimento (Black, Isort, Pylint, Flake8, MyPy, Pytest)
+3. Instala extensões recomendadas do VS Code/Cursor:
+   - Python
+   - Pylance
+   - Black Formatter
+   - Isort
+   - Flake8
+   - MyPy
+   - Auto Docstring
+   - Even Better TOML
+
+### Configuração do VS Code/Cursor
+
+O arquivo `.vscode/settings.json` já está configurado com:
+- Python 3.12.8 obrigatório (venv local)
+- Formatação automática (Black) ao salvar
+- Organização de imports (Isort) ao salvar
+- Linting habilitado (Flake8, MyPy)
+- PYTHONPATH configurado para `src/`
+
+**Importante**: Sempre abrir a pasta raiz do projeto (`/home/fahbrain/projects/omnimind`), não a pasta pai.
 
 ### Available Templates
 
@@ -312,43 +312,43 @@ api_code = generator.generate_api_endpoint(
 
 ---
 
-## Automated Code Review
+## Ferramentas de Qualidade de Código
 
-### Overview
-AI-powered automated code review with comprehensive analysis.
+### Pipeline de Qualidade (Ordem Obrigatória)
 
-### Features
-- **Static Analysis**: AST parsing and code metrics
-- **Security Scanning**: Vulnerability detection
-- **Style Checking**: PEP 8 compliance
-- **Complexity Analysis**: Cyclomatic complexity
-- **Documentation Checks**: Docstring coverage
-- **Type Safety**: Type hint validation
-- **Performance Analysis**: Performance issue detection
-- **Best Practices**: Python best practice validation
+Conforme `.cursor/rules/rules.mdc`, a ordem de validação é:
 
-### Usage
+1. **Black** (formatação)
+   ```bash
+   black src tests
+   ```
 
-```python
-from src.workflows.automated_code_review import review_code
+2. **Flake8** (linting)
+   ```bash
+   flake8 src tests --max-line-length=100
+   ```
 
-# Review a file
-result = review_code(
-    Path("src/agents/my_agent.py"),
-    min_score=8.0,
-    output_report=Path("logs/code_review.md")
-)
+3. **MyPy** (tipagem)
+   ```bash
+   mypy src tests
+   ```
 
-print(f"Score: {result.overall_score:.1f}/10.0")
-print(f"Issues: {len(result.issues)}")
-print(f"Status: {'✅ PASSED' if result.passed else '❌ FAILED'}")
+4. **Testes** (via scripts oficiais)
+   ```bash
+   # Suite rápida (diária)
+   ./scripts/run_tests_fast.sh
 
-# View metrics
-if result.metrics:
-    print(f"Complexity: {result.metrics.complexity}")
-    print(f"Type Hints: {result.metrics.type_hint_coverage:.1f}%")
-    print(f"Docstrings: {result.metrics.docstring_coverage:.1f}%")
-```
+   # Suite completa (semanal)
+   ./scripts/run_tests_with_defense.sh
+   ```
+
+### Ferramentas Disponíveis
+
+- **Black** (>=25.0.0): Formatação automática
+- **Flake8** (>=7.0.0): Linting (PEP 8)
+- **MyPy** (>=1.15.0): Verificação de tipos estáticos
+- **Isort** (>=7.0.0): Ordenação de imports
+- **Pylint** (>=4.0.0): Análise estática adicional (opcional)
 
 ### Issue Categories
 
@@ -393,44 +393,40 @@ Status: ✅ PASSED
 
 ---
 
-## Performance Benchmarking
+## Scripts de Teste e Validação
 
-### Overview
-Comprehensive performance benchmarking with regression detection.
+### Scripts Principais
 
-### Features
-- **Benchmark Execution**: Multiple iterations with warmup
-- **Metrics Collection**: Time, memory, CPU utilization
-- **Baseline Comparison**: Compare against baseline
-- **Regression Detection**: Automatic regression alerts
-- **Historical Tracking**: Performance trends over time
-- **Report Generation**: Detailed benchmark reports
+#### 1. Suite Rápida (Diária) - `scripts/run_tests_fast.sh`
 
-### Usage
-
-```python
-from src.optimization.benchmarking import (
-    PerformanceBenchmark,
-    RegressionDetector,
-    benchmark_with_regression_detection
-)
-
-# Simple benchmark
-def my_workload():
-    result = sum(range(1000000))
-    return result
-
-# Run benchmark with regression detection
-result = benchmark_with_regression_detection(
-    name="my_workload",
-    workload=my_workload,
-    iterations=100,
-    regression_threshold=10.0
-)
-
-print(result["benchmark"]["mean_time_ms"])
-print(result["regression"]["message"])
+```bash
+./scripts/run_tests_fast.sh
 ```
+
+**Características:**
+- Força GPU via variáveis de ambiente
+- Exclui testes `@pytest.mark.slow` e `@pytest.mark.chaos`
+- Inclui testes `@pytest.mark.real` (sem chaos)
+- Duração: ~15-20 min
+- Logs em `data/test_reports/`
+
+#### 2. Suite Completa (Semanal) - `scripts/run_tests_with_defense.sh`
+
+```bash
+./scripts/run_tests_with_defense.sh
+```
+
+**Características:**
+- Inclui todos os testes (incluindo chaos)
+- Força GPU
+- Duração: ~45-90 min
+- Logs em `data/test_reports/`
+
+### Scripts de Validação
+
+- **`scripts/canonical/validate/validate_code.sh`**: Validação completa de código
+- **`scripts/canonical/validate/validate_services.sh`**: Validação de serviços
+- **`scripts/canonical/test/run_full_test_suite.sh`**: Suite completa de testes
 
 ### Advanced Usage
 
@@ -491,139 +487,142 @@ Date range: 2025-11-01 to 2025-11-19
 
 ---
 
-## Integration Examples
+## Workflow de Desenvolvimento Completo
 
-### Full Development Workflow
+### 1. Setup Inicial
 
-```python
-from pathlib import Path
-from src.tools.code_generator import CodeGenerator
-from src.workflows.automated_code_review import review_code
-from src.optimization.benchmarking import benchmark_with_regression_detection
+```bash
+# Clone e configure ambiente
+cd /home/fahbrain/projects
+git clone <repository-url> omnimind
+cd omnimind
 
-# 1. Generate code
-generator = CodeGenerator()
-generator.generate_agent(
-    agent_name="MyAgent",
-    description="My custom agent",
-    purpose="Custom tasks",
-    output_file=Path("src/agents/my_agent.py")
-)
+# Criar venv e instalar dependências
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements/requirements-core.txt
+pip install -r requirements/requirements-dev.txt
 
-# 2. Review code
-review_result = review_code(
-    Path("src/agents/my_agent.py"),
-    min_score=8.0,
-    output_report=Path("logs/review.md")
-)
-
-if not review_result.passed:
-    print("Code review failed - fix issues first")
-    exit(1)
-
-# 3. Benchmark performance
-def agent_workload():
-    from src.agents.my_agent import MyAgent
-    agent = MyAgent()
-    return agent.execute("test task")
-
-benchmark_result = benchmark_with_regression_detection(
-    name="my_agent_performance",
-    workload=agent_workload,
-    iterations=100
-)
-
-print(f"Performance: {benchmark_result['benchmark']['mean_time_ms']:.2f}ms")
+# Configurar IDE
+./scripts/dev/setup_ide.sh
 ```
+
+### 2. Desenvolvimento Diário
+
+```bash
+# Ativar ambiente
+source .venv/bin/activate
+
+# Desenvolver código...
+
+# Validar antes de commitar
+./scripts/canonical/validate/validate_code.sh
+
+# Rodar testes rápidos
+./scripts/run_tests_fast.sh
+```
+
+### 3. Pre-Commit
+
+O hook `scripts/dev/pre_commit_check.sh` executa automaticamente:
+- Formatação (Black)
+- Ordenação de imports (Isort)
+- Testes unitários essenciais
 
 ---
 
-## Best Practices
+## Boas Práticas
 
-### Installation
-1. Always use one-click installer for new setups
-2. Review installation log for any warnings
-3. Run validation after installation
-4. Keep hardware profile updated
+### Instalação
+1. Sempre usar Python 3.12.8 (obrigatório)
+2. Usar script de instalação canônico: `scripts/canonical/install/install_omnimind.sh`
+3. Verificar logs de instalação em `logs/install_*.log`
+4. Validar GPU após instalação: `python3 -c "import torch; print(torch.cuda.is_available())"`
 
-### Dependencies
-1. Generate lockfile after any dependency changes
-2. Run security scan regularly (weekly recommended)
-3. Keep dependencies updated (but test first)
-4. Review security reports before deployment
+### Dependências
+1. Usar arquivos de requirements por categoria (`requirements-core.txt`, `requirements-dev.txt`, etc.)
+2. Não instalar dependências globalmente - sempre usar venv
+3. Atualizar requirements quando adicionar novas dependências
+4. Testar após atualizar dependências
 
-### Code Quality
-1. Generate tests for all new code
-2. Run code review before committing
-3. Maintain 8.0+ code quality score
-4. Fix all critical and error-level issues
+### Qualidade de Código
+1. Sempre rodar pipeline de qualidade antes de commitar:
+   - `black src tests`
+   - `flake8 src tests --max-line-length=100`
+   - `mypy src tests`
+2. Usar scripts oficiais de teste (não rodar `pytest tests` direto)
+3. Manter tipagem completa em código novo
+4. Adicionar logs informativos (sem TODO/FIXME)
 
-### Performance
-1. Establish baselines for critical operations
-2. Run benchmarks before optimization
-3. Set appropriate regression thresholds
-4. Monitor trends over time
+### Testes
+1. Suite rápida diária: `./scripts/run_tests_fast.sh`
+2. Suite completa semanal: `./scripts/run_tests_with_defense.sh`
+3. Testes críticos (phi, IIT, Lacanian, Freud) devem usar `@pytest.mark.real`
+4. Testes que destroem servidor devem usar `@pytest.mark.chaos`
 
 ---
 
 ## Troubleshooting
 
-### Installation Issues
+### Problemas de Instalação
 
-**Problem**: Python version too old  
-**Solution**: Installer will automatically install Python 3.12.8 via pyenv
+**Problema**: Python version incorreta
+**Solução**: Python 3.12.8 é obrigatório. Instalar via pyenv ou usar sistema de pacotes.
 
-**Problem**: GPU not detected  
-**Solution**: Check NVIDIA drivers with `nvidia-smi`, run `verify_gpu_setup.py`
+**Problema**: GPU não detectada
+**Solução**:
+```bash
+# Verificar drivers NVIDIA
+nvidia-smi
 
-**Problem**: Permission denied  
-**Solution**: Don't run installer as root - it will use sudo when needed
+# Verificar CUDA
+python3 -c "import torch; print(torch.cuda.is_available())"
 
-### Dependency Issues
+# Verificar variáveis de ambiente
+echo $CUDA_HOME
+echo $LD_LIBRARY_PATH
+```
 
-**Problem**: Lockfile verification fails  
-**Solution**: Regenerate lockfile with `manager.generate_lockfile()`
+**Problema**: Permission denied
+**Solução**: Não rodar como root. O script usa `sudo` quando necessário.
 
-**Problem**: Vulnerability scan timeout  
-**Solution**: Disable OSV scanning temporarily: `scan_vulnerabilities(use_osv=False)`
+### Problemas de Dependências
 
-### Code Review Issues
+**Problema**: D-Bus não encontrado
+**Solução**: Instalar dependências do sistema primeiro:
+```bash
+sudo apt-get install -y libdbus-1-dev pkg-config
+pip install -r requirements.txt
+```
 
-**Problem**: Score too low  
-**Solution**: Check specific issues and fix highest severity first
+**Problema**: Erros de importação
+**Solução**: Verificar que PYTHONPATH inclui `src/`:
+```bash
+export PYTHONPATH="${PWD}/src:${PYTHONPATH}"
+```
 
-**Problem**: False positives  
-**Solution**: Review suggestions - not all are required to fix
+### Problemas de Qualidade de Código
 
-### Benchmark Issues
+**Problema**: Black formatação falha
+**Solução**: Rodar manualmente: `black src tests`
 
-**Problem**: High variance in results  
-**Solution**: Increase warmup iterations or iterations count
+**Problema**: MyPy muitos erros
+**Solução**: Máximo 25 erros aceitáveis. Verificar tipos gradualmente.
 
-**Problem**: Regression false positive  
-**Solution**: Adjust regression threshold or check system load
-
----
-
-## Contributing
-
-When adding new features:
-1. Use code generator for boilerplate
-2. Run automated code review
-3. Add comprehensive tests
-4. Run benchmarks for performance-critical code
-5. Update this documentation
-
----
-
-## License
-
-MIT License - See LICENSE file for details
+**Problema**: Testes falhando
+**Solução**: Verificar se GPU está disponível e se Ollama está rodando com modelo `phi:latest`
 
 ---
 
-## Support
+## Referências
 
-For issues, questions, or contributions:
-- GitHub Issues: https://github.com/fabs-devbrain/OmniMind/issues
-- Documentation: https://github.com/fabs-devbrain/OmniMind/docs
+- **Scripts Canônicos**: `scripts/canonical/`
+- **Configuração do Sistema**: `.cursor/rules/rules.mdc`
+- **Guia de Ambiente**: `docs/guides/ENVIRONMENT_SETUP.md`
+- **Guia de Uso**: `docs/guides/USAGE_GUIDE.md`
+- **Guia de Modo Dev**: `docs/guides/DEV_MODE.md`
+
+---
+
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
+**Última Atualização**: 5 de Dezembro de 2025

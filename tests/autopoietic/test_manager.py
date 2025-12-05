@@ -18,7 +18,7 @@ def test_manager_runs_full_cycle(tmp_path):
     )
 
     # Mock Φ alto para permitir síntese
-    manager._get_current_phi = lambda: 0.5
+    manager._get_current_phi = lambda: 0.5  # type: ignore[method-assign]
 
     log_expand = manager.run_cycle({"error_rate": 0.0, "cpu_usage": 25.0, "latency_ms": 15.0})
     assert log_expand.strategy == EvolutionStrategy.EXPAND
@@ -67,7 +67,7 @@ def test_manager_persists_synthesized_components(tmp_path):
     )
 
     # Mock Φ alto para permitir síntese
-    manager._get_current_phi = lambda: 0.5
+    manager._get_current_phi = lambda: 0.5  # type: ignore[method-assign]
 
     log = manager.run_cycle({"error_rate": 0.0, "cpu_usage": 25.0, "latency_ms": 15.0})
 
@@ -107,7 +107,7 @@ def test_manager_validates_phi_before_changes(tmp_path, monkeypatch):
     )
 
     # Mock _get_current_phi para retornar valor baixo
-    manager._get_current_phi = lambda: 0.1
+    manager._get_current_phi = lambda: 0.1  # type: ignore[method-assign]
 
     log = manager.run_cycle({"error_rate": 0.0, "cpu_usage": 25.0})
 
@@ -142,7 +142,7 @@ def test_manager_validates_phi_after_changes_and_rollbacks(tmp_path, monkeypatch
         call_count[0] += 1
         return val
 
-    manager._get_current_phi = lambda: mock_phi(manager)
+    manager._get_current_phi = lambda: mock_phi(manager)  # type: ignore[method-assign]
 
     log = manager.run_cycle({"error_rate": 0.0, "cpu_usage": 25.0})
 

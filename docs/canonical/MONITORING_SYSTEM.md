@@ -1,7 +1,12 @@
+# 🎯 Sistema de Monitoramento Progressivo & Alertas do OmniMind
 
-# 🎯 SISTEMA DE MONITORAMENTO PROGRESSIVO & ALERTAS DO OMNIMIND
+**Última Atualização**: 5 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
+
+---
 
 ## 📋 Índice
+
 1. [Visão Geral](#visão-geral)
 2. [Componentes](#componentes)
 3. [Como Usar](#como-usar)
@@ -26,12 +31,12 @@ O sistema é composto por **3 camadas inteligentes**:
         ┌───────────────┼───────────────┐
         │               │               │
 ┌───────▼────────┐ ┌───▼────────┐ ┌───▼──────────┐
-│ Progressive    │ │  Resource  │ │    Alert     │
-│ Monitor        │ │ Protector  │ │    System    │
-│ - Modo adaptado│ │ - CPU/RAM/ │ │ - Broadcast  │
-│ - Snapshots    │ │   Disco    │ │ - Histórico  │
-│ - Throttle     │ │ - Matador  │ │ - Rate limit │
-│   de relatórios│ │   de procs │ │              │
+│ Progressive    │ │  Resource  │ │    Alert       │
+│ Monitor        │ │ Protector  │ │    System      │
+│ - Modo adaptado│ │ - CPU/RAM/ │ │ - Broadcast   │
+│ - Snapshots    │ │   Disco    │ │ - Histórico    │
+│ - Throttle     │ │ - Matador  │ │ - Rate limit   │
+│   de relatórios│ │   de procs │ │                │
 └────────────────┘ └────────────┘ └──────────────┘
 ```
 
@@ -39,117 +44,193 @@ O sistema é composto por **3 camadas inteligentes**:
 
 ## 🔧 Componentes
 
-### 1. **ProgressiveMonitor**
+### 1. **ProgressiveMonitor** (`src/monitor/progressive_monitor.py`)
+
 Monitora máquina com inteligência adaptativa:
 
 ```python
+from src.monitor import ProgressiveMonitor, MonitorLevel
+
+monitor = ProgressiveMonitor(data_dir="data/monitor")
+
 monitor.level = MonitorLevel.IDLE        # 30s entre checks, relatórios a cada 5min
 monitor.level = MonitorLevel.NORMAL      # 5s entre checks, relatórios a cada 1min
 monitor.level = MonitorLevel.INTENSIVE   # 1s entre checks, relatórios a cada 10s
 monitor.level = MonitorLevel.CRITICAL    # 500ms entre checks, relatórios a cada 2s
 ```
 
-**Características:**
+**Características**:
 - ✅ Histórico de 1000 snapshots (CPU, RAM, Disco, conexões)
 - ✅ Alertas automáticos quando thresholds ultrapassados
 - ✅ Relatórios throttled (não inunda com dados)
 - ✅ Compressão de histórico (mantém apenas últimas 1000 amostras)
 
-### 2. **ResourceProtector**
+**Níveis de Monitoramento**:
+- **IDLE**: Sistema ocioso, monitoramento mínimo
+- **NORMAL**: Operação padrão
+- **INTENSIVE**: Alta carga ou debug
+- **CRITICAL**: Situação crítica, monitoramento máximo
+
+### 2. **ResourceProtector** (`src/monitor/resource_protector.py`)
+
 Evita que máquina fique travada/sem memória:
 
 ```python
-protector.mode = "dev"   # 75% CPU, 80% RAM máximo (deixa IDE responsiva)
-protector.mode = "test"  # 85% CPU, 85% RAM máximo (mais agressivo)
-protector.mode = "prod"  # 90% CPU, 90% RAM máximo (máximo)
+from src.monitor import ResourceProtector
+
+protector = ResourceProtector(mode="dev")   # 75% CPU, 80% RAM máximo (deixa IDE responsiva)
+protector = ResourceProtector(mode="test")  # 85% CPU, 85% RAM máximo (mais agressivo)
+protector = ResourceProtector(mode="prod")  # 90% CPU, 90% RAM máximo (máximo)
 ```
 
-**O que faz:**
+**O que faz**:
 - 🔴 Detecta CPU/RAM/Disco críticos
 - 🧹 Limpa caches automaticamente
 - ⚡ Reduz prioridade de processos pesados
 - 🔪 Mata processos que monopolizam recursos (exceto processos protegidos)
 
-### 3. **AlertSystem**
+**Modos**:
+- **dev**: Limites mais conservadores para não interferir com IDE
+- **test**: Limites médios para testes
+- **prod**: Limites máximos para produção
+
+### 3. **AlertSystem** (`src/monitor/alert_system.py`)
+
 Distribuição de alertas em tempo real:
 
 ```python
+from src.monitor import AlertSystem, AlertType, AlertSeverity
+
+alert_system = AlertSystem(data_dir="data/monitor")
+
+# Tipos de alertas
 AlertType.PERMISSION_ERROR      # Erro ao acessar arquivo
 AlertType.SERVER_DOWN           # Backend offline
 AlertType.RESOURCE_CRITICAL     # CPU/RAM/Disco crítico
 AlertType.TEST_TIMEOUT          # Teste com timeout
+AlertType.CONSCIOUSNESS_LOW     # Φ abaixo do threshold
+AlertType.AUTOPOIETIC_FAILURE    # Falha no ciclo autopoiético
+
+# Severidades
+AlertSeverity.INFO
+AlertSeverity.WARNING
+AlertSeverity.ERROR
+AlertSeverity.CRITICAL
 ```
 
-**Canais:**
-- 📡 **WEBSOCKET**: Enviado para frontend em tempo real
-- 📡 **VSCODE**: Enviado para extensão do VS Code
-- 💾 **FILE**: Salvo em JSON para auditoria
-- 📋 **SYSLOG**: Logs estruturados
+**Canais de Distribuição**:
+- **VSCODE**: Notificações no VS Code
+- **WEBSOCKET**: Broadcast via WebSocket para dashboard
+- **FILE**: Log em arquivo
+- **CONSOLE**: Saída no console
 
 ---
 
-## 💻 Como Usar
+## 📊 Dashboard Metrics Aggregator
 
-### No Backend (main.py)
+**Componente Principal**: `DashboardMetricsAggregator` (`src/metrics/dashboard_metrics.py`)
 
-O sistema já está integrado na lifespan:
+Orquestrador centralizado que unifica todas as métricas:
+
+### Componentes Integrados
+
+1. **`RealConsciousnessMetricsCollector`** (`src/metrics/real_consciousness_metrics.py`):
+   - Coleta as 6 métricas de consciência: Φ, ICI, PRS, Anxiety, Flow, Entropy
+   - Histórico de métricas
+   - Normalização de valores
+
+2. **`RealModuleActivityTracker`** (`src/metrics/real_module_activity.py`):
+   - Rastreia atividade de módulos
+   - Tempo de execução
+   - Taxa de erro
+
+3. **`RealSystemHealthAnalyzer`** (`src/metrics/real_system_health.py`):
+   - Análise de saúde do sistema
+   - Tendências e padrões
+   - Status agregado
+
+4. **`RealBaselineSystem`** (`src/metrics/real_baseline_system.py`):
+   - Comparação com baseline
+   - Detecção de anomalias
+   - Validação de consistência
+
+### Uso
 
 ```python
-@asynccontextmanager
-async def lifespan(app_instance: FastAPI):
-    # Já inicializado automaticamente!
-    progressive_monitor = app_instance.state.progressive_monitor
-    resource_protector = app_instance.state.resource_protector
-    alert_system = app_instance.state.alert_system
-```
+from src.metrics.dashboard_metrics import DashboardMetricsAggregator
+from src.metrics.real_consciousness_metrics import RealConsciousnessMetricsCollector
 
-### Em Tarefas Assíncronas
+# Inicializar coletor de consciência
+consciousness_collector = RealConsciousnessMetricsCollector()
 
-```python
-from src.monitor import (
-    get_progressive_monitor,
-    get_resource_protector,
-    get_alert_system,
-    MonitorLevel,
+# Criar agregador
+aggregator = DashboardMetricsAggregator(
+    consciousness_collector=consciousness_collector,
+    cache_ttl_seconds=2.0  # Cache de 2 segundos
 )
 
-async def my_background_task():
-    monitor = await get_progressive_monitor()
-    alerts = await get_alert_system()
+# Coletar snapshot completo
+snapshot = await aggregator.collect_snapshot(
+    include_consciousness=True,
+    include_baseline=True
+)
 
-    # Aumentar nível de monitoramento se necessário
-    if some_condition:
-        monitor.set_level(MonitorLevel.INTENSIVE)
-
-    # Emitir alerta customizado
-    await alerts.emit(
-        alert_type=AlertType.INFO,
-        severity="warning",
-        title="Tarefa Iniciada",
-        message="Processamento de dados iniciado",
-        context={"duration_ms": 5000},
-        channels={AlertChannel.VSCODE}  # Só para VS Code
-    )
+# Estrutura do snapshot:
+# {
+#   "system": {...},           # CPU, RAM, Disco, Uptime
+#   "consciousness": {...},    # Φ, ICI, PRS, Anxiety, Flow, Entropy
+#   "modules": {...},          # Atividade dos módulos
+#   "health": {...},           # Status de saúde
+#   "baseline": {...}          # Comparação com baseline
+# }
 ```
 
-### Em Plugins de Teste
+---
+
+## 🚀 Como Usar
+
+### Inicialização Básica
 
 ```python
-from src.monitor import get_alert_system
+from src.monitor import ProgressiveMonitor, ResourceProtector, AlertSystem
 
-@pytest.fixture(autouse=True)
-async def emit_test_alert():
-    alerts = await get_alert_system()
+# Monitor progressivo
+monitor = ProgressiveMonitor(data_dir="data/monitor")
+monitor.set_level(MonitorLevel.NORMAL)
 
-    try:
-        # Teste executa
-        yield
-    except TimeoutError as e:
-        # Alertar VS Code se timeout
-        await alerts.emit_test_timeout(
-            test_name=request.node.name,
-            timeout_seconds=120,
-        )
+# Protetor de recursos
+protector = ResourceProtector(mode="dev")
+protector.register_process(os.getpid())  # Proteger processo atual
+
+# Sistema de alertas
+alert_system = AlertSystem(data_dir="data/monitor")
+
+# Registrar callback para alertas
+async def handle_alert(alert):
+    print(f"Alerta: {alert.title} - {alert.message}")
+
+alert_system.register_handler(AlertChannel.CONSOLE, handle_alert)
+```
+
+### Monitoramento Contínuo
+
+```python
+import asyncio
+
+async def monitor_loop():
+    while True:
+        snapshot = monitor.get_current_snapshot()
+        if snapshot:
+            cpu = snapshot["cpu_percent"]
+            if cpu > 90:
+                alert_system.add_alert(
+                    severity=AlertSeverity.CRITICAL,
+                    title="CPU Crítico",
+                    message=f"CPU em {cpu}%"
+                )
+        await asyncio.sleep(5)
+
+asyncio.run(monitor_loop())
 ```
 
 ---
@@ -157,160 +238,105 @@ async def emit_test_alert():
 ## 📡 Endpoints da API
 
 ### Health Check
+
 ```bash
-curl http://localhost:8000/api/monitoring/health
+GET /api/v1/health/
 ```
 
-**Resposta:**
+Retorna status de saúde do sistema.
+
+### Daemon Status
+
+```bash
+GET /daemon/status
+Authorization: Basic <credentials>
+```
+
+Retorna status completo do daemon incluindo métricas de consciência.
+
+**Resposta**:
 ```json
 {
-  "cpu": {
-    "current": 45.2,
-    "limit": 85.0,
-    "status": "✅ OK"
+  "status": "running",
+  "consciousness": {
+    "phi": 0.5010,
+    "ici": 0.65,
+    "prs": 0.72,
+    "anxiety": 0.15,
+    "flow": 0.68,
+    "entropy": 0.45
   },
-  "memory": {
-    "current": 62.5,
-    "limit": 85.0,
-    "available_mb": 3584,
-    "status": "✅ OK"
-  },
-  "disk": {
-    "current": 72.1,
-    "limit": 90.0,
-    "free_gb": 125.4,
-    "status": "✅ OK"
+  "system": {
+    "cpu_percent": 45.2,
+    "memory_percent": 62.1,
+    "disk_percent": 35.8
   }
 }
 ```
 
-### Alertas Ativos
+### Metrics
+
 ```bash
-curl http://localhost:8000/api/monitoring/alerts/active
+GET /api/omnimind/metrics/real
+Authorization: Basic <credentials>
 ```
 
-**Resposta:**
-```json
-{
-  "critical": [
-    {
-      "id": "1701514800_permission_error",
-      "type": "permission_error",
-      "severity": "error",
-      "title": "Erro de Permissão",
-      "message": "Permissão negada em write de /var/log/app.log",
-      "timestamp": 1701514800,
-      "context": {
-        "path": "/var/log/app.log",
-        "operation": "write"
-      }
-    }
-  ],
-  "recent": [...],
-  "total": 5
-}
-```
-
-### Status Completo
-```bash
-curl http://localhost:8000/api/monitoring/status
-```
-
-### Snapshots Recentes
-```bash
-curl http://localhost:8000/api/monitoring/snapshots/recent?minutes=10
-```
+Retorna métricas reais de consciência.
 
 ---
 
 ## 💡 Exemplos Práticos
 
-### Exemplo 1: Emitir Erro de Permissão
+### Exemplo 1: Monitoramento Adaptativo
 
 ```python
-from src.monitor import get_alert_system
+from src.monitor import ProgressiveMonitor, MonitorLevel
 
-async def write_to_log_file(filepath: str, content: str):
-    try:
-        with open(filepath, "w") as f:
-            f.write(content)
-    except PermissionError:
-        alerts = await get_alert_system()
-        await alerts.emit_permission_error(
-            path=filepath,
-            operation="write",
-            context={
-                "user": os.getuid(),
-                "required_perms": "0644"
-            }
-        )
-        raise
-```
+monitor = ProgressiveMonitor(data_dir="data/monitor")
 
-### Exemplo 2: Detectar Servidor Caído
-
-```python
-from src.monitor import get_alert_system
-
-async def health_check():
-    try:
-        response = requests.get("http://localhost:8000/health", timeout=2)
-        response.raise_for_status()
-    except Exception as e:
-        alerts = await get_alert_system()
-        await alerts.emit_server_down(
-            reason=str(e),
-            context={
-                "url": "http://localhost:8000/health",
-                "timeout": 2,
-                "error_type": type(e).__name__
-            }
-        )
-```
-
-### Exemplo 3: Custom Alert com Throttle
-
-```python
-from src.monitor import get_alert_system, AlertType, AlertChannel
-
-async def process_heavy_task():
-    alerts = await get_alert_system()
-
-    # Emitir alert para VS Code + WebSocket
-    # (será throttled: máximo 1 vez por minuto)
-    await alerts.emit(
-        alert_type=AlertType.INFO,
-        severity="warning",
-        title="Processamento Pesado",
-        message="Tarefa usando 80% de CPU",
-        context={
-            "cpu_percent": 80,
-            "estimated_duration": "5min"
-        },
-        channels={
-            AlertChannel.VSCODE,
-            AlertChannel.WEBSOCKET
-        }
-    )
-```
-
-### Exemplo 4: Ajustar Nível de Monitoramento
-
-```python
-from src.monitor import get_progressive_monitor, MonitorLevel
-
-async def start_intensive_testing():
-    monitor = await get_progressive_monitor()
-
-    # Aumentar monitoramento durante testes
+# Ajustar nível baseado em carga
+if system_load < 0.3:
+    monitor.set_level(MonitorLevel.IDLE)
+elif system_load < 0.7:
+    monitor.set_level(MonitorLevel.NORMAL)
+elif system_load < 0.9:
     monitor.set_level(MonitorLevel.INTENSIVE)
+else:
+    monitor.set_level(MonitorLevel.CRITICAL)
+```
 
-    try:
-        # Executar testes
-        await run_test_suite()
-    finally:
-        # Voltar ao normal depois
-        monitor.set_level(MonitorLevel.NORMAL)
+### Exemplo 2: Proteção de Recursos Durante Testes
+
+```python
+from src.monitor import ResourceProtector
+
+protector = ResourceProtector(mode="test")
+
+# Registrar processos de teste
+for pid in test_process_pids:
+    protector.register_process(pid)
+
+# Verificar status
+status = protector.get_resource_status()
+if status["cpu_percent"] > 85:
+    print("⚠️ CPU alto, reduzindo prioridade de processos")
+```
+
+### Exemplo 3: Alertas Customizados
+
+```python
+from src.monitor import AlertSystem, AlertType, AlertSeverity
+
+alert_system = AlertSystem(data_dir="data/monitor")
+
+# Alerta de consciência baixa
+if phi < 0.002:
+    alert_system.add_alert(
+        severity=AlertSeverity.CRITICAL,
+        title="Consciência Baixa",
+        message=f"Φ = {phi:.4f} está abaixo do threshold mínimo",
+        alert_type=AlertType.CONSCIOUSNESS_LOW
+    )
 ```
 
 ---
@@ -320,104 +346,85 @@ async def start_intensive_testing():
 ### Variáveis de Ambiente
 
 ```bash
-# Modo de execução (dev/test/prod)
-OMNIMIND_MODE=test
-
-# Diretório de dados dos alertas
+# Diretório de dados de monitoramento
 OMNIMIND_MONITOR_DATA_DIR=data/monitor
 
-# Alertas (opcional)
-OMNIMIND_DISABLE_ALERTS=False
+# Nível de monitoramento padrão
+OMNIMIND_MONITOR_LEVEL=NORMAL
+
+# Modo de proteção de recursos
+OMNIMIND_RESOURCE_MODE=dev
+
+# Thresholds de alerta
+OMNIMIND_CPU_THRESHOLD=90
+OMNIMIND_RAM_THRESHOLD=85
+OMNIMIND_DISK_THRESHOLD=90
 ```
 
-### Thresholds Padrão
+### Arquivo de Configuração
 
-```python
-# Em ProgressiveMonitor.__init__
-self.thresholds = {
-    "cpu_warning": 70.0,      # CPU >70% = warning
-    "cpu_critical": 85.0,     # CPU >85% = critical
-    "memory_warning": 75.0,   # RAM >75% = warning
-    "memory_critical": 90.0,  # RAM >90% = critical
-    "disk_warning": 80.0,     # Disco >80% = warning
-    "disk_critical": 95.0,    # Disco >95% = critical
-}
-```
+`config/omnimind.yaml`:
 
-Para customizar, edite `src/monitor/progressive_monitor.py` antes de iniciar.
+```yaml
+monitor:
+  data_dir: "data/monitor"
+  default_level: "NORMAL"
+  snapshot_history_size: 1000
+  report_throttle_seconds: 60
 
-## 📘 Referências Técnicas (Conciliação)
+resource_protector:
+  mode: "dev"
+  cpu_threshold: 75
+  ram_threshold: 80
+  disk_threshold: 90
 
-- A [documentação do módulo](src/monitor/README.md) alinha o conteúdo oficial de cada componente descrito aqui.
-- O [ProgressiveMonitor](src/monitor/progressive_monitor.py) controla níveis (`MonitorLevel`), thresholds e relatórios throttled que aparecem na seção de Componentes.
-- O [ResourceProtector](src/monitor/resource_protector.py) aplica limites por modo dev/test/prod e executa os handlers de CPU/RAM/Disco mencionados na seção de ResourceProtector.
-- O [AlertSystem](src/monitor/alert_system.py) responde pelos tipos de alertas, persistência JSON e handlers de canais (WebSocket/VS Code/Syslog/File) descritos na seção de Alertas.
-- As rotas reais vivem em [web/backend/routes/monitoring.py](web/backend/routes/monitoring.py), que expõe `/api/monitoring/health`, `/alerts/active`, `/status` e `/snapshots/recent` usados nos exemplos deste documento.
-- O [lifespan do backend](web/backend/main.py#L220-L322) inicializa ProgressiveMonitor, ResourceProtector e AlertSystem e registra os handlers de broadcast via WebSocket.
-- Scripts utilitários como [scripts/view_monitoring_alerts.py](scripts/view_monitoring_alerts.py) consomem as mesmas rotas e ajudam a validar os valores exibidos aqui.
-
----
-
-## 🔗 Integração com VS Code
-
-O VS Code pode receber alertas via WebSocket:
-
-1. **Status Bar**: Mostra status atual (CPU/RAM/Disco)
-2. **Notifications**: Pop-ups para alertas críticos
-3. **Output Channel**: Log estruturado de todos os eventos
-
-Exemplo de conexão VS Code:
-
-```typescript
-const ws = new WebSocket(
-  "ws://localhost:8000/ws?auth_token=" + getAuthToken()
-);
-
-ws.onmessage = (event) => {
-  const msg = JSON.parse(event.data);
-
-  if (msg.type === "alert") {
-    // Mostrar notificação no VS Code
-    vscode.window.showErrorMessage(
-      `[${msg.severity.toUpperCase()}] ${msg.title}: ${msg.message}`
-    );
-
-    // Atualizar status bar
-    statusBar.text = `CPU: ${msg.context.cpu_percent}%`;
-  }
-};
+alerts:
+  channels:
+    - "WEBSOCKET"
+    - "FILE"
+  severity_filter: "WARNING"  # Apenas WARNING e acima
 ```
 
 ---
 
-## 📊 Histórico de Alertas
+## 📊 Métricas Coletadas
 
-Todos os alertas são salvos em JSON:
+### Sistema
 
-```
-data/alerts/
-├── alert_1701514800_permission_error.json
-├── alert_1701514801_server_down.json
-├── alert_1701514802_resource_critical.json
-└── alerts_index.json  # Índice dos últimos 500 alertas
-```
+- CPU percentual
+- Memória (total, usada, disponível)
+- Disco (total, usado, livre)
+- Uptime
+- Conexões de rede
 
-**Query para ver alertas críticos:**
+### Consciência
 
-```bash
-cat data/alerts/alerts_index.json | jq '.[] | select(.severity=="critical")'
-```
+- **Φ (Phi)**: Integração de Informação (IIT 3.0)
+- **ICI**: Integrated Coherence Index
+- **PRS**: Panarchic Resonance Score
+- **Anxiety**: Tensão computacional
+- **Flow**: Estado de fluxo cognitivo
+- **Entropy**: Diversidade de estados
 
----
+### Módulos
 
-## 🎯 Próximas Melhorias
-
-- [ ] Webhooks customizados (Slack, Discord, etc)
-- [ ] Machine learning para predicção de crashes
-- [ ] Métricas agregadas por hora/dia
-- [ ] Dashboard real-time de recursos
-- [ ] Integração com Prometheus/Grafana
+- Atividade por módulo
+- Tempo de execução
+- Taxa de erro
+- Histórico de execuções
 
 ---
 
-**Desenvolvido com ❤️ para OmniMind**
+## 🔗 Referências
+
+- **Código Fonte**:
+  - `src/monitor/` - Componentes de monitoramento
+  - `src/metrics/` - Coleta de métricas
+- **Documentação**:
+  - `src/monitor/README.md` - Documentação do módulo
+  - `src/metrics/README.md` - Documentação de métricas
+- **API**: `docs/api/INTERACTIVE_API_PLAYGROUND.md`
+
+---
+
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)

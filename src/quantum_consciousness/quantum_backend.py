@@ -22,18 +22,12 @@ import logging
 import os
 from typing import Any, Dict, Optional
 
+import torch  # noqa: E402
 from dotenv import load_dotenv
 
-load_dotenv()
-
-# --- CUDA SETUP ---
-# We rely on the shell script (start_omnimind_system.sh) to set CUDA_VISIBLE_DEVICES and others.
-# Doing it here causes "CUDA unknown error" in PyTorch.
-# Trust the shell environment.
-
-import torch  # noqa: E402
-
 from src.monitor.resource_manager import resource_manager
+
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +123,8 @@ class QuantumBackend:
         )
         self.backend: Any = None
         self.mode = "UNKNOWN"  # Will be: LOCAL_GPU, LOCAL_CPU, CLOUD, MOCK
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        logger.info(f"QuantumBackend using device: {self.device}")
 
         # Detect GPU availability (with fallback for CUDA init issues)
         # CRITICAL: Check environment variables FIRST to allow forced GPU mode

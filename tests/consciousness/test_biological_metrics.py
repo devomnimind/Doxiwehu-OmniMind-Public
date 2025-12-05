@@ -9,7 +9,7 @@ import pytest
 # Skip if numpy not available
 np = pytest.importorskip("numpy")
 
-from src.consciousness.biological_metrics import (
+from src.consciousness.biological_metrics import (  # noqa: E402
     BiologicalMetricsAnalyzer,
     LempelZivComplexity,
     PhaseLagIndex,

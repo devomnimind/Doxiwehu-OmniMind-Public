@@ -1,7 +1,7 @@
 # Paper 2: Quantum-Classical Hybrid Sinthoma
 ## Bridging Computational Paradigms via Lacanian Real
 
-**Authors:** OmniMind Quantum Research Team
+**Authors:** Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
 **Date:** November 26, 2025 | **Version:** 2.0 (Complete)
 
 ---

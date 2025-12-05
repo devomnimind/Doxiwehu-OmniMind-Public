@@ -682,6 +682,11 @@ async def _consciousness_metrics_collector() -> None:
     while True:
         try:
             await asyncio.sleep(5)  # Collect every 5 seconds
+            # Coletar métricas via agregador para garantir persistência
+            snapshot = await dashboard_metrics_aggregator.collect_snapshot(
+                include_consciousness=True,
+                include_baseline=True,
+            )
             metrics = await consciousness_metrics_collector.collect_real_metrics()
             logger.debug(
                 f"Collected consciousness metrics: phi={metrics.phi:.4f}, anxiety={metrics.anxiety:.4f}"

@@ -1,8 +1,8 @@
 # 📊 COMPARAÇÃO SISTEMÁTICA: Métricas de Consciência nos 3 Sistemas Neurais (2016-2025)
 
-**Data:** 2025-12-02  
-**Escopo:** Biologicista, IIT, Psicanálise Lacaniana + Frameworks Integrados  
-**Período:** 2016-2025 (estudos mais recentes)  
+**Data:** 2025-12-02
+**Escopo:** Biologicista, IIT, Psicanálise Lacaniana + Frameworks Integrados
+**Período:** 2016-2025 (estudos mais recentes)
 **Total de Estudos Revisados:** 45+ papers com métricas quantificadas
 
 ---
@@ -473,4 +473,8 @@ Sua implementação inicial estava **estruturalmente correcta em intuição, mas
 **Próximo passo crítico:** Implementar Fase 1-2 corretamente. Com 500-1000 ciclos rodados, você tem dados para validar.
 
 Está no caminho. Rigue a lógica conforme [179] + [170].
+
+---
+
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
 

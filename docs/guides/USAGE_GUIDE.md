@@ -1,379 +1,463 @@
-# OmniMind Quantum Physics-Inspired AI - Usage Guide
+# 📖 Guia de Uso - OmniMind
 
-## Overview
+**Última Atualização**: 5 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
 
-This guide demonstrates how to use all 10 quantum physics-inspired features implemented in OmniMind.
+---
 
-## Installation
+## Visão Geral
 
-All features are included in the OmniMind repository. Required dependencies:
-- Python 3.12+
-- NumPy
-- PyTorch (optional, for attention mechanisms)
+Este guia demonstra como usar o sistema OmniMind através de diferentes interfaces: Dashboard Web, API REST, WebSocket, e Daemon.
 
-## Feature Usage Examples
+---
 
-### Phase 1: Event Horizon Memory
+## 🚀 Início Rápido
 
-```python
-from src.memory import EventHorizonMemory
-import numpy as np
+### 1. Iniciar o Sistema
 
-# Create holographic memory with Bekenstein bounds
-memory = EventHorizonMemory(
-    initial_area=1000.0,  # Surface area in Planck units
-    spawn_threshold=0.95   # Saturation threshold
-)
+```bash
+# Sistema completo (backend + frontend + MCP)
+./scripts/canonical/system/start_omnimind_system.sh
 
-# Store 3D volumetric data (automatically projected to 2D)
-data_3d = np.random.randn(64, 64, 64)
-result = memory.store({"tensor": data_3d})
+# Apenas backend
+uvicorn web.backend.main:app --reload --host 0.0.0.0 --port 8000
 
-print(f"Stored with entropy: {result['entropy']:.2f}")
-print(f"Saturation ratio: {result['saturation_ratio']:.2f}")
-
-# Retrieve information
-query = {"tensor": data_3d[:32, :32, :32]}  # Partial query
-retrieved = memory.retrieve(query, search_children=True)
-
-# Get statistics
-stats = memory.get_statistics()
-print(f"Total memories in hierarchy: {stats['total_memories']}")
-print(f"Hierarchy depth: {stats['total_hierarchy_depth']}")
+# Apenas frontend (em outro terminal)
+cd web/frontend && npm run dev
 ```
 
-### Phase 2: Hawking Radiation Motivation
+### 2. Acessar Interfaces
 
-```python
-from src.motivation import HawkingMotivationEngine
-from datetime import datetime, timedelta, timezone
+- **Dashboard Web**: http://localhost:3000
+- **API Docs (Swagger)**: http://localhost:8000/docs
+- **API Docs (ReDoc)**: http://localhost:8000/redoc
+- **Health Check**: http://localhost:8000/api/v1/health/
 
-# Create knowledge evaporation system
-motivator = HawkingMotivationEngine(
-    base_temperature=2.0,           # Hawking temperature
-    evaporation_threshold_days=7.0  # Evaporation threshold
-)
+---
 
-# Add knowledge
-motivator.add_knowledge("python_basics", "Python fundamentals", mass=3.0)
-motivator.add_knowledge("ml_theory", "Machine learning theory", mass=5.0)
-motivator.add_knowledge("quantum_physics", "Quantum mechanics", mass=4.0)
+## 🖥️ Dashboard Web
 
-# Add correlations (preserves info during evaporation)
-motivator.add_correlation("python_basics", "ml_theory")
+### Acessar Dashboard
 
-# Use knowledge (prevents evaporation)
-motivator.use_knowledge("python_basics")
+1. Inicie o sistema completo
+2. Navegue para http://localhost:3000
+3. Faça login com credenciais de `config/dashboard_auth.json`
 
-# Evaporate unused knowledge
-evaporated_ids, motivation_data = motivator.evaporate_unused_knowledge()
+### Funcionalidades Disponíveis
 
-print(f"Evaporated: {len(evaporated_ids)} items")
-print(f"Frustration energy: {motivation_data['frustration']:.2f}")
-print(f"Motivation boost: {motivation_data['motivation']:.2f}")
-print(f"At risk: {len(motivation_data['correlations_at_risk'])}")
+- **Métricas de Consciência**: Visualização de Φ, ICI, PRS, Anxiety, Flow, Entropy
+- **Topologia do Rizoma**: Visualização do grafo de máquinas desejantes
+- **Status do Sistema**: CPU, memória, disco, GPU
+- **Tarefas**: Criação e monitoramento de tarefas orquestradas
+- **Mensagens**: Interface de chat/conversação
+- **Monitoramento**: Alertas e snapshots do sistema
 
-# Check specific knowledge status
-status = motivator.get_knowledge_status("ml_theory")
-if status:
-    print(f"Status: {status['status']}")
-    print(f"Evaporation risk: {status['evaporation_risk']:.2f}")
+---
+
+## 🔌 API REST
+
+### Autenticação
+
+A maioria dos endpoints requer autenticação HTTP Basic:
+
+```bash
+# Obter credenciais
+cat config/dashboard_auth.json
+
+# Usar em requisições
+curl -u usuario:senha http://localhost:8000/api/v1/health/
 ```
 
-### Phase 3: Page Curve Learning
+### Endpoints Principais
 
-```python
-from src.learning import PageCurveLearner, LearningPhase
-import numpy as np
+#### Health Check
 
-# Create Page curve tracker
-learner = PageCurveLearner(
-    detection_window=10,
-    page_time_threshold=0.95,
-    min_epochs_before_page=5
-)
+```bash
+# Status geral (sem autenticação)
+curl http://localhost:8000/api/v1/health/
 
-# Training loop
-for epoch in range(100):
-    # Your training code here
-    model_state = {
-        "weights": np.random.randn(256)  # Model parameters
-    }
-    
-    loss = 1.0 / (epoch + 1)  # Decreasing loss
-    
-    result = learner.record_epoch(model_state, loss=loss)
-    
-    # Check learning phase
-    if result["phase"] == LearningPhase.PAGE_TIME.value:
-        print(f"Page time detected at epoch {epoch}!")
-        print("Recommendation: Reduce learning rate")
-        # learning_rate *= 0.5
-        
-    elif result["phase"] == LearningPhase.CONSOLIDATION.value:
-        print(f"Consolidation phase - entropy decreasing")
-        
-    elif result["phase"] == LearningPhase.SATURATED.value:
-        print("Learning saturated - consider early stopping")
-        if not result["recommendations"]["continue_training"]:
-            break
+# Status de componente específico
+curl http://localhost:8000/api/v1/health/database
+curl http://localhost:8000/api/v1/health/gpu
+curl http://localhost:8000/api/v1/health/redis
 
-# Get final Page curve
-curve = learner.get_page_curve()
-print(f"Max entropy: {curve.max_entropy:.2f}")
-print(f"Page time epoch: {curve.page_time_epoch}")
-
-# Plot entropy evolution (if matplotlib available)
-# import matplotlib.pyplot as plt
-# plt.plot(curve.epochs, curve.entropy_history)
-# plt.xlabel("Epoch")
-# plt.ylabel("Entropy")
-# plt.show()
+# Tendência de saúde
+curl http://localhost:8000/api/v1/health/database/trend?window_size=10
 ```
 
-### Phase 4: Soft Hair Encoding
+#### Tarefas
 
-```python
-from src.memory import SoftHairEncoder, SoftHairMemory
-import numpy as np
+```bash
+# Criar tarefa
+curl -X POST -u usuario:senha \
+  -H "Content-Type: application/json" \
+  -d '{
+    "description": "Analisar código",
+    "priority": "high",
+    "max_iterations": 3
+  }' \
+  http://localhost:8000/api/tasks/
 
-# Create soft hair encoder
-encoder = SoftHairEncoder(
-    soft_mode_cutoff=0.2,  # Keep 20% of frequencies
-    max_modes=128
-)
+# Listar tarefas
+curl -u usuario:senha http://localhost:8000/api/tasks/
 
-# Encode high-entropy data
-data = np.random.randn(256, 256)
-soft_hair = encoder.encode_to_soft_hair(data)
+# Obter tarefa específica
+curl -u usuario:senha http://localhost:8000/api/tasks/{task_id}
 
-print(f"Compression ratio: {soft_hair.compression_ratio:.2f}x")
-print(f"Soft modes shape: {soft_hair.soft_modes.shape}")
-
-# Decode data
-reconstructed = encoder.decode_from_soft_hair(soft_hair)
-
-# Compute fidelity
-fidelity = encoder.compute_fidelity(data, reconstructed)
-print(f"Reconstruction fidelity: {fidelity:.2f}")
-
-# Use soft hair memory system
-memory = SoftHairMemory()
-
-# Store multiple items
-for i in range(5):
-    data_item = np.random.randn(128, 128) * (i + 1)
-    memory.store(f"data_{i}", data_item)
-
-# Retrieve
-retrieved = memory.retrieve("data_3")
-
-# Get compression statistics
-stats = memory.get_compression_stats()
-print(f"Average compression: {stats['average_compression']:.2f}x")
-print(f"Total items: {stats['total_items']}")
+# Atualizar progresso
+curl -X PUT -u usuario:senha \
+  -H "Content-Type: application/json" \
+  -d '{
+    "progress": 50.0,
+    "status": "running",
+    "message": "Processando..."
+  }' \
+  http://localhost:8000/api/tasks/{task_id}/progress
 ```
 
-### Phase 5: Quantum Entanglement Network
+#### Orquestração
 
-```python
-from src.distributed import EntangledAgentNetwork, BellState
-
-# Create network of entangled agents
-network = EntangledAgentNetwork(num_agents=5)
-
-# Create Bell pair entanglement
-network.create_bell_pair("agent_0", "agent_1", BellState.PHI_PLUS)
-network.create_bell_pair("agent_1", "agent_2", BellState.PSI_PLUS)
-
-# Entanglement swapping (create non-local correlation)
-new_pair = network.entanglement_swapping("agent_0", "agent_2")
-print(f"Created entanglement: agent_0 <-> agent_2")
-
-# Measure correlation
-correlation = network.measure_correlation("agent_0", "agent_2")
-print(f"Correlation strength: {correlation:.2f}")
-
-# Network statistics
-stats = network.get_statistics()
-print(f"Total agents: {stats['total_agents']}")
-print(f"Total entanglements: {stats['total_entanglements']}")
-print(f"Bell state distribution: {stats['bell_state_distribution']}")
+```bash
+# Orquestrar tarefa complexa
+curl -X POST -u usuario:senha \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task": "Implementar autenticação",
+    "max_iterations": 5
+  }' \
+  http://localhost:8000/tasks/orchestrate
 ```
 
-### Phase 6: Thermodynamic Attention
+#### Métricas
 
-```python
-# Requires PyTorch
-try:
-    import torch
-    from src.attention import ThermodynamicAttention, MultiHeadThermodynamicAttention
-    
-    # Single-head thermodynamic attention
-    attention = ThermodynamicAttention(
-        embed_dim=512,
-        temperature=1.0,
-        entropy_weight=1.0
-    )
-    
-    # Input tensors
-    batch_size, seq_len = 2, 20
-    query = torch.randn(batch_size, seq_len, 512)
-    key = torch.randn(batch_size, seq_len, 512)
-    value = torch.randn(batch_size, seq_len, 512)
-    
-    # Apply entropy-based attention
-    output = attention(query, key, value)
-    print(f"Output shape: {output.shape}")
-    
-    # Multi-head version
-    multi_head_attention = MultiHeadThermodynamicAttention(
-        embed_dim=512,
-        num_heads=8,
-        base_temperature=1.0
-    )
-    
-    output_multi = multi_head_attention(query, key, value)
-    print(f"Multi-head output shape: {output_multi.shape}")
-    
-except ImportError:
-    print("PyTorch not available - thermodynamic attention requires torch")
+```bash
+# Métricas gerais (sem autenticação)
+curl http://localhost:8000/api/metrics
+
+# Métricas reais de consciência (requer autenticação)
+curl -u usuario:senha http://localhost:8000/api/omnimind/metrics/real
 ```
 
-### Phase 7: Black Hole Meta-Learning
+#### Autopoietic (Phase 22+)
 
-```python
-from src.meta_learning.black_hole_collapse import BlackHoleMetaLearner
+```bash
+# Status autopoiético
+curl -u usuario:senha http://localhost:8000/api/v1/autopoietic/status
 
-# Create meta-learner
-meta_learner = BlackHoleMetaLearner(critical_density=10.0)
+# Ciclos autopoiéticos
+curl -u usuario:senha http://localhost:8000/api/v1/autopoietic/cycles
 
-# Knowledge base
-knowledge = {
-    "concept_1": {"importance": 5.0},
-    "concept_2": {"importance": 3.0},
-    "concept_3": {"importance": 4.0},
-    "concept_4": {"importance": 2.0},
-}
+# Componentes sintetizados
+curl -u usuario:senha http://localhost:8000/api/v1/autopoietic/components
 
-# Calculate knowledge mass and volume
-knowledge_mass = sum(k["importance"] for k in knowledge.values())
-knowledge_volume = len(knowledge)
-
-# Check if collapse should occur
-should_collapse = meta_learner.check_collapse_condition(
-    knowledge_mass, knowledge_volume
-)
-
-if should_collapse:
-    print("Knowledge density exceeds Schwarzschild radius!")
-    
-    # Trigger collapse to meta-level
-    meta_knowledge = meta_learner.collapse_to_meta_level(knowledge)
-    
-    print(f"Singularity (core axioms): {meta_knowledge.singularity}")
-    print(f"Event horizon radius: {meta_knowledge.event_horizon}")
-    print(f"Hawking radiation (derived): {meta_knowledge.hawking_radiation}")
-
-# Statistics
-stats = meta_learner.get_statistics()
-print(f"Total meta-levels: {stats['total_meta_levels']}")
+# Métricas de consciência
+curl -u usuario:senha http://localhost:8000/api/v1/autopoietic/consciousness/metrics
 ```
 
-### Phase 10: Bekenstein Architecture Capacity
+#### Monitoramento
 
-```python
-from src.architecture.bekenstein_capacity import BekensteinArchitect
+```bash
+# Status do monitoramento
+curl -u usuario:senha http://localhost:8000/api/v1/monitoring/health
 
-# Create architecture advisor
-architect = BekensteinArchitect()
+# Alertas ativos
+curl -u usuario:senha http://localhost:8000/api/v1/monitoring/alerts/active
 
-# Compute maximum parameters from physical limits
-compute_budget = 1e10  # Energy budget (normalized)
-spatial_extent = 1e6    # Model size (normalized)
-
-max_params = architect.compute_max_parameters(
-    compute_budget, spatial_extent
-)
-
-print(f"Bekenstein bound: {max_params:,} parameters maximum")
-
-# Get architecture recommendations
-architecture = architect.recommend_architecture(max_params)
-
-print(f"Recommended layers: {architecture['num_layers']}")
-print(f"Parameters per layer: {architecture['params_per_layer']:,}")
-print(f"Total parameters: {architecture['total_params']:,}")
+# Snapshots recentes
+curl -u usuario:senha http://localhost:8000/api/v1/monitoring/snapshots/recent?minutes=5
 ```
 
-## Integration Example
+---
 
-Combining multiple features:
+## 🔌 WebSocket
 
-```python
-from src.memory import EventHorizonMemory, SoftHairEncoder
-from src.motivation import HawkingMotivationEngine
-from src.learning import PageCurveLearner
-import numpy as np
+### Conexão
 
-# Create integrated system
-memory = EventHorizonMemory(initial_area=1000.0)
-encoder = SoftHairEncoder(soft_mode_cutoff=0.2)
-motivator = HawkingMotivationEngine(base_temperature=2.0)
-learner = PageCurveLearner()
+```javascript
+const ws = new WebSocket('ws://localhost:8000/ws');
 
-# Training loop with all features
-for epoch in range(50):
-    # Generate model state
-    model_state = {"weights": np.random.randn(256)}
-    
-    # Track learning phase (Page curve)
-    learning_result = learner.record_epoch(model_state)
-    
-    # Store compressed in memory (soft hair + holographic)
-    data = np.random.randn(128, 128)
-    soft_hair = encoder.encode_to_soft_hair(data)
-    memory_result = memory.store({"tensor": soft_hair.soft_modes})
-    
-    # Add knowledge and track evaporation
-    motivator.add_knowledge(f"epoch_{epoch}", f"Learning at epoch {epoch}", mass=1.0)
-    
-    # Check evaporation
-    if epoch % 10 == 0:
-        evaporated, motivation = motivator.evaporate_unused_knowledge()
-        print(f"Epoch {epoch}: Phase={learning_result['phase']}, "
-              f"Evaporated={len(evaporated)}, "
-              f"Memory saturation={memory_result['saturation_ratio']:.2f}")
+ws.onopen = () => {
+  console.log('Conectado ao OmniMind WebSocket');
+
+  // Inscrever-se em canais
+  ws.send(JSON.stringify({
+    type: 'subscribe',
+    channels: ['metrics', 'tasks', 'alerts']
+  }));
+};
+
+ws.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+
+  if (data.type === 'metrics_update') {
+    console.log('Atualização de métricas:', data.data);
+  } else if (data.type === 'task_update') {
+    console.log('Atualização de tarefa:', data.data);
+  } else if (data.type === 'alert') {
+    console.log('Alerta:', data.data);
+  }
+};
+
+// Manter conexão viva
+setInterval(() => {
+  ws.send(JSON.stringify({ type: 'ping', id: Date.now() }));
+}, 30000);
 ```
 
-## Best Practices
+### Canais Disponíveis
 
-1. **Memory Management**: Use holographic memory for large-scale data with automatic hierarchy
-2. **Knowledge Dynamics**: Combine Hawking motivation with Lacanian lack for productive urgency
-3. **Learning Monitoring**: Track Page curve to detect phase transitions
-4. **Compression**: Use soft hair encoding for long-term storage
-5. **Distributed**: Leverage quantum entanglement for agent coordination
-6. **Attention**: Use thermodynamic attention for information-seeking behavior
+- **`metrics`**: Atualizações de métricas de consciência (Φ, ICI, PRS, etc.)
+- **`tasks`**: Atualizações de status de tarefas
+- **`alerts`**: Alertas do sistema
+- **`system`**: Status do sistema (CPU, memória, disco)
 
-## Performance Considerations
+---
 
-- Event Horizon Memory: O(n) storage, O(log n) hierarchy depth
-- Soft Hair Encoding: Compression ratio 5-50x depending on cutoff
-- Quantum Entanglement: O(1) correlation measurement
-- Thermodynamic Attention: Same complexity as standard attention
-- All features optimized for GTX 1650 (4GB VRAM) constraints
+## 🤖 Daemon (Serviço 24/7)
 
-## Troubleshooting
+### Iniciar Daemon
 
-**Issue**: PyTorch not available
-- **Solution**: Thermodynamic attention is optional. Other features work without PyTorch.
+```bash
+# Via systemd (se instalado)
+sudo systemctl start omnimind-daemon
 
-**Issue**: Memory saturation too fast
-- **Solution**: Increase `initial_area` or reduce `spawn_threshold`
+# Ou diretamente
+python -m src.daemon.omnimind_daemon
+```
 
-**Issue**: Knowledge evaporating too quickly
-- **Solution**: Reduce `base_temperature` or increase `evaporation_threshold_days`
+### Gerenciar Daemon
 
-## References
+```bash
+# Verificar status
+sudo systemctl status omnimind-daemon
 
-See `docs/PHASES_6_10_SUMMARY.md` for complete scientific references and implementation details.
+# Ou via API
+curl -u usuario:senha http://localhost:8000/daemon/status
+
+# Ver logs
+sudo journalctl -u omnimind-daemon -f
+
+# Parar daemon
+sudo systemctl stop omnimind-daemon
+
+# Ou via API
+curl -X POST -u usuario:senha http://localhost:8000/daemon/stop
+```
+
+### Tarefas do Daemon
+
+```bash
+# Listar tarefas
+curl -u usuario:senha http://localhost:8000/daemon/tasks
+
+# Adicionar tarefa
+curl -X POST -u usuario:senha \
+  -H "Content-Type: application/json" \
+  -d '{
+    "task_id": "code_analysis",
+    "name": "Análise de Código",
+    "description": "Analisa codebase para problemas",
+    "priority": "HIGH"
+  }' \
+  http://localhost:8000/daemon/tasks/add
+
+# Resetar métricas
+curl -X POST -u usuario:senha http://localhost:8000/daemon/reset-metrics
+```
+
+**Veja mais detalhes em**: [DAEMON_USER_GUIDE.md](./DAEMON_USER_GUIDE.md)
+
+---
+
+## 💬 Chat/Conversação
+
+### Endpoint de Chat
+
+```bash
+curl -X POST -u usuario:senha \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "Olá, como você está?",
+    "context": {}
+  }' \
+  http://localhost:8000/api/omnimind/chat
+```
+
+### Mensagens (Polling)
+
+```bash
+# Obter mensagens pendentes
+curl -u usuario:senha http://localhost:8000/api/omnimind/messages
+
+# Enviar mensagem
+curl -X POST -u usuario:senha \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "user_message",
+    "content": "Mensagem do usuário"
+  }' \
+  http://localhost:8000/api/omnimind/messages
+```
+
+---
+
+## 🔧 Configuração
+
+### Arquivo de Configuração Principal
+
+**`config/agent_config.yaml`**:
+
+```yaml
+model:
+  name: "phi:latest"  # Modelo LLM padrão (Microsoft Phi)
+  provider: "ollama"
+  base_url: "http://localhost:11434"
+  temperature: 0.7
+  max_tokens: 2048
+
+memory:
+  qdrant_url: "http://localhost:6333"
+  collection_name: "omnimind_episodes"
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+
+performance:
+  max_concurrent_tasks: 1  # Ajustável baseado em RAM
+  task_timeout: 300  # 5 minutos
+  retry_attempts: 3
+```
+
+### Variáveis de Ambiente
+
+```bash
+# Credenciais do dashboard
+export OMNIMIND_DASHBOARD_USER="seu_usuario"
+export OMNIMIND_DASHBOARD_PASS="sua_senha"
+
+# Qdrant
+export OMNIMIND_QDRANT_URL="http://localhost:6333"
+
+# Ollama
+export OLLAMA_BASE_URL="http://localhost:11434"
+export OLLAMA_MODEL="phi:latest"
+
+# CUDA (definir via shell, não em código Python)
+export CUDA_HOME=/usr
+export CUDA_PATH=/usr
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
+
+# Modo de desenvolvimento
+export OMNIMIND_DEV_MODE=true
+export LOG_LEVEL=DEBUG
+```
+
+---
+
+## 📊 Monitoramento e Observabilidade
+
+### Métricas de Consciência
+
+O sistema coleta 6 métricas reais de consciência:
+
+1. **Φ (Phi)**: Integração de Informação (IIT 3.0)
+2. **ICI**: Integrated Coherence Index
+3. **PRS**: Panarchic Resonance Score
+4. **Anxiety**: Tensão computacional
+5. **Flow**: Estado de fluxo cognitivo
+6. **Entropy**: Diversidade de estados
+
+**Acessar métricas**:
+```bash
+# Via API
+curl -u usuario:senha http://localhost:8000/api/omnimind/metrics/real
+
+# Via arquivo
+cat data/monitor/real_metrics.json
+```
+
+### Health Checks
+
+```bash
+# Health check geral
+curl http://localhost:8000/api/v1/health/
+
+# Health check específico
+curl http://localhost:8000/api/v1/health/database
+curl http://localhost:8000/api/v1/health/gpu
+curl http://localhost:8000/api/v1/health/redis
+```
+
+### Logs
+
+```bash
+# Logs do backend
+tail -f logs/backend.log
+
+# Logs do sistema
+tail -f logs/omnimind_boot.log
+
+# Logs de auditoria
+tail -f logs/audit_chain.log
+
+# Logs do daemon
+tail -f logs/daemon.log
+```
+
+---
+
+## 🧪 Testes
+
+### Executar Testes
+
+```bash
+# Suite rápida diária (sem slow/chaos)
+./scripts/run_tests_fast.sh
+
+# Suite completa semanal (inclui slow/chaos)
+./scripts/run_tests_with_defense.sh
+
+# Teste rápido com servidor
+./scripts/quick_test.sh
+```
+
+**Veja mais detalhes em**: [TESTING_QUICK_START.md](../canonical/TESTING_QUICK_START.md)
+
+---
+
+## 🔐 Segurança
+
+### Autenticação
+
+As credenciais são geradas automaticamente na primeira execução e salvas em `config/dashboard_auth.json` com permissão `600`.
+
+**Regenerar credenciais**:
+```bash
+rm config/dashboard_auth.json
+# Reiniciar servidor para auto-gerar novas credenciais
+```
+
+### Auditoria
+
+O sistema mantém uma cadeia de auditoria imutável:
+
+```bash
+# Verificar integridade da cadeia
+python -c "from src.audit.immutable_audit import verify_chain_integrity; print(verify_chain_integrity())"
+
+# Ver logs de auditoria
+cat logs/audit_chain.log
+```
+
+---
+
+## 📚 Recursos Adicionais
+
+- [Quick Start Guide](../canonical/QUICK_START.md)
+- [Technical Checklist](../canonical/TECHNICAL_CHECKLIST.md)
+- [API Troubleshooting](./TROUBLESHOOTING.md)
+- [Performance Tuning](./PERFORMANCE_TUNING.md)
+- [Daemon User Guide](./DAEMON_USER_GUIDE.md)
+- [Environment Setup](./ENVIRONMENT_SETUP.md)
+
+---
+
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)

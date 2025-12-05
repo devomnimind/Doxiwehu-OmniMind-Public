@@ -1,7 +1,8 @@
 # 📋 ANÁLISE CONSOLIDADA: SCRIPTS, MARKERS E TESTES
 
-**Data**: 2025-12-04
-**Status**: 🔄 ANÁLISE EM ANDAMENTO
+**Data**: 5 de Dezembro de 2025  
+**Última Atualização**: 2025-12-05  
+**Status**: ✅ **CONSOLIDADO E ATUALIZADO**  
 **Objetivo**: Consolidar nomes de scripts, markers pytest e testes para evitar incongruências
 
 ---
@@ -25,45 +26,57 @@ Durante revisão de `run_tests_fast.sh`, foi descoberto que:
 
 ---
 
-## ✅ CORREÇÕES IMPLEMENTADAS (2025-12-04)
+## ✅ CORREÇÕES IMPLEMENTADAS (2025-12-04 a 2025-12-05)
 
-### 1. pytest.ini - Adicionar marker `chaos`
+### 1. pytest.ini e pyproject.toml - Markers Registrados
 
-**Arquivo**: [`config/pytest.ini`](../../config/pytest.ini)
+**Arquivos**: 
+- [`config/pytest.ini`](../../config/pytest.ini)
+- [`pyproject.toml`](../../pyproject.toml)
 
+**Markers definidos**:
 ```ini
 markers =
     asyncio: mark tests that use async/await
-    slow: mark slow-running tests
+    slow: mark a test as slow (running on main GPU, takes >30s)
     security: mark security-focused suites
     parallel: mark tests that can run in parallel safely
-    serial: mark tests that must run serially
-    mock: mark tests that use @patch decorators
+    serial: mark tests that must run serially (e.g., database tests)
+    mock: mark tests that use @patch decorators (structure validation only)
     semi_real: mark tests without @patch but without full LLM integration
-    real: mark tests with full GPU+LLM+Network integration
-    chaos: mark tests that destroy/restart server (WEEKLY ONLY!)  # <-- NOVO
+    real: mark tests with full GPU+LLM+Network integration (measures real metrics)
+      - WITHOUT @pytest.mark.chaos: Included in run_tests_fast.sh (safe, no server destruction)
+      - WITH @pytest.mark.chaos: Only in run_tests_with_defense.sh (destroys server for chaos engineering)
+    chaos: mark tests that destroy/crash server intentionally (WEEKLY/CHAOS ENGINEERING ONLY - excluded from run_tests_fast.sh)
 ```
 
-**Impacto**: Agora `-m "not chaos"` vai **excluir** todos os testes que destroem servidor
+**Impacto**: 
+- ✅ `-m "not chaos"` exclui todos os testes que destroem servidor
+- ✅ Markers também registrados em `pyproject.toml` para evitar warnings
+- ✅ Warnings de markers desconhecidos resolvidos (2025-12-05)
 
 ### 2. run_tests_fast.sh - Excluir chaos tests
 
 **Arquivo**: [`scripts/run_tests_fast.sh`](../../scripts/run_tests_fast.sh)
 
-**ANTES**:
-```bash
--m "not slow and not real" \
-```
-
-**DEPOIS**:
+**Configuração atual**:
 ```bash
 -m "not slow and not real and not chaos" \
 ```
+
+**Características**:
+- ✅ GPU forçada (com fallback device_count detection)
+- ✅ Exclui testes `@pytest.mark.slow` (timeout > 30s)
+- ✅ Exclui testes `@pytest.mark.chaos` (destroem servidor)
+- ✅ **INCLUI** testes `@pytest.mark.real` SEM `@pytest.mark.chaos` (GPU+LLM+Network, não destroem servidor)
+- ⏱️ Duração: ~15-20 min
+- 🎯 Uso: Diário (CI/CD automático)
 
 **Comentário no script**:
 ```bash
 # ⚠️ IMPORTANTE: Excluir testes CHAOS (destroem servidor)
 # Testes chaos SÓ rodam em modo SEMANAL (run_tests_with_defense.sh)
+# ✅ INCLUÍDOS: Testes @pytest.mark.real SEM @pytest.mark.chaos
 ```
 
 ### 3. run_tests_with_defense.sh - Comentário sobre inclusão de chaos
@@ -103,11 +116,11 @@ markers =
 
 ### Scripts Ativos
 
-| Script | Localização | Propósito | Exclusões | Inclusões |
-|--------|------------|----------|-----------|-----------|
-| `quick_test.sh` | `scripts/quick_test.sh` | Teste rápido + servidor local | `slow`, `real`, `chaos` | nenhuma |
-| `run_tests_fast.sh` | `scripts/run_tests_fast.sh` | Validação rápida unitária | `slow`, `real`, `chaos` | nenhuma |
-| `run_tests_with_defense.sh` | `scripts/run_tests_with_defense.sh` | Suite semanal completa | nenhuma | **INCLUI TUDO** |
+| Script | Localização | Propósito | Exclusões | Inclusões | Duração |
+|--------|------------|----------|-----------|-----------|---------|
+| `quick_test.sh` | `scripts/quick_test.sh` | Teste rápido + servidor local | `slow`, `real`, `chaos` | nenhuma | ~10-15 min |
+| `run_tests_fast.sh` | `scripts/run_tests_fast.sh` | Validação rápida diária | `slow`, `chaos` | `real` (sem chaos) | ~15-20 min |
+| `run_tests_with_defense.sh` | `scripts/run_tests_with_defense.sh` | Suite semanal completa | nenhuma | **INCLUI TUDO** | ~45-90 min |
 
 **Nota**: Não há `run_tests_with_server.sh` ativo. Referências em docs estão em `docs/archive/` (correto).
 
@@ -123,7 +136,7 @@ markers =
 | `mock` | ✅ | ✅ | Usa @patch decorators |
 | `semi_real` | ✅ | ✅ | Mocks mas sem LLM full |
 | `real` | ✅ | ✅ | GPU+LLM+Network full |
-| `chaos` | ❌ **ADICIONADO** | ✅ | Destroem servidor |
+| `chaos` | ✅ (2025-12-04) | ✅ | Destroem servidor (WEEKLY ONLY) |
 
 ---
 
@@ -314,6 +327,12 @@ async def test_long_operation():
 
 ---
 
-**Data de Conclusão**: 2025-12-04 10:15 UTC
-**Varredura Total**: 10 docs, 7+ testes, 9+ markers, 3 scripts verificados
+**Data de Conclusão**: 2025-12-04 10:15 UTC  
+**Última Atualização**: 2025-12-05  
+**Varredura Total**: 10 docs, 7+ testes, 9+ markers, 3 scripts verificados  
 **Status Geral**: ✅ **CONSOLIDAÇÃO COMPLETA - SEM INCONGRUÊNCIAS CRÍTICAS**
+
+**Atualizações 2025-12-05**:
+- ✅ Markers também registrados em `pyproject.toml` para evitar warnings
+- ✅ Documentação atualizada com informações corretas sobre `run_tests_fast.sh` (inclui testes `real` sem `chaos`)
+- ✅ Tabela de scripts atualizada com durações e inclusões corretas

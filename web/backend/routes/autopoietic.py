@@ -356,13 +356,19 @@ async def get_consciousness_metrics(
                         ]
                         avg_latency = sum(latencies) / len(latencies) if latencies else 0.0
 
+                        # Handle timestamp (can be datetime or float)
+                        last_update = None
+                        if hasattr(history[-1], "timestamp"):
+                            ts = history[-1].timestamp
+                            if hasattr(ts, "isoformat"):
+                                last_update = ts.isoformat()
+                            elif isinstance(ts, (int, float)):
+                                from datetime import datetime, timezone
+                                last_update = datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
+
                         module_stats[module] = {
                             "history_length": executions,
-                            "last_update": (
-                                history[-1].timestamp.isoformat()
-                                if hasattr(history[-1], "timestamp")
-                                else None
-                            ),
+                            "last_update": last_update,
                             "error_count": errors,
                             "error_rate": errors / executions if executions > 0 else 0.0,
                             "avg_latency_ms": avg_latency,
@@ -384,15 +390,28 @@ async def get_consciousness_metrics(
                         total_errors / total_executions if total_executions > 0 else 0.0
                     ),
                     "active_modules": len(
-                        [m for m in module_stats.values() if m.get("history_length", 0) > 0]
+                        [
+                            m
+                            for m in module_stats.values()
+                            if isinstance(m, dict)
+                            and isinstance(m.get("history_length"), (int, float))
+                            and float(m.get("history_length", 0)) > 0
+                        ]
                     ),
                 }
 
+                # Type-safe valid_predictions_count
+                valid_predictions = [
+                    p
+                    for p in raw_predictions
+                    if isinstance(p, dict)
+                    and isinstance(p.get("granger_causality"), (int, float))
+                    and float(p.get("granger_causality", 0)) > 0
+                ]
+
                 response["raw_data"] = {
                     "causal_predictions": raw_predictions,
-                    "valid_predictions_count": len(
-                        [p for p in raw_predictions if p.get("granger_causality", 0) > 0]
-                    ),
+                    "valid_predictions_count": len(valid_predictions),
                     "total_predictions": len(raw_predictions),
                     "module_stats": module_stats,
                     "module_activities": module_activities,  # Phase 22: Novo

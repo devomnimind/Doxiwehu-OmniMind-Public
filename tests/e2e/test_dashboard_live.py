@@ -154,28 +154,22 @@ async def test_polling_endpoint(async_client):
 
 
 @pytest.mark.asyncio
-async def test_websocket_metrics(omnimind_server):
+async def test_websocket_metrics(omnimind_server, auth_credentials):
     """
     Verify that the WebSocket endpoint broadcasts metrics updates.
     """
     import asyncio
     import json
-    import os
     from base64 import b64encode
 
     import websockets
-    from dotenv import load_dotenv
-
-    # Load environment variables
-    load_dotenv()
 
     # Use dynamic URL from fixture
     base_url = omnimind_server.replace("http://", "ws://").replace("https://", "wss://")
     uri = f"{base_url}/ws"
 
-    # Get credentials from env or fallback to admin:admin
-    user = os.getenv("OMNIMIND_DASHBOARD_USER", "admin")
-    password = os.getenv("OMNIMIND_DASHBOARD_PASS", "admin")
+    # Get credentials from fixture
+    user, password = auth_credentials
 
     # Basic Auth headers
     auth_token = b64encode(f"{user}:{password}".encode("ascii")).decode("ascii")

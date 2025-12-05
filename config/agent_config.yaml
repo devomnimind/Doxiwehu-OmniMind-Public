@@ -7,13 +7,14 @@ agent:
   version: "0.1.0"
 
 model:
-  name: "qwen2:7b-instruct"
+  name: "phi:latest"           # Primary LLM model (validated via benchmark)
   provider: "ollama"
   base_url: "http://localhost:11434"
   quantization: "Q4_K_M"
   context_window: 4096
   temperature: 0.7
   max_tokens: 2048
+  fallback_model: "qwen2:7b-instruct"  # Secondary model (pending Ollama 404 fix)
 
 gpu:
   device: "cuda:0"

@@ -227,7 +227,7 @@ O projeto OmniMind deixa um legado duradouro:
 
 ## 📞 CONTATO E SUPORTE
 
-**Equipe de Desenvolvimento:** This work was conceived by Fabrício da Silva and implemented with AI assistance from GitHub Copilot (Claude Haiku 4.5 and Grok Code Fast 1), with constant code review and debugging across various models including Gemini and Perplexity AI, under theoretical coordination by the author.
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
 **Documentação:** https://devomnimind.github.io/omnimind
 **Código Fonte:** https://github.com/devomnimind/omnimind
 **DOI:** https://doi.org/10.5281/zenodo.XXXXXXX

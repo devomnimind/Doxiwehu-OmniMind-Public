@@ -149,16 +149,14 @@ async def _call_llm_for_chat(message: str, system_prompt: str, context: Dict[str
     try:
         # Use Ollama via llm_router
         llm_router = get_llm_router()
-        response = llm_router.infer(
-            task="chat_completion",
-            system_prompt=system_prompt,
-            user_input=message,
-            context=context,
-            temperature=0.7,
-            max_tokens=512,
-        )
+        # Build prompt from system_prompt and user_input
+        full_prompt = f"{system_prompt}\n\nUser: {message}\n\nContext: {context}\n\nAssistant:"
+        response_obj = await llm_router.invoke(full_prompt)
 
-        return response.strip() if response else "Desculpe, não consegui gerar uma resposta."
+        if response_obj.success:
+            return response_obj.text.strip() if response_obj.text else "Desculpe, não consegui gerar uma resposta."
+        else:
+            raise Exception(response_obj.error or "LLM invocation failed")
 
     except Exception as e:
         logger.warning(f"LLM call failed: {e}. Using fallback.")

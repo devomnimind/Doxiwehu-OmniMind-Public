@@ -66,10 +66,10 @@ class DummyBaselineSystem:
 @pytest.mark.asyncio
 async def test_dashboard_snapshot_includes_all_sections():
     aggregator = DashboardMetricsAggregator(
-        consciousness_collector=DummyCollector(),
-        module_tracker=DummyModuleTracker(),
-        health_analyzer=DummyHealthAnalyzer(),
-        baseline_system=DummyBaselineSystem(),
+        consciousness_collector=DummyCollector(),  # type: ignore[arg-type]
+        module_tracker=DummyModuleTracker(),  # type: ignore[arg-type]
+        health_analyzer=DummyHealthAnalyzer(),  # type: ignore[arg-type]
+        baseline_system=DummyBaselineSystem(),  # type: ignore[arg-type]
         system_metrics_fn=lambda: {
             "cpu_percent": 42.0,
             "memory_percent": 58.0,

@@ -244,6 +244,33 @@ class PhiCalculator:
         result = self.calculate_phi_with_unconscious()
         return result.conscious_phi
 
+    async def calculate_with_quantum_validation(self, states: "Any") -> Dict[str, Any]:
+        """
+        Calcula Φ topológico atual e valida com backend quântico híbrido (Phase 25).
+
+        Importante:
+        - Não altera a lógica de Φ topológico.
+        - Apenas chama o HybridPhiCalculator em paralelo para comparação.
+
+        Args:
+            states: Matriz de estados (por exemplo, atividade de nós) a ser usada
+                pelo validador híbrido. Será convertida para numpy.ndarray.
+
+        Returns:
+            Dicionário com:
+            - phi_classical, phi_quantum, fidelity, latências (HybridPhiCalculator)
+            - phi_topological: valor de Φ calculado por este PhiCalculator.
+        """
+        import numpy as np
+
+        from src.quantum_consciousness.hybrid_phi_calculator import HybridPhiCalculator
+
+        array_states = np.asarray(states)
+        hybrid = HybridPhiCalculator(use_ibm=False)
+        hybrid_result = await hybrid.calculate_phi_hybrid(array_states, use_real_hw=False)
+        hybrid_result["phi_topological"] = float(self.calculate_phi())
+        return hybrid_result
+
     def _generate_complex_candidates(self) -> List[Set[int]]:
         """
         Gera candidatos a complexo (subsistemas).

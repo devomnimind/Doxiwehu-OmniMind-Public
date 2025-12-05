@@ -44,7 +44,7 @@ class NeurosymbolicReasoner:
 
     def __init__(
         self,
-        neural_model: str = "ollama/qwen2:7b-instruct",
+        neural_model: str = "ollama/phi:latest",
         knowledge_graph_path: Optional[str] = None,
         default_strategy: ReconciliationStrategy = ReconciliationStrategy.SYNTHESIS,
     ):

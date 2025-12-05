@@ -14,10 +14,10 @@ import yaml
 from langchain_ollama import OllamaLLM
 from langgraph.graph import END, StateGraph
 
-from ..consciousness.affective_memory import AffectiveTraceNetwork, JouissanceProfile
+from ..consciousness.affective_memory import JouissanceProfile, TraceMemory
 from ..integrations.llm_router import LLMModelTier, get_llm_router, invoke_llm_sync
 from ..integrations.supabase_adapter import SupabaseConfig
-from ..memory import EpisodicMemory
+from ..memory.narrative_history import NarrativeHistory
 from ..onboarding import SupabaseMemoryOnboarding
 from ..tools import FileOperations, ShellExecutor, SystemMonitor
 from .agent_protocol import AgentMessage, MessagePriority, MessageType, get_message_bus
@@ -83,10 +83,10 @@ class ReactAgent:
             temperature=model_config.get("temperature", 0.7),
         )
 
-        # Initialize memory
+        # Initialize episodic memory backed by Qdrant
         memory_config = self.config["memory"]
         qdrant_url = os.getenv("QDRANT_URL", memory_config["qdrant_url"])
-        self.memory = EpisodicMemory(
+        self.memory = NarrativeHistory(
             qdrant_url=qdrant_url,
             collection_name=memory_config["collection_name"],
         )
@@ -111,12 +111,9 @@ class ReactAgent:
         self.agent_id = f"{self.mode}_agent_{id(self)}"
         self.message_bus = get_message_bus()
 
-        # Agent communication
-        self.agent_id = f"{self.mode}_agent_{id(self)}"
-        self.message_bus = get_message_bus()
-
         # Initialize affective memory system (Lacan/Deleuze)
-        self.affective_memory = AffectiveTraceNetwork()
+        # Use TraceMemory (Lacanian) instead of AffectiveTraceNetwork
+        self.affective_memory = TraceMemory()
         self.jouissance_profile = JouissanceProfile(self.__class__.__name__)
 
         # Initialize training-related attributes
@@ -151,17 +148,18 @@ class ReactAgent:
         # Atualizar perfil de jouissance
         self.jouissance_profile.update_from_task(task, outcome)
 
-        # Inscrever traço afetivo
+        # Inscrever traço afetivo (Lacanian: sem significado imediato)
         affect_valence = self._compute_affect_valence(result)
-        trace_content = {
+        raw_event = {
             "task": task,
             "result": result,
             "outcome": outcome,
             "agent_class": self.__class__.__name__,
             "timestamp": self._timestamp(),
+            "affect_valence": affect_valence,  # Store for later retroactive signification
         }
 
-        trace_id = self.affective_memory.inscribe_trace(trace_content, affect_valence)
+        trace_id = self.affective_memory.inscribe_event(raw_event)
 
         logger.debug(f"Experience inscribed as trace {trace_id} with valence {affect_valence:.2f}")
 
@@ -190,8 +188,16 @@ class ReactAgent:
         # Aplicar afinidade como multiplicador inverso
         resistance *= 1.0 - affinity
 
-        # Registrar transferência na rede afetiva
-        self.affective_memory.register_transference(target_agent.agent_id, task, resistance)
+        # Registrar transferência como evento (Lacanian: sem método específico de transferência)
+        transference_event = {
+            "type": "transference",
+            "source_agent": self.agent_id,
+            "target_agent": target_agent.agent_id,
+            "task": task,
+            "resistance": resistance,
+            "affinity": affinity,
+        }
+        self.affective_memory.inscribe_event(transference_event)
 
         logger.info(
             f"Transferência estabelecida: {self.agent_id} -> {target_agent.agent_id} "
@@ -213,18 +219,23 @@ class ReactAgent:
             True se re-significação foi bem-sucedida
         """
         try:
-            # Re-significar traço na rede afetiva
-            success = self.affective_memory.resignify_trace(trace_id, new_context)
+            # Re-significar traço retroativamente (Lacanian: Nachträglichkeit)
+            # Extrair significado e afeto do novo contexto
+            new_meaning = str(new_context.get("meaning", "reinterpreted"))
+            new_affect = float(new_context.get("affect", 0.0))
 
-            if success:
-                # Atualizar perfil de jouissance baseado na nova interpretação
-                self.jouissance_profile.update_from_resignification(new_context)
+            self.affective_memory.trigger_retroactive_signification(
+                trace_id=trace_id,
+                retroactive_event=new_context,
+                new_meaning=new_meaning,
+                new_affect=new_affect,
+            )
 
-                logger.info(f"Experiência {trace_id} re-significada com novo contexto")
-                return True
-            else:
-                logger.warning(f"Falha ao re-significar experiência {trace_id}")
-                return False
+            # Atualizar perfil de jouissance baseado na nova interpretação
+            self.jouissance_profile.update_from_resignification(new_context)
+
+            logger.info(f"Experiência {trace_id} re-significada com novo contexto")
+            return True
 
         except Exception as e:
             logger.error(f"Erro na re-significação: {e}")
@@ -234,8 +245,32 @@ class ReactAgent:
         """
         Recuperar experiências por intensidade afetiva (não por similaridade).
         Deleuze: conexões intensivas, não representacionais.
+
+        Note: TraceMemory doesn't have recall_by_affect, so we return
+        retroactively signified traces as a proxy for affect-based recall.
         """
-        return self.affective_memory.recall_by_affect(query, min_intensity)
+        # Get retroactively signified traces (these have been assigned affect)
+        signified_trace_ids = self.affective_memory.get_retroactively_signified_traces()
+
+        # Return trace data (simplified - in production, would filter by affect intensity)
+        traces = []
+        for trace_id in signified_trace_ids[:10]:  # Limit to 10 for performance
+            if trace_id in self.affective_memory.primary_inscriptions:
+                trace = self.affective_memory.primary_inscriptions[trace_id]
+                if (
+                    trace.retroactive_affect is not None
+                    and abs(trace.retroactive_affect) >= min_intensity
+                ):
+                    traces.append(
+                        {
+                            "trace_id": trace_id,
+                            "event": trace.event1_raw,
+                            "affect": trace.retroactive_affect,
+                            "meaning": trace.retroactive_meaning,
+                        }
+                    )
+
+        return traces
 
     def _determine_outcome(self, result: Dict[str, Any]) -> str:
         """Determinar outcome da tarefa baseado no resultado."""

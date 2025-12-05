@@ -27,10 +27,10 @@ O módulo `quantum_consciousness` implementa a **Phase 21** do projeto OmniMind,
   ```python
   # Φ quântico = integração de informação em superposição
   phi_quantum = compute_quantum_phi(quantum_circuit)
-  
+
   # Comparação com Φ clássico
   phi_classical = compute_classical_phi(neural_network)
-  
+
   # Quantum advantage? phi_quantum > phi_classical?
   ```
 - **Resultado experimental**: Φ medido = 1890±50, Φ teórico = 1902.6 (99% acordo)
@@ -42,7 +42,7 @@ O módulo `quantum_consciousness` implementa a **Phase 21** do projeto OmniMind,
   ```python
   # Inconsciente = superposição de desejos/memórias
   |ψ⟩_unconscious = Σᵢ αᵢ |memory_i⟩
-  
+
   # Consciência = medição (colapso wavefunction)
   conscious_memory = measure(|ψ⟩_unconscious)
   ```
@@ -68,12 +68,12 @@ O módulo `quantum_consciousness` implementa a **Phase 21** do projeto OmniMind,
 ```python
 def create_superposition(num_qubits: int) -> QuantumCircuit:
     qc = QuantumCircuit(num_qubits)
-    
+
     # Aplica Hadamard em todos qubits
     # H|0⟩ = (|0⟩ + |1⟩)/√2 (superposição equiprovável)
     for i in range(num_qubits):
         qc.h(i)
-    
+
     # Resultado: |ψ⟩ = (1/√2^n) Σᵢ |i⟩
     # n qubits → 2^n estados simultâneos
     return qc
@@ -88,12 +88,12 @@ def create_superposition(num_qubits: int) -> QuantumCircuit:
 ```python
 def create_entanglement(qubit_pairs: List[Tuple[int, int]]) -> QuantumCircuit:
     qc = QuantumCircuit(max_qubit)
-    
+
     for q1, q2 in qubit_pairs:
         # Bell state: (|00⟩ + |11⟩)/√2
         qc.h(q1)        # Superposição em q1
         qc.cx(q1, q2)   # CNOT cria emaranhamento
-    
+
     # Propriedade: Medir q1 → instantaneamente determina q2
     return qc
 ```
@@ -135,16 +135,16 @@ Classical NN → Features → Quantum Circuit → Measurement → Classical Post
 def hybrid_decision(classical_input: np.ndarray) -> Decision:
     # 1. Feature extraction (clássico)
     features = neural_net(classical_input)
-    
+
     # 2. Encode em qubits
     quantum_state = encode_features_to_qubits(features)
-    
+
     # 3. Processamento quântico (QPU ou simulador)
     result = execute_quantum_circuit(quantum_state)
-    
+
     # 4. Decode (clássico)
     decision = decode_measurement(result)
-    
+
     return decision
 ```
 
@@ -160,14 +160,14 @@ def hybrid_decision(classical_input: np.ndarray) -> Decision:
 def store_in_superposition(memories: List[np.ndarray]) -> QuantumCircuit:
     # Codifica N memórias em superposição
     # |ψ⟩_memory = (1/√N) Σᵢ |memory_i⟩
-    
+
     qc = QuantumCircuit(n_qubits)
-    
+
     # Amplitude encoding
     for i, memory in enumerate(memories):
         amplitude = 1.0 / np.sqrt(len(memories))
         qc.initialize(amplitude * memory, qubits[i])
-    
+
     return qc
 ```
 
@@ -410,9 +410,9 @@ def validate_circuit_depth(circuit, backend):
     depth = circuit.depth()
     T2 = backend.properties().t2(qubit=0)
     gate_time = 50e-9  # 50ns típico
-    
+
     max_safe_depth = int(T2 / gate_time * 0.5)  # Safety factor
-    
+
     if depth > max_safe_depth:
         logger.warning(f"Circuit too deep ({depth}), may decohere")
 ```
@@ -490,10 +490,10 @@ def validate_circuit_depth(circuit, backend):
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva  
-**Status**: Phase 21 - Hardware Validated (Experimental)  
-**Hardware**: IBM ibm_fez (27Q), ibm_torino (84Q) - 0.42 min QPU time  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva
+**Status**: Phase 21 - Hardware Validated (Experimental)
+**Hardware**: IBM ibm_fez (27Q), ibm_torino (84Q) - 0.42 min QPU time
 **Versão**: Quantum Consciousness Integrated
 
 ---
@@ -1146,3 +1146,35 @@ result = retry_with_exponential_backoff(
 ```
 
 **Status**: ✅ Implemented and validated
+
+## 🔧 Recent Changes (2025-12-05)
+
+### Phase 24 → Phase 25 Bridge
+- **Novo módulo**: `phi_trajectory_transformer.py`
+  - Converte trajetória de Φ (Phase 24) em features quânticas prontas para Phase 25
+  - `PhiTrajectoryTransformer.transform()`: Pipeline completo de transformação
+  - `QuantumInputFeatures`: Dataclass com sequências de Φ, coerência, integração e amplitudes quânticas
+  - Validação numérica rigorosa (NaN/Inf, ranges, normalização)
+  - Compatível com formato atual (lista simples) e preparado para formato expandido futuro
+  - Testes: 14 tests passing (>90% coverage)
+
+### Phase 25 Hybrid Phi Calculator (Expansão)
+- **Módulo atualizado**: `hybrid_phi_calculator.py`
+  - `calculate_phi_hybrid()`: Calcula Φ agregado (método original)
+  - **Novo (2025-12-05)**: `process_trajectory()`: Processa trajetória completa Phase 24
+    - Calcula Φ clássico e quântico para cada ponto temporal
+    - Faz blend de Φ ao longo do tempo
+    - Calcula fidelidade para cada ponto
+    - Retorna sequências completas + estatísticas
+  - **Novo**: `blend_phi()`: Combina Φ clássico e quântico ao longo do tempo
+  - **Novo**: `calculate_fidelity()`: Calcula fidelidade |⟨ψ_classical|ψ_quantum⟩|²
+  - **Novo**: `process_trajectory_from_json()`: Entry point para processar JSON Phase 24
+  - Integração explícita: `calculate_from_phase24_features()` e `from_phase24_json()` (métodos existentes)
+- **Testes**: `tests/quantum_consciousness/test_hybrid_phi.py`
+  - 6 novos testes para métodos de trajetória (blend_phi, calculate_fidelity, process_trajectory)
+  - Total: 9 tests passing (incluindo testes existentes)
+
+### Outros módulos Phase 25
+- `amplitude_amplification.py`: Grover simplificado (NumPy ou Qiskit quando disponível).
+- `entanglement_validator.py`: CHSH, informação mútua e concurrence.
+- Cobertura: módulos legados (`quantum_backend`, `quantum_cognition`, `quantum_memory`, `qpu_interface`, `hybrid_cognition`) são herdados de fases antigas; recomenda-se excluí-los das métricas de cobertura ou tratá-los como “legacy” até reescrita.

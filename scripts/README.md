@@ -28,6 +28,23 @@ Scripts principais que definem e confirmam nossa pesquisa e projeto OmniMind.
 - **`canonical/test/run_tests_background.sh`** - Testes em background
 - **`canonical/test/run_all_tests_hybrid.py`** - Suite completa de testes híbridos
 - **`canonical/test/run_tests.py`** - Executor principal de testes
+- **`run_tests_fast.sh`** ⭐ DIÁRIO - 3996 testes (sem chaos/slow), 10-15 min
+  - GPU forçada, timeout 800s/teste
+  - Inclui `@pytest.mark.real` SEM `@pytest.mark.chaos` (seguro)
+  - Exclui `@pytest.mark.slow` e `@pytest.mark.chaos`
+  - **Server Management**: Usa `ServerStateManager` (centralized, thread-safe)
+    - `omnimind_server` fixture adquire propriedade se E2E tests presentes
+    - Plugin respeita propriedade, não reinicia servidor sob controle da fixture
+    - Health checks cacheados (5s) evitam múltiplas tentativas
+- **`run_tests_with_defense.sh`** ⭐ SEMANAL - 4004 testes (+ 8 chaos), 45-90 min
+  - Inclui chaos engineering tests (server destruction)
+  - Autodefesa: detecta padrões de crash perigosos
+  - ⚠️ Use fora do horário de trabalho
+  - **Server Management**: Mesmo mecanismo coordenado via `ServerStateManager`
+- **`quick_test.sh`** - 4004 testes + backend (30-45 min)
+  - Requer sudo configurado
+  - Inicia backend em localhost:8000
+  - Plugin monitora server lifecycle
 
 ### Validação
 - **`canonical/validate/run_real_metrics.sh`** - Métricas reais com GPU/Quantum
@@ -160,7 +177,16 @@ Scripts antigos e não utilizados foram arquivados em `.archive/deprecated/`:
 ## 🚀 Uso Rápido
 
 ```bash
-# Sistema completo (PRINCIPAL)
+# ⚡ DIÁRIO: Testes rápidos (3996 testes, 10-15 min)
+./scripts/run_tests_fast.sh
+
+# 🛡️ SEMANAL: Suite completa com chaos engineering (4004 testes, 45-90 min)
+./scripts/run_tests_with_defense.sh
+
+# 🖥️ FULL: Testes + Backend integration (4004 testes, 30-45 min)
+./scripts/quick_test.sh
+
+# Sistema completo
 ./scripts/canonical/system/start_omnimind_system.sh
 
 # Apenas backend em cluster
@@ -168,9 +194,6 @@ Scripts antigos e não utilizados foram arquivados em `.archive/deprecated/`:
 
 # Monitorar testes
 ./scripts/canonical/monitor/monitor_tests_live.sh
-
-# Testes por categoria
-./scripts/canonical/test/run_tests_by_category.sh unit
 
 # Validação completa
 ./scripts/canonical/test/run_full_certification.sh

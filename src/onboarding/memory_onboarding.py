@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import logging
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Set
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Set, Union
 
 from ..integrations.graphql_supabase import (
     GraphQLCollectionPage,
@@ -14,8 +14,13 @@ from ..integrations.supabase_adapter import SupabaseConfig
 
 if TYPE_CHECKING:
     from ..memory import EpisodicMemory
+    from ..memory.narrative_history import NarrativeHistory
+
+    MemoryType = Union[EpisodicMemory, NarrativeHistory]
 else:
     EpisodicMemory = Any
+    NarrativeHistory = Any
+    MemoryType = Any
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +39,7 @@ class SupabaseMemoryOnboarding:
     def __init__(
         self,
         config: SupabaseConfig,
-        memory: EpisodicMemory,
+        memory: MemoryType,
         helper: Optional[GraphQLSupabaseHelper] = None,
     ) -> None:
         self.config = config

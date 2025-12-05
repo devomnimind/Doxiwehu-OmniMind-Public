@@ -59,7 +59,6 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import structlog
-import torch  # Added for GPU check
 
 from src.monitor.resource_manager import resource_manager
 

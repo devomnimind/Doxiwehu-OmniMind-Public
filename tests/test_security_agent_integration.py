@@ -123,7 +123,8 @@ security:
         patch("psutil.process_iter", mock_process_iter),
         patch("psutil.net_connections", mock_net_connections),
         patch.object(SecurityAgent, "_execute_response", AsyncMock()) as mock_execute_response,
-        patch("src.agents.react_agent.EpisodicMemory", MagicMock()),
+        # Mock NarrativeHistory instead of EpisodicMemory (Phase 24 migration)
+        patch("src.agents.react_agent.NarrativeHistory", MagicMock()),
         patch(
             "src.agents.react_agent.ReactAgent._run_supabase_memory_onboarding",
             MagicMock(),

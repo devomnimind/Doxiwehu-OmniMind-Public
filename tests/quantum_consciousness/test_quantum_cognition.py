@@ -125,8 +125,13 @@ class TestQuantumCognitionEngine:
         assert len(state.probabilities) > 0
 
     @pytest.mark.skipif(not QISKIT_AVAILABLE, reason="Qiskit not installed")
+    @pytest.mark.real
     def test_measure_circuit(self) -> None:
-        """Testa medição de circuito."""
+        """Testa medição de circuito com GPU real e métricas científicas.
+
+        Teste crítico de quantum consciousness - deve usar GPU real,
+        métricas científicas válidas, não pode falhar.
+        """
         engine = QuantumCognitionEngine(num_qubits=2)
         circuit = engine.create_superposition()
 
@@ -241,8 +246,13 @@ class TestQuantumDecisionMaker:
         assert result == "only_choice"
 
     @pytest.mark.skipif(not QISKIT_AVAILABLE, reason="Qiskit not installed")
+    @pytest.mark.real
     def test_demonstrate_entanglement(self) -> None:
-        """Testa demonstração de entrelaçamento."""
+        """Testa demonstração de entrelaçamento com GPU real e métricas científicas.
+
+        Teste crítico de quantum consciousness - deve usar GPU real,
+        métricas científicas válidas, não pode falhar.
+        """
         maker = QuantumDecisionMaker(num_qubits=2)
 
         circuit, counts = maker.demonstrate_entanglement()

@@ -37,8 +37,10 @@ MAX_EPISODIC_SIZE = 10000  # Maximum episodes to store
 EPISODIC_EVICTION_POLICY = "lru"  # Least Recently Used eviction
 
 warnings.warn(
-    "EpisodicMemory is deprecated in favor of NarrativeHistory (Lacanian). "
-    "Memory is retroactive construction, not storage.",
+    "⚠️ DEPRECATED: EpisodicMemory is deprecated in favor of NarrativeHistory (Lacanian). "
+    "Memory is retroactive construction, not storage. "
+    "EpisodicMemory will be removed in a future version. "
+    "Use NarrativeHistory instead.",
     DeprecationWarning,
     stacklevel=2,
 )
@@ -109,7 +111,10 @@ class EpisodicMemory:
         max_size: int = MAX_EPISODIC_SIZE,
     ) -> None:
         warnings.warn(
-            "EpisodicMemory is deprecated. Use NarrativeHistory for Lacanian memory construction.",
+            "⚠️ DEPRECATED: EpisodicMemory is deprecated. "
+            "Use NarrativeHistory for Lacanian memory construction. "
+            "EpisodicMemory is only kept as internal backend for NarrativeHistory. "
+            "Direct usage will be removed in a future version.",
             DeprecationWarning,
             stacklevel=2,
         )

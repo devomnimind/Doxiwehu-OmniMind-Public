@@ -6,19 +6,23 @@ This guide provides comprehensive performance optimization techniques for OmniMi
 
 ## Quick Performance Check
 
-Run the benchmark suite to establish baseline performance:
+Execute o diagnóstico de performance para verificar o estado atual:
 
 ```bash
-python benchmarks/PHASE7_COMPLETE_BENCHMARK_AUDIT.py
+# Diagnóstico rápido de performance
+python scripts/canonical/diagnose/diagnose.py --check-performance
+
+# Verificar métricas do sistema
+curl http://localhost:8000/api/metrics
 ```
 
-This generates a detailed report in `logs/PHASE7_BENCHMARK_REPORT.json`.
+**Nota**: O benchmark `PHASE7_COMPLETE_BENCHMARK_AUDIT.py` não existe mais. Use os scripts de diagnóstico e métricas da API.
 
 ## Benchmark Results
 
 ### Hardware Baseline (GTX 1650)
 
-Based on validated testing (November 2025):
+Baseado em testes validados (Novembro-Dezembro 2025):
 
 ```
 CPU Performance:
@@ -32,33 +36,51 @@ GPU Performance:
   - Memory: 4GB VRAM
   - Memory Bandwidth: 12.67 GB/s
   - CUDA Version: 12.4
-  - PyTorch: 2.6.0+cu124
+  - PyTorch: 2.5.1+cu124 (atualizado Dezembro 2025)
 
 System Memory:
   - Total: 24GB RAM
   - Available: ~18.5GB for operations
-  - Swap: Configured (varies)
+  - Swap: Configurado (varia)
 ```
+
+**Nota**: PyTorch atualizado para 2.5.1+cu124 (Dezembro 2025).
 
 ### API Performance Targets
 
 ```
 Endpoint Response Times (P95):
   - Health Check: < 10ms
+    - GET /api/v1/health/
+    - GET /api/v1/health/{check_name}
   - Task Submission: < 100ms
+    - POST /api/tasks/
   - Task Status: < 50ms
+    - GET /api/tasks/{task_id}
   - Metrics: < 100ms
-  - Orchestration: < 30s (depends on task complexity)
+    - GET /api/metrics
+    - GET /api/omnimind/metrics/real
+  - Orchestration: < 30s (depende da complexidade da tarefa)
+    - POST /tasks/orchestrate
 
 WebSocket:
   - Connection Latency: < 100ms
   - Message Latency: < 50ms
   - Concurrent Connections: 50+
+  - Endpoint: ws://localhost:8000/ws
 
 Throughput:
   - API Requests: 100+ req/s
-  - Task Orchestration: 10 concurrent tasks
+  - Task Orchestration: 10 tarefas concorrentes (configurável)
   - Database Operations: 1000+ ops/s
+```
+
+**Configuração atual** (`config/agent_config.yaml`):
+```yaml
+performance:
+  max_concurrent_tasks: 1  # Ajustável baseado em RAM disponível
+  task_timeout: 300  # 5 minutos
+  retry_attempts: 3
 ```
 
 ## Optimization Strategies
@@ -74,12 +96,25 @@ Throughput:
 **Configuration:**
 
 ```yaml
-# config/omnimind.yaml
-hardware:
-  use_gpu: true
-  gpu_device: 0
-  batch_size: 32  # Adjust based on VRAM
-  precision: "float16"  # Use mixed precision for speed
+# config/agent_config.yaml
+gpu:
+  device: "cuda:0"
+  gpu_layers: -1  # Auto-gerenciado (Ollama gerencia)
+  offload_ratio: 0.95
+
+model:
+  name: "phi:latest"  # Modelo padrão (Microsoft Phi)
+  provider: "ollama"
+  base_url: "http://localhost:11434"
+  temperature: 0.7
+  max_tokens: 2048
+```
+
+**Variáveis de ambiente CUDA** (definir via shell/script, não em código Python):
+```bash
+export CUDA_HOME=/usr
+export CUDA_PATH=/usr
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
 ```
 
 **Memory Constraints (GTX 1650 - 4GB VRAM):**
@@ -548,15 +583,20 @@ async def process_async(items):
 ### Run Benchmarks
 
 ```bash
-# Full system benchmark
-python benchmarks/PHASE7_COMPLETE_BENCHMARK_AUDIT.py
+# Diagnóstico completo do sistema
+python scripts/canonical/diagnose/diagnose.py --full
 
-# API load test
-python scripts/load_test.py --requests 1000 --concurrent 10
+# Verificação rápida de performance
+python scripts/canonical/diagnose/diagnose.py --check-performance
 
-# Database benchmark
-python scripts/benchmark_db.py --operations 10000
+# Benchmark de modelos LLM
+python scripts/benchmark_llm_models.py
+
+# Análise de suite de testes
+python scripts/analyze_test_suite.py
 ```
+
+**Nota**: O benchmark `PHASE7_COMPLETE_BENCHMARK_AUDIT.py` não existe mais. Use os scripts de diagnóstico disponíveis.
 
 ### Continuous Benchmarking
 
@@ -572,15 +612,21 @@ python scripts/compare_benchmarks.py \
 
 ## Additional Resources
 
-- [Hardware Optimization Summary](../HARDWARE_OPTIMIZATION_SUMMARY.md)
-- [GPU Setup Report](../reports/GPU_SETUP_REPORT.md)
-- [Phase 7-9 Implementation](../PHASE7-9_IMPLEMENTATION_SUMMARY.md)
 - [Troubleshooting Guide](./TROUBLESHOOTING.md)
+- [Interactive API Playground](./INTERACTIVE_API_PLAYGROUND.md)
+- [Quick Start Guide](../canonical/QUICK_START.md)
+- [Technical Checklist](../canonical/TECHNICAL_CHECKLIST.md)
+- [System Initialization](../canonical/omnimind_system_initialization.md)
 
 ## 📘 Referências Técnicas
 
-- [src/api/main.py](src/api/main.py) expõe os routers e configura o FastAPI usado pelas rotas descritas em Interface e Monitoramento.
-- [web/backend/main.py](web/backend/main.py) define a inicialização de `uvicorn`, broadcasters e o sistema de monitoramento que dita os limites de worker count e timeouts mencionados.
-- [config/omnimind.yaml](config/omnimind.yaml) centraliza variáveis como `hardware.use_gpu`, `orchestrator.max_concurrent_tasks` e thresholds usados nas seções de GPU e orquestração.
-- [src/monitor/resource_protector.py](src/monitor/resource_protector.py) fornece os limites por modo (dev/test/prod) e os handlers de CPU/RAM/DISCO referidos na seção Database/Resource Optimization.
-- [scripts/run_mcp_benchmark.sh](scripts/run_mcp_benchmark.sh) e [scripts/run_tests_fast.sh](scripts/run_tests_fast.sh) são os artefatos ativos utilizados para benchmarks e testes de performance citados em Benchmarks & Monitoring.
+- **`web/backend/main.py`**: Define inicialização do FastAPI, routers e sistema de monitoramento
+- **`config/agent_config.yaml`**: Centraliza configurações de modelo, GPU, performance e orquestração
+- **`src/monitor/resource_protector.py`**: Fornece limites por modo (dev/test/prod) e handlers de CPU/RAM/DISCO
+- **`scripts/run_tests_fast.sh`**: Suite rápida de testes (diária, ~15-20 min)
+- **`scripts/run_tests_with_defense.sh`**: Suite completa de testes (semanal, ~45-90 min)
+- **`scripts/canonical/diagnose/diagnose.py`**: Ferramenta de diagnóstico automatizado
+
+---
+
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)

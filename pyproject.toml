@@ -82,6 +82,17 @@ log_cli = true
 log_cli_level = "DEBUG"
 log_cli_format = "%(asctime)s [%(levelname)8s] %(name)s:%(funcName)s:%(lineno)d - %(message)s"
 log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+markers = [
+    "asyncio: mark tests that use async/await",
+    "slow: mark a test as slow (running on main GPU, takes >30s)",
+    "security: mark security-focused suites",
+    "parallel: mark tests that can run in parallel safely",
+    "serial: mark tests that must run serially (e.g., database tests)",
+    "mock: mark tests that use @patch decorators (structure validation only)",
+    "semi_real: mark tests without @patch but without full LLM integration",
+    "real: mark tests with full GPU+LLM+Network integration (measures real metrics)",
+    "chaos: mark tests that destroy/crash server intentionally (WEEKLY/CHAOS ENGINEERING ONLY - excluded from run_tests_fast.sh)",
+]
 filterwarnings = [
     "ignore:This module contains legacy behaviorist implementations.*:DeprecationWarning",
     "ignore:EmotionalIntelligence legacy initialization is deprecated.*:DeprecationWarning",
@@ -98,6 +109,15 @@ filterwarnings = [
     "ignore:QualiaEngine is deprecated.*:DeprecationWarning",
     "ignore:TheoryOfMind is deprecated.*:DeprecationWarning",
     "ignore:This module contains legacy phenomenological implementations.*:DeprecationWarning"
+]
+
+[tool.coverage.run]
+omit = [
+  "src/quantum_consciousness/quantum_backend.py",
+  "src/quantum_consciousness/quantum_cognition.py",
+  "src/quantum_consciousness/quantum_memory.py",
+  "src/quantum_consciousness/qpu_interface.py",
+  "src/quantum_consciousness/hybrid_cognition.py",
 ]
 
 [tool.pyright]

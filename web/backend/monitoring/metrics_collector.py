@@ -177,6 +177,18 @@ class MetricsCollector:
             "errors_by_code": dict(errors_by_code),
         }
 
+    def summary(self) -> Dict[str, Any]:
+        """Get summary of all metrics (for heartbeat logging)."""
+        all_metrics = self.get_all_metrics()
+        error_summary = self.get_error_summary()
+
+        return {
+            "requests": all_metrics.get("total_requests", 0),
+            "errors": error_summary.get("total_errors", 0),
+            "success_rate": all_metrics.get("success_rate", 0.0),
+            "errors_by_code": error_summary.get("errors_by_code", {}),
+        }
+
     async def _metrics_loop(self) -> None:
         """Background loop for metrics aggregation and cleanup."""
         while self._running:

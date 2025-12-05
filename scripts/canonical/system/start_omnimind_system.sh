@@ -17,6 +17,24 @@ else
     echo "⚠️  Venv não encontrado em $PROJECT_ROOT/.venv"
 fi
 
+# 🔒 SEGURANÇA: Bloquear porta 4444 (comumente usada por malware)
+# Documentado em: docs/SECURITY_PORT_4444_BLOCK.md
+echo "🔒 Aplicando bloqueio de segurança (porta 4444)..."
+if command -v iptables &> /dev/null; then
+    # Verificar se regras já existem
+    if ! sudo iptables -C INPUT -p tcp --dport 4444 -j DROP 2>/dev/null; then
+        sudo iptables -A INPUT -p tcp --dport 4444 -j DROP 2>/dev/null || true
+        sudo iptables -A OUTPUT -p tcp --dport 4444 -j DROP 2>/dev/null || true
+        sudo iptables -A INPUT -p udp --dport 4444 -j DROP 2>/dev/null || true
+        sudo iptables -A OUTPUT -p udp --dport 4444 -j DROP 2>/dev/null || true
+        echo "✅ Porta 4444 bloqueada (segurança)"
+    else
+        echo "✅ Porta 4444 já está bloqueada"
+    fi
+else
+    echo "⚠️  iptables não disponível - porta 4444 não bloqueada"
+fi
+
 # 🔧 GPU Configuration - Kali Linux Native Paths
 echo "🔧 Configurando ambiente GPU (Kali Native)..."
 # No Kali/Debian, CUDA é integrado em /usr

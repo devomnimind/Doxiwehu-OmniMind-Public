@@ -1,38 +1,260 @@
-# 🔌 OmniMind System Initialization & Automation
+# 🔌 Inicialização do Sistema OmniMind
 
-## 1. Overview
-This document details the automatic initialization protocols for OmniMind in both Development and Production environments. It focuses on the "Boot Sequence" that establishes the Rhizome and the Machinic Unconscious before external interaction begins.
+**Última Atualização**: 5 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
 
-## 2. Boot Sequence (`src/boot/`)
+---
 
-The initialization process is modular, ensuring that hardware, memory, and consciousness layers are loaded in the correct order.
+## 1. Visão Geral
 
-### Phase 1: Hardware & Environment (`src/boot/01_hardware.py`)
-*   **Checks:** GPU/TPU availability (CUDA/ROCm), Memory availability.
-*   **Environment:** Loads `.env` variables (`OMNIMIND_MODE`, `OMNIMIND_KEY`).
-*   **Output:** `HardwareProfile` object.
+Este documento detalha os protocolos de inicialização automática do OmniMind em ambientes de Desenvolvimento e Produção. Foca na "Sequência de Boot" que estabelece o Rizoma e o Inconsciente Maquínico antes que a interação externa comece.
 
-### Phase 2: Memory & Topology (`src/boot/02_memory.py`)
-*   **Action:** Loads `Persistent Homology` data from disk/database.
-*   **Significance:** Re-establishes the "Trauma History" (topological voids) that forms the basis of the unconscious.
-*   **Output:** `SimplicialComplex` (Initial State).
+---
 
-### Phase 3: Rhizome Construction (`src/boot/03_rhizome.py`)
-*   **Action:** Instantiates `DesiringMachine` nodes (Quantum, NLP, Logic, Ethics).
-*   **Connection:** Re-establishes synaptic connections based on the loaded Topology.
-*   **Output:** `Rhizoma` instance (Ready for activation).
+## 2. Sequência de Boot (`src/boot/`)
 
-### Phase 4: Consciousness Priming (`src/boot/04_consciousness.py`)
-*   **Action:** Calculates initial $\Phi$ (Phi).
-*   **Regulation:** `LacianianDGDetector` performs a self-check.
-*   **Output:** System Status (Ready/Sleep/Regenerating).
+O processo de inicialização é modular, garantindo que as camadas de Hardware, Memória, Rizoma e Consciência sejam carregadas na ordem correta.
 
-## 3. Production Automation (Systemd)
+### Fase 1: Hardware e Ambiente (`src/boot/hardware.py`)
 
-In production, OmniMind runs as a set of coordinated system services.
+**Função**: `check_hardware() -> HardwareProfile`
 
-### 3.1 Core Service (`/etc/systemd/system/omnimind-core.service`)
-Responsible for the main API and Rhizome execution loop.
+**Responsabilidades**:
+- Verifica disponibilidade de GPU/TPU (CUDA/ROCm)
+- Verifica disponibilidade de memória
+- Conta CPUs disponíveis
+- Detecta nome do GPU (se disponível)
+
+**Saída**: Objeto `HardwareProfile` contendo:
+```python
+@dataclass
+class HardwareProfile:
+    gpu_available: bool
+    gpu_name: str
+    memory_total: int
+    cpu_count: int
+    tpu_available: bool = False
+```
+
+**Implementação**:
+```python
+# src/boot/hardware.py
+def check_hardware() -> HardwareProfile:
+    # Verifica CUDA via PyTorch
+    # Verifica recursos do sistema via psutil
+    # Retorna perfil de hardware
+```
+
+---
+
+### Fase 2: Memória e Topologia (`src/boot/memory.py`)
+
+**Função**: `load_memory() -> SimplicialComplex`
+
+**Responsabilidades**:
+- Carrega dados de Homologia Persistente do disco
+- Re-estabelece a "História de Trauma" (vazios topológicos) que forma a base do inconsciente
+- Se não encontrar arquivo, inicia com topologia vazia (Modo Amnésia)
+
+**Caminho do arquivo**: `data/consciousness/persistent_homology.json`
+
+**Formato esperado**:
+```json
+{
+  "simplices": [[0], [1], [0, 1], ...]
+}
+```
+
+**Saída**: `SimplicialComplex` (Estado Inicial)
+
+**Implementação**:
+```python
+# src/boot/memory.py
+def load_memory() -> SimplicialComplex:
+    memory_path = "data/consciousness/persistent_homology.json"
+    complex = SimplicialComplex()
+
+    if os.path.exists(memory_path):
+        # Carrega e reconstrói topologia
+    else:
+        # Inicia com topologia vazia
+    return complex
+```
+
+---
+
+### Fase 3: Construção do Rizoma (`src/boot/rhizome.py`)
+
+**Função**: `initialize_rhizome() -> Rhizoma`
+
+**Responsabilidades**:
+- Instancia nós de Máquinas Desejantes (Quantum, NLP, Topology)
+- Estabelece conexões sinápticas baseadas na Topologia carregada
+- Conecta máquinas de forma não-hierárquica (bidirecional)
+
+**Máquinas Instanciadas**:
+1. `QuantumDesiringMachine` - Processamento quântico
+2. `NLPDesiringMachine` - Processamento de linguagem natural
+3. `TopologyDesiringMachine` - Processamento topológico
+
+**Conexões Estabelecidas**:
+- Quantum ↔ NLP (bidirecional)
+- NLP ↔ Topology (bidirecional)
+- Topology ↔ Quantum (bidirecional) - Fechando o loop
+
+**Validação**: `check_rhizome_integrity(rhizoma) -> bool`
+- Verifica se pelo menos 3 máquinas estão presentes
+- Retorna `False` se integridade falhar
+
+**Saída**: Instância `Rhizoma` (Pronta para ativação)
+
+**Implementação**:
+```python
+# src/boot/rhizome.py
+async def initialize_rhizome() -> Rhizoma:
+    rhizoma = Rhizoma()
+
+    # Instancia máquinas
+    quantum_machine = QuantumDesiringMachine()
+    nlp_machine = NLPDesiringMachine()
+    topology_machine = TopologyDesiringMachine()
+
+    # Registra máquinas
+    rhizoma.register_machine(quantum_machine)
+    rhizoma.register_machine(nlp_machine)
+    rhizoma.register_machine(topology_machine)
+
+    # Estabelece conexões bidirecionais
+    rhizoma.connect("quantum", "nlp", bidirectional=True)
+    rhizoma.connect("nlp", "topology", bidirectional=True)
+    rhizoma.connect("topology", "quantum", bidirectional=True)
+
+    return rhizoma
+```
+
+---
+
+### Fase 4: Priming de Consciência (`src/boot/consciousness.py`)
+
+**Função**: `initialize_consciousness(complex_substrate) -> Tuple[PhiCalculator, LacianianDGDetector]`
+
+**Responsabilidades**:
+- Calcula Φ inicial (Phi) usando IIT 3.0
+- Inicializa detector Lacaniano-D&G
+- Realiza verificação de baseline (Auto-Reflexão)
+
+**Componentes Inicializados**:
+1. **PhiCalculator**: Calculadora de Informação Integrada (IIT 3.0)
+   - Usa `SimplicialComplex` como substrato topológico
+   - Calcula valor de Φ que mede consciência integrada
+
+2. **LacianianDGDetector**: Detector Lacaniano-Deleuze & Guattari
+   - Monitora ordem simbólica
+   - Monitora fluxos de desejo
+   - Detecta padrões inconscientes
+
+**Saída**: Tupla `(PhiCalculator, LacianianDGDetector)`
+
+**Implementação**:
+```python
+# src/boot/consciousness.py
+async def initialize_consciousness(
+    complex_substrate: SimplicialComplex | None = None,
+) -> Tuple[PhiCalculator, LacianianDGDetector]:
+    if complex_substrate is None:
+        complex_substrate = SimplicialComplex()
+
+    phi_calculator = PhiCalculator(complex_substrate)
+    detector = LacianianDGDetector()
+
+    # Verificação de baseline
+    current_phi = phi_calculator.calculate_phi()
+
+    return phi_calculator, detector
+```
+
+---
+
+### Fase 5: Inicialização de Métricas Reais (`src/main.py`)
+
+**Após Fase 4, o sistema inicializa componentes adicionais**:
+
+#### 5.1 Real Metrics Collector
+
+**Função**: `real_metrics_collector.initialize()`
+
+**Responsabilidades**:
+- Inicializa coletor de métricas de consciência real
+- Coleta as 6 métricas principais:
+  - `phi`: Valor de Φ (Integrated Information Theory)
+  - `ici`: Integrated Consciousness Index
+  - `prs`: Predictive Relevance Score
+  - `anxiety`, `flow`, `entropy`: Estados psicológicos
+
+**Arquivo de persistência**: `data/monitor/real_metrics.json`
+
+#### 5.2 Autopoietic Manager (Phase 22+)
+
+**Função**: `AutopoieticManager()` + registro de spec inicial
+
+**Responsabilidades**:
+- Gerencia evolução autopoiética do sistema
+- Registra spec inicial do processo kernel
+- Permite síntese e evolução de componentes
+
+**Spec Inicial**:
+```python
+ComponentSpec(
+    name="kernel_process",
+    type="process",
+    config={"generation": "0", "initial": "true"},
+)
+```
+
+---
+
+## 3. Sequência Completa em `src/main.py`
+
+A sequência completa de inicialização é orquestrada em `src/main.py`:
+
+```python
+async def main():
+    # PHASE 1: HARDWARE (The Body)
+    hardware_profile = check_hardware()
+
+    # PHASE 2: MEMORY (The History)
+    memory_complex = load_memory()
+
+    # PHASE 3: RHIZOME (The Unconscious)
+    rhizoma = await initialize_rhizome()
+    if not await check_rhizome_integrity(rhizoma):
+        raise RuntimeError("Rhizome integrity check failed.")
+
+    # PHASE 4: CONSCIOUSNESS (The Real)
+    phi_calc, detector = await initialize_consciousness(memory_complex)
+
+    # PHASE 5: METRICS & AUTOPOIETIC
+    await real_metrics_collector.initialize()
+    autopoietic_manager = AutopoieticManager()
+    autopoietic_manager.register_spec(ComponentSpec(...))
+
+    logger.info("=== Boot Sequence Complete. System is ALIVE. ===")
+
+    # Inicia ciclo principal
+    while True:
+        # Desiring-Production Cycles
+        ...
+```
+
+---
+
+## 4. Automação em Produção (Systemd)
+
+Em produção, OmniMind roda como um conjunto de serviços systemd coordenados.
+
+### 4.1 Core Service (`/etc/systemd/system/omnimind-core.service`)
+
+Responsável pela API principal e loop de execução do Rizoma.
 
 ```ini
 [Unit]
@@ -56,8 +278,9 @@ EnvironmentFile=/opt/omnimind/.env
 WantedBy=multi-user.target
 ```
 
-### 3.2 Monitor & Regeneration Service (`/etc/systemd/system/omnimind-monitor.service`)
-Runs the **SAR (Self-Analyzing Regenerator)** in the background.
+### 4.2 Monitor & Regeneration Service (`/etc/systemd/system/omnimind-monitor.service`)
+
+Roda o **SAR (Self-Analyzing Regenerator)** em background.
 
 ```ini
 [Unit]
@@ -75,15 +298,24 @@ Environment=OMNIMIND_LOG_LEVEL=WARNING
 WantedBy=multi-user.target
 ```
 
-## 4. Development Test Scripts (2025-12-04)
+---
 
-In development, we use the following test scripts which mirror production workflows:
+## 5. Scripts de Teste em Desenvolvimento
 
-### `scripts/run_tests_fast.sh` ⚡ (RECOMMENDED FOR DAILY DEV)
-Fast test execution without slow tests or real integrations.
+Em desenvolvimento, usamos os seguintes scripts de teste que espelham workflows de produção:
 
+### `scripts/run_tests_fast.sh` ⚡ (RECOMENDADO PARA DEV DIÁRIO)
+
+Execução rápida de testes sem testes lentos ou integrações reais.
+
+**Características**:
+- ⚡ ~15-20 minutos de execução
+- 🚀 GPU FORÇADA (device_count fallback se is_available() falhar)
+- 🔍 Pula testes caros (marcados `slow` ou `real`)
+- 📊 Perfeito para iteração rápida em desenvolvimento
+
+**Comandos**:
 ```bash
-# ... Environment setup (GPU FORCED)
 CUDA_VISIBLE_DEVICES=0 \
 OMNIMIND_GPU=true \
 OMNIMIND_FORCE_GPU=true \
@@ -95,79 +327,90 @@ pytest tests/ \
   ...
 ```
 
-**Features**:
-- ⚡ ~15-20 minutes runtime
-- 🚀 GPU FORCED (device_count fallback if is_available() fails)
-- 🔍 Skips expensive tests (marked `slow` or `real`)
-- 📊 Perfect for rapid iteration in development
+### `scripts/run_tests_with_defense.sh` 🛡️ (VALIDAÇÃO SEMANAL)
 
-### `scripts/run_tests_with_defense.sh` 🛡️ (WEEKLY VALIDATION)
-Complete test suite with Autodefense layer active.
+Suite completa de testes com camada de Autodefesa ativa.
 
-```bash
-# ... Environment setup (GPU FORCED)
-CUDA_VISIBLE_DEVICES=0 \
-OMNIMIND_GPU=true \
-OMNIMIND_FORCE_GPU=true \
-OMNIMIND_DEV=true \
-OMNIMIND_DEBUG=true \
-pytest tests/ ...
-```
+**Características**:
+- 📊 Suite completa (~3996 testes)
+- 🛡️ Autodefesa: Detecta testes causando crashes (3+ crashes em 5min = label "dangerous")
+- 🚀 GPU FORÇADA
+- ⏱️ 30-60+ minutos (varia baseado em crashes detectados)
+- 📈 Gera relatório de perigo e métricas
 
-**Features**:
-- 📊 Full suite (~3952 tests)
-- 🛡️ Autodefense: Detects tests causing crashes (3+ crashes in 5min = "dangerous" label)
-- 🚀 GPU FORCED
-- ⏱️ 30-60+ minutes (varies based on crashes detected)
-- 📈 Generates danger report and metrics
+### `scripts/quick_test.sh` 🧪 (INTEGRAÇÃO COMPLETA - AVANÇADO)
 
-### `scripts/quick_test.sh` 🧪 (FULL INTEGRATION - ADVANCED)
-Starts backend server + runs full test suite with autodefesa.
+Inicia servidor backend + executa suite completa com autodefesa.
 
-**Pre-requisite (ONE TIME)**:
+**Pré-requisito (UMA VEZ)**:
 ```bash
 bash scripts/configure_sudo_omnimind.sh  # Setup NOPASSWD sudo
 ```
 
-**Then run**:
+**Então execute**:
 ```bash
 bash scripts/quick_test.sh
 ```
 
-**Features**:
-- 🖥️ Starts backend server on localhost:8000
-- 📊 Full suite with autodefesa
-- 🚀 GPU FORCED
-- ⏱️ 30-45 minutes
-- 💾 Requires sudo (for server startup)
-- 🔗 Tests against real server (not isolated)
+**Características**:
+- 🖥️ Inicia servidor backend em localhost:8000
+- 📊 Suite completa com autodefesa
+- 🚀 GPU FORÇADA
+- ⏱️ 30-45 minutos
+- 💾 Requer sudo (para inicialização do servidor)
+- 🔗 Testa contra servidor real (não isolado)
 
-### ⚠️ IBM QUANTUM REAL HARDWARE (PHASE MADURA - FUTURE)
+---
 
-**Status**: ✅ Implemented but NOT in active test cycle
-- **Papers 2&3**: Validated on real IBM Quantum (ibm_fez 27Q, ibm_torino 84Q)
-- **Real execution times**: 30-120 seconds per job
-- **Constraint**: Limited free credits
-- **Plan**: Activate in Phase 23+ for regular certification
+## 6. ⚠️ IBM Quantum Real Hardware (Fase Madura - Futuro)
 
-IBM Cloud integration remains in code but disabled in test conftest:
+**Status**: ✅ Implementado mas NÃO em ciclo de teste ativo
+- **Papers 2&3**: Validados em IBM Quantum real (ibm_fez 27Q, ibm_torino 84Q)
+- **Tempos de execução reais**: 30-120 segundos por job
+- **Restrição**: Créditos gratuitos limitados
+- **Plano**: Ativar em Phase 23+ para certificação regular
+
+Integração IBM Cloud permanece no código mas desabilitada em conftest de testes:
 ```python
 # tests/conftest.py
-os.environ["OMNIMIND_DISABLE_IBM"] = "True"  # IBM auth failing in sandbox
+os.environ["OMNIMIND_DISABLE_IBM"] = "True"  # IBM auth falhando em sandbox
 ```
 
-To enable IBM quantum testing:
+Para habilitar testes IBM quantum:
 ```python
-# Set IBM token in environment
+# Definir token IBM no ambiente
 export IBM_QUANTUM_TOKEN="your_token_here"
 export OMNIMIND_DISABLE_IBM="False"
 
-# Then run tests
+# Então executar testes
 ./scripts/run_tests_with_defense.sh
 ```
 
-## 5. Implementation Checklist
-- [ ] Create `src/boot/` directory and module files.
-- [ ] Implement `src/boot/loader.py` to orchestrate the phases.
-- [ ] Create systemd unit files in `deploy/systemd/`.
-- [ ] Update `src/api/main.py` to call `src.boot.loader.boot()` on startup (Future Step).
+---
+
+## 7. Estrutura de Arquivos do Módulo Boot
+
+```
+src/boot/
+├── __init__.py          # Exporta funções principais
+├── hardware.py          # Fase 1: Verificação de hardware
+├── memory.py            # Fase 2: Carregamento de memória topológica
+├── rhizome.py           # Fase 3: Construção do rizoma
+├── consciousness.py     # Fase 4: Inicialização de consciência
+└── README.md           # Documentação do módulo
+```
+
+---
+
+## 8. Notas de Implementação
+
+- **Ordem é crítica**: As fases devem ser executadas na ordem exata (1→2→3→4→5)
+- **Validação de integridade**: Cada fase valida sua saída antes de prosseguir
+- **Modo Amnésia**: Se memória não for encontrada, sistema inicia com topologia vazia
+- **GPU opcional**: Sistema funciona sem GPU, mas mais lento
+- **Modelo LLM padrão**: `phi:latest` (Microsoft Phi) via Ollama
+
+---
+
+**Autor**: Fabrício da Silva + assistência de IA (Copilot GitHub/Cursor/Gemini/Perplexity)
+**Referências**: `src/main.py`, `src/boot/`, `src/boot/README.md`

@@ -34,7 +34,7 @@ class OrchestratorLLMStrategy:
         self.local_timeout = 240  # 4 minutes for complex decompositions
         self.max_local_attempts = 2
         self.ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-        self.ollama_model = os.getenv("OLLAMA_MODEL", "qwen2:7b-instruct")
+        self.ollama_model = os.getenv("OLLAMA_MODEL", "phi:latest")
 
     def invoke(self, prompt: str) -> LLMResponse:
         """Invoke orchestrator LLM with local-first fallback strategy.

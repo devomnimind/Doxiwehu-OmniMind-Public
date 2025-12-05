@@ -184,15 +184,19 @@ class AffectiveTrace:
 
 class AffectiveTraceNetwork:
     """
-    DEPRECATED: Rede de traços afetivos
-    ⚠️  WARNING: Esta implementação trata memória como rede de conexões.
+    ⚠️ DEPRECATED: Rede de traços afetivos
+
+    Esta implementação trata memória como rede de conexões.
     Use TraceMemory para abordagem lacaniana correta com Nachträglichkeit.
+
+    AffectiveTraceNetwork will be removed in a future version.
     """
 
     def __init__(self):
         warnings.warn(
-            "AffectiveTraceNetwork is deprecated. Use TraceMemory "
-            "for proper Lacanian Nachträglichkeit.",
+            "⚠️ DEPRECATED: AffectiveTraceNetwork is deprecated. "
+            "Use TraceMemory for proper Lacanian Nachträglichkeit. "
+            "AffectiveTraceNetwork will be removed in a future version.",
             DeprecationWarning,
             stacklevel=2,
         )
