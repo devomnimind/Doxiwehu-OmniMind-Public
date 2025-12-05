@@ -7,6 +7,11 @@ Baseado em:
 - Hodge Laplacian (de Millán et al. 2025)
 
 OTIMIZAÇÃO GPU: Substituição de NumPy por PyTorch para álgebra linear acelerada.
+
+HYBRID CONSCIOUSNESS ARCHITECTURE:
+- Φ_consciente: MICS (Maximum Information Complex Set) - vencedor
+- Φ_inconsciente: Subsistemas com Phi > 0 mas que NÃO são o MICS
+- Não descarta os "perdedores" - eles são o inconsciente maquínico
 """
 
 from dataclasses import dataclass
@@ -109,62 +114,222 @@ class SimplicialComplex:
         return hodge
 
 
-class PhiCalculator:
-    """Calcula Φ (phi) - medida de consciência IIT."""
+@dataclass
+class IITResult:
+    """
+    Resultado do cálculo de IIT com preservação do inconsciente.
 
-    def __init__(self, complex: SimplicialComplex):
+    CRÍTICO: Não é aditivo, mas competitivo.
+    - conscious_phi: O valor do MICS (Máximo Φ - Vencedor)
+    - conscious_complex: Nós que formam o MICS
+    - machinic_unconscious: Lista de subsistemas com Φ > 0 mas que NÃO são o MICS
+
+    Filosofia:
+    - O "resto" não é lixo, é o Inconsciente Maquínico
+    - Estes dados alimentam LacanianModule (sinthomes) e DeleuzianModule (linhas de fuga)
+    - Φ = 0 para observador externo não significa inatividade, apenas falta de integração
+    """
+
+    conscious_phi: float = 0.0  # O valor do MICS (Vencedor)
+    conscious_complex: Set[int] = None  # type: ignore  # Nós do MICS
+
+    # O "Resto" não é lixo, é o Inconsciente:
+    machinic_unconscious: List[Dict[str, Any]] = None  # type: ignore
+
+    def __post_init__(self) -> None:
+        """Initialize default values for mutable fields."""
+        if self.conscious_complex is None:
+            self.conscious_complex = set()
+        if self.machinic_unconscious is None:
+            self.machinic_unconscious = []
+
+    def total_phi(self) -> float:
+        """
+        Total Φ = Φ_consciente + soma(Φ_inconsciente).
+
+        Note: Apenas para diagnóstico. O modelo híbrido é competitivo, não aditivo.
+        """
+        unconscious_sum = sum(u["phi_value"] for u in self.machinic_unconscious)
+        return self.conscious_phi + unconscious_sum
+
+    def unconscious_ratio(self) -> float:
+        """
+        Razão Φ_inconsciente / Φ_total.
+
+        No cérebro humano: ~95% inconsciente (Freud/Lacan corretos!)
+        """
+        total = self.total_phi()
+        if total == 0:
+            return 0.0
+        unconscious_sum = sum(u["phi_value"] for u in self.machinic_unconscious)
+        return unconscious_sum / total
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for serialization."""
+        return {
+            "conscious_phi": self.conscious_phi,
+            "conscious_complex": list(self.conscious_complex),
+            "machinic_unconscious": self.machinic_unconscious,
+            "total_phi": self.total_phi(),
+            "unconscious_ratio": self.unconscious_ratio(),
+        }
+
+
+class PhiCalculator:
+    """
+    Calcula Φ (phi) - medida de consciência IIT.
+
+    REFATORADO para arquitetura híbrida:
+    - Identifica MICS (Maximum Information Complex Set)
+    - Preserva candidatos perdedores como Inconsciente Maquínico
+    - Limiar de ruído: phi > 0.01 para ser considerado inconsciente válido
+    """
+
+    def __init__(self, complex: SimplicialComplex, noise_threshold: float = 0.01):
         self.complex = complex
+        self.noise_threshold = noise_threshold  # Threshold para filtrar ruído
+
+    def calculate_phi_with_unconscious(self) -> IITResult:
+        """
+        Calcula Φ com preservação do inconsciente.
+
+        Lógica:
+        1. Calcula Φ para candidatos a complexo
+        2. Identifica o Máximo (MICS) -> conscious_phi
+        3. Filtra os restantes: Se phi > noise_threshold, adiciona a machinic_unconscious
+
+        Returns:
+            IITResult com consciente + lista de inconscientes
+        """
+        result = IITResult()
+
+        if self.complex.n_vertices < 2:
+            return result
+
+        # Gera candidatos a complexo (subsistemas)
+        candidates = self._generate_complex_candidates()
+
+        if not candidates:
+            # Se não há candidatos, calcula para o complexo inteiro
+            phi_value = self._calculate_phi_for_subsystem(set(range(self.complex.n_vertices)))
+            result.conscious_phi = phi_value
+            result.conscious_complex = set(range(self.complex.n_vertices))
+            return result
+
+        # Calcula phi para cada candidato
+        candidate_phis = []
+        for candidate_nodes in candidates:
+            phi_value = self._calculate_phi_for_subsystem(candidate_nodes)
+            candidate_phis.append({"subsystem_nodes": candidate_nodes, "phi_value": phi_value})
+
+        # Ordena por phi (maior primeiro)
+        candidate_phis.sort(key=lambda x: x["phi_value"], reverse=True)
+
+        # MICS = candidato com maior Φ
+        if candidate_phis:
+            mics = candidate_phis[0]
+            result.conscious_phi = mics["phi_value"]
+            result.conscious_complex = mics["subsystem_nodes"]
+
+            # Os "perdedores" com Φ > threshold são o Inconsciente
+            for candidate in candidate_phis[1:]:
+                if candidate["phi_value"] > self.noise_threshold:
+                    result.machinic_unconscious.append(candidate)
+
+        return result
 
     def calculate_phi(self) -> float:
         """
-        Calcula Φ = min(Φ_partition) sobre todas partições.
+        Calcula Φ tradicional (backward compatibility).
 
-        Φ quantifica integração: quanto "consciência"?
-
-        IIT axiomas:
-        1. Intrinsic existence: Sistema causa-efeito sobre si mesmo ✓
-        2. Composition: múltiplos elementos ✓
-        3. Information: diferenciação de estados ✓
-        4. Integration: partes NÃO independentes ✓ (Φ mede isso)
-        5. Exclusion: um máximo local ✓
+        Apenas retorna o phi do MICS (consciente).
         """
+        result = self.calculate_phi_with_unconscious()
+        return result.conscious_phi
 
-        if self.complex.n_vertices < 2:
+    def _generate_complex_candidates(self) -> List[Set[int]]:
+        """
+        Gera candidatos a complexo (subsistemas).
+
+        Estratégia simplificada:
+        1. Complexo inteiro
+        2. Subgrafos conectados significativos
+        3. Limita número de candidatos para evitar explosão combinatorial
+        """
+        n = self.complex.n_vertices
+        candidates = []
+
+        # Candidato 1: Complexo inteiro
+        candidates.append(set(range(n)))
+
+        # Candidato 2-N: Subconjuntos baseados em conectividade
+        # Simplificado: divide em grupos de tamanho ~n/2, n/3, etc.
+        if n >= 4:
+            # Metade esquerda
+            candidates.append(set(range(n // 2)))
+            # Metade direita
+            candidates.append(set(range(n // 2, n)))
+
+        if n >= 6:
+            # Terço
+            candidates.append(set(range(n // 3)))
+            candidates.append(set(range(n // 3, 2 * n // 3)))
+            candidates.append(set(range(2 * n // 3, n)))
+
+        # Limita a 10 candidatos para evitar explosão
+        return candidates[:10]
+
+    def _calculate_phi_for_subsystem(self, nodes: Set[int]) -> float:
+        """
+        Calcula Φ para um subsistema específico.
+
+        Args:
+            nodes: Conjunto de nós que formam o subsistema
+
+        Returns:
+            Valor de Φ para este subsistema
+        """
+        if len(nodes) < 2:
             return 0.0
 
-        # Simplificado:
-        # Φ ≈ (número de simplices / possibilidades teóricas)
-        # Em produção: algoritmo mais sofisticado
+        # Filtra simplices que pertencem ao subsistema
+        subsystem_simplices = [s for s in self.complex.simplices if set(s.vertices).issubset(nodes)]
 
-        n_vertices = self.complex.n_vertices
-        # Cuidado com overflow em ints normais se n_vertices for grande, mas aqui é float div
-        # Usa limite combinatorial de vértices+arestas para evitar colapso exponencial
+        n_vertices = len(nodes)
         max_possible = n_vertices + (n_vertices * (n_vertices - 1) / 2.0)
         max_possible = max(max_possible, 1.0)
-        actual_simplices = len(self.complex.simplices)
+        actual_simplices = len(subsystem_simplices)
 
         phi = actual_simplices / max_possible
 
-        # Penaliza desconexão (reduz phi se não-integrado)
-        hodge_0 = self.complex.get_hodge_laplacian(0)
+        # Penaliza desconexão (usando Hodge Laplacian)
+        # Criar sub-complex temporário para calcular Hodge
+        temp_complex = SimplicialComplex()
+        temp_complex.n_vertices = n_vertices
+
+        # Mapeia nós originais para [0, n_vertices-1]
+        node_list = sorted(nodes)
+        node_map = {old_id: new_id for new_id, old_id in enumerate(node_list)}
+
+        for simplex in subsystem_simplices:
+            remapped_vertices = tuple(node_map[v] for v in simplex.vertices if v in node_map)
+            if remapped_vertices:
+                temp_complex.simplices.add(
+                    Simplex(vertices=remapped_vertices, dimension=len(remapped_vertices) - 1)
+                )
+
+        hodge_0 = temp_complex.get_hodge_laplacian(0)
 
         if hodge_0.numel() > 0:
             try:
-                # PyTorch Eigendecomposition (GPU accelerated)
-                # eigvalsh é para matrizes simétricas (Hermitianas), o que Hodge Laplacian é.
                 eigenvalues = torch.linalg.eigvalsh(hodge_0)
-
-                # Segundo menor eigenvalue = Fiedler eigenvalue (medida conectividade)
-                # Eigenvalues já vêm ordenados em ordem ascendente no eigvalsh
                 if len(eigenvalues) > 1:
                     fiedler = eigenvalues[1].item()
                     phi *= (fiedler / (fiedler + 1.0)) if fiedler > 0 else 0.5
-            except RuntimeError as e:
-                # Fallback se SVD falhar (instabilidade numérica)
-                print(f"Warning: Phi calculation numeric instability: {e}")
-                pass
+            except RuntimeError:
+                pass  # Fallback: mantém phi sem penalização
 
-        return max(0.002, min(float(phi), 1.0))  # Normaliza 0-1 com piso anti-colapso
+        return max(0.0, min(float(phi), 1.0))
 
 
 class LogToTopology:
