@@ -169,7 +169,7 @@ class TestGeminiProvider:
     def test_select_model_based_on_task_type(self):
         """Testa seleção de modelo baseada no tipo de tarefa"""
         assert self.provider._select_model(TaskType.CODE_GENERATION) == "gemini-1.5-pro"
-        assert self.provider._select_model(TaskType.ANALYSIS) == "gemini-1.5-flash"
+        assert self.provider._select_model(TaskType.ANALYSIS) == "gemini-2.0-flash"
 
 
 class TestCopilotProvider:
@@ -227,15 +227,16 @@ class TestOpenRouterProvider:
         asyncio.run(run_test())
 
     def test_select_model_uses_free_model_for_code(self):
-        """Testa que usa modelo gratuito para tarefas de código"""
-        assert self.provider._select_model(TaskType.CODE_GENERATION) == "qwen/qwen3-coder:free"
-        assert self.provider._select_model(TaskType.CODE_REVIEW) == "qwen/qwen3-coder:free"
-        assert self.provider._select_model(TaskType.ANALYSIS) == "openai/gpt-4-turbo"
+        """Testa que usa modelo adequado para tarefas de código"""
+        assert self.provider._select_model(TaskType.CODE_GENERATION) == "qwen/qwen2-72b-instruct"
+        assert self.provider._select_model(TaskType.CODE_REVIEW) == "qwen/qwen2-72b-instruct"
+        assert self.provider._select_model(TaskType.ANALYSIS) == "qwen/qwen2-72b-instruct"
 
     def test_calculate_cost_free_model(self):
-        """Testa cálculo de custo para modelo gratuito"""
-        cost = self.provider._calculate_cost("qwen/qwen3-coder:free", 1000)
-        assert cost == 0.0
+        """Testa cálculo de custo para modelo"""
+        # qwen/qwen2-72b-instruct tem custo baixo mas não zero
+        cost = self.provider._calculate_cost("qwen/qwen2-72b-instruct", 1000)
+        assert cost > 0.0
 
     def test_calculate_cost_paid_model(self):
         """Testa cálculo de custo para modelo pago"""

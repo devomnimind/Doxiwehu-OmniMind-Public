@@ -9,6 +9,8 @@ Credenciais são carregadas via env vars:
   OMNIMIND_DASHBOARD_PASS
 """
 
+import json
+import os
 import subprocess
 import time
 from pathlib import Path
@@ -17,6 +19,36 @@ from typing import Generator
 import httpx
 import pytest
 import pytest_asyncio
+
+
+def get_auth_credentials():
+    """
+    Resolve credenciais de autenticação na seguinte ordem:
+    1. Variáveis de ambiente
+    2. Arquivo config/dashboard_auth.json
+    3. Default (admin/admin)
+    """
+    # 1. Env vars
+    user = os.getenv("OMNIMIND_DASHBOARD_USER")
+    password = os.getenv("OMNIMIND_DASHBOARD_PASS")
+
+    if user and password:
+        return user, password
+
+    # 2. Auth file
+    root_dir = Path(__file__).parent.parent.parent
+    auth_file = root_dir / "config" / "dashboard_auth.json"
+
+    if auth_file.exists():
+        try:
+            with open(auth_file) as f:
+                data = json.load(f)
+                return data.get("user", "admin"), data.get("pass", "admin")
+        except Exception:
+            pass
+
+    # 3. Default
+    return "admin", "admin"
 
 
 @pytest.fixture(scope="session")
@@ -74,6 +106,13 @@ def omnimind_server() -> Generator[str, None, None]:
     # Buscar arquivo main.py
     cwd = Path(__file__).parent.parent.parent
 
+    # Force credentials for test server
+    env = os.environ.copy()
+    if "OMNIMIND_DASHBOARD_USER" not in env:
+        env["OMNIMIND_DASHBOARD_USER"] = "admin"
+    if "OMNIMIND_DASHBOARD_PASS" not in env:
+        env["OMNIMIND_DASHBOARD_PASS"] = "admin"
+
     server_process = subprocess.Popen(
         [
             "python",
@@ -90,6 +129,7 @@ def omnimind_server() -> Generator[str, None, None]:
             "5",
         ],
         cwd=cwd,
+        env=env,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,

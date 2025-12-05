@@ -267,6 +267,29 @@ class RSIArchitecture(nn.Module):
             f"Imaginary({imaginary_dim})"
         )
 
+    def _ensure_device(self, x: torch.Tensor) -> None:
+        """Ensures model is on the same device as input tensor."""
+        device = x.device
+        # Check if any parameter is on meta device
+        is_meta = any(p.device.type == "meta" for p in self.parameters())
+        if is_meta:
+            # Move to device and re-initialize if needed
+            self.to_empty(device=device)
+            # Re-initialize weights because to_empty leaves them uninitialized
+            self.apply(self._init_weights)
+        elif next(self.parameters()).device != device:
+            self.to(device)
+
+    def _init_weights(self, module):
+        """Initialize weights for modules moved from meta device."""
+        if isinstance(module, nn.Linear):
+            nn.init.xavier_uniform_(module.weight)
+            if module.bias is not None:
+                nn.init.zeros_(module.bias)
+        elif isinstance(module, nn.LayerNorm):
+            nn.init.ones_(module.weight)
+            nn.init.zeros_(module.bias)
+
     def forward(self, real_data: torch.Tensor) -> Dict[str, torch.Tensor]:
         """
         Processamento através dos três registros.
@@ -282,16 +305,10 @@ class RSIArchitecture(nn.Module):
             - reconstructed_real: Tentativa de reconstrução
             - remainder: O que não pode ser simbolizado (objeto a)
         """
+        # Ensure model is on correct device
+        self._ensure_device(real_data)
+
         # Real → Symbolic (tentativa de simbolização)
-        # Ensure real_embedding is on correct device
-        # Use to_empty() if module is on meta device (placeholder)
-        device = real_data.device
-        if next(self.real_embedding.parameters(), None) is not None:
-            param_device = next(self.real_embedding.parameters()).device
-            if param_device.type == "meta":
-                self.real_embedding = self.real_embedding.to_empty(device=device)
-            else:
-                self.real_embedding = self.real_embedding.to(device)
         real_embedded = self.real_embedding(real_data)
         symbolic = self.symbolic_processor(real_embedded)
 

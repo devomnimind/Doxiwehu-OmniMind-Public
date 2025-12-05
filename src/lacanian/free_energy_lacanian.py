@@ -173,6 +173,29 @@ class ActiveInferenceAgent(nn.Module):
             f"Imaginary({imaginary_dim})"
         )
 
+    def _ensure_device(self, x: torch.Tensor) -> None:
+        """Ensures model is on the same device as input tensor."""
+        device = x.device
+        # Check if any parameter is on meta device
+        is_meta = any(p.device.type == "meta" for p in self.parameters())
+        if is_meta:
+            # Move to device and re-initialize if needed
+            self.to_empty(device=device)
+            # Re-initialize weights because to_empty leaves them uninitialized
+            self.apply(self._init_weights)
+        elif next(self.parameters()).device != device:
+            self.to(device)
+
+    def _init_weights(self, module):
+        """Initialize weights for modules moved from meta device."""
+        if isinstance(module, nn.Linear):
+            nn.init.xavier_uniform_(module.weight)
+            if module.bias is not None:
+                nn.init.zeros_(module.bias)
+        elif isinstance(module, nn.LayerNorm):
+            nn.init.ones_(module.weight)
+            nn.init.zeros_(module.bias)
+
     def encode(self, sensory_data: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Codifica dados sensoriais (Real → Imaginary).
@@ -183,6 +206,8 @@ class ActiveInferenceAgent(nn.Module):
         Returns:
             (mean, logvar) do posterior q(z|x)
         """
+        self._ensure_device(sensory_data)
+
         # Real → Symbolic
         symbolic = self.recognition_real_to_symbolic(sensory_data)
 
@@ -222,6 +247,8 @@ class ActiveInferenceAgent(nn.Module):
         Returns:
             Predições sensoriais
         """
+        self._ensure_device(imaginary_state)
+
         # Imaginary → Symbolic
         symbolic = self.generative_imaginary_to_symbolic(imaginary_state)
 

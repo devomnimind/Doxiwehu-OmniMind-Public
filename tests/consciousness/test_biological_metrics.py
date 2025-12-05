@@ -25,7 +25,8 @@ class TestLempelZivComplexity:
         binary = LempelZivComplexity.binarize_signal(signal)
 
         # Values >= 3 should be '1', < 3 should be '0'
-        assert binary == "01111"
+        # [1 < 3 → 0, 2 < 3 → 0, 3 >= 3 → 1, 4 >= 3 → 1, 5 >= 3 → 1]
+        assert binary == "00111"
 
     def test_binarize_with_custom_threshold(self):
         """Test binarization with custom threshold."""
