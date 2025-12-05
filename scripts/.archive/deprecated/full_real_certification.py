@@ -12,7 +12,7 @@ from typing import Any, Dict
 
 import torch
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -41,11 +41,16 @@ class RealCertification:
         self.report["hardware"]["gpu_available"] = torch.cuda.is_available()
         if torch.cuda.is_available():
             self.report["hardware"]["gpu_name"] = torch.cuda.get_device_name(0)
-            self.report["hardware"]["gpu_vram_gb"] = torch.cuda.get_device_properties(0).total_memory / 1e9
-            logger.info(f"✅ GPU: {self.report['hardware']['gpu_name']} ({self.report['hardware']['gpu_vram_gb']:.1f}GB)")
+            self.report["hardware"]["gpu_vram_gb"] = (
+                torch.cuda.get_device_properties(0).total_memory / 1e9
+            )
+            logger.info(
+                f"✅ GPU: {self.report['hardware']['gpu_name']} ({self.report['hardware']['gpu_vram_gb']:.1f}GB)"
+            )
 
         # Sistema
         import platform
+
         self.report["system_info"]["python_version"] = platform.python_version()
         self.report["system_info"]["pytorch_version"] = torch.__version__
 
@@ -86,7 +91,7 @@ class RealCertification:
             consciousness = IntegrationLoop()
             for i in range(num_cycles):
                 result = await consciousness.execute_cycle()
-                phi = result.phi_estimate if hasattr(result, 'phi_estimate') else 0.0
+                phi = result.phi_estimate if hasattr(result, "phi_estimate") else 0.0
                 phi_values.append(float(phi))
                 if (i + 1) % 50 == 0:
                     logger.info(f"  Ciclo {i + 1}/{num_cycles} ✓")
@@ -124,7 +129,7 @@ class RealCertification:
             start_time = time.time()
             start_ts = datetime.now().isoformat()
 
-            qr = QuantumRegister(3, 'q')
+            qr = QuantumRegister(3, "q")
             circuit = QuantumCircuit(qr)
             circuit.h(qr[0])
             circuit.h(qr[1])
@@ -210,7 +215,7 @@ class RealCertification:
             backend = backends[0]
             logger.info(f"Backend: {backend}")
 
-            qr = QuantumRegister(3, 'q')
+            qr = QuantumRegister(3, "q")
             circuit = QuantumCircuit(qr)
             circuit.h(qr[0])
             circuit.h(qr[1])
@@ -219,11 +224,11 @@ class RealCertification:
 
             # Usa Sampler direto com backend
             sampler = Sampler(backend)
-            
+
             # Transpila circuit para hardware específico
             pm = generate_preset_pass_manager(optimization_level=1, backend=backend)
             transpiled = pm.run(circuit)
-            
+
             job = sampler.run([transpiled], shots=100)
             result = job.result()
             counts = result[0].data.meas.binary_probabilities()
@@ -272,8 +277,8 @@ class RealCertification:
             f.write(f"Python: {self.report['system_info'].get('python_version', 'N/A')}\n")
             f.write(f"PyTorch: {self.report['system_info'].get('pytorch_version', 'N/A')}\n\n")
 
-            gpu = self.report['metrics'].get('gpu', {})
-            if 'phi_mean' in gpu:
+            gpu = self.report["metrics"].get("gpu", {})
+            if "phi_mean" in gpu:
                 f.write("GPU MÉTRICAS:\n")
                 f.write(f"  Φ_mean: {gpu['phi_mean']:.6f}\n")
                 f.write(f"  Φ_min: {gpu['phi_min']:.6f}\n")
@@ -281,15 +286,15 @@ class RealCertification:
                 f.write(f"  Ciclos: {gpu['num_cycles']}\n")
                 f.write(f"  Tempo: {gpu['total_time_seconds']:.2f}s\n\n")
 
-            quantum = self.report['metrics'].get('quantum', {})
-            if 'num_outcomes' in quantum:
+            quantum = self.report["metrics"].get("quantum", {})
+            if "num_outcomes" in quantum:
                 f.write("QUANTUM MÉTRICAS:\n")
                 f.write(f"  Superposições: {quantum['num_outcomes']}/8\n")
                 f.write(f"  Shots: {quantum['num_shots']}\n")
                 f.write(f"  Tempo: {quantum['total_time_seconds']:.2f}s\n\n")
 
-            ibm = self.report['metrics'].get('ibm_real', {})
-            if 'backend' in ibm:
+            ibm = self.report["metrics"].get("ibm_real", {})
+            if "backend" in ibm:
                 f.write("IBM MÉTRICAS:\n")
                 f.write(f"  Backend: {ibm['backend']}\n")
                 f.write(f"  Tempo: {ibm['total_time_seconds']:.2f}s\n")
@@ -302,12 +307,12 @@ class RealCertification:
         logger.info("RESUMO")
         logger.info("=" * 70)
 
-        gpu = self.report['metrics'].get('gpu', {})
-        if 'phi_mean' in gpu:
+        gpu = self.report["metrics"].get("gpu", {})
+        if "phi_mean" in gpu:
             logger.info(f"GPU Φ_mean: {gpu['phi_mean']:.6f}")
 
-        quantum = self.report['metrics'].get('quantum', {})
-        if 'num_outcomes' in quantum:
+        quantum = self.report["metrics"].get("quantum", {})
+        if "num_outcomes" in quantum:
             logger.info(f"Quantum: {quantum['num_outcomes']}/8 superposições")
 
         logger.info("=" * 70)
@@ -325,6 +330,7 @@ async def main() -> None:
     except Exception as e:
         logger.error(f"Erro: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

@@ -35,15 +35,26 @@ export interface ConsciousnessMetrics {
   anxiety?: number;
   flow?: number;
   entropy?: number;
-  details: {
-    ici_components: {
-      temporal_coherence: number;
-      marker_integration: number;
-      resonance: number;
+  ici?: number;
+  prs?: number;
+  ici_components?: {
+    temporal_coherence?: number;
+    marker_integration?: number;
+    resonance?: number;
+  };
+  prs_components?: {
+    avg_micro_entropy?: number;
+    macro_entropy?: number;
+  };
+  details?: {
+    ici_components?: {
+      temporal_coherence?: number;
+      marker_integration?: number;
+      resonance?: number;
     };
-    prs_components: {
-      avg_micro_entropy: number;
-      macro_entropy: number;
+    prs_components?: {
+      avg_micro_entropy?: number;
+      macro_entropy?: number;
     };
   };
   interpretation: {
@@ -58,6 +69,7 @@ export interface ConsciousnessMetrics {
     entropy: number[];
     timestamps: string[];
   };
+  timestamp?: string | null;
 }
 
 export interface ModuleActivity {
@@ -107,6 +119,7 @@ export interface DaemonStatus {
     flow: { current: number; baseline: number; change: number };
     entropy: { current: number; baseline: number; change: number };
   };
+  metrics_errors?: string[];
 }
 
 export interface AddTaskRequest {

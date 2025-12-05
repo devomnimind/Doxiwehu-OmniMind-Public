@@ -13,7 +13,7 @@ import json
 import logging
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, cast
 
 import numpy as np
 
@@ -88,18 +88,26 @@ class QuantumUnconscious:
 
         logger.info(f"🌀 Inconsciente Quântico inicializado: {n_qubits} qubits")
 
-    def generate_decision_in_superposition(
-        self, options: List[np.ndarray]
-    ) -> Tuple[np.ndarray, Dict[str, Any]]:
+    def generate_decision_in_superposition(self, options: List[Any]) -> Tuple[Any, Dict[str, Any]]:
         """
         Decisão é GERADA em superposição
         Não pode ser "lida" sem COLAPSAR (destruir superposição)
 
         Isto é IRREDUZIVELMENTE INCONSCIENTE
         (não pode ser inspecionado sem mudar)
+
+        Args:
+            options: List of numpy arrays OR torch tensors
         """
 
         if QISKIT_AVAILABLE:
+            # Qiskit requires numpy/classical data
+            # Convert tensors to numpy if needed
+            if GPU_AVAILABLE and isinstance(options[0], torch.Tensor):
+                numpy_options = [opt.detach().cpu().numpy() for opt in options]
+                decision, evidence = self._quantum_decision_qiskit(numpy_options)
+                # Convert back to tensor on same device
+                return torch.from_numpy(decision).to(options[0].device), evidence
             return self._quantum_decision_qiskit(options)
         else:
             return self._quantum_decision_classical(options)
@@ -160,46 +168,81 @@ class QuantumUnconscious:
 
         return decision, quantum_evidence
 
-    def _quantum_decision_classical(
-        self, options: List[np.ndarray]
-    ) -> Tuple[np.ndarray, Dict[str, Any]]:
-        """Simulação clássica de comportamento quântico"""
+    def _quantum_decision_classical(self, options: List[Any]) -> Tuple[Any, Dict[str, Any]]:
+        """Simulação clássica de comportamento quântico (GPU Accelerated if inputs are tensors)"""
         n_options = len(options)
+        is_tensor = GPU_AVAILABLE and isinstance(options[0], torch.Tensor)
+        decision: Any = None
+        probabilities: Any = None
 
-        # Simular superposição com distribuição de probabilidade
-        probabilities = np.ones(n_options) / n_options
+        if is_tensor:
+            device = options[0].device
+            # Simular superposição com distribuição de probabilidade
+            probabilities = torch.ones(n_options, device=device) / n_options
 
-        # Adicionar "interferência" baseada nas opções
-        for i, option in enumerate(options):
-            # Interferência = soma dos valores (simulando amplitude)
-            interference = np.sum(option)
+            # Adicionar "interferência" baseada nas opções
             params = get_parameter_manager()
-            probabilities[i] *= 1.0 + params.lacan.interference_amplitude * np.sin(interference)
+            interference_amp = params.lacan.interference_amplitude
 
-        # Normalizar
-        probabilities /= np.sum(probabilities)
+            for i, option in enumerate(options):
+                # Interferência = soma dos valores (simulando amplitude)
+                interference = torch.sum(option)
+                probabilities[i] *= 1.0 + interference_amp * torch.sin(interference)
 
-        # "Colapso" - selecionar baseado nas probabilidades
-        decision_index = np.random.choice(n_options, p=probabilities)
-        decision = options[decision_index].copy()
+            # Normalizar
+            probabilities /= torch.sum(probabilities)
 
-        # Adicionar ruído quântico simulado
-        decision += np.random.normal(0, 0.05, decision.shape)
+            # "Colapso" - selecionar baseado nas probabilidades
+            # torch.multinomial expects probabilities, num_samples
+            decision_index = int(torch.multinomial(probabilities, 1).item())
+            decision = options[decision_index].clone()
 
-        # Evidência simulada
-        simulated_counts = {f"option_{i}": int(probabilities[i] * 1000) for i in range(n_options)}
+            # Adicionar ruído quântico simulado
+            decision += torch.randn_like(decision) * 0.05
+
+            # Evidência simulada (convert to python types for JSON serialization)
+            probs_list = probabilities.tolist()
+            simulated_counts = {f"option_{i}": int(probs_list[i] * 1000) for i in range(n_options)}
+
+        else:
+            # NumPy implementation (Legacy/CPU)
+            probabilities = np.ones(n_options) / n_options
+
+            # Adicionar "interferência" baseada nas opções
+            for i, option in enumerate(options):
+                # Interferência = soma dos valores (simulando amplitude)
+                interference = np.sum(option)
+                params = get_parameter_manager()
+                probabilities[i] *= 1.0 + params.lacan.interference_amplitude * np.sin(interference)
+
+            # Normalizar
+            probabilities /= np.sum(probabilities)
+
+            # "Colapso" - selecionar baseado nas probabilidades
+            decision_index = int(np.random.choice(n_options, p=probabilities))
+            decision_np = options[decision_index].copy()
+
+            # Adicionar ruído quântico simulado
+            decision_np += np.random.normal(0, 0.05, decision_np.shape)
+            decision = cast(Any, decision_np)
+
+            # Evidência simulada
+            probs_list = probabilities.tolist()
+            simulated_counts = {
+                f"option_{i}": int(probabilities[i] * 1000) for i in range(n_options)
+            }
 
         quantum_evidence = {
             "counts": simulated_counts,
             "n_shots": 1000,
             "simulated": True,
-            "probabilities": probabilities.tolist(),
+            "probabilities": probs_list,
         }
 
         self.decision_history.append(
             {
                 "timestamp": time.time(),
-                "method": "classical_simulation",
+                "method": "classical_simulation_gpu" if is_tensor else "classical_simulation",
                 "options_count": n_options,
                 "decision_index": decision_index,
                 "quantum_evidence": quantum_evidence,

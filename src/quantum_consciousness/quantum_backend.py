@@ -26,34 +26,24 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# --- CRITICAL: Fix CUDA BEFORE importing torch ---
-try:
-    from .cuda_init_fix import fix_cuda_init  # type: ignore[import-untyped]
+# --- CUDA SETUP ---
+# We rely on the shell script (start_omnimind_system.sh) to set CUDA_VISIBLE_DEVICES and others.
+# Doing it here causes "CUDA unknown error" in PyTorch.
+# Trust the shell environment.
 
-    cuda_fixed, cuda_diagnostic = fix_cuda_init()
-except ImportError:
-    # Fallback: set minimum CUDA env vars
-    if "CUDA_HOME" not in os.environ:
-        os.environ["CUDA_HOME"] = "/usr/local/cuda-12.4"
-    if "CUDA_VISIBLE_DEVICES" not in os.environ:
-        os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-    cuda_fixed, cuda_diagnostic = False, "Manual CUDA env setup"
-
-# NOW import torch (after CUDA env is configured)
 import torch  # noqa: E402
 
-logger = logging.getLogger(__name__)
+from src.monitor.resource_manager import resource_manager
 
-if cuda_fixed:
-    logger.info(f"✅ CUDA initialization fixed: {cuda_diagnostic}")
-else:
-    logger.warning(f"⚠️ CUDA initialization fallback: {cuda_diagnostic}")
+logger = logging.getLogger(__name__)
 
 # --- D-Wave Imports ---
 try:
     import dimod  # type: ignore[import-untyped]
-    from dwave.system import DWaveSampler  # type: ignore[import-untyped,attr-defined]
-    from dwave.system import EmbeddingComposite  # type: ignore[import-untyped,attr-defined]
+    from dwave.system import (
+        DWaveSampler,  # type: ignore[import-untyped,attr-defined]
+        EmbeddingComposite,  # type: ignore[import-untyped,attr-defined]
+    )
 
     DWAVE_AVAILABLE = True
 except ImportError:
@@ -70,21 +60,31 @@ except ImportError:
 # --- Qiskit Imports ---
 try:  # type: ignore[import-untyped]
     from qiskit_aer import AerSimulator  # type: ignore[import-untyped,attr-defined]
-    from qiskit_algorithms import AmplificationProblem  # type: ignore[attr-defined]
-    from qiskit_algorithms import Grover  # type: ignore[attr-defined]
-    from qiskit_algorithms.optimizers import COBYLA  # type: ignore[import-untyped,attr-defined]
+    from qiskit_algorithms import (
+        AmplificationProblem,  # type: ignore[attr-defined]
+        Grover,  # type: ignore[attr-defined]
+    )
+    from qiskit_algorithms.optimizers import (
+        COBYLA,  # type: ignore[import-untyped,attr-defined]
+    )
 
     try:
-        from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
+        from qiskit.primitives import (
+            Sampler,  # type: ignore[import-untyped,attr-defined]
+        )
     except ImportError:
         from qiskit.primitives import (
             StatevectorSampler as Sampler,  # type: ignore[import-untyped,attr-defined]
         )
-    from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
-    from qiskit_optimization import QuadraticProgram  # type: ignore[import-untyped,attr-defined]
-    from qiskit_optimization.algorithms import (
+    from qiskit.circuit.library import (
+        PhaseOracle,  # type: ignore[import-untyped,attr-defined]
+    )
+    from qiskit_optimization import (
+        QuadraticProgram,  # type: ignore[import-untyped,attr-defined]
+    )
+    from qiskit_optimization.algorithms import (  # type: ignore[import-untyped,attr-defined]
         MinimumEigenOptimizer,
-    )  # type: ignore[import-untyped,attr-defined]
+    )
 
     QISKIT_AVAILABLE = True
 except ImportError:
@@ -94,17 +94,31 @@ except ImportError:
 class QuantumBackend:
     """
     Unified Quantum Backend with proper LOCAL > CLOUD priority.
+    Implements Singleton pattern to prevent re-initialization overhead.
 
     Changes from previous version:
+    - Singleton Pattern (Fixes CPU/PCIe bottleneck)
     - Prefer local simulation (GPU > CPU) before cloud
     - Proper Grover implementation via qiskit_algorithms
     - Latency estimation per mode
     - GPU support detection
     """
 
+    _instance = None
+    _initialized = False
+
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(QuantumBackend, cls).__new__(cls)
+        return cls._instance
+
     def __init__(
         self, provider: str = "auto", api_token: Optional[str] = None, prefer_local: bool = True
     ):
+        # Prevent re-initialization
+        if self._initialized:
+            return
+
         self.provider = provider
         self.prefer_local = prefer_local
         self.token = (
@@ -183,6 +197,7 @@ class QuantumBackend:
 
         # Initialization
         self._initialize_backend()
+        self._initialized = True
 
     def _initialize_backend(self):
         """Initialize backend with LOCAL > CLOUD priority."""
@@ -200,8 +215,11 @@ class QuantumBackend:
 
     def _setup_local_qiskit(self):
         """Setup LOCAL Qiskit Aer (GPU > CPU)."""
-        # Try GPU first
-        if self.use_gpu:
+        # Use Hybrid Resource Manager
+        target_device = resource_manager.allocate_task("quantum_backend", 100.0)
+
+        # Try GPU first if allocated
+        if self.use_gpu and target_device == "cuda":
             try:
                 self.backend = AerSimulator(method="statevector", device="GPU")
                 self.mode = "LOCAL_GPU"

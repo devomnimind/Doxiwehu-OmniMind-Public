@@ -51,8 +51,8 @@ class LLMService {
    */
   private getAuthHeader(): string {
     if (!this.auth) {
-      const username = localStorage.getItem('username') || 'admin';
-      const password = localStorage.getItem('password') || 'omnimind2025!';
+      const username = localStorage.getItem('omnimind_user') || '';
+      const password = localStorage.getItem('omnimind_pass') || '';
       return 'Basic ' + btoa(`${username}:${password}`);
     }
     const { username, password } = this.auth;

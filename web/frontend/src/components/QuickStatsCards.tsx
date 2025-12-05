@@ -1,71 +1,68 @@
 import { useDaemonStore } from '../store/daemonStore';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiService } from '../services/api';
+
+interface AuditStats {
+  total_events: number;
+  chain_integrity: boolean;
+}
+
+interface TrainingMetrics {
+  total_iterations: number;
+  avg_conflict_quality: number; // percentual 0-100
+  repression_events: number;
+}
 
 export function QuickStatsCards() {
   const status = useDaemonStore((state) => state.status);
-  const [auditStats, setAuditStats] = useState({ total_events: 0, chain_integrity: false });
-  const [trainingMetrics, setTrainingMetrics] = useState({
-    total_iterations: 0,
-    avg_conflict_quality: 0,
-    repression_events: 0,
-  });
+  const [auditStats, setAuditStats] = useState<AuditStats | null>(null);
+  const [trainingMetrics, setTrainingMetrics] = useState<TrainingMetrics | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  const fetchAllMetrics = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const [auditData, trainingData] = await Promise.all([
+        apiService.get('/audit/stats'),
+        apiService.get('/metrics/training'),
+      ]);
+
+      setAuditStats({
+        total_events: auditData?.total_events ?? 0,
+        chain_integrity: Boolean(auditData?.chain_integrity),
+      });
+
+      setTrainingMetrics({
+        total_iterations: trainingData?.total_iterations ?? 0,
+        avg_conflict_quality: Math.round((trainingData?.avg_conflict_quality ?? 0) * 100),
+        repression_events: trainingData?.repression_events ?? 0,
+      });
+
+      setLastUpdated(new Date());
+    } catch (err) {
+      console.error('Failed to fetch metrics:', err);
+      setAuditStats(null);
+      setTrainingMetrics(null);
+      setError('Não foi possível carregar as métricas em tempo real.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchAllMetrics = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch audit stats (real data from audit_chain.log)
-        const auditData = await apiService.get('/audit/stats');
-        setAuditStats({
-          total_events: auditData.total_events || 0,
-          chain_integrity: auditData.chain_integrity || false,
-        });
-
-        // Fetch training metrics (from FreudianMind)
-        const trainingData = await apiService.get('/metrics/training');
-        if (trainingData.total_iterations) {
-          setTrainingMetrics({
-            total_iterations: trainingData.total_iterations || 0,
-            avg_conflict_quality: (trainingData.avg_conflict_quality || 0) * 100,
-            repression_events: trainingData.repression_events || 0,
-          });
-        }
-      } catch (error) {
-        console.error('Failed to fetch metrics:', error);
-        // Use fallback data if API fails
-        setAuditStats({ total_events: 303, chain_integrity: true });
-        setTrainingMetrics({
-          total_iterations: 50,
-          avg_conflict_quality: 69,
-          repression_events: 15,
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAllMetrics();
-    // Refresh every 10 seconds
     const interval = setInterval(fetchAllMetrics, 10000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchAllMetrics]);
 
   if (!status) return null;
 
-  // Real data from backend and audit system
-  const stats = {
-    testsPassed: trainingMetrics.total_iterations || 50,
-    totalTests: trainingMetrics.total_iterations || 50,
-    coverage: Math.round(trainingMetrics.avg_conflict_quality) || 69,
-    auditMessages: auditStats.total_events,
-    repressedMemories: trainingMetrics.repression_events,
-    lastUpdated: new Date().toLocaleTimeString(),
-  };
-
-  const getStatusColor = (value: number, total?: number) => {
+  const getStatusColor = (value?: number, total?: number) => {
+    if (value === null || value === undefined) return 'text-gray-500';
     if (total) {
       const percentage = (value / total) * 100;
       if (percentage >= 95) return 'text-green-400';
@@ -78,12 +75,36 @@ export function QuickStatsCards() {
     return 'text-red-400';
   };
 
+  const renderValue = (value: number | null | undefined, suffix = '') => {
+    if (value === null || value === undefined) {
+      return <span className="text-gray-500">—</span>;
+    }
+    return (
+      <span>
+        {value}
+        {suffix}
+      </span>
+    );
+  };
+
   return (
     <div className="glass-card p-6">
       <h2 className="text-2xl font-bold text-gradient-cyber mb-6 flex items-center gap-2">
         📈 Quick Stats
         <span className="text-sm text-gray-400 font-normal">(System Overview)</span>
       </h2>
+
+      {error && (
+        <div className="mb-4 bg-red-900/30 border border-red-500/40 text-red-200 text-sm rounded-lg p-3 flex items-center justify-between">
+          <span>{error}</span>
+          <button
+            onClick={fetchAllMetrics}
+            className="btn-outline-neon text-xs px-3 py-1"
+          >
+            Tentar novamente
+          </button>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex items-center justify-center py-8">
@@ -96,7 +117,7 @@ export function QuickStatsCards() {
             <div className="text-2xl mb-2">🧠</div>
             <div className="text-gray-400 text-xs mb-1">Training Runs</div>
             <div className="text-xl font-bold text-cyber-400">
-              {stats.testsPassed}
+              {renderValue(trainingMetrics?.total_iterations)}
             </div>
             <div className="text-xs text-cyber-400">
               ✅ Iterations
@@ -107,11 +128,31 @@ export function QuickStatsCards() {
           <div className="bg-gray-700/30 rounded-lg p-4 text-center hover-lift">
             <div className="text-2xl mb-2">🎯</div>
             <div className="text-gray-400 text-xs mb-1">Avg Quality</div>
-            <div className={`text-xl font-bold ${getStatusColor(stats.coverage)}`}>
-              {stats.coverage}%
+            <div
+              className={`text-xl font-bold ${
+                trainingMetrics?.avg_conflict_quality !== undefined
+                  ? getStatusColor(trainingMetrics?.avg_conflict_quality)
+                  : 'text-gray-500'
+              }`}
+            >
+              {trainingMetrics?.avg_conflict_quality !== undefined
+                ? `${trainingMetrics?.avg_conflict_quality}%`
+                : '—'}
             </div>
-            <div className={`text-xs ${getStatusColor(stats.coverage)}`}>
-              {stats.coverage >= 80 ? '✅ Good' : stats.coverage >= 60 ? '⚠️ Fair' : '❌ Low'}
+            <div
+              className={`text-xs ${
+                trainingMetrics?.avg_conflict_quality !== undefined
+                  ? getStatusColor(trainingMetrics?.avg_conflict_quality)
+                  : 'text-gray-500'
+              }`}
+            >
+              {trainingMetrics?.avg_conflict_quality !== undefined
+                ? trainingMetrics.avg_conflict_quality >= 80
+                  ? '✅ Good'
+                  : trainingMetrics.avg_conflict_quality >= 60
+                  ? '⚠️ Fair'
+                  : '❌ Low'
+                : 'Sem dados'}
             </div>
           </div>
 
@@ -120,10 +161,14 @@ export function QuickStatsCards() {
             <div className="text-2xl mb-2">🔗</div>
             <div className="text-gray-400 text-xs mb-1">Audit Events</div>
             <div className="text-xl font-bold text-blue-400">
-              {stats.auditMessages.toLocaleString()}
+              {auditStats ? auditStats.total_events.toLocaleString() : '—'}
             </div>
             <div className="text-xs text-blue-400">
-              {auditStats.chain_integrity ? '✅ Intact' : '⚠️ Check'}
+              {auditStats
+                ? auditStats.chain_integrity
+                  ? '✅ Intact'
+                  : '⚠️ Check'
+                : 'Sem dados'}
             </div>
           </div>
 
@@ -132,7 +177,7 @@ export function QuickStatsCards() {
             <div className="text-2xl mb-2">🔐</div>
             <div className="text-gray-400 text-xs mb-1">Repressed</div>
             <div className="text-xl font-bold text-purple-400">
-              {stats.repressedMemories}
+              {renderValue(trainingMetrics?.repression_events)}
             </div>
             <div className="text-xs text-purple-400">
               Encrypted
@@ -155,13 +200,16 @@ export function QuickStatsCards() {
 
       <div className="mt-6 pt-4 border-t border-gray-700">
         <div className="flex items-center justify-between text-xs text-gray-400">
-          <span>Last Updated: {stats.lastUpdated}</span>
+          <span>
+            Last Updated:{' '}
+            {lastUpdated ? lastUpdated.toLocaleTimeString() : '—'}
+          </span>
           <div className="flex gap-2">
             <button className="btn-outline-neon text-xs px-3 py-1">
               📊 Export
             </button>
-            <button 
-              onClick={() => window.location.reload()}
+            <button
+              onClick={fetchAllMetrics}
               className="btn-outline-neon text-xs px-3 py-1"
             >
               🔄 Refresh

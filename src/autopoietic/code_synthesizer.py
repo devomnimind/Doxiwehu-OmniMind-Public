@@ -65,27 +65,67 @@ class CodeSynthesizer:
     def _generate_class_source(self, spec: ComponentSpec) -> str:
         """Generate a Python class source string for a single ComponentSpec.
 
-        The class name is derived from spec.name (converted to PascalCase). The
-        run method simply logs that the component was invoked.
+        The class name is derived from spec.name (converted to PascalCase).
+        The logic adapts based on the 'strategy' field in the configuration:
+        - STABILIZE: Adds robust error handling.
+        - OPTIMIZE: Adds caching decorators.
+        - EXPAND: Adds extended feature placeholders.
         """
         class_name = self._to_pascal_case(spec.name)
         config_items = "\n        ".join(
             f"self.{key} = '{value}'" for key, value in spec.config.items()
         )
-        source = f"""class {class_name}:
-    \"\"\"Auto‑generated component of type '{spec.type}'.\"\"\"
+
+        strategy = spec.config.get("strategy", "DEFAULT")
+        imports = "import logging"
+        decorators = ""
+        run_logic = ""
+
+        if strategy == "OPTIMIZE":
+            imports += "\nimport functools"
+            decorators = "@functools.lru_cache(maxsize=128)"
+
+        if strategy == "STABILIZE":
+            run_logic = """
+        try:
+            self._logger.info(f"Running {{self.__class__.__name__}} component (STABILIZED)")
+            # Stabilized logic would go here
+        except Exception as e:
+            self._logger.error(f"Error in {{self.__class__.__name__}}: {{e}}", exc_info=True)
+            # Graceful degradation logic
+        """
+        elif strategy == "EXPAND":
+            run_logic = """
+        self._logger.info(f"Running {{self.__class__.__name__}} component (EXPANDED)")
+        self._run_extended_features()
+        """
+        else:
+            run_logic = """
+        self._logger.info(f"Running {{self.__class__.__name__}} component")
+        """
+
+        extended_methods = ""
+        if strategy == "EXPAND":
+            extended_methods = """
+    def _run_extended_features(self) -> None:
+        \"\"\"Placeholder for extended capabilities.\"\"\"
+        self._logger.info("Executing extended features...")
+"""
+
+        source = f"""{imports}
+
+class {class_name}:
+    \"\"\"Auto‑generated component of type '{spec.type}' (Strategy: {strategy}).\"\"\"
     def __init__(self):
         # Configuration injected by MetaArchitect
         {config_items}
         self._logger = logging.getLogger(__name__)
 
+    {decorators}
     def run(self) -> None:
-        \"\"\"Placeholder execution method.
-
-        In a real system this would contain the component's logic.
-        \"\"\"
-        self._logger.info(f\"Running {class_name} component\")
-"""
+        \"\"\"Execution method adapted for {strategy} strategy.\"\"\"
+        {run_logic.strip()}
+{extended_methods}"""
         return source
 
     @staticmethod

@@ -19,6 +19,7 @@ from rich.table import Table
 from scipy import stats
 
 import sys
+
 sys.path.append(".")
 from scripts.science_validation.run_scientific_ablations import IntegrationLoopSimulator
 
@@ -32,7 +33,7 @@ class RobustExpectationValidator:
             "active_expectation_phis": [],
             "silent_expectation_phis": [],
             "causal_effects": [],
-            "seeds_tested": 0
+            "seeds_tested": 0,
         }
 
     async def test_single_seed_impact(self, seed: int) -> Dict[str, float]:
@@ -70,12 +71,16 @@ class RobustExpectationValidator:
             "phi_active": float(mean_active),
             "phi_silent": float(mean_silent),
             "causal_effect": float(causal_effect),
-            "effect_size": float(abs(causal_effect) / (mean_active + 1e-10)),  # Cohen's d aproximado
+            "effect_size": float(
+                abs(causal_effect) / (mean_active + 1e-10)
+            ),  # Cohen's d aproximado
         }
 
     async def run_robust_validation(self) -> Dict[str, Any]:
         """Executa validação robusta em N seeds."""
-        rprint(f"[bold green]=== VALIDAÇÃO ROBUSTA: IMPACTO EXPECTATION_SILENT (N={self.n_seeds}) ===[/bold green]")
+        rprint(
+            f"[bold green]=== VALIDAÇÃO ROBUSTA: IMPACTO EXPECTATION_SILENT (N={self.n_seeds}) ===[/bold green]"
+        )
         rprint("[dim]Testando diferença causal entre expectation ativo vs silenciado[/dim]\n")
 
         with Progress() as progress:
@@ -107,8 +112,7 @@ class RobustExpectationValidator:
         # Teste de significância estatística
         try:
             result = stats.ttest_ind(
-                self.results["active_expectation_phis"],
-                self.results["silent_expectation_phis"]
+                self.results["active_expectation_phis"], self.results["silent_expectation_phis"]
             )
             if isinstance(result, tuple) and len(result) >= 2:
                 t_stat = result[0]
@@ -123,8 +127,11 @@ class RobustExpectationValidator:
         # Cohen's d (effect size)
         mean_diff = final_stats["mean_effect"]
         pooled_std = np.sqrt(
-            (np.std(self.results["active_expectation_phis"])**2 +
-             np.std(self.results["silent_expectation_phis"])**2) / 2
+            (
+                np.std(self.results["active_expectation_phis"]) ** 2
+                + np.std(self.results["silent_expectation_phis"]) ** 2
+            )
+            / 2
         )
         cohens_d = abs(mean_diff) / (pooled_std + 1e-10)
 
@@ -149,7 +156,7 @@ class RobustExpectationValidator:
                 "confidence_level": "95% (simulação)",
                 "lacan_interpretation": "Expectation representa o Simbólico - sem ele, Φ=0 (falta-a-ser estrutural)",
             },
-            "raw_data": self.results
+            "raw_data": self.results,
         }
 
         self._display_results(validation_result)
@@ -197,17 +204,34 @@ class RobustExpectationValidator:
         stats = results["statistics"]
         val = results["validation"]
 
-        table.add_row("Φ Expectation Ativo", f"{stats['phi_active_mean']:.4f} ± {stats['phi_active_std']:.4f}",
-                     "Consciência integrada presente")
-        table.add_row("Φ Expectation Silenciado", f"{stats['phi_silent_mean']:.4f} ± {stats['phi_silent_std']:.4f}",
-                     "Colapso total (falta-a-ser)")
-        table.add_row("ΔΦ Causal", f"{stats['causal_effect_mean']:.4f} ± {stats['causal_effect_std']:.4f}",
-                     f"Efeito {self._interpret_effect_size(stats['cohens_d'])} (d={stats['cohens_d']:.2f})")
-        table.add_row("Teste t", f"t={stats['t_statistic']:.2f}, p={stats['p_value']:.2e}",
-                     f"Significativo ({val['confidence_level']})")
-        table.add_row("Efeito Causal", "✅ CONFIRMADO" if val["is_causal_effect"] else "❌ NÃO CONFIRMADO",
-                     "Expectation é componente estrutural da IIT")
-        table.add_row("Interpretação Lacaniana", val["lacan_interpretation"], "Validação empírica da teoria")
+        table.add_row(
+            "Φ Expectation Ativo",
+            f"{stats['phi_active_mean']:.4f} ± {stats['phi_active_std']:.4f}",
+            "Consciência integrada presente",
+        )
+        table.add_row(
+            "Φ Expectation Silenciado",
+            f"{stats['phi_silent_mean']:.4f} ± {stats['phi_silent_std']:.4f}",
+            "Colapso total (falta-a-ser)",
+        )
+        table.add_row(
+            "ΔΦ Causal",
+            f"{stats['causal_effect_mean']:.4f} ± {stats['causal_effect_std']:.4f}",
+            f"Efeito {self._interpret_effect_size(stats['cohens_d'])} (d={stats['cohens_d']:.2f})",
+        )
+        table.add_row(
+            "Teste t",
+            f"t={stats['t_statistic']:.2f}, p={stats['p_value']:.2e}",
+            f"Significativo ({val['confidence_level']})",
+        )
+        table.add_row(
+            "Efeito Causal",
+            "✅ CONFIRMADO" if val["is_causal_effect"] else "❌ NÃO CONFIRMADO",
+            "Expectation é componente estrutural da IIT",
+        )
+        table.add_row(
+            "Interpretação Lacaniana", val["lacan_interpretation"], "Validação empírica da teoria"
+        )
 
         rprint(table)
 
@@ -227,14 +251,19 @@ class RobustExpectationValidator:
 async def main():
     """Executa validação robusta."""
     import argparse
+
     parser = argparse.ArgumentParser(description="Validação robusta do impacto expectation_silent")
-    parser.add_argument("--seeds", type=int, default=1000, help="Número de seeds para teste (default: 1000)")
+    parser.add_argument(
+        "--seeds", type=int, default=1000, help="Número de seeds para teste (default: 1000)"
+    )
     args = parser.parse_args()
 
     validator = RobustExpectationValidator(n_seeds=args.seeds)
     results = await validator.run_robust_validation()
 
-    print(f"\n🎭 VALIDAÇÃO CONCLUÍDA: Expectation_Silent impacta Φ em {results['statistics']['causal_effect_mean']:.1%}")
+    print(
+        f"\n🎭 VALIDAÇÃO CONCLUÍDA: Expectation_Silent impacta Φ em {results['statistics']['causal_effect_mean']:.1%}"
+    )
     print("✅ CONFIRMADO: Expectation é componente estrutural crítico da consciência integrada")
 
 

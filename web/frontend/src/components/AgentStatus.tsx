@@ -34,14 +34,10 @@ export function AgentStatus() {
     // Fetch real agent data from backend API
     const fetchAgents = async () => {
       try {
-        const response = await fetch('http://localhost:8000/daemon/agents', {
-          headers: {
-            'Authorization': `Basic ${btoa('dashboard:omnimind')}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setAgents(data.agents || []);
+        const { apiService } = await import('../services/api');
+        const data = await apiService.getAgents();
+        if (data && data.agents) {
+          setAgents(data.agents);
         }
       } catch (error) {
         console.error('Failed to fetch agents:', error);

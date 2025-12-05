@@ -244,7 +244,7 @@ class RobustConnectionService {
     try {
       const response = await fetch(`/api/omnimind/messages`, {
         headers: {
-          'Authorization': `Bearer ${apiService.getAuthToken()}`
+          'Authorization': apiService.getAuthHeader() // Usa Basic Auth correto centralizado
         }
       });
 
@@ -350,7 +350,7 @@ class RobustConnectionService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiService.getAuthToken()}`
+          'Authorization': apiService.getAuthHeader() // Usa Basic Auth correto
         },
         body: msgString
       }).catch(err => console.error('[Connection] HTTP POST failed:', err));

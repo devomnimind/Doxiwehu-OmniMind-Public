@@ -12,11 +12,14 @@ from typing import Dict, List, Tuple
 from omnimind_parameters import get_parameter_manager  # type: ignore[import-untyped]
 
 # Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 from consciousness.shared_workspace import SharedWorkspace
 
-def generate_causal_data(n_points: int = 200, noise_level: float = 0.1) -> Tuple[np.ndarray, np.ndarray]:
+
+def generate_causal_data(
+    n_points: int = 200, noise_level: float = 0.1
+) -> Tuple[np.ndarray, np.ndarray]:
     """Gera dados com causalidade clara: X -> Y"""
     np.random.seed(42)
     params = get_parameter_manager()
@@ -24,14 +27,22 @@ def generate_causal_data(n_points: int = 200, noise_level: float = 0.1) -> Tuple
     # X: processo autoregressivo
     x = np.zeros(n_points)
     for t in range(1, n_points):
-        x[t] = params.lacan.interference_amplitude * 7 * x[t-1] + (1 - params.lacan.interference_amplitude * 7) * np.random.randn()
+        x[t] = (
+            params.lacan.interference_amplitude * 7 * x[t - 1]
+            + (1 - params.lacan.interference_amplitude * 7) * np.random.randn()
+        )
 
     # Y: depende de X com lag + autoregressão própria + ruído
     y = np.zeros(n_points)
     for t in range(3, n_points):
-        y[t] = params.lacan.interference_amplitude * 6 * x[t-2] + (1 - params.lacan.interference_amplitude * 6) * y[t-1] + noise_level * np.random.randn()
+        y[t] = (
+            params.lacan.interference_amplitude * 6 * x[t - 2]
+            + (1 - params.lacan.interference_amplitude * 6) * y[t - 1]
+            + noise_level * np.random.randn()
+        )
 
     return x.reshape(-1, 1), y.reshape(-1, 1)
+
 
 def generate_spurious_correlation(n_points: int = 200) -> Tuple[np.ndarray, np.ndarray]:
     """Gera dados com correlação espúria (sem causalidade)"""
@@ -43,6 +54,7 @@ def generate_spurious_correlation(n_points: int = 200) -> Tuple[np.ndarray, np.n
     y = 0.8 * z + 0.2 * np.random.randn(n_points)
 
     return x.reshape(-1, 1), y.reshape(-1, 1)
+
 
 def test_transfer_entropy_detailed():
     """Teste detalhado da Transfer Entropy com diferentes configurações"""
@@ -64,11 +76,7 @@ def test_transfer_entropy_detailed():
             te_yx = SharedWorkspace.compute_transfer_entropy(Y_causal, X_causal, k=k)
 
             key = f"bins={n_bins},k={k}"
-            results[key] = {
-                'te_xy': te_xy,
-                'te_yx': te_yx,
-                'ratio': te_xy / max(te_yx, 0.001)
-            }
+            results[key] = {"te_xy": te_xy, "te_yx": te_yx, "ratio": te_xy / max(te_yx, 0.001)}
 
             print(f"  {key}: X→Y={te_xy:.3f}, Y→X={te_yx:.3f}, ratio={results[key]['ratio']:.1f}")
 
@@ -82,6 +90,7 @@ def test_transfer_entropy_detailed():
     print(f"  Espúrio: X→Y={te_xy_spur:.3f}, Y→X={te_yx_spur:.3f}")
 
     return results
+
 
 def audit_methodological_biases():
     """Auditoria dos vieses metodológicos nos testes"""
@@ -122,6 +131,7 @@ def audit_methodological_biases():
 
     return biases
 
+
 def test_granger_vs_transfer_consistency():
     """Testa consistência entre Granger e Transfer Entropy"""
     print("\n🔄 AUDITORIA: Consistência Granger vs Transfer Entropy")
@@ -154,6 +164,7 @@ def test_granger_vs_transfer_consistency():
     else:
         print("✅ CONSISTENTE: Nenhum detecta causalidade (esperado para dados ruins)")
 
+
 def recommend_improvements():
     """Recomendações para melhorar Transfer Entropy"""
     print("\n💡 RECOMENDAÇÕES: Melhorias para Transfer Entropy")
@@ -161,35 +172,35 @@ def recommend_improvements():
 
     recommendations = [
         {
-            'titulo': 'Discretização Adaptativa',
-            'problema': 'Percentis fixos perdem estrutura local',
-            'solucao': 'Usar k-means ou bayesian blocks para bins adaptativos',
-            'impacto': 'Melhor detecção de causalidade sutil'
+            "titulo": "Discretização Adaptativa",
+            "problema": "Percentis fixos perdem estrutura local",
+            "solucao": "Usar k-means ou bayesian blocks para bins adaptativos",
+            "impacto": "Melhor detecção de causalidade sutil",
         },
         {
-            'titulo': 'Múltiplos Lags',
-            'problema': 'Lag fixo pode dar falso negativo',
-            'solucao': 'Testar lags 1-5 e usar máximo TE',
-            'impacto': 'Mais robusto para diferentes dinâmicas'
+            "titulo": "Múltiplos Lags",
+            "problema": "Lag fixo pode dar falso negativo",
+            "solucao": "Testar lags 1-5 e usar máximo TE",
+            "impacto": "Mais robusto para diferentes dinâmicas",
         },
         {
-            'titulo': 'Agregação de Dimensões',
-            'problema': 'Ignora 255/256 dimensões dos embeddings',
-            'solucao': 'PCA ou média ponderada das dimensões',
-            'impacto': 'Usa toda informação disponível'
+            "titulo": "Agregação de Dimensões",
+            "problema": "Ignora 255/256 dimensões dos embeddings",
+            "solucao": "PCA ou média ponderada das dimensões",
+            "impacto": "Usa toda informação disponível",
         },
         {
-            'titulo': 'Calibração com Dados Reais',
-            'problema': 'Normalização baseada em teoria, não empiria',
-            'solucao': 'Treinar em datasets com causalidade conhecida',
-            'impacto': 'Valores mais precisos e calibrados'
+            "titulo": "Calibração com Dados Reais",
+            "problema": "Normalização baseada em teoria, não empiria",
+            "solucao": "Treinar em datasets com causalidade conhecida",
+            "impacto": "Valores mais precisos e calibrados",
         },
         {
-            'titulo': 'Ensemble Methods',
-            'problema': 'Um método pode falhar onde outro funciona',
-            'solucao': 'Combinar Granger + Transfer + outros métodos',
-            'impacto': 'Maior robustez e confiança'
-        }
+            "titulo": "Ensemble Methods",
+            "problema": "Um método pode falhar onde outro funciona",
+            "solucao": "Combinar Granger + Transfer + outros métodos",
+            "impacto": "Maior robustez e confiança",
+        },
     ]
 
     for i, rec in enumerate(recommendations, 1):
@@ -197,6 +208,7 @@ def recommend_improvements():
         print(f"   ❌ {rec['problema']}")
         print(f"   ✅ {rec['solucao']}")
         print(f"   🎯 {rec['impacto']}")
+
 
 def main():
     """Auditoria completa"""
@@ -237,6 +249,7 @@ def main():
 
     print("\n❓ DECISÃO: Continuar com Phase 2 (Complexidade) ou")
     print("           Refinar Transfer Entropy primeiro?")
+
 
 if __name__ == "__main__":
     main()

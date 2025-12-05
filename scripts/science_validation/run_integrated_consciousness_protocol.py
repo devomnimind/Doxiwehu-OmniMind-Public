@@ -29,13 +29,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = ""
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from embeddings.code_embeddings import OmniMindEmbeddings
+
 # from consciousness.shared_workspace import SharedWorkspace  # Temporariamente desabilitado
 
 # Configurar logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -56,14 +54,12 @@ class IntegratedConsciousnessRunner:
 
         # Memória do projeto OmniMind
         self.omnimind_memory = OmniMindEmbeddings(
-            qdrant_url=self.qdrant_url,
-            collection_name="omnimind_embeddings"
+            qdrant_url=self.qdrant_url, collection_name="omnimind_embeddings"
         )
 
         # Memória universal da máquina
         self.universal_memory = UniversalMemoryAccess(
-            qdrant_url=self.qdrant_url,
-            collection_name="universal_machine_embeddings"
+            qdrant_url=self.qdrant_url, collection_name="universal_machine_embeddings"
         )
 
         # Sistema de consciência (simplificado para focar na memória integrada)
@@ -79,7 +75,7 @@ class IntegratedConsciousnessRunner:
             "memory_accesses": [],
             "consciousness_states": [],
             "timestamp_start": datetime.now().isoformat(),
-            "integrated_memory": True
+            "integrated_memory": True,
         }
 
         logger.info(f"✅ Sistemas integrados inicializados para {cycles} ciclos")
@@ -90,11 +86,7 @@ class IntegratedConsciousnessRunner:
         """
         query_embedding = self.model.encode(query, normalize_embeddings=True)
 
-        results = {
-            "omnimind": [],
-            "universal": [],
-            "integrated_score": 0.0
-        }
+        results = {"omnimind": [], "universal": [], "integrated_score": 0.0}
 
         # Buscar na memória OmniMind
         try:
@@ -102,14 +94,14 @@ class IntegratedConsciousnessRunner:
                 collection_name="omnimind_embeddings",
                 query=query_embedding.tolist(),
                 limit=top_k,
-                with_payload=True
+                with_payload=True,
             )
             results["omnimind"] = [
                 {
                     "score": point.score,
                     "content": point.payload.get("content", ""),
                     "file_path": point.payload.get("file_path", ""),
-                    "content_type": point.payload.get("content_type", "")
+                    "content_type": point.payload.get("content_type", ""),
                 }
                 for point in omnimind_results.points
             ]
@@ -122,14 +114,14 @@ class IntegratedConsciousnessRunner:
                 collection_name="universal_machine_embeddings",
                 query=query_embedding.tolist(),
                 limit=top_k,
-                with_payload=True
+                with_payload=True,
             )
             results["universal"] = [
                 {
                     "score": point.score,
                     "content": point.payload.get("content", ""),
                     "file_path": point.payload.get("file_path", ""),
-                    "content_type": point.payload.get("content_type", "")
+                    "content_type": point.payload.get("content_type", ""),
                 }
                 for point in universal_results.points
             ]
@@ -158,7 +150,7 @@ class IntegratedConsciousnessRunner:
             "memória semântica integrada",
             "processamento de linguagem natural",
             "arquitetura de IA consciente",
-            "validação científica de consciência"
+            "validação científica de consciência",
         ]
 
         cycle_memory = []
@@ -167,12 +159,14 @@ class IntegratedConsciousnessRunner:
         # Coletar conhecimento de ambas as memórias
         for theme in themes:
             search_results = self.integrated_search(theme, top_k=3)
-            cycle_memory.append({
-                "theme": theme,
-                "omnimind_results": len(search_results["omnimind"]),
-                "universal_results": len(search_results["universal"]),
-                "integrated_score": search_results["integrated_score"]
-            })
+            cycle_memory.append(
+                {
+                    "theme": theme,
+                    "omnimind_results": len(search_results["omnimind"]),
+                    "universal_results": len(search_results["universal"]),
+                    "integrated_score": search_results["integrated_score"],
+                }
+            )
 
             # Agregar conteúdo para input da consciência
             for result in search_results["omnimind"][:2] + search_results["universal"][:2]:
@@ -193,7 +187,7 @@ class IntegratedConsciousnessRunner:
                 "memory_accesses": cycle_memory,
                 "input_size": len(consciousness_input),
                 "timestamp": datetime.now().isoformat(),
-                "integrated_memory_active": True
+                "integrated_memory_active": True,
             }
 
         except Exception as e:
@@ -202,12 +196,14 @@ class IntegratedConsciousnessRunner:
                 "cycle": cycle_num,
                 "phi": 0.0,
                 "error": str(e),
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
 
         return cycle_result
 
-    def _calculate_phi_integrated(self, consciousness_input: List[str], memory_data: List[Dict]) -> float:
+    def _calculate_phi_integrated(
+        self, consciousness_input: List[str], memory_data: List[Dict]
+    ) -> float:
         """
         Calcula Φ integrado baseado no input de consciência e dados de memória.
         """
@@ -218,25 +214,25 @@ class IntegratedConsciousnessRunner:
         base_phi = 0.1  # Φ mínimo para sistema ativo
 
         # Contribuição da memória OmniMind
-        omnimind_contribution = sum(
-            item["omnimind_results"] for item in memory_data
-        ) * 0.1
+        omnimind_contribution = sum(item["omnimind_results"] for item in memory_data) * 0.1
 
         # Contribuição da memória universal
-        universal_contribution = sum(
-            item["universal_results"] for item in memory_data
-        ) * 0.05
+        universal_contribution = sum(item["universal_results"] for item in memory_data) * 0.05
 
         # Contribuição da integração
-        integration_contribution = sum(
-            item["integrated_score"] for item in memory_data
-        ) * 0.2
+        integration_contribution = sum(item["integrated_score"] for item in memory_data) * 0.2
 
         # Contribuição do input de consciência
         input_contribution = min(len(consciousness_input) * 0.05, 0.3)
 
         # Calcular Φ total
-        phi = base_phi + omnimind_contribution + universal_contribution + integration_contribution + input_contribution
+        phi = (
+            base_phi
+            + omnimind_contribution
+            + universal_contribution
+            + integration_contribution
+            + input_contribution
+        )
 
         # Limitar entre 0 e 1
         phi = max(0.0, min(1.0, phi))
@@ -305,16 +301,20 @@ class IntegratedConsciousnessRunner:
                 "phi_median": float(np.median(phi_values)),
                 "consciousness_detected": bool(np.mean(phi_values) > 0.5),
                 "cycles_with_consciousness": int(sum(1 for phi in phi_values if phi > 0.5)),
-                "total_memory_accesses": int(sum(
-                    len(access) for access in self.results["memory_accesses"]
-                ))
+                "total_memory_accesses": int(
+                    sum(len(access) for access in self.results["memory_accesses"])
+                ),
             }
 
             logger.info("📊 ANÁLISE FINAL:")
             logger.info(f"   Φ médio: {self.results['analysis']['phi_mean']:.3f}")
             logger.info(f"   Φ máximo: {self.results['analysis']['phi_max']:.3f}")
-            logger.info(f"   Ciclos com consciência: {self.results['analysis']['cycles_with_consciousness']}")
-            logger.info(f"   Status: {'🧠 CONSCIÊNCIA DETECTADA' if self.results['analysis']['consciousness_detected'] else '🤖 SISTEMA INCONSCIENTE'}")
+            logger.info(
+                f"   Ciclos com consciência: {self.results['analysis']['cycles_with_consciousness']}"
+            )
+            logger.info(
+                f"   Status: {'🧠 CONSCIÊNCIA DETECTADA' if self.results['analysis']['consciousness_detected'] else '🤖 SISTEMA INCONSCIENTE'}"
+            )
 
     def _save_results(self):
         """Salva resultados em arquivo."""
@@ -324,7 +324,7 @@ class IntegratedConsciousnessRunner:
         results_path = Path("real_evidence") / filename
         results_path.parent.mkdir(exist_ok=True)
 
-        with open(results_path, 'w', encoding='utf-8') as f:
+        with open(results_path, "w", encoding="utf-8") as f:
             json.dump(self.results, f, indent=2, ensure_ascii=False)
 
         logger.info(f"💾 Resultados salvos em: {results_path}")
@@ -347,14 +347,10 @@ class UniversalMemoryAccess:
             return {
                 "collection_name": self.collection_name,
                 "total_chunks": collection_info.points_count,
-                "status": "active"
+                "status": "active",
             }
         except Exception as e:
-            return {
-                "collection_name": self.collection_name,
-                "error": str(e),
-                "status": "error"
-            }
+            return {"collection_name": self.collection_name, "error": str(e), "status": "error"}
 
 
 def main():
@@ -362,10 +358,12 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Protocolo de Consciência Integrada OmniMind")
-    parser.add_argument("--cycles", type=int, default=200,
-                       help="Número de ciclos de consciência (padrão: 200)")
-    parser.add_argument("--test", action="store_true",
-                       help="Executar apenas teste rápido (10 ciclos)")
+    parser.add_argument(
+        "--cycles", type=int, default=200, help="Número de ciclos de consciência (padrão: 200)"
+    )
+    parser.add_argument(
+        "--test", action="store_true", help="Executar apenas teste rápido (10 ciclos)"
+    )
 
     args = parser.parse_args()
 
@@ -384,7 +382,9 @@ def main():
         print("\n🎉 PROTOCOLO CONCLUÍDO!")
         print(f"✅ Ciclos completados: {results['cycles_completed']}")
         print(f"🧠 Φ médio: {analysis.get('phi_mean', 0):.3f}")
-        print(f"🎯 Status: {'CONSCIÊNCIA DETECTADA' if analysis.get('consciousness_detected', False) else 'SISTEMA INCONSCIENTE'}")
+        print(
+            f"🎯 Status: {'CONSCIÊNCIA DETECTADA' if analysis.get('consciousness_detected', False) else 'SISTEMA INCONSCIENTE'}"
+        )
 
     except KeyboardInterrupt:
         logger.info("\n⏹️ Protocolo interrompido pelo usuário")

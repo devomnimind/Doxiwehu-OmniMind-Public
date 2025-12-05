@@ -27,27 +27,28 @@ Contact: fabricioslv@hotmail.com.br
 """
 '''
 
+
 def add_copyright_to_file(filepath):
     """Adiciona copyright header se não existir"""
     try:
-        with open(filepath, 'r', encoding='utf-8') as f:
+        with open(filepath, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Verifica se já tem copyright
-        if 'Copyright (C) 2024-2025 Fabrício da Silva' in content:
+        if "Copyright (C) 2024-2025 Fabrício da Silva" in content:
             return False
 
         # Remove shebang se existir
-        shebang = ''
-        if content.startswith('#!'):
-            lines = content.split('\n')
-            shebang = lines[0] + '\n'
-            content = '\n'.join(lines[1:])
+        shebang = ""
+        if content.startswith("#!"):
+            lines = content.split("\n")
+            shebang = lines[0] + "\n"
+            content = "\n".join(lines[1:])
 
         # Adiciona copyright
-        new_content = shebang + COPYRIGHT_HEADER + '\n' + content
+        new_content = shebang + COPYRIGHT_HEADER + "\n" + content
 
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             f.write(new_content)
 
         return True
@@ -56,15 +57,16 @@ def add_copyright_to_file(filepath):
         print(f"Erro em {filepath}: {e}")
         return False
 
+
 def main():
     """Função principal"""
-    directories = ['src', 'tests', 'scripts']
+    directories = ["src", "tests", "scripts"]
     total_files = 0
     modified_files = 0
 
     for directory in directories:
         if os.path.exists(directory):
-            pattern = os.path.join(directory, '**', '*.py')
+            pattern = os.path.join(directory, "**", "*.py")
             for filepath in glob.glob(pattern, recursive=True):
                 total_files += 1
                 if add_copyright_to_file(filepath):
@@ -75,5 +77,6 @@ def main():
     print(f"Total de arquivos: {total_files}")
     print(f"Arquivos modificados: {modified_files}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -18,18 +18,18 @@ def load_citation_cff(cff_path: Path = Path("CITATION.cff")) -> Dict[str, Any]:
         # Parse simples baseado no formato do teste
         bibtex = "@dataset{omnimind_consciousness_2025,\n"
 
-        lines = content.split('\n')
+        lines = content.split("\n")
         for line in lines:
             line = line.strip()
-            if line.startswith('title:'):
-                title = line.split(':', 1)[1].strip().strip('"')
+            if line.startswith("title:"):
+                title = line.split(":", 1)[1].strip().strip('"')
                 bibtex += f'  title = "{title}",\n'
-            elif 'given-names:' in line:
-                author = line.split(':', 1)[1].strip().strip('"')
+            elif "given-names:" in line:
+                author = line.split(":", 1)[1].strip().strip('"')
                 bibtex += f"  author = {{{author}}},\n"
-            elif line.startswith('year:') or 'year:' in line:
-                year = line.split(':', 1)[1].strip()
-                bibtex += f'  year = {{{year}}},\n'
+            elif line.startswith("year:") or "year:" in line:
+                year = line.split(":", 1)[1].strip()
+                bibtex += f"  year = {{{year}}},\n"
 
         bibtex += "}\n"
         return {"bibtex": bibtex}

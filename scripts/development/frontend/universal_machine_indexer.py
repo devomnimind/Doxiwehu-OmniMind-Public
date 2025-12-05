@@ -150,7 +150,20 @@ class UniversalEmbeddingsIndexer:
         if mime_type:
             if mime_type.startswith("text/"):
                 # Arquivos de código
-                code_exts = {".py", ".js", ".ts", ".java", ".cpp", ".c", ".go", ".rs", ".php", ".rb", ".sh", ".sql"}
+                code_exts = {
+                    ".py",
+                    ".js",
+                    ".ts",
+                    ".java",
+                    ".cpp",
+                    ".c",
+                    ".go",
+                    ".rs",
+                    ".php",
+                    ".rb",
+                    ".sh",
+                    ".sql",
+                }
                 if ext in code_exts:
                     return UniversalContentType.CODE
 
@@ -217,8 +230,12 @@ class UniversalEmbeddingsIndexer:
             content_type = self.detect_content_type(file_path)
 
             # Arquivos de texto direto
-            if content_type in [UniversalContentType.CODE, UniversalContentType.TEXT,
-                              UniversalContentType.CONFIG, UniversalContentType.DOCUMENTATION]:
+            if content_type in [
+                UniversalContentType.CODE,
+                UniversalContentType.TEXT,
+                UniversalContentType.CONFIG,
+                UniversalContentType.DOCUMENTATION,
+            ]:
 
                 # Tentar diferentes encodings
                 encodings = ["utf-8", "latin-1", "cp1252", "iso-8859-1"]
@@ -238,7 +255,9 @@ class UniversalEmbeddingsIndexer:
                 try:
                     result = subprocess.run(
                         ["pdftotext", "-layout", "-enc", "UTF-8", str(path), "-"],
-                        capture_output=True, text=True, timeout=30
+                        capture_output=True,
+                        text=True,
+                        timeout=30,
                     )
                     if result.returncode == 0:
                         return result.stdout
@@ -279,15 +298,17 @@ Localização: {path.parent}
 
         # Para arquivos pequenos, um chunk só
         if len(content) <= self.chunk_size:
-            return [UniversalContentChunk(
-                file_path=file_path,
-                content=content,
-                content_type=content_type,
-                mime_type=mime_type or "unknown",
-                size_bytes=path.stat().st_size,
-                is_text=True,
-                metadata={"chunk_index": 0, "total_chunks": 1}
-            )]
+            return [
+                UniversalContentChunk(
+                    file_path=file_path,
+                    content=content,
+                    content_type=content_type,
+                    mime_type=mime_type or "unknown",
+                    size_bytes=path.stat().st_size,
+                    is_text=True,
+                    metadata={"chunk_index": 0, "total_chunks": 1},
+                )
+            ]
 
         # Dividir em chunks com sobreposição
         chunks = []
@@ -301,20 +322,22 @@ Localização: {path.parent}
             end = min(i + self.chunk_size, len(content))
             chunk_content = content[i:end]
 
-            chunks.append(UniversalContentChunk(
-                file_path=file_path,
-                content=chunk_content,
-                content_type=content_type,
-                mime_type=mime_type or "unknown",
-                size_bytes=path.stat().st_size,
-                is_text=True,
-                metadata={
-                    "chunk_index": chunk_index,
-                    "total_chunks": total_chunks,
-                    "start_pos": i,
-                    "end_pos": end
-                }
-            ))
+            chunks.append(
+                UniversalContentChunk(
+                    file_path=file_path,
+                    content=chunk_content,
+                    content_type=content_type,
+                    mime_type=mime_type or "unknown",
+                    size_bytes=path.stat().st_size,
+                    is_text=True,
+                    metadata={
+                        "chunk_index": chunk_index,
+                        "total_chunks": total_chunks,
+                        "start_pos": i,
+                        "end_pos": end,
+                    },
+                )
+            )
 
             i += self.chunk_size - overlap
             chunk_index += 1
@@ -404,9 +427,11 @@ Localização: {path.parent}
                 mount_point = partition.mountpoint
 
                 # Filtrar pontos de montagem relevantes
-                if (os.path.exists(mount_point) and
-                    os.access(mount_point, os.R_OK) and
-                    not any(skip in mount_point for skip in ["/proc", "/sys", "/dev", "/run"])):
+                if (
+                    os.path.exists(mount_point)
+                    and os.access(mount_point, os.R_OK)
+                    and not any(skip in mount_point for skip in ["/proc", "/sys", "/dev", "/run"])
+                ):
                     mount_points.append(mount_point)
 
         except Exception as e:
@@ -476,6 +501,7 @@ Localização: {path.parent}
                 # Aplicar exclusões
                 for pattern in exclude_patterns:
                     import re
+
                     if re.search(pattern, root):
                         dirs[:] = []  # Não entrar neste diretório
                         break
@@ -520,16 +546,18 @@ Localização: {path.parent}
         results = []
         for point in search_result.points:
             payload = point.payload or {}
-            results.append({
-                "score": float(point.score),
-                "file_path": payload.get("file_path", ""),
-                "content": payload.get("content", ""),
-                "content_type": payload.get("content_type", ""),
-                "mime_type": payload.get("mime_type", ""),
-                "size_bytes": payload.get("size_bytes", 0),
-                "is_text": payload.get("is_text", False),
-                "chunk_metadata": payload.get("chunk_metadata", {}),
-            })
+            results.append(
+                {
+                    "score": float(point.score),
+                    "file_path": payload.get("file_path", ""),
+                    "content": payload.get("content", ""),
+                    "content_type": payload.get("content_type", ""),
+                    "mime_type": payload.get("mime_type", ""),
+                    "size_bytes": payload.get("size_bytes", 0),
+                    "is_text": payload.get("is_text", False),
+                    "chunk_metadata": payload.get("chunk_metadata", {}),
+                }
+            )
 
         return results
 
@@ -553,10 +581,7 @@ Localização: {path.parent}
 
 def main():
     """Função principal para indexação completa."""
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s"
-    )
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
     logger.info("🤖 OMNIMIND - Indexação Universal da Máquina")
     logger.info("=" * 60)
@@ -566,6 +591,7 @@ def main():
         import sentence_transformers
         import qdrant_client
         import psutil
+
         logger.info("✅ Dependências OK")
     except ImportError as e:
         logger.error(f"❌ Dependência faltando: {e}")

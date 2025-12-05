@@ -82,29 +82,19 @@ export function ConversationAssistant() {
     setInput('');
 
     try {
+      const { apiService } = await import('../services/api');
+
       // Chamar backend com contexto do sistema
-      const response = await fetch('http://localhost:8000/api/omnimind/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Basic ' + btoa('admin:omnimind2025!'),
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          context: {
-            system_metrics: status?.system_metrics,
-            daemon_running: status?.running,
-            task_count: status?.task_count,
-            consciousness_metrics: status?.consciousness_metrics,
-          }
-        }),
+      const data = await apiService.post('/api/omnimind/chat', {
+        message: userMessage,
+        context: {
+          system_metrics: status?.system_metrics,
+          daemon_running: status?.running,
+          task_count: status?.task_count,
+          consciousness_metrics: status?.consciousness_metrics,
+        }
       });
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
-
-      const data = await response.json();
       const assistantResponse: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',

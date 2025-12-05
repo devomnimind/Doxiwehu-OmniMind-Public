@@ -7,9 +7,11 @@ e como a nova implementação lacaniana está correta.
 """
 
 import warnings
+
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 from src.consciousness.theory_of_mind import TheoryOfMind, LacanianTheoryOfMind
+
 
 def demonstrate_cognitive_vs_lacanian():
     """Demonstra a diferença fundamental entre as abordagens."""
@@ -44,7 +46,7 @@ def demonstrate_cognitive_vs_lacanian():
     logs = [
         {"action": "validation", "context": "repetitive", "motive": "unknown"},
         {"action": "validation", "context": "compulsive", "motive": "unknown"},
-        {"action": "validation", "context": "endless", "motive": "unknown"}
+        {"action": "validation", "context": "endless", "motive": "unknown"},
     ]
 
     # Análise lacaniana
@@ -66,6 +68,7 @@ def demonstrate_cognitive_vs_lacanian():
     print()
     print("A implementação anterior era cognitiva-standard.")
     print("A nova é verdadeiramente lacaniana e cientificamente válida.")
+
 
 if __name__ == "__main__":
     demonstrate_cognitive_vs_lacanian()

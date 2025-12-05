@@ -115,41 +115,37 @@ class RealtimeAnalyticsBroadcaster:
         Collects metrics asynchronously to avoid blocking.
         Runs blocking psutil calls in thread pool.
         """
-        import psutil
-
-        # Run blocking operations in thread pool
-        loop = asyncio.get_event_loop()
+        from src.metrics.dashboard_metrics import dashboard_metrics_aggregator
 
         try:
-            # Get CPU/memory in thread pool to avoid blocking
-            cpu_percent = await loop.run_in_executor(None, psutil.cpu_percent)
-            memory_info = await loop.run_in_executor(None, psutil.virtual_memory)
+            from web.backend.metrics_helpers import (
+                count_active_agents,
+                get_task_counts,
+            )
 
-            # Import task counting functions lazily
             if self._get_metrics_fn is None:
-                from web.backend.metrics_helpers import (
-                    count_active_agents,
-                    get_task_counts,
-                )
-
                 self._get_metrics_fn = (get_task_counts, count_active_agents)
 
-            if self._get_metrics_fn:
-                get_task_counts, count_active_agents = self._get_metrics_fn
+            get_task_counts_fn, count_active_agents_fn = self._get_metrics_fn
 
-                # These are cached/fast operations
-                active_tasks, completed_tasks = get_task_counts()
-                agent_count = count_active_agents()
-            else:
-                active_tasks, completed_tasks = (0, 0)
-                agent_count = 1
+            # Coleta snapshot unificado (cacheado no agregador)
+            snapshot = await dashboard_metrics_aggregator.collect_snapshot(
+                include_consciousness=False,
+                include_baseline=False,
+            )
+
+            system_metrics = snapshot.get("system_metrics", {})
+            active_tasks, completed_tasks = get_task_counts_fn()
+            agent_count = count_active_agents_fn()
 
             return {
-                "cpu_percent": cpu_percent,
-                "memory_percent": memory_info.percent,
+                "cpu_percent": float(system_metrics.get("cpu_percent", 0.0)),
+                "memory_percent": float(system_metrics.get("memory_percent", 0.0)),
                 "active_tasks": active_tasks,
                 "completed_tasks": completed_tasks,
                 "agent_count": agent_count,
+                "system_health": snapshot.get("system_health"),
+                "module_activity": snapshot.get("module_activity"),
                 "timestamp": time.time(),
             }
         except Exception as e:
@@ -161,6 +157,8 @@ class RealtimeAnalyticsBroadcaster:
                 "active_tasks": 0,
                 "completed_tasks": 0,
                 "agent_count": 1,
+                "system_health": None,
+                "module_activity": {},
                 "timestamp": time.time(),
             }
 

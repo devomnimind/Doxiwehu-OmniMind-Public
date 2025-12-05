@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useWebSocket } from '../hooks/useWebSocket';
+import { useDaemonStore } from '../store/daemonStore';
 
 interface AnalyticsData {
   timestamp: string;
@@ -12,6 +13,7 @@ interface AnalyticsData {
 
 export function RealtimeAnalytics() {
   const { lastMessage } = useWebSocket();
+  const uptimeSeconds = useDaemonStore((state) => state.status?.uptime_seconds ?? 0);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData[]>([]);
   const [currentMetrics, setCurrentMetrics] = useState({
     cpu: 0,
@@ -52,6 +54,13 @@ export function RealtimeAnalytics() {
     if (value >= thresholds.danger) return 'bg-gradient-to-r from-neon-red to-red-700';
     if (value >= thresholds.warning) return 'bg-gradient-to-r from-neon-yellow to-yellow-700';
     return 'bg-gradient-to-r from-neon-green to-green-700';
+  };
+
+  const formatUptime = (seconds: number) => {
+    if (!seconds) return '—';
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
   };
 
   return (
@@ -207,7 +216,9 @@ export function RealtimeAnalytics() {
             </div>
             <div>
               <p className="text-sm text-gray-400">Uptime</p>
-              <p className="text-lg font-bold text-white">99.9%</p>
+              <p className="text-lg font-bold text-white">
+                {formatUptime(uptimeSeconds)}
+              </p>
             </div>
           </div>
         </div>

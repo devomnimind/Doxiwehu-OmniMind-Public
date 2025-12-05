@@ -53,13 +53,33 @@ export function AutopoieticMetrics() {
 
   const fetchData = async () => {
     try {
+      // Importar apiService diretamente (não dinamicamente) para garantir credenciais
       const { apiService } = await import('../services/api');
+
+      // Se não tiver token, nem tenta buscar (evita erro 401 spam)
+      if (!apiService.getAuthToken()) {
+         return;
+      }
+
+      // Garantir que credenciais estão configuradas
+      if (!apiService.getAuthToken()) {
+        apiService.setDefaultCredentials();
+      }
 
       // Usar apiService que já tem autenticação configurada
       const [statusData, cyclesData, statsData] = await Promise.all([
-        apiService.getAutopoieticStatus().catch(() => null),
-        apiService.getAutopoieticCycles(50).catch(() => ({ cycles: [], total: 0 })),
-        apiService.getAutopoieticCycleStats().catch(() => null),
+        apiService.getAutopoieticStatus().catch((err) => {
+          console.error('Erro ao buscar status:', err);
+          return null;
+        }),
+        apiService.getAutopoieticCycles(50).catch((err) => {
+          console.error('Erro ao buscar ciclos:', err);
+          return { cycles: [], total: 0 };
+        }),
+        apiService.getAutopoieticCycleStats().catch((err) => {
+          console.error('Erro ao buscar stats:', err);
+          return null;
+        }),
       ]);
 
       // Processar status
@@ -67,8 +87,8 @@ export function AutopoieticMetrics() {
         // Garantir que current_phi seja tratado corretamente (0.0 é válido, não null)
         const processedStatus = {
           ...statusData,
-          current_phi: statusData.current_phi !== null && statusData.current_phi !== undefined 
-            ? statusData.current_phi 
+          current_phi: statusData.current_phi !== null && statusData.current_phi !== undefined
+            ? statusData.current_phi
             : null,
         };
         setStatus(processedStatus);
@@ -297,12 +317,12 @@ export function AutopoieticMetrics() {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => `${name}: ${((percent || 0) * 100).toFixed(0)}%`}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {strategyData.map((entry, index) => (
+                  {strategyData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>

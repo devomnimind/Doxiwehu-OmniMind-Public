@@ -44,9 +44,9 @@ class QuantumCertifier:
         self, input_dir: Path, advantage: bool, validation: Dict, output_path: Path
     ) -> None:
         # Verificar arquivo de forma mais robusta
-        ibm_file = input_dir / 'ibm_query_usage.json'
-        has_real_jobs = "Real" if ibm_file.exists() and len(ibm_file.read_text()) > 0 else 'N/A'
-        
+        ibm_file = input_dir / "ibm_query_usage.json"
+        has_real_jobs = "Real" if ibm_file.exists() and len(ibm_file.read_text()) > 0 else "N/A"
+
         md = f"""# Certificado de Evidências Quantum - Phase 21/23
 
 Data: {datetime.now().isoformat()}

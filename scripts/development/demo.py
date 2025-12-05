@@ -25,9 +25,7 @@ def main() -> None:
     # Setup credentials
     os.environ["OMNIMIND_AUTHOR_NAME"] = "Fabrício da Silva"
     os.environ["OMNIMIND_AUTHOR_EMAIL"] = "fabricioslv@hotmail.com.br"
-    os.environ["OMNIMIND_AUTHOR_LATTES"] = (
-        "https://lattes.cnpq.br/3571784975796376"
-    )
+    os.environ["OMNIMIND_AUTHOR_LATTES"] = "https://lattes.cnpq.br/3571784975796376"
 
     print("\n📋 Credentials configured:")
     print(f"  • Author: {os.environ['OMNIMIND_AUTHOR_NAME']}")

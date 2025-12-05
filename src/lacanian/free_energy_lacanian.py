@@ -30,6 +30,8 @@ License: MIT
 
 from __future__ import annotations
 
+# ===== CRITICAL: CUDA Configuration Managed Externally =====
+# ===== NOW import torch =====
 import logging
 from dataclasses import dataclass
 from enum import Enum

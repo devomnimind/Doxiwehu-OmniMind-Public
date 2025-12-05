@@ -15,16 +15,18 @@ load_dotenv()
 
 # Configuração IBM Quantum
 IBM_BACKEND = "ibm_torino"  # Backend livre
-IBM_API_KEY = os.getenv('IBM_API_KEY')
+IBM_API_KEY = os.getenv("IBM_API_KEY")
 
 if not IBM_API_KEY:
     print("❌ ERRO: IBM_API_KEY não encontrada no .env")
     sys.exit(1)
 
+
 def log(message):
     """Log com timestamp"""
     timestamp = datetime.now().strftime("%H:%M:%S")
     print(f"[{timestamp}] {message}")
+
 
 def run_quantum_test(test_file, test_name):
     """Executa teste no IBM Quantum"""
@@ -34,12 +36,12 @@ def run_quantum_test(test_file, test_name):
 
         # Configurar backend IBM
         env = os.environ.copy()
-        env['IBM_BACKEND'] = IBM_BACKEND
-        env['QUANTUM_MODE'] = 'true'  # Flag para modo quântico forçado
+        env["IBM_BACKEND"] = IBM_BACKEND
+        env["QUANTUM_MODE"] = "true"  # Flag para modo quântico forçado
 
-        result = subprocess.run([
-            sys.executable, test_file
-        ], capture_output=True, text=True, timeout=600, env=env)  # 10 min timeout
+        result = subprocess.run(
+            [sys.executable, test_file], capture_output=True, text=True, timeout=600, env=env
+        )  # 10 min timeout
 
         elapsed = time.time() - start_time
 
@@ -57,6 +59,7 @@ def run_quantum_test(test_file, test_name):
     except Exception as e:
         log(f"💥 Erro em {test_name}: {e}")
         return False, str(e)
+
 
 def main():
     log("🚀 INICIANDO EXECUÇÃO TOTALMENTE QUÂNTICA OMNIMIND")
@@ -81,7 +84,7 @@ def main():
         ("test_timescale_sweep.py", "Varredura Temporal Quântica"),
         ("test_inter_rater_agreement.py", "Concordância Inter-Avaliadores Quântica"),
         ("test_do_calculus.py", "Do-Calculus Causal Quântico"),
-        ("test_lacan_complete.py", "Lacan Subjectivity Quântica")
+        ("test_lacan_complete.py", "Lacan Subjectivity Quântica"),
     ]
 
     for test_file, test_name in all_tests:
@@ -126,6 +129,7 @@ def main():
     log("✅ Subjectividade quântica demonstrada empiricamente")
 
     return successful_tests == total_tests
+
 
 if __name__ == "__main__":
     success = main()

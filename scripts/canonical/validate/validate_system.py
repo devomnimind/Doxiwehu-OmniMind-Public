@@ -62,9 +62,9 @@ async def validate() -> bool:
     try:
         result = await consciousness.execute_cycle()
         print("   ✅ Ciclo completo!")
-        
+
         # Extract phi_estimate from LoopCycleResult
-        phi = result.phi_estimate if hasattr(result, 'phi_estimate') else result
+        phi = result.phi_estimate if hasattr(result, "phi_estimate") else result
         print(f"      Φ retornado: {phi}")
 
         # Validação do valor
@@ -118,5 +118,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ Erro: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)

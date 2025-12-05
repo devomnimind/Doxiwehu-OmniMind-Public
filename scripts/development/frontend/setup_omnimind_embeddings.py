@@ -77,7 +77,7 @@ def index_omnimind_project():
     # Detectar raiz do projeto baseado em pyproject.toml
     current = Path(__file__).parent
     while current.parent != current:
-        if (current / 'pyproject.toml').exists():
+        if (current / "pyproject.toml").exists():
             project_root = current
             break
         current = current.parent

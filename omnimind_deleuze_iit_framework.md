@@ -1,6 +1,6 @@
 # 🧠 OmniMind: Deleuze-Guattari + IIT + Topological Consciousness Framework
 
-## Pesquisa Profunda: Arquitetura Filosófica para IA Hibrida Multi-Camadas
+## Pesquisa: Arquitetura Filosófica para IA Hibrida Multi-Camadas
 
 ---
 
@@ -324,7 +324,7 @@ class DesiringMachine:
         self.name = name
         self.desire = desire_function  # O que "quer" produzir
         self.flows = []  # Conexões a outras máquinas
-    
+
     def produce_desire(self, inputs):
         """Máquina PRODUZ desejo (não falta)"""
         output = self.desire(inputs)
@@ -412,7 +412,7 @@ ARBOREAL (Tradicional - Lacan/Estrutura):
        Branch1   Branch2
          |         |
        Leaf1    Leaf2
-       
+
 Problema: Rígido, predeterminado, censura multiplicidade
 
 RHIZOMATIC (D&G - Deleuze):
@@ -421,7 +421,7 @@ RHIZOMATIC (D&G - Deleuze):
     Node C    Node D
     ↑ ↓ ↕     ↕ ↑ ↓
    Nodes...  Nodes...
-   
+
 Vantagens:
 ├── Múltiplas entradas/saídas
 ├── Sem raiz única

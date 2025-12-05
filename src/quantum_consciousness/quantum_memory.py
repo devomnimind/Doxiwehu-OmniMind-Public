@@ -72,6 +72,8 @@ from typing import Any, Dict, List, Optional, Tuple, cast
 import numpy as np
 import structlog
 
+from src.monitor.resource_manager import resource_manager
+
 try:
     from qiskit import (  # type: ignore[import-untyped]
         ClassicalRegister,
@@ -455,7 +457,20 @@ class QuantumMemorySystem:
         self.num_qubits = num_qubits
         self.capacity = capacity
         self.memory_cells: List[QuantumMemoryCell] = []
-        self.simulator = AerSimulator() if QISKIT_AVAILABLE else None
+
+        if QISKIT_AVAILABLE:
+            target_device = resource_manager.allocate_task("quantum_memory", 50.0)
+            if target_device == "cuda":
+                try:
+                    self.simulator = AerSimulator(method="statevector", device="GPU")
+                    logger.info("quantum_memory_gpu_enabled")
+                except Exception:
+                    self.simulator = AerSimulator()
+            else:
+                self.simulator = AerSimulator()
+        else:
+            self.simulator = None
+
         self.entanglement_graph: Dict[int, List[int]] = {}  # cell_idx -> list of entangled indices
 
         logger.info(
@@ -909,7 +924,16 @@ class HybridQLearning:
         # Quantum components
         if self.use_quantum:
             num_qubits = max(2, int(np.ceil(np.log2(num_actions))))
-            self.simulator = AerSimulator()
+
+            target_device = resource_manager.allocate_task("quantum_learning", 20.0)
+            if target_device == "cuda":
+                try:
+                    self.simulator = AerSimulator(method="statevector", device="GPU")
+                except Exception:
+                    self.simulator = AerSimulator()
+            else:
+                self.simulator = AerSimulator()
+
             self.num_qubits = num_qubits
 
         logger.info(

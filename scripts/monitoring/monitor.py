@@ -16,24 +16,31 @@ def monitor_processes():
     """Monitor de processos OmniMind."""
     omnimind_processes = []
 
-    for proc in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent', 'cmdline']):
+    for proc in psutil.process_iter(["pid", "name", "cpu_percent", "memory_percent", "cmdline"]):
         try:
             cmdline = " ".join(proc.cmdline()) if proc.cmdline() else ""
             name = proc.name().lower()
 
             # Identificar processos OmniMind
-            if ("omnimind" in cmdline.lower() or
-                ("uvicorn" in name and "omnimind" in cmdline) or
-                (".venv/bin/python" in cmdline and "omnimind" in cmdline) or
-                ("node" in name and any(port in cmdline for port in ["3000", "3001", "8000", "8080"]))):
+            if (
+                "omnimind" in cmdline.lower()
+                or ("uvicorn" in name and "omnimind" in cmdline)
+                or (".venv/bin/python" in cmdline and "omnimind" in cmdline)
+                or (
+                    "node" in name
+                    and any(port in cmdline for port in ["3000", "3001", "8000", "8080"])
+                )
+            ):
 
-                omnimind_processes.append({
-                    "pid": proc.pid,
-                    "name": proc.name(),
-                    "cpu_percent": proc.cpu_percent(),
-                    "memory_percent": proc.memory_percent(),
-                    "cmdline": cmdline[:100] + "..." if len(cmdline) > 100 else cmdline,
-                })
+                omnimind_processes.append(
+                    {
+                        "pid": proc.pid,
+                        "name": proc.name(),
+                        "cpu_percent": proc.cpu_percent(),
+                        "memory_percent": proc.memory_percent(),
+                        "cmdline": cmdline[:100] + "..." if len(cmdline) > 100 else cmdline,
+                    }
+                )
 
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             continue
@@ -44,7 +51,7 @@ def monitor_processes():
 def monitor_resources():
     """Monitor de recursos."""
     memory = psutil.virtual_memory()
-    disk = psutil.disk_usage('/')
+    disk = psutil.disk_usage("/")
 
     return {
         "cpu_percent": psutil.cpu_percent(),
@@ -63,11 +70,13 @@ def monitor_network():
     omnimind_connections = []
     for conn in connections:
         if conn.laddr and conn.laddr.port in omnimind_ports:
-            omnimind_connections.append({
-                "port": conn.laddr.port,
-                "status": conn.status,
-                "pid": conn.pid,
-            })
+            omnimind_connections.append(
+                {
+                    "port": conn.laddr.port,
+                    "status": conn.status,
+                    "pid": conn.pid,
+                }
+            )
 
     return {
         "omnimind_connections": omnimind_connections,
@@ -83,17 +92,21 @@ def monitor_filesystem():
     try:
         result = subprocess.run(
             ["find", str(project_root), "-type", "f", "-size", "+100M"],
-            capture_output=True, text=True, timeout=10
+            capture_output=True,
+            text=True,
+            timeout=10,
         )
 
-        for line in result.stdout.strip().split('\n'):
+        for line in result.stdout.strip().split("\n"):
             if line:
                 file_path = Path(line)
                 size_mb = file_path.stat().st_size / (1024 * 1024)
-                large_files.append({
-                    "path": str(file_path.relative_to(project_root)),
-                    "size_mb": round(size_mb, 2),
-                })
+                large_files.append(
+                    {
+                        "path": str(file_path.relative_to(project_root)),
+                        "size_mb": round(size_mb, 2),
+                    }
+                )
     except Exception as e:
         print(f"Erro ao verificar filesystem: {e}")
 
@@ -137,7 +150,9 @@ def main():
     # Exibir resultados
     print(f"📊 PROCESSOS OMNIMIND: {len(processes)}")
     for proc in processes[:5]:  # Mostrar primeiros 5
-        print(f"  PID {proc['pid']}: {proc['name']} (CPU: {proc['cpu_percent']:.1f}%, MEM: {proc['memory_percent']:.1f}%)")
+        print(
+            f"  PID {proc['pid']}: {proc['name']} (CPU: {proc['cpu_percent']:.1f}%, MEM: {proc['memory_percent']:.1f}%)"
+        )
 
     if len(processes) > 5:
         print(f"  ... e mais {len(processes) - 5} processos")
@@ -149,12 +164,12 @@ def main():
 
     print(f"\n🌐 REDE:")
     print(f"  Conexões OmniMind: {network['total_connections']}")
-    for conn in network['omnimind_connections'][:3]:
+    for conn in network["omnimind_connections"][:3]:
         print(f"  Porta {conn['port']}: {conn['status']}")
 
     print(f"\n📁 FILESYSTEM:")
     print(f"  Arquivos grandes (>100MB): {len(filesystem['large_files'])}")
-    for file_info in filesystem['large_files'][:3]:
+    for file_info in filesystem["large_files"][:3]:
         print(f"  {file_info['path']}: {file_info['size_mb']}MB")
 
     print(f"\n🚨 ALERTAS DE SEGURANÇA:")

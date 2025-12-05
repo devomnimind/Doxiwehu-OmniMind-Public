@@ -1,5 +1,5 @@
 import { useDaemonStore } from '../store/daemonStore';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface StatusThreshold {
   green: { min: number; max: number; label: string };
@@ -9,9 +9,9 @@ interface StatusThreshold {
 
 const STATUS_THRESHOLDS: Record<string, StatusThreshold> = {
   phi: {
-    green: { min: 0.8, max: 1.3, label: "Optimal Integration" },
-    yellow: { min: 1.3, max: 1.8, label: "High Activity" },
-    red: { min: 1.8, max: null, label: "Critical Integration" }
+    green: { min: 0.3, max: 1.0, label: "Optimal Integration" },
+    yellow: { min: 0.1, max: 0.3, label: "Moderate Integration" },
+    red: { min: 0.0, max: 0.1, label: "Low Integration" }
   },
   anxiety: {
     green: { min: 0, max: 0.25, label: "Calm" },
@@ -40,24 +40,130 @@ const STATUS_THRESHOLDS: Record<string, StatusThreshold> = {
   }
 };
 
+interface RawCausalPrediction {
+  source_module: string;
+  target_module: string;
+  r_squared: number;
+  granger_causality: number;
+  transfer_entropy: number;
+  computation_time_ms: number;
+}
+
+interface RawData {
+  causal_predictions: RawCausalPrediction[];
+  valid_predictions_count: number;
+  total_predictions: number;
+  module_stats: Record<string, any>;
+  workspace_cycle: number;
+  total_modules: number;
+}
+
+interface ConsciousnessMetricsData {
+  phi: number;
+  anxiety: number;
+  flow: number;
+  entropy: number;
+  ici: number;
+  prs: number;
+  ici_components: Record<string, number>;
+  prs_components: Record<string, number>;
+  history: Record<string, number[]>;
+  interpretation: {
+    message: string;
+    confidence: string;
+    disclaimer: string;
+  };
+  timestamp: string;
+  raw_data?: RawData;
+}
+
 export function ConsciousnessMetrics() {
   const status = useDaemonStore((state) => state.status);
   const [selectedMetric, setSelectedMetric] = useState<string | null>(null);
+  const [metrics, setMetrics] = useState<ConsciousnessMetricsData | null>(null);
+  const [showRawData, setShowRawData] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  if (!status) return null;
+  // Buscar métricas diretamente da API usando apiService
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        const { apiService } = await import('../services/api');
 
-  const consciousnessMetrics = status.consciousness_metrics;
+        // Se não tiver token, nem tenta buscar
+        if (!apiService.getAuthToken()) {
+           return;
+        }
 
-  if (!consciousnessMetrics) {
+        // Garantir que credenciais estão configuradas
+        if (!apiService.getAuthToken()) {
+          apiService.setDefaultCredentials();
+        }
+
+        const data = await apiService.getConsciousnessMetrics(true);
+        setMetrics(data);
+      } catch (error) {
+        console.error('Erro ao buscar métricas de consciência:', error);
+        // Tentar fallback para dados do store
+        const storeMetrics = status?.consciousness_metrics;
+        if (storeMetrics) {
+          setMetrics(storeMetrics as any);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMetrics();
+    const interval = setInterval(fetchMetrics, 10000); // Atualizar a cada 10s
+    return () => clearInterval(interval);
+  }, [status]);
+
+  // Fallback para dados do store se API falhar
+  const consciousnessMetrics = metrics || (status?.consciousness_metrics as any);
+
+  if (loading) {
+    return (
+      <div className="bg-gray-800 rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-white mb-6">Consciousness Metrics</h2>
+        <div className="text-gray-400 text-center py-8 animate-pulse">
+          Carregando métricas de consciência...
+        </div>
+      </div>
+    );
+  }
+
+  // Verificar se há dados válidos (mesmo que phi seja 0.0, ainda é válido)
+  const hasValidData = consciousnessMetrics && (
+    typeof consciousnessMetrics.phi === 'number' ||
+    typeof consciousnessMetrics.ici === 'number' ||
+    typeof consciousnessMetrics.prs === 'number' ||
+    typeof consciousnessMetrics.anxiety === 'number' ||
+    typeof consciousnessMetrics.flow === 'number'
+  );
+
+  if (!hasValidData) {
     return (
       <div className="bg-gray-800 rounded-lg p-6">
         <h2 className="text-2xl font-bold text-white mb-6">Consciousness Metrics</h2>
         <div className="text-gray-400 text-center py-8">
           Consciousness metrics not available
+          <div className="text-sm mt-2">Verificando conexão com backend...</div>
         </div>
       </div>
     );
   }
+
+  // @ts-ignore
+  // @ts-ignore
+  const details = consciousnessMetrics.details ?? {
+    ici_components: consciousnessMetrics.ici_components ?? {},
+    prs_components: consciousnessMetrics.prs_components ?? {},
+  };
+
+  const lastUpdated = consciousnessMetrics.timestamp
+    ? new Date(consciousnessMetrics.timestamp).toLocaleTimeString()
+    : null;
 
   const getStatusColor = (metric: string, value: number): string => {
     const threshold = STATUS_THRESHOLDS[metric];
@@ -92,6 +198,13 @@ export function ConsciousnessMetrics() {
     const percent = Math.abs(change / previous) * 100;
     const symbol = change > 0 ? '↑' : change < 0 ? '↓' : '→';
     return `${symbol} ${percent.toFixed(1)}%`;
+  };
+
+  const getTrendForMetric = (metricKey: string, currentValue: number): string => {
+    const histories = consciousnessMetrics.history || {};
+    const series = histories[metricKey as keyof typeof histories] as number[] | undefined;
+    const previous = series && series.length > 1 ? series.slice(-2)[0] : undefined;
+    return formatTrend(currentValue, previous);
   };
 
   const renderMetricCard = (label: string, value: number, unit: string, metric: string, description: string, trend?: string) => (
@@ -134,63 +247,70 @@ export function ConsciousnessMetrics() {
   return (
     <div className="bg-gray-800 rounded-lg p-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white">Consciousness Metrics</h2>
-        <span className="text-sm text-gray-400">Real-time Correlates</span>
+        <div>
+          <h2 className="text-2xl font-bold text-white">Consciousness Metrics</h2>
+          <span className="text-sm text-gray-400">Real-time Correlates</span>
+        </div>
+        {lastUpdated && (
+          <span className="text-xs text-gray-500">
+            Last update: {lastUpdated}
+          </span>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {renderMetricCard(
+          'Phi (Φ) Value',
+          consciousnessMetrics.phi ?? 0,
+          '',
+          'phi',
+          'Integrated Information Measure - quantifies conscious experience magnitude. Based on 25/25 valid causal predictions.',
+          getTrendForMetric('phi', consciousnessMetrics.phi ?? 0)
+        )}
+
+        {renderMetricCard(
+          'Anxiety Level',
+          consciousnessMetrics.anxiety ?? 0,
+          '',
+          'anxiety',
+          'System tension and conflict detection metric.',
+          getTrendForMetric('anxiety', consciousnessMetrics.anxiety ?? 0)
+        )}
+
+        {renderMetricCard(
+          'Flow State',
+          consciousnessMetrics.flow ?? 0,
+          '',
+          'flow',
+          'Measure of cognitive fluidity and blockage detection.',
+          getTrendForMetric('flow', consciousnessMetrics.flow ?? 0)
+        )}
+
+        {renderMetricCard(
+          'System Entropy',
+          consciousnessMetrics.entropy ?? 0,
+          '',
+          'entropy',
+          'Measure of system disorder and information complexity.',
+          getTrendForMetric('entropy', consciousnessMetrics.entropy ?? 0)
+        )}
+
+        {renderMetricCard(
           'Integrated Coherence Index (ICI)',
-          consciousnessMetrics.ICI,
+          consciousnessMetrics.ici ?? 0,
           '',
           'ici',
           'Measures how well local coherence integrates into global structure. Components: Temporal, Marker, Resonance.',
-          formatTrend(consciousnessMetrics.ICI, consciousnessMetrics.history?.phi.slice(-2)[0])
+          getTrendForMetric('ici', consciousnessMetrics.ici ?? 0)
         )}
 
         {renderMetricCard(
           'Panarchic Resonance Score (PRS)',
-          consciousnessMetrics.PRS,
+          consciousnessMetrics.prs ?? 0,
           '',
           'prs',
           'Measures alignment between micro (Node) and macro (System) entropy levels.',
-          formatTrend(consciousnessMetrics.PRS, consciousnessMetrics.history?.phi.slice(-2)[0])
-        )}
-
-        {consciousnessMetrics.phi !== undefined && renderMetricCard(
-          'Phi (Φ) Value',
-          consciousnessMetrics.phi,
-          '',
-          'phi',
-          'Integrated Information Measure - quantifies conscious experience magnitude.',
-          formatTrend(consciousnessMetrics.phi, consciousnessMetrics.history?.phi.slice(-2)[0])
-        )}
-
-        {consciousnessMetrics.anxiety !== undefined && renderMetricCard(
-          'Anxiety Level',
-          consciousnessMetrics.anxiety,
-          '',
-          'anxiety',
-          'System tension and conflict detection metric.',
-          formatTrend(consciousnessMetrics.anxiety, consciousnessMetrics.history?.anxiety.slice(-2)[0])
-        )}
-
-        {consciousnessMetrics.flow !== undefined && renderMetricCard(
-          'Flow State',
-          consciousnessMetrics.flow,
-          '',
-          'flow',
-          'Measure of cognitive fluidity and blockage detection.',
-          formatTrend(consciousnessMetrics.flow, consciousnessMetrics.history?.flow.slice(-2)[0])
-        )}
-
-        {consciousnessMetrics.entropy !== undefined && renderMetricCard(
-          'System Entropy',
-          consciousnessMetrics.entropy,
-          '',
-          'entropy',
-          'Measure of system disorder and information complexity.',
-          formatTrend(consciousnessMetrics.entropy, consciousnessMetrics.history?.entropy.slice(-2)[0])
+          getTrendForMetric('prs', consciousnessMetrics.prs ?? 0)
         )}
       </div>
 
@@ -217,21 +337,21 @@ export function ConsciousnessMetrics() {
       </div>
 
       {/* Components Breakdown */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-gray-700/30 rounded-lg p-4">
           <h4 className="text-white font-semibold mb-3">ICI Components</h4>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-400">Temporal Coherence:</span>
-              <span className="text-white">{((consciousnessMetrics.details?.ici_components?.temporal_coherence || 0) * 100).toFixed(1)}%</span>
+              <span className="text-white">{((consciousnessMetrics.ici_components?.temporal_coherence || 0) * 100).toFixed(1)}%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Marker Integration:</span>
-              <span className="text-white">{((consciousnessMetrics.details?.ici_components?.marker_integration || 0) * 100).toFixed(1)}%</span>
+              <span className="text-white">{((consciousnessMetrics.ici_components?.marker_integration || 0) * 100).toFixed(1)}%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Resonance:</span>
-              <span className="text-white">{((consciousnessMetrics.details?.ici_components?.resonance || 0) * 100).toFixed(1)}%</span>
+              <span className="text-white">{((consciousnessMetrics.ici_components?.resonance || 0) * 100).toFixed(1)}%</span>
             </div>
           </div>
         </div>
@@ -241,15 +361,103 @@ export function ConsciousnessMetrics() {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-400">Avg Micro Entropy:</span>
-              <span className="text-white">{((consciousnessMetrics.details?.prs_components?.avg_micro_entropy || 0) * 100).toFixed(1)}%</span>
+              <span className="text-white">{((consciousnessMetrics.prs_components?.avg_micro_entropy || 0) * 100).toFixed(1)}%</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-400">Macro Entropy:</span>
-              <span className="text-white">{((consciousnessMetrics.details?.prs_components?.macro_entropy || 0) * 100).toFixed(1)}%</span>
+              <span className="text-white">{((consciousnessMetrics.prs_components?.macro_entropy || 0) * 100).toFixed(1)}%</span>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Raw Data Section */}
+      {metrics?.raw_data && (
+        <div className="bg-gray-700/30 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-white font-semibold">📊 Dados Brutos do Sistema Híbrido</h4>
+            <button
+              onClick={() => setShowRawData(!showRawData)}
+              className="text-sm text-cyber-green hover:text-cyber-green/80 transition-colors"
+            >
+              {showRawData ? 'Ocultar' : 'Mostrar'} Dados Brutos
+            </button>
+          </div>
+
+          {/* Estatísticas Resumidas */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div className="bg-gray-800/50 rounded p-3">
+              <div className="text-xs text-gray-400">Predições Válidas</div>
+              <div className="text-lg font-bold text-cyber-green">
+                {metrics.raw_data.valid_predictions_count}/{metrics.raw_data.total_predictions}
+              </div>
+            </div>
+            <div className="bg-gray-800/50 rounded p-3">
+              <div className="text-xs text-gray-400">Ciclo Workspace</div>
+              <div className="text-lg font-bold text-white">{metrics.raw_data.workspace_cycle}</div>
+            </div>
+            <div className="bg-gray-800/50 rounded p-3">
+              <div className="text-xs text-gray-400">Total de Módulos</div>
+              <div className="text-lg font-bold text-white">{metrics.raw_data.total_modules}</div>
+            </div>
+            <div className="bg-gray-800/50 rounded p-3">
+              <div className="text-xs text-gray-400">Taxa de Validação</div>
+              <div className="text-lg font-bold text-cyber-green">
+                {metrics.raw_data.total_predictions > 0
+                  ? ((metrics.raw_data.valid_predictions_count / metrics.raw_data.total_predictions) * 100).toFixed(0)
+                  : 0}%
+              </div>
+            </div>
+          </div>
+
+          {/* Dados Brutos Expandidos */}
+          {showRawData && (
+            <div className="mt-4 space-y-4">
+              {/* Predições Causais */}
+              <div>
+                <h5 className="text-white font-semibold mb-2 text-sm">
+                  Predições Causais ({metrics.raw_data.causal_predictions.length})
+                </h5>
+                <div className="max-h-64 overflow-y-auto space-y-2">
+                  {metrics.raw_data.causal_predictions.slice(0, 10).map((pred, idx) => (
+                    <div key={idx} className="bg-gray-800/50 rounded p-2 text-xs">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-cyber-green font-mono">
+                          {pred.source_module} → {pred.target_module}
+                        </span>
+                        <span className="text-gray-400">{pred.computation_time_ms.toFixed(2)}ms</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-gray-300">
+                        <div>R²: {pred.r_squared.toFixed(4)}</div>
+                        <div>Granger: {pred.granger_causality.toFixed(4)}</div>
+                        <div>Transfer: {pred.transfer_entropy.toFixed(4)}</div>
+                      </div>
+                    </div>
+                  ))}
+                  {metrics.raw_data.causal_predictions.length > 10 && (
+                    <div className="text-center text-gray-400 text-xs py-2">
+                      ... e mais {metrics.raw_data.causal_predictions.length - 10} predições
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Estatísticas dos Módulos */}
+              <div>
+                <h5 className="text-white font-semibold mb-2 text-sm">Estatísticas dos Módulos</h5>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {Object.entries(metrics.raw_data.module_stats).map(([module, stats]: [string, any]) => (
+                    <div key={module} className="bg-gray-800/50 rounded p-2 text-xs">
+                      <div className="text-cyber-green font-mono truncate">{module}</div>
+                      <div className="text-gray-400">Histórico: {stats.history_length}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

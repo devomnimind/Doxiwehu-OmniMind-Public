@@ -26,12 +26,13 @@ import os
 # Adicionar o diretório pai ao path para importar src
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-src_dir = os.path.join(parent_dir, 'src')
+src_dir = os.path.join(parent_dir, "src")
 sys.path.insert(0, src_dir)
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 async def test_llm_provider(provider_name: str, model_name: str, timeout: int) -> Dict:
     """Testa um provedor LLM específico."""
@@ -49,8 +50,7 @@ async def test_llm_provider(provider_name: str, model_name: str, timeout: int) -
         test_timeout = min(timeout - 10, 30)  # Máximo 30s para teste
 
         response = await asyncio.wait_for(
-            router.invoke(prompt, tier=LLMModelTier.BALANCED),
-            timeout=test_timeout
+            router.invoke(prompt, tier=LLMModelTier.BALANCED), timeout=test_timeout
         )
 
         total_time = time.time() - start_time
@@ -64,7 +64,7 @@ async def test_llm_provider(provider_name: str, model_name: str, timeout: int) -
                 "total_time_s": round(total_time, 2),
                 "response_length": len(response.text),
                 "actual_provider": response.provider,
-                "actual_model": response.model
+                "actual_model": response.model,
             }
         else:
             return {
@@ -72,7 +72,7 @@ async def test_llm_provider(provider_name: str, model_name: str, timeout: int) -
                 "model": model_name,
                 "status": "FAILED",
                 "error": response.error,
-                "total_time_s": round(total_time, 2)
+                "total_time_s": round(total_time, 2),
             }
 
     except asyncio.TimeoutError:
@@ -82,7 +82,7 @@ async def test_llm_provider(provider_name: str, model_name: str, timeout: int) -
             "model": model_name,
             "status": "TIMEOUT",
             "error": "Teste excedeu timeout",
-            "total_time_s": round(total_time, 2)
+            "total_time_s": round(total_time, 2),
         }
     except Exception as e:
         total_time = time.time() - start_time
@@ -91,8 +91,9 @@ async def test_llm_provider(provider_name: str, model_name: str, timeout: int) -
             "model": model_name,
             "status": "ERROR",
             "error": str(e),
-            "total_time_s": round(total_time, 2)
+            "total_time_s": round(total_time, 2),
         }
+
 
 async def main():
     """Executa testes completos dos LLMs."""
@@ -113,16 +114,14 @@ async def main():
         print(f"\n🔍 Testando {config['provider']} ({config['model']})...")
         print(f"   Timeout configurado: {config['timeout']}s")
 
-        result = await test_llm_provider(
-            config['provider'],
-            config['model'],
-            config['timeout']
-        )
+        result = await test_llm_provider(config["provider"], config["model"], config["timeout"])
 
         results.append(result)
 
-        if result['status'] == 'SUCCESS':
-            print(f"   ✅ SUCCESS - {result['latency_ms']}ms - Provider: {result['actual_provider']}")
+        if result["status"] == "SUCCESS":
+            print(
+                f"   ✅ SUCCESS - {result['latency_ms']}ms - Provider: {result['actual_provider']}"
+            )
         else:
             print(f"   ❌ {result['status']} - {result.get('error', 'Unknown error')}")
 
@@ -131,13 +130,15 @@ async def main():
     print("📊 RESUMO DOS TESTES")
     print("=" * 50)
 
-    success_count = sum(1 for r in results if r['status'] == 'SUCCESS')
+    success_count = sum(1 for r in results if r["status"] == "SUCCESS")
     total_count = len(results)
 
     print(f"✅ Sucessos: {success_count}/{total_count}")
 
     if success_count > 0:
-        avg_latency = sum(r['latency_ms'] for r in results if r['status'] == 'SUCCESS') / success_count
+        avg_latency = (
+            sum(r["latency_ms"] for r in results if r["status"] == "SUCCESS") / success_count
+        )
         print(f"📈 Latência média: {avg_latency:.0f}ms")
     else:
         print("❌ Nenhum provider funcionou")
@@ -145,8 +146,10 @@ async def main():
     # Detalhes por provider
     print("\n📋 DETALHES POR PROVIDER:")
     for result in results:
-        status_icon = "✅" if result['status'] == 'SUCCESS' else "❌"
-        print(f"   {status_icon} {result['provider']}: {result['status']} ({result['total_time_s']}s)")
+        status_icon = "✅" if result["status"] == "SUCCESS" else "❌"
+        print(
+            f"   {status_icon} {result['provider']}: {result['status']} ({result['total_time_s']}s)"
+        )
 
     # Verificar se temos pelo menos um provider funcionando
     if success_count == 0:
@@ -160,6 +163,7 @@ async def main():
     else:
         print("\n🎉 SUCESSO: Todos os providers estão funcionando!")
         return True
+
 
 if __name__ == "__main__":
     success = asyncio.run(main())

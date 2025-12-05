@@ -7,7 +7,7 @@ import json
 import logging
 from pathlib import Path
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -41,6 +41,7 @@ def main() -> int:
     logger.info("\n2️⃣  Verificando Qiskit...")
     try:
         import qiskit
+
         logger.info(f"✅ Qiskit: {qiskit.__version__}")
         result["validation"]["qiskit_version"] = qiskit.__version__
     except ImportError:
@@ -52,6 +53,7 @@ def main() -> int:
     logger.info("\n3️⃣  Verificando qiskit-ibm-runtime...")
     try:
         from qiskit_ibm_runtime import QiskitRuntimeService  # noqa: F401
+
         logger.info("✅ qiskit-ibm-runtime disponível")
         result["validation"]["qiskit_ibm_runtime"] = True
     except ImportError:

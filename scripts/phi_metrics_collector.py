@@ -21,11 +21,14 @@ class PhiMetricsCollector:
     """Coleta e processa métricas de Φ de saída de testes."""
 
     def __init__(self, output_file: Optional[str] = None):
-        self.output_file = output_file or f"data/test_reports/phi_metrics_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        self.output_file = (
+            output_file
+            or f"data/test_reports/phi_metrics_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        )
         self.metrics = []
         self.test_name = None
         self.test_start = None
-        
+
         # Padrões regex para diferentes formatos de Φ
         self.phi_patterns = [
             r"Φ\s*=\s*([\d.]+)",  # Φ = 0.1234
@@ -35,7 +38,7 @@ class PhiMetricsCollector:
             r"RESULTADO:\s*Φ.*=\s*([\d.]+)",  # RESULTADO: Φ_avg = 0.7654
             r"phi_proxy\s*=\s*([\d.]+)",  # phi_proxy = 372.5999...
         ]
-        
+
         Path(self.output_file).parent.mkdir(parents=True, exist_ok=True)
 
     def parse_phi_value(self, line: str) -> float | None:
@@ -61,12 +64,12 @@ class PhiMetricsCollector:
         match = re.search(r"test_\w+\.py::\w+", line)
         if match:
             return match.group(0)
-        
+
         # Formato simplificado: "TESTE REAL: Mede Φ com GPU real"
         match = re.search(r"(?:TESTE|TEST)\s*(?:REAL)?:?\s*(.+?)(?:\n|$)", line, re.IGNORECASE)
         if match:
             return match.group(1).strip()[:100]
-        
+
         return None
 
     def process_line(self, line: str) -> None:
@@ -107,7 +110,8 @@ class PhiMetricsCollector:
             "phi_std": (
                 sum((x - (sum(phi_values) / len(phi_values))) ** 2 for x in phi_values)
                 / len(phi_values)
-            ) ** 0.5,
+            )
+            ** 0.5,
             "bounded_count": sum(1 for m in self.metrics if m["phi_bounded"]),
             "collection_timestamp": datetime.now().isoformat(),
         }
@@ -144,7 +148,10 @@ class PhiMetricsCollector:
         print(f"   Total de medições: {stats['total_measurements']}", file=sys.stderr)
         print(f"   Φ_média: {stats['phi_mean']:.4f}", file=sys.stderr)
         print(f"   Φ_min/max: {stats['phi_min']:.4f} / {stats['phi_max']:.4f}", file=sys.stderr)
-        print(f"   Valores válidos [0,1]: {stats['bounded_count']}/{stats['total_measurements']}", file=sys.stderr)
+        print(
+            f"   Valores válidos [0,1]: {stats['bounded_count']}/{stats['total_measurements']}",
+            file=sys.stderr,
+        )
 
         # Salvar TXT também
         txt_file = self.output_file.replace(".json", ".txt")
@@ -180,7 +187,7 @@ def main():
 
     try:
         for line in sys.stdin:
-            line = line.rstrip('\n\r')
+            line = line.rstrip("\n\r")
             # Imprimir passthrough
             print(line)
             # Processar para métricas

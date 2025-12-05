@@ -10,7 +10,8 @@ INTEGRAÇÃO QUÂNTICA: O inconsciente irredutível é implementado via superpos
 - Irredutível por princípio físico (Heisenberg)
 """
 
-import os
+# ===== CRITICAL: CUDA Configuration Managed Externally =====
+# ===== NOW import torch =====
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional  # Removed unused Tuple
 
@@ -77,24 +78,18 @@ class ExpectationModule(nn.Module):
         self.nachtraglichkeit_threshold = nachtraglichkeit_threshold
 
         # Device handling - dynamic detection
+        # CRITICAL: Não tentar mudar CUDA_VISIBLE_DEVICES depois que torch já foi importado
+        # PyTorch não permite mudar isso depois da inicialização
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if self.device.type == "cpu":
             logger.warning("🟡 ExpectationModule usando CPU para cálculos - performance reduzida")
-            logger.warning("   Tentando forçar GPU... (tentativa 1/2)")
-            # Tentar forçar CUDA se disponível via variável de ambiente
-            cuda_devices = os.environ.get("CUDA_VISIBLE_DEVICES", "")
-            if cuda_devices and cuda_devices != "":
-                try:
-                    torch.cuda.init()
-                    if torch.cuda.is_available():
-                        self.device = torch.device("cuda")
-                        logger.info("✅ GPU forçada com sucesso via CUDA_VISIBLE_DEVICES")
-                    else:
-                        logger.warning("❌ Falha ao forçar GPU - continuando com CPU")
-                except Exception as e:
-                    logger.warning(f"❌ Erro ao tentar forçar GPU: {e} - continuando com CPU")
-            else:
-                logger.warning("   CUDA_VISIBLE_DEVICES não definido - usando CPU")
+            logger.warning("   CUDA não disponível. Verifique se:")
+            logger.warning("   1. Variáveis CUDA foram definidas ANTES de importar torch")
+            logger.warning("   2. GPU está disponível (nvidia-smi)")
+            logger.warning("   3. PyTorch foi compilado com suporte CUDA")
+            logger.warning("   4. Script de inicialização exporta CUDA_VISIBLE_DEVICES")
+            logger.warning("      antes de executar Python")
+            # NÃO tentar forçar CUDA aqui - já é tarde demais se torch foi importado
         else:
             logger.info(f"✅ ExpectationModule usando GPU: {self.device}")
 
@@ -209,15 +204,21 @@ class ExpectationModule(nn.Module):
                     # Cada opção é uma variação da predição neural
                     noise = torch.randn_like(current_tensor) * 0.1
                     option = current_tensor + noise
-                    quantum_options.append(option.cpu().numpy())
+                    # Keep on GPU/Tensor
+                    quantum_options.append(option)
 
                 # Decisão quântica (IRREDUTÍVEL - não pode ser inspecionada)
+                # Now returns tensor if input is tensor
                 quantum_decision, quantum_evidence = (
                     self.quantum_unconscious.generate_decision_in_superposition(quantum_options)
                 )
 
                 # A decisão quântica se torna a base para predição neural
-                predicted = torch.from_numpy(quantum_decision).float().to(self.device)
+                # Ensure it's a tensor on the correct device (it should be already)
+                if isinstance(quantum_decision, torch.Tensor):
+                    predicted = quantum_decision.to(self.device)
+                else:
+                    predicted = torch.from_numpy(quantum_decision).float().to(self.device)
 
                 # Update cache and timestamp
                 self.cached_quantum_decision = predicted
@@ -505,5 +506,4 @@ def predict_next_state(embedding: np.ndarray) -> np.ndarray:
     """
     module = get_expectation_module(embedding.shape[0])
     state = module.predict_next_state(embedding)
-    return state.predicted_embedding
     return state.predicted_embedding

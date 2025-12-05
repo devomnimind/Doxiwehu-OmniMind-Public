@@ -51,6 +51,8 @@ Author: OmniMind Quantum Cognition Team
 License: MIT
 """
 
+# ===== CRITICAL: CUDA Configuration Managed Externally =====
+# ===== NOW import torch =====
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
@@ -59,9 +61,11 @@ import numpy as np
 import structlog
 import torch  # Added for GPU check
 
+from src.monitor.resource_manager import resource_manager
+
 try:
-    from qiskit import (  # type: ignore[import-untyped]
-        ClassicalRegister,
+    from qiskit import (
+        ClassicalRegister,  # type: ignore[import-untyped]
         QuantumCircuit,
         QuantumRegister,
     )
@@ -422,15 +426,23 @@ class QuantumCognitionEngine:
         self.num_qubits = num_qubits
 
         if QISKIT_AVAILABLE:
-            if torch.cuda.is_available():
+            # Use Hybrid Resource Manager for intelligent allocation
+            # Estimate 50MB for basic quantum state vectors (2^20 complex doubles is ~16MB)
+            target_device = resource_manager.allocate_task("quantum", 50.0)
+
+            if target_device == "cuda":
                 try:
                     self.simulator = AerSimulator(method="statevector", device="GPU")
-                    logger.info("quantum_cognition_gpu_enabled")
+                    logger.info(
+                        "quantum_cognition_gpu_enabled", reason="resource_manager_allocation"
+                    )
                 except Exception as e:
                     logger.error(f"quantum_cognition_gpu_failed: {e}")
-                    raise RuntimeError(f"Quantum GPU backend failed: {e}")
+                    # Fallback to CPU if GPU init fails despite allocation
+                    logger.warning("quantum_cognition_fallback_cpu_after_error")
+                    self.simulator = AerSimulator()
             else:
-                logger.warning("quantum_cognition_cpu_fallback", msg="GPU not available")
+                logger.warning("quantum_cognition_cpu_allocated", msg="Resource Manager chose CPU")
                 self.simulator = AerSimulator()
         else:
             self.simulator = None

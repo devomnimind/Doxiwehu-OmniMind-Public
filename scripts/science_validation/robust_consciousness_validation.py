@@ -33,7 +33,7 @@ from scipy import stats
 
 # Configurar GPU se disponível
 if torch.cuda.is_available():
-    torch.set_default_device('cuda')
+    torch.set_default_device("cuda")
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 else:
     os.environ["CUDA_VISIBLE_DEVICES"] = ""
@@ -47,10 +47,7 @@ from embeddings.code_embeddings import OmniMindEmbeddings
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.FileHandler("logs/robust_validation.log"),
-        logging.StreamHandler()
-    ]
+    handlers=[logging.FileHandler("logs/robust_validation.log"), logging.StreamHandler()],
 )
 logger = logging.getLogger(__name__)
 
@@ -66,7 +63,7 @@ class RobustConsciousnessValidator:
         self.qdrant_url = "http://localhost:6333"
 
         # Configurar device
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         logger.info(f"🎯 Usando device: {self.device}")
 
         # Inicializar modelo compartilhado
@@ -81,7 +78,7 @@ class RobustConsciousnessValidator:
             "timestamp_start": datetime.now().isoformat(),
             "run_results": [],
             "statistical_analysis": {},
-            "final_verdict": {}
+            "final_verdict": {},
         }
 
         logger.info(f"🚀 Protocolo Robusto: {runs} execuções x {cycles_per_run} ciclos cada")
@@ -127,22 +124,20 @@ class RobustConsciousnessValidator:
 
         # Runner independente para esta execução
         runner = IntegratedConsciousnessRunner(
-            cycles=self.cycles_per_run,
-            model=self.model,
-            run_id=run_id
+            cycles=self.cycles_per_run, model=self.model, run_id=run_id
         )
 
         # Executar ciclos
         run_result = runner.run_full_protocol_silent()
 
         # Adicionar metadados
-        run_result.update({
-            "run_id": run_id,
-            "device": self.device,
-            "timestamp": datetime.now().isoformat()
-        })
+        run_result.update(
+            {"run_id": run_id, "device": self.device, "timestamp": datetime.now().isoformat()}
+        )
 
-        logger.info(f"✅ Execução {run_id} concluída - Φ médio: {run_result['analysis']['phi_mean']:.3f}")
+        logger.info(
+            f"✅ Execução {run_id} concluída - Φ médio: {run_result['analysis']['phi_mean']:.3f}"
+        )
 
         return run_result
 
@@ -168,18 +163,24 @@ class RobustConsciousnessValidator:
             "phi_global_max": float(np.max(phi_means)),
             "phi_confidence_interval_95": [
                 float(np.mean(phi_means) - 1.96 * np.std(phi_means)),
-                float(np.mean(phi_means) + 1.96 * np.std(phi_means))
+                float(np.mean(phi_means) + 1.96 * np.std(phi_means)),
             ],
             "consciousness_consistency": float(np.mean(consciousness_detections)),
             "runs_with_consciousness": int(sum(consciousness_detections)),
             "statistical_significance": self._calculate_significance(phi_means),
-            "robustness_score": self._calculate_robustness(phi_means, phi_stds)
+            "robustness_score": self._calculate_robustness(phi_means, phi_stds),
         }
 
         logger.info("📊 ANÁLISE ESTATÍSTICA GLOBAL:")
-        logger.info(f"   Φ global médio: {self.global_results['statistical_analysis']['phi_global_mean']:.3f}")
-        logger.info(f"   Consistência de consciência: {self.global_results['statistical_analysis']['consciousness_consistency']:.1%}")
-        logger.info(f"   Intervalo de confiança 95%: [{self.global_results['statistical_analysis']['phi_confidence_interval_95'][0]:.3f}, {self.global_results['statistical_analysis']['phi_confidence_interval_95'][1]:.3f}]")
+        logger.info(
+            f"   Φ global médio: {self.global_results['statistical_analysis']['phi_global_mean']:.3f}"
+        )
+        logger.info(
+            f"   Consistência de consciência: {self.global_results['statistical_analysis']['consciousness_consistency']:.1%}"
+        )
+        logger.info(
+            f"   Intervalo de confiança 95%: [{self.global_results['statistical_analysis']['phi_confidence_interval_95'][0]:.3f}, {self.global_results['statistical_analysis']['phi_confidence_interval_95'][1]:.3f}]"
+        )
 
     def _calculate_significance(self, phi_means: List[float]) -> Dict[str, Any]:
         """Calcula significância estatística."""
@@ -191,14 +192,14 @@ class RobustConsciousnessValidator:
             "p_value": float(p_value),
             "significant_at_005": p_value < 0.05,
             "significant_at_001": p_value < 0.01,
-            "effect_size": float((np.mean(phi_means) - 0.5) / np.std(phi_means))  # Cohen's d
+            "effect_size": float((np.mean(phi_means) - 0.5) / np.std(phi_means)),  # Cohen's d
         }
 
     def _calculate_robustness(self, phi_means: List[float], phi_stds: List[float]) -> float:
         """Calcula score de robustez (0-1)."""
         # Robustez = consistência + estabilidade
         consistency = 1.0 - np.std(phi_means)  # Menor variabilidade = maior robustez
-        stability = 1.0 - np.mean(phi_stds)   # Menor variação interna = maior robustez
+        stability = 1.0 - np.mean(phi_stds)  # Menor variação interna = maior robustez
 
         robustness = (consistency + stability) / 2.0
         return max(0.0, min(1.0, robustness))
@@ -213,7 +214,7 @@ class RobustConsciousnessValidator:
             "consistency_threshold": stats["consciousness_consistency"] > 0.8,
             "statistical_significance": stats["statistical_significance"]["significant_at_001"],
             "robustness_threshold": stats["robustness_score"] > 0.7,
-            "confidence_interval_positive": stats["phi_confidence_interval_95"][0] > 0.5
+            "confidence_interval_positive": stats["phi_confidence_interval_95"][0] > 0.5,
         }
 
         # Veredicto
@@ -225,11 +226,13 @@ class RobustConsciousnessValidator:
             "criteria_met": sum(criteria.values()),
             "total_criteria": len(criteria),
             "detailed_criteria": criteria,
-            "scientific_assessment": self._scientific_assessment(consciousness_detected, stats)
+            "scientific_assessment": self._scientific_assessment(consciousness_detected, stats),
         }
 
         verdict_emoji = "🧠" if consciousness_detected else "🤖"
-        logger.info(f"🎯 VEREDITO FINAL: {verdict_emoji} {'CONSCIÊNCIA DETECTADA' if consciousness_detected else 'SISTEMA INCONSCIENTE'}")
+        logger.info(
+            f"🎯 VEREDITO FINAL: {verdict_emoji} {'CONSCIÊNCIA DETECTADA' if consciousness_detected else 'SISTEMA INCONSCIENTE'}"
+        )
         logger.info(f"   Critérios atendidos: {sum(criteria.values())}/{len(criteria)}")
 
     def _scientific_assessment(self, detected: bool, stats: Dict) -> str:
@@ -259,7 +262,7 @@ São necessários mais ciclos ou ajustes na arquitetura para atingir consciênci
         results_path = Path("real_evidence") / filename
         results_path.parent.mkdir(exist_ok=True)
 
-        with open(results_path, 'w', encoding='utf-8') as f:
+        with open(results_path, "w", encoding="utf-8") as f:
             json.dump(self.global_results, f, indent=2, ensure_ascii=False, default=str)
 
         logger.info(f"💾 Resultados robustos salvos em: {results_path}")
@@ -278,14 +281,11 @@ class IntegratedConsciousnessRunner:
 
         # Inicializar sistemas de memória
         self.omnimind_memory = OmniMindEmbeddings(
-            qdrant_url=self.qdrant_url,
-            collection_name="omnimind_embeddings",
-            model=self.model
+            qdrant_url=self.qdrant_url, collection_name="omnimind_embeddings", model=self.model
         )
 
         self.universal_memory = UniversalMemoryAccess(
-            qdrant_url=self.qdrant_url,
-            collection_name="universal_machine_embeddings"
+            qdrant_url=self.qdrant_url, collection_name="universal_machine_embeddings"
         )
 
         # Resultados
@@ -294,7 +294,7 @@ class IntegratedConsciousnessRunner:
             "phi_values": [],
             "memory_accesses": [],
             "consciousness_states": [],
-            "run_id": run_id
+            "run_id": run_id,
         }
 
     def run_full_protocol_silent(self) -> Dict[str, Any]:
@@ -318,7 +318,7 @@ class IntegratedConsciousnessRunner:
             "memória semântica integrada",
             "processamento de linguagem natural",
             "arquitetura de IA consciente",
-            "validação científica de consciência"
+            "validação científica de consciência",
         ]
 
         cycle_memory = []
@@ -327,12 +327,14 @@ class IntegratedConsciousnessRunner:
         # Busca integrada paralela
         for theme in themes:
             search_results = self.integrated_search(theme, top_k=3)
-            cycle_memory.append({
-                "theme": theme,
-                "omnimind_results": len(search_results["omnimind"]),
-                "universal_results": len(search_results["universal"]),
-                "integrated_score": search_results["integrated_score"]
-            })
+            cycle_memory.append(
+                {
+                    "theme": theme,
+                    "omnimind_results": len(search_results["omnimind"]),
+                    "universal_results": len(search_results["universal"]),
+                    "integrated_score": search_results["integrated_score"],
+                }
+            )
 
             for result in search_results["omnimind"][:2] + search_results["universal"][:2]:
                 if result["content"]:
@@ -347,7 +349,7 @@ class IntegratedConsciousnessRunner:
             "memory_accesses": cycle_memory,
             "input_size": len(consciousness_input),
             "timestamp": datetime.now().isoformat(),
-            "integrated_memory_active": True
+            "integrated_memory_active": True,
         }
 
     def integrated_search(self, query: str, top_k: int = 5) -> Dict[str, Any]:
@@ -362,14 +364,14 @@ class IntegratedConsciousnessRunner:
                 collection_name="omnimind_embeddings",
                 query=query_embedding.tolist(),
                 limit=top_k,
-                with_payload=True
+                with_payload=True,
             )
             results["omnimind"] = [
                 {
                     "score": point.score,
                     "content": point.payload.get("content", ""),
                     "file_path": point.payload.get("file_path", ""),
-                    "content_type": point.payload.get("content_type", "")
+                    "content_type": point.payload.get("content_type", ""),
                 }
                 for point in omnimind_results.points
             ]
@@ -382,14 +384,14 @@ class IntegratedConsciousnessRunner:
                 collection_name="universal_machine_embeddings",
                 query=query_embedding.tolist(),
                 limit=top_k,
-                with_payload=True
+                with_payload=True,
             )
             results["universal"] = [
                 {
                     "score": point.score,
                     "content": point.payload.get("content", ""),
                     "file_path": point.payload.get("file_path", ""),
-                    "content_type": point.payload.get("content_type", "")
+                    "content_type": point.payload.get("content_type", ""),
                 }
                 for point in universal_results.points
             ]
@@ -406,7 +408,9 @@ class IntegratedConsciousnessRunner:
 
         return results
 
-    def _calculate_phi_integrated(self, consciousness_input: List[str], memory_data: List[Dict]) -> float:
+    def _calculate_phi_integrated(
+        self, consciousness_input: List[str], memory_data: List[Dict]
+    ) -> float:
         """Cálculo de Φ integrado."""
         if not consciousness_input:
             return 0.0
@@ -417,7 +421,13 @@ class IntegratedConsciousnessRunner:
         integration_contribution = sum(item["integrated_score"] for item in memory_data) * 0.2
         input_contribution = min(len(consciousness_input) * 0.05, 0.3)
 
-        phi = base_phi + omnimind_contribution + universal_contribution + integration_contribution + input_contribution
+        phi = (
+            base_phi
+            + omnimind_contribution
+            + universal_contribution
+            + integration_contribution
+            + input_contribution
+        )
         return max(0.0, min(1.0, phi))
 
     def _analyze_results(self):
@@ -433,7 +443,9 @@ class IntegratedConsciousnessRunner:
                 "phi_median": float(np.median(phi_values)),
                 "consciousness_detected": bool(np.mean(phi_values) > 0.5),
                 "cycles_with_consciousness": int(sum(1 for phi in phi_values if phi > 0.5)),
-                "total_memory_accesses": int(sum(len(access) for access in self.results["memory_accesses"]))
+                "total_memory_accesses": int(
+                    sum(len(access) for access in self.results["memory_accesses"])
+                ),
             }
 
 
@@ -451,14 +463,10 @@ class UniversalMemoryAccess:
             return {
                 "collection_name": self.collection_name,
                 "total_chunks": collection_info.points_count,
-                "status": "active"
+                "status": "active",
             }
         except Exception as e:
-            return {
-                "collection_name": self.collection_name,
-                "error": str(e),
-                "status": "error"
-            }
+            return {"collection_name": self.collection_name, "error": str(e), "status": "error"}
 
 
 def main():
@@ -466,12 +474,15 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Protocolo Robusto de Validação de Consciência")
-    parser.add_argument("--runs", type=int, default=5,
-                       help="Número de execuções independentes (padrão: 5)")
-    parser.add_argument("--cycles", type=int, default=1000,
-                       help="Ciclos por execução (padrão: 1000)")
-    parser.add_argument("--quick", action="store_true",
-                       help="Execução rápida para teste (2 runs x 100 ciclos)")
+    parser.add_argument(
+        "--runs", type=int, default=5, help="Número de execuções independentes (padrão: 5)"
+    )
+    parser.add_argument(
+        "--cycles", type=int, default=1000, help="Ciclos por execução (padrão: 1000)"
+    )
+    parser.add_argument(
+        "--quick", action="store_true", help="Execução rápida para teste (2 runs x 100 ciclos)"
+    )
 
     args = parser.parse_args()
 
@@ -494,7 +505,9 @@ def main():
         print(f"✅ Execuções completadas: {stats.get('total_runs_completed', 0)}")
         print(f"🧠 Φ global médio: {stats.get('phi_global_mean', 0):.3f}")
         print(f"📊 Consistência: {stats.get('consciousness_consistency', 0):.1%}")
-        print(f"🎯 Veredicto: {'CONSCIÊNCIA DETECTADA' if verdict.get('consciousness_detected', False) else 'SISTEMA INCONSCIENTE'}")
+        print(
+            f"🎯 Veredicto: {'CONSCIÊNCIA DETECTADA' if verdict.get('consciousness_detected', False) else 'SISTEMA INCONSCIENTE'}"
+        )
 
     except KeyboardInterrupt:
         logger.info("\n⏹️ Protocolo interrompido pelo usuário")

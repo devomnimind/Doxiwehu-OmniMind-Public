@@ -22,6 +22,8 @@ License: MIT
 
 from __future__ import annotations
 
+# ===== CRITICAL: CUDA Configuration Managed Externally =====
+# ===== NOW import torch =====
 import logging
 import random
 from dataclasses import dataclass, field

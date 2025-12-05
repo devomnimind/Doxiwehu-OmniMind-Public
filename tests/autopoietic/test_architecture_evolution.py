@@ -11,8 +11,18 @@ from __future__ import annotations
 
 import pytest
 
-from src.autopoietic.architecture_evolution import ArchitectureEvolution
 from src.autopoietic.meta_architect import ComponentSpec, MetaArchitect
+from src.autopoietic.architecture_evolution import ArchitectureEvolution, EvolutionStrategy
+
+
+def _strategy_prefix(strategy: EvolutionStrategy) -> str:
+    mapping = {
+        EvolutionStrategy.EXPAND: "expanded_",
+        EvolutionStrategy.STABILIZE: "stabilized_",
+        EvolutionStrategy.OPTIMIZE: "optimized_",
+        EvolutionStrategy.EXPLORE: "evolved_",
+    }
+    return mapping[strategy]
 
 
 class TestArchitectureEvolution:
@@ -36,9 +46,9 @@ class TestArchitectureEvolution:
 
     def test_propose_evolution_empty(self, evolution: ArchitectureEvolution) -> None:
         """Testa proposta de evolução com dicionário vazio."""
-        evolved = evolution.propose_evolution({})
-        assert isinstance(evolved, list)
-        assert len(evolved) == 0
+        batch = evolution.propose_evolution({})
+        assert isinstance(batch.specs, list)
+        assert len(batch.specs) == 0
 
     def test_propose_evolution_single(self, evolution: ArchitectureEvolution) -> None:
         """Testa proposta de evolução para um único componente."""
@@ -48,14 +58,16 @@ class TestArchitectureEvolution:
             )
         }
 
-        evolved = evolution.propose_evolution(existing)
+        batch = evolution.propose_evolution(existing)
+        evolved = batch.specs
+        prefix = _strategy_prefix(batch.strategy)
 
         assert isinstance(evolved, list)
         assert len(evolved) == 1
 
         spec = evolved[0]
         assert isinstance(spec, ComponentSpec)
-        assert spec.name == "evolved_component_a"
+        assert spec.name == f"{prefix}component_a"
         assert spec.type == "synthesizer"
         assert spec.config["evolved"] == "true"
         assert spec.config["param"] == "value"
@@ -68,18 +80,19 @@ class TestArchitectureEvolution:
             "comp_z": ComponentSpec(name="comp_z", type="type_z", config={"z": "3"}),
         }
 
-        evolved = evolution.propose_evolution(existing)
+        batch = evolution.propose_evolution(existing)
+        evolved = batch.specs
 
         assert len(evolved) == 3
 
+        prefix = _strategy_prefix(batch.strategy)
         names = [spec.name for spec in evolved]
-        assert "evolved_comp_x" in names
-        assert "evolved_comp_y" in names
-        assert "evolved_comp_z" in names
+        assert f"{prefix}comp_x" in names
+        assert f"{prefix}comp_y" in names
+        assert f"{prefix}comp_z" in names
 
-        # Verifica que todos mantiveram seus tipos
         for spec in evolved:
-            original_name = spec.name.replace("evolved_", "")
+            original_name = spec.name.replace(prefix, "", 1)
             original_type = existing[original_name].type
             assert spec.type == original_type
 
@@ -93,10 +106,8 @@ class TestArchitectureEvolution:
             )
         }
 
-        evolved = evolution.propose_evolution(existing)
-
-        assert len(evolved) == 1
-        evolved_spec = evolved[0]
+        batch = evolution.propose_evolution(existing)
+        evolved_spec = batch.specs[0]
 
         # Verifica que as configurações originais foram preservadas
         assert evolved_spec.config["key1"] == "value1"
@@ -109,8 +120,7 @@ class TestArchitectureEvolution:
         """Testa que a flag 'evolved' é adicionada à configuração."""
         existing = {"component": ComponentSpec(name="component", type="any_type", config={})}
 
-        evolved = evolution.propose_evolution(existing)
-
+        evolved = evolution.propose_evolution(existing).specs
         assert evolved[0].config["evolved"] == "true"
 
     def test_propose_evolution_preserves_type(self, evolution: ArchitectureEvolution) -> None:
@@ -120,10 +130,12 @@ class TestArchitectureEvolution:
             f"comp_{t}": ComponentSpec(name=f"comp_{t}", type=t, config={}) for t in types_to_test
         }
 
-        evolved = evolution.propose_evolution(existing)
+        batch = evolution.propose_evolution(existing)
+        evolved = batch.specs
+        prefix = _strategy_prefix(batch.strategy)
 
         for spec in evolved:
-            original_name = spec.name.replace("evolved_", "")
+            original_name = spec.name.replace(prefix, "", 1)
             assert spec.type == existing[original_name].type
 
     def test_propose_evolution_validation_success(self, evolution: ArchitectureEvolution) -> None:
@@ -135,7 +147,7 @@ class TestArchitectureEvolution:
         }
 
         # Não deve lançar exceção
-        evolved = evolution.propose_evolution(existing)
+        evolved = evolution.propose_evolution(existing).specs
         assert len(evolved) == 1
 
     def test_propose_evolution_creates_correct_names(
@@ -148,23 +160,25 @@ class TestArchitectureEvolution:
             "multiple_words_here": ComponentSpec("multiple_words_here", "type3", {}),
         }
 
-        evolved = evolution.propose_evolution(existing)
+        batch = evolution.propose_evolution(existing)
+        evolved = batch.specs
+        prefix = _strategy_prefix(batch.strategy)
 
         names = {spec.name for spec in evolved}
-        assert "evolved_simple" in names
-        assert "evolved_with_underscore" in names
-        assert "evolved_multiple_words_here" in names
+        assert f"{prefix}simple" in names
+        assert f"{prefix}with_underscore" in names
+        assert f"{prefix}multiple_words_here" in names
 
     def test_propose_evolution_with_empty_config(self, evolution: ArchitectureEvolution) -> None:
         """Testa evolução de componentes com config vazia."""
         existing = {"empty_config": ComponentSpec(name="empty_config", type="test", config={})}
 
-        evolved = evolution.propose_evolution(existing)
-
-        assert len(evolved) == 1
-        # Config deve ter apenas a flag evolved
-        assert evolved[0].config["evolved"] == "true"
-        assert len(evolved[0].config) == 1
+        batch = evolution.propose_evolution(existing)
+        assert len(batch.specs) == 1
+        spec = batch.specs[0]
+        assert spec.config["evolved"] == "true"
+        assert spec.config["strategy"] == batch.strategy.name
+        assert spec.config["generation"] == "1"
 
     def test_propose_evolution_with_complex_config(self, evolution: ArchitectureEvolution) -> None:
         """Testa evolução de componentes com config complexa."""
@@ -181,8 +195,7 @@ class TestArchitectureEvolution:
             )
         }
 
-        evolved = evolution.propose_evolution(existing)
-
+        evolved = evolution.propose_evolution(existing).specs
         assert len(evolved) == 1
         spec = evolved[0]
 
@@ -197,14 +210,16 @@ class TestArchitectureEvolution:
         """Testa múltiplas iterações de evolução."""
         # Primeira evolução
         existing_v1 = {"base": ComponentSpec("base", "type", {"version": "1"})}
-        evolved_v1 = evolution.propose_evolution(existing_v1)
+        batch_v1 = evolution.propose_evolution(existing_v1)
+        evolved_v1 = batch_v1.specs
 
-        # Segunda evolução
         existing_v2 = {evolved_v1[0].name: evolved_v1[0]}
-        evolved_v2 = evolution.propose_evolution(existing_v2)
+        batch_v2 = evolution.propose_evolution(existing_v2)
+        evolved_v2 = batch_v2.specs
 
+        prefix = _strategy_prefix(batch_v1.strategy)
         assert len(evolved_v2) == 1
-        assert evolved_v2[0].name == "evolved_evolved_base"
+        assert evolved_v2[0].name == f"{prefix}{evolved_v1[0].name}"
         assert evolved_v2[0].config["version"] == "1"
         assert evolved_v2[0].config["evolved"] == "true"
 
@@ -219,12 +234,13 @@ class TestArchitectureEvolution:
 
         # Evolui
         evolution = ArchitectureEvolution(meta_architect)
-        evolved = evolution.propose_evolution(existing)
+        batch = evolution.propose_evolution(existing)
+        evolved = batch.specs
 
-        # Verifica resultado
         assert len(evolved) == len(original_specs)
+        prefix = _strategy_prefix(batch.strategy)
         for spec in evolved:
-            assert spec.name.startswith("evolved_")
+            assert spec.name.startswith(prefix)
             assert spec.config["evolved"] == "true"
 
     def test_propose_evolution_maintains_immutability(
@@ -236,9 +252,7 @@ class TestArchitectureEvolution:
             "component": ComponentSpec(name="component", type="test", config=original_config)
         }
 
-        evolved = evolution.propose_evolution(existing)
+        evolved = evolution.propose_evolution(existing).specs
 
-        # Config original não deve ter a flag evolved
         assert "evolved" not in existing["component"].config
-        # Config evoluída deve ter a flag
         assert evolved[0].config["evolved"] == "true"

@@ -37,7 +37,7 @@ class MonitorController:
                 [sys.executable, str(self.monitor_script)],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
-                cwd=str(self.project_root)
+                cwd=str(self.project_root),
             )
 
             # Salvar PID
@@ -147,7 +147,9 @@ class MonitorController:
                             "timestamp": snapshot_data.get("timestamp"),
                             "processes": snapshot_data.get("processes_count"),
                             "cpu_percent": snapshot_data.get("resources", {}).get("cpu_percent"),
-                            "memory_percent": snapshot_data.get("resources", {}).get("memory_percent"),
+                            "memory_percent": snapshot_data.get("resources", {}).get(
+                                "memory_percent"
+                            ),
                             "alerts": snapshot_data.get("alerts", []),
                         }
                 except Exception:
@@ -175,8 +177,12 @@ class MonitorController:
             print("\n📈 ÚLTIMO SNAPSHOT:")
             print(f"   Timestamp: {snap['timestamp']}")
             print(f"   Processos: {snap['processes']}")
-            print(f"   CPU: {snap['cpu_percent']:.1f}%" if snap['cpu_percent'] else "   CPU: N/A")
-            print(f"   Memória: {snap['memory_percent']:.1f}%" if snap['memory_percent'] else "   Memória: N/A")
+            print(f"   CPU: {snap['cpu_percent']:.1f}%" if snap["cpu_percent"] else "   CPU: N/A")
+            print(
+                f"   Memória: {snap['memory_percent']:.1f}%"
+                if snap["memory_percent"]
+                else "   Memória: N/A"
+            )
 
             if snap["alerts"]:
                 print(f"   Alertas: {len(snap['alerts'])}")

@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 @dataclass
 class FederationLog:
     """Log de interação federada"""
+
     cycle: int
     subject_a_decision: Any
     subject_b_decision: Any
@@ -24,6 +25,7 @@ class FederationLog:
 @dataclass
 class CommunicationChannel:
     """Canal de comunicação com ruído essencial (alteridade)"""
+
     noise_level: float = 0.15  # Ruído essencial para alteridade
 
     def transmit(self, message: Any) -> Any:
@@ -80,7 +82,7 @@ class FederatedOmniMind:
                 subject_a_decision=subject_a_decision,
                 subject_b_decision=subject_b_decision,
                 disagreement=disagreement,
-                timestamp=time.time()
+                timestamp=time.time(),
             )
 
             self.federation_logs.append(log_entry)
@@ -90,7 +92,9 @@ class FederatedOmniMind:
         return {
             "total_cycles": len(self.federation_logs),
             "disagreements": len(self.disagreements),
-            "disagreement_rate": len(self.disagreements) / len(self.federation_logs) if self.federation_logs else 0
+            "disagreement_rate": (
+                len(self.disagreements) / len(self.federation_logs) if self.federation_logs else 0
+            ),
         }
 
     def _subject_decision(self, subject_id: str, cycle: int) -> float:

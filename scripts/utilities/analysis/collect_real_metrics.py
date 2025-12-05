@@ -88,10 +88,10 @@ class RealMetricsCollector:
                     "min": min(phi_values),
                     "max": max(phi_values),
                     "std_dev": (
-                        sum((x - sum(phi_values) / len(phi_values)) ** 2
-                            for x in phi_values)
+                        sum((x - sum(phi_values) / len(phi_values)) ** 2 for x in phi_values)
                         / len(phi_values)
-                    ) ** 0.5,
+                    )
+                    ** 0.5,
                     "median": sorted(phi_values)[len(phi_values) // 2],
                 },
                 "time_seconds": elapsed_time,
@@ -172,10 +172,10 @@ class RealMetricsCollector:
                     "min_of_means": min(all_means),
                     "max_of_means": max(all_means),
                     "std_of_means": (
-                        sum((x - sum(all_means) / len(all_means)) ** 2
-                            for x in all_means)
+                        sum((x - sum(all_means) / len(all_means)) ** 2 for x in all_means)
                         / len(all_means)
-                    ) ** 0.5,
+                    )
+                    ** 0.5,
                 },
                 "time_seconds": elapsed_time,
                 "status": "SUCCESS",

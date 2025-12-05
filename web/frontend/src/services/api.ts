@@ -36,32 +36,36 @@ class ApiService {
   }
 
   setDefaultCredentials(): void {
-    const defaultUser = import.meta.env.VITE_DASHBOARD_USER;
-    const defaultPass = import.meta.env.VITE_DASHBOARD_PASS;
-
-    if (
-      typeof defaultUser === 'string' &&
-      defaultUser &&
-      typeof defaultPass === 'string' &&
-      defaultPass
-    ) {
-      this.setCredentials(defaultUser, defaultPass);
-    }
+    // Tentar recuperar da sessão anterior
+    this.username = localStorage.getItem('omnimind_user') || '';
+    this.password = localStorage.getItem('omnimind_pass') || '';
   }
 
-  private getAuthHeader(): string {
+  getAuthHeader(): string {
+    if (!this.username || !this.password) {
+      return '';
+    }
     const credentials = btoa(`${this.username}:${this.password}`);
     return `Basic ${credentials}`;
   }
 
   getHeaders(): HeadersInit {
-    return {
-      'Authorization': this.getAuthHeader(),
+    const auth = this.getAuthHeader();
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
+    if (auth) {
+      headers['Authorization'] = auth;
+    }
+    return headers;
   }
 
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    // Garantir que credenciais estão configuradas
+    if (!this.getAuthToken()) {
+      this.setDefaultCredentials();
+    }
+
     const headers = {
       'Authorization': this.getAuthHeader(),
       'Content-Type': 'application/json',
@@ -71,9 +75,13 @@ class ApiService {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       ...options,
       headers,
+      // credentials: 'include' removido para simplificar CORS com Basic Auth
+      // Apenas necessário para cookies/sessions, não para Authorization header
     });
 
     if (!response.ok) {
+      const errorText = await response.text().catch(() => response.statusText);
+      console.error(`API Error ${response.status} para ${endpoint}: ${errorText}`);
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
@@ -216,6 +224,31 @@ class ApiService {
 
   async getTribunalActivity(): Promise<any> {
     return this.get('/api/tribunal/activity');
+  }
+
+  // Autopoietic endpoints (Phase 22)
+  async getAutopoieticStatus(): Promise<any> {
+    return this.get('/api/v1/autopoietic/status');
+  }
+
+  async getAutopoieticCycles(limit: number = 50): Promise<any> {
+    return this.get(`/api/v1/autopoietic/cycles?limit=${limit}`);
+  }
+
+  async getAutopoieticCycleStats(): Promise<any> {
+    return this.get('/api/v1/autopoietic/cycles/stats');
+  }
+
+  async getAutopoieticComponents(limit: number = 50): Promise<any> {
+    return this.get(`/api/v1/autopoietic/components?limit=${limit}`);
+  }
+
+  async getAutopoieticHealth(): Promise<any> {
+    return this.get('/api/v1/autopoietic/health');
+  }
+
+  async getConsciousnessMetrics(includeRaw: boolean = false): Promise<any> {
+    return this.get(`/api/v1/autopoietic/consciousness/metrics?include_raw=${includeRaw}`);
   }
 }
 

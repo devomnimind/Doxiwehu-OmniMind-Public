@@ -59,7 +59,7 @@ OMNIMIND_GPU=true \
 OMNIMIND_FORCE_GPU=true \
 OMNIMIND_DEV=true \
 OMNIMIND_DEBUG=true \
-PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb=512 \
+PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512 \
 pytest tests/ \
   -vv \
   --tb=short \

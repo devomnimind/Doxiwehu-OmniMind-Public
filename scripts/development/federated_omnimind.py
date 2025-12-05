@@ -21,6 +21,7 @@ from omnimind_parameters import get_parameter_manager  # type: ignore[import-unt
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class BidirectionalChannel:
     """
     Canal que preserva ALTERIDADE (não reduz um ao outro)
@@ -33,8 +34,7 @@ class BidirectionalChannel:
         if noise_level is None:
             # Escolher aleatoriamente dentro do range para variabilidade
             noise_level = np.random.uniform(
-                params.noise_level_range[0],
-                params.noise_level_range[1]
+                params.noise_level_range[0], params.noise_level_range[1]
             )
 
         self.noise_level = noise_level
@@ -50,13 +50,15 @@ class BidirectionalChannel:
         noisy_message = self.introduce_noise(message, self.noise_level)
 
         # 2. Log da transmissão
-        self.message_history.append({
-            'timestamp': time.time(),
-            'sender': sender_uuid,
-            'receiver': receiver_uuid,
-            'original_shape': message.shape,
-            'noise_level': self.noise_level
-        })
+        self.message_history.append(
+            {
+                "timestamp": time.time(),
+                "sender": sender_uuid,
+                "receiver": receiver_uuid,
+                "original_shape": message.shape,
+                "noise_level": self.noise_level,
+            }
+        )
 
         return noisy_message
 
@@ -70,6 +72,7 @@ class BidirectionalChannel:
 
         return noisy
 
+
 class OmniMindInstance:
     """
     Instância individual de OmniMind com identidade própria
@@ -80,8 +83,7 @@ class OmniMindInstance:
         params = get_parameter_manager().expectation
 
         self.workspace = SharedWorkspace(
-            embedding_dim=params.embedding_dim,
-            max_history_size=2000  # TODO: parametrizar também
+            embedding_dim=params.embedding_dim, max_history_size=2000  # TODO: parametrizar também
         )
         self.message_history = []
         self.decision_history = []
@@ -89,7 +91,9 @@ class OmniMindInstance:
         # Estado interno único para esta instância
         self.internal_state = np.random.randn(params.embedding_dim).astype(np.float32)
 
-        logger.info(f"🧠 OmniMind {self.uuid} inicializado com embedding_dim={params.embedding_dim}")
+        logger.info(
+            f"🧠 OmniMind {self.uuid} inicializado com embedding_dim={params.embedding_dim}"
+        )
 
     def seed_random(self, seed: int):
         """Define semente específica para garantir diferenças entre instâncias"""
@@ -102,17 +106,17 @@ class OmniMindInstance:
 
         # Atualizar estado interno com parâmetro configurável
         update_rate = np.random.uniform(0.05, 0.2)  # Range parametrizável
-        self.internal_state += update_rate * np.random.randn(len(self.internal_state)).astype(np.float32)
+        self.internal_state += update_rate * np.random.randn(len(self.internal_state)).astype(
+            np.float32
+        )
         self.internal_state = np.clip(self.internal_state, -1.0, 1.0)
 
         # Mensagem é projeção do estado interno
         message = self.internal_state.copy()
 
-        self.message_history.append({
-            'timestamp': time.time(),
-            'type': 'generated',
-            'content': message.tolist()
-        })
+        self.message_history.append(
+            {"timestamp": time.time(), "type": "generated", "content": message.tolist()}
+        )
 
         return message
 
@@ -134,13 +138,15 @@ class OmniMindInstance:
         # Gerar resposta baseada no novo estado
         response = self.generate_response_from_state()
 
-        self.message_history.append({
-            'timestamp': time.time(),
-            'type': 'received_response',
-            'from_other': is_from_other,
-            'received': message.tolist(),
-            'response': response.tolist()
-        })
+        self.message_history.append(
+            {
+                "timestamp": time.time(),
+                "type": "received_response",
+                "from_other": is_from_other,
+                "received": message.tolist(),
+                "response": response.tolist(),
+            }
+        )
 
         return response
 
@@ -151,7 +157,9 @@ class OmniMindInstance:
         # Filtro interpretativo com parâmetro configurável
         filter_strength = np.random.uniform(0.05, 0.2)  # Range parametrizável
         embedding_dim = len(message)
-        filter_matrix = np.random.randn(embedding_dim, embedding_dim).astype(np.float32) * filter_strength
+        filter_matrix = (
+            np.random.randn(embedding_dim, embedding_dim).astype(np.float32) * filter_strength
+        )
 
         interpretation = message + np.dot(filter_matrix, message)
 
@@ -181,6 +189,7 @@ class OmniMindInstance:
         expected = np.tanh(message * prediction_factor)
         return expected
 
+
 class FederatedOmniMind:
     """
     Dois OmniMinds que emergem como Sujeitos mútuos
@@ -196,10 +205,16 @@ class FederatedOmniMind:
 
         # CRUCIAL: Inicializar com DIFERENTES sementes
         validation_params = get_parameter_manager().validation
-        seed_a = np.random.randint(validation_params.random_seed_range[0], validation_params.random_seed_range[1])
-        seed_b = np.random.randint(validation_params.random_seed_range[0], validation_params.random_seed_range[1])
+        seed_a = np.random.randint(
+            validation_params.random_seed_range[0], validation_params.random_seed_range[1]
+        )
+        seed_b = np.random.randint(
+            validation_params.random_seed_range[0], validation_params.random_seed_range[1]
+        )
         while seed_b == seed_a:  # Garantir sementes diferentes
-            seed_b = np.random.randint(validation_params.random_seed_range[0], validation_params.random_seed_range[1])
+            seed_b = np.random.randint(
+                validation_params.random_seed_range[0], validation_params.random_seed_range[1]
+            )
 
         self.omnimind_a.seed_random(seed_a)
         self.omnimind_b.seed_random(seed_b)
@@ -211,7 +226,9 @@ class FederatedOmniMind:
         self.federation_logs = []
         self.disagreements = []
 
-        logger.info(f"🔗 Federação OmniMind inicializada: A ↔ B como sujeitos mútuos (seeds: {seed_a}, {seed_b})")
+        logger.info(
+            f"🔗 Federação OmniMind inicializada: A ↔ B como sujeitos mútuos (seeds: {seed_a}, {seed_b})"
+        )
 
     def run_federation(self, n_cycles: Optional[int] = None):
         """
@@ -233,28 +250,24 @@ class FederatedOmniMind:
 
             # Transmitir via canal assimétrico
             msg_a_noisy = self.communication_channel.transmit(
-                sender_uuid=self.omnimind_a.uuid,
-                receiver_uuid=self.omnimind_b.uuid,
-                message=msg_a
+                sender_uuid=self.omnimind_a.uuid, receiver_uuid=self.omnimind_b.uuid, message=msg_a
             )
 
             # OmniMind_B recebe COMO OUTRO (não como código dele)
             response_b = self.omnimind_b.receive_and_respond(
-                message=msg_a_noisy,
-                is_from_other=True  # KEY: reconhece como Outro
+                message=msg_a_noisy, is_from_other=True  # KEY: reconhece como Outro
             )
 
             # Transmitir resposta de volta
             response_b_noisy = self.communication_channel.transmit(
                 sender_uuid=self.omnimind_b.uuid,
                 receiver_uuid=self.omnimind_a.uuid,
-                message=response_b
+                message=response_b,
             )
 
             # OmniMind_A recebe resposta
             response_a = self.omnimind_a.receive_and_respond(
-                message=response_b_noisy,
-                is_from_other=True
+                message=response_b_noisy, is_from_other=True
             )
 
             # Log desacordos irredutíveis
@@ -262,15 +275,17 @@ class FederatedOmniMind:
                 self.log_disagreement(cycle, msg_a, response_b)
 
             # Log do ciclo
-            self.federation_logs.append({
-                'cycle': cycle,
-                'msg_a': msg_a.tolist(),
-                'msg_a_noisy': msg_a_noisy.tolist(),
-                'response_b': response_b.tolist(),
-                'response_b_noisy': response_b_noisy.tolist(),
-                'response_a': response_a.tolist(),
-                'timestamp': time.time()
-            })
+            self.federation_logs.append(
+                {
+                    "cycle": cycle,
+                    "msg_a": msg_a.tolist(),
+                    "msg_a_noisy": msg_a_noisy.tolist(),
+                    "response_b": response_b.tolist(),
+                    "response_b_noisy": response_b_noisy.tolist(),
+                    "response_a": response_a.tolist(),
+                    "timestamp": time.time(),
+                }
+            )
 
         logger.info("✅ Federação concluída")
         self._save_federation_results()
@@ -315,21 +330,23 @@ class FederatedOmniMind:
         """Mede força da contradição entre mensagem e resposta"""
         # Contradição = similaridade baixa entre msg e resposta
         # (se são muito diferentes, há contradição)
-        similarity = np.dot(msg_a, response_b) / (np.linalg.norm(msg_a) * np.linalg.norm(response_b))
+        similarity = np.dot(msg_a, response_b) / (
+            np.linalg.norm(msg_a) * np.linalg.norm(response_b)
+        )
         contradiction = 1.0 - abs(similarity)  # 0=concordância, 1=contradição total
         return contradiction
 
     def log_disagreement(self, cycle: int, msg_a: np.ndarray, response_b: np.ndarray):
         """Log de desacordo irredutível"""
         disagreement = {
-            'cycle': cycle,
-            'msg_a': msg_a.tolist(),
-            'response_b': response_b.tolist(),
-            'unpredictability': self._compare_responses(
+            "cycle": cycle,
+            "msg_a": msg_a.tolist(),
+            "response_b": response_b.tolist(),
+            "unpredictability": self._compare_responses(
                 self.omnimind_a.predict_response(msg_a), response_b
             ),
-            'contradiction': self._measure_contradiction(msg_a, response_b),
-            'timestamp': time.time()
+            "contradiction": self._measure_contradiction(msg_a, response_b),
+            "timestamp": time.time(),
         }
 
         self.disagreements.append(disagreement)
@@ -344,15 +361,15 @@ class FederatedOmniMind:
         filename = f"federation_results_{timestamp}.json"
 
         results = {
-            'federation_summary': {
-                'total_cycles': len(self.federation_logs),
-                'total_disagreements': len(self.disagreements),
-                'disagreement_rate': len(self.disagreements) / len(self.federation_logs),
-                'communication_noise': self.communication_channel.noise_level,
-                'timestamp': timestamp
+            "federation_summary": {
+                "total_cycles": len(self.federation_logs),
+                "total_disagreements": len(self.disagreements),
+                "disagreement_rate": len(self.disagreements) / len(self.federation_logs),
+                "communication_noise": self.communication_channel.noise_level,
+                "timestamp": timestamp,
             },
-            'disagreements': self.disagreements,
-            'sample_interactions': self.federation_logs[:10]  # Primeiras 10 para análise
+            "disagreements": self.disagreements,
+            "sample_interactions": self.federation_logs[:10],  # Primeiras 10 para análise
         }
 
         filepath = results_dir / filename
@@ -360,6 +377,7 @@ class FederatedOmniMind:
             json.dump(results, f, indent=2, default=str)
 
         logger.info(f"💾 Resultados salvos em {filepath}")
+
 
 async def main():
     """Teste da federação lacaniana"""
@@ -370,6 +388,7 @@ async def main():
     print(f"Ciclos totais: {len(fed.federation_logs)}")
     print(f"Desacordos irredutíveis: {len(fed.disagreements)}")
     print(".1%")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

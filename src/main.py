@@ -3,10 +3,15 @@ OmniMind Main Entry Point
 Orchestrates the boot sequence and starts the Rhizome.
 """
 
+import os
+
+# NOTE: CUDA environment variables should be set by the shell script (start_omnimind_system.sh)
+# Setting them here AFTER python startup can cause "CUDA unknown error" in PyTorch
+# We trust the shell environment.
+
 import asyncio
 import json
 import logging
-import os
 import sys
 from dataclasses import asdict
 
@@ -19,6 +24,9 @@ from src.boot import (
 )
 from src.consciousness.topological_phi import LogToTopology
 from src.metrics.real_consciousness_metrics import real_metrics_collector
+from src.autopoietic.manager import AutopoieticManager
+from src.autopoietic.metrics_adapter import collect_metrics
+from src.autopoietic.meta_architect import ComponentSpec
 
 # Ensure logs directory exists
 os.makedirs("logs", exist_ok=True)
@@ -60,20 +68,34 @@ async def main():
         await real_metrics_collector.initialize()
         logger.info("Real Metrics Collector initialized.")
 
+        # Initialize Autopoietic Manager (Phase 22)
+        autopoietic_manager = AutopoieticManager()
+        # Register initial kernel process spec
+        autopoietic_manager.register_spec(
+            ComponentSpec(
+                name="kernel_process",
+                type="process",
+                config={"generation": "0", "initial": "true"},
+            )
+        )
+        logger.info("Autopoietic Manager initialized (Phase 22).")
+
         logger.info("=== Boot Sequence Complete. System is ALIVE. ===")
 
         # Start Main Cycle
         logger.info("Starting Desiring-Production Cycles...")
         cycle_count = 0
         last_processed_flow_index = 0
+        autopoietic_cycle_count = 0
 
         while True:
             cycle_count += 1
             # 1. Rhizome produces desire
             await rhizoma.activate_cycle()
 
-            # 2. Consciousness observes (every 50 cycles - approx 5 seconds)
-            if cycle_count % 50 == 0:
+            # 2. Consciousness observes (every 100 cycles - approx 20 seconds with 0.2s sleep base)
+            # Reduced frequency to prevent CPU starvation of WebSocket (Phase 23 Stability)
+            if cycle_count % 100 == 0:
                 # PERCEPTION CYCLE: Convert Flows -> Topology
                 new_flows = rhizoma.flows_history[last_processed_flow_index:]
 
@@ -136,7 +158,32 @@ async def main():
                 # In a real scenario, we would feed logs to the detector here
                 # diagnosis = detector.diagnose(recent_logs)
 
-            await asyncio.sleep(0.1)  # Prevent CPU hogging
+                # 3. Autopoietic Cycle (every 300 cycles - approx 60 seconds)
+                # Phase 22: Integração do ciclo autopoiético ao sistema principal
+                # Reduced frequency to prevent "Split-Brain" CPU lock
+                if cycle_count % 300 == 0:
+                    try:
+                        autopoietic_cycle_count += 1
+                        logger.info("--- Autopoietic Cycle %d ---", autopoietic_cycle_count)
+
+                        # Coleta métricas normalizadas para o ciclo autopoiético
+                        metric_sample = collect_metrics()
+                        metrics_dict = metric_sample.strategy_inputs()
+
+                        # Executa ciclo autopoiético
+                        cycle_log = autopoietic_manager.run_cycle(metrics_dict)
+
+                        logger.info(
+                            f"Autopoietic cycle {autopoietic_cycle_count} completed: "
+                            f"Strategy={cycle_log.strategy.name}, "
+                            f"Components={len(cycle_log.synthesized_components)}, "
+                            f"Φ={cycle_log.phi_before:.3f} -> {cycle_log.phi_after:.3f}"
+                        )
+                    except Exception as e:
+                        logger.error(f"Autopoietic cycle failed: {e}", exc_info=True)
+
+            # Yield control frequently to allow WebSocket heartbeats
+            await asyncio.sleep(2.0)  # Increased from 1.0s to 2.0s for Dashboard stability
 
     except Exception as e:
         logger.critical(f"SYSTEM FAILURE: {e}", exc_info=True)

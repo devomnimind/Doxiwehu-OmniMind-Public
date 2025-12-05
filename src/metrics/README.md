@@ -215,6 +215,30 @@ Analisador de saúde do sistema baseado em dados reais.
 - `get_health_trends(history: List[SystemHealthStatus])` → `Dict[str, Any]`
   > Analisa tendências de saúde....
 
+### `DashboardMetricsAggregator`
+
+Orquestrador introduzido na Phase 22→23 para unificar todas as métricas expostas no dashboard web.
+
+**Responsabilidades principais:**
+
+- Coletar métricas do host (`CPU`, `memória`, `disco`, `uptime`) via `psutil`.
+- Delegar coleta de consciência ao `RealConsciousnessMetricsCollector` e normalizar o payload (incluindo históricos de `phi`, `ICI`, `PRS`, ansiedade, flow e entropia).
+- Agregar atividade real dos módulos via `RealModuleActivityTracker`.
+- Executar o `RealSystemHealthAnalyzer` para gerar os rótulos exibidos em `SystemHealthSummary`.
+- Registrar e comparar baselines reais através do `RealBaselineSystem`.
+- Servir como única fonte tanto para o endpoint `/daemon/status` quanto para o broadcaster de `metrics_update` no WebSocket.
+
+**API:**
+
+- `collect_snapshot(include_consciousness: bool = True, include_baseline: bool = True)` → `Dict[str, Any]`
+  > Retorna snapshot completo (ou leve) com caching interno de 2 s.
+- `set_consciousness_collector(collector: RealConsciousnessMetricsCollector)` → `None`
+  > Permite injetar o coletor global criado no backend.
+- `dashboard_metrics_aggregator` (instância global)
+  > Pode ser reutilizada por endpoints, broadcasters e serviços long-running.
+
+> **Importante:** sempre preferir este agregador ao criar novos componentes de monitoramento. Ele garante nomes consistentes, remove valores hardcoded e mantém os baselines sincronizados com os dados reais.
+
 ### `SinthomeMetrics`
 
 Calculadora de métricas Sinthomáticas.

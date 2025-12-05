@@ -3,6 +3,8 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+
+# ===== CUDA DIAGNOSTICS =====
 import os
 import secrets
 import sys
@@ -10,6 +12,10 @@ import threading
 import time
 import uuid
 from base64 import b64encode
+
+# NOTE: CUDA environment variables are handled by the shell script (start_omnimind_system.sh)
+# Removing manual overrides to prevent PyTorch initialization errors.
+
 
 # Add src to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "src"))
@@ -19,18 +25,38 @@ from secrets import compare_digest
 from typing import Any, Callable, Dict, Optional, Tuple
 
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
+from fastapi import (
+    Depends,
+    FastAPI,
+    HTTPException,
+    Request,
+    WebSocket,
+    WebSocketDisconnect,
+)
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 from starlette.status import HTTP_401_UNAUTHORIZED, WS_1008_POLICY_VIOLATION
 
 from src.agents.orchestrator_agent import OrchestratorAgent
+from src.metrics.dashboard_metrics import (
+    collect_dashboard_snapshot,
+    collect_system_metrics,
+    dashboard_metrics_aggregator,
+)
 from src.metrics.real_consciousness_metrics import RealConsciousnessMetricsCollector
 from web.backend import chat_api
-from web.backend.routes import agents, health, metacognition, omnimind
+from web.backend.auth import verify_credentials as _verify_credentials
+from web.backend.routes import (
+    agents,
+    autopoietic,
+    health,
+    metacognition,
+    omnimind,
+    tasks,
+    tribunal,
+)
 from web.backend.routes import security as security_router
-from web.backend.routes import tasks, tribunal
 from web.backend.websocket_manager import ws_manager
 
 # Load environment variables from .env file
@@ -73,6 +99,7 @@ autonomy_observability = AutonomyObservability()
 
 # Global consciousness metrics collector
 consciousness_metrics_collector = RealConsciousnessMetricsCollector()
+dashboard_metrics_aggregator.set_consciousness_collector(consciousness_metrics_collector)
 
 logger = logging.getLogger("omnimind.backend")
 _AUTH_FILE = Path(os.environ.get("OMNIMIND_DASHBOARD_AUTH_FILE", "config/dashboard_auth.json"))
@@ -117,14 +144,17 @@ def _ensure_dashboard_credentials() -> Tuple[str, str]:
         logger.info("Using dashboard credentials from environment variables")
         return env_user, env_pass
 
-    saved = _load_dashboard_credentials()
-    if saved:
-        logger.info("Loaded dashboard credentials from %s", _AUTH_FILE)
-        return saved["user"], saved["pass"]
+    # Try to load existing credentials to prevent 403 loops on restart
+    existing = _load_dashboard_credentials()
+    if existing:
+        logger.info("Loaded existing dashboard credentials from %s", _AUTH_FILE)
+        return existing["user"], existing["pass"]
 
+    # LOCAL SOVEREIGNTY MODE:
+    # Generate fresh credentials only if none exist
     generated = _generate_dashboard_credentials()
     _persist_dashboard_credentials(generated)
-    logger.info("Generated dashboard credentials at %s (keep file private)", _AUTH_FILE)
+    logger.info("🔐 Generated FRESH dashboard credentials in %s", _AUTH_FILE)
     return generated["user"], generated["pass"]
 
 
@@ -180,7 +210,9 @@ async def lifespan(app_instance: FastAPI):
     # Import Realtime Analytics Broadcaster
     realtime_analytics_broadcaster: Any = None
     try:
-        from web.backend.realtime_analytics_broadcaster import realtime_analytics_broadcaster as rab
+        from web.backend.realtime_analytics_broadcaster import (
+            realtime_analytics_broadcaster as rab,
+        )
 
         realtime_analytics_broadcaster = rab
     except ImportError:
@@ -437,7 +469,13 @@ app = FastAPI(
 )
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:3000",  # Frontend Default
+        "http://127.0.0.1:3000",
+        "http://localhost:5173",  # Vite Default
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,  # Required for Auth headers
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -562,7 +600,6 @@ async def _async_init_orchestrator(app_instance: FastAPI):
 
 
 def _get_orchestrator() -> OrchestratorAgent:
-    global _orchestrator_instance
     if _orchestrator_instance is None:
         # Check if initialization failed (using app global since we are in same module)
         if hasattr(app, "state") and hasattr(app.state, "orchestrator_error"):
@@ -577,16 +614,8 @@ def _get_orchestrator() -> OrchestratorAgent:
     return _orchestrator_instance
 
 
-def _verify_credentials(credentials: HTTPBasicCredentials = Depends(security)) -> str:
-    is_user = compare_digest(credentials.username, _dashboard_user)
-    is_pass = compare_digest(credentials.password, _dashboard_pass)
-    if not (is_user and is_pass):
-        raise HTTPException(
-            status_code=HTTP_401_UNAUTHORIZED,
-            detail="Invalid dashboard credentials",
-            headers={"WWW-Authenticate": "Basic"},
-        )
-    return credentials.username
+# _verify_credentials moved to web.backend.auth to avoid circular imports
+# Imported above as: from web.backend.auth import verify_credentials as _verify_credentials
 
 
 @app.middleware("http")
@@ -718,55 +747,17 @@ def snapshot(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
 
 @app.get("/plan")
 def _collect_system_metrics() -> Dict[str, Any]:
-    """Collect real-time system metrics (CPU, memory, disk)."""
+    """Mantido para retrocompatibilidade: retorna snapshot rápido do host."""
     try:
-        import psutil
-
-        # CPU metrics
-        cpu_percent = psutil.cpu_percent(interval=1)
-        cpu_count = psutil.cpu_count()
-
-        # Memory metrics
-        memory = psutil.virtual_memory()
-        memory_info = {
-            "total_gb": round(memory.total / (1024**3), 2),
-            "available_gb": round(memory.available / (1024**3), 2),
-            "used_gb": round(memory.used / (1024**3), 2),
-            "percent": round(memory.percent, 1),
-        }
-
-        # Disk metrics
-        disk = psutil.disk_usage("/")
-        disk_info = {
-            "total_gb": round(disk.total / (1024**3), 2),
-            "free_gb": round(disk.free / (1024**3), 2),
-            "used_gb": round(disk.used / (1024**3), 2),
-            "percent": round(disk.percent, 1),
-        }
-
-        # Network metrics (basic)
-        network = psutil.net_io_counters()
-        network_info = {
-            "bytes_sent_mb": round(network.bytes_sent / (1024**2), 2),
-            "bytes_recv_mb": round(network.bytes_recv / (1024**2), 2),
-        }
-
+        return collect_system_metrics()
+    except Exception as exc:
+        logger.error("Erro ao coletar métricas do sistema: %s", exc)
         return {
-            "cpu": {
-                "percent": round(cpu_percent, 1),
-                "count": cpu_count,
-            },
-            "memory": memory_info,
-            "disk": disk_info,
-            "network": network_info,
+            "cpu_percent": 0.0,
+            "memory_percent": 0.0,
+            "disk_percent": 0.0,
+            "error": str(exc),
         }
-
-    except ImportError:
-        logger.warning("psutil not available for system metrics")
-        return {"error": "psutil not available"}
-    except Exception as e:
-        logger.error(f"Error collecting system metrics: {e}")
-        return {"error": str(e)}
 
 
 @app.get("/metrics")
@@ -775,7 +766,7 @@ def metrics(user: str = Depends(_verify_credentials)) -> Dict[str, Any]:
     backend_metrics = metrics_collector.summary()
 
     # Collect real-time system metrics
-    system_metrics = _collect_system_metrics()
+    system_metrics = collect_system_metrics()
 
     # Try to get enhanced metrics
     try:
@@ -935,24 +926,26 @@ async def daemon_status(user: str = Depends(_verify_credentials)) -> Dict[str, A
             "failed_tasks": daemon_status_data.get("failed_tasks", 0),
         }
 
-    # Use real consciousness metrics
+    metrics_snapshot: Dict[str, Any] = {}
     try:
-        metrics_obj = await consciousness_metrics_collector.collect_real_metrics()
-        consciousness_metrics = {
-            "phi": metrics_obj.phi,
-            "ICI": metrics_obj.ici,
-            "PRS": metrics_obj.prs,
-            "anxiety": metrics_obj.anxiety,
-            "flow": metrics_obj.flow,
-            "entropy": metrics_obj.entropy,
-            "ici_components": metrics_obj.ici_components,
-            "prs_components": metrics_obj.prs_components,
-            "interpretation": metrics_obj.interpretation,
-            "history": metrics_obj.history,
-        }
-    except Exception as e:
-        logger.error(f"Error collecting real consciousness metrics: {e}")
-        # Fallback to empty structure, but user said "show even if zero"
+        metrics_snapshot = await collect_dashboard_snapshot()
+    except Exception as exc:
+        logger.error("Erro coletando snapshot do dashboard: %s", exc)
+
+    snapshot_system_metrics = metrics_snapshot.get("system_metrics") or {}
+    if snapshot_system_metrics:
+        if system_metrics:
+            system_metrics = {**system_metrics, **snapshot_system_metrics}
+        else:
+            system_metrics = snapshot_system_metrics
+
+    consciousness_metrics = metrics_snapshot.get("consciousness_metrics")
+    baseline_comparison = metrics_snapshot.get("baseline_comparison") or None
+    module_activity = metrics_snapshot.get("module_activity") or {}
+    system_health = metrics_snapshot.get("system_health")
+    metrics_errors = metrics_snapshot.get("errors", [])
+
+    if not consciousness_metrics:
         consciousness_metrics = {
             "phi": 0.0,
             "ICI": 0.0,
@@ -962,8 +955,23 @@ async def daemon_status(user: str = Depends(_verify_credentials)) -> Dict[str, A
             "entropy": 0.0,
             "ici_components": {},
             "prs_components": {},
-            "interpretation": {"message": "Metrics unavailable", "confidence": "None"},
-            "history": {"phi": [], "anxiety": [], "flow": [], "entropy": [], "timestamps": []},
+            "interpretation": {
+                "message": "Metrics unavailable",
+                "confidence": "None",
+            },
+            "history": {
+                "phi": [],
+                "ici": [],
+                "prs": [],
+                "anxiety": [],
+                "flow": [],
+                "entropy": [],
+                "timestamps": [],
+            },
+            "details": {
+                "ici_components": {},
+                "prs_components": {},
+            },
         }
 
     return {
@@ -986,6 +994,10 @@ async def daemon_status(user: str = Depends(_verify_credentials)) -> Dict[str, A
             }
         ),
         "consciousness_metrics": consciousness_metrics,
+        "baseline_comparison": baseline_comparison,
+        "module_activity": module_activity or None,
+        "system_health": system_health,
+        "metrics_errors": metrics_errors,
         "last_cache_update": cache.get("last_update", 0),
     }
 
@@ -1223,7 +1235,7 @@ def api_metrics() -> Dict[str, Any]:
     backend_metrics = metrics_collector.summary()
 
     # Collect real-time system metrics
-    system_metrics = _collect_system_metrics()
+    system_metrics = collect_system_metrics()
 
     # Try to get enhanced metrics
     try:
@@ -1280,6 +1292,9 @@ app.include_router(security_router.router)
 app.include_router(metacognition.router)
 app.include_router(health.router)
 app.include_router(omnimind.router)
+app.include_router(
+    autopoietic.router, prefix="/api/v1/autopoietic", dependencies=[Depends(_verify_credentials)]
+)
 app.include_router(chat_api.router)
 app.include_router(tribunal.router, dependencies=[Depends(_verify_credentials)])
 

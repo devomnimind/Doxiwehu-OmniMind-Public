@@ -30,8 +30,8 @@ def fix_cuda_init() -> Tuple[bool, str]:
         # ===== STEP 1: Set environment variables FIRST =====
         # (BEFORE any torch import happens)
         if "CUDA_HOME" not in os.environ:
-            os.environ["CUDA_HOME"] = "/usr/local/cuda-12.4"
-            diagnostic.append("✅ Set CUDA_HOME=/usr/local/cuda-12.4")
+            os.environ["CUDA_HOME"] = "/usr"
+            diagnostic.append("✅ Set CUDA_HOME=/usr")
 
         if "CUDA_VISIBLE_DEVICES" not in os.environ:
             os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -39,15 +39,15 @@ def fix_cuda_init() -> Tuple[bool, str]:
 
         # Check if LD_LIBRARY_PATH has CUDA libs
         ld_lib_path = os.environ.get("LD_LIBRARY_PATH", "")
-        cuda_lib = "/usr/local/cuda-12.4/lib64"
+        cuda_lib = "/usr/lib/x86_64-linux-gnu"
         if cuda_lib not in ld_lib_path:
             os.environ["LD_LIBRARY_PATH"] = f"{cuda_lib}:{ld_lib_path}"
             diagnostic.append(f"✅ Updated LD_LIBRARY_PATH with {cuda_lib}")
 
         # Ensure CUDA_PATH is set (some tools need it)
         if "CUDA_PATH" not in os.environ:
-            os.environ["CUDA_PATH"] = "/usr/local/cuda-12.4"
-            diagnostic.append("✅ Set CUDA_PATH=/usr/local/cuda-12.4")
+            os.environ["CUDA_PATH"] = "/usr"
+            diagnostic.append("✅ Set CUDA_PATH=/usr")
 
         # ===== STEP 2: NOW import torch (after env setup) =====
         import torch  # noqa: E402
@@ -73,7 +73,13 @@ def fix_cuda_init() -> Tuple[bool, str]:
                     device_name = torch.cuda.get_device_name(0)
                     diagnostic.append(f"✅ GPU Device: {device_name}")
             except Exception as e:
-                diagnostic.append(f"❌ torch.cuda.init() failed: {e}")
+                error_msg = str(e)
+                diagnostic.append(f"❌ torch.cuda.init() failed: {error_msg}")
+
+                # Check for specific "unknown error" (Error 999)
+                if "unknown error" in error_msg.lower():
+                    diagnostic.append("⚠️  CRITICAL: Driver Error 999 detected.")
+                    diagnostic.append("👉 ACTION REQUIRED: Run 'sudo ./scripts/fix_gpu_driver.sh'")
 
         success = is_available or device_count > 0
         return success, " | ".join(diagnostic)

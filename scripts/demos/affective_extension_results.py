@@ -5,6 +5,7 @@ Demonstração da Extensão Lacaniana - Resultados
 Como os testes estão rodando, aqui estão os resultados da implementação:
 """
 
+
 def show_implementation_results():
     print("🧪 EXTENSÃO LACANIANA IMPLEMENTADA - RESULTADOS")
     print("=" * 60)
@@ -62,6 +63,7 @@ def show_implementation_results():
     print("  • Não interfere na operação atual")
     print("  • Base sólida para pesquisa empírica")
     print("  • Potencial para descobertas científicas significativas")
+
 
 if __name__ == "__main__":
     show_implementation_results()

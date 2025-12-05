@@ -32,9 +32,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -123,12 +121,12 @@ class CodeSigner:
 
     def _remove_existing_signature(self, content: str) -> str:
         """Remove existing signature block from module."""
-        pattern = rf"{re.escape(self.SIGNATURE_HEADER_START)}.*?{re.escape(self.SIGNATURE_HEADER_END)}\n?"
+        pattern = (
+            rf"{re.escape(self.SIGNATURE_HEADER_START)}.*?{re.escape(self.SIGNATURE_HEADER_END)}\n?"
+        )
         return re.sub(pattern, "", content, flags=re.DOTALL)
 
-    def _create_signature_block(
-        self, signature: ModuleSignature, module_hash: str
-    ) -> str:
+    def _create_signature_block(self, signature: ModuleSignature, module_hash: str) -> str:
         """
         Create a formatted signature block for insertion into module.
 
@@ -216,15 +214,11 @@ class CodeSigner:
 
             # Combine: signature block + clean content
             # Signature goes after docstring if present, otherwise at top
-            if content_without_sig.startswith('"""') or content_without_sig.startswith(
-                "'''"
-            ):
+            if content_without_sig.startswith('"""') or content_without_sig.startswith("'''"):
                 # Find end of module docstring
                 quote = '"""' if content_without_sig.startswith('"""') else "'''"
                 first_line_end = content_without_sig.find("\n") + 1
-                first_quotes = content_without_sig[
-                    first_line_end : first_line_end + 3
-                ] == quote
+                first_quotes = content_without_sig[first_line_end : first_line_end + 3] == quote
                 if first_quotes:
                     # Multi-line docstring
                     docstring_end = content_without_sig.find(quote, 6)
@@ -260,9 +254,7 @@ class CodeSigner:
             logger.error(f"Failed to sign {module_path}: {e}")
             return False
 
-    def sign_directory(
-        self, root_path: Path, recursive: bool = True
-    ) -> Dict[str, Any]:
+    def sign_directory(self, root_path: Path, recursive: bool = True) -> Dict[str, Any]:
         """
         Sign all Python modules in a directory.
 
@@ -366,9 +358,7 @@ class CodeSigner:
 
 def main() -> int:
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Sign OmniMind modules with developer credentials"
-    )
+    parser = argparse.ArgumentParser(description="Sign OmniMind modules with developer credentials")
     parser.add_argument(
         "--module-path",
         type=Path,

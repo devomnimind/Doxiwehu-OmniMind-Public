@@ -20,22 +20,24 @@ load_dotenv()
 # Garantir PYTHONPATH correto
 script_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(script_dir)))
-src_path = os.path.join(project_root, 'src')
+src_path = os.path.join(project_root, "src")
 if src_path not in sys.path:
     sys.path.insert(0, src_path)
 
 # Configuração IBM Quantum
 IBM_BACKEND = "ibm_torino"  # Backend livre (0 jobs pendentes)
-IBM_API_KEY = os.getenv('IBM_API_KEY')
+IBM_API_KEY = os.getenv("IBM_API_KEY")
 
 if not IBM_API_KEY:
     print("❌ ERRO: IBM_API_KEY não encontrada no .env")
     sys.exit(1)
 
+
 def log(message):
     """Log com timestamp"""
     timestamp = datetime.now().strftime("%H:%M:%S")
     print(f"[{timestamp}] {message}")
+
 
 def run_classical_test(test_file, test_name):
     """Executa teste clássico localmente"""
@@ -45,11 +47,13 @@ def run_classical_test(test_file, test_name):
 
         # Configurar ambiente com PYTHONPATH correto
         env = os.environ.copy()
-        env['PYTHONPATH'] = f"{src_path}:{env.get('PYTHONPATH', '')}"
+        env["PYTHONPATH"] = f"{src_path}:{env.get('PYTHONPATH', '')}"
 
-        result = subprocess.run([
-            sys.executable, '-c',
-            f"""
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                f"""
 import sys
 import os
 sys.path.insert(0, '{src_path}')
@@ -60,8 +64,13 @@ os.environ['PYTHONPATH'] = '{src_path}:{project_root}/scripts/science_validation
 
 import runpy
 runpy.run_path('{os.path.join(project_root, test_file)}', run_name='__main__')
-"""
-        ], capture_output=True, text=True, timeout=600, env=env)
+""",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=600,
+            env=env,
+        )
 
         elapsed = time.time() - start_time
 
@@ -80,6 +89,7 @@ runpy.run_path('{os.path.join(project_root, test_file)}', run_name='__main__')
         log(f"❌ {test_name} erro crítico: {str(e)}")
         return False, str(e)
 
+
 def run_quantum_test(test_file, test_name):
     """Executa teste quântico no IBM"""
     try:
@@ -88,13 +98,15 @@ def run_quantum_test(test_file, test_name):
 
         # Para testes quânticos, ainda usar subprocess mas com PYTHONPATH correto
         env = os.environ.copy()
-        env['IBM_API_KEY'] = IBM_API_KEY
-        env['IBM_BACKEND'] = IBM_BACKEND
-        env['PYTHONPATH'] = f"{src_path}:{env.get('PYTHONPATH', '')}"
+        env["IBM_API_KEY"] = IBM_API_KEY
+        env["IBM_BACKEND"] = IBM_BACKEND
+        env["PYTHONPATH"] = f"{src_path}:{env.get('PYTHONPATH', '')}"
 
-        result = subprocess.run([
-            sys.executable, '-c',
-            f"""
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-c",
+                f"""
 import sys
 import os
 sys.path.insert(0, '{src_path}')
@@ -105,8 +117,13 @@ os.environ['PYTHONPATH'] = '{src_path}:{project_root}/scripts/science_validation
 
 import runpy
 runpy.run_path('{os.path.join(project_root, test_file)}', run_name='__main__')
-"""
-        ], capture_output=True, text=True, timeout=600, env=env)
+""",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=600,
+            env=env,
+        )
 
         elapsed = time.time() - start_time
 
@@ -124,6 +141,7 @@ runpy.run_path('{os.path.join(project_root, test_file)}', run_name='__main__')
     except Exception as e:
         log(f"❌ {test_name} erro crítico: {str(e)}")
         return False, str(e)
+
 
 async def main():
     log("🚀 EXECUÇÃO HÍBRIDA OMNIMIND - REAL EVIDENCE SUITE")
@@ -144,13 +162,15 @@ async def main():
         ("tests/test_pci_perturbation.py", "PCI Perturbação"),
         ("tests/test_anesthesia_gradient.py", "Anestesia Gradiente"),
         ("tests/test_timescale_sweep.py", "Varredura Temporal"),
-        ("tests/test_inter_rater_agreement.py", "Concordância Inter-Avaliadores")
+        ("tests/test_inter_rater_agreement.py", "Concordância Inter-Avaliadores"),
     ]
 
     classical_results = []
     with ThreadPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(run_classical_test, test_file, test_name)
-                  for test_file, test_name in classical_tests]
+        futures = [
+            executor.submit(run_classical_test, test_file, test_name)
+            for test_file, test_name in classical_tests
+        ]
 
         for future in as_completed(futures):
             result = future.result()
@@ -162,7 +182,7 @@ async def main():
 
     quantum_tests = [
         ("tests/test_do_calculus.py", "Do-Calculus Causal"),
-        ("tests/test_lacan_complete.py", "Lacan Subjectivity")
+        ("tests/test_lacan_complete.py", "Lacan Subjectivity"),
     ]
 
     quantum_results = []
@@ -204,6 +224,7 @@ async def main():
         log("Verificar logs para detalhes")
 
     log("=" * 60)
+
 
 if __name__ == "__main__":
     asyncio.run(main())

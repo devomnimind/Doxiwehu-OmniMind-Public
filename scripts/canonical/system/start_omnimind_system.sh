@@ -17,13 +17,66 @@ else
     echo "⚠️  Venv não encontrado em $PROJECT_ROOT/.venv"
 fi
 
+# 🔧 GPU Configuration - Kali Linux Native Paths
+echo "🔧 Configurando ambiente GPU (Kali Native)..."
+# No Kali/Debian, CUDA é integrado em /usr
+export CUDA_HOME="/usr"
+export CUDA_path="/usr"
+# A libcuda.so.1 está em /usr/lib/x86_64-linux-gnu/
+# Adicionar ao LD_LIBRARY_PATH explicitamente para garantir que PyTorch a encontre
+export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
+export CUDA_VISIBLE_DEVICES="0"
+export PYTORCH_CUDA_ALLOC_CONF="backend:cudaMallocAsync"
+# export CUDA_LAUNCH_BLOCKING="1" # Descomente se precisar debugar inicialização síncrona
+
 # Garantir permissão de execução no run_cluster
 chmod +x scripts/canonical/system/run_cluster.sh
+
+# Lógica de Autenticação Dinâmica (Soberania Local) - UNIFICADA PARA CLUSTER
+# Gera credenciais UMA VEZ e exporta para todos os subprocessos
+DASH_USER=""
+DASH_PASS=""
+AUTH_FILE="config/dashboard_auth.json"
+
+# 1. Tentar ler do arquivo gerado anteriormente ou preservar sessão
+if [ -f "$AUTH_FILE" ]; then
+    # Extração segura
+    DASH_USER=$(python3 -c "import json; print(json.load(open('$AUTH_FILE')).get('user', ''))" 2>/dev/null)
+    DASH_PASS=$(python3 -c "import json; print(json.load(open('$AUTH_FILE')).get('pass', ''))" 2>/dev/null)
+fi
+
+# 2. Fallback para .env
+if [ -z "$DASH_USER" ] && [ -f ".env" ]; then
+    DASH_USER=$(grep "^OMNIMIND_DASHBOARD_USER=" .env | cut -d '=' -f2 | tr -d '"' | tr -d "'")
+    DASH_PASS=$(grep "^OMNIMIND_DASHBOARD_PASS=" .env | cut -d '=' -f2 | tr -d '"' | tr -d "'")
+fi
+
+# 3. Gerar novas se não existirem (e salvar no arquivo para o backend usar a mesma)
+if [ -z "$DASH_USER" ]; then
+    # SOBERANIA LOCAL REAL: Gerar credenciais aleatórias fortes a cada sessão
+    # Isso garante segurança e obriga o uso correto do fluxo de autenticação
+    DASH_USER="admin"
+    DASH_PASS=$(openssl rand -base64 12)
+
+    # Salvar no JSON para persistência e leitura pelo backend
+    echo "{\"user\": \"$DASH_USER\", \"pass\": \"$DASH_PASS\"}" > "$AUTH_FILE"
+    echo "🔑 Novas credenciais SOBERANAS geradas em $AUTH_FILE"
+fi
+
+# EXPORTAR PARA O AMBIENTE - ISSO GARANTE QUE TODOS OS BACKENDS USEM A MESMA SENHA
+export OMNIMIND_DASHBOARD_USER="$DASH_USER"
+export OMNIMIND_DASHBOARD_PASS="$DASH_PASS"
+export OMNIMIND_DASHBOARD_AUTH_FILE="$PROJECT_ROOT/$AUTH_FILE"
+
+echo -e "${GREEN}🔐 Credenciais Unificadas do Cluster:${NC}"
+echo "   User: $DASH_USER"
+echo "   Pass: $DASH_PASS"
 
 # 1. Limpeza
 echo "🧹 Limpando processos antigos..."
 pkill -f "python web/backend/main.py"
 pkill -f "uvicorn web.backend.main:app"
+pkill -f "python -m src.main"
 pkill -f "vite"
 pkill -f "bpftrace.*monitor_mcp_bpf" || true
 sleep 2
@@ -50,22 +103,38 @@ else
     tail -n 10 logs/backend_8000.log
 fi
 
-# 3. Iniciar Daemon (com delay para não sobrecarregar)
+# 3. Iniciar Ciclo Principal com Autopoiese (Phase 23)
+echo -e "${GREEN}🔄 Iniciando Ciclo Principal OmniMind (Fase 23: Autopoiese + Integração Real-time)...${NC}"
+cd "$PROJECT_ROOT"
+mkdir -p logs data/autopoietic/synthesized_code data/monitor
+
+# Iniciar ciclo principal em background (Rhizome + Consciência + Autopoiese)
+nohup python -m src.main > logs/main_cycle.log 2>&1 &
+MAIN_CYCLE_PID=$!
+echo $MAIN_CYCLE_PID > logs/main_cycle.pid
+echo "✓ Ciclo Principal iniciado (PID $MAIN_CYCLE_PID)"
+echo "   Log: tail -f logs/main_cycle.log"
+sleep 3
+
+# 4. Iniciar Daemon (com delay para não sobrecarregar)
 echo -e "${GREEN}⏰ Agendando inicialização do Daemon (em 5 segundos)...${NC}"
 sleep 5
 echo -e "${GREEN}🤖 Inicializando OmniMind Daemon...${NC}"
 cd "$PROJECT_ROOT"
 
-# Usar credenciais padrão do dashboard (admin:omnimind2025!)
-# Fazer requisição com autenticação básica
+# Lógica de Autenticação Dinâmica (Soberania Local)
+# JÁ FOI TRATADA NO INÍCIO DO SCRIPT
+# Apenas re-leitura para garantir (embora variáveis de ambiente já estejam setadas)
+
+# Fazer requisição com as credenciais descobertas
 curl -X POST http://localhost:8000/daemon/start \
-  -u admin:omnimind2025! \
+  -u "${OMNIMIND_DASHBOARD_USER}:${OMNIMIND_DASHBOARD_PASS}" \
   > logs/daemon_start.log 2>&1 &
 DAEMON_START_PID=$!
 echo "✓ Daemon start request enviado (PID $DAEMON_START_PID)"
 sleep 2
 
-# 4. Iniciar Frontend
+# 5. Iniciar Frontend
 echo -e "${GREEN}🎨 Iniciando Frontend...${NC}"
 cd web/frontend
 # Verificar se node_modules existe, se não, instalar
@@ -79,7 +148,7 @@ FRONTEND_PID=$!
 echo $FRONTEND_PID > ../../logs/frontend.pid
 echo "Frontend iniciado com PID $FRONTEND_PID"
 
-# 5. Verificação Final
+# 6. Verificação Final
 echo -e "${GREEN}🔍 Verificando status do sistema...${NC}"
 sleep 5
 
@@ -91,7 +160,7 @@ else
     cat ../../logs/frontend.log
 fi
 
-# 6. Iniciar eBPF Monitor Contínuo
+# 7. Iniciar eBPF Monitor Contínuo
 echo -e "${GREEN}📊 Iniciando eBPF Monitor Contínuo...${NC}"
 
 # Voltar para a raiz do projeto para encontrar scripts/secure_run.py
@@ -125,6 +194,18 @@ fi
 
 echo -e "${GREEN}✨ Sistema OmniMind Reiniciado!${NC}"
 echo "Backend Cluster: Ports 8000, 8080, 3001"
+echo "Ciclo Principal (Autopoiese Phase 22): PID $MAIN_CYCLE_PID"
 echo "Frontend: http://localhost:3000"
+echo ""
+echo -e "${GREEN}🔐 CREDENCIAIS DA SESSÃO ATUAL (CLUSTER UNIFICADO):${NC}"
+echo -e "   User: ${GREEN}${OMNIMIND_DASHBOARD_USER}${NC}"
+echo -e "   Pass: ${GREEN}${OMNIMIND_DASHBOARD_PASS}${NC}"
+echo "   (Use estas credenciais para logar no Dashboard)"
+echo ""
 echo "eBPF Monitor: logs/ebpf_monitor.log"
 echo "Logs Directory: logs/"
+echo ""
+echo "📊 Autopoiese Phase 23 (Active):"
+echo "   - Componentes sintetizados: data/autopoietic/synthesized_code/"
+echo "   - Histórico de ciclos: data/autopoietic/cycle_history.jsonl"
+echo "   - Log do ciclo: logs/main_cycle.log"

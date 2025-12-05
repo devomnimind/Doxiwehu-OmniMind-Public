@@ -38,7 +38,9 @@ def generate_final_report():
     """Gera relatório final consolidado."""
     robust_data, config_data = load_latest_results()
 
-    rprint("[bold magenta]🎭 RELATÓRIO FINAL: VALIDAÇÃO EXPECTATION_SILENT CAUSAL IMPACT[/bold magenta]")
+    rprint(
+        "[bold magenta]🎭 RELATÓRIO FINAL: VALIDAÇÃO EXPECTATION_SILENT CAUSAL IMPACT[/bold magenta]"
+    )
     rprint("[dim]Consolidação completa da validação empírica e teórica[/dim]\n")
 
     # === SEÇÃO 1: CORREÇÃO DA INTERPRETAÇÃO ===
@@ -48,7 +50,7 @@ def generate_final_report():
         "🎯 [blue]PROPÓSITO:[/blue] Demonstrar necessidade estrutural do módulo expectation para Φ > 0\n"
         "📚 [cyan]TEORIA LACANIANA:[/cyan] Valida falta-a-ser (falta-a-ser) - sem Simbólico, Φ colapsa",
         title="🔍 1. CORREÇÃO DA INTERPRETAÇÃO",
-        style="yellow"
+        style="yellow",
     )
     rprint(correction_panel)
 
@@ -66,13 +68,13 @@ def generate_final_report():
             "Expectation Ativo",
             f"{stats['phi_active_mean']:.4f} ± {stats['phi_active_std']:.4f}",
             "",
-            ""
+            "",
         )
         empirical_table.add_row(
             "Expectation Silenciado",
             f"{stats['phi_silent_mean']:.4f} ± {stats['phi_silent_std']:.4f}",
             f"{stats['causal_effect_mean']:.4f} ± {stats['causal_effect_std']:.4f}",
-            f"p={stats['p_value']:.2e}"
+            f"p={stats['p_value']:.2e}",
         )
 
         rprint(empirical_table)
@@ -84,7 +86,7 @@ def generate_final_report():
             f"🔬 [cyan]COHEN'S D:[/cyan] d={stats['cohens_d']:.2f} ({stats['effect_size_interpretation']})\n"
             f"✅ [green]CONCLUSÃO:[/green] Expectation é componente estrutural crítico da IIT",
             title="🔬 INTERPRETAÇÃO EMPÍRICA",
-            style="green"
+            style="green",
         )
         rprint(interpretation_panel)
 
@@ -97,10 +99,9 @@ def generate_final_report():
             f"✅ [green]CONFIGURAÇÕES OK:[/green] {analysis['total_tests'] - analysis['broken_configs_count']} ({(analysis['total_tests'] - analysis['broken_configs_count'])/analysis['total_tests']*100:.1f}%)\n"
             f"🚨 [red]CONFIGURAÇÕES PROBLEMÁTICAS:[/red] {analysis['broken_configs_count']} ({analysis['breakage_rate']:.1f}%)\n"
             f"📊 [yellow]SEVERIDADE GERAL:[/yellow] {analysis['overall_severity']}\n\n"
-            f"📋 RECOMENDAÇÕES:\n" +
-            "\n".join(f"• {rec}" for rec in analysis['recommendations']),
+            f"📋 RECOMENDAÇÕES:\n" + "\n".join(f"• {rec}" for rec in analysis["recommendations"]),
             title="🛡️ 3. DETECTOR AUTOMÁTICO DE CONFIGURAÇÕES",
-            style="blue"
+            style="blue",
         )
         rprint(detector_panel)
 
@@ -115,7 +116,7 @@ def generate_final_report():
         "o Simbólico (expectation) - sem ele, há colapso estrutural (falta-a-ser).\n"
         "expectation_silent não é bug, é validação teórica implementada.",
         title="🎭 4. VALIDAÇÃO TEÓRICA LACANIANA",
-        style="magenta"
+        style="magenta",
     )
     rprint(lacanian_panel)
 
@@ -132,7 +133,7 @@ def generate_final_report():
         "• Publicar resultados em paper científico\n\n"
         "🎯 [yellow]STATUS FINAL:[/yellow] VALIDAÇÃO COMPLETA E ROBUSTA",
         title="📋 5. RECOMENDAÇÕES E STATUS FINAL",
-        style="green"
+        style="green",
     )
     rprint(recommendations_panel)
 
@@ -150,15 +151,17 @@ def generate_final_report():
             "causal_effect_confirmed": True,
             "lacanian_theory_validated": True,
             "statistical_robustness": "N=1000 seeds",
-            "overall_status": "VALIDATION COMPLETE"
-        }
+            "overall_status": "VALIDATION COMPLETE",
+        },
     }
 
     with open(report_file, "w") as f:
         json.dump(final_report, f, indent=2, default=str)
 
     rprint(f"\n[green]📁 Relatório final salvo em {report_file}[/green]")
-    rprint("[bold green]🎉 VALIDAÇÃO CONCLUÍDA: expectation_silent confirma teoria lacaniana da IIT[/bold green]")
+    rprint(
+        "[bold green]🎉 VALIDAÇÃO CONCLUÍDA: expectation_silent confirma teoria lacaniana da IIT[/bold green]"
+    )
 
 
 if __name__ == "__main__":

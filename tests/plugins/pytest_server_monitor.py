@@ -230,11 +230,38 @@ class ServerMonitorPlugin:
         if "tests/e2e/" in item_path or "tests\\e2e\\" in item_path:
             return False
 
-        # EXCEÇÃO EXPLÍCITA: Testes de integração de consciência são
-        # unitários/mockados e NÃO devem disparar o servidor real. "integration"
-        # no nome do arquivo dispara falso positivo.
-        if "tests/consciousness/test_integration_loss.py" in item_path:
-            return False
+        # EXCEÇÃO EXPLÍCITA: Lista de arquivos que contêm palavras-chave de integração
+        # mas são unitários/mockados e NÃO devem disparar o servidor real.
+        excluded_files = [
+            "tests/consciousness/test_integration_loss.py",
+            "tests/autopoietic/test_architecture_evolution.py",
+            "tests/autopoietic/test_meaning_maker.py",
+            "tests/manual/test_ui_integration.py",
+            "tests/test_agents_core_integration.py",
+            "tests/test_enhanced_agents_integration.py",
+            "tests/test_dashboard_ws_auth.py",
+            "tests/metrics/test_dashboard_metrics.py",
+            "tests/test_enhanced_integrations.py",
+            "tests/autopoietic/test_integration_flow_v2.py",
+            "tests/test_security_agent_integration.py",
+            "tests/swarm/test_swarm_integration.py",
+            "tests/consciousness/test_integration_loop.py",
+            "tests/test_lacanian_integration_complete.py",
+            "tests/test_external_ai_integration.py",
+            "tests/test_phase16_full_integration.py",
+            "tests/test_phase16_integration.py",
+            "tests/test_tools_integration.py",
+            "tests/test_dashboard_e2e.py",
+            "tests/test_phase3_integration.py",
+            "tests/autopoietic/test_advanced_repair.py",
+        ]
+
+        # Normaliza o caminho do item para comparação
+        normalized_item_path = item_path.replace("\\", "/")
+
+        for excluded in excluded_files:
+            if excluded in normalized_item_path:
+                return False
 
         # Testes que explicitamente marcam que precisam de servidor
         e2e_markers = ["e2e", "endpoint", "dashboard", "integration"]

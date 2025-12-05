@@ -18,6 +18,7 @@ from rich.table import Table
 from rich.panel import Panel
 
 import sys
+
 sys.path.append(".")
 from scripts.science_validation.run_scientific_ablations import IntegrationLoopSimulator
 
@@ -34,7 +35,9 @@ class PhiConfigurationValidator:
         self.baseline_phi_silent = 0.05  # Φ esperado quando expectation_silent=True
         self.tolerance = 0.2  # Tolerância mais permissiva para variações
 
-    async def test_configuration_impact(self, config_name: str, config_value: Any) -> Dict[str, Any]:
+    async def test_configuration_impact(
+        self, config_name: str, config_value: Any
+    ) -> Dict[str, Any]:
         """Testa impacto de uma configuração específica."""
         # Usa abordagem similar ao robust validation: múltiplas seeds com mesmo simulador
         phis = []
@@ -68,7 +71,11 @@ class PhiConfigurationValidator:
         std_phi = np.std(phis)
 
         # Define baseline baseado na configuração
-        expected_baseline = self.baseline_phi_silent if config_name == "expectation_silent" and config_value else self.baseline_phi
+        expected_baseline = (
+            self.baseline_phi_silent
+            if config_name == "expectation_silent" and config_value
+            else self.baseline_phi
+        )
 
         # Detecta problemas
         is_broken = abs(mean_phi - expected_baseline) > self.tolerance
@@ -88,7 +95,9 @@ class PhiConfigurationValidator:
     async def scan_all_configurations(self) -> Dict[str, Any]:
         """Escaneia todas as configurações críticas."""
         rprint("[bold red]🔍 DETECTOR AUTOMÁTICO: Configurações que Quebram Φ[/bold red]")
-        rprint("[dim]Escaneando configurações críticas para detectar Φ=0 ou inconsistências[/dim]\n")
+        rprint(
+            "[dim]Escaneando configurações críticas para detectar Φ=0 ou inconsistências[/dim]\n"
+        )
 
         all_results = {}
         broken_configs = []
@@ -132,13 +141,21 @@ class PhiConfigurationValidator:
             name = config["config_name"]
             config_breakdown[name] = config_breakdown.get(name, 0) + 1
 
-        most_problematic = max(config_breakdown.items(), key=lambda x: x[1]) if config_breakdown else ("Nenhuma", 0)
+        most_problematic = (
+            max(config_breakdown.items(), key=lambda x: x[1])
+            if config_breakdown
+            else ("Nenhuma", 0)
+        )
 
         # Severidade geral
         critical_count = sum(1 for c in broken_configs if c["severity"] == "CRÍTICO")
         high_count = sum(1 for c in broken_configs if c["severity"] == "ALTO")
 
-        overall_severity = "CRÍTICA" if critical_count > 0 else "ALTA" if high_count > 2 else "MODERADA" if broken_count > 0 else "NORMAL"
+        overall_severity = (
+            "CRÍTICA"
+            if critical_count > 0
+            else "ALTA" if high_count > 2 else "MODERADA" if broken_count > 0 else "NORMAL"
+        )
 
         return {
             "total_tests": total_tests,
@@ -156,12 +173,18 @@ class PhiConfigurationValidator:
         """Gera recomendações baseadas nos problemas encontrados."""
         recommendations = []
 
-        if any(c["config_name"] == "expectation_silent" and c["config_value"] for c in broken_configs):
-            recommendations.append("⚠️ expectation_silent=True quebra Φ - usar apenas para testes controlados")
+        if any(
+            c["config_name"] == "expectation_silent" and c["config_value"] for c in broken_configs
+        ):
+            recommendations.append(
+                "⚠️ expectation_silent=True quebra Φ - usar apenas para testes controlados"
+            )
             recommendations.append("📊 Implementar alertas automáticos quando Φ < 0.1")
 
         if any(c["config_name"] == "embedding_dim" for c in broken_configs):
-            recommendations.append("🔧 embedding_dim muito pequeno causa singularidade - manter ≥ 128")
+            recommendations.append(
+                "🔧 embedding_dim muito pequeno causa singularidade - manter ≥ 128"
+            )
 
         if not broken_configs:
             recommendations.append("✅ Todas configurações críticas estão OK")
@@ -185,7 +208,7 @@ class PhiConfigurationValidator:
                     str(config["config_value"]),
                     f"{config['mean_phi']:.4f}",
                     config["severity"],
-                    f"{config['deviation']:.4f}"
+                    f"{config['deviation']:.4f}",
                 )
 
             rprint(table)
@@ -199,10 +222,9 @@ class PhiConfigurationValidator:
             f"Configurações Quebradas: {analysis['broken_configs_count']} ({analysis['breakage_rate']:.1%})\n"
             f"Configuração Mais Problemática: {analysis['most_problematic_config']} ({analysis['most_problematic_count']} quebras)\n"
             f"Severidade Geral: {analysis['overall_severity']}\n\n"
-            f"📋 RECOMENDAÇÕES:\n" +
-            "\n".join(f"• {rec}" for rec in analysis['recommendations']),
+            f"📋 RECOMENDAÇÕES:\n" + "\n".join(f"• {rec}" for rec in analysis["recommendations"]),
             title="🔍 RESULTADO DA ANÁLISE",
-            style="blue"
+            style="blue",
         )
         rprint(analysis_panel)
 

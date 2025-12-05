@@ -69,6 +69,8 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
+from src.monitor.resource_manager import resource_manager
+
 # Retry mechanism with exponential backoff
 RETRY_BASE_DELAY = 1.0  # seconds
 RETRY_MAX_DELAY = 30.0  # seconds
@@ -448,7 +450,15 @@ class SimulatorBackend(QPUBackend):
         self.backend_type = BackendType.SIMULATOR_AER
 
         if QISKIT_AVAILABLE:
-            self.simulator = AerSimulator()
+            target_device = resource_manager.allocate_task("quantum_simulator", 50.0)
+            if target_device == "cuda":
+                try:
+                    self.simulator = AerSimulator(method="statevector", device="GPU")
+                    logger.info("simulator_backend_gpu_enabled")
+                except Exception:
+                    self.simulator = AerSimulator()
+            else:
+                self.simulator = AerSimulator()
         else:
             self.simulator = None
             logger.warning("qiskit_aer_not_available", msg="Install with: pip install qiskit-aer")

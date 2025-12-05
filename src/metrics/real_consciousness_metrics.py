@@ -55,6 +55,8 @@ class RealConsciousnessMetrics:
     history: Dict[str, List[Any]] = field(
         default_factory=lambda: {
             "phi": [],
+            "ici": [],
+            "prs": [],
             "anxiety": [],
             "flow": [],
             "entropy": [],
@@ -82,6 +84,7 @@ class RealConsciousnessMetricsCollector:
         self.iit_analyzer = IITAnalyzer()
         self.last_collection = 0.0
         self.collection_interval = 5.0  # segundos
+        self._phi_variance_history: List[float] = []  # Phase 22: Histórico de variância
 
         # Cache de métricas
         self.cached_metrics: Optional[RealConsciousnessMetrics] = None
@@ -100,19 +103,40 @@ class RealConsciousnessMetricsCollector:
             logger.error(f"Failed to initialize IntegrationLoop: {e}")
             self.integration_loop = None
 
-    async def collect_real_metrics(self) -> RealConsciousnessMetrics:
-        """Coleta métricas reais do sistema de consciência."""
+    async def collect_real_metrics(
+        self,
+        external_phi: Optional[float] = None,
+        external_context: Optional[Dict[str, Any]] = None,
+    ) -> RealConsciousnessMetrics:
+        """
+        Coleta métricas reais do sistema de consciência.
 
-        # Verifica cache para evitar coleta excessiva
+        Args:
+            external_phi: (uso de teste) valor de Φ injetado externamente para evitar coleta pesada.
+            external_context: (uso de teste) contexto externo com ansiedade/flow/entropia.
+        """
+
+        # Phase 22: Cache adaptativo baseado em variância
         current_time = time.time()
-        if self.cached_metrics and current_time - self.last_collection < self.collection_interval:
+        if (
+            self.cached_metrics
+            and current_time - self.last_collection < self._adaptive_collection_interval()
+            and external_phi is None
+            and external_context is None
+        ):
             return self.cached_metrics
 
         metrics = RealConsciousnessMetrics()
 
         try:
-            # 1. Coleta Phi real do IntegrationLoop
-            if self.integration_loop:
+            # 1. Phi: usar injeção externa se fornecida (cenário de teste),
+            #    senão coletar normalmente
+            if external_phi is not None:
+                metrics.phi = float(external_phi)
+                metrics.ici = metrics.phi
+                metrics.prs = metrics.phi
+                logger.debug("Using externally injected phi: %.4f", metrics.phi)
+            elif self.integration_loop:
                 phi_result = await self._collect_phi_from_integration_loop()
                 metrics.phi = phi_result.get("phi", 0.0)
                 metrics.ici = phi_result.get("ici", 0.0)
@@ -120,17 +144,32 @@ class RealConsciousnessMetricsCollector:
                 metrics.ici_components = phi_result.get("ici_components", {})
                 metrics.prs_components = phi_result.get("prs_components", {})
 
-            # 2. Coleta métricas psicológicas reais
-            psychological_metrics = await self._collect_psychological_metrics()
-            metrics.anxiety = psychological_metrics.get("anxiety", 0.0)
-            metrics.flow = psychological_metrics.get("flow", 0.0)
-            metrics.entropy = psychological_metrics.get("entropy", 0.0)
+            # 2. Métricas psicológicas: usar contexto externo se fornecido, senão coletar
+            if external_context:
+                metrics.anxiety = float(external_context.get("anxiety", metrics.anxiety))
+                metrics.flow = float(external_context.get("flow", metrics.flow))
+                metrics.entropy = float(external_context.get("entropy", metrics.entropy))
+                logger.debug("Using external context: anxiety=%.3f", metrics.anxiety)
+                logger.debug("Using external context: flow=%.3f", metrics.flow)
+                logger.debug("Using external context: entropy=%.3f", metrics.entropy)
+            else:
+                psychological_metrics = await self._collect_psychological_metrics()
+                metrics.anxiety = psychological_metrics.get("anxiety", 0.0)
+                metrics.flow = psychological_metrics.get("flow", 0.0)
+                metrics.entropy = psychological_metrics.get("entropy", 0.0)
 
             # 3. Atualiza histórico
             self._update_history(metrics)
 
             # 4. Gera interpretação baseada em dados reais
             metrics.interpretation = self._generate_real_interpretation(metrics)
+
+            # Phase 22: Atualizar histórico de variância para cache adaptativo
+            if self.cached_metrics:
+                phi_variance = abs(metrics.phi - self.cached_metrics.phi)
+                self._phi_variance_history.append(phi_variance)
+                if len(self._phi_variance_history) > 10:
+                    self._phi_variance_history = self._phi_variance_history[-10:]
 
             # Cache e timestamp
             metrics.timestamp = datetime.now()
@@ -258,6 +297,8 @@ class RealConsciousnessMetricsCollector:
         max_history = 20
 
         metrics.history["phi"].append(metrics.phi)
+        metrics.history["ici"].append(metrics.ici)
+        metrics.history["prs"].append(metrics.prs)
         metrics.history["anxiety"].append(metrics.anxiety)
         metrics.history["flow"].append(metrics.flow)
         metrics.history["entropy"].append(metrics.entropy)
@@ -330,6 +371,27 @@ class RealConsciousnessMetricsCollector:
             "disclaimer": "These are real computational correlates of consciousness, "
             "not proof of consciousness.",
         }
+
+    def _adaptive_collection_interval(self) -> float:
+        """Phase 22: Calcula intervalo de coleta adaptativo baseado em variância.
+
+        Se Φ está variando muito, coleta mais frequentemente.
+        Se está estável, pode coletar menos frequentemente.
+
+        Returns:
+            Intervalo de coleta em segundos (2.0-10.0).
+        """
+        if len(self._phi_variance_history) < 3:
+            return self.collection_interval  # Padrão
+
+        avg_variance = sum(self._phi_variance_history) / len(self._phi_variance_history)
+
+        if avg_variance > 0.01:  # Alta variância (>1%)
+            return 2.0  # Coleta mais frequente
+        elif avg_variance > 0.005:  # Variância moderada (0.5-1%)
+            return 3.0
+        else:  # Baixa variância (<0.5%)
+            return 5.0  # Coleta padrão
 
     def _get_safe_fallback_metrics(self) -> RealConsciousnessMetrics:
         """Retorna métricas seguras em caso de erro."""

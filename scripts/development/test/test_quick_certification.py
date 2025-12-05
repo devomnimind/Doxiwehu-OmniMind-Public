@@ -20,7 +20,7 @@ from pathlib import Path
 
 import torch
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -53,6 +53,7 @@ async def test_quick_certification() -> bool:
     logger.info("\n2️⃣  Testando imports...")
     try:
         from src.consciousness.integration_loop import IntegrationLoop  # noqa: F401
+
         logger.info("✅ IntegrationLoop importado")
         results["tests"]["imports"] = "PASS"
     except Exception as e:
@@ -67,7 +68,7 @@ async def test_quick_certification() -> bool:
 
         consciousness = IntegrationLoop()
         result = await consciousness.execute_cycle()
-        phi = result.phi_estimate if hasattr(result, 'phi_estimate') else 0.0
+        phi = result.phi_estimate if hasattr(result, "phi_estimate") else 0.0
         logger.info(f"✅ Ciclo completo: Φ = {phi:.4f}")
         results["tests"]["consciousness_cycle"] = "PASS"
         results["phi_sample"] = float(phi)
@@ -82,7 +83,7 @@ async def test_quick_certification() -> bool:
         from qiskit import QuantumCircuit, QuantumRegister
         from qiskit_aer import AerSimulator
 
-        qr = QuantumRegister(3, 'q')
+        qr = QuantumRegister(3, "q")
         circuit = QuantumCircuit(qr)
         circuit.h(qr[0])
         circuit.h(qr[1])
@@ -167,6 +168,7 @@ async def main() -> None:
     except Exception as e:
         logger.error(f"❌ Erro: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 

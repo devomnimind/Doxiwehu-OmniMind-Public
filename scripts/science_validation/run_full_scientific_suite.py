@@ -50,7 +50,7 @@ class IntegratedScientificRunner:
     def toggle_expectation_silent(self, mode: str) -> None:
         """Desativação automática de expectation baseado no modo atual."""
         # Lógica implementada: alterna automaticamente entre True/False para testar impacto
-        if hasattr(self, '_expectation_toggle_count'):
+        if hasattr(self, "_expectation_toggle_count"):
             self._expectation_toggle_count += 1
         else:
             self._expectation_toggle_count = 0
@@ -58,8 +58,12 @@ class IntegratedScientificRunner:
         # Alterna a cada 10 ciclos para testar impacto
         self.simulator.expectation_silent = (self._expectation_toggle_count // 10) % 2 == 1
 
-        logger.info("Expectation toggled", silent=self.simulator.expectation_silent,
-                   toggle_count=self._expectation_toggle_count, mode=mode)
+        logger.info(
+            "Expectation toggled",
+            silent=self.simulator.expectation_silent,
+            toggle_count=self._expectation_toggle_count,
+            mode=mode,
+        )
 
     async def run_integrated_cycle(self, cycle_num: int) -> Dict[str, Any]:
         """Executa um ciclo integrado: Ablação + Federação + Consciência + Lacan juntos."""

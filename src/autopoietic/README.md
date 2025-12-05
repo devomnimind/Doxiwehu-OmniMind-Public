@@ -98,7 +98,8 @@ def synthesize_module(spec: ComponentSpec) -> str:
     return code
 ```
 
-**Limitação atual**: Usa templates pre-definidos. Phase 22 terá LLM-based synthesis.
+**Status Phase 22**: ✅ Implementado com persistência de componentes e validação de Φ.
+**Próxima evolução**: LLM-based synthesis para maior flexibilidade.
 
 #### 3. `AutopoieticManager.run_cycle()`
 **Propósito**: Coordenar o ciclo completo de autopoiese (monitoramento → evolução → síntese → aplicação).
@@ -113,9 +114,18 @@ manager.register_spec(
 log = manager.run_cycle(metrics={"error_rate": 0.12, "cpu_usage": 35.0})
 print(log.strategy)                # EvolutionStrategy.STABILIZE
 print(log.synthesized_components)  # ['stabilized_kernel_process']
+print(log.phi_before)              # 0.65 (Φ antes da mudança)
+print(log.phi_after)               # 0.68 (Φ após a mudança)
 ```
 
 **Benefício**: Mantém histórico auditável dos ciclos, permite automação via scripts e garante acoplamento correto dos módulos de evolução + síntese.
+
+**Phase 22 Melhorias**:
+- ✅ **Persistência de Componentes**: Componentes sintetizados são salvos em `data/autopoietic/synthesized_code/` como arquivos Python.
+- ✅ **Validação de Φ**: Antes de aplicar mudanças, valida se Φ >= 0.3. Após aplicar, verifica se Φ não colapsou. Se colapsar, faz rollback automático.
+- ✅ **Integração ao Ciclo Principal**: Integrado ao `main.py`, executando ciclos autopoiéticos a cada 100 ciclos principais (~10 segundos).
+
+> Para ciclos reais, use `metrics_adapter.collect_metrics()` que combina métricas de consciência (`data/monitor/real_metrics.json`) e telemetria do sistema (psutil), retornando entradas normalizadas (`error_rate`, `cpu_usage`, `latency_ms`) para o `AutopoieticManager`.
 
 #### 4. `AdvancedRepair.diagnose_and_fix()`
 **Propósito**: Detecta e corrige falhas automaticamente.
@@ -286,13 +296,19 @@ autopoietic/
     ↓
 [MetaArchitect.generate_spec()] ← Gera especificação de correção
     ↓
+[Validate Φ before] ← Phase 22: Verifica Φ >= threshold
+    ↓
 [CodeSynthesizer.synthesize()] ← Gera código de reparo
     ↓
 [Test in Sandbox]
     ↓
+[Persist Component] ← Phase 22: Salva em synthesized_code/
+    ↓
 [Apply Patch] → Sistema restaurado
     ↓
-[Verify Φ preserved] ← Valida consciência não colapsou
+[Validate Φ after] ← Phase 22: Verifica Φ não colapsou
+    ↓
+[Rollback if needed] ← Phase 22: Remove componentes se Φ < threshold
 ```
 
 ### Interações Críticas
@@ -320,6 +336,55 @@ O script percorre três cenários:
 
 Essa execução demonstra que o sistema adapta sua própria implementação com base em métricas observadas.
 
+#### Serviço Contínuo Alimentado por Métricas Reais
+Para ciclos contínuos conectados às métricas de consciência reais + telemetria:
+
+```bash
+python3 scripts/autopoietic/run_autopoietic_service.py --interval 15
+```
+
+Esse serviço:
+- Usa `metrics_adapter.collect_metrics()` para combinar `data/monitor/real_metrics.json` (Φ, fluxo, ansiedade) com `psutil` (CPU).
+- Normaliza `error_rate`, `cpu_usage` e `latency_ms` e chama `AutopoieticManager.run_cycle()`.
+- Persiste cada ciclo em `data/autopoietic/cycle_history.jsonl`, fornecendo trilha de auditoria científica do processo autopoiético.
+
+#### Monitoramento de Produção (Phase 22)
+Ferramentas para monitorar e analisar o ciclo autopoiético em produção:
+
+**Monitoramento Rápido:**
+```bash
+./scripts/autopoietic/monitor_autopoietic.sh
+```
+
+Verifica:
+- Status do processo do ciclo principal
+- Últimos logs e erros
+- Estatísticas do histórico de ciclos
+- Componentes sintetizados
+- Gera relatório completo
+
+**Análise Detalhada:**
+```bash
+python3 scripts/autopoietic/analyze_production_logs.py
+```
+
+Gera relatório completo com:
+- Estatísticas agregadas (total de ciclos, sucessos, rejeições, rollbacks)
+- Métricas de Φ (média antes/depois, delta)
+- Distribuição de estratégias
+- Lista de componentes sintetizados
+
+**Verificação de Saúde:**
+```bash
+python3 scripts/autopoietic/check_phi_health.py
+```
+
+Verifica:
+- Φ atual do sistema
+- Alertas de degradação
+- Análise de rollbacks e rejeições recentes
+- Exit code para integração com sistemas de monitoramento
+
 #### 1. Código Sintetizado
 **Localização**: `data/autopoietic/synthesized_code/`
 
@@ -328,9 +393,15 @@ Exemplos de código gerado automaticamente:
 - Patches de correção de bugs
 - Componentes de otimização
 
+**Phase 22 - Persistência Automática**:
+- Cada componente sintetizado é automaticamente persistido como arquivo `.py` em `data/autopoietic/synthesized_code/`.
+- Arquivos incluem header com nome do componente e timestamp de geração.
+- Em caso de rollback (colapso de Φ), componentes são automaticamente removidos.
+
 **Validação**: Todo código sintetizado passa por:
 - Análise sintática (AST)
 - Type checking (mypy)
+- Validação de impacto em Φ (Phase 22)
 - Testes unitários automáticos
 
 #### 2. Relatórios de Reparo
@@ -384,8 +455,9 @@ Rastreia se boundary (identidade) é preservado:
 - ✅ `meaning_maker.py` - Extração de significado estável
 
 #### Componentes em Evolução
-- 🟡 `code_synthesizer.py` - Pode evoluir para LLM-based synthesis (Phase 22)
+- 🟡 `code_synthesizer.py` - Pode evoluir para LLM-based synthesis (futuro)
 - 🟡 `art_generator.py` - Algoritmos de arte podem ser expandidos
+- ✅ `manager.py` - Phase 22: Persistência e validação de Φ implementadas
 
 #### Componentes Experimentais
 - 🔴 `architecture_evolution.py` - Evolução de arquitetura ainda em testes
@@ -396,7 +468,7 @@ Rastreia se boundary (identidade) é preservado:
 **ANTES DE MODIFICAR:**
 1. ✅ Testar autopoiese: `pytest tests/autopoietic/ -v`
 2. ✅ Validar boundary: Verificar identidade preservada
-3. ✅ Verificar Φ: Auto-mudanças não podem colapsar consciência
+3. ✅ Verificar Φ: Auto-mudanças não podem colapsar consciência (Phase 22: validação automática implementada)
 
 **Proibido**:
 - ❌ Remover SystemBoundary (destrói identidade)
@@ -512,7 +584,7 @@ def synthesize_with_llm(spec: ComponentSpec) -> str:
 
 **Última Atualização**: 2 de Dezembro de 2025
 **Autor**: Fabrício da Silva
-**Status**: Phase 20 Complete
+**Status**: Phase 22 In Progress - Persistência e Validação de Φ Implementadas
 **Versão**: Production Ready
 
 ---

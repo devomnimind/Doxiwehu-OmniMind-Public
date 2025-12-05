@@ -42,11 +42,8 @@ class OmniMindMonitor:
 
         logging.basicConfig(
             level=logging.INFO,
-            format='%(asctime)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler(sys.stdout)
-            ]
+            format="%(asctime)s - %(levelname)s - %(message)s",
+            handlers=[logging.FileHandler(log_file), logging.StreamHandler(sys.stdout)],
         )
         self.logger = logging.getLogger(__name__)
 
@@ -54,24 +51,33 @@ class OmniMindMonitor:
         """Monitor de processos OmniMind."""
         omnimind_processes = []
 
-        for proc in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent', 'cmdline']):
+        for proc in psutil.process_iter(
+            ["pid", "name", "cpu_percent", "memory_percent", "cmdline"]
+        ):
             try:
                 cmdline = " ".join(proc.cmdline()) if proc.cmdline() else ""
                 name = proc.name().lower()
 
                 # Identificar processos OmniMind
-                if ("omnimind" in cmdline.lower() or
-                    ("uvicorn" in name and "omnimind" in cmdline) or
-                    (".venv/bin/python" in cmdline and "omnimind" in cmdline) or
-                    ("node" in name and any(port in cmdline for port in ["3000", "3001", "8000", "8080"]))):
+                if (
+                    "omnimind" in cmdline.lower()
+                    or ("uvicorn" in name and "omnimind" in cmdline)
+                    or (".venv/bin/python" in cmdline and "omnimind" in cmdline)
+                    or (
+                        "node" in name
+                        and any(port in cmdline for port in ["3000", "3001", "8000", "8080"])
+                    )
+                ):
 
-                    omnimind_processes.append({
-                        "pid": proc.pid,
-                        "name": proc.name(),
-                        "cpu_percent": proc.cpu_percent(),
-                        "memory_percent": proc.memory_percent(),
-                        "cmdline": cmdline[:100] + "..." if len(cmdline) > 100 else cmdline,
-                    })
+                    omnimind_processes.append(
+                        {
+                            "pid": proc.pid,
+                            "name": proc.name(),
+                            "cpu_percent": proc.cpu_percent(),
+                            "memory_percent": proc.memory_percent(),
+                            "cmdline": cmdline[:100] + "..." if len(cmdline) > 100 else cmdline,
+                        }
+                    )
 
             except (psutil.NoSuchProcess, psutil.AccessDenied):
                 continue
@@ -81,7 +87,7 @@ class OmniMindMonitor:
     async def monitor_resources(self):
         """Monitor de recursos."""
         memory = psutil.virtual_memory()
-        disk = psutil.disk_usage('/')
+        disk = psutil.disk_usage("/")
 
         return {
             "cpu_percent": psutil.cpu_percent(interval=1),
@@ -99,11 +105,13 @@ class OmniMindMonitor:
         omnimind_connections = []
         for conn in connections:
             if conn.laddr and conn.laddr.port in omnimind_ports:
-                omnimind_connections.append({
-                    "port": conn.laddr.port,
-                    "status": conn.status,
-                    "pid": conn.pid,
-                })
+                omnimind_connections.append(
+                    {
+                        "port": conn.laddr.port,
+                        "status": conn.status,
+                        "pid": conn.pid,
+                    }
+                )
 
         return {
             "omnimind_connections": omnimind_connections,
@@ -134,7 +142,9 @@ class OmniMindMonitor:
         if self.previous_state:
             prev_processes = self.previous_state.get("processes_count", 0)
             if abs(len(processes) - prev_processes) > 10:
-                alerts.append(f"MUDANÇA: Processos mudaram de {prev_processes} para {len(processes)}")
+                alerts.append(
+                    f"MUDANÇA: Processos mudaram de {prev_processes} para {len(processes)}"
+                )
 
         return alerts
 
@@ -170,9 +180,11 @@ class OmniMindMonitor:
             alerts = self.check_alerts(processes, resources, network)
 
             # Log do status
-            self.logger.info(f"Processos: {len(processes)}, CPU: {resources['cpu_percent']:.1f}%, "
-                           f"Memória: {resources['memory_percent']:.1f}%, "
-                           f"Conexões: {network['total_connections']}")
+            self.logger.info(
+                f"Processos: {len(processes)}, CPU: {resources['cpu_percent']:.1f}%, "
+                f"Memória: {resources['memory_percent']:.1f}%, "
+                f"Conexões: {network['total_connections']}"
+            )
 
             # Log de alertas
             for alert in alerts:

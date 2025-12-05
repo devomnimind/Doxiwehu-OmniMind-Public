@@ -15,6 +15,9 @@ Date: November 2025
 License: MIT
 """
 
+# ===== CRITICAL: CUDA Configuration Managed Externally =====
+# Do not set CUDA_VISIBLE_DEVICES here. Use start_omnimind_system.sh.
+# ===== NOW import torch =====
 import json
 import logging
 import time
@@ -1004,9 +1007,10 @@ class SharedWorkspace:
         for source, targets in result.predictions.items():
             for target, metrics in targets.items():
                 # Verificar se já existe (evitar duplicatas)
+                # Phase 22: Verificar em mais predições para evitar duplicatas
                 existing = [
                     p
-                    for p in self.cross_predictions[-10:]  # Últimas 10
+                    for p in self.cross_predictions[-50:]  # Aumentado de 10 para 50
                     if p.source_module == source and p.target_module == target
                 ]
                 if not existing or force_recompute:
@@ -1035,8 +1039,9 @@ class SharedWorkspace:
         if not self.cross_predictions:
             return 0.0
 
-        # IIT rigorosa: só calcula Φ se há histórico suficiente
-        min_history_required = 5
+        # Phase 22: IIT rigorosa com mais dados para validação estatística
+        # Aumentado mínimo de histórico para garantir robustez
+        min_history_required = 10  # Aumentado de 5 para 10
         modules = self.get_all_modules()
 
         # Verificar se todos os módulos têm histórico suficiente
@@ -1049,8 +1054,14 @@ class SharedWorkspace:
                 )
                 return 0.0
 
-        # Usar apenas predições recentes e válidas
-        recent_predictions = self.cross_predictions[-len(modules) ** 2 :]
+        # Phase 22: Usar mais predições para validação estatística robusta
+        # Antes: apenas últimas N² predições (muito pouco)
+        # Agora: usar até 200 predições ou todas se disponíveis
+        max_predictions_for_phi = 200
+        if len(self.cross_predictions) > max_predictions_for_phi:
+            recent_predictions = self.cross_predictions[-max_predictions_for_phi:]
+        else:
+            recent_predictions = self.cross_predictions
         if not recent_predictions:
             return 0.0
 
@@ -1129,7 +1140,9 @@ class SharedWorkspace:
             "cycle": self.cycle_count,
             "label": label,
             "modules": {name: embedding.tolist() for name, embedding in self.embeddings.items()},
-            "cross_predictions": [asdict(p) for p in self.cross_predictions[-100:]],  # Últimas 100
+            "cross_predictions": [
+                asdict(p) for p in self.cross_predictions[-200:]
+            ],  # Phase 22: Aumentado para 200
             "phi": self.compute_phi_from_integrations(),
         }
 

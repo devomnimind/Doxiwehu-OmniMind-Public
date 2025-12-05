@@ -19,6 +19,7 @@ import { NotificationCenter } from './NotificationCenter';
 import { OmniMindSinthome } from './OmniMindSinthome';
 import { ConsciousnessMetrics } from './ConsciousnessMetrics';
 import { SystemHealthSummary } from './SystemHealthSummary';
+import { AutopoieticMetrics } from './AutopoieticMetrics';
 import { EventLog } from './EventLog';
 import { ModuleActivityHeatmap } from './ModuleActivityHeatmap';
 import { QuickStatsCards } from './QuickStatsCards';
@@ -34,6 +35,11 @@ export function Dashboard() {
   const { lastMessage } = useWebSocket();
 
   const fetchData = useCallback(async () => {
+    // Se não estiver autenticado, não faz requests para evitar spam de 401
+    if (!useAuthStore.getState().isAuthenticated) {
+       return;
+    }
+
     setLoading(true);
     setError(null);
     try {
@@ -76,17 +82,11 @@ export function Dashboard() {
 
   useEffect(() => {
     fetchData();
-    // Refresh every 15 seconds (reduced from 5s to prevent excessive polling)
-    // Only refresh if there are active agents or tasks
+    // Refresh every 5 seconds to keep dashboard alive
     const interval = setInterval(() => {
-      const state = useDaemonStore.getState();
-      // Skip refresh if no agents and no active tasks to reduce flickering
-      if (state.agents && state.agents.length > 0) {
-        fetchData();
-      } else if (state.tasks && state.tasks.length > 0) {
-        fetchData();
-      }
-    }, 15000);
+      // Always refresh to maintain heartbeat
+      fetchData();
+    }, 5000);
     return () => clearInterval(interval);
   }, [fetchData]);
 
@@ -172,6 +172,11 @@ export function Dashboard() {
           <div className="animate-slide-up" style={{ animationDelay: '0.35s' }}>
             <MetricsTimeline />
           </div>
+        </div>
+
+        {/* Autopoietic Metrics (Phase 22) */}
+        <div className="mb-6 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <AutopoieticMetrics />
         </div>
 
         {/* Module Activity & Event Log */}

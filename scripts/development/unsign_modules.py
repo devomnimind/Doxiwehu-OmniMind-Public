@@ -19,9 +19,7 @@ from pathlib import Path
 from typing import Dict
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -107,9 +105,7 @@ class CodeUnsigner:
             logger.error(f"Failed to unsign {module_path}: {e}")
             return False
 
-    def unsign_directory(
-        self, root_path: Path, recursive: bool = True
-    ) -> Dict[str, int]:
+    def unsign_directory(self, root_path: Path, recursive: bool = True) -> Dict[str, int]:
         """
         Remove signatures from all modules in directory.
 
@@ -161,9 +157,7 @@ class CodeUnsigner:
 
 def main() -> int:
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Remove code signatures from OmniMind modules"
-    )
+    parser = argparse.ArgumentParser(description="Remove code signatures from OmniMind modules")
     parser.add_argument(
         "--module-path",
         type=Path,
