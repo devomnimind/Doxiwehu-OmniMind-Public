@@ -50,7 +50,7 @@ A auditoria definia 6 requisitos para delegação robusta:
 ```python
 class DelegationManager:
     """Gerencia delegações com proteções (timeout, circuit breaker, retry)"""
-    
+
     async def delegate_with_protection(
         agent_name: str,
         task_description: str,
@@ -79,10 +79,10 @@ class DelegationManager:
 ```python
 class HeartbeatMonitor:
     """Monitora heartbeat de agentes continuamente"""
-    
+
     async def start_monitoring():
         """Inicia check periódico (default 30s) de saúde dos agentes"""
-    
+
     async def get_health_status() -> Dict[str, bool]:
         """Retorna status de saúde atual"""
 ```
@@ -114,7 +114,7 @@ self.heartbeat_monitor: Optional[HeartbeatMonitor] = None
 ```python
 def _init_delegation_manager(self) -> Optional[DelegationManager]:
     """Inicializa DelegationManager com timeout configurável"""
-    
+
 def _init_heartbeat_monitor(self) -> Optional[HeartbeatMonitor]:
     """Inicializa HeartbeatMonitor com intervalo configurável"""
 ```
@@ -141,7 +141,7 @@ async def delegate_task_with_protection(
 ```python
 def get_delegation_metrics(agent_name: Optional[str] = None) -> Dict[str, Any]:
     """Retorna métricas de delegação"""
-    
+
 def get_recent_delegations(limit: int = 10) -> Dict[str, Any]:
     """Retorna últimas delegações executadas"""
 ```
@@ -238,7 +238,7 @@ orchestrator.delegate_task_with_protection(
 delegation:
   timeout_seconds: 30.0    # Default timeout
   max_retries: 3           # Tentativas antes de falhar
-  
+
 monitoring:
   heartbeat_interval: 30.0 # Segundos entre health checks
   circuit_breaker_threshold: 3  # Falhas antes de abrir
@@ -464,7 +464,7 @@ pytest tests/test_delegation_manager.py --cov=src.orchestrator.delegation_manage
 
 ---
 
-**Data:** 2025-12-06  
-**Tempo investido:** ~6-8 horas  
-**Status:** 60% Completo (pronto para produção básica)  
+**Data:** 2025-12-06
+**Tempo investido:** ~6-8 horas
+**Status:** 60% Completo (pronto para produção básica)
 **Próximo Passo:** Implementar backoff exponencial e análise de patterns de falha
