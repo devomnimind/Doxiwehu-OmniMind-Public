@@ -27,8 +27,8 @@ from ..integrations.dbus_controller import (
     DBusSystemController,
 )
 from ..integrations.llm_router import LLMModelTier
-from ..integrations.orchestrator_llm import invoke_orchestrator_llm
 from ..integrations.mcp_client import MCPClient, MCPClientError
+from ..integrations.orchestrator_llm import invoke_orchestrator_llm
 from ..integrations.qdrant_adapter import (
     QdrantAdapter,
     QdrantAdapterError,
@@ -42,6 +42,7 @@ from ..integrations.supabase_adapter import (
 from ..metacognition.metacognition_agent import MetacognitionAgent
 from ..orchestrator.agent_registry import AgentPriority, AgentRegistry
 from ..orchestrator.circuit_breaker import AgentCircuitBreaker
+from ..orchestrator.delegation_manager import DelegationManager, HeartbeatMonitor
 from ..orchestrator.event_bus import EventPriority, OrchestratorEventBus
 from ..security.security_agent import SecurityAgent
 from ..tools.omnimind_tools import ToolsFramework
@@ -108,6 +109,12 @@ class OrchestratorAgent(ReactAgent):
         # NEW: Circuit breakers por agente (Seção 7 da Auditoria)
         self._circuit_breakers: Dict[str, AgentCircuitBreaker] = {}
 
+        # NEW: Delegation Manager com proteções (Seção 7 da Auditoria)
+        self.delegation_manager: Optional[DelegationManager] = None
+
+        # NEW: Heartbeat Monitor para saúde dos agentes (Seção 7 da Auditoria)
+        self.heartbeat_monitor: Optional[HeartbeatMonitor] = None
+
         self.config_path = config_path
         self.mcp_client: Optional[MCPClient] = self._init_mcp_client()
         self.dbus_session_controller: Optional[DBusSessionController] = (
@@ -136,6 +143,12 @@ class OrchestratorAgent(ReactAgent):
 
         # NEW: Inicializar AutopoieticManager (Seção 2 da Auditoria)
         self.autopoietic_manager = self._init_autopoietic_manager()
+
+        # NEW: Inicializar DelegationManager (Seção 7 da Auditoria)
+        self.delegation_manager = self._init_delegation_manager()
+
+        # NEW: Inicializar HeartbeatMonitor (Seção 7 da Auditoria)
+        self.heartbeat_monitor = self._init_heartbeat_monitor()
 
     def _init_mcp_client(self) -> Optional[MCPClient]:
         try:
@@ -280,6 +293,57 @@ class OrchestratorAgent(ReactAgent):
         except Exception as e:
             logger.error("Falha ao inicializar AutopoieticManager: %s", e)
             return None
+
+    def _init_delegation_manager(self) -> Optional[DelegationManager]:
+        """Inicializa DelegationManager com proteções (Seção 7 da Auditoria).
+
+        Returns:
+            DelegationManager inicializado ou None se falhar
+        """
+        try:
+            delegation_config = self.config.get("delegation", {})
+            timeout_seconds = delegation_config.get("timeout_seconds", 30.0)
+
+            manager = DelegationManager(self, timeout_seconds=timeout_seconds)
+            logger.info(f"DelegationManager inicializado (timeout={timeout_seconds}s)")
+            return manager
+
+        except Exception as e:
+            logger.error("Falha ao inicializar DelegationManager: %s", e)
+            return None
+
+    def _init_heartbeat_monitor(self) -> Optional[HeartbeatMonitor]:
+        """Inicializa HeartbeatMonitor para saúde dos agentes (Seção 7 da Auditoria).
+
+        Returns:
+            HeartbeatMonitor inicializado ou None se falhar
+        """
+        try:
+            monitoring_config = self.config.get("monitoring", {})
+            check_interval = monitoring_config.get("heartbeat_interval", 30.0)
+
+            monitor = HeartbeatMonitor(self, check_interval_seconds=check_interval)
+            logger.info(f"HeartbeatMonitor inicializado (intervalo={check_interval}s)")
+            return monitor
+
+        except Exception as e:
+            logger.error("Falha ao inicializar HeartbeatMonitor: %s", e)
+            return None
+
+    async def start_delegation_monitoring(self) -> None:
+        """Inicia monitoramento de delegações (Seção 7 da Auditoria).
+
+        Ativa heartbeat monitor para verificar saúde de agentes continuamente.
+        """
+        try:
+            if self.heartbeat_monitor:
+                asyncio.create_task(self.heartbeat_monitor.start_monitoring())
+                logger.info("HeartbeatMonitor iniciado para monitoramento contínuo")
+            else:
+                logger.warning("HeartbeatMonitor não inicializado")
+
+        except Exception as e:
+            logger.error("Erro ao iniciar monitoramento de delegações: %s", e)
 
     async def start_sensor_integration(self) -> None:
         """Inicia integração com sensores (Seção 3 da Auditoria).
@@ -1056,6 +1120,7 @@ ESTIMATED_COMPLEXITY: low"""
             elif agent_mode == AgentMode.CODE:
                 agent = self._get_agent(agent_mode)
                 from typing import cast
+
                 from src.agents.code_agent import CodeAgent
 
                 code_agent = cast(CodeAgent, agent)
@@ -1071,6 +1136,7 @@ ESTIMATED_COMPLEXITY: low"""
             elif agent_mode == AgentMode.PSYCHOANALYST:
                 agent = self._get_agent(agent_mode)
                 from typing import cast
+
                 from src.agents.psychoanalytic_analyst import PsychoanalyticAnalyst
 
                 psycho_agent = cast(PsychoanalyticAnalyst, agent)
@@ -1637,6 +1703,119 @@ ESTIMATED_COMPLEXITY: low"""
         except Exception as e:
             logger.error(f"Failed to delegate task: {e}")
             return {"error": str(e)}
+
+    async def delegate_task_with_protection(
+        self,
+        agent_name: str,
+        task_description: str,
+        task_callable,
+        timeout_seconds: Optional[float] = None,
+        max_retries: int = 3,
+    ) -> Dict[str, Any]:
+        """Delega tarefa com proteções (Seção 7 da Auditoria).
+
+        Usa DelegationManager para garantir:
+        - Timeout automático
+        - Circuit breaker se agente falhar
+        - Retry automático
+        - Auditoria de delegações
+
+        Args:
+            agent_name: Nome do agente para delegar
+            task_description: Descrição da tarefa
+            task_callable: Função async que executa a tarefa
+            timeout_seconds: Timeout customizado
+            max_retries: Máximo de tentativas
+
+        Returns:
+            Resultado da delegação
+
+        Raises:
+            RuntimeError: Se circuit breaker está aberto
+            asyncio.TimeoutError: Se tarefa excede timeout
+        """
+        if not self.delegation_manager:
+            logger.error("DelegationManager não inicializado")
+            return {"error": "DelegationManager not available"}
+
+        try:
+            result = await self.delegation_manager.delegate_with_protection(
+                agent_name=agent_name,
+                task_description=task_description,
+                task_callable=task_callable,
+                timeout_seconds=timeout_seconds,
+                max_retries=max_retries,
+            )
+            return result
+
+        except asyncio.TimeoutError:
+            logger.error(f"Timeout delegando para {agent_name}")
+            return {"error": "Task timeout", "agent": agent_name}
+
+        except RuntimeError as e:
+            logger.error(f"Circuit breaker aberto para {agent_name}: {e}")
+            return {"error": str(e), "agent": agent_name}
+
+        except Exception as e:
+            logger.error(f"Erro ao delegar para {agent_name}: {e}")
+            return {"error": str(e), "agent": agent_name}
+
+    def get_delegation_metrics(self, agent_name: Optional[str] = None) -> Dict[str, Any]:
+        """Retorna métricas de delegação (Seção 7 da Auditoria).
+
+        Args:
+            agent_name: Nome do agente (None = todos)
+
+        Returns:
+            Dicionário com métricas de delegação
+        """
+        if not self.delegation_manager:
+            return {"error": "DelegationManager not initialized"}
+
+        metrics = self.delegation_manager.get_metrics(agent_name)
+
+        return {
+            "metrics": {
+                name: {
+                    "total_delegations": m.total_delegations,
+                    "successful": m.successful_delegations,
+                    "failed": m.failed_delegations,
+                    "timeout_count": m.timeout_count,
+                    "average_duration_seconds": m.average_duration_seconds,
+                    "circuit_breaker_state": m.circuit_breaker_state.value,
+                    "last_check_time": m.last_check_time,
+                }
+                for name, m in metrics.items()
+            }
+        }
+
+    def get_recent_delegations(self, limit: int = 10) -> Dict[str, Any]:
+        """Retorna delegações recentes (Seção 7 da Auditoria).
+
+        Args:
+            limit: Número máximo de delegações a retornar
+
+        Returns:
+            Lista de delegações recentes
+        """
+        if not self.delegation_manager:
+            return {"error": "DelegationManager not initialized"}
+
+        delegations = self.delegation_manager.get_recent_delegations(limit)
+
+        return {
+            "delegations": [
+                {
+                    "id": d.id,
+                    "agent": d.agent_name,
+                    "task": d.task_description,
+                    "status": d.status.value,
+                    "duration_seconds": d.duration_seconds,
+                    "created_at": d.created_at,
+                }
+                for d in delegations
+            ]
+        }
 
     def orchestrate(self, tasks: List[str]) -> Dict[str, Any]:
         """
