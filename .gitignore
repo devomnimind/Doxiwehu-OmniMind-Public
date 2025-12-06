@@ -349,7 +349,6 @@ src/consciousness/phi_semantic_aware.py
 src/integrity/
 src/intelligence/
 src/knowledge/
-src/security/playbooks/suspicious_port_response.py
 src/utils/README.md
 tests/autonomous/
 tests/integrity/

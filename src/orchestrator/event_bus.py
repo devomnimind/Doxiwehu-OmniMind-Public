@@ -107,9 +107,9 @@ class OrchestratorEventBus:
         if event.priority != EventPriority.CRITICAL and self._should_debounce(event):
             return
 
-        # Adicionar à fila apropriada
+        # Adicionar à fila apropriada com timestamp como tiebreaker
         queue = self._queues[event.priority]
-        await queue.put((event.priority.value, event))
+        await queue.put((event.priority.value, event.timestamp, event))
 
         logger.debug("Evento publicado: %s (prioridade: %s)", event.event_type, event.priority.name)
 
@@ -212,7 +212,7 @@ class OrchestratorEventBus:
 
                     if not queue.empty():
                         try:
-                            _, event = await asyncio.wait_for(queue.get(), timeout=0.1)
+                            _, _, event = await asyncio.wait_for(queue.get(), timeout=0.1)
                             await self._process_event(event)
                             event_processed = True
                             break  # Processar um evento de cada vez
