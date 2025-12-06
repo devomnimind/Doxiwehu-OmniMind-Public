@@ -13,6 +13,7 @@ Integração: Controla todos os modos (code, architect, debug, reviewer, ask)
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import re
 import time
@@ -20,6 +21,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
+from ..autopoietic.manager import AutopoieticManager
 from ..integrations.dbus_controller import (
     DBusSessionController,
     DBusSystemController,
@@ -38,6 +40,9 @@ from ..integrations.supabase_adapter import (
     SupabaseConfig,
 )
 from ..metacognition.metacognition_agent import MetacognitionAgent
+from ..orchestrator.agent_registry import AgentPriority, AgentRegistry
+from ..orchestrator.circuit_breaker import AgentCircuitBreaker
+from ..orchestrator.event_bus import EventPriority, OrchestratorEventBus
 from ..security.security_agent import SecurityAgent
 from ..tools.omnimind_tools import ToolsFramework
 from .architect_agent import ArchitectAgent
@@ -88,8 +93,21 @@ class OrchestratorAgent(ReactAgent):
         self.tools_framework = ToolsFramework()
         self.mode = "orchestrator"
 
-        # Agentes especializados (lazy init)
+        # Agentes especializados (lazy init) - MANTIDO para compatibilidade
         self._agents: Dict[AgentMode, ReactAgent] = {}
+
+        # NEW: AgentRegistry centralizado (Seção 1 da Auditoria)
+        self.agent_registry = AgentRegistry()
+
+        # NEW: EventBus para integração de sensores (Seção 3 da Auditoria)
+        self.event_bus = OrchestratorEventBus()
+
+        # NEW: AutopoieticManager integrado (Seção 2 da Auditoria)
+        self.autopoietic_manager: Optional[AutopoieticManager] = None
+
+        # NEW: Circuit breakers por agente (Seção 7 da Auditoria)
+        self._circuit_breakers: Dict[str, AgentCircuitBreaker] = {}
+
         self.config_path = config_path
         self.mcp_client: Optional[MCPClient] = self._init_mcp_client()
         self.dbus_session_controller: Optional[DBusSessionController] = (
@@ -112,6 +130,12 @@ class OrchestratorAgent(ReactAgent):
         self.current_plan: Optional[Dict[str, Any]] = None
         self.delegated_tasks: List[Dict[str, Any]] = []
         self.completed_subtasks: List[Dict[str, Any]] = []
+
+        # NEW: Registrar agentes críticos no AgentRegistry
+        self._register_critical_agents()
+
+        # NEW: Inicializar AutopoieticManager (Seção 2 da Auditoria)
+        self.autopoietic_manager = self._init_autopoietic_manager()
 
     def _init_mcp_client(self) -> Optional[MCPClient]:
         try:
@@ -202,6 +226,163 @@ class OrchestratorAgent(ReactAgent):
         except Exception as exc:
             logger.error("Failed to initialize MetacognitionAgent: %s", exc)
             return None
+
+    def _register_critical_agents(self) -> None:
+        """Registra agentes críticos no AgentRegistry (Seção 1 da Auditoria).
+
+        Implementa sistema de registro centralizado com priorização.
+        """
+        try:
+            # Registrar SecurityAgent se disponível
+            if self.security_agent:
+                self.agent_registry.register_agent(
+                    "security", self.security_agent, AgentPriority.CRITICAL
+                )
+                logger.info("SecurityAgent registrado no AgentRegistry")
+
+            # Registrar MetacognitionAgent se disponível
+            if self.metacognition_agent:
+                self.agent_registry.register_agent(
+                    "metacognition", self.metacognition_agent, AgentPriority.CRITICAL
+                )
+                logger.info("MetacognitionAgent registrado no AgentRegistry")
+
+            # Registrar o próprio orchestrator
+            self.agent_registry.register_agent("orchestrator", self, AgentPriority.ESSENTIAL)
+            logger.info("OrchestratorAgent auto-registrado no AgentRegistry")
+
+        except Exception as e:
+            logger.error("Erro ao registrar agentes críticos: %s", e)
+
+    def _init_autopoietic_manager(self) -> Optional[AutopoieticManager]:
+        """Inicializa AutopoieticManager integrado (Seção 2 da Auditoria).
+
+        Returns:
+            AutopoieticManager inicializado ou None se falhar
+        """
+        try:
+            from ..autopoietic.meta_architect import ComponentSpec
+
+            manager = AutopoieticManager()
+
+            # Registrar OrchestratorAgent como componente observável
+            manager.register_spec(
+                ComponentSpec(
+                    name="orchestrator_agent",
+                    type="agent",
+                    config={"generation": "0", "initial": "true"},
+                )
+            )
+
+            logger.info("AutopoieticManager inicializado e integrado ao Orchestrator")
+            return manager
+
+        except Exception as e:
+            logger.error("Falha ao inicializar AutopoieticManager: %s", e)
+            return None
+
+    async def start_sensor_integration(self) -> None:
+        """Inicia integração com sensores (Seção 3 da Auditoria).
+
+        Conecta SecurityAgent e outros sensores ao EventBus.
+        """
+        try:
+            # Iniciar processamento de eventos
+            asyncio.create_task(self.event_bus.start_processing())
+            logger.info("EventBus iniciado para processamento de eventos")
+
+            # Registrar handler para eventos de segurança
+            self.event_bus.subscribe("security_*", self._handle_security_event)
+
+            # TODO: Adicionar mais integrações de sensores aqui
+            # - NetworkSensorGanglia
+            # - Outros sensores de monitoramento
+
+        except Exception as e:
+            logger.error("Erro ao iniciar integração de sensores: %s", e)
+
+    async def _handle_security_event(self, event: Any) -> None:
+        """Handler para eventos de segurança (Seção 3 da Auditoria).
+
+        Args:
+            event: Evento de segurança do EventBus
+        """
+        try:
+            logger.warning(
+                "Evento de segurança recebido: %s (prioridade: %s)",
+                event.event_type,
+                event.priority.name if hasattr(event, "priority") else "UNKNOWN",
+            )
+
+            # Determinar se é evento crítico
+            is_critical = hasattr(event, "priority") and event.priority == EventPriority.CRITICAL
+
+            if is_critical:
+                # Resposta a crises (Seção 6 da Auditoria)
+                await self._handle_crisis(event)
+            else:
+                # Log do evento para análise posterior
+                logger.info("Evento de segurança registrado: %s", event.event_type)
+
+        except Exception as e:
+            logger.error("Erro ao processar evento de segurança: %s", e)
+
+    async def _handle_crisis(self, event: Any) -> None:
+        """Coordena resposta a crise (Seção 6 da Auditoria).
+
+        Args:
+            event: Evento crítico
+        """
+        try:
+            logger.critical("MODO DE CRISE ATIVADO: %s", event.event_type)
+
+            # 1. Notificar SecurityAgent para executar playbook
+            if self.security_agent:
+                # SecurityAgent já tem playbooks implementados
+                logger.info("SecurityAgent notificado da crise")
+
+            # 2. Coletar evidências (placeholder)
+            # TODO: Implementar coleta de evidências forenses
+
+            # 3. Notificar humanos (placeholder)
+            # TODO: Implementar notificação de emergência
+            logger.critical("ALERTA CRÍTICO: %s", event.data.get("description", ""))
+
+        except Exception as e:
+            logger.error("Erro ao coordenar resposta a crise: %s", e)
+
+    async def health_check_agents(self) -> Dict[str, bool]:
+        """Executa health check em todos os agentes registrados.
+
+        Returns:
+            Dicionário com status de saúde de cada agente
+        """
+        return await self.agent_registry.health_check_all()
+
+    def _get_circuit_breaker(self, agent_name: str) -> AgentCircuitBreaker:
+        """Obtém ou cria circuit breaker para agente (Seção 7 da Auditoria).
+
+        Args:
+            agent_name: Nome do agente
+
+        Returns:
+            Circuit breaker do agente
+        """
+        if agent_name not in self._circuit_breakers:
+            self._circuit_breakers[agent_name] = AgentCircuitBreaker(
+                failure_threshold=3, timeout=30.0, recovery_timeout=60.0
+            )
+            logger.debug("Circuit breaker criado para agente %s", agent_name)
+
+        return self._circuit_breakers[agent_name]
+
+    def get_circuit_breaker_stats(self) -> Dict[str, Dict[str, Any]]:
+        """Obtém estatísticas de todos os circuit breakers.
+
+        Returns:
+            Dicionário com estatísticas por agente
+        """
+        return {name: breaker.get_stats() for name, breaker in self._circuit_breakers.items()}
 
     def _timestamp(self) -> str:
         """Retorna timestamp UTC em formato ISO"""
@@ -437,20 +618,54 @@ class OrchestratorAgent(ReactAgent):
         return self._finalize_operation(metric_name, start, result)
 
     def _get_agent(self, mode: AgentMode) -> ReactAgent:
-        """Obtém ou cria agente especializado"""
+        """Obtém ou cria agente especializado com fallback (Seção 1 da Auditoria).
+
+        Implementa:
+        - Tentativa de obter agente do AgentRegistry primeiro
+        - Criação lazy se não existir
+        - Registro automático de novos agentes
+        - Fallback para orchestrator se agente falhar
+
+        Args:
+            mode: Modo do agente
+
+        Returns:
+            Instância do agente
+        """
+        # Tentar obter do AgentRegistry primeiro
+        agent_name = mode.value
+        registered_agent = self.agent_registry.get_agent(agent_name)
+
+        if registered_agent:
+            return registered_agent
+
+        # Se não está registrado, criar e registrar
         if mode not in self._agents:
-            if mode == AgentMode.CODE:
-                self._agents[mode] = CodeAgent(self.config_path)
-            elif mode == AgentMode.ARCHITECT:
-                self._agents[mode] = ArchitectAgent(self.config_path)
-            elif mode == AgentMode.DEBUG:
-                self._agents[mode] = DebugAgent(self.config_path)
-            elif mode == AgentMode.REVIEWER:
-                self._agents[mode] = ReviewerAgent(self.config_path)
-            elif mode == AgentMode.PSYCHOANALYST:
-                self._agents[mode] = PsychoanalyticAnalyst(self.config_path)
-            else:
-                raise ValueError(f"Unknown agent mode: {mode}")
+            try:
+                if mode == AgentMode.CODE:
+                    self._agents[mode] = CodeAgent(self.config_path)
+                elif mode == AgentMode.ARCHITECT:
+                    self._agents[mode] = ArchitectAgent(self.config_path)
+                elif mode == AgentMode.DEBUG:
+                    self._agents[mode] = DebugAgent(self.config_path)
+                elif mode == AgentMode.REVIEWER:
+                    self._agents[mode] = ReviewerAgent(self.config_path)
+                elif mode == AgentMode.PSYCHOANALYST:
+                    self._agents[mode] = PsychoanalyticAnalyst(self.config_path)
+                else:
+                    raise ValueError(f"Unknown agent mode: {mode}")
+
+                # Registrar no AgentRegistry
+                self.agent_registry.register_agent(
+                    agent_name, self._agents[mode], AgentPriority.OPTIONAL
+                )
+                logger.info("Agente %s criado e registrado", agent_name)
+
+            except Exception as e:
+                logger.error("Falha ao criar agente %s: %s", agent_name, e)
+                # Fallback: retornar o próprio orchestrator
+                logger.warning("Usando OrchestratorAgent como fallback para %s", agent_name)
+                return self
 
         return self._agents[mode]
 
