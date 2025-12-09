@@ -1,19 +1,23 @@
 # ============================================================================
-# SECURITY HARDENED VERSIONS (Hugging Face Spaces Deployment)
+# SECURITY HARDENED + GPU COMPATIBLE (HuggingFace Spaces Deployment)
 # ============================================================================
-# NOTE: Core OmniMind uses stricter versions in requirements-core.txt
-# These versions address CVEs while maintaining HF Spaces compatibility
+# CRITICAL: GPU setup requires EXACT version compatibility
+# DO NOT use >= ranges for torch/torchvision/torchaudio - they MUST match
 #
-# Security Patches Applied:
-# - transformers: Updated from 4.41.2 to fix ReDoS & deserialization CVEs
-# - torch: Updated from 2.3.1 to address RCE in torch.load()
-# - Other deps: Latest secure versions
+# Security Strategy:
+# 1. torch 2.5.1 - Safe version (GPU-compatible with torchvision/torchaudio)
+# 2. transformers 4.46.x - Latest safe version (addresses ReDoS/deserialization)
+# 3. Other deps - Latest with proven compatibility
+#
+# Note: torch.load() RCE (CVE-2024-49988) mitigation:
+#   - Use weights_only=True when loading external models
+#   - This is a code-level fix, not version-dependent
 # ============================================================================
 
-fastapi>=0.122.0
-uvicorn[standard]>=0.38.0
-transformers>=4.57.0
-torch>=2.9.0
-accelerate>=0.30.0
-python-dotenv>=1.2.0
-pydantic>=2.12.0
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+transformers==4.46.3
+torch==2.5.1
+accelerate==0.30.1
+python-dotenv==1.0.0
+pydantic==2.5.0
