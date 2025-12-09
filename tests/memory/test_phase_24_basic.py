@@ -435,3 +435,46 @@ class TestPhase24Integration:
         assert sem1 is sem2, "Semantic memory should be singleton"
         assert state1 is state2, "State manager should be singleton"
         assert temp1 is temp2, "Temporal index should be singleton"
+
+
+class TestPhase24HybridTopological:
+    """Testes de integração entre Phase 24 Memory e HybridTopologicalEngine."""
+
+    def test_phase24_memory_with_topological_metrics(self, semantic_memory):
+        """Testa que Phase 24 Memory pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Armazenar episódio
+        episode_id = semantic_memory.store_episode(
+            content="Test episode for topological integration",
+            metadata={"test": True},
+        )
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert episode_id is not None
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Phase 24 Memory: memória semântica, estado, temporal
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

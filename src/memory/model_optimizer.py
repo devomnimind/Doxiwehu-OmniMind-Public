@@ -173,13 +173,18 @@ class ModelOptimizer:
         if use_kv_cache:
             self.kv_caches[model_name] = {}
 
+        # Auto-detect device
+        from src.utils.device_utils import get_compute_device
+
+        device_str = get_compute_device()
+
         # Armazenar configuração
         self.model_configs[model_name] = ModelConfig(
             model_name=model_name,
             precision=precision,
             use_kv_cache=use_kv_cache,
             cache_size=self.kv_cache_size,
-            device="cpu",  # TODO: detectar device automaticamente
+            device=device_str,  # Auto-detect via device_utils
             max_length=512,
         )
 

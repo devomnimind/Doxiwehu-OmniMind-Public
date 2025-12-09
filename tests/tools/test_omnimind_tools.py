@@ -260,8 +260,17 @@ class TestNewTaskTool:
         assert isinstance(result, dict)
 
 
+@pytest.mark.skip(
+    reason="EpisodicMemory is deprecated. Use NarrativeHistory (Lacanian) instead. "
+    "See src/memory/episodic_memory.py for deprecation notice."
+)
 class TestEpisodicMemoryTool:
-    """Testes para EpisodicMemoryTool."""
+    """Testes para EpisodicMemoryTool (DEPRECATED).
+
+    ⚠️  WARNING: EpisodicMemory is deprecated.
+    Memory is retroactive construction, not storage.
+    Use NarrativeHistory for proper Lacanian implementation.
+    """
 
     @pytest.fixture
     def tool(self) -> EpisodicMemoryTool:

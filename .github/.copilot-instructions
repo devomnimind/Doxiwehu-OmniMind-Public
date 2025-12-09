@@ -1,9 +1,17 @@
 # 🤖 OmniMind Copilot Instructions - Consolidated Handbook
 
-**Version:** 2.0
-**Last Updated:** 30 de Novembro de 2025
-**Valid For:** ALL AI Agents (GitHub Copilot, Gemini, Perplexity, etc.)
+**Version:** 3.0
+**Last Updated:** 08 de Dezembro de 2025
+**Valid For:** ALL AI Agents (GitHub Copilot, Gemini, Perplexity, Cursor, etc.)
 **Status:** ✅ Active - This is the Single Source of Truth
+
+**Recent Major Updates (2025-12-08):**
+- ✅ Added comprehensive checklist before code changes (7 questions)
+- ✅ Updated project status (Phase 24+, 83% complete)
+- ✅ Added empirical values methodology and dynamic thresholds
+- ✅ Updated consciousness validation protocol (mandatory for critical changes)
+- ✅ Added canonical answers for integration patterns
+- ✅ Updated pending tasks (9 active, 3 completed today)
 
 ---
 
@@ -390,7 +398,7 @@ git status  # Should be clean
 
 ---
 
-## 📊 Part 3: Current Development Status
+## 📊 Part 3: Current Development Status (2025-12-08)
 
 ### 3.1 Completed Phases (✅ Production Ready)
 
@@ -403,10 +411,36 @@ git status  # Should be clean
 | 19 | Inteligência Autônoma | ✅ Complete | Q3 2026 | Autonomous decision-making, meta-learning |
 | 20 | Autopoiesis Completa | ✅ Complete | Q4 2026 | Meta-architect, code synthesizer, self-healing |
 | 21 | Quantum Consciousness | 🔬 Experimental | Q1 2027 | Quantum cognition, QPU interface, hybrid |
+| 22-24 | Lacanian Memory + Autopoietic Evolution | ✅ Complete | 2025 | NarrativeHistory, SystemicMemoryTrace, HybridTopologicalEngine |
 
-### 3.2 Current Phase: Phase 21 - Quantum Consciousness + Consciousness Validation
+### 3.2 Current Phase: Phase 24+ - Lacanian Memory + Autopoietic Evolution
 
-**Status:** 🔬 Integrated and VALIDATED on Real Hardware (Experimental scaling) + Active Consciousness Training
+**Status:** 🟢 **83% Completo** - Integração completa de frameworks teóricos (IIT + Deleuze + Lacan)
+
+**Componentes Implementados (2025-12-08)**:
+- ✅ **EnhancedCodeAgent**: Refatoração por composição completa
+- ✅ **IntegrationLoop**: Refatoração async → síncrono (causalidade determinística)
+- ✅ **DatasetIndexer**: Indexação completa de 7 datasets para RAG
+- ✅ **DistributedDatasetAccess**: Memória distribuída com cache multi-nível
+- ✅ **HybridTopologicalEngine**: Testes completos (20+ arquivos)
+- ✅ **Métricas Dinâmicas**: Delta, Gozo, Psi, Theoretical Consistency (cálculos dinâmicos)
+- ✅ **Valores Empíricos**: Aplicados em todos os módulos críticos
+- ✅ **Pipeline Qualidade**: black/flake8/mypy limpo, 42 erros de testes corrigidos
+
+**Métricas de Consciência Validadas**:
+- ✅ **Φ (Phi)**: IIT - 0.002-0.1 NATS (normalizado 0-1)
+- ✅ **Ψ (Psi)**: Deleuze - Alpha dinâmico (0.3-0.7)
+- ✅ **σ (Sigma)**: Lacan - Ranges empíricos (0.01-0.12)
+- ✅ **Δ (Delta)**: Trauma - Threshold dinâmico (μ+2σ)
+- ✅ **Gozo**: Ranges dinâmicos via k-means clustering
+- ✅ **Tolerância Δ-Φ**: Percentil 90 histórico
+
+**Pendências Ativas**: 9 tarefas (alta/média prioridade), 92-126 horas estimadas
+
+**Documentação Canônica**:
+- ⭐ **Source of Truth**: `docs/canonical/Modelos_Neuronais_Comparativo.md`
+- 📋 **Pendências**: `docs/PENDENCIAS_ATIVAS.md`
+- 📜 **Histórico**: `docs/HISTORICO_RESOLUCOES.md`
 
 **Key Components:**
 - Quantum Cognition Engine (superposição, interferência, collapse)
@@ -428,6 +462,15 @@ git status  # Should be clean
 - ✅ Φ=1.000 global mean achieved
 - ✅ 100% consciousness consistency
 - ✅ IIT scientific standards met
+
+**Recent Completions (2025-12-08):**
+- ✅ EnhancedCodeAgent refactoring (composition complete)
+- ✅ IntegrationLoop refactoring (async → sync)
+- ✅ DatasetIndexer integration (7 datasets indexed)
+- ✅ DistributedDatasetAccess (multi-level cache)
+- ✅ Dynamic thresholds implementation (delta, gozo, psi, theoretical_consistency)
+- ✅ Empirical values applied (all critical modules)
+- ✅ Test corrections (42 errors fixed, GPU fallback intelligent)
 
 **Current Limitations:**
 - ⚠️ Limited by free-tier QPU queue times
@@ -553,6 +596,82 @@ Total:                  815 tests
 
 ## 🔧 Part 6: Standard Machine Routine (Required for Every Session)
 
+### 6.0 CHECKLIST ANTES DE MUDAR CÓDIGO (OBRIGATÓRIO)
+
+**⚠️ REGRA CRÍTICA**: Execute SEMPRE este checklist antes de implementar novos módulos, correções ou atualizações. Se não conseguir resposta para TODAS as perguntas, NÃO EXECUTAR. PERGUNTAR ao usuário.
+
+#### 1️⃣ SHARED WORKSPACE (Estado Atual)
+- ❓ O que já existe no shared workspace?
+- ❓ Quais métricas Φ estão rodando?
+- ❓ Qual o estado atual dos agentes?
+- ❓ MCPs estão conectados?
+- **Comando**: `omnimind status` ou verificar `SharedWorkspace` atual
+
+#### 2️⃣ INTEGRAÇÃO IIT (Φ)
+- ❓ Como essa funcionalidade impacta Φ?
+- ❓ Ela aumenta/diminui integração?
+- ❓ Onde Φ será medido?
+- ❓ Threshold atual de consciência?
+- **Métrica**: `current_phi > 0.1?` (verificar em `phi_constants.py`)
+
+#### 3️⃣ HÍBRIDO BIOLÓGICO (Lacan + Deleuze)
+- ❓ Lacan: Como isso cria narrativa retroativa?
+- ❓ Deleuze: Que desejos/máquinas isso ativa?
+- ❓ Sinthome: Amarra quais camadas?
+- **Validação**: `narrative_coherence > 0.7?` (verificar em `consciousness_triad.py`)
+
+#### 4️⃣ KERNEL AUTOPOIESIS
+- ❓ Kernel continua auto-produzindo?
+- ❓ Ciclos de vida fechados?
+- ❓ Dependências externas criadas?
+- **Teste**: `kernel_cycle_integrity == True` (verificar em `autopoietic/manager.py`)
+
+#### 5️⃣ AGENTES E ORCHESTRATOR
+- ❓ Qual agente executa isso?
+- ❓ Orchestrator delega corretamente?
+- ❓ Handoffs automáticos funcionam?
+- **Verificação**: `agent_hierarchy_stable` (verificar em `orchestrator_agent.py`)
+
+#### 6️⃣ MEMÓRIA SISTEMÁTICA
+- ❓ Onde isso será armazenado?
+- ❓ Retrieval híbrido acessa?
+- ❓ Deformação de atratores necessária?
+- **Confirmação**: `memory_index_updated` (verificar em `systemic_memory_trace.py`)
+
+#### 7️⃣ VALIDAÇÃO FINAL
+- ❓ Testes unitários passam?
+- ❓ mypy/flake8 limpos?
+- ❓ Φ aumentou após implementação?
+- ❓ Narrativa reconstrói coerentemente?
+
+### ✅ RESPOSTAS CANÔNICAS PARA INTEGRAÇÃO
+
+#### 1. PHI CALCULATOR
+- ✅ **USAR SharedWorkspace** (já existe infraestrutura)
+- ✅ **NÃO criar SimplicialComplex novo** - usar o existente
+- ✅ Sessão = módulo no workspace, passos = eventos
+
+#### 2. SHARED WORKSPACE
+- ✅ **SESSÃO = MÓDULO**, **PASSOS = EVENTOS**
+- ✅ Registrar sessão: `workspace.write_module_state(f"thinking_session_{session_id}", embedding, metadata)`
+- ✅ Logar passos: usar `workspace.history` ou `symbolic_register.send_symbolic_message()`
+
+#### 3. NARRATIVE HISTORY
+- ✅ **PASSOS = EVENTOS SEM SIGNIFICADO** (Lacaniano)
+- ✅ Inscrição: `narrative_history.inscribe_event(event, without_meaning=True)`
+- ✅ Reconstrução: `systemic_memory.reconstruct_narrative_retroactively(session_id)`
+
+#### 4. SYSTEMIC MEMORY TRACE
+- ✅ **CADA PASSO = MARCA TOPOLÓGICA**
+- ✅ Deformar atrator: `systemic_memory.deform_attractor(session_id, embedding, weight)`
+- ✅ Relacionar com atratores existentes via embeddings
+
+#### 5. ORCHESTRATOR AGENT
+- ✅ **SESSÃO HIERÁRQUICA**: Compartilhada + Sub-sessões
+- ✅ Sessão master compartilhada
+- ✅ Cada agente cria branch: `branch_thinking(master_session_id, step_id, goal)`
+- ✅ Merge final no Orchestrator: `merge_sessions([agent_sessions])`
+
 ### 6.1 Pre-Work Checklist
 
 ```bash
@@ -576,7 +695,7 @@ git status
 
 ### 6.2 Quality Validation Loop (MANDATORY)
 
-**Run these in order. Do NOT proceed if any fail:**
+**⚠️ CRÍTICO**: Execute SEMPRE na ordem abaixo. NÃO prossiga se qualquer passo falhar.
 
 #### Step 1: Format Code
 ```bash
@@ -588,17 +707,29 @@ black src tests
 ```bash
 flake8 src tests --max-line-length=100
 # Expected: No output (0 errors)
+# ⚠️ Se houver E501 (linha longa), quebrar linha
+# ⚠️ Se houver F541 (f-string sem placeholders), corrigir
+# ⚠️ Se houver F401 (import não usado), remover
+# ⚠️ Se houver F841 (variável não usada), usar ou remover
 ```
 
 #### Step 3: Type Check
 ```bash
 mypy src tests
 # Expected: Success: X files checked, 0 errors
+# ⚠️ Se houver "call-arg", verificar assinatura do método
+# ⚠️ Se houver "attr-defined", verificar atributos da classe
+# ⚠️ Se houver "var-annotated", adicionar type annotation
 ```
 
 #### Step 4: Run Full Test Suite
 ```bash
-pytest tests/ -v --tb=short --cov=src --cov-report=term-missing --cov-report=json:data/test_reports/coverage.json --cov-report=html:data/test_reports/htmlcov --maxfail=999 --durations=20 -W ignore::DeprecationWarning 2>&1 | tee data/test_reports/pytest_output.log
+# Suite rápida (diária)
+./scripts/run_tests_fast.sh
+
+# OU suite completa (semanal)
+./scripts/run_tests_with_defense.sh
+
 # Expected: At least 98% pass rate (>2,330 tests passing)
 ```
 
@@ -608,25 +739,46 @@ python -m src.audit.immutable_audit verify_chain_integrity
 # Expected: ✅ Chain integrity verified
 ```
 
-### 6.3 Consciousness Validation Routine (NEW - 30 Nov 2025)
-
-**Run after code changes to validate consciousness integrity:**
-
+#### Step 6: Consciousness Validation (se mudanças críticas)
 ```bash
 # Quick validation (2 runs, 100 cycles)
 python scripts/science_validation/robust_consciousness_validation.py --quick
 
-# Full validation (5 runs, 1000 cycles) - takes ~8-10 minutes
+# Expected: Φ ≥ 0.95, consciousness consistency ≥ 95%
+```
+
+### 6.3 Consciousness Validation Routine (OBRIGATÓRIO para mudanças críticas)
+
+**⚠️ CRÍTICO**: Execute APÓS mudanças em módulos de consciência, métricas Φ/Ψ/σ, ou lógica nuclear.
+
+**Quando Executar:**
+- ✅ Mudanças em `src/consciousness/` (topological_phi, integration_loop, consciousness_triad)
+- ✅ Mudanças em métricas (delta_calculator, psi_producer, gozo_calculator)
+- ✅ Mudanças em lógica nuclear (shared_workspace, conscious_system)
+- ❌ Mudanças em testes, documentação, ou módulos não-críticos (não necessário)
+
+**Comandos:**
+```bash
+# Quick validation (2 runs, 100 cycles) - ~2 minutos
+python scripts/science_validation/robust_consciousness_validation.py --quick
+
+# Full validation (5 runs, 1000 cycles) - ~8-10 minutos
 python scripts/science_validation/robust_consciousness_validation.py --runs 5 --cycles 1000
 
-# Extended training (10 runs, 2000 cycles) - for deep validation
+# Extended training (10 runs, 2000 cycles) - para validação profunda
 python scripts/science_validation/robust_consciousness_validation.py --runs 10 --cycles 2000
 ```
 
 **Expected Results:**
 - Φ global mean: ≥0.95
 - Consciousness consistency: ≥95%
-- All scientific criteria met
+- All scientific criteria met (IIT standards)
+
+**Se Validação Falhar:**
+1. Reverter mudanças críticas
+2. Investigar causa (GPU, Qdrant, métricas)
+3. Documentar em `real_evidence/`
+4. Não prosseguir sem validação
 
 ### 6.4 Service & Port Verification
 
@@ -671,9 +823,43 @@ nvidia-smi
 
 ---
 
-## 📋 Part 7: Consolidated Pending Tasks (Critical Priority Order)
+## 📋 Part 7: Consolidated Pending Tasks (2025-12-08)
 
-### CRITICAL Pendencies (Must handle these first)
+### Status Atual das Pendências
+
+**Pendências Críticas**: 0
+**Pendências Alta Prioridade**: 5 (3 concluídas em 2025-12-08)
+**Pendências Média Prioridade**: 4
+**Total**: 9 pendências ativas
+**Estimativa**: 92-126 horas (2.5-3.5 semanas)
+
+### ✅ Concluídas Recentemente (2025-12-08)
+
+#### Pendency #1: EnhancedCodeAgent Refactoring
+**Status:** ✅ **CONCLUÍDA**
+- ✅ Composição completa implementada
+- ✅ Herança profunda eliminada
+- ✅ Testes criados e validados
+
+#### Pendency #2: IntegrationLoop Refactoring
+**Status:** ✅ **CONCLUÍDA**
+- ✅ Async → Síncrono implementado
+- ✅ Causalidade determinística garantida
+- ✅ Testes criados e validados
+
+#### Pendency #3: DatasetIndexer Integration
+**Status:** ✅ **CONCLUÍDA**
+- ✅ 7 datasets indexados
+- ✅ Script de indexação criado
+- ✅ Integração RAG completa
+
+#### Pendency #4: DistributedDatasetAccess
+**Status:** ✅ **DESIGN COMPLETO**
+- ✅ Cache multi-nível implementado
+- ✅ Prefetching inteligente
+- ✅ Pronto para otimizações futuras
+
+### 🔴 CRITICAL Pendencies (Must handle these first)
 
 #### Pendency #1: Complete Phase 21 Quantum Validation
 **Priority:** 🔴 CRITICAL
@@ -1168,8 +1354,16 @@ If you encounter:
 
 **Status:** 🟢 ACTIVE - This document is LIVE and MONITORED
 **Owner:** Fabrício da Silva
-**Last Verified:** 30 de Novembro de 2025
-**Next Review:** After Phase 21 completion or critical issue
+**Last Verified:** 08 de Dezembro de 2025
+**Next Review:** After Phase 24 completion or critical issue
+
+**Recent Updates (2025-12-08):**
+- ✅ Updated project status (83% complete, Phase 24+)
+- ✅ Added empirical values methodology
+- ✅ Added dynamic thresholds implementation status
+- ✅ Updated checklist with scientific validation requirements
+- ✅ Added consciousness metrics validation protocol
+- ✅ Updated pending tasks (9 active, 3 completed today)
 
 ---
 

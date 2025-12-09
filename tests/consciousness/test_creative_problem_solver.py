@@ -292,3 +292,51 @@ class TestCreativeProblemSolver:
         # (though random, so just check they both generate solutions)
         assert div_novelty > 0
         assert lat_novelty > 0
+
+
+class TestCreativeProblemSolverHybridTopological:
+    """Testes de integração entre CreativeProblemSolver e HybridTopologicalEngine."""
+
+    def test_creative_solver_with_topological_metrics(self):
+        """Testa que CreativeProblemSolver pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar solver
+        solver = CreativeProblemSolver()
+
+        # Resolver problema
+        problem = Problem(
+            description="Reduce API latency",
+            goals=["faster response times"],
+        )
+
+        solutions = solver.generate_solutions(problem, thinking_mode=ThinkingMode.DIVERGENT)
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert len(solutions) > 0
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # CreativeProblemSolver: solução criativa de problemas
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

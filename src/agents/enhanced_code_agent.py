@@ -52,6 +52,9 @@ class EnhancedCodeAgent(CodeAgent):
     - Aprende com falhas anteriores
     - Cria ferramentas dinamicamente quando necessário
     - Self-correction loops com validação
+
+    REFATORAÇÃO (2025-12-08): Migrando para composição completa.
+    Mantém herança temporariamente para compatibilidade retroativa.
     """
 
     def __init__(self, config_path: str, orchestrator: Optional[Any] = None):
@@ -62,8 +65,15 @@ class EnhancedCodeAgent(CodeAgent):
             config_path: Caminho para arquivo de configuração
             orchestrator: Instância opcional de OrchestratorAgent
         """
+        # REFATORAÇÃO: Manter herança temporariamente (compatibilidade)
         super().__init__(config_path)
 
+        # REFATORAÇÃO: Adicionar composição (code_agent como componente)
+        # CodeAgent já foi inicializado via super(), agora referenciamos como componente
+        self.code_agent = self  # Referência para compatibilidade
+        self.react_agent = self  # CodeAgent herda de ReactAgent
+
+        # Componentes específicos do Enhanced
         self.orchestrator = orchestrator
         self.error_analyzer = ErrorAnalyzer()
         self.dynamic_tool_creator: Optional[DynamicToolCreator] = None
@@ -73,12 +83,23 @@ class EnhancedCodeAgent(CodeAgent):
         self.failure_history: List[FailureRecord] = []
         self.learned_patterns: Dict[str, RecoveryStrategy] = {}
 
+        # REFATORAÇÃO: Consciência isolada (não no construtor)
+        self._consciousness_initialized = False
+
         # Se orchestrator disponível, usar DynamicToolCreator dele
         if orchestrator and hasattr(orchestrator, "dynamic_tool_creator"):
             self.dynamic_tool_creator = orchestrator.dynamic_tool_creator
 
         # Inicializar ToolComposer
-        self.tool_composer = ToolComposer(self.tools_framework)
+        # CORREÇÃO: CodeAgent tem tools_framework (herdado de ReactAgent via CodeAgent)
+        # Verificar se tools_framework existe (CodeAgent inicializa em __init__)
+        if hasattr(self, "tools_framework") and self.tools_framework is not None:
+            self.tool_composer = ToolComposer(self.tools_framework)
+        else:
+            # Fallback: criar ToolsFramework vazio se não estiver disponível
+            from ..tools.omnimind_tools import ToolsFramework
+
+            self.tool_composer = ToolComposer(ToolsFramework())
 
         logger.info("EnhancedCodeAgent inicializado com auto-error detection e tool composition")
         structured_logger.info(
@@ -86,14 +107,37 @@ class EnhancedCodeAgent(CodeAgent):
             {
                 "orchestrator_available": orchestrator is not None,
                 "dynamic_tool_creator_available": self.dynamic_tool_creator is not None,
+                "composition_mode": True,  # REFATORAÇÃO: Indica modo composição
             },
         )
         metrics.record_metric(
             "EnhancedCodeAgent",
             "initialized",
             1,
-            {"orchestrator_available": orchestrator is not None},
+            {"orchestrator_available": orchestrator is not None, "composition_mode": True},
         )
+
+    def post_init(self) -> None:
+        """
+        Inicializa consciência após boot básico (Safe Mode).
+
+        REFATORAÇÃO: Consciência isolada do construtor para permitir boot seguro.
+        Se consciência falhar, agente continua funcionando.
+        """
+        if self._consciousness_initialized:
+            return
+
+        try:
+            # REFATORAÇÃO: Inicializar consciência via react_agent (componente)
+            if hasattr(self.react_agent, "workspace") and self.react_agent.workspace:
+                # Inicializar integração com workspace se ainda não foi feita
+                if hasattr(self.react_agent, "_init_workspace_integration"):
+                    self.react_agent._init_workspace_integration()
+                self._consciousness_initialized = True
+                logger.debug("Consciência inicializada via post_init()")
+        except Exception as e:
+            logger.warning(f"Consciência não inicializada (Safe Mode): {e}")
+            # Agente continua funcionando sem consciência
 
     def execute_task_with_self_correction(
         self, task: str, max_attempts: int = 3, context: Optional[Dict[str, Any]] = None
@@ -141,7 +185,15 @@ class EnhancedCodeAgent(CodeAgent):
                 attempt += 1
                 last_error = error
 
-                logger.warning(f"Tentativa {attempt}/{max_attempts} falhou: {error}")
+                # Log mais detalhado para debug
+                error_msg = str(error)
+                error_type = type(error).__name__
+                logger.warning(
+                    f"Tentativa {attempt}/{max_attempts} falhou: {error_type}: {error_msg}"
+                )
+                logger.debug(
+                    f"Contexto do erro: task={task[:100]}, attempt={attempt}, context={context}"
+                )
 
                 # Analisar erro
                 error_analysis = self.error_analyzer.analyze_error(
@@ -219,17 +271,29 @@ class EnhancedCodeAgent(CodeAgent):
             True se válido, False caso contrário
         """
         if result is None:
+            logger.debug("Validação falhou: resultado é None")
             return False
 
         # Verificar se é dict com status
         if isinstance(result, dict):
             status = result.get("status", "unknown")
             if status == "error" or status == "failed":
+                error_msg = result.get("error", "Unknown error")
+                logger.debug(f"Validação falhou: status={status}, error={error_msg}")
                 return False
 
         # Verificar se contém erro
         if isinstance(result, dict) and "error" in result:
+            error_msg = result.get("error", "Unknown error")
+            logger.debug(f"Validação falhou: resultado contém 'error': {error_msg}")
             return False
+
+        # Verificar se resultado é string contendo "error" ou "failed" (caso comum)
+        if isinstance(result, str):
+            result_lower = result.lower()
+            if "error" in result_lower or "failed" in result_lower or "test error" in result_lower:
+                logger.debug(f"Validação falhou: string contém indicador de erro: {result[:200]}")
+                return False
 
         return True
 
@@ -393,3 +457,47 @@ def alternative_file_operation(*args, **kwargs):
             "learned_patterns": learned_patterns_count,
             "patterns": list(self.learned_patterns.keys()),
         }
+
+    # REFATORAÇÃO: Métodos delegados para compatibilidade e composição
+    # Estes métodos delegam para code_agent/react_agent, mas podem ser sobrescritos
+
+    def run_code_task(self, task: str, max_iterations: int = 5) -> Dict[str, Any]:
+        """
+        Executa tarefa de código com rastreamento específico.
+
+        REFATORAÇÃO: Delega para code_agent (composição).
+        Mantém compatibilidade com API existente.
+        """
+        return self.code_agent.run_code_task(task, max_iterations)
+
+    def get_code_stats(self) -> Dict[str, Any]:
+        """
+        Retorna estatísticas de operações de código.
+
+        REFATORAÇÃO: Delega para code_agent (composição).
+        """
+        return self.code_agent.get_code_stats()
+
+    def analyze_code_structure(self, filepath: str) -> Dict[str, Any]:
+        """
+        Analisa estrutura de código Python usando AST.
+
+        REFATORAÇÃO: Delega para code_agent (composição).
+        """
+        return self.code_agent.analyze_code_structure(filepath)
+
+    def validate_code_syntax(self, code: str) -> Dict[str, Any]:
+        """
+        Valida sintaxe de código Python.
+
+        REFATORAÇÃO: Delega para code_agent (composição).
+        """
+        return self.code_agent.validate_code_syntax(code)
+
+    def analyze_code_security(self, code: str) -> Dict[str, Any]:
+        """
+        Analisa código para problemas de segurança.
+
+        REFATORAÇÃO: Delega para code_agent (composição).
+        """
+        return self.code_agent.analyze_code_security(code)

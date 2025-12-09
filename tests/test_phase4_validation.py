@@ -595,5 +595,41 @@ async def main():
         print("❌ Escalabilidade INEFICIENTE")
 
 
+async def test_phase4_with_topological_metrics():
+    """Testa Phase 4 validation com métricas topológicas."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    logger.info("🚀 TESTE PHASE 4: Validação + Topological Metrics")
+    logger.info("=" * 60)
+
+    # Criar workspace com engine topológico
+    workspace = SharedWorkspace(embedding_dim=256, max_history_size=1000)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular módulos
+    modules = ["qualia_engine", "narrative_constructor", "expectation_module"]
+    np.random.seed(42)
+
+    # Gerar dados
+    for t in range(100):
+        for module in modules:
+            embedding = np.random.randn(256)
+            workspace.write_module_state(module, embedding)
+        workspace.advance_cycle()
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar que métricas topológicas podem ser usadas na validação
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Phase 4: validação com ablações reais
+        # Topological: estrutura e integração
+        # Ambas podem ser usadas para validação completa
+
+    logger.info("✅ Phase 4 validation + Topological Metrics verified")
+
+
 if __name__ == "__main__":
     asyncio.run(main())

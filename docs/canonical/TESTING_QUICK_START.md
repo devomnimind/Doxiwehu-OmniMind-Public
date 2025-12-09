@@ -1,6 +1,6 @@
 ## 🧠 OMNIMIND TEST SUITE - SETUP RÁPIDO
 
-### 🔒 SERVER STATE MANAGEMENT (2025-12-05)
+### 🔒 SERVER STATE MANAGEMENT
 
 **Novo**: Gerenciador centralizado `ServerStateManager` evita conflitos entre:
 - `omnimind_server` fixture (session scope, E2E tests)
@@ -14,14 +14,14 @@
 
 **Arquivo**: `tests/server_state_manager.py` - Estados: UNKNOWN, RUNNING, DOWN, STARTING, STOPPING
 
-### ⏱️ TIMEOUT CONFIGURATION (2025-12-05)
+### ⏱️ TIMEOUT CONFIGURATION
 
 **Global Settings** in `config/pytest.ini`:
 - **Per-test timeout**: 800 seconds (13.3 minutes max per individual test)
 - **Timeout method**: thread-based (safe interrupt)
 - **No session timeout**: Each test gets full 800s allocation
 
-### 🚀 SCRIPTS DE TESTE ATIVOS (2025-12-05)
+### 🚀 SCRIPTS DE TESTE ATIVOS
 
 Há 3 scripts principais para diferentes cenários:
 

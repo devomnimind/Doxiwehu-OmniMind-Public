@@ -38,6 +38,12 @@ Módulo implementa funcionalidades especializadas através de:
 - Recuperação de falhas em nível meta
 - Composição de agentes baseada em requisitos
 - Integração com ErrorAnalyzer para análise estrutural
+- ✅ **Substitui** `integrity.intelligent_integrator` (deprecated - Phase 26D)
+
+**IntrospectionLoop** (`introspection_loop.py`):
+- Loop de aprendizado e introspecção contínua
+- Auto-análise e melhoria iterativa
+- ✅ **Substitui** `intelligence.learning_loop` (deprecated - Phase 26B)
 
 **ErrorAnalyzer** (`error_analyzer.py`):
 - Análise estrutural de erros
@@ -52,6 +58,8 @@ Módulo implementa funcionalidades especializadas através de:
 - Integração com HybridRetrievalSystem e DatasetIndexer
 - Aumento de contexto para re-execução
 - Integração com ModuleMetricsCollector e StructuredModuleLogger
+- ✅ **Indexação de Datasets** (2025-12-08): Integração completa com DatasetIndexer para indexar todos os datasets disponíveis
+- ✅ **7 datasets indexados**: scientific_papers_arxiv, qasper_qa, human_vs_ai_code, turing_reasoning, infllm_v2_data, dbpedia_ontology
 
 **SandboxSystem** (`sandbox_system.py`) - ✅ COMPLETO (2025-12-06):
 - Sistema de sandbox para auto-melhoria segura

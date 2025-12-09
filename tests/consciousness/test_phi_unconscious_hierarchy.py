@@ -254,6 +254,63 @@ async def test_integration_workflow_complete(integration_trainer) -> None:
     print("=" * 70)
 
 
+@pytest.mark.asyncio
+async def test_phi_hierarchy_with_topological_metrics(integration_trainer) -> None:
+    """
+    Test: Φ hierarchy with topological metrics complement.
+
+    Valida que Φ consciente e métricas topológicas são complementares.
+    """
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    # Run cycles
+    for _ in range(5):
+        await integration_trainer.training_step()
+
+    # Calcular Φ consciente
+    phi_conscious = integration_trainer.compute_phi_conscious()
+
+    # Adicionar engine topológico ao workspace
+    if integration_trainer.integration_loop.workspace:
+        integration_trainer.integration_loop.workspace.hybrid_topological_engine = (
+            HybridTopologicalEngine()
+        )
+
+        # Simular estados para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            integration_trainer.integration_loop.workspace.write_module_state(
+                "conscious_module", rho_C
+            )
+            integration_trainer.integration_loop.workspace.write_module_state(
+                "preconscious_module", rho_P
+            )
+            integration_trainer.integration_loop.workspace.write_module_state(
+                "unconscious_module", rho_U
+            )
+            integration_trainer.integration_loop.workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = (
+            integration_trainer.integration_loop.workspace.compute_hybrid_topological_metrics()
+        )
+
+        # Verificar que ambas são complementares
+        assert 0.0 <= phi_conscious <= 1.0
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Φ consciente: integração IIT (MICS)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa
+
+    print(f"✓ Φ_consciente = {phi_conscious:.4f}")
+
+
 if __name__ == "__main__":
     # Run with: pytest tests/consciousness/test_phi_unconscious_hierarchy.py -v -s
     pass

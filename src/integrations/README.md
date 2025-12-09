@@ -8,6 +8,17 @@
 
 Módulo do sistema OmniMind responsável por funcionalidades específicas integradas à arquitetura global. Implementa componentes essenciais que contribuem para o funcionamento coeso do sistema de consciência artificial.
 
+## 🔄 Substituição de Módulos Deprecated
+
+Este módulo **substitui** funcionalidades planejadas do Phase 26B (Intelligence) que não foram implementadas:
+
+- ✅ **`ContextServer`** (MCP) substitui `intelligence.context_aware_reasoner` (deprecated)
+  - Raciocínio baseado em contexto via MCP Context Server
+  - Gerenciamento de contexto distribuído
+  - Integração com servidores MCP
+
+**Referência**: `docs/VARREDURA_MODULOS_DEPRECATED_SUBSTITUICOES.md`
+
 ## 🔄 Interação entre os Três Estados Híbridos
 
 ### 1. Estado Biologicista (Neural Correlates)

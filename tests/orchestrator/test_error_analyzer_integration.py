@@ -14,11 +14,20 @@ from src.orchestrator.error_analyzer import ErrorAnalyzer, ErrorType, RecoverySt
 
 
 class TestErrorAnalyzerIntegration:
-    """Testes de integração ErrorAnalyzer + OrchestratorAgent."""
+    """Testes de integração ErrorAnalyzer + OrchestratorAgent.
+
+    NOTA: O sistema já tem fallback automático para CPU quando há CUDA OOM.
+    Não desabilitamos GPU completamente - deixamos o sistema verificar memória
+    disponível e usar fallback automático quando necessário.
+    """
 
     @pytest.fixture
     def orchestrator(self):
-        """Cria instância de OrchestratorAgent para testes."""
+        """Cria instância de OrchestratorAgent para testes.
+
+        O sistema automaticamente verifica memória GPU disponível antes de
+        carregar modelos. Se não houver memória suficiente, usa CPU como fallback.
+        """
         with patch("src.agents.orchestrator_agent.MCPClient"):
             agent = OrchestratorAgent(config_path="config/agent_config.yaml")
             return agent

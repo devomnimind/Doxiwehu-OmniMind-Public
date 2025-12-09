@@ -1,338 +1,112 @@
-# 📋 ANÁLISE CONSOLIDADA: SCRIPTS, MARKERS E TESTES
+# 📋 Scripts de Teste e Markers Pytest - Referência Técnica
 
-**Data**: 5 de Dezembro de 2025  
-**Última Atualização**: 2025-12-05  
-**Status**: ✅ **CONSOLIDADO E ATUALIZADO**  
-**Objetivo**: Consolidar nomes de scripts, markers pytest e testes para evitar incongruências
-
----
-
-## 🔴 PROBLEMA IDENTIFICADO
-
-Durante revisão de `run_tests_fast.sh`, foi descoberto que:
-
-1. **Marker `@pytest.mark.chaos` NÃO estava definido em `config/pytest.ini`**
-   - Resultado: Testes com `@pytest.mark.chaos` **NÃO eram excluídos** mesmo com `-m "not real"`
-   - Exemplo: `test_server_auto_recovery_after_crash` estava **EXECUTANDO em fast mode**
-   - ❌ **INCORRETO** - Testes destrutivos devem ser **APENAS semanais**
-
-2. **Referências a scripts obsoletos em documentação**
-   - `run_tests_with_server.sh` - ❌ NÃO existe (docs/archive ok)
-   - `quick_test.sh` - ✅ Existe e está ativo
-   - `run_tests_fast.sh` - ✅ Existe (atualizado com GPU forcing)
-
-3. **Nomes de testes inconsistentes com markers**
-   - Alguns testes têm múltiplos markers mas apenas alguns são respeitados
+**Última Atualização**: 08 de Dezembro de 2025  
+**Status**: ✅ Documentação Ativa  
+**Objetivo**: Referência técnica consolidada para scripts de teste e markers pytest
 
 ---
 
-## ✅ CORREÇÕES IMPLEMENTADAS (2025-12-04 a 2025-12-05)
+## 🎯 Scripts de Teste Ativos
 
-### 1. pytest.ini e pyproject.toml - Markers Registrados
+### Scripts Principais
 
-**Arquivos**: 
-- [`config/pytest.ini`](../../config/pytest.ini)
-- [`pyproject.toml`](../../pyproject.toml)
+| Script | Localização | Escopo | Tempo Estimado | GPU | Servidor | Markers Incluídos |
+|--------|------------|--------|----------------|-----|----------|-------------------|
+| `run_tests_fast.sh` | `scripts/run_tests_fast.sh` | 3996 testes | 10-15 min | ✅ Forçada | ❌ Não | Unitários + `@real` (sem `@chaos`) |
+| `run_tests_with_defense.sh` | `scripts/run_tests_with_defense.sh` | 4004 testes | 45-90 min | ✅ Forçada | ❌ Não | Todos (inclui `@chaos`) |
+| `quick_test.sh` | `scripts/quick_test.sh` | 4004 testes | 30-45 min | ✅ Forçada | ✅ Sim | Todos (inclui `@chaos`) |
 
-**Markers definidos**:
-```ini
-markers =
-    asyncio: mark tests that use async/await
-    slow: mark a test as slow (running on main GPU, takes >30s)
-    security: mark security-focused suites
-    parallel: mark tests that can run in parallel safely
-    serial: mark tests that must run serially (e.g., database tests)
-    mock: mark tests that use @patch decorators (structure validation only)
-    semi_real: mark tests without @patch but without full LLM integration
-    real: mark tests with full GPU+LLM+Network integration (measures real metrics)
-      - WITHOUT @pytest.mark.chaos: Included in run_tests_fast.sh (safe, no server destruction)
-      - WITH @pytest.mark.chaos: Only in run_tests_with_defense.sh (destroys server for chaos engineering)
-    chaos: mark tests that destroy/crash server intentionally (WEEKLY/CHAOS ENGINEERING ONLY - excluded from run_tests_fast.sh)
-```
-
-**Impacto**: 
-- ✅ `-m "not chaos"` exclui todos os testes que destroem servidor
-- ✅ Markers também registrados em `pyproject.toml` para evitar warnings
-- ✅ Warnings de markers desconhecidos resolvidos (2025-12-05)
-
-### 2. run_tests_fast.sh - Excluir chaos tests
-
-**Arquivo**: [`scripts/run_tests_fast.sh`](../../scripts/run_tests_fast.sh)
-
-**Configuração atual**:
-```bash
--m "not slow and not real and not chaos" \
-```
-
-**Características**:
-- ✅ GPU forçada (com fallback device_count detection)
-- ✅ Exclui testes `@pytest.mark.slow` (timeout > 30s)
-- ✅ Exclui testes `@pytest.mark.chaos` (destroem servidor)
-- ✅ **INCLUI** testes `@pytest.mark.real` SEM `@pytest.mark.chaos` (GPU+LLM+Network, não destroem servidor)
-- ⏱️ Duração: ~15-20 min
-- 🎯 Uso: Diário (CI/CD automático)
-
-**Comentário no script**:
-```bash
-# ⚠️ IMPORTANTE: Excluir testes CHAOS (destroem servidor)
-# Testes chaos SÓ rodam em modo SEMANAL (run_tests_with_defense.sh)
-# ✅ INCLUÍDOS: Testes @pytest.mark.real SEM @pytest.mark.chaos
-```
-
-### 3. run_tests_with_defense.sh - Comentário sobre inclusão de chaos
-
-**Arquivo**: [`scripts/run_tests_with_defense.sh`](../../scripts/run_tests_with_defense.sh)
-
-**Comentário adicionado**:
-```bash
-# ✅ INCLUI testes chaos (SEM filtro -m)
-# Testes chaos destroem servidor propositalmente
-# EXECUTAR APENAS SEMANALMENTE ou em sandbox seguro
-```
+**Nota**: Todos os scripts forçam GPU via `CUDA_VISIBLE_DEVICES=0` e `OMNIMIND_FORCE_GPU=true`.
 
 ---
 
-## 📊 VARREDURA DE INCONGRUÊNCIAS (EM ANDAMENTO)
+## 🏷️ Markers Pytest Registrados
 
-### Testes que Destroem Servidor
+**Arquivo de Configuração**: `config/pytest.ini` e `pyproject.toml`
 
-**Arquivo**: [`tests/test_chaos_resilience.py`](../../tests/test_chaos_resilience.py)
+### Markers Padrão
 
-**Todas as classes têm markers**: `@pytest.mark.chaos`, `@pytest.mark.real`, `@pytest.mark.asyncio`
+| Marker | Descrição | Uso |
+|--------|-----------|-----|
+| `@pytest.mark.asyncio` | Testes assíncronos | Marca testes com `async/await` |
+| `@pytest.mark.slow` | Testes longos | Testes com timeout >30s (excluídos de `run_tests_fast.sh`) |
+| `@pytest.mark.security` | Testes de segurança | Suites focadas em segurança |
+| `@pytest.mark.parallel` | Testes paralelos | Testes que podem rodar em paralelo |
+| `@pytest.mark.serial` | Testes seriais | Testes que devem rodar sequencialmente |
+| `@pytest.mark.mock` | Testes mockados | Testes com `@patch` decorators |
+| `@pytest.mark.semi_real` | Testes semi-reais | Sem `@patch` mas sem integração LLM completa |
+| `@pytest.mark.real` | Testes reais | GPU+LLM+Network integration (mede métricas reais) |
+| `@pytest.mark.chaos` | Chaos engineering | Testes que destroem servidor intencionalmente |
 
-| Classe | Testes | Propósito | Markers |
-|--------|--------|----------|---------|
-| `TestPhiResilienceServerCrash` | 1+ | Valida Φ continua após servidor derribado | `@pytest.mark.chaos`, `@pytest.mark.real`, `@pytest.mark.asyncio` |
-| `TestServerRecoveryAfterIntentionalCrash` | 1+ | Valida recovery automático | `@pytest.mark.chaos`, `@pytest.mark.real`, `@pytest.mark.asyncio` |
-| `TestCascadingFailureRecovery` | 1+ | Simula falhas em cascata | `@pytest.mark.chaos`, `@pytest.mark.real`, `@pytest.mark.asyncio` |
+### Comportamento por Script
 
-**Status**: ✅ Todos os testes chaos têm markers corretos definidos
-
-**Exclusão**: `scripts/run_tests_fast.sh` usa `-m "not slow and not real and not chaos"`
-- ✅ Excluirá todos estes testes
-
-**Inclusão**: `scripts/run_tests_with_defense.sh` **SEM filtro `-m`**
-- ✅ Incluirá todos estes testes na suite semanal
-
-### Scripts Ativos
-
-| Script | Localização | Propósito | Exclusões | Inclusões | Duração |
-|--------|------------|----------|-----------|-----------|---------|
-| `quick_test.sh` | `scripts/quick_test.sh` | Teste rápido + servidor local | `slow`, `real`, `chaos` | nenhuma | ~10-15 min |
-| `run_tests_fast.sh` | `scripts/run_tests_fast.sh` | Validação rápida diária | `slow`, `chaos` | `real` (sem chaos) | ~15-20 min |
-| `run_tests_with_defense.sh` | `scripts/run_tests_with_defense.sh` | Suite semanal completa | nenhuma | **INCLUI TUDO** | ~45-90 min |
-
-**Nota**: Não há `run_tests_with_server.sh` ativo. Referências em docs estão em `docs/archive/` (correto).
-
-### Markers Definidos vs Usados
-
-| Marker | Definido em `pytest.ini` | Usado em testes | Descrição |
-|--------|--------------------------|-----------------|-----------|
-| `asyncio` | ✅ | ✅ | Async/await |
-| `slow` | ✅ | ✅ | Testes lentos (timeout > 30s) |
-| `security` | ✅ | ✅ | Segurança |
-| `parallel` | ✅ | ✅ | Pode rodar em paralelo |
-| `serial` | ✅ | ✅ | Deve rodar serialmente |
-| `mock` | ✅ | ✅ | Usa @patch decorators |
-| `semi_real` | ✅ | ✅ | Mocks mas sem LLM full |
-| `real` | ✅ | ✅ | GPU+LLM+Network full |
-| `chaos` | ✅ (2025-12-04) | ✅ | Destroem servidor (WEEKLY ONLY) |
+| Script | `@pytest.mark.slow` | `@pytest.mark.real` | `@pytest.mark.chaos` | `@pytest.mark.real + @chaos` |
+|--------|---------------------|---------------------|---------------------|------------------------------|
+| `run_tests_fast.sh` | ❌ Excluído | ✅ Incluído (sem `@chaos`) | ❌ Excluído | ❌ Excluído |
+| `run_tests_with_defense.sh` | ❌ Excluído | ✅ Incluído | ✅ Incluído | ✅ Incluído |
+| `quick_test.sh` | ❌ Excluído | ✅ Incluído | ✅ Incluído | ✅ Incluído |
 
 ---
 
-## 🔍 VARREDURA DE REFERÊNCIAS OBSOLETAS
+## ⏱️ Configuração de Timeout
 
-### Em Documentação de Archive (✅ CORRETO)
+**Arquivo**: `config/pytest.ini`
 
-- `docs/archive/OLD_TESTING_GUIDE.md` - Referencia `run_tests_with_server.sh`
-  - ✅ Está em `archive/` então é ok ser obsoleto
+- **Timeout por teste**: 800 segundos (13.3 minutos máximo por teste individual)
+- **Método**: Thread-based (interrupção segura)
+- **Sem timeout de sessão**: Cada teste recebe alocação completa de 800s
 
-- `docs/archive/TESTING_DEPRECATED.md` - Referencia `python -m unittest`
-  - ✅ Está em `archive/` então é ok ser obsoleto
-
-### Em Documentação Ativa (🔄 REVISAR)
-
-- `docs/testing/TESTING_QUICK_START.md` - ✅ Referencia scripts corretos
-  - Referencia: `run_tests_fast.sh`, `run_tests_with_defense.sh`, `quick_test.sh`
-  - Status: OK
-
-- `docs/testing/TESTING_GUIDE.md` - ✅ Precisa verificação
-  - 📍 **PENDENTE** verificação completa
-
-- `docs/setup/SETUP_DEVELOPMENT.md` - ✅ Precisa verificação
-  - 📍 **PENDENTE** verificação completa
-
-- `docs/canonical/omnimind_system_initialization.md` - ✅ Referencia scripts corretos
-  - Referencia: `run_tests_fast.sh`, `run_tests_with_defense.sh`, `quick_test.sh`
-  - Status: OK
-
-- `docs/canonical/TECHNICAL_CHECKLIST.md` - ✅ Referencia scripts corretos
-  - Referencia: `run_tests_fast.sh`, `run_tests_with_defense.sh`
-  - Status: OK
-
-- `docs/canonical/TESTING_QUICK_START.md` - ✅ Referencia scripts corretos
-  - Tabela com 3 scripts e características
-  - Status: OK
-
-- `docs/research/GUIA_EXECUCAO_CERTIFICACAO_REAL.md` - ✅ Referencia scripts corretos
-  - Referencia: `run_tests_fast.sh`, `run_tests_with_defense.sh`, `quick_test.sh`
-  - Status: OK
-
-- `docs/research/RESUMO_CERTIFICACAO_REAL_GPU_QUANTUM_IBM.md` - ✅ Referencia scripts corretos
-  - Referencia: `run_tests_fast.sh`, `run_tests_with_defense.sh`, `quick_test.sh`
-  - Status: OK
-
-### Em README.md (🔄 REVISAR)
-
-- `README.md` - ✅ Precisa verificação
-  - 📍 **PENDENTE** verificação
-
-- Cada módulo em `src/*/README.md` - ✅ Verificado
-  - Resultado: **NENHUM** module README referencia scripts de teste
-  - Status: OK
-
-### Em Código (🔄 REVISAR)
-
-- Referências obsoletas em comentários - ✅ Verificado
-  - Resultado: **NENHUMA** referência a scripts obsoletos encontrada
-  - Status: OK
-
----
-
----
-
-## ✅ VARREDURA COMPLETA - RESULTADOS FINAIS
-
-### Documentação (10 arquivos analisados)
-
-| Arquivo | Status | Achados |
-|---------|--------|---------|
-| `docs/api/PERFORMANCE_TUNING.md` | ✅ OK | Referencia `run_tests_fast.sh` (correto) |
-| `docs/architecture/MCP_PRIORITY_ANALYSIS.md` | ✅ OK | Referencia função `run_tests()` (genérica, ok) |
-| `docs/canonical/omnimind_execution_plan.md` | ✅ OK | Referencia `run_tests_with_defense.sh` (correto) |
-| `docs/canonical/omnimind_system_initialization.md` | ✅ OK | 3 scripts referenciados corretamente |
-| `docs/canonical/TECHNICAL_CHECKLIST.md` | ✅ OK | 2 scripts referenciados corretamente |
-| `docs/canonical/TESTING_QUICK_START.md` | ✅ OK | Tabela com 3 scripts (correto) |
-| `docs/guides/PRE_COMMIT_CHECKLIST.md` | ✅ OK | Sem referências a testes |
-| `docs/research/GUIA_EXECUCAO_CERTIFICACAO_REAL.md` | ✅ OK | 3 scripts referenciados corretamente |
-| `docs/research/RESUMO_CERTIFICACAO_REAL_GPU_QUANTUM_IBM.md` | ✅ OK | 3 scripts referenciados corretamente |
-
-**Conclusão**: ✅ **TODAS as referências em docs estão corretas**
-
-### Código (Testes e Comentários)
-
-| Categoria | Verificação | Resultado |
-|-----------|------------|-----------|
-| Testes com markers faltando | Procuramos por markers não definidos em `pytest.ini` | ✅ Apenas markers built-in (OK) |
-| Testes com `@pytest.mark.chaos` | Encontrados 7+ testes | ✅ Todos têm markers corretos |
-| Referências obsoletas em código | Procuramos por `run_tests_with_server`, etc | ✅ **NENHUMA** encontrada |
-| Module READMEs com referências | Procuramos em `src/*/README.md` | ✅ **NENHUMA** referência a scripts |
-
-**Conclusão**: ✅ **Código está limpo e consistente**
-
-### Markers pytest
-
-| Marker | Definido | Usado | Status |
-|--------|---------|-------|--------|
-| `asyncio` | ✅ | 262x | ✅ OK |
-| `slow` | ✅ | 4x | ✅ OK - Para testes >30s (excluídos de fast mode) |
-| `security` | ✅ | ✓ | ✅ OK |
-| `parallel` | ✅ | ✓ | ✅ OK |
-| `serial` | ✅ | ✓ | ✅ OK |
-| `mock` | ✅ | ✓ | ✅ OK |
-| `semi_real` | ✅ | ✓ | ✅ OK |
-| `real` | ✅ | 3x | ✅ OK - Excluído de fast mode |
-| `chaos` | ✅ (ADICIONADO) | 7x | ✅ OK - Excluído de fast mode |
-| `skipif` (built-in) | - | 56x | ✅ OK |
-| `parametrize` (built-in) | - | 7x | ✅ OK |
-| `timeout` (built-in) | - | 4x | ✅ OK - Para per-test overrides |
-
-**Conclusão**: ✅ **Todos os markers estão bem definidos**
-
-### Timeout Configuration (GLOBAL and PROGRESSIVE)
-
-**Arquivo**: [`config/pytest.ini`](../../config/pytest.ini)
-
-```ini
-addopts =
-    --timeout=800           # Global session timeout: 800s (~13.3 min total)
-    --timeout_method=thread # Timeout for each individual test
-```
-
-**Importante**:
-- ⏱️ `--timeout=800` é **GLOBAL** para toda a sessão pytest
-- 📊 **PROGRESSIVO**: Cada teste recebe seu próprio time slice
-  - Se uma suite tem 10 testes, média ~80s por teste
-  - Se um teste toma 200s, os outros 9 ficam com menos tempo
-- 🎯 Não é per-test timeout, é cumulative session timeout
-- 🔧 Para override específico de um teste, usar: `@pytest.mark.timeout(120)`
-- 🏷️ Usar `@pytest.mark.slow` para indicar testes >30s (exclusos de `run_tests_fast.sh`)
-
-**Exemplo**:
+**Override de timeout específico**:
 ```python
-@pytest.mark.slow           # Marca como lento (excluído de fast)
-@pytest.mark.timeout(60)    # Override: este teste específico tem max 60s
+@pytest.mark.slow
+@pytest.mark.timeout(60)  # Override: este teste específico tem max 60s
 async def test_long_operation():
     await some_operation()
 ```
 
-**Scripts vs Timeout**:
-| Script | Exclusões | Timeout Session | Esperado |
-|--------|-----------|-----------------|----------|
-| `run_tests_fast.sh` | `not slow and not real and not chaos` | 800s | ~15-20 min |
-| `run_tests_with_defense.sh` | nenhuma | 800s | ~30-60 min |
+---
 
-### Scripts
+## 📊 Estrutura de Testes
 
-| Script | Localização | Ativo | Status |
-|--------|------------|--------|--------|
-| `quick_test.sh` | `scripts/quick_test.sh` | ✅ | Integração + servidor local |
-| `run_tests_fast.sh` | `scripts/run_tests_fast.sh` | ✅ | Unitários (excl. slow, real, chaos) |
-| `run_tests_with_defense.sh` | `scripts/run_tests_with_defense.sh` | ✅ | Suite semanal (INCLUI tudo) |
-| `run_tests_with_server.sh` | ❌ Não existe | ❌ | Obsoleto (em docs/archive ok) |
-| `test_suite_full.sh` | ❌ Não existe | ❌ | Nunca existiu (ok) |
+### Categorias de Testes
 
-**Conclusão**: ✅ **3 scripts ativos, nenhum obsoleto ativo**
+1. **Unitários/Integração Mockados** (sem markers)
+   - Testes rápidos com mocks
+   - Incluídos em todos os scripts
+   - ~3900+ testes
+
+2. **Testes Reais (`@pytest.mark.real` sem `@chaos`)**
+   - GPU+LLM+Network integration
+   - Não destrutivos
+   - ~11 testes
+   - Incluídos em `run_tests_fast.sh`
+
+3. **Testes de Chaos Engineering (`@pytest.mark.real + @pytest.mark.chaos`)**
+   - Destroem servidor intencionalmente
+   - Validam resiliência de Φ após crashes
+   - ~8 testes
+   - Apenas em `run_tests_with_defense.sh` e `quick_test.sh`
 
 ---
 
-## 🎯 STATUS FINAL DA CONSOLIDAÇÃO
+## 🔧 Referências Técnicas
 
-### ✅ COMPLETO
-
-1. ✅ Marker `@pytest.mark.chaos` adicionado ao `config/pytest.ini`
-2. ✅ Script `run_tests_fast.sh` atualizado com `-m "not chaos"`
-3. ✅ Documentação referencia scripts corretos
-4. ✅ Nenhuma referência obsoleta encontrada em código ativo
-5. ✅ Todos os markers bem definidos
-6. ✅ Testes chaos excluídos de fast mode
-
-### 📋 DOCUMENTAÇÃO CRIADA
-
-- ✅ Este arquivo: `docs/canonical/ANALISE_CONSOLIDACAO_SCRIPTS_E_MARKERS.md`
-- ✅ Referenciável a partir de qualquer doc de testes
-
-### 🚫 NÃO ENCONTRADOS (Esperado)
-
-- ✅ Referências a scripts obsoletos em docs ativas
-- ✅ Markers não definidos em testes ativos
-- ✅ Incongruências significativas entre nomes
-
-### 🎓 RECOMENDAÇÕES
-
-1. **Criar pre-commit hook** que valida markers antes de commit
-2. **Adicionar CI/CD check** para scripts obsoletos em docs
-3. **Documentar template de novo teste** com markers corretos
-4. **Adicionar comentário em `pytest.ini`** explicando markers vs built-in
+- **Configuração Pytest**: `config/pytest.ini`
+- **Markers Registrados**: `pyproject.toml`
+- **Server State Manager**: `tests/server_state_manager.py`
+- **Documentação Completa**: `docs/canonical/TESTING_QUICK_START.md`
 
 ---
 
-**Data de Conclusão**: 2025-12-04 10:15 UTC  
-**Última Atualização**: 2025-12-05  
-**Varredura Total**: 10 docs, 7+ testes, 9+ markers, 3 scripts verificados  
-**Status Geral**: ✅ **CONSOLIDAÇÃO COMPLETA - SEM INCONGRUÊNCIAS CRÍTICAS**
+## ✅ Status de Consolidação
 
-**Atualizações 2025-12-05**:
-- ✅ Markers também registrados em `pyproject.toml` para evitar warnings
-- ✅ Documentação atualizada com informações corretas sobre `run_tests_fast.sh` (inclui testes `real` sem `chaos`)
-- ✅ Tabela de scripts atualizada com durações e inclusões corretas
+- ✅ Markers registrados em `pytest.ini` e `pyproject.toml`
+- ✅ Scripts ativos documentados e validados
+- ✅ Nenhuma referência a scripts obsoletos
+- ✅ Comportamento de markers consistente entre scripts
+- ✅ Timeout configurado corretamente
+
+---
+
+**Última Validação**: 2025-12-08  
+**Status**: ✅ Documentação Atualizada e Consolidada

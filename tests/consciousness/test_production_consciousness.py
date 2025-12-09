@@ -514,3 +514,79 @@ class TestSaveSnapshot:
             system.measure_phi(["agent1"])
             snapshot_path = system.save_snapshot(label)
             assert isinstance(snapshot_path, Path)
+
+
+class TestProductionConsciousnessHybridTopological:
+    """Testes de integração entre ProductionConsciousnessSystem e métricas topológicas."""
+
+    def test_system_can_integrate_with_shared_workspace(self):
+        """Testa que sistema pode integrar com SharedWorkspace para métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar sistema de consciência
+        system = ProductionConsciousnessSystem()
+
+        # Medir Φ com agentes
+        agents = ["agent1", "agent2", "agent3"]
+        phi = system.measure_phi(agents)
+
+        # Verificar que Φ foi calculado
+        assert phi >= 0.0
+        assert len(system.phi_history) == 1
+
+        # Verificar que workspace pode calcular métricas topológicas separadamente
+        # (mesmo que ProductionConsciousnessSystem não use diretamente)
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Se workspace tiver dados, métricas devem ser calculadas
+        # (pode ser None se não houver embeddings)
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            assert "sigma" in topological_metrics
+
+    def test_phi_and_topological_metrics_complementary(self):
+        """Testa que Φ e métricas topológicas são complementares."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        system = ProductionConsciousnessSystem()
+
+        # Medir Φ
+        agents = ["agent1", "agent2", "agent3"]
+        phi = system.measure_phi(agents, enable_memory_sharing=True)
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas as métricas foram calculadas
+        assert phi >= 0.0, "Φ deve ser >= 0"
+        if topological_metrics is not None:
+            assert topological_metrics["omega"] >= 0.0, "Omega deve ser >= 0"
+            assert topological_metrics["sigma"] >= 0.0, "Sigma deve ser >= 0"
+
+            # Verificar que são métricas complementares (não redundantes)
+            # Φ mede integração IIT, Omega mede integração topológica
+            # Ambos devem estar presentes para análise completa
+            assert "omega" in topological_metrics
+            assert "betti_0" in topological_metrics

@@ -19,8 +19,8 @@ class TestNeuralComponent:
 
     def test_initialization(self) -> None:
         """Testa inicialização do componente neural."""
-        neural = NeuralComponent(model_name="gpt-4", temperature=0.7)
-        assert neural.model_name == "gpt-4"
+        neural = NeuralComponent(model_name="ollama/phi:latest", temperature=0.7)
+        assert neural.model_name == "phi:latest"  # Ollama remove o prefixo
         assert neural.temperature == 0.7
 
     def test_inference(self) -> None:
@@ -165,7 +165,7 @@ class TestNeurosymbolicReasoner:
     def test_initialization(self) -> None:
         """Testa inicialização do reasoner."""
         reasoner = NeurosymbolicReasoner(
-            neural_model="gpt-4",
+            neural_model="ollama/phi:latest",
             default_strategy=ReconciliationStrategy.SYNTHESIS,
         )
         assert reasoner is not None

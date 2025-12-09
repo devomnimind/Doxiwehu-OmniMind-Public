@@ -1,5 +1,8 @@
 # Core dependencies for OmniMind (essential runtime)
 # Install with: pip install -r requirements-core.txt
+#
+# CRITICAL: Sistema quântico é CORE e FUNCIONAL
+# Incluir requirements-quantum.txt para funcionalidade completa
 
 # Web Framework
 fastapi>=0.122.0

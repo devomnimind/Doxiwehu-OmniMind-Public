@@ -92,15 +92,21 @@ markers = [
     "semi_real: mark tests without @patch but without full LLM integration",
     "real: mark tests with full GPU+LLM+Network integration (measures real metrics)",
     "chaos: mark tests that destroy/crash server intentionally (WEEKLY/CHAOS ENGINEERING ONLY - excluded from run_tests_fast.sh)",
+    "stress: mark stress/load tests (timeout escalonado até 800s, modo sem falhas)",
+    "e2e: mark end-to-end tests (servidor em produção, não reinicia)",
 ]
 filterwarnings = [
+    # Legacy behaviorist/phenomenological implementations
     "ignore:This module contains legacy behaviorist implementations.*:DeprecationWarning",
+    "ignore:This module contains legacy phenomenological implementations.*:DeprecationWarning",
+    # EmotionalIntelligence deprecated methods
     "ignore:EmotionalIntelligence legacy initialization is deprecated.*:DeprecationWarning",
     "ignore:analyze_sentiment is deprecated.*:DeprecationWarning",
     "ignore:detect_emotion_from_action is deprecated.*:DeprecationWarning",
     "ignore:generate_empathetic_response is deprecated.*:DeprecationWarning",
     "ignore:get_emotional_trend is deprecated.*:DeprecationWarning",
     "ignore:get_statistics is deprecated.*:DeprecationWarning",
+    # Qualia/Consciousness deprecated classes
     "ignore:Solution class is deprecated.*:DeprecationWarning",
     "ignore:Quale class is deprecated.*:DeprecationWarning",
     "ignore:SensoryQualia is deprecated.*:DeprecationWarning",
@@ -108,7 +114,14 @@ filterwarnings = [
     "ignore:IntegratedInformationCalculator.*is deprecated.*:DeprecationWarning",
     "ignore:QualiaEngine is deprecated.*:DeprecationWarning",
     "ignore:TheoryOfMind is deprecated.*:DeprecationWarning",
-    "ignore:This module contains legacy phenomenological implementations.*:DeprecationWarning"
+    # Memory deprecated (uso interno é intencional)
+    "ignore:.*EpisodicMemory is deprecated in favor of NarrativeHistory.*:DeprecationWarning",
+    # Qiskit deprecated (biblioteca externa - não podemos corrigir)
+    "ignore:The property.*qiskit.circuit.instruction.Instruction.condition.*is deprecated.*:DeprecationWarning",
+    "ignore::DeprecationWarning:qiskit_aer.*",
+    "ignore::DeprecationWarning:qiskit.*",
+    # Matplotlib warnings (comportamento esperado)
+    "ignore:No artists with labels found to put in legend.*:UserWarning",
 ]
 
 [tool.coverage.run]

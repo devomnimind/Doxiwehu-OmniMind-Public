@@ -106,6 +106,46 @@ class TestSemanticCacheLayer:
         assert cache.stats["misses"] == 0
         assert not compute_called  # Não deve ter computado
 
+
+class TestSemanticCacheHybridTopological:
+    """Testes de integração entre SemanticCacheLayer e HybridTopologicalEngine."""
+
+    def test_semantic_cache_with_topological_metrics(self):
+        """Testa que SemanticCacheLayer pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar SemanticCacheLayer
+        cache = SemanticCacheLayer(collection_name="test_cache")
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert cache.collection_name == "test_cache"
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # SemanticCache: cache semântico (Qdrant)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa
+
     @patch("src.memory.semantic_cache.QdrantClient")
     def test_get_or_compute_force_compute(self, mock_qdrant_client):
         """Testa get_or_compute com force_compute=True."""

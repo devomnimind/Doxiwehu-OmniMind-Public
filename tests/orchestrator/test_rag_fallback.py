@@ -25,6 +25,9 @@ class TestRAGFallbackSystem:
     def mock_retrieval_system(self):
         """Fixture para mockar HybridRetrievalSystem."""
         mock = MagicMock(spec=HybridRetrievalSystem)
+        # Adicionar atributos necessários que o código real acessa
+        mock.qdrant_url = "http://localhost:6333"
+        mock.collection_name = "test_collection"
         mock.retrieve.return_value = [
             RetrievalResult(
                 content="Test document content",

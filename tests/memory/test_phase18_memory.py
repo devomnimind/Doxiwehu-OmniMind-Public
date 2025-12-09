@@ -153,3 +153,46 @@ class TestMemoryReplay:
 
         assert replayed["replayed"] is True
         assert replayed["replay_count"] == 1
+
+
+class TestPhase18MemoryHybridTopological:
+    """Testes de integração entre Phase 18 Memory e HybridTopologicalEngine."""
+
+    def test_phase18_memory_with_topological_metrics(self):
+        """Testa que Phase 18 Memory pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar memórias Phase 18
+        semantic = SemanticMemory()
+
+        # Armazenar conceito
+        concept = semantic.store_concept("Python", {"type": "language"})
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert concept.name == "python"
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Phase 18 Memory: memória tri-partite (semântica, procedural, consolidator)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

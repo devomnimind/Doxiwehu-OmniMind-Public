@@ -8,8 +8,16 @@
 # GPU Support (Optional - requires NVIDIA GPU)
 -r requirements-gpu.txt
 
-# Quantum Computing (Optional - requires IBM Quantum account)
+# ============================================================================
+# CORE QUANTUM SYSTEM - OBRIGATÓRIO (NÃO REMOVER)
+# Sistema quântico é CORE e FUNCIONAL - usado por:
+# - quantum_unconscious.py (inconsciente irredutível)
+# - quantum_consciousness/* (cognição quântica)
+# - expectation_module.py (integração quântica)
+# - quantum_backend.py, quantum_memory.py, qpu_interface.py
+# ============================================================================
 -r requirements-quantum.txt
+# ============================================================================
 
 # Optional Dependencies (May fail on some systems)
 -r requirements-optional.txt

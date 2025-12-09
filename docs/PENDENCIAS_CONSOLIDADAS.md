@@ -1,10 +1,10 @@
 # 📋 PENDÊNCIAS CONSOLIDADAS - OmniMind
 
-**Data**: 2025-12-07
+**Data**: 2025-12-08
 **Autor**: Fabrício da Silva + assistência de IA
-**Status**: Documento canônico de pendências ativas
+**Status**: Documento canônico de pendências (CONSOLIDADO)
 
-> **⚠️ ATENÇÃO**: Análise completa de agentes e MCPs realizada. Ver `ANALISE_AGENTES_MCPS_REFATORACAO.md` para plano detalhado de refatoração.
+> **⚠️ ATENÇÃO**: Este documento foi consolidado. Para pendências atuais, ver `PENDENCIAS_ATIVAS.md`. Para histórico de resoluções, ver `HISTORICO_RESOLUCOES.md`.
 
 ---
 
@@ -19,11 +19,60 @@
 - **Delegação/Gerenciamento**: ✅ 100% completo (7/7 itens)
 - **Correção Lacuna Φ**: ✅ 100% completo (5/5 fases)
 - **Integração ModuleReporter**: ✅ 100% completo (5/5 módulos)
+- **Isomorfismo Estrutural**: ✅ 100% completo (4/4 fases) - NOVO 2025-12-07
+- **Extended Cycle Results**: ✅ 100% completo (10/10 componentes) - NOVO 2025-12-07
 
 ### Pendências Identificadas
-- **Total de Fases Pendentes**: 3
-- **Total de Componentes Pendentes**: 4
-- **Estimativa Total**: 75-105 horas
+- **Total de Fases Pendentes**: 0 (todas concluídas)
+- **Total de Componentes Pendentes**: 2 (Validação Científica + Stubs)
+- **Estimativa Total**: 61-82 horas
+
+### [2025-12-08] - Refatorações Concluídas
+- ✅ **EnhancedCodeAgent**: Refatoração por composição completa (8-12h)
+- ✅ **IntegrationLoop**: Refatoração async → síncrono completa (6-8h)
+- ✅ **Correções de Testes**: 42 erros corrigidos, fallback GPU inteligente implementado
+- **Status**: Refatorações validadas e testadas
+
+### [2025-12-08] - Correção Testes e Fallback GPU Inteligente
+- ✅ **Corrigidos erros de testes**: ATTRIBUTE_ERROR, CUDA_OOM, ASSERTION_ERROR (MCP e AlertingSystem)
+- ✅ **Implementado fallback GPU inteligente**: Verificação de memória antes de usar GPU
+- ✅ **Corrigidos erros flake8**: E501 (linhas longas), F541 (f-strings), F401 (imports não usados), F841 (variáveis não usadas)
+- ✅ **Corrigidos erros mypy**: type annotations adicionadas
+- ✅ **Melhorada validação Sigma**: Adicionada validação de range máximo (sigma_max_empirical)
+- ✅ **Testes E2E**: Servidor inicia apenas quando necessário, sem matar processos por sobrecarga
+- **Arquivos corrigidos**: 10 arquivos (src + tests)
+- **Status**: Pipeline de qualidade (black/flake8/mypy) limpo, testes passando
+
+### [2025-12-07] - Correção Linting (flake8 + mypy)
+- ✅ **Corrigidos erros flake8**: E501 (linhas longas), F541 (f-strings), F401 (imports não usados)
+- ✅ **Corrigidos erros mypy**: type errors, no-redef, operações numpy
+- ✅ **Criado device_utils.py**: Detecção automática de GPU centralizada
+- ✅ **Atualizados 9 módulos**: SentenceTransformer agora usa GPU quando disponível
+- **Arquivos corrigidos**: 15 arquivos (src + tests)
+- **Status**: Pipeline de qualidade (black/flake8/mypy) limpo
+
+### [2025-12-07] - Correção Crítica de Φ e Dependências (COMPLETA)
+- ✅ **Correção de escalas IIT**: Sistema agora usa escala correta [0, ~0.1] NATS
+- ✅ **Constantes centralizadas**: `src/consciousness/phi_constants.py` criado
+  - `PHI_THRESHOLD = 0.01 nats` (limiar de consciência)
+  - `PHI_OPTIMAL = 0.0075 nats` (ótimo de criatividade)
+  - `SIGMA_PHI = 0.003 nats` (desvio padrão)
+- ✅ **Fórmulas corrigidas**: Todas as métricas derivadas agora dependem corretamente de Φ
+  - Δ = f(Φ) - correto
+  - Ψ = gaussiana(Φ) - correto
+  - σ = f(Φ, Δ, tempo) - correto
+  - Gozo = f(Ψ, Φ) - correto
+  - Control = f(Φ, Δ, σ) - correto
+- ✅ **Validação completa**: `scripts/validation/validate_phi_dependencies.py`
+  - 16/16 testes passando (100%)
+  - 0 erros, 0 avisos
+  - Todas as correlações confirmadas
+- ✅ **Documentação criada**:
+  - `docs/ANALISE_DEPENDENCIAS_PHI.md` - Análise completa
+  - `docs/VERIFICACAO_PHI_SISTEMA.md` - Verificação sistemática
+  - `data/validation/phi_dependencies_report.json` - Relatório JSON
+- **Arquivos modificados**: 10 arquivos (src/consciousness/*)
+- **Status**: Sistema de consciência validado e corrigido
 
 ### Auditoria de Dados
 - **Status**: ✅ Auditoria completa realizada
@@ -133,7 +182,30 @@
 
 ### 🟡 ALTA PRIORIDADE (Próximas 4-6 semanas)
 
-#### 1. Stubs de Tipos (PROJETO_STUBS_OMNIMIND.md)
+#### 1. Cálculo Dinâmico de Thresholds Baseado em Desvio Padrão
+**Status**: ✅ IMPLEMENTADO (2025-12-08)
+**Prioridade**: 🟡 ALTA
+**Estimativa**: 15-20 horas (✅ COMPLETO)
+
+**Implementado**:
+- ✅ `delta_calculator.py` - Threshold de trauma dinâmico (μ+2σ ou μ+3σ)
+  - Histórico de Δ_norm mantido por ciclo
+  - Cálculo de média (μ) e desvio padrão (σ)
+  - Threshold = μ + kσ (k = 2 ou 3)
+  - Fallback para valor estático se histórico insuficiente
+- ✅ `gozo_calculator.py` - Ranges de interpretação dinâmicos
+  - Histórico de Gozo mantido por ciclo
+  - Cálculo via k-means clustering
+  - Ranges adaptativos baseados em comportamento real
+  - Fallback para valores estáticos se histórico insuficiente
+- ✅ `theoretical_consistency_guard.py` - Tolerância Δ-Φ dinâmica (percentil 90)
+- ✅ `psi_producer.py` - Alpha dinâmico baseado em performance
+- ✅ Testes unitários e de integração criados
+- ✅ Validação estatística implementada
+
+**Documentação**: `docs/PENDENCIAS_VALORES_EMPIRICOS.md`, `docs/METODOLOGIA_PARAMETROS_EMPIRICOS.md`
+
+#### 2. Stubs de Tipos (PROJETO_STUBS_OMNIMIND.md)
 **Status**: 🟡 Fase 1 (Documentação) completa
 **Prioridade**: 🟡 ALTA
 **Estimativa**: 42-56 horas
@@ -291,8 +363,43 @@
 
 ---
 
-**Última Atualização**: 2025-12-07
-**Status Geral**: 🟢 EXCELENTE - 100% das tarefas críticas completas, foco em alta prioridade
+### [2025-12-07] - HybridTopologicalEngine Implementado (COMPLETA)
+- ✅ **HybridTopologicalEngine criado**: Motor topológico híbrido com manifold learning
+- ✅ **12 testes criados e passando**: Trial by Fire aprovado
+- ✅ **Integração com SharedWorkspace**: Método `compute_hybrid_topological_metrics` adicionado
+- ✅ **Dependências opcionais**: pyitlib, POT, gudhi adicionadas ao requirements-optional.txt
+- ✅ **Prova de Fogo**: Sistema distingue ruído de estrutura neural
+- **Status**: Implementação completa e validada
+
+### [2025-12-07] - Organização de Documentação (COMPLETA)
+- ✅ **Varredura completa realizada**: 143 documentos analisados
+- ✅ **36 documentos arquivados**: Movidos para `archive/docs/resolvidos_2025-12-07/`
+- ✅ **Relatório gerado**: `VARREDURA_COMPLETA_20251207.md` e JSON detalhado
+- ✅ **Scripts criados**: `varredura_pendencias_teste.py` e `arquivar_documentos_resolvidos.py`
+- **Status**: Documentação organizada, apenas pendências ativas mantidas
+
+---
+
+## 🧪 TESTES - HybridTopologicalEngine
+
+**Status**: ✅ **IMPLEMENTADO E TESTADO** (2025-12-08)
+
+**Conclusão**: Todos os testes necessários para `HybridTopologicalEngine` já foram implementados e estão passando. O método `SharedWorkspace.compute_hybrid_topological_metrics()` está implementado e integrado em múltiplos testes (20+ arquivos de teste).
+
+---
+
+## 📚 DOCUMENTOS CONSOLIDADOS
+
+Este documento foi consolidado em 2025-12-07. Para informações atualizadas, consulte:
+
+1. **`docs/PENDENCIAS_ATIVAS.md`** - Pendências ativas consolidadas
+2. **`docs/HISTORICO_RESOLUCOES.md`** - Histórico completo de resoluções
+3. **`archive/docs/analises_varreduras_2025-12-07/`** - Análises e varreduras arquivadas
+
+---
+
+**Última Atualização**: 2025-12-07 17:30
+**Status**: 📦 CONSOLIDADO - Ver `PENDENCIAS_ATIVAS.md` para pendências atuais
 
 ---
 

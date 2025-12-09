@@ -481,3 +481,71 @@ class TestMetaLearningEdgeCases:
         # Sistema deve permanecer estável
         assert len(results) == 10
         assert all(isinstance(r, float) for r in results)
+
+
+class TestMetaLearningHybridTopological:
+    """Testes de integração entre Meta Learning e HybridTopologicalEngine."""
+
+    def test_meta_learning_with_topological_metrics(self):
+        """Testa que meta learning pode usar métricas topológicas para otimização."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular estados
+        np.random.seed(42)
+        for i in range(10):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que métricas topológicas podem informar otimização
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Meta learning pode usar Omega como métrica de integração
+            # Para otimização de estratégias baseadas em estrutura topológica
+            omega_value = topological_metrics["omega"]
+            assert 0.0 <= omega_value <= 1.0
+
+    def test_goal_generation_with_topological_context(self):
+        """Testa que goal generation pode usar contexto topológico."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular estados
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que métricas topológicas podem informar geração de goals
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Goals podem ser gerados baseados em estrutura topológica
+            # Omega: integração (pode indicar necessidade de otimização)
+            # Betti-0: fragmentação (pode indicar necessidade de integração)

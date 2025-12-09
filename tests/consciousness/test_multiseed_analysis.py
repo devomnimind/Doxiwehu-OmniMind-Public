@@ -407,3 +407,50 @@ class TestMultiSeedIntegration:
         assert stats["num_seeds"] == 5
         assert validation["tests_total"] > 0
         assert validation["summary"] is not None
+
+
+class TestMultiSeedAnalysisHybridTopological:
+    """Testes de integração entre MultiSeedAnalysis e HybridTopologicalEngine."""
+
+    @pytest.mark.asyncio
+    async def test_multiseed_analysis_with_topological_metrics(self):
+        """Testa que MultiSeedAnalysis pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar runner
+        runner = MultiSeedRunner(learning_rate=0.01, enable_logging=False)
+
+        # Executar seeds
+        with tempfile.TemporaryDirectory() as tmpdir:
+            results = await runner.run_seeds(
+                num_seeds=2, num_cycles=3, target_phi=0.99, output_dir=Path(tmpdir)
+            )
+
+            # Simular estados no workspace para métricas topológicas
+            np.random.seed(42)
+            for i in range(5):
+                rho_C = np.random.randn(256)
+                rho_P = np.random.randn(256)
+                rho_U = np.random.randn(256)
+
+                workspace.write_module_state("conscious_module", rho_C)
+                workspace.write_module_state("preconscious_module", rho_P)
+                workspace.write_module_state("unconscious_module", rho_U)
+                workspace.advance_cycle()
+
+            # Calcular métricas topológicas
+            topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+            # Verificar que ambas funcionam
+            assert len(results) == 2
+            if topological_metrics is not None:
+                assert "omega" in topological_metrics
+                # MultiSeedAnalysis: análise estatística multi-seed
+                # Topological: estrutura e integração (Omega, Betti-0)
+                # Ambas são complementares para análise completa

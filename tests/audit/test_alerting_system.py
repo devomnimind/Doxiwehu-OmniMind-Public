@@ -138,9 +138,42 @@ class TestAlertingSystem:
         return mock
 
     @pytest.fixture
-    def alerting_system(self, mock_audit_system: Mock) -> AlertingSystem:
-        """Cria instância do sistema de alertas com mock."""
-        return AlertingSystem(audit_system=mock_audit_system)
+    def alerting_system(self, mock_audit_system: Mock, temp_log_dir: Path) -> AlertingSystem:
+        """Cria instância do sistema de alertas com mock.
+
+        NOTA: Limpa alertas existentes ANTES de criar instância para garantir
+        estado limpo nos testes. O AlertingSystem carrega alertas de arquivos
+        durante __init__, então precisamos limpar arquivos primeiro.
+        """
+        # Limpar arquivos de alertas ANTES de criar instância
+        # (AlertingSystem carrega alertas durante __init__)
+        alerts_file = temp_log_dir / "alerts" / "alerts.jsonl"
+        if alerts_file.exists():
+            alerts_file.unlink()
+
+        # Limpar também arquivos em data/alerts (compatibilidade)
+        data_alerts_dir = Path("data/alerts")
+        if data_alerts_dir.exists():
+            for alert_file in data_alerts_dir.glob("alert_*.json"):
+                alert_file.unlink()
+            index_file = data_alerts_dir / "alerts_index.json"
+            if index_file.exists():
+                index_file.unlink()
+
+        # Criar instância (agora sem alertas carregados)
+        system = AlertingSystem(audit_system=mock_audit_system)
+
+        # Garantir estado limpo (caso algum alerta tenha sido carregado)
+        system.active_alerts.clear()
+        system.stats = {
+            "total_alerts": 0,
+            "active_alerts": 0,
+            "critical_active": 0,
+            "by_severity": {severity.value: 0 for severity in AlertSeverity},
+            "by_category": {category.value: 0 for category in AlertCategory},
+        }
+
+        return system
 
     def test_initialization(self, alerting_system: AlertingSystem, temp_log_dir: Path) -> None:
         """Testa inicialização do sistema de alertas."""
@@ -281,7 +314,14 @@ class TestAlertingSystem:
         assert result is False
 
     def test_get_active_alerts_all(self, alerting_system: AlertingSystem) -> None:
-        """Testa obtenção de todos os alertas ativos."""
+        """Testa obtenção de todos os alertas ativos.
+
+        NOTA: Limpa alertas existentes antes de criar novos para garantir
+        contagem correta mesmo se houver alertas carregados de execuções anteriores.
+        """
+        # Limpar alertas existentes (podem vir de _load_alerts ou _migrate_old_alerts)
+        alerting_system.active_alerts.clear()
+
         alerting_system.create_alert(
             severity=AlertSeverity.INFO,
             category=AlertCategory.SYSTEM,
@@ -300,7 +340,14 @@ class TestAlertingSystem:
         assert len(active) == 2
 
     def test_get_active_alerts_by_severity(self, alerting_system: AlertingSystem) -> None:
-        """Testa obtenção de alertas por severidade."""
+        """Testa obtenção de alertas por severidade.
+
+        NOTA: Limpa alertas existentes antes de criar novos para garantir
+        contagem correta mesmo se houver alertas carregados de execuções anteriores.
+        """
+        # Limpar alertas existentes (podem vir de _load_alerts ou _migrate_old_alerts)
+        alerting_system.active_alerts.clear()
+
         alerting_system.create_alert(
             severity=AlertSeverity.INFO,
             category=AlertCategory.SYSTEM,
@@ -401,7 +448,21 @@ class TestAlertingSystem:
         assert len(history) == 3
 
     def test_get_statistics(self, alerting_system: AlertingSystem) -> None:
-        """Testa obtenção de estatísticas."""
+        """Testa obtenção de estatísticas.
+
+        NOTA: Limpa alertas e estatísticas existentes antes de criar novos para garantir
+        contagem correta mesmo se houver alertas carregados de execuções anteriores.
+        """
+        # Limpar alertas e estatísticas existentes
+        alerting_system.active_alerts.clear()
+        alerting_system.stats = {
+            "total_alerts": 0,
+            "active_alerts": 0,
+            "critical_active": 0,
+            "by_severity": {severity.value: 0 for severity in AlertSeverity},
+            "by_category": {category.value: 0 for category in AlertCategory},
+        }
+
         alerting_system.create_alert(
             severity=AlertSeverity.INFO,
             category=AlertCategory.SYSTEM,
@@ -481,7 +542,14 @@ class TestAlertingSystem:
 
     @pytest.mark.asyncio
     async def test_monitor_audit_chain_healthy(self, alerting_system: AlertingSystem) -> None:
-        """Testa monitoramento de audit chain saudável."""
+        """Testa monitoramento de audit chain saudável.
+
+        NOTA: Limpa alertas existentes antes de executar para garantir
+        contagem correta mesmo se houver alertas carregados de execuções anteriores.
+        """
+        # Limpar alertas existentes antes de testar
+        alerting_system.active_alerts.clear()
+
         # Run one iteration
         task = asyncio.create_task(alerting_system.monitor_audit_chain(interval=1))
 
@@ -501,7 +569,14 @@ class TestAlertingSystem:
     async def test_monitor_audit_chain_invalid(
         self, alerting_system: AlertingSystem, mock_audit_system: Mock
     ) -> None:
-        """Testa monitoramento com chain inválida."""
+        """Testa monitoramento com chain inválida.
+
+        NOTA: Limpa alertas existentes antes de executar para garantir
+        contagem correta mesmo se houver alertas carregados de execuções anteriores.
+        """
+        # Limpar alertas existentes antes de testar
+        alerting_system.active_alerts.clear()
+
         # Make integrity check fail
         mock_audit_system.verify_chain_integrity = Mock(
             return_value={"valid": False, "message": "Integrity compromised"}

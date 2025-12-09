@@ -82,10 +82,11 @@ class OmniMindEmbeddings:
             self.model = model
             self.embedding_dim = self.model.get_sentence_embedding_dimension()
         else:
-            logger.info(f"Carregando modelo: {model_name}")
-            self.model = SentenceTransformer(
-                model_name, device="cpu"
-            )  # Forçar CPU para evitar problemas de memória
+            from src.utils.device_utils import get_sentence_transformer_device
+
+            device = get_sentence_transformer_device()
+            logger.info(f"Carregando modelo: {model_name} (device={device})")
+            self.model = SentenceTransformer(model_name, device=device)
             self.embedding_dim = int(
                 self.model.get_sentence_embedding_dimension() or 384
             )  # type: ignore

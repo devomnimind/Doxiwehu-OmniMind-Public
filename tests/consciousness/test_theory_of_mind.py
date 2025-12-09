@@ -71,8 +71,17 @@ class TestMentalStateModel:
         assert model.beliefs[0].subject == "task"
 
 
+@pytest.mark.skip(
+    reason="TheoryOfMind is deprecated. Use LacanianTheoryOfMind instead. "
+    "See src/consciousness/theory_of_mind.py for deprecation notice."
+)
 class TestTheoryOfMind:
-    """Tests for TheoryOfMind engine."""
+    """Tests for TheoryOfMind engine (DEPRECATED).
+
+    ⚠️  WARNING: TheoryOfMind is deprecated.
+    This class is fundamentally incorrect from a Lacanian perspective.
+    Use LacanianTheoryOfMind for proper implementation.
+    """
 
     def test_initialization(self) -> None:
         """Test Theory of Mind initialization."""

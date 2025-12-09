@@ -250,6 +250,51 @@ class ApiService {
   async getConsciousnessMetrics(includeRaw: boolean = false): Promise<any> {
     return this.get(`/api/v1/autopoietic/consciousness/metrics?include_raw=${includeRaw}`);
   }
+
+  // API de Explicabilidade (Sessão 6 - Orchestrator)
+  async getDecisions(params?: {
+    action?: string;
+    start_date?: number;
+    end_date?: number;
+    success?: boolean;
+    min_trust_level?: number;
+    limit?: number;
+  }): Promise<any[]> {
+    const queryParams = new URLSearchParams();
+    if (params?.action) queryParams.append('action', params.action);
+    if (params?.start_date) queryParams.append('start_date', params.start_date.toString());
+    if (params?.end_date) queryParams.append('end_date', params.end_date.toString());
+    if (params?.success !== undefined) queryParams.append('success', params.success.toString());
+    if (params?.min_trust_level !== undefined) queryParams.append('min_trust_level', params.min_trust_level.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+    const query = queryParams.toString();
+    return this.get(`/api/decisions${query ? `?${query}` : ''}`);
+  }
+
+  async getDecisionDetail(decisionId: number): Promise<any> {
+    return this.get(`/api/decisions/${decisionId}`);
+  }
+
+  async getDecisionStats(): Promise<any> {
+    return this.get('/api/decisions/stats/summary');
+  }
+
+  async exportDecisions(params?: {
+    action?: string;
+    start_date?: number;
+    end_date?: number;
+    limit?: number;
+  }): Promise<any> {
+    const queryParams = new URLSearchParams();
+    if (params?.action) queryParams.append('action', params.action);
+    if (params?.start_date) queryParams.append('start_date', params.start_date.toString());
+    if (params?.end_date) queryParams.append('end_date', params.end_date.toString());
+    if (params?.limit) queryParams.append('limit', params.limit.toString());
+
+    const query = queryParams.toString();
+    return this.get(`/api/decisions/export/json${query ? `?${query}` : ''}`);
+  }
 }
 
 export const apiService = new ApiService();

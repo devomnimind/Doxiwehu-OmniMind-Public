@@ -4,6 +4,17 @@
 
 O módulo `collaboration` implementa defesas sofisticadas contra ataques adversariais e alucinações em LLMs, enquanto mantém foco em colaboração humano-centrada. Este é o núcleo da **Phase 22** do OmniMind, implementando proteções baseadas em pesquisa de segurança AI 2024-2025.
 
+## 🔄 Substituição de Módulos Deprecated
+
+Este módulo **substitui** funcionalidades planejadas do Phase 26D (Integrity) que não foram implementadas:
+
+- ✅ **`HallucinationDefense`** substitui `integrity.semantic_coherence_validator` (deprecated)
+  - Validação de coerência semântica integrada com detecção de alucinações
+  - Validação factual e cross-check de coerência
+  - Detecção de padrões de alucinação conhecidos
+
+**Referência**: `docs/VARREDURA_MODULOS_DEPRECATED_SUBSTITUICOES.md`
+
 **Propósito Principal**: Criar camada defensiva robusta que:
 1. ✅ Detecta e mitiga alucinações em LLMs (Stanford 2025: 33-42% taxa de alucinação)
 2. ✅ Identifica tentativas de jailbreak (CyberArk 2025: 6 padrões principais)

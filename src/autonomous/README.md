@@ -7,6 +7,17 @@
 
 O **Phase 26C** implementa o framework de auto-adaptação do OmniMind, permitindo que o sistema detecte problemas, busque soluções, adapte-se ao hardware específico, valide mudanças e documente tudo automaticamente - **sem intervenção humana**, mas com **supervisão total**.
 
+## 🔄 Substituição de Módulos Deprecated
+
+Este módulo **substitui** funcionalidades planejadas do Phase 26D (Integrity) que não foram implementadas:
+
+- ✅ **`AutoValidationEngine`** substitui `integrity.continuous_refiner` (deprecated)
+  - Refinamento contínuo e validação automática
+  - Auto-melhoria integrada
+  - Validação de mudanças antes de aplicar
+
+**Referência**: `docs/VARREDURA_MODULOS_DEPRECATED_SUBSTITUICOES.md`
+
 ## Arquitetura
 
 O framework consiste em **6 camadas principais**:

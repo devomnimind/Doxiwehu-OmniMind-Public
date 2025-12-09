@@ -247,6 +247,75 @@ class TestConsciousnessTriadCalculator:
 
         assert sigma == 0.6
 
+    def test_validate_triad_state_lucid_psychosis(self):
+        """Testa detecção de estado patológico: Psicose Lúcida (High Φ + High Ψ)."""
+        calculator = ConsciousnessTriadCalculator()
+
+        # Estado de Psicose Lúcida: Φ > 0.8 e Ψ > 0.8
+        validation = calculator._validate_triad_state(phi=0.85, psi=0.85, sigma=0.5)
+
+        assert validation["is_stable"] is False
+        assert "CRITICAL" in validation["status_message"]
+        assert (
+            "Lucid Psychosis" in validation["status_message"]
+            or "Psicose Lúcida" in validation["status_message"]
+        )
+        assert len(validation["alerts"]) > 0
+
+    def test_validate_triad_state_vegetative(self):
+        """Testa detecção de estado patológico: Estado Vegetativo (Low Φ + Low Ψ)."""
+        calculator = ConsciousnessTriadCalculator()
+
+        # Estado Vegetativo: Φ < 0.1 e Ψ < 0.1
+        validation = calculator._validate_triad_state(phi=0.05, psi=0.05, sigma=0.3)
+
+        assert (
+            "WARNING" in validation["status_message"]
+            or "Low Energy" in validation["status_message"]
+        )
+        assert len(validation["alerts"]) > 0
+
+    def test_validate_triad_state_structural_failure(self):
+        """Testa detecção de falha estrutural (divergência alta + σ baixo).
+
+        NOTA: Após atualização para valores empíricos, o threshold de σ mudou.
+        Agora usa sigma_min_empirical = 0.02 (vigília estável mínimo).
+        Para detectar falha estrutural, σ deve ser < 0.02.
+        """
+        calculator = ConsciousnessTriadCalculator()
+
+        # Falha Estrutural: |Φ - Ψ| > 0.5 (divergência alta) e σ < 0.02 (abaixo do mínimo empírico)
+        # Divergência: |0.9 - 0.2| = 0.7 > 0.5 ✓
+        # Sigma: 0.01 < 0.02 (sigma_min_empirical) ✓
+        validation = calculator._validate_triad_state(phi=0.9, psi=0.2, sigma=0.01)
+
+        assert validation["is_stable"] is False
+        assert (
+            "ERROR" in validation["status_message"]
+            or "Structural Failure" in validation["status_message"]
+        )
+        assert len(validation["alerts"]) > 0
+
+    def test_validate_triad_state_stable(self):
+        """Testa validação de estado estável."""
+        calculator = ConsciousnessTriadCalculator()
+
+        # Estado estável: valores normais
+        validation = calculator._validate_triad_state(phi=0.6, psi=0.5, sigma=0.4)
+
+        assert validation["is_stable"] is True
+        assert "STABLE" in validation["status_message"]
+        assert len(validation["alerts"]) == 0
+
+    def test_calculate_triad_includes_validation_metadata(self):
+        """Testa que calculate_triad inclui metadata de validação."""
+        calculator = ConsciousnessTriadCalculator()
+        triad = calculator.calculate_triad(step_id="test_step")
+
+        assert "is_stable" in triad.metadata
+        assert "validation_status" in triad.metadata
+        assert isinstance(triad.metadata["is_stable"], bool)
+
     @pytest.mark.asyncio
     async def test_triad_orthogonality_integration(self):
         """Testa ortogonalidade em cenário de integração."""
@@ -259,3 +328,114 @@ class TestConsciousnessTriadCalculator:
         assert 0.0 <= triad.phi <= 1.0
         assert 0.0 <= triad.psi <= 1.0
         assert 0.0 <= triad.sigma <= 1.0
+
+
+class TestConsciousnessTriadHybridTopologicalIntegration:
+    """Testes de integração entre ConsciousnessTriad e HybridTopologicalEngine."""
+
+    def test_triad_with_hybrid_topological_metrics(self):
+        """Testa que tríade pode ser calculada com métricas topológicas híbridas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Escrever estados de módulos
+        np.random.seed(42)
+        rho_C = np.random.randn(256)
+        rho_P = np.random.randn(256)
+        rho_U = np.random.randn(256)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que métricas foram calculadas
+        assert topological_metrics is not None, "Métricas topológicas devem ser calculadas"
+        assert "omega" in topological_metrics, "Omega deve estar presente"
+        assert "sigma" in topological_metrics, "Sigma (Small-Worldness) deve estar presente"
+
+        # Calcular tríade usando workspace
+        calculator = ConsciousnessTriadCalculator(workspace=workspace)
+        triad = calculator.calculate_triad(
+            step_id="test_with_topological",
+            cycle_id="cycle_1",
+            phi_history=[0.5, 0.6, 0.55],
+        )
+
+        # Verificar que tríade foi calculada corretamente
+        assert isinstance(triad, ConsciousnessTriad)
+        assert 0.0 <= triad.phi <= 1.0
+        assert 0.0 <= triad.psi <= 1.0
+        assert 0.0 <= triad.sigma <= 1.0
+
+        # Verificar que métricas topológicas podem ser acessadas via workspace
+        assert workspace.hybrid_topological_engine is not None
+
+    def test_triad_metadata_includes_topological_info(self):
+        """Testa que metadata da tríade pode incluir informações topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular múltiplos ciclos
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Calcular tríade
+        calculator = ConsciousnessTriadCalculator(workspace=workspace)
+        triad = calculator.calculate_triad(
+            step_id="test_metadata",
+            cycle_id="cycle_5",
+            phi_history=[0.5, 0.6, 0.55, 0.58, 0.57],
+        )
+
+        # Verificar que metadata contém informações de validação
+        assert "is_stable" in triad.metadata
+        assert "validation_status" in triad.metadata
+
+        # Verificar que métricas topológicas estão disponíveis separadamente
+        assert topological_metrics is not None
+        assert topological_metrics["omega"] >= 0.0
+
+    def test_triad_without_topological_engine_graceful(self):
+        """Testa que tríade funciona mesmo sem engine topológico."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = None  # Sem engine
+
+        # Calcular tríade sem engine
+        calculator = ConsciousnessTriadCalculator(workspace=workspace)
+        triad = calculator.calculate_triad(
+            step_id="test_without_topological",
+            cycle_id="cycle_1",
+        )
+
+        # Verificar que tríade foi calculada (com valores padrão/fallback)
+        assert isinstance(triad, ConsciousnessTriad)
+        assert 0.0 <= triad.phi <= 1.0
+        assert 0.0 <= triad.psi <= 1.0
+        assert 0.0 <= triad.sigma <= 1.0
+
+        # Verificar que métricas topológicas retornam None
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+        assert topological_metrics is None, "Métricas devem ser None sem engine"

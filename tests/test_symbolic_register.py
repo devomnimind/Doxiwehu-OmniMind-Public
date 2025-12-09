@@ -84,5 +84,57 @@ def test_symbolic_register_basic():
     return True
 
 
+def test_symbolic_register_with_topological_metrics():
+    """Test Symbolic Register with topological metrics integration."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    print("🧪 Testing Symbolic Register + Topological Metrics...")
+
+    # Inicializar workspace com engine topológico
+    workspace = SharedWorkspace(embedding_dim=256)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Enviar mensagem simbólica
+    workspace.send_symbolic_message(
+        sender="test_module_1",
+        receiver="test_module_2",
+        symbolic_content={
+            "order": "Real",
+            "embeddings": [1.0, 2.0, 3.0],
+            "modules": ["mod1", "mod2", "mod3"],
+        },
+        priority=3,
+    )
+
+    # Simular estados para métricas topológicas
+    np.random.seed(42)
+    for i in range(5):
+        rho_C = np.random.randn(256)
+        rho_P = np.random.randn(256)
+        rho_U = np.random.randn(256)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+        workspace.advance_cycle()
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar que registro simbólico funciona
+    messages = workspace.receive_symbolic_messages("test_module_2")
+    assert len(messages) == 1
+
+    # Verificar que métricas topológicas podem ser calculadas
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Registro simbólico: comunicação RSI (Real-Symbolic-Imaginary)
+        # Métricas topológicas: estrutura e integração
+        # Ambas são complementares para análise completa
+
+    print("✅ Symbolic Register + Topological Metrics integration verified")
+
+
 if __name__ == "__main__":
     test_symbolic_register_basic()

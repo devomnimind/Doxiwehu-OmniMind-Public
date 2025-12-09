@@ -46,7 +46,8 @@ class TestEnhancedCodeAgent:
 
     def test_execute_task_with_self_correction_success(self, enhanced_agent):
         """Testa execução bem-sucedida na primeira tentativa."""
-        enhanced_agent.execute.return_value = {"status": "success", "result": "ok"}
+        # CORREÇÃO: EnhancedCodeAgent usa self.run() não self.execute()
+        enhanced_agent.run = MagicMock(return_value={"status": "success", "result": "ok"})
         enhanced_agent._validate_output = MagicMock(return_value=True)
 
         result = enhanced_agent.execute_task_with_self_correction("test task")
@@ -57,11 +58,14 @@ class TestEnhancedCodeAgent:
 
     def test_execute_task_with_self_correction_retry(self, enhanced_agent):
         """Testa execução com retry após erro."""
+        # CORREÇÃO: EnhancedCodeAgent usa self.run() não self.execute()
         # Primeira tentativa falha, segunda sucede
-        enhanced_agent.execute.side_effect = [
-            Exception("Test error"),
-            {"status": "success", "result": "ok"},
-        ]
+        enhanced_agent.run = MagicMock(
+            side_effect=[
+                Exception("Test error"),
+                {"status": "success", "result": "ok"},
+            ]
+        )
         enhanced_agent._validate_output = MagicMock(return_value=True)
 
         # Mock error_analyzer

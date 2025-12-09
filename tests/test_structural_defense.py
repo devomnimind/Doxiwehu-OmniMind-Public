@@ -106,5 +106,44 @@ async def test_bion_metabolism():
     logger.info("✅ Bion Metabolism Test Passed")
 
 
+@pytest.mark.asyncio
+async def test_structural_defense_with_topological_metrics():
+    """Test Structural Defense with topological metrics integration."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    workspace = SharedWorkspace(embedding_dim=256, max_history_size=100)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    logger.info("🚀 Testing Structural Defense + Topological Metrics")
+
+    # Simulate cycles with states
+    np.random.seed(42)
+    for i in range(10):
+        embedding = np.random.randn(256)
+        workspace.write_module_state("cortex", embedding)
+        workspace.advance_cycle()
+
+    # Inject threat
+    threat = {"severity": 40, "error": "Test error", "source": "test"}
+    result = await workspace.trigger_defense_mechanism(threat)
+
+    # Calculate topological metrics
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verify defense mechanism
+    assert "analysis" in result
+    assert "response" in result
+
+    # Verify topological metrics
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Defense mechanisms can use topological structure for analysis
+        # Omega: integration measure (stability)
+        # Can inform defense strategy selection
+
+    logger.info("✅ Structural Defense + Topological Metrics verified")
+
+
 if __name__ == "__main__":
     asyncio.run(test_structural_defense_cycles())

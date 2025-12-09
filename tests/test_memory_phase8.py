@@ -1,4 +1,9 @@
-"""Targeted Phase 8 tests for the episodic memory subsystem."""
+"""Targeted Phase 8 tests for the episodic memory subsystem.
+
+⚠️  WARNING: EpisodicMemory is deprecated.
+Use NarrativeHistory (Lacanian) for proper implementation.
+Memory is retroactive construction, not storage.
+"""
 
 from typing import Any, Dict, List, Optional
 
@@ -6,6 +11,13 @@ import pytest
 
 from src.memory import episodic_memory as episodic_module
 from src.memory.episodic_memory import EpisodicMemory
+
+# Marcar todos os testes deste arquivo como skipped (EpisodicMemory deprecated)
+pytestmark = pytest.mark.skip(
+    reason="EpisodicMemory is deprecated. Use NarrativeHistory (Lacanian) instead. "
+    "See src/memory/episodic_memory.py for deprecation notice. "
+    "This file tests deprecated functionality and is kept for reference only."
+)
 
 
 class DummyDistance:

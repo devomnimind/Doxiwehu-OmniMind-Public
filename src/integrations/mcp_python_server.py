@@ -383,21 +383,48 @@ class PythonMCPServer(MCPServer):
                     cwd=self.project_root,
                 )
 
-                if result.returncode == 0 or result.stdout:
-                    import json
+                import json
 
+                # CORREÇÃO (2025-12-08): flake8 retorna exit_code != 0 apenas quando há issues
+                # exit_code == 0 significa sem issues, mesmo se houver stdout (warnings, etc.)
+                if result.returncode == 0:
+                    # Sem issues - flake8 retorna 0 quando não há problemas
+                    return {"issues": []}
+
+                # exit_code != 0 significa que há issues
+                if result.stdout:
                     try:
-                        issues = json.loads(result.stdout) if result.stdout else []
-                        return {"issues": issues}
+                        # Tentar parsear como JSON (formato esperado)
+                        issues = json.loads(result.stdout)
+                        # Garantir que é uma lista
+                        if isinstance(issues, list):
+                            return {"issues": issues}
+                        elif isinstance(issues, dict):
+                            # Se for um único objeto, converter para lista
+                            return {"issues": [issues]}
+                        else:
+                            return {"issues": []}
                     except json.JSONDecodeError:
-                        # Se não for JSON, parsear saída texto
+                        # Se não for JSON válido, parsear saída texto linha por linha
+                        # Apenas linhas que parecem erros do flake8 (formato: file:line:col: code message)
                         issues = []
                         for line in result.stdout.split("\n"):
-                            if line.strip():
-                                issues.append({"message": line, "severity": "warning"})
+                            line = line.strip()
+                            if line and ":" in line:
+                                # Formato típico do flake8: file:line:col: code message
+                                parts = line.split(":", 3)
+                                if len(parts) >= 4:
+                                    issues.append(
+                                        {
+                                            "message": parts[3].strip(),
+                                            "severity": "error",
+                                            "line": int(parts[1]) if parts[1].isdigit() else None,
+                                            "column": int(parts[2]) if parts[2].isdigit() else None,
+                                        }
+                                    )
                         return {"issues": issues}
                 else:
-                    # Sem issues
+                    # Sem stdout mas exit_code != 0 - pode ser erro de execução
                     return {"issues": []}
 
             finally:

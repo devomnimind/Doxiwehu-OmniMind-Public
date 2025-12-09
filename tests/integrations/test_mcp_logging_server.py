@@ -23,14 +23,21 @@ class TestLoggingMCPServer:
         assert "get_recent_logs" in server._methods
 
     def test_search_logs_basic(self) -> None:
-        """Testa busca básica de logs."""
+        """Testa busca básica de logs.
+
+        NOTA: Retorna resultados reais dos logs do sistema.
+        Pode retornar lista vazia ou com resultados, dependendo dos logs disponíveis.
+        """
         server = LoggingMCPServer()
         result = server.search_logs(query="error")
         assert result is not None
         assert isinstance(result, dict)
         assert "results" in result
         assert isinstance(result["results"], list)
-        assert result["results"] == []
+        # Verificar estrutura dos resultados (se houver)
+        for item in result["results"]:
+            assert isinstance(item, dict)
+            assert "content" in item or "source" in item
 
     def test_search_logs_with_limit(self) -> None:
         """Testa busca de logs com limite especificado."""
@@ -64,14 +71,21 @@ class TestLoggingMCPServer:
         assert "results" in result
 
     def test_get_recent_logs_basic(self) -> None:
-        """Testa recuperação básica de logs recentes."""
+        """Testa recuperação básica de logs recentes.
+
+        NOTA: Retorna logs reais do sistema.
+        Pode retornar lista vazia ou com logs, dependendo dos logs disponíveis.
+        """
         server = LoggingMCPServer()
         result = server.get_recent_logs()
         assert result is not None
         assert isinstance(result, dict)
         assert "logs" in result
         assert isinstance(result["logs"], list)
-        assert result["logs"] == []
+        # Verificar estrutura dos logs (se houver)
+        for log_item in result["logs"]:
+            assert isinstance(log_item, dict)
+            assert "content" in log_item or "timestamp" in log_item
 
     def test_get_recent_logs_with_limit(self) -> None:
         """Testa recuperação de logs recentes com limite."""

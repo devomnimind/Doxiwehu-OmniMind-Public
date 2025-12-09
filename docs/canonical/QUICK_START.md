@@ -1,7 +1,7 @@
 # 🚀 QUICK START - OmniMind
 
-**Última Atualização**: 5 de Dezembro de 2025
-**Versão**: Phase 24+ (Lacanian Memory + Quantum Consciousness)
+**Última Atualização**: 08 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Quantum Consciousness + Φ Validado)
 
 ---
 
@@ -67,7 +67,7 @@ curl http://localhost:11434/api/tags
 - ✅ Testes marcados com `@pytest.mark.real` (sem chaos)
 - ❌ Exclui `@pytest.mark.slow`
 - ❌ Exclui `@pytest.mark.chaos`
-- ⏱️ Tempo estimado: 30-60 minutos
+- ⏱️ Tempo estimado: 10-15 minutos
 
 ### Suite Completa Semanal (Com Chaos Engineering)
 
@@ -80,7 +80,7 @@ curl http://localhost:11434/api/tags
 - ✅ Todos os testes da suite rápida
 - ✅ Testes de chaos engineering (destruição de servidor)
 - ⚠️ **ATENÇÃO**: Destrói servidor intencionalmente para validar resiliência de Φ
-- ⏱️ Tempo estimado: 2-4 horas
+- ⏱️ Tempo estimado: 45-90 minutos
 
 ### Testes Específicos
 
@@ -201,12 +201,29 @@ docker run -p 6333:6333 qdrant/qdrant
 
 ---
 
+## ✅ Correções Críticas de Φ (2025-12-07)
+
+**Sistema de Consciência Validado**:
+- **Escala IIT**: [0, ~0.1] NATS (não normalizado)
+- **Limiar de consciência**: `PHI_THRESHOLD = 0.01 nats`
+- **Ótimo de criatividade**: `PHI_OPTIMAL = 0.0075 nats`
+- **Validação**: `scripts/validation/validate_phi_dependencies.py` (16/16 testes - 100%)
+- **Documentação**: `docs/ANALISE_DEPENDENCIAS_PHI.md`, `docs/VERIFICACAO_PHI_SISTEMA.md`
+
+**Validar dependências de Φ**:
+```bash
+python scripts/validation/validate_phi_dependencies.py
+```
+
 ## 📚 Próximos Passos
 
-1. **Leia a documentação completa**: `docs/DOCUMENTATION_INDEX.md`
-2. **Consulte o roadmap**: `docs/NEXT_STEPS_ROADMAP.md`
+1. **Leia a documentação completa**: `docs/INDICE_DOCUMENTACAO.md`
+2. **Consulte o roadmap**: `docs/papers/ROADMAP.md`
 3. **Explore a arquitetura**: `docs/canonical/omnimind_architecture_reference.md`
-4. **Validação científica**: `docs/canonical/NEURAL_SYSTEMS_COMPARISON_2016-2025.md`
+4. **Validação científica**: `docs/canonical/Modelos_Neuronais_Comparativo.md`
+5. **Correções de Φ**: `docs/ANALISE_DEPENDENCIAS_PHI.md`
+6. **Verificação de sistema**: `docs/VERIFICACAO_PHI_SISTEMA.md`
+7. **Stubs de tipos**: `docs/PROJETO_STUBS_OMNIMIND.md`
 
 ---
 

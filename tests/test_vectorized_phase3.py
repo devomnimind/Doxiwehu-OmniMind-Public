@@ -403,5 +403,57 @@ async def test_vectorized_predictions():
     logger.info("✅ Phase 3 vetorização implementada com sucesso!")
 
 
+async def test_vectorized_with_topological_metrics():
+    """Testa vetorização Phase 3 com métricas topológicas."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    logger.info("🚀 TESTE PHASE 3: Vetorização + Topological Metrics")
+    logger.info("=" * 60)
+
+    # Inicializar workspace com engine topológico
+    workspace = SharedWorkspace(embedding_dim=256, max_history_size=1000)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular módulos
+    modules = ["qualia_engine", "narrative_constructor", "expectation_module"]
+    np.random.seed(42)
+
+    logger.info(f"📊 Simulando {len(modules)} módulos...")
+
+    # Gerar dados
+    for t in range(50):
+        for module in modules:
+            embedding = np.random.randn(256)
+            workspace.write_module_state(module, embedding)
+        workspace.advance_cycle()
+
+    # Calcular predições vetorizadas (Phase 3)
+    # O workspace retorna dict, mas podemos acessar o predictor diretamente para métricas
+    predictions_dict = workspace.compute_all_cross_predictions_vectorized(history_window=50)
+
+    # Verificar que predições foram calculadas
+    assert len(predictions_dict) > 0, "Deve haver predições calculadas"
+
+    # Acessar predictor interno para métricas de performance
+    if workspace._vectorized_predictor is not None:
+        # Criar predictor temporário para obter métricas completas
+        from src.consciousness.shared_workspace import VectorizedCrossPredictor
+
+        predictor = VectorizedCrossPredictor(workspace, use_gpu=False)
+        result = predictor.compute_all_cross_predictions_vectorized(history_window=50)
+        assert result.speedup_factor > 0, "Speedup deve ser positivo"
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Phase 3: otimizações de performance (vetorização)
+        # Topological: estrutura e integração
+        # Ambas são complementares
+
+    logger.info("✅ Phase 3 vetorização + Topological Metrics verified")
+
+
 if __name__ == "__main__":
     asyncio.run(test_vectorized_predictions())

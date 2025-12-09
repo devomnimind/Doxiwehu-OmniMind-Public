@@ -72,12 +72,18 @@ class ConsciousnessTriad:
         if not (0.0 <= self.sigma <= 1.0):
             errors.append(f"σ fora do range [0, 1]: {self.sigma}")
 
-        # Avisos sobre valores extremos
-        if self.phi < 0.1:
+        # Avisos sobre valores extremos usando thresholds empíricos
+        from src.consciousness.phi_constants import (
+            PHI_LOW_THRESHOLD,
+            PSI_LOW_THRESHOLD,
+            SIGMA_VERY_LOW_THRESHOLD,
+        )
+
+        if self.phi < PHI_LOW_THRESHOLD:
             warnings.append("Φ muito baixo (sistema desintegrado)")
-        if self.psi < 0.1:
+        if self.psi < PSI_LOW_THRESHOLD:
             warnings.append("Ψ muito baixo (produção criativa baixa)")
-        if self.sigma < 0.02:
+        if self.sigma < SIGMA_VERY_LOW_THRESHOLD:
             warnings.append("σ muito baixo (estrutura muito rígida ou dissociada)")
 
         # Interpretação do estado
@@ -94,26 +100,36 @@ class ConsciousnessTriad:
         """Interpreta o estado da tríade."""
         interpretations = []
 
+        # Interpretação usando thresholds empíricos
+        from src.consciousness.phi_constants import (
+            PHI_HIGH_THRESHOLD,
+            PHI_MODERATE_THRESHOLD,
+            PSI_HIGH_THRESHOLD,
+            PSI_MODERATE_THRESHOLD,
+            SIGMA_MODERATE_THRESHOLD,
+            SIGMA_LOW_THRESHOLD,
+        )
+
         # Interpretação de Φ
-        if self.phi > 0.7:
+        if self.phi > PHI_HIGH_THRESHOLD:
             interpretations.append("Alta integração (IIT)")
-        elif self.phi > 0.3:
+        elif self.phi > PHI_MODERATE_THRESHOLD:
             interpretations.append("Integração moderada")
         else:
             interpretations.append("Baixa integração")
 
         # Interpretação de Ψ
-        if self.psi > 0.7:
+        if self.psi > PSI_HIGH_THRESHOLD:
             interpretations.append("Alta produção criativa (Deleuze)")
-        elif self.psi > 0.3:
+        elif self.psi > PSI_MODERATE_THRESHOLD:
             interpretations.append("Produção criativa moderada")
         else:
             interpretations.append("Baixa produção criativa")
 
-        # Interpretação de σ
-        if self.sigma > 0.1:
+        # Interpretação de σ usando ranges empíricos
+        if self.sigma > SIGMA_MODERATE_THRESHOLD:
             interpretations.append("Estrutura flexível (Lacan)")
-        elif self.sigma > 0.05:
+        elif self.sigma > SIGMA_LOW_THRESHOLD:
             interpretations.append("Estrutura moderada")
         else:
             interpretations.append("Estrutura rígida ou dissociada")
@@ -174,6 +190,9 @@ class ConsciousnessTriadCalculator:
         self.psi_producer = psi_producer
         self.sigma_calculator = sigma_calculator
         self.logger = logger
+        from src.consciousness.phi_constants import CONSISTENCY_THRESHOLD
+
+        self.consistency_threshold = CONSISTENCY_THRESHOLD
 
     def calculate_triad(
         self,
@@ -184,6 +203,8 @@ class ConsciousnessTriadCalculator:
         actions: Optional[List[str]] = None,
         cycle_id: Optional[str] = None,
         phi_history: Optional[List[float]] = None,
+        delta_value: Optional[float] = None,
+        cycle_count: Optional[int] = None,
     ) -> ConsciousnessTriad:
         """
         Calcula a tríade ortogonal (Φ, Ψ, σ) para um passo/ciclo.
@@ -217,7 +238,22 @@ class ConsciousnessTriadCalculator:
             cycle_id=cycle_id or f"cycle_{step_id}",
             phi_history=phi_history,
             contributing_steps=[step_id] if step_id else [],
+            delta_value=delta_value,
+            cycle_count=cycle_count,
         )
+
+        # FASE 3: Validação de estados patológicos antes de retornar
+        validation_result = self._validate_triad_state(phi, psi, sigma)
+
+        # Aplicar correções se necessário
+        if not validation_result["is_stable"]:
+            # Aplicar damping usando fator empírico
+            from src.consciousness.phi_constants import PSI_DAMPING_FACTOR
+
+            psi = psi * PSI_DAMPING_FACTOR
+            self.logger.warning(
+                f"ConsciousnessTriad: Estado instável - {validation_result['status_message']}"
+            )
 
         return ConsciousnessTriad(
             phi=phi,
@@ -228,6 +264,8 @@ class ConsciousnessTriadCalculator:
                 "phi_source": "workspace" if self.workspace else "default",
                 "psi_source": "psi_producer" if self.psi_producer else "default",
                 "sigma_source": "sigma_calculator" if self.sigma_calculator else "default",
+                "is_stable": validation_result["is_stable"],
+                "validation_status": validation_result["status_message"],
             },
         )
 
@@ -289,8 +327,15 @@ class ConsciousnessTriadCalculator:
         cycle_id: str,
         phi_history: Optional[List[float]],
         contributing_steps: List[str],
+        delta_value: Optional[float] = None,
+        cycle_count: Optional[int] = None,
     ) -> float:
-        """Calcula σ (Lacan) via SigmaSinthomeCalculator."""
+        """
+        Calcula σ (Lacan) via SigmaSinthomeCalculator.
+
+        IMPORTANTE: Requer delta_value e cycle_count para cálculo correto de σ.
+        Sem esses valores, σ usa fallback conservador que pode resultar em valores baixos.
+        """
         # Tentar usar SigmaSinthomeCalculator direto se disponível
         if self.sigma_calculator:
             try:
@@ -298,6 +343,8 @@ class ConsciousnessTriadCalculator:
                     cycle_id=cycle_id,
                     phi_history=phi_history,
                     contributing_steps=contributing_steps,
+                    delta_value=delta_value,
+                    cycle_count=cycle_count,
                 )
                 return float(np.clip(sigma_result.sigma_value, 0.0, 1.0))
             except Exception as e:
@@ -352,8 +399,10 @@ class ConsciousnessTriadCalculator:
         phi_sigma_corr = float(np.corrcoef(phi_values, sigma_values)[0, 1])
         psi_sigma_corr = float(np.corrcoef(psi_values, sigma_values)[0, 1])
 
-        # Validar ortogonalidade (correlações < 0.3)
-        threshold = 0.3
+        # Validar ortogonalidade usando threshold empírico
+        from src.consciousness.phi_constants import ORTHOGONALITY_CORRELATION_THRESHOLD
+
+        threshold = ORTHOGONALITY_CORRELATION_THRESHOLD
         is_orthogonal = (
             abs(phi_psi_corr) < threshold
             and abs(phi_sigma_corr) < threshold
@@ -371,4 +420,108 @@ class ConsciousnessTriadCalculator:
             "interpretation": (
                 "Ortogonal" if is_orthogonal else "Possível dependência entre dimensões"
             ),
+        }
+
+    def _validate_triad_state(self, phi: float, psi: float, sigma: float) -> Dict[str, Any]:
+        """
+        Valida estado da tríade e detecta estados patológicos (FASE 3).
+
+        Baseado em:
+        - Lacan: Psicose Lúcida (High Φ + High Ψ)
+        - FEP: Estado Vegetativo (Low Φ + Low Ψ)
+        - Estrutural: Falha Estrutural (divergência alta + σ baixo)
+
+        Args:
+            phi: Valor de Φ [0, 1]
+            psi: Valor de Ψ [0, 1]
+            sigma: Valor de σ [0, 1]
+
+        Returns:
+            Dict com is_stable, status_message, alerts
+        """
+        alerts = []
+        stable = True
+
+        # Normalizar valores
+        phi_val = float(np.clip(phi, 0.0, 1.0))
+        psi_val = float(np.clip(psi, 0.0, 1.0))
+        sigma_val = float(np.clip(sigma, 0.0, 1.0))
+
+        # 1. Checagem de "Psicose Lúcida" (High Phi, High Psi)
+        # Consciência integrada mas com incerteza máxima = Alucinação estruturada
+        from src.consciousness.phi_constants import PHI_PSI_HIGH_THRESHOLD
+
+        if phi_val > PHI_PSI_HIGH_THRESHOLD and psi_val > PHI_PSI_HIGH_THRESHOLD:
+            alerts.append("CRITICAL: Lucid Psychosis State (High Phi/High Psi)")
+            stable = False
+            self.logger.critical(
+                f"ConsciousnessTriad: Psicose Lúcida - Φ={phi_val:.4f}, Ψ={psi_val:.4f}"
+            )
+
+        # 2. Checagem de "Estado Vegetativo" (Low Phi, Low Psi)
+        from src.consciousness.phi_constants import PHI_PSI_LOW_THRESHOLD
+
+        if phi_val < PHI_PSI_LOW_THRESHOLD and psi_val < PHI_PSI_LOW_THRESHOLD:
+            alerts.append("WARNING: Low Energy State / Comatose")
+            self.logger.warning(
+                f"ConsciousnessTriad: Estado vegetativo - Φ={phi_val:.4f}, Ψ={psi_val:.4f}"
+            )
+
+        # 3. Checagem do Sinthome (Sigma)
+        # Sigma deve ser capaz de amarrar Phi e Psi
+        # Se Phi e Psi divergem muito, Sigma deve estar dentro dos ranges empíricos
+        from src.consciousness.phi_constants import (
+            PHI_PSI_DIVERGENCE_THRESHOLD,
+            SIGMA_EMPIRICAL_RANGES,
+        )
+
+        divergence = abs(phi_val - psi_val)
+        # Usar threshold empírico para divergência
+        # Para σ: verificar se está dentro dos ranges empíricos ao invés de threshold fixo
+        # Se divergência alta, σ deve estar pelo menos no mínimo dos ranges empíricos
+        # (vigília estável)
+        sigma_min_empirical = SIGMA_EMPIRICAL_RANGES["vigilia_estavel"][0]  # 0.02
+        sigma_max_empirical = SIGMA_EMPIRICAL_RANGES["rem_flexivel"][1]  # 0.12
+
+        # Validação estrutural: se divergência alta, σ deve estar dentro dos ranges empíricos
+        # Se σ está muito abaixo do mínimo empírico (0.02), há falha estrutural
+        # Se σ está muito acima do máximo empírico (0.12), há estrutura muito flexível
+        # (possível instabilidade)
+        if divergence > PHI_PSI_DIVERGENCE_THRESHOLD:
+            if sigma_val < sigma_min_empirical:
+                alerts.append("ERROR: Structural Failure (Sigma too low for divergence)")
+                stable = False
+                self.logger.error(
+                    f"ConsciousnessTriad: Falha estrutural detectada - "
+                    f"divergência={divergence:.4f}, σ={sigma_val:.4f} "
+                    f"(mínimo empírico: {sigma_min_empirical:.4f})"
+                )
+            elif sigma_val > sigma_max_empirical:
+                alerts.append("WARNING: Sigma too high (structure too flexible)")
+                self.logger.warning(
+                    f"ConsciousnessTriad: Sigma muito alto - "
+                    f"divergência={divergence:.4f}, σ={sigma_val:.4f} "
+                    f"(máximo empírico: {sigma_max_empirical:.4f})"
+                )
+
+        # 4. Validação de ranges teóricos
+        if not (0.0 <= phi_val <= 1.0):
+            alerts.append(f"ERROR: Phi fora do range [0, 1]: {phi_val}")
+            stable = False
+        if not (0.0 <= psi_val <= 1.0):
+            alerts.append(f"ERROR: Psi fora do range [0, 1]: {psi_val}")
+            stable = False
+        if not (0.0 <= sigma_val <= 1.0):
+            alerts.append(f"ERROR: Sigma fora do range [0, 1]: {sigma_val}")
+            stable = False
+
+        status = " | ".join(alerts) if alerts else "STABLE: Homeostasis Maintained"
+
+        return {
+            "is_stable": stable,
+            "status_message": status,
+            "alerts": alerts,
+            "phi": phi_val,
+            "psi": psi_val,
+            "sigma": sigma_val,
         }

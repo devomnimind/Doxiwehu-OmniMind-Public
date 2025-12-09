@@ -157,3 +157,92 @@ class TestSystemicMemoryTrace:
         assert "total_visits" in summary
         assert "average_deformation_strength" in summary
         assert summary["topological_markers_count"] > 0
+
+
+class TestSystemicMemoryTraceHybridTopological:
+    """Testes de integração entre SystemicMemoryTrace e HybridTopologicalEngine via SharedWorkspace."""  # noqa: E501
+
+    def test_systemic_memory_with_shared_workspace_topological(self):
+        """Testa que SystemicMemoryTrace pode ser usado com SharedWorkspace que tem HybridTopologicalEngine."""  # noqa: E501
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com SystemicMemoryTrace e HybridTopologicalEngine
+        memory_trace = SystemicMemoryTrace(state_space_dim=256)
+        workspace = SharedWorkspace(
+            embedding_dim=256,
+            systemic_memory=memory_trace,
+        )
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Adicionar traços ao memory trace
+        np.random.seed(42)
+        for i in range(5):
+            past_state = np.random.randn(256)
+            current_state = past_state + np.random.randn(256) * 0.1
+            memory_trace.add_trace_not_memory(past_state, current_state)
+
+        # Escrever estados no workspace
+        rho_C = np.random.randn(256)
+        rho_P = np.random.randn(256)
+        rho_U = np.random.randn(256)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas as estruturas funcionam
+        assert len(memory_trace.topological_markers) > 0, "Memory trace deve ter marcas"
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics, "Métricas topológicas devem estar presentes"
+
+    def test_systemic_memory_affects_phi_with_topological_metrics(self):
+        """Testa que SystemicMemoryTrace afeta Φ e métricas topológicas são complementares."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        memory_trace = SystemicMemoryTrace(state_space_dim=256)
+        workspace = SharedWorkspace(
+            embedding_dim=256,
+            systemic_memory=memory_trace,
+        )
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Adicionar múltiplos traços
+        np.random.seed(42)
+        for i in range(10):
+            past_state = np.random.randn(256)
+            current_state = past_state + np.random.randn(256) * 0.15
+            memory_trace.add_trace_not_memory(past_state, current_state)
+
+        # Simular múltiplos ciclos no workspace
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular Φ padrão
+        standard_phi = workspace.compute_phi_from_integrations()
+
+        # Verificar que memory trace afeta Φ
+        result = memory_trace.affect_phi_calculation(standard_phi, lambda x: 0.0)
+        assert "phi_with_memory" in result
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas as métricas estão disponíveis
+        assert result["phi_with_memory"] >= 0.0
+        if topological_metrics is not None:
+            assert topological_metrics["omega"] >= 0.0
+            # Ambas medem aspectos diferentes da consciência
+            # Memory trace: deformações topológicas no espaço de estados
+            # Topological metrics: estrutura do grafo semântico

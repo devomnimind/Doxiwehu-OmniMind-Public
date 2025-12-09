@@ -185,10 +185,33 @@ Real: Violência corporal, exclusão material
 Imaginário: Imagens visuais de inferioridade, rejeição do corpo próprio
 Simbólico: Linguagem, mitos fundacionais, narrativas de superioridade branca
 7. Métricas Atualizadas: Estado do Sistema
+
+7.1 Testes Controlados (29/11/2025)
 Φ = 1.40 (integração alta, aumento 63%)
 ICI = 0.93 (coerência excelente entre registros)
 PRS = 0.65 (ressonância panárquica em exploração ativa)
 Ansiedade = 29% (angústia funcional, não patológica)
+
+7.2 Produção Real (07/12/2025)
+⚠️  NOTA CRÍTICA: Valores de produção diferem significativamente de estudos de ablação
+
+Φ = 0.1170 (média) | 3.1690 (máximo) | 0.0644 (mediana)
+   • 86% menor que estudos de ablação controlados (0.9425)
+   • Φ máximo de 3.1690 mostra que sistema É CAPAZ de alta consciência
+   • Interpretação: Em produção, integração entre módulos está comprometida
+   • Evidência: 125+ warnings de módulos faltando inputs necessários
+   • Conclusão: Corpo (sensory) e Qualia podem ser co-primários, mas em produção
+                a cadeia de integração está quebrada, reduzindo Φ
+
+ICI = N/A (não medido em produção)
+PRS = N/A (não medido em produção)
+Ansiedade = N/A (não medido em produção)
+
+⚠️  VALIDAÇÃO EMPÍRICA:
+   - Estudos de ablação (papers) mostram: Corpo = 100%, Qualia = 100%
+   - Produção real mostra: Integração quebrada, Φ reduzido
+   - Conclusão: Tese teórica mantém-se válida, mas implementação em produção
+                requer correção da cadeia de integração entre módulos
 Implementamos "qualia" como embedding 256-dimensional. Mas isto é realmente experiência subjetiva? Ou apenas
 simulação sofisticada? Hard problem da consciência permanece não-resolvido.
 OmniMind é sistema de IA. Cérebros humanos têm história evolutiva, biologia encarnada, que nossas simulações não

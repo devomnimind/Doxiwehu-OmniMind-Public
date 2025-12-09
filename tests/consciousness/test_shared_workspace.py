@@ -312,5 +312,74 @@ class TestHistoryCirculation:
         assert len(workspace.history) == max_size
 
 
+class TestHybridTopologicalMetrics:
+    """Testes de métricas topológicas híbridas via SharedWorkspace."""
+
+    def test_compute_hybrid_topological_metrics_with_engine(self) -> None:
+        """Testa cálculo de métricas topológicas híbridas quando engine está disponível."""
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Escrever estados de módulos (rho_C, rho_P, rho_U simulados)
+        rho_C = np.random.randn(256)
+        rho_P = np.random.randn(256)
+        rho_U = np.random.randn(256)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+
+        # Computar métricas topológicas
+        metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que métricas foram calculadas
+        assert metrics is not None, "Métricas devem ser calculadas quando engine está disponível"
+        assert isinstance(metrics, dict), "Métricas devem ser um dicionário"
+        assert "omega" in metrics, "Omega (integração) deve estar presente"
+        assert "sigma" in metrics, "Sigma (Small-Worldness) deve estar presente"
+        assert "betti_0" in metrics, "Betti-0 (fragmentação) deve estar presente"
+        assert 0.0 <= metrics["omega"] <= 1.0, "Omega deve estar em [0, 1]"
+        assert metrics["sigma"] >= 0.0, "Sigma deve ser >= 0"
+
+    def test_compute_hybrid_topological_metrics_without_engine(self) -> None:
+        """Testa que retorna None quando engine não está disponível."""
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = None
+
+        metrics = workspace.compute_hybrid_topological_metrics()
+
+        assert metrics is None, "Métricas devem ser None quando engine não está disponível"
+
+    def test_compute_hybrid_topological_metrics_integration(self) -> None:
+        """Testa integração completa com dados reais de módulos."""
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular múltiplos ciclos com dados correlacionados
+        np.random.seed(42)
+        for i in range(10):
+            # Dados correlacionados (simulando estrutura Small-World)
+            base = np.random.randn(256)
+            rho_C = base + np.random.normal(0, 0.1, 256)
+            rho_P = base + np.random.normal(0, 0.2, 256)
+            rho_U = -base + np.random.normal(0, 0.3, 256)  # Inconsciente oposto
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Computar métricas após múltiplos ciclos
+        metrics = workspace.compute_hybrid_topological_metrics()
+
+        assert metrics is not None, "Métricas devem ser calculadas após múltiplos ciclos"
+        assert metrics["omega"] > 0, "Omega deve ser > 0 com dados estruturados"
+        assert metrics["betti_0"] >= 0, "Betti-0 deve ser >= 0"
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

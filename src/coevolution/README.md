@@ -8,6 +8,17 @@
 
 Módulo do sistema OmniMind responsável por funcionalidades específicas integradas à arquitetura global. Implementa componentes essenciais que contribuem para o funcionamento coeso do sistema de consciência artificial.
 
+## 🔄 Substituição de Módulos Deprecated
+
+Este módulo **substitui** funcionalidades planejadas do Phase 26D (Integrity) que não foram implementadas:
+
+- ✅ **`BiasDetector`** substitui `integrity.bias_quantifier` (deprecated)
+  - Detecção e correção de vieses algorítmicos
+  - Estatísticas de vieses detectados
+  - Correção automática de vieses comuns
+
+**Referência**: `docs/VARREDURA_MODULOS_DEPRECATED_SUBSTITUICOES.md`
+
 ## 🔄 Interação entre os Três Estados Híbridos
 
 ### 1. Estado Biologicista (Neural Correlates)
@@ -127,9 +138,9 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
 
 ---

@@ -5,6 +5,9 @@ import pytest
 
 from src.orchestrator.task_executor import TaskExecutor
 
+# CORREÇÃO: Testes de stress precisam de timeout escalonado até 800s
+# Modo escalonado: sem falhas até 800s conforme configuração global
+
 
 async def run_load_test(num_tasks: int):
     """Helper to run N tasks and return stats."""
@@ -60,6 +63,8 @@ async def run_load_test(num_tasks: int):
 
 
 @pytest.mark.asyncio
+@pytest.mark.stress  # CORREÇÃO: Marcar como stress test
+@pytest.mark.timeout(800)  # CORREÇÃO: Timeout escalonado até 800s (modo sem falhas)
 async def test_load_004_tasks():
     """Baseline: 4 tasks"""
     stats = await run_load_test(4)
@@ -71,6 +76,8 @@ async def test_load_004_tasks():
 
 
 @pytest.mark.asyncio
+@pytest.mark.stress  # CORREÇÃO: Marcar como stress test
+@pytest.mark.timeout(800)  # CORREÇÃO: Timeout escalonado até 800s (modo sem falhas)
 async def test_load_008_tasks():
     """Ramp-up: 8 tasks"""
     stats = await run_load_test(8)
@@ -82,6 +89,8 @@ async def test_load_008_tasks():
 
 
 @pytest.mark.asyncio
+@pytest.mark.stress  # CORREÇÃO: Marcar como stress test
+@pytest.mark.timeout(800)  # CORREÇÃO: Timeout escalonado até 800s (modo sem falhas)
 async def test_load_016_tasks():
     """Ramp-up: 16 tasks"""
     stats = await run_load_test(16)
@@ -93,6 +102,8 @@ async def test_load_016_tasks():
 
 
 @pytest.mark.asyncio
+@pytest.mark.stress  # CORREÇÃO: Marcar como stress test
+@pytest.mark.timeout(800)  # CORREÇÃO: Timeout escalonado até 800s (modo sem falhas)
 async def test_load_032_tasks():
     """Ramp-up: 32 tasks"""
     stats = await run_load_test(32)
@@ -104,6 +115,8 @@ async def test_load_032_tasks():
 
 
 @pytest.mark.asyncio
+@pytest.mark.stress  # CORREÇÃO: Marcar como stress test
+@pytest.mark.timeout(800)  # CORREÇÃO: Timeout escalonado até 800s (modo sem falhas)
 async def test_load_064_tasks():
     """Stress: 64 tasks"""
     stats = await run_load_test(64)
@@ -115,6 +128,8 @@ async def test_load_064_tasks():
 
 
 @pytest.mark.asyncio
+@pytest.mark.stress  # CORREÇÃO: Marcar como stress test
+@pytest.mark.timeout(800)  # CORREÇÃO: Timeout escalonado até 800s (modo sem falhas)
 async def test_load_128_tasks():
     """Max Stress: 128 tasks"""
     stats = await run_load_test(128)

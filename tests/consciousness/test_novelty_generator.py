@@ -534,3 +534,50 @@ class TestIntegration:
 
         # Knowledge should increase
         assert final_concepts >= initial_concepts
+
+
+class TestNoveltyGeneratorHybridTopological:
+    """Testes de integração entre NoveltyGenerator e HybridTopologicalEngine."""
+
+    def test_novelty_generator_with_topological_metrics(self):
+        """Testa que NoveltyGenerator pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar NoveltyGenerator
+        generator = NoveltyGenerator()
+
+        # Gerar novidade
+        output = generator.generate_novel_concept(
+            seed_concepts=[],
+            creativity_type=CreativityType.COMBINATIONAL,
+            novelty_threshold=0.5,
+        )
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert isinstance(output, CreativeOutput)
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # NoveltyGenerator: geração de novidade (criatividade)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

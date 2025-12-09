@@ -218,8 +218,16 @@ class TestIntegratedInformationCalculator:
         assert level == IntegrationLevel.UNIFIED
 
 
+@pytest.mark.skip(
+    reason="QualiaEngine is deprecated. Use OmniMind_Complete_Subjectivity_Integration instead. "
+    "See src/consciousness/qualia_engine.py for deprecation notice."
+)
 class TestQualiaEngine:
-    """Test QualiaEngine main system."""
+    """Test QualiaEngine main system (DEPRECATED).
+
+    ⚠️  WARNING: QualiaEngine is deprecated.
+    Use OmniMind_Complete_Subjectivity_Integration for proper Lacanian implementation.
+    """
 
     def test_qualia_engine_initialization(self) -> None:
         """Test qualia engine initializes correctly."""

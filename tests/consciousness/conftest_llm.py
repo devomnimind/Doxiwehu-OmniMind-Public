@@ -138,8 +138,17 @@ class RealLLMProvider:
                 mock = MockLLMProvider()
                 return await mock.generate(prompt, max_tokens, temperature)
 
+            # CORREÇÃO: Não usar mais qwen2:7b - usar modelo padrão ou phi
+            # O cálculo de Φ não depende mais de LLM externa específica
+            # Se precisar de LLM, usar modelo padrão do Ollama
+            try:
+                models = await client.list_models()
+                model_name = models[0].get("name", "phi") if models else "phi"
+            except Exception:
+                model_name = "phi"  # Fallback para phi
+
             response = await client.generate(
-                model="qwen2:7b-instruct",
+                model=model_name,
                 prompt=prompt,
                 stream=False,
                 options={"temperature": temperature, "num_predict": max_tokens},
@@ -159,7 +168,14 @@ class RealLLMProvider:
                 mock = MockLLMProvider()
                 return await mock.embed(text)
 
-            response = await client.embeddings(model="qwen2:7b-instruct", prompt=text)
+            # CORREÇÃO: Não usar mais qwen2:7b - usar modelo padrão ou phi
+            try:
+                models = await client.list_models()
+                model_name = models[0].get("name", "phi") if models else "phi"
+            except Exception:
+                model_name = "phi"  # Fallback para phi
+
+            response = await client.embeddings(model=model_name, prompt=text)
             return response.get("embedding", [])
         except Exception as e:
             logger.warning(f"LLM embedding failed: {e}, using mock")

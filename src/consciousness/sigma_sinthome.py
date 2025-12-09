@@ -3,14 +3,13 @@ Sigma Sinthome (σ_sinthome) - Métrica de Coesão Estrutural (Lacan)
 
 Implementa σ como dimensão ortogonal independente de Φ (IIT) e Ψ (Deleuze).
 
-σ captura:
-- Coesão estrutural (amarração de sentido)
-- Estabilidade do sinthome (teste de removibilidade)
-- Rigidez vs flexibilidade (variância de Φ)
+CORREÇÃO (2025-12-07): Adicionada dependência de Φ conforme IIT clássico.
+FASE 2 (2025-12-07): Integração de PrecisionWeighter para eliminar pesos hardcoded.
+Fórmula: σ = 0.5 * (Φ_norm × (1-Δ) × tempo) + 0.5 * (componentes estruturais com pesos dinâmicos)
 
 Autor: Fabrício da Silva + assistência de IA
-Data: 2025-12-06
-Baseado em: PLANO_IMPLEMENTACAO_LACUNA_PHI.md + VALORES_EMPIRICOS_REAIS_IIT.py
+Data: 2025-12-07
+Baseado em: VERIFICACAO_PHI_SISTEMA.md
 """
 
 import logging
@@ -18,6 +17,9 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
 import numpy as np
+
+from src.consciousness.adaptive_weights import PrecisionWeighter
+from src.consciousness.phi_constants import normalize_phi
 
 logger = logging.getLogger(__name__)
 
@@ -61,10 +63,12 @@ class SigmaSinthomeCalculator:
     - Ψ mede produção (criatividade/caos)
     - σ mede amarração (estrutura/estabilidade)
 
-    Fórmula:
-    σ = 0.4 * removability_score
-      + 0.3 * stability_score
-      + 0.3 * flexibility_score
+    Fórmula (com PrecisionWeighter):
+    σ = Σ(componente_i * peso_i) onde pesos são calculados dinamicamente
+    baseado em variância (FEP - Free Energy Principle)
+
+    Fallback (use_precision_weights=False):
+    σ = 0.4 * removability_score + 0.3 * stability_score + 0.3 * flexibility_score
 
     Valores empíricos (com cautela):
     - Vigília estável: σ ∈ [0.02, 0.05] (rígido)
@@ -77,6 +81,7 @@ class SigmaSinthomeCalculator:
         self,
         integration_trainer: Optional[Any] = None,  # IntegrationTrainer
         workspace: Optional[Any] = None,  # SharedWorkspace
+        use_precision_weights: bool = True,
     ):
         """
         Inicializa calculador de σ.
@@ -84,29 +89,66 @@ class SigmaSinthomeCalculator:
         Args:
             integration_trainer: Instância opcional de IntegrationTrainer
             workspace: Instância opcional de SharedWorkspace
+            use_precision_weights: Se True, usa PrecisionWeighter para pesos dinâmicos
         """
         self.integration_trainer = integration_trainer
         self.workspace = workspace
         self.logger = logger
+        self.use_precision_weights = use_precision_weights
+        self.precision_weighter: Optional[PrecisionWeighter] = (
+            PrecisionWeighter(history_window=50) if use_precision_weights else None
+        )
 
     def calculate_sigma_for_cycle(
         self,
         cycle_id: str,
         phi_history: Optional[List[float]] = None,
         contributing_steps: Optional[List[str]] = None,
+        delta_value: Optional[float] = None,
+        cycle_count: Optional[int] = None,
     ) -> SigmaResult:
         """
         Calcula σ_sinthome para um ciclo completo.
 
+        CORREÇÃO (2025-12-07): Agora inclui dependência de Φ conforme IIT clássico.
+        Fórmula combinada: σ = 0.5 * (Φ_norm × (1-Δ) × tempo) + 0.5 * (componentes estruturais)
+
         Args:
             cycle_id: ID único do ciclo
-            phi_history: Histórico de Φ (para calcular flexibilidade)
+            phi_history: Histórico de Φ (para calcular flexibilidade e componente de Φ)
             contributing_steps: Lista de passos que contribuíram
+            delta_value: Valor de δ (defesa) para cálculo de σ_from_phi (opcional)
+            cycle_count: Número do ciclo atual para cálculo de tempo (opcional)
 
         Returns:
             SigmaResult com sigma_value, components, sinthome_module
         """
-        # 1. Detectar sinthome (se disponível)
+        # 1. Calcular componente baseado em Φ (IIT clássico)
+        if phi_history and len(phi_history) > 0:
+            # Usar último valor de Φ do histórico
+            phi_raw = phi_history[-1]
+            # Se phi_history está normalizado [0,1], assumir que precisa converter
+            # Mas como não sabemos, vamos assumir que já está normalizado e converter para nats
+            # Se for > 1.0, assumir que está em nats; caso contrário, assumir normalizado
+            if phi_raw > 1.0:
+                # Já está em nats
+                phi_norm = normalize_phi(phi_raw)
+            else:
+                # Assumir que está normalizado [0,1], usar diretamente
+                phi_norm = float(np.clip(phi_raw, 0.0, 1.0))
+        else:
+            phi_norm = 0.0
+
+        # Calcular σ_from_phi = Φ_norm × (1-Δ) × tempo
+        if delta_value is not None and cycle_count is not None:
+            delta_norm = float(np.clip(delta_value, 0.0, 1.0))
+            time_factor = min(1.0, cycle_count / 100.0)  # Normaliza tempo (100 ciclos = 1.0)
+            sigma_from_phi = phi_norm * (1.0 - delta_norm) * time_factor
+        else:
+            # Fallback: usar apenas Φ_norm se Δ ou tempo não disponíveis
+            sigma_from_phi = phi_norm * 0.5  # Aproximação conservadora
+
+        # 2. Detectar sinthome (se disponível)
         sinthome_info = None
         if self.integration_trainer:
             try:
@@ -119,19 +161,47 @@ class SigmaSinthomeCalculator:
         )
         sinthome_module = sinthome_info.get("module_name") if sinthome_info else None
 
-        # 2. Removability score (teste de removibilidade)
+        # 3. Removability score (teste de removibilidade)
         removability_score = self._calculate_removability_score(sinthome_info)
 
-        # 3. Stability score (estabilidade estrutural)
+        # 4. Stability score (estabilidade estrutural)
         stability_score = self._calculate_stability_score(sinthome_info)
 
-        # 4. Flexibility score (variância de Φ)
+        # 5. Flexibility score (variância de Φ)
         flexibility_score = self._calculate_flexibility_score(phi_history)
 
-        # 5. Agregar componentes
-        sigma_value = 0.4 * removability_score + 0.3 * stability_score + 0.3 * flexibility_score
+        # 6. Componente estrutural (com PrecisionWeighter ou fallback)
+        component_values = {
+            "removability": removability_score,
+            "stability": stability_score,
+            "flexibility": flexibility_score,
+        }
+        if self.use_precision_weights and self.precision_weighter:
+            weights = self.precision_weighter.compute_weights(component_values)
+            sigma_from_structure = sum(component_values[k] * weights[k] for k in component_values)
+            self.logger.debug(f"SigmaSinthome: Pesos dinâmicos calculados: {weights}")
+        else:
+            # Fallback para pesos hardcoded (compatibilidade)
+            sigma_from_structure = (
+                0.4 * removability_score + 0.3 * stability_score + 0.3 * flexibility_score
+            )
 
-        # 6. Normalizar para [0, 1] com clipping
+        # 7. COMBINAR: Alpha dinâmico baseado em Φ (FASE 3)
+        # Se Φ é alto, confia mais no componente de Φ (integração)
+        # Se Φ é baixo, confia mais na estrutura (sinthome)
+        if phi_norm > 0:
+            # Alpha dinâmico: clip(phi_norm * 1.2, 0.3, 0.7)
+            # Phi alto (0.8) -> alpha = 0.7 (confia mais em Φ)
+            # Phi baixo (0.1) -> alpha = 0.3 (confia mais em estrutura)
+            alpha = float(np.clip(phi_norm * 1.2, 0.3, 0.7))
+        else:
+            # Fallback: usar 0.5 se phi_norm não disponível
+            alpha = 0.5
+            self.logger.debug("SigmaSinthome: phi_norm não disponível, usando alpha=0.5 (fallback)")
+
+        sigma_value = alpha * sigma_from_phi + (1.0 - alpha) * sigma_from_structure
+
+        # 8. Normalizar para [0, 1] com clipping
         sigma_value = float(np.clip(sigma_value, 0.0, 1.0))
 
         # Criar componentes
@@ -273,18 +343,43 @@ class SigmaSinthomeCalculator:
         - REM flexível: σ_φ ≈ 0.08 (flexível)
         - Anestesia: σ_φ ≈ 0.02 (dissociação)
 
+        CORREÇÃO (2025-12-08 20:45): Filtrar zeros APENAS para cálculo de variância
+        Valores zero bloqueiam cálculo correto (variância = 0 → sigma = 1.0, errado!)
+
         Args:
             phi_history: Histórico de Φ (últimos N valores)
 
         Returns:
             Flexibility score [0, 1]
         """
-        if not phi_history or len(phi_history) < 3:
+        if not phi_history or len(phi_history) < 1:
             return 0.5  # Default neutro (sem histórico suficiente)
 
         try:
-            phi_array = np.array(phi_history)
-            phi_std = float(np.std(phi_array))
+            # CORREÇÃO (2025-12-08 20:45): Filtrar zeros APENAS para cálculo de variância
+            # Valores zero bloqueiam cálculo correto (std = 0 quando todos são zero)
+            phi_array_full = np.array(phi_history)
+            phi_array_nonzero = phi_array_full[
+                phi_array_full > 0.0
+            ]  # Filtrar zeros apenas para std
+
+            if len(phi_array_nonzero) < 2:
+                # Se menos de 2 valores não-zero, usar estimativa baseada em valor atual
+                phi_current = phi_array_full[-1] if len(phi_array_full) > 0 else 0.0
+                # Se phi é muito baixo (< 0.01), flexibility deve ser baixo (estrutura rígida)
+                # Se phi é alto (> 0.05), flexibility deve ser alto (estrutura flexível)
+                flexibility_estimate = min(
+                    0.5, phi_current * 10.0
+                )  # Escala: phi=0.05 → flexibility=0.5
+                self.logger.debug(
+                    f"Flexibility: histórico com < 2 valores não-zero "
+                    f"(phi_current={phi_current:.4f}), "
+                    f"estimando flexibility={flexibility_estimate:.4f}"
+                )
+                return float(np.clip(flexibility_estimate, 0.0, 1.0))
+
+            # Calcular std apenas com valores não-zero (evita std = 0 quando todos são zero)
+            phi_std = float(np.std(phi_array_nonzero))
 
             # Normalizar baseado em valores empíricos
             # σ_φ ≈ 0.03 (vigília) → flexibility ≈ 0.3

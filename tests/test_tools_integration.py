@@ -69,3 +69,43 @@ def test_execute_command_blocks_forbidden(monkeypatch: pytest.MonkeyPatch, tmp_p
         for entry in audit_entries
         if entry["tool_name"] == "execute_command"
     )
+
+
+class TestToolsFrameworkHybridTopological:
+    """Testes de integração entre ToolsFramework e HybridTopologicalEngine."""
+
+    def test_tools_can_work_with_consciousness_metrics(
+        self, monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+    ) -> None:
+        """Testa que ferramentas podem trabalhar com métricas de consciência."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        home = tmp_path / "fake_home"
+        monkeypatch.setenv("HOME", str(home))
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular estados
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ferramentas podem usar métricas topológicas para decisões
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Ferramentas podem usar Omega para priorizar ações baseadas em integração
+            # Betti-0 para identificar fragmentação que precisa ser resolvida

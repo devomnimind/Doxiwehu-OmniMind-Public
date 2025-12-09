@@ -39,3 +39,12 @@ falcon>=4.0.0        # Alternative web framework
 # Development Tools
 bandit>=1.8.0        # Security linting
 radon>=6.0.0         # Code complexity analysis
+
+# Topological Data Analysis (Optional - for HybridTopologicalEngine)
+# These are optional dependencies for advanced topological metrics
+# Core functionality works without these, but with reduced precision
+pyitlib>=0.2.0       # Transfer Entropy (for rigorous non-linear reentry calculation)
+POT>=0.9.0           # Python Optimal Transport (for Wasserstein distance via Sinkhorn)
+gudhi>=3.9.0         # Homology Persistence (for precise Betti-2 calculation)
+scikit-learn>=1.3.0  # Manifold Learning (PCA, Isomap) - may already be in core
+networkx>=3.5        # Graph Analysis (Small-Worldness) - may already be in core

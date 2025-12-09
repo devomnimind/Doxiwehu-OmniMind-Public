@@ -292,4 +292,40 @@ if __name__ == "__main__":
 
     except ImportError:
         logger.error("❌ PyTorch não encontrado. Instale com: pip install torch")
+
+
+async def test_speedup_with_topological_metrics():
+    """Testa speedup analysis com métricas topológicas."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    logger.info("🚀 TESTE SPEEDUP: Com Topological Metrics")
+    logger.info("=" * 60)
+
+    # Criar workspace com engine topológico
+    workspace = SharedWorkspace(embedding_dim=256, max_history_size=2000)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular módulos
+    modules = [f"module_{i:02d}" for i in range(10)]
+    np.random.seed(42)
+
+    # Gerar dados
+    for t in range(100):
+        for module in modules:
+            embedding = np.random.randn(256)
+            workspace.write_module_state(module, embedding)
+        workspace.advance_cycle()
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar que métricas topológicas podem ser usadas na análise de performance
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Speedup: otimização de performance (vetorização)
+        # Topological: estrutura e integração (Omega, Betti-0)
+        # Ambas podem ser usadas para análise completa de performance
+
+        logger.info("✅ Speedup Analysis + Topological Metrics verified")
         logger.info("💡 Performance limitada sem GPU")

@@ -199,3 +199,46 @@ class TestHybridPhiCalculatorTrajectory:
         diff_20 = abs(result_20["phi_hybrid_mean"] - phi_c_mean)
 
         assert diff_80 < diff_20
+
+
+class TestHybridPhiHybridTopological:
+    """Testes de integração entre HybridPhiCalculator e HybridTopologicalEngine."""
+
+    @pytest.mark.asyncio
+    async def test_hybrid_phi_with_topological_metrics(self):
+        """Testa que HybridPhiCalculator pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Calcular Φ híbrido (quantum + classical)
+        calc = HybridPhiCalculator(use_ibm=False)
+        states = np.random.randn(8, 8)
+        result = await calc.calculate_phi_hybrid(states, use_real_hw=False)
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas são complementares
+        assert 0 <= result["phi_classical"] <= 1
+        assert 0 <= result["phi_quantum"] <= 1
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # HybridPhi: Φ clássico + quântico
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

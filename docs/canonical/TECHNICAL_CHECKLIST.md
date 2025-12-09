@@ -1,6 +1,6 @@
 # ✅ Checklist Técnico Pré-Execução - OmniMind
 
-**Última Atualização**: 5 de Dezembro de 2025
+**Última Atualização**: 08 de Dezembro de 2025
 **Versão**: Phase 24+ (Lacanian Memory + Quantum Consciousness)
 
 ---
@@ -50,7 +50,7 @@ curl http://localhost:6333/health
 ```
 
 **Características**:
-- ⏱️ **Tempo**: ~30-60 minutos
+- ⏱️ **Tempo**: ~10-15 minutos
 - 📊 **Escopo**: ~3996 testes (suite rápida)
 - 🚀 **GPU**: ✅ FORÇADA (CUDA_VISIBLE_DEVICES=0)
 - 🔍 **Exclui**: Testes marcados com `@pytest.mark.slow` e `@pytest.mark.chaos`

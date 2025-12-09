@@ -10,13 +10,18 @@ This enables real causal coupling measured by SharedWorkspace cross-prediction m
 import asyncio
 import json
 import logging
-import numpy as np
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, Optional, List, Tuple
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple
 
-from src.consciousness.shared_workspace import SharedWorkspace, ModuleState
+import numpy as np
+
+from src.consciousness.shared_workspace import ModuleState, SharedWorkspace
+
+# Importação condicional para evitar circular imports
+if TYPE_CHECKING:
+    from src.consciousness.extended_cycle_result import ExtendedLoopCycleResult
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +80,21 @@ class ModuleExecutor:
     async def execute(
         self, workspace: SharedWorkspace, input_module: Optional[str] = None, **kwargs: Any
     ) -> Dict[str, np.ndarray]:
-        """Execute module with inputs from workspace."""
+        """
+        Execute module with inputs from workspace (async wrapper).
+
+        REFATORAÇÃO: Delega para execute_sync() para manter compatibilidade.
+        """
+        return self.execute_sync(workspace, input_module, **kwargs)
+
+    def execute_sync(
+        self, workspace: SharedWorkspace, input_module: Optional[str] = None, **kwargs: Any
+    ) -> Dict[str, np.ndarray]:
+        """
+        Execute module with inputs from workspace (síncrono).
+
+        REFATORAÇÃO: Método síncrono para causalidade determinística.
+        """
         start_time = datetime.now()
         self.call_count += 1
 
@@ -85,16 +104,24 @@ class ModuleExecutor:
             if input_module:
                 state = workspace.read_module_state(input_module)
                 if isinstance(state, ModuleState):
-                    inputs[input_module] = state.embedding
+                    # Check if embedding is not all zeros (module actually produced output)
+                    if not np.allclose(state.embedding, 0.0):
+                        inputs[input_module] = state.embedding
                 elif isinstance(state, np.ndarray):
-                    inputs[input_module] = state
+                    # Check if embedding is not all zeros
+                    if not np.allclose(state, 0.0):
+                        inputs[input_module] = state
             else:
                 for req_input in self.spec.required_inputs:
                     state = workspace.read_module_state(req_input)
                     if isinstance(state, ModuleState):
-                        inputs[req_input] = state.embedding
+                        # Check if embedding is not all zeros (module actually produced output)
+                        if not np.allclose(state.embedding, 0.0):
+                            inputs[req_input] = state.embedding
                     elif isinstance(state, np.ndarray):
-                        inputs[req_input] = state
+                        # Check if embedding is not all zeros
+                        if not np.allclose(state, 0.0):
+                            inputs[req_input] = state
 
             # Generate output
             output_embedding = self._compute_output(inputs, **kwargs)
@@ -148,13 +175,30 @@ class ModuleExecutor:
 
         # If required inputs are missing or zero, module cannot function properly
         if missing_required or zero_required:
-            logger.warning(
-                f"Module {self.module_name} missing/zero required inputs: "
-                f"missing={missing_required}, zero={zero_required}. "
-                f"Cannot compute meaningful output."
+            # ESPERADO nos primeiros ciclos: módulos dependentes podem não ter inputs ainda
+            # Exemplo: imagination requer narrative + expectation, mas no ciclo 1,
+            # narrative ainda não produziu output (qualia → narrative precisa de qualia primeiro)
+            if self.call_count <= 3:  # Primeiros 3 ciclos são esperados ter inputs faltando
+                logger.debug(
+                    f"Module {self.module_name} missing/zero required inputs "
+                    f"(ciclo inicial esperado): missing={missing_required}, "
+                    f"zero={zero_required}. Usando fallback output."
+                )
+            else:
+                logger.warning(
+                    f"Module {self.module_name} missing/zero required inputs: "
+                    f"missing={missing_required}, zero={zero_required}. "
+                    f"Cannot compute meaningful output."
+                )
+            # Instead of returning zeros (which breaks the chain), return a small random embedding
+            # This allows the module to still produce some output, even if degraded
+            # The next module can still function, though with reduced quality
+            fallback_output = np.random.randn(self.spec.embedding_dim) * 0.01
+            logger.debug(
+                f"Module {self.module_name} using fallback output (degraded mode) "
+                f"due to missing inputs"
             )
-            # Return zeros to indicate module failure
-            return np.zeros(self.spec.embedding_dim)
+            return fallback_output
 
         # Default behavior for other modules
         if inputs:
@@ -163,7 +207,14 @@ class ModuleExecutor:
             base_output = np.mean(stacked, axis=0)
         else:
             # No inputs - initialize with random embedding
-            base_output = np.random.randn(self.spec.embedding_dim) * 0.1
+            # For sensory_input (no required inputs), this is expected on first cycle
+            if self.module_name == "sensory_input":
+                # Generate a more meaningful initial sensory input
+                base_output = np.random.randn(self.spec.embedding_dim) * 0.1
+                logger.debug(f"Module {self.module_name} initialized with random sensory input")
+            else:
+                # For other modules without inputs, use smaller random
+                base_output = np.random.randn(self.spec.embedding_dim) * 0.1
 
         # Ensure correct dimensionality
         if len(base_output) != self.spec.embedding_dim:
@@ -174,13 +225,22 @@ class ModuleExecutor:
                 base_output = base_output[: self.spec.embedding_dim]
 
         # Add stochastic component
-        noise = np.random.randn(self.spec.embedding_dim) * 0.05
+        # CORREÇÃO (2025-12-08): Aumentar ruído para evitar convergência
+        # Ruído muito baixo (0.05) + normalização L2 faz embeddings convergirem
+        noise = np.random.randn(self.spec.embedding_dim) * 0.1  # Aumentado de 0.05 para 0.1
         output = base_output + noise
 
-        # L2 normalize
+        # L2 normalize (mas preservar alguma variação)
+        # CORREÇÃO (2025-12-08): Normalização L2 muito agressiva reduz variação
+        # Usar normalização mais suave que preserve variação relativa
         norm = np.linalg.norm(output)
         if norm > 0:
-            output = output / norm
+            # Normalização suave: preserva 90% da magnitude original
+            output = (output / norm) * (
+                0.9
+                + 0.1
+                * (norm / max(1.0, np.linalg.norm(base_output) if len(base_output) > 0 else 1.0))
+            )
 
         return output
 
@@ -230,6 +290,12 @@ class IntegrationLoop:
             required_inputs=["meaning_maker"],
             produces_output=True,
         ),
+        "imagination": ModuleInterfaceSpec(
+            module_name="imagination",
+            embedding_dim=768,
+            required_inputs=["narrative", "expectation"],
+            produces_output=True,
+        ),
     }
 
     def __init__(
@@ -238,15 +304,26 @@ class IntegrationLoop:
         module_specs: Optional[Dict[str, ModuleInterfaceSpec]] = None,
         loop_sequence: Optional[List[str]] = None,
         enable_logging: bool = True,
+        enable_extended_results: bool = False,
     ):
         """Initialize integration loop."""
         self.module_specs = module_specs or self.STANDARD_SPECS
-        self.loop_sequence = loop_sequence or list(self.STANDARD_SPECS.keys())
+        # Loop sequence padrão inclui imagination após expectation
+        default_sequence = [
+            "sensory_input",
+            "qualia",
+            "narrative",
+            "meaning_maker",
+            "expectation",
+            "imagination",  # NOVO: Imaginário Lacaniano
+        ]
+        self.loop_sequence = loop_sequence or default_sequence
 
         # Use maximum dimension from all modules
         max_dim = max(spec.embedding_dim for spec in self.module_specs.values())
         self.workspace = workspace or SharedWorkspace(embedding_dim=max_dim)
         self.enable_logging = enable_logging
+        self.enable_extended_results = enable_extended_results
 
         # Initialize module executors
         self.executors = {
@@ -261,8 +338,42 @@ class IntegrationLoop:
         # Structural ablation flag: silences expectation output (maintains history, blocks flow)
         self.expectation_silent: bool = False
 
-    async def execute_cycle(self, collect_metrics: bool = True) -> LoopCycleResult:
-        """Execute one complete integration loop cycle com análise de complexidade.
+        # Extended results components (lazy initialization)
+        self._extended_components: Optional[Dict[str, Any]] = None
+        if self.enable_extended_results:
+            self._initialize_extended_components()
+
+        # PROTOCOLO LIVEWIRE FASE 3.1: Consciousness Watchdog
+        self.watchdog: Optional["ConsciousnessWatchdog"] = None
+        try:
+            from src.consciousness.consciousness_watchdog import ConsciousnessWatchdog
+
+            self.watchdog = ConsciousnessWatchdog()
+            logger.debug("ConsciousnessWatchdog inicializado")
+        except ImportError:
+            logger.warning("ConsciousnessWatchdog não disponível, continuando sem monitoramento")
+
+        # PROTOCOLO CLÍNICO-CIBERNÉTICO (2025-12-08): Homeostatic Regulator
+        self._homeostatic_regulator: Optional["HomeostaticRegulator"] = None
+        try:
+            from src.consciousness.homeostatic_regulator import HomeostaticRegulator
+
+            self._homeostatic_regulator = HomeostaticRegulator()
+            logger.debug("HomeostaticRegulator inicializado")
+        except ImportError:
+            logger.warning(
+                "HomeostaticRegulator não disponível, continuando sem regulação homeostática"
+            )
+
+        # NOVO: GozoCalculator para cálculo de Jouissance
+        self._gozo_calculator: Optional[Any] = None
+
+    def execute_cycle_sync(self, collect_metrics: bool = True) -> LoopCycleResult:
+        """
+        Execute one complete integration loop cycle (síncrono).
+
+        REFATORAÇÃO: Método síncrono para causalidade determinística.
+        Integra com ConsciousSystem.step() para dinâmica RNN.
 
         If expectation_silent=True, expectation module maintains history but
         blocks output flow (structural ablation: measures falta-a-ser gap).
@@ -294,6 +405,44 @@ class IntegrationLoop:
         # Advance workspace cycle
         self.workspace.advance_cycle()
 
+        # REFATORAÇÃO: Integrar com ConsciousSystem.step() antes de executar módulos
+        stimulus = self._collect_stimulus_from_modules()
+        if self.workspace.conscious_system is not None:
+            try:
+                import torch
+
+                # Converter estímulo para tensor se necessário
+                # CORREÇÃO CRÍTICA (2025-12-08): Mover estímulo para GPU imediatamente
+                if isinstance(stimulus, np.ndarray):
+                    stimulus_tensor = torch.from_numpy(stimulus.astype(np.float32))
+                elif isinstance(stimulus, torch.Tensor):
+                    stimulus_tensor = stimulus
+                else:
+                    # Fallback: estímulo zero
+                    stimulus_tensor = torch.zeros(self.workspace.embedding_dim, dtype=torch.float32)
+
+                # Mover estímulo para o device do ConsciousSystem (GPU se disponível)
+                if self.workspace.conscious_system is not None:
+                    stimulus_tensor = stimulus_tensor.to(self.workspace.conscious_system.device)
+
+                # Executar RNN Dynamics (síncrono)
+                self.workspace.conscious_system.step(stimulus_tensor)
+                # CORREÇÃO CRÍTICA: Atualizar histórico após step
+                # get_state() adiciona o estado atual ao histórico (self.history.append(state))
+                # Isso permite que compute_phi_causal() calcule sobre dados atualizados
+                # NOTA: get_state() converte para CPU para armazenamento, mas cálculos principais
+                # (step, compute_phi_causal) devem usar GPU
+                self.workspace.conscious_system.get_state()
+                if self.enable_logging:
+                    phi_causal = self.workspace.conscious_system.compute_phi_causal()
+                    repression = self.workspace.conscious_system.repression_strength
+                    logger.debug(
+                        f"Cycle {self.cycle_count}: RNN step executed "
+                        f"(Φ={phi_causal:.4f}, repression={repression:.3f})"
+                    )
+            except Exception as e:
+                logger.warning(f"Cycle {self.cycle_count}: RNN step failed - {e}")
+
         # NOVO: Rastrear transição de ciclo na memória sistemática
         if (
             hasattr(self.workspace, "systemic_memory")
@@ -313,7 +462,7 @@ class IntegrationLoop:
                 # Marca transição de ciclo com threshold normal
                 self.workspace.systemic_memory.mark_cycle_transition(cycle_states, threshold=0.01)
 
-        # Execute modules in sequence
+        # REFATORAÇÃO: Execute modules in sequence (síncrono)
         for module_name in self.loop_sequence:
             try:
                 executor = self.executors[module_name]
@@ -321,7 +470,7 @@ class IntegrationLoop:
                 # If expectation_silent, execute but block output from expectation
                 if self.expectation_silent and module_name == "expectation":
                     # Still execute (maintains history/state) but don't propagate output
-                    _ = await executor.execute(self.workspace)
+                    _ = executor.execute_sync(self.workspace)
                     # Don't add to result.modules_executed to block information flow
                     if self.enable_logging:
                         logger.debug(
@@ -329,7 +478,7 @@ class IntegrationLoop:
                             "(structural ablation)"
                         )
                 else:
-                    await executor.execute(self.workspace)
+                    executor.execute_sync(self.workspace)
                     result.modules_executed.append(module_name)
 
                     if self.enable_logging:
@@ -392,6 +541,25 @@ class IntegrationLoop:
                 # Compute Φ from workspace state (which already has cross-predictions)
                 result.phi_estimate = self.workspace.compute_phi_from_integrations()
 
+                # CORREÇÃO CRÍTICA (2025-12-08): Atualizar repressão APÓS cálculo de Φ
+                # Repressão não atualizada estava bloqueando acesso ao Real (Rho_U congelado)
+                # NOVO: Passar success e phi_norm para decay adaptativo
+                if self.workspace.conscious_system is not None:
+                    cycle_success = result.success
+                    phi_norm = None
+                    if result.phi_estimate > 0:
+                        # Normalizar Φ para [0, 1] se necessário
+                        from src.consciousness.phi_constants import normalize_phi
+
+                        phi_norm = (
+                            normalize_phi(result.phi_estimate)
+                            if result.phi_estimate > 1.0
+                            else result.phi_estimate
+                        )
+                    self.workspace.conscious_system.update_repression(
+                        threshold=1.0, success=cycle_success, phi_norm=phi_norm
+                    )
+
                 if self.enable_logging:
                     logger.info(f"Cycle {self.cycle_count}: Φ={result.phi_estimate:.4f}")
 
@@ -444,7 +612,91 @@ class IntegrationLoop:
             except Exception as e:
                 logger.debug(f"Falha ao gerar relatório do ciclo: {e}")
 
+        # Extended results pipeline (se habilitado) - REFATORAÇÃO: Removido await (síncrono)
+        # Nota: Extended results pode ser processado assincronamente em outro lugar se necessário
+        if self.enable_extended_results and collect_metrics:
+            try:
+                # REFATORAÇÃO: Não usar await em método síncrono
+                # Extended results pode ser processado posteriormente se necessário
+                logger.debug(f"Cycle {self.cycle_count}: Extended results disabled in sync mode")
+                # Nota: _build_extended_result() requer await, então não pode ser usado aqui
+                # Se necessário, processar extended results em método async separado
+            except Exception as e:
+                logger.debug(f"Falha ao processar extended results: {e}")
+
         return result
+
+    async def execute_cycle(self, collect_metrics: bool = True) -> LoopCycleResult:
+        """
+        Execute one complete integration loop cycle (async wrapper).
+
+        REFATORAÇÃO: Wrapper async para compatibilidade retroativa.
+        Delega para execute_cycle_sync() e processa extended results se habilitado.
+        """
+        base_result = self.execute_cycle_sync(collect_metrics)
+
+        # Se extended results habilitado, construir ExtendedLoopCycleResult
+        if self.enable_extended_results and collect_metrics:
+            try:
+                extended_result = await self._build_extended_result(base_result)
+                # Atualizar cycle_history com extended result
+                if len(self.cycle_history) > 0:
+                    self.cycle_history[-1] = extended_result
+
+                # CORREÇÃO CRÍTICA (2025-12-08): Adicionar ciclo ao cycle_history dos
+                # extended components. Para que get_phi_history() funcione corretamente
+                if self._extended_components is not None:
+                    cycle_history_extended = self._extended_components.get("cycle_history")
+                    if cycle_history_extended is not None:
+                        cycle_history_extended.add_cycle(extended_result)
+                        logger.debug(
+                            f"Cycle {base_result.cycle_number}: Adicionado ao "
+                            f"cycle_history (tamanho={cycle_history_extended.size()})"
+                        )
+
+                return extended_result
+            except Exception as e:
+                logger.warning(f"Erro ao construir extended result: {e}, retornando base result")
+                return base_result
+
+        return base_result
+
+    def _collect_stimulus_from_modules(self) -> np.ndarray:
+        """
+        Coleta estímulo dos módulos para RNN.
+
+        REFATORAÇÃO: Agrega estados dos módulos como estímulo para ConsciousSystem.
+        """
+        try:
+            # Agregar estados dos módulos como estímulo
+            module_states = []
+            for module_name in self.loop_sequence:
+                try:
+                    state = self.workspace.read_module_state(module_name)
+                    if isinstance(state, ModuleState):
+                        module_states.append(state.embedding)
+                    elif isinstance(state, np.ndarray):
+                        module_states.append(state)
+                except Exception:
+                    pass  # Ignora módulos sem estado
+
+            if module_states:
+                # Média dos estados dos módulos como estímulo
+                stimulus = np.mean(module_states, axis=0)
+                # Normalizar para dimensão do workspace
+                if len(stimulus) != self.workspace.embedding_dim:
+                    if len(stimulus) < self.workspace.embedding_dim:
+                        padding = np.zeros(self.workspace.embedding_dim - len(stimulus))
+                        stimulus = np.concatenate([stimulus, padding])
+                    else:
+                        stimulus = stimulus[: self.workspace.embedding_dim]
+                return stimulus
+            else:
+                # Fallback: estímulo zero
+                return np.zeros(self.workspace.embedding_dim)
+        except Exception as e:
+            logger.warning(f"Erro ao coletar estímulo dos módulos: {e}")
+            return np.zeros(self.workspace.embedding_dim)
 
     def _compute_all_cross_predictions(self) -> Dict[str, Dict[str, float]]:
         """Compute cross-prediction scores between all module pairs."""
@@ -539,6 +791,333 @@ class IntegrationLoop:
         """Get Φ values over cycle history."""
         return [c.phi_estimate for c in self.cycle_history]
 
+    def _initialize_extended_components(self) -> None:
+        """Inicializa componentes para extended results (lazy)."""
+        if self._extended_components is not None:
+            return
+
+        from src.consciousness.consciousness_triad import ConsciousnessTriad
+        from src.consciousness.cycle_history import CycleHistory
+        from src.consciousness.cycle_result_builder import LoopCycleResultBuilder
+        from src.consciousness.embedding_narrative import EmbeddingNarrativeAnalyzer
+        from src.consciousness.embedding_psi_adapter import PsiProducerAdapter
+        from src.consciousness.embedding_sigma_adapter import (
+            SigmaSinthomeCalculatorAdapter,
+        )
+        from src.consciousness.embedding_validator import EmbeddingNarrativeValidator
+
+        # CORREÇÃO (2025-12-08): Inicializar sigma_calculator no adapter
+        # Sem isso, adapter sempre usa fallback e retorna 0.5
+        from src.consciousness.sigma_sinthome import SigmaSinthomeCalculator
+        from src.consciousness.theoretical_consistency_guard import (
+            TheoreticalConsistencyGuard,
+        )
+
+        sigma_calculator = SigmaSinthomeCalculator(
+            integration_trainer=None,  # Não temos trainer no loop básico
+            workspace=self.workspace,
+        )
+
+        self._extended_components = {
+            "builder": LoopCycleResultBuilder(self.workspace),
+            "narrative_analyzer": EmbeddingNarrativeAnalyzer(),
+            "psi_adapter": PsiProducerAdapter(),
+            "sigma_adapter": SigmaSinthomeCalculatorAdapter(sigma_calculator=sigma_calculator),
+            "cycle_history": CycleHistory(max_history_size=1000),
+            "validator": EmbeddingNarrativeValidator(),
+            "triad_class": ConsciousnessTriad,
+            "consistency_guard": TheoreticalConsistencyGuard(raise_on_critical=False),
+        }
+
+    async def _build_extended_result(
+        self, base_result: LoopCycleResult
+    ) -> "ExtendedLoopCycleResult":
+        """
+        Constrói ExtendedLoopCycleResult com tríade completa.
+
+        Args:
+            base_result: LoopCycleResult base
+
+        Returns:
+            ExtendedLoopCycleResult com Φ, Ψ, σ, tríade
+        """
+        if self._extended_components is None:
+            self._initialize_extended_components()
+
+        if self._extended_components is None:
+            raise RuntimeError("Extended components not initialized")
+        components = self._extended_components
+        builder = components["builder"]
+        narrative_analyzer = components["narrative_analyzer"]
+        psi_adapter = components["psi_adapter"]
+        sigma_adapter = components["sigma_adapter"]
+        cycle_history = components["cycle_history"]
+        validator = components["validator"]
+        ConsciousnessTriad = components["triad_class"]
+        consistency_guard = components["consistency_guard"]
+
+        # 1. Construir ExtendedLoopCycleResult base
+        previous_cycle = cycle_history.get_previous_cycle(base_result.cycle_number)
+        extended_result = builder.build_from_workspace(base_result, previous_cycle)
+
+        # 2. Analisar narrativa de embeddings
+        previous_cycles = cycle_history.get_recent_cycles(n=5)
+        try:
+            embedding_narrative = await narrative_analyzer.analyze_cycle(
+                extended_result, previous_cycles if previous_cycles else None
+            )
+        except Exception as e:
+            logger.error(f"Erro ao analisar narrativa: {e}", exc_info=True)
+            raise
+
+        # 3. Validar narrativa
+        validation = await validator.validate(embedding_narrative)
+        if not validation["is_valid"] and self.enable_logging:
+            logger.warning(
+                f"Cycle {base_result.cycle_number}: Validação falhou: {validation['issues']}"
+            )
+
+        # 4. Preparar phi_raw_nats para todos os cálculos
+        from src.consciousness.phi_constants import denormalize_phi
+
+        phi_raw = base_result.phi_estimate  # Assumir que já está normalizado [0,1]
+        phi_raw_nats = denormalize_phi(phi_raw)
+
+        # 5. Calcular Δ primeiro (depende apenas de Φ)
+        try:
+            from src.consciousness.delta_calculator import DeltaCalculator
+
+            delta_calc = DeltaCalculator()
+            if extended_result.module_outputs:
+                expectation_emb = extended_result.module_outputs.get("expectation")
+                reality_emb = extended_result.module_outputs.get("sensory_input")
+                if expectation_emb is not None and reality_emb is not None:
+                    delta_result = delta_calc.calculate_delta(
+                        expectation_embedding=expectation_emb,
+                        reality_embedding=reality_emb,
+                        module_outputs=extended_result.module_outputs,
+                        integration_strength=extended_result.integration_strength,
+                        phi_raw=phi_raw_nats,
+                    )
+                    extended_result.delta = delta_result.delta_value
+        except Exception as e:
+            logger.warning(f"Erro ao calcular δ: {e}")
+            extended_result.delta = None
+
+        # 6. Calcular Ψ (depende apenas de Φ)
+        try:
+            # CORREÇÃO (2025-12-07): Passar phi_raw_nats para cálculo correto de Ψ
+            psi = await psi_adapter.calculate_psi_for_embedding(
+                embedding_narrative, phi_raw=phi_raw_nats
+            )
+            extended_result.psi = psi
+        except Exception as e:
+            logger.warning(f"Erro ao calcular Ψ: {e}")
+            extended_result.psi = None
+
+        # 7. Calcular σ (depende de Φ e Δ)
+        try:
+            # CORREÇÃO CRÍTICA (2025-12-08): Usar histórico do IntegrationLoop em vez de
+            # cycle_history vazio. O cycle_history dos extended components não está sendo
+            # populado, então usar self.cycle_history que já contém os ciclos anteriores
+            # CORREÇÃO (2025-12-08 20:30): NÃO filtrar valores zero - incluir todos para
+            # análise. Se filtrar, quando Phi está zerando, phi_history fica vazio
+            phi_history_from_loop = [
+                c.phi_estimate
+                for c in self.cycle_history
+                # Removido filtro > 0.0 - incluir todos os valores, mesmo zeros, para análise
+            ][
+                -20:
+            ]  # Últimos 20 valores
+
+            # Se cycle_history dos extended components tem dados, usar ele também
+            phi_history_from_extended = cycle_history.get_phi_history(last_n=20)
+
+            # Combinar ambos os históricos (remover duplicatas mantendo ordem)
+            phi_history_combined = list(
+                dict.fromkeys(phi_history_from_loop + phi_history_from_extended)
+            )[-20:]
+
+            # Usar histórico combinado ou fallback para histórico do loop
+            phi_history = phi_history_combined if phi_history_combined else phi_history_from_loop
+
+            logger.debug(
+                f"Sigma: phi_history_len={len(phi_history)}, "
+                f"from_loop={len(phi_history_from_loop)}, "
+                f"from_extended={len(phi_history_from_extended)}"
+            )
+
+            sigma = await sigma_adapter.calculate_sigma_from_phi_history(
+                cycle_id=extended_result.cycle_id or f"cycle_{base_result.cycle_number}",
+                phi_history=phi_history,
+                delta_value=extended_result.delta,  # δ já calculado
+                cycle_count=base_result.cycle_number,
+            )
+            extended_result.sigma = sigma
+        except Exception as e:
+            logger.warning(f"Erro ao calcular σ: {e}", exc_info=True)
+            extended_result.sigma = None
+
+        # 8. Construir tríade completa
+        try:
+            triad = ConsciousnessTriad(
+                phi=base_result.phi_estimate,
+                psi=extended_result.psi or 0.0,
+                sigma=extended_result.sigma or 0.0,
+                step_id=extended_result.cycle_id or f"cycle_{base_result.cycle_number}",
+                metadata={
+                    "validation_confidence": validation.get("confidence", 0.5),
+                    "has_extended_data": extended_result.has_extended_data(),
+                },
+            )
+            extended_result.triad = triad
+        except Exception as e:
+            logger.warning(f"Erro ao construir tríade: {e}")
+            extended_result.triad = None
+
+        # 9. Calcular Gozo (FASE 2)
+        try:
+            from src.consciousness.gozo_calculator import GozoCalculator
+
+            # CORREÇÃO CRÍTICA (2025-12-08): Manter instância de GozoCalculator entre ciclos
+            # Para drenagem progressiva funcionar, precisa manter estado (last_gozo_value)
+            if not hasattr(self, "_gozo_calculator") or self._gozo_calculator is None:
+                self._gozo_calculator = GozoCalculator()
+
+            expectation_emb = extended_result.module_outputs.get("expectation")
+            reality_emb = extended_result.module_outputs.get("sensory_input")
+            if expectation_emb is not None and reality_emb is not None:
+                # CORREÇÃO (2025-12-07): Passar phi_raw e psi_value para cálculo correto de Gozo
+                psi_value = extended_result.psi  # Ψ já calculado anteriormente
+                # CORREÇÃO CRÍTICA (2025-12-08): Passar flag success para drenagem do Gozo
+                cycle_success = base_result.success
+                gozo_result = self._gozo_calculator.calculate_gozo(
+                    expectation_embedding=expectation_emb,
+                    reality_embedding=reality_emb,
+                    current_embedding=reality_emb,
+                    phi_raw=phi_raw_nats,  # phi_raw_nats definido no passo 4
+                    psi_value=psi_value,  # Passar Ψ calculado
+                    delta_value=extended_result.delta,  # Passar Δ para fórmula de Solms
+                    sigma_value=extended_result.sigma,  # NOVO: Passar σ para binding adaptativo
+                    success=cycle_success,  # Flag de sucesso para drenagem
+                )
+                extended_result.gozo = gozo_result.gozo_value
+        except Exception as e:
+            logger.warning(f"Erro ao calcular Gozo: {e}")
+            extended_result.gozo = None
+
+        # 10. Calcular Control Effectiveness (FASE 4)
+        try:
+            from src.consciousness.regulatory_adjustment import RegulatoryAdjuster
+
+            regulatory = RegulatoryAdjuster()
+            if extended_result.module_outputs:
+                regulation = regulatory.calculate_adjustment(
+                    current_error=extended_result.gozo or 0.5,
+                    sigma=extended_result.sigma or 0.5,
+                    delta=extended_result.delta or 0.5,
+                    module_outputs=extended_result.module_outputs,
+                )
+                # CORREÇÃO (2025-12-07): Passar phi_raw para cálculo correto de Control
+                control_effectiveness = regulatory.calculate_control_effectiveness(
+                    sigma=extended_result.sigma or 0.5,
+                    delta=extended_result.delta or 0.5,
+                    regulation=regulation,
+                    phi_raw=phi_raw_nats,  # Passar em nats para normalização explícita
+                )
+                extended_result.control_effectiveness = control_effectiveness
+
+                # PROTOCOLO CLÍNICO-CIBERNÉTICO (2025-12-08): Fechar loop de controle
+                # Aplicar regulação homeostática baseada em control_effectiveness
+                if self._homeostatic_regulator is not None:
+                    try:
+                        phi_current = base_result.phi_estimate
+                        sigma_current = extended_result.sigma or 0.5
+
+                        regulation_result = self._homeostatic_regulator.actuate_control_loop(
+                            control_effectiveness=control_effectiveness,
+                            current_sigma=sigma_current,
+                            phi_current=phi_current,
+                        )
+
+                        # Aplicar repressão de emergência se válvula foi ativada
+                        if regulation_result["mode"] == "EMERGENCY_VENTING":
+                            if self.workspace.conscious_system is not None:
+                                self.workspace.conscious_system.update_repression(
+                                    emergency_repression=regulation_result["new_repression"]
+                                )
+                                logger.warning(
+                                    f"🚨 VÁLVULA DE EMERGÊNCIA: Repressão ajustada para "
+                                    f"{regulation_result['new_repression']:.4f}"
+                                )
+
+                        # Armazenar temperatura para uso futuro (se módulos usarem LangevinDynamics)
+                        # TODO: Aplicar temperatura aos módulos que usam LangevinDynamics
+                        extended_result.homeostatic_state = regulation_result
+
+                        logger.debug(
+                            f"Homeostase: mode={regulation_result['mode']}, "
+                            f"β={regulation_result['new_beta']:.4f}, "
+                            f"R={regulation_result['new_repression']:.4f}"
+                        )
+                    except Exception as e:
+                        logger.warning(f"Erro ao aplicar regulação homeostática: {e}")
+        except Exception as e:
+            logger.warning(f"Erro ao calcular Control Effectiveness: {e}")
+            extended_result.control_effectiveness = None
+
+        # 10. Capturar imagination output (FASE 1)
+        try:
+            if extended_result.module_outputs and "imagination" in extended_result.module_outputs:
+                extended_result.imagination_output = extended_result.module_outputs["imagination"]
+        except Exception as e:
+            logger.warning(f"Erro ao capturar imagination output: {e}")
+            extended_result.imagination_output = None
+
+        # 11. Validação de Consistência Teórica (FASE 3 - Protocolo Livewire)
+        try:
+            from src.consciousness.phi_value import PhiValue
+
+            # CORREÇÃO: Garantir que phi_raw_nats está definido
+            # Se não estiver (exceção anterior), usar phi_estimate normalizado
+            if "phi_raw_nats" not in locals():
+                from src.consciousness.phi_constants import denormalize_phi
+
+                phi_raw = base_result.phi_estimate  # Assumir que já está normalizado [0,1]
+                phi_raw_nats = denormalize_phi(phi_raw)
+
+            # Criar PhiValue a partir de phi_raw_nats
+            phi_value = PhiValue.from_nats(phi_raw_nats, source="integration_loop")
+
+            # Validar ciclo completo
+            violations = consistency_guard.validate_cycle(
+                phi=phi_value,
+                delta=extended_result.delta or 0.0,
+                psi=extended_result.psi or 0.0,
+                sigma=extended_result.sigma,
+                gozo=extended_result.gozo,
+                control=extended_result.control_effectiveness,
+                cycle_id=base_result.cycle_number,
+            )
+
+            # Logar violações se houver
+            if violations and self.enable_logging:
+                for violation in violations:
+                    if violation.severity == "critical":
+                        logger.critical(f"💥 CICLO {base_result.cycle_number}: {violation.message}")
+                    elif violation.severity == "error":
+                        logger.error(f"🚨 CICLO {base_result.cycle_number}: {violation.message}")
+                    else:
+                        logger.warning(f"⚠️ CICLO {base_result.cycle_number}: {violation.message}")
+
+            # Armazenar violações no extended_result (se houver campo para isso)
+            if hasattr(extended_result, "consistency_violations"):
+                extended_result.consistency_violations = violations
+        except Exception as e:
+            logger.warning(f"Erro ao validar consistência teórica: {e}")
+
+        return extended_result
+
     def save_state(self, filepath: Path) -> None:
         """Save integration loop state and history."""
         state = {
@@ -562,6 +1141,53 @@ class IntegrationLoop:
             json.dump(state, f, indent=2, default=str)
 
         logger.info(f"Integration loop state saved to {filepath}")
+
+    def create_full_snapshot(
+        self, tag: Optional[str] = None, description: Optional[str] = None
+    ) -> str:
+        """
+        Create complete snapshot of consciousness state.
+
+        Args:
+            tag: Optional tag for organization (e.g., "experimento_001")
+            description: Optional description
+
+        Returns:
+            snapshot_id
+        """
+        from src.backup.consciousness_snapshot import (
+            ConsciousnessSnapshotManager,
+            SnapshotTag,
+        )
+
+        snapshot_manager = ConsciousnessSnapshotManager()
+        snapshot_tag = None
+        if tag:
+            snapshot_tag = SnapshotTag(name=tag, description=description)
+
+        snapshot_id = snapshot_manager.create_full_snapshot(self, tag=snapshot_tag)
+        logger.info(f"Full consciousness snapshot created: {snapshot_id} (tag: {tag})")
+        return snapshot_id
+
+    def restore_from_snapshot(self, snapshot_id: str) -> bool:
+        """
+        Restore complete state from snapshot.
+
+        Args:
+            snapshot_id: Snapshot ID to restore
+
+        Returns:
+            True if restore successful
+        """
+        from src.backup.consciousness_snapshot import ConsciousnessSnapshotManager
+
+        snapshot_manager = ConsciousnessSnapshotManager()
+        success = snapshot_manager.restore_full_snapshot(snapshot_id, self)
+        if success:
+            logger.info(f"Consciousness state restored from snapshot: {snapshot_id}")
+        else:
+            logger.error(f"Failed to restore from snapshot: {snapshot_id}")
+        return success
 
 
 async def main_example():

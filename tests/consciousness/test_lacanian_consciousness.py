@@ -282,3 +282,58 @@ async def test_three_frameworks_integration(integration_trainer) -> None:
         isinstance(avg_non_mics_phi, float) and 0 <= avg_non_mics_phi <= 1
     ), "Avg non-MICS Φ valid"
     assert isinstance(are_separate, bool), "Separation measurable"
+
+
+@pytest.mark.asyncio
+async def test_lacanian_with_topological_metrics(integration_trainer) -> None:
+    """
+    TEST 7: Integração Lacan + Métricas Topológicas.
+
+    Verifica que:
+    - Sinthome (σ) pode ser complementado com métricas topológicas
+    - Ambas as métricas são complementares (não redundantes)
+    """
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    # Treinar um pouco
+    await integration_trainer.train(num_cycles=5)
+
+    # Obter workspace do trainer
+    # Nota: IntegrationTrainer usa 'loop' como atributo, não 'integration_loop'
+    workspace = integration_trainer.loop.workspace
+    if workspace is None:
+        pytest.skip("Workspace não disponível no trainer")
+
+    # Adicionar engine topológico
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular estados para métricas topológicas
+    # Nota: Workspace do IntegrationLoop usa embedding_dim=768 (padrão dos módulos)
+    # Precisamos usar dimensão correta para evitar erro de shape
+    embedding_dim = workspace.embedding_dim
+    np.random.seed(42)
+    for i in range(5):
+        rho_C = np.random.randn(embedding_dim)
+        rho_P = np.random.randn(embedding_dim)
+        rho_U = np.random.randn(embedding_dim)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+        workspace.advance_cycle()
+
+    # Calcular Φ consciente (IIT)
+    phi_conscious = integration_trainer.compute_phi_conscious()
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar que ambas as métricas foram calculadas
+    assert 0.0 <= phi_conscious <= 1.0, "Φ_conscious deve estar em [0, 1]"
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics, "Omega deve estar presente"
+        # Φ (IIT) e Omega (topológico) são complementares
+        # Sinthome (σ) estrutura o acesso, métricas topológicas medem estrutura
+
+    print("\n✅ TEST 7 PASS: Lacan + Topological Metrics integrados")

@@ -1,8 +1,10 @@
 # 🔧 PROJETO STUBS OMNIMIND
 
-**Data**: 2025-12-06
+**Data**: 2025-12-07 (última atualização)
 **Autor**: Fabrício da Silva + assistência de IA
 **Objetivo**: Criar stubs de tipos para bibliotecas externas sem suporte completo de mypy
+
+> **📝 NOTA**: Este documento é atualizado conforme problemas de mypy são identificados durante o desenvolvimento. Problemas de bibliotecas sem suporte devem ser adicionados aqui para criação de stubs posteriormente.
 
 ---
 
@@ -82,11 +84,27 @@ Este projeto visa criar stubs de tipos (`.pyi`) para bibliotecas externas usadas
    - **Status**: ⏳ Documentado
    - **Prioridade**: 🟡 MÉDIA
 
-6. **numpy**
-   - **Problema**: Tipos de array dinâmicos
-   - **Arquivos afetados**: 30 arquivos
-   - **Status**: ⏳ Documentado
-   - **Prioridade**: 🟡 MÉDIA
+6. **numpy** ⚠️
+   - **Problema**: Tipos de array dinâmicos e incompatibilidades com `float()`
+   - **Erros específicos identificados** (2025-12-07):
+     - `Argument 1 to "float" has incompatible type "SupportsDunderLT[Any] | SupportsDunderGT[Any]"; expected "str | Buffer | SupportsFloat | SupportsIndex"` [arg-type]
+     - Ocorre em operações como `float(np.clip(...))`, `float(np.linalg.norm(...))`, `float(np.var(...))`
+     - MyPy não reconhece que numpy retorna tipos compatíveis com `float()`
+   - **Arquivos afetados**: 3 arquivos críticos + 30 arquivos com uso geral
+     - `consciousness/gozo_calculator.py` (linha 189: `float(np.clip(novelty, 0.0, 1.0))`)
+     - `consciousness/delta_calculator.py` (linha 166: `float(trauma_level)`)
+     - `consciousness/cycle_result_builder.py` (linha 139: `float(activation)`)
+     - Outros arquivos com operações numpy similares
+   - **Operações problemáticas**:
+     - `np.clip()` → retorno não reconhecido como `SupportsFloat`
+     - `np.linalg.norm()` → retorno não reconhecido como `SupportsFloat`
+     - `np.var()` → retorno não reconhecido como `SupportsFloat`
+     - `np.mean()` → retorno não reconhecido como `SupportsFloat`
+     - Operações aritméticas com arrays numpy → tipos incompatíveis
+   - **Workaround atual**: `# type: ignore[arg-type,assignment]` (não ideal)
+   - **Status**: ⏳ Documentado, aguardando stub
+   - **Prioridade**: 🔴 ALTA (erros frequentes em cálculos de consciência)
+   - **Notas**: Stub deve definir tipos de retorno corretos para funções numpy comuns
 
 7. **qiskit** / **qiskit-aer**
    - **Problema**: Tipos não disponíveis
@@ -243,11 +261,103 @@ class QdrantClient:
 
 ### Resultados da Varredura
 
-*[Será atualizado conforme a varredura progride]*
+**Última atualização**: 2025-12-07
+
+#### Erros MyPy Identificados por Biblioteca
+
+**numpy** (2 erros críticos):
+- `src/consciousness/gozo_calculator.py:189`: `float(np.clip(...))` - tipo incompatível
+- `src/consciousness/cycle_result_builder.py:139`: `float(activation)` - tipo incompatível
+- **Padrão**: Operações numpy retornam tipos que mypy não reconhece como compatíveis com `float()`
+- **Solução proposta**: Stub deve definir `np.clip()`, `np.linalg.norm()`, etc. como retornando `SupportsFloat`
+
+**qdrant-client** (múltiplos erros):
+- Atributos não reconhecidos: `search`, `query_points`, `get_collection`
+- Tipos de retorno incompatíveis: `PointStruct` vs `dict[str, object]`
+
+**sentence-transformers** (múltiplos erros):
+- Atributo `encode` não reconhecido em `SentenceTransformer`
+- Tipos de retorno de embeddings não definidos
 
 ---
 
 ## 📊 MODELO DE CÓDIGO PARA STUBS
+
+### Stub Numpy (Exemplo - Prioridade Alta)
+
+```python
+"""
+Stub para numpy - OmniMind.
+
+Este stub corrige problemas de tipagem com operações numpy comuns,
+especialmente conversões para float() que mypy não reconhece.
+
+Versão numpy suportada: >=1.20.0
+Criado em: 2025-12-07
+"""
+
+from typing import Any, SupportsFloat, Union, overload
+from typing_extensions import Protocol
+
+# Protocolo para tipos compatíveis com float()
+class SupportsFloatConversion(Protocol):
+    """Protocolo para tipos que podem ser convertidos para float."""
+    def __float__(self) -> float: ...
+
+# Overloads para np.clip
+@overload
+def clip(
+    a: SupportsFloatConversion,
+    a_min: float,
+    a_max: float,
+    out: None = ...,
+    **kwargs: Any
+) -> float: ...
+
+@overload
+def clip(
+    a: Any,
+    a_min: float,
+    a_max: float,
+    out: None = ...,
+    **kwargs: Any
+) -> Any: ...
+
+# Overloads para np.linalg.norm
+@overload
+def norm(x: SupportsFloatConversion, ord: Any = ..., axis: None = ...) -> float: ...
+
+@overload
+def norm(x: Any, ord: Any = ..., axis: Any = ...) -> Any: ...
+
+# Overloads para np.var
+@overload
+def var(a: SupportsFloatConversion, axis: None = ..., **kwargs: Any) -> float: ...
+
+@overload
+def var(a: Any, axis: Any = ..., **kwargs: Any) -> Any: ...
+
+# Overloads para np.mean
+@overload
+def mean(a: SupportsFloatConversion, axis: None = ..., **kwargs: Any) -> float: ...
+
+@overload
+def mean(a: Any, axis: Any = ..., **kwargs: Any) -> Any: ...
+
+# Módulo linalg
+class linalg:
+    norm = norm  # type: ignore[assignment]
+    # ... outros métodos
+
+# Módulo principal
+class ndarray:
+    """Array numpy."""
+    def __float__(self) -> float: ...
+    # ... outros métodos
+
+# Exports
+__all__ = ["ndarray", "clip", "linalg", "var", "mean"]
+```
 
 ### Template Base
 
@@ -354,6 +464,28 @@ pytest tests/ -v
 
 ---
 
-**Última Atualização**: 2025-12-06
+**Última Atualização**: 2025-12-07
 **Status**: 🟡 EM DESENVOLVIMENTO - Fase 1 (Documentação)
 
+---
+
+## 📝 ATUALIZAÇÕES RECENTES
+
+### [2025-12-07] - Documentação de Problemas MyPy com Numpy
+
+**Problemas identificados**:
+- ✅ Erros específicos de mypy com numpy documentados
+- ✅ Arquivos críticos identificados (3 arquivos com erros ativos)
+- ✅ Operações problemáticas mapeadas (`np.clip`, `np.linalg.norm`, `np.var`, `np.mean`)
+- ✅ Workaround atual documentado (`type: ignore[arg-type,assignment]`)
+
+**Próximos passos**:
+- [ ] Criar stub para numpy com tipos de retorno corretos
+- [ ] Definir protocolos para operações numpy comuns
+- [ ] Testar stub com arquivos críticos identificados
+- [ ] Integrar stub no projeto OmniMind
+
+**Impacto esperado**:
+- Redução de 2 erros críticos de mypy
+- Melhoria na tipagem de 30+ arquivos que usam numpy
+- Eliminação de workarounds `type: ignore` em cálculos de consciência

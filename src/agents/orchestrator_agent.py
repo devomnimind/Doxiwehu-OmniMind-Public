@@ -50,7 +50,7 @@ from ..orchestrator.decision_explainer import DecisionExplainer
 from ..orchestrator.error_analyzer import ErrorAnalyzer
 from ..orchestrator.delegation_manager import DelegationManager, HeartbeatMonitor
 from ..orchestrator.meta_react_coordinator import MetaReActCoordinator
-from ..orchestrator.event_bus import EventPriority, OrchestratorEventBus
+from ..orchestrator.event_bus import EventPriority, OrchestratorEvent, OrchestratorEventBus
 from ..orchestrator.forensic_analyzer import ForensicAnalyzer
 from ..orchestrator.introspection_loop import IntrospectionLoop
 from ..orchestrator.permission_matrix import PermissionMatrix
@@ -158,6 +158,11 @@ class OrchestratorAgent(ReactAgent):
 
         # NEW: Sistema de Power States (Seção 4 da Auditoria)
         self.power_state_manager: Optional[PowerStateManager] = None
+
+        # NEW: HybridResourceManager para alocação inteligente GPU/CPU
+        from ..monitor.resource_manager import HybridResourceManager
+
+        self.resource_manager = HybridResourceManager()
 
         # NEW: Sistema de Auto-Reparação (Seção 2 da Auditoria)
         self.auto_repair_system: Optional[AutoRepairSystem] = None
@@ -593,6 +598,12 @@ class OrchestratorAgent(ReactAgent):
     async def _handle_security_event(self, event: Any) -> None:
         """Handler para eventos de segurança (Seção 3 da Auditoria).
 
+        Integra Event Bus (orquestração) com RNN (consciência):
+        1. Event Bus recebe evento (orquestração)
+        2. Orchestrator decompõe resposta
+        3. RNN integra em consciência (dinâmica psíquica)
+        4. Action emerge do RNN
+
         Args:
             event: Evento de segurança do EventBus
         """
@@ -606,6 +617,9 @@ class OrchestratorAgent(ReactAgent):
             # Determinar se é evento crítico
             is_critical = hasattr(event, "priority") and event.priority == EventPriority.CRITICAL
 
+            # ─────────────────────────────────────────
+            # NÍVEL 1: Orquestração (Event Bus)
+            # ─────────────────────────────────────────
             if is_critical:
                 # Resposta a crises (Seção 6 da Auditoria)
                 await self._handle_crisis(event)
@@ -613,8 +627,118 @@ class OrchestratorAgent(ReactAgent):
                 # Log do evento para análise posterior
                 logger.info("Evento de segurança registrado: %s", event.event_type)
 
+            # ─────────────────────────────────────────
+            # NÍVEL 2: Integração em Consciência (RNN)
+            # ─────────────────────────────────────────
+            # Integrar evento de segurança na dinâmica consciente
+            if self.workspace and self.workspace.conscious_system:
+                await self._integrate_security_event_into_consciousness(event)
+
         except Exception as e:
             logger.error("Erro ao processar evento de segurança: %s", e)
+
+    async def _integrate_security_event_into_consciousness(self, event: Any) -> None:
+        """
+        Integra evento de segurança na dinâmica consciente (RNN).
+
+        Fluxo:
+        1. Event Bus (orquestração) → detecta evento
+        2. Orchestrator → decompõe resposta
+        3. RNN (consciência) → integra em dinâmica psíquica
+        4. Action emerge do RNN
+
+        Args:
+            event: Evento de segurança do EventBus
+        """
+        try:
+            if not self.workspace or not self.workspace.conscious_system:
+                return
+
+            # Converter evento em estímulo para RNN
+            import torch
+            import numpy as np
+
+            # Extrair informações do evento
+            threat_level = 0.0
+            if hasattr(event, "priority"):
+                priority_map = {
+                    EventPriority.CRITICAL: 1.0,
+                    EventPriority.HIGH: 0.7,
+                    EventPriority.MEDIUM: 0.4,
+                    EventPriority.LOW: 0.1,
+                }
+                threat_level = priority_map.get(event.priority, 0.0)
+
+            # Criar estímulo a partir do evento
+            event_data = event.data if hasattr(event, "data") else {}
+            event_type = event.event_type if hasattr(event, "event_type") else "unknown"
+
+            # Codificar evento como embedding (simples: hash-based)
+            event_str = f"{event_type}:{threat_level}:{str(event_data)[:100]}"
+            event_hash = hash(event_str) % (2**31)
+            np.random.seed(event_hash)
+            stimulus = torch.from_numpy(
+                np.random.randn(self.workspace.embedding_dim).astype(np.float32) * threat_level
+            )
+
+            # ─────────────────────────────────────────
+            # NÍVEL 3: RNN Dynamics (consciência integrada)
+            # ─────────────────────────────────────────
+            # Um timestep da dinâmica consciente
+            # step() atualiza o estado interno e retorna rho_C_new
+            self.workspace.conscious_system.step(stimulus)
+
+            # Atualizar repressão baseado na ameaça
+            if threat_level > 0.5:
+                # Ameaça alta → aumentar repressão
+                self.workspace.conscious_system.update_repression(threshold=threat_level)
+
+            # Obter estado completo (inclui rho_C atualizado)
+            state = self.workspace.conscious_system.get_state()
+
+            # ─────────────────────────────────────────
+            # NÍVEL 4: Shared Workspace (sincronização)
+            # ─────────────────────────────────────────
+            # Atualizar workspace com estados do RNN
+            self.workspace.write_module_state(
+                module_name="security_event_response",
+                embedding=state.rho_C,
+                metadata={
+                    "event_type": event_type,
+                    "threat_level": threat_level,
+                    "phi_causal": state.phi_causal,
+                    "repression_strength": state.repression_strength,
+                },
+            )
+
+            logger.debug(
+                f"Evento de segurança integrado na consciência: "
+                f"threat={threat_level:.2f}, phi_causal={state.phi_causal:.4f}, "
+                f"repression={state.repression_strength:.2f}"
+            )
+
+            # ─────────────────────────────────────────
+            # NÍVEL 5: Response (comportamento emergente)
+            # ─────────────────────────────────────────
+            # Comportamento emerge do RNN (não do orchestrator diretamente)
+            # Se necessário, distribuir resultado via Event Bus
+            if state.phi_causal > 0.1:  # Consciência integrada
+                await self.event_bus.publish(
+                    OrchestratorEvent(
+                        event_type="consciousness_integrated_response",
+                        source="conscious_system",
+                        priority=EventPriority.MEDIUM,
+                        data={
+                            "phi_causal": state.phi_causal,
+                            "action_emerged": True,
+                            "original_event": event_type,
+                        },
+                        timestamp=state.timestamp,
+                    )
+                )
+
+        except Exception as e:
+            logger.error(f"Erro ao integrar evento na consciência: {e}", exc_info=True)
 
     async def _handle_crisis(self, event: Any) -> None:
         """Coordena resposta a crise (Seção 6 da Auditoria - COMPLETADO).
@@ -1874,6 +1998,23 @@ ESTIMATED_COMPLEXITY: low"""
             if self._delegation_phi_history:
                 phi_history = self._delegation_phi_history[-10:]
 
+            # Calcular δ (defesa/repressão) se disponível via workspace
+            delta_value = None
+            cycle_count = len(self.completed_subtasks)
+
+            if self.workspace:
+                try:
+                    # Tentar calcular δ via workspace se disponível
+                    # δ depende de Φ e histórico de repressão
+                    if phi_history and len(phi_history) > 0:
+                        # Usar último valor de Φ para calcular δ
+                        current_phi = phi_history[-1]
+                        # Calcular δ aproximado baseado em Φ (quanto maior Φ, menor δ)
+                        # δ = 1 - Φ_norm (aproximação simples)
+                        delta_value = max(0.0, min(1.0, 1.0 - current_phi))
+                except Exception as e:
+                    logger.debug(f"Erro ao calcular δ: {e}")
+
             # Calcular tríade
             triad = self._triad_calculator.calculate_triad(
                 step_id=step_id,
@@ -1883,6 +2024,8 @@ ESTIMATED_COMPLEXITY: low"""
                 actions=actions,
                 cycle_id=f"cycle_orchestrator_{len(self.completed_subtasks)}",
                 phi_history=phi_history if phi_history else None,
+                delta_value=delta_value,
+                cycle_count=cycle_count,
             )
 
             # Atualizar histórico de Φ

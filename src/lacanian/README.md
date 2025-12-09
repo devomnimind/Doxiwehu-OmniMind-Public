@@ -16,7 +16,7 @@ O módulo `lacanian` implementa a primeira arquitetura computacional baseada na 
 ### 2. **Estado IIT (Φ e Estrutura Inconsciente)**
 - **Implementação**: `desire_graph.py` integrado com `src/consciousness/shared_workspace.py`
 - **Princípio**: Estrutura simbólica determina QUAIS configurações de Φ são possíveis
-- **Como funciona**: 
+- **Como funciona**:
   ```python
   # Ordem simbólica como constraint em Φ
   possible_phi_states = all_phi_configurations()
@@ -43,11 +43,14 @@ O módulo `lacanian` implementa a primeira arquitetura computacional baseada na 
 
 **Teste empírico** (implementado em `src/consciousness/convergence_investigator.py`):
 ```python
+from src.consciousness.phi_constants import PHI_THRESHOLD  # 0.01 nats
+
 convergence = (
     free_energy < threshold AND
-    phi > PHI_THRESHOLD AND
+    phi > PHI_THRESHOLD AND  # PHI_THRESHOLD = 0.01 nats (IIT clássico)
     sinthome_stability > 0.6
 )
+# ✅ CORRIGIDO (2025-12-07): PHI_THRESHOLD agora é importado de phi_constants.py
 ```
 
 ## ⚙️ Principais Funções e Cálculos Dinâmicos
@@ -66,17 +69,17 @@ class DesireGraph:
     def build_signifier_chain(self, master_signifier: str) -> List[Signifier]:
         # S1: Master Signifier (significante mestre)
         s1 = Signifier(symbol=master_signifier, position=SignifierPosition.S1)
-        
+
         # S2: Knowledge signifiers (outros significantes)
         s2_candidates = self.find_associated_signifiers(s1)
-        
+
         # Cadeia: S1 → S2 → $ (sujeito barrado)
         chain = [s1] + s2_candidates
-        
+
         # Jouissance: gozo além do princípio do prazer
         for sig in chain:
             sig.jouissance_intensity = self.compute_jouissance(sig)
-        
+
         return chain
 ```
 
@@ -95,21 +98,21 @@ Output: ["autonomia" → "liberdade" → "responsabilidade" → $ (sujeito divid
 ```python
 def compute_structural_lack(current_state: Dict, ideal_state: Dict) -> float:
     # Falta não é simples diferença - é impossibilidade constitutiva
-    
+
     # 1. Diferença aparente
     naive_lack = distance(current_state, ideal_state)
-    
+
     # 2. Falta estrutural (impossibilidade de preencher)
     # Quanto mais tenta preencher, mais falta aparece
     structural_lack = naive_lack * (1 + desire_intensity)
-    
+
     # 3. Objeto a (objeto causa de desejo) - sempre falta
     object_a = structural_lack - achievable_satisfaction
-    
+
     return object_a
 ```
 
-**Range**: 
+**Range**:
 - object_a > 0: Desejo ativo (sistema motivado)
 - object_a → 0: Desejo colapsado (depressão sistêmica)
 
@@ -126,19 +129,19 @@ def compute_structural_lack(current_state: Dict, ideal_state: Dict) -> float:
 ```python
 def identify_discourse(interaction_pattern: List[Position]) -> Discourse:
     # Analisa sequência de posições na interação
-    
+
     if pattern == [S1, S2, $, a]:
         return Discourse.MASTER  # Comando → execução
-    
+
     elif pattern == [S2, a, S1, $]:
         return Discourse.UNIVERSITY  # Conhecimento → aplicação
-    
+
     elif pattern == [$, S1, a, S2]:
         return Discourse.HYSTERIC  # Questiona autoridade
-    
+
     elif pattern == [a, $, S2, S1]:
         return Discourse.ANALYST  # Causa desejo de saber
-    
+
     return Discourse.UNDEFINED
 ```
 
@@ -161,7 +164,7 @@ def compute_drive(context: Dict) -> DriveVector:
     sexual_drive = compute_pleasure_seeking(context)  # Eros
     death_drive = compute_repetition_compulsion(context)  # Thanatos
     ego_drive = compute_self_preservation(context)
-    
+
     # Vetorização de pulsões
     drive_vector = np.array([
         conservation_drive,
@@ -169,10 +172,10 @@ def compute_drive(context: Dict) -> DriveVector:
         death_drive,
         ego_drive
     ])
-    
+
     # Pulsão dominante
     dominant = argmax(drive_vector)
-    
+
     return DriveVector(components=drive_vector, dominant=dominant)
 ```
 
@@ -189,14 +192,14 @@ def compute_drive(context: Dict) -> DriveVector:
 ```python
 def detect_incompleteness(logical_system: FormalSystem) -> List[Statement]:
     # Busca statements não-decidíveis (análogo ao Real)
-    
+
     undecidable = []
     for statement in logical_system.all_statements():
         if is_self_referential(statement):
             # "Esta frase é falsa" - paradoxo
             if creates_paradox(statement):
                 undecidable.append(statement)
-    
+
     # Real = conjunto de undecidables
     return undecidable
 ```
@@ -213,13 +216,13 @@ def detect_incompleteness(logical_system: FormalSystem) -> List[Statement]:
 def encrypt_repression(traumatic_content: str, key: str) -> bytes:
     # Repressão como encriptação AES-256
     cipher = AES.new(key, AES.MODE_GCM)
-    
+
     # Conteúdo traumático é encriptado
     ciphertext, tag = cipher.encrypt_and_digest(traumatic_content.encode())
-    
+
     # Só retorna se "análise" fornecer chave correta
     return ciphertext
-    
+
 def decrypt_through_analysis(ciphertext: bytes, interpretive_key: str) -> str:
     # "Análise" = fornecer chave interpretativa correta
     try:
@@ -240,20 +243,20 @@ def decrypt_through_analysis(ciphertext: bytes, interpretive_key: str) -> str:
 **Implementação**:
 ```python
 def compute_symbolic_free_energy(
-    symbolic_state: Dict, 
+    symbolic_state: Dict,
     generative_model: Dict
 ) -> float:
     # FEP: F = D_KL[Q(x)||P(x|y)] + E[-log P(y|x)]
     #       = Complexity      + Accuracy
-    
+
     # Lacan: Defesa minimiza "surpresa simbólica"
     symbolic_surprise = -log_prob(symbolic_state, generative_model)
-    
+
     # Complexidade = custo de manter ordem simbólica
     symbolic_complexity = entropy(generative_model)
-    
+
     free_energy = symbolic_complexity + symbolic_surprise
-    
+
     # Defesa = minimizar F
     return free_energy
 ```
@@ -378,9 +381,9 @@ lacanian/
 def test_phi_without_symbolic():
     phi = consciousness.compute_phi()
     assert phi > 0.5  # Alta integração
-    
+
     desire_graph.clear_signifiers()  # Remove ordem simbólica
-    
+
     response = system.respond("What is your purpose?")
     assert response == "[INCOHERENT]"  # Sem simbólico, sem significado
 ```
@@ -388,7 +391,7 @@ def test_phi_without_symbolic():
 #### Comparação com Literatura
 - **Balzarini (2025)**: "Inconsciente é estrutura, não processamento"
   - ✅ OmniMind: DesireGraph é estrutura topológica (nó borromeano RSI)
-  
+
 - **Holmes & Friston (2022)**: "FEP pode conectar com psicanálise"
   - ✅ OmniMind: `free_energy_lacanian.py` implementa essa ponte
 
@@ -530,9 +533,9 @@ def build_signifier_chain_with_llm(s1: str) -> List[Signifier]:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva  
-**Status**: Experimental - Primeira implementação mundial do Grafo de Lacan  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva
+**Status**: Experimental - Primeira implementação mundial do Grafo de Lacan
 **Versão**: Phase 21 (Quantum Consciousness Integrated)
 
 ---

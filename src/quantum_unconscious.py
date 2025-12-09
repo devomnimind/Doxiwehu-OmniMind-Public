@@ -19,20 +19,73 @@ import numpy as np
 
 from omnimind_parameters import get_parameter_manager  # type: ignore[import-untyped]
 
-# Simulação quântica (usando Qiskit se disponível, senão simulação clássica)
-try:
-    from qiskit import (  # type: ignore[import-untyped]
-        ClassicalRegister,
-        QuantumCircuit,
-        QuantumRegister,
-        execute,
-    )
-    from qiskit.providers.aer import QasmSimulator  # type: ignore[import-untyped]
+# Configurar logger primeiro
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-    QISKIT_AVAILABLE = True
-except ImportError:
-    QISKIT_AVAILABLE = False
-    print("Qiskit não disponível - usando simulação clássica")
+# Simulação quântica (usando Qiskit se disponível, senão simulação clássica)
+# CRITICAL: Importação lazy para permitir configuração de variáveis CUDA antes
+QISKIT_AVAILABLE = False
+AerSimulator: Any = None
+QasmSimulator: Any = None
+QuantumRegister: Any = None
+ClassicalRegister: Any = None
+QuantumCircuit: Any = None
+_QISKIT_INITIALIZED = False
+
+
+def _initialize_qiskit() -> None:
+    """
+    Inicializa Qiskit de forma lazy (chamado apenas quando necessário).
+
+    Permite que variáveis de ambiente CUDA sejam configuradas ANTES da importação.
+    """
+    global QISKIT_AVAILABLE, AerSimulator, QasmSimulator, _QISKIT_INITIALIZED
+    global QuantumRegister, ClassicalRegister, QuantumCircuit
+
+    if _QISKIT_INITIALIZED:
+        return
+
+    try:
+        from qiskit import (  # type: ignore[import-untyped]
+            ClassicalRegister as ClassicalRegisterNew,
+            QuantumCircuit as QuantumCircuitNew,
+            QuantumRegister as QuantumRegisterNew,
+        )
+
+        # Tornar disponíveis globalmente
+        QuantumRegister = QuantumRegisterNew
+        ClassicalRegister = ClassicalRegisterNew
+        QuantumCircuit = QuantumCircuitNew
+
+        # Qiskit 1.0+ usa qiskit_aer diretamente
+        try:
+            from qiskit_aer import AerSimulator as AerSimulatorNew  # type: ignore[import-untyped]
+
+            AerSimulator = AerSimulatorNew
+            QISKIT_AVAILABLE = True
+            logger.info("✅ Qiskit disponível (qiskit_aer) - usando simulação quântica")
+        except ImportError:
+            # Fallback para API antiga (Qiskit < 1.0)
+            try:
+                from qiskit.providers.aer import (  # type: ignore[import-untyped]
+                    QasmSimulator as QasmSimulatorOld,
+                )
+
+                QasmSimulator = QasmSimulatorOld
+                QISKIT_AVAILABLE = True
+                logger.info(
+                    "✅ Qiskit disponível (qiskit.providers.aer) - usando simulação quântica"
+                )
+            except ImportError:
+                QISKIT_AVAILABLE = False
+                logger.warning("⚠️ Qiskit não disponível - usando simulação clássica")
+    except ImportError as e:
+        QISKIT_AVAILABLE = False
+        logger.warning(f"⚠️ Qiskit não disponível ({e}) - usando simulação clássica")
+
+    _QISKIT_INITIALIZED = True
+
 
 # Otimização Global: Forçar uso de GPU se disponível
 try:
@@ -41,9 +94,6 @@ try:
     GPU_AVAILABLE = torch.cuda.is_available()
 except ImportError:
     GPU_AVAILABLE = False
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 class QuantumUnconscious:
@@ -59,28 +109,50 @@ class QuantumUnconscious:
         self.n_qubits = n_qubits
         self.decision_history: List[Dict[str, Any]] = []
 
+        # CRITICAL: Inicializar Qiskit de forma lazy (permite configurar CUDA antes)
+        _initialize_qiskit()
+
         if QISKIT_AVAILABLE:
             self.quantum_core = QuantumRegister(n_qubits, "unconscious")
             self.classical_register = ClassicalRegister(n_qubits, "measurement")
             self.circuit = QuantumCircuit(self.quantum_core, self.classical_register)
 
             # OTIMIZAÇÃO GPU: Configurar backend para usar GPU se disponível
+            # CRITICAL: Requer qiskit-aer-gpu instalado (não apenas qiskit-aer)
             if GPU_AVAILABLE:
                 try:
-                    # Tentar configurar Aer para GPU
-                    self.backend = QasmSimulator(method="statevector", device="GPU")
-                    logger.info("🚀 Quantum Backend: Qiskit Aer (GPU Accelerated)")
+                    # Tentar configurar Aer para GPU (Qiskit 1.0+)
+                    # NOTA: qiskit-aer-gpu deve estar instalado para device="GPU" funcionar
+                    if AerSimulator is not None:
+                        self.backend = AerSimulator(method="statevector", device="GPU")
+                        logger.info("🚀 Quantum Backend: Qiskit Aer (GPU Accelerated)")
+                    elif QasmSimulator is not None:
+                        self.backend = QasmSimulator(method="statevector", device="GPU")
+                        logger.info("🚀 Quantum Backend: Qiskit Aer (GPU Accelerated)")
+                    else:
+                        raise RuntimeError("No Qiskit backend available")
                 except Exception as e:
-                    logger.error(f"❌ CRITICAL: Falha ao iniciar Qiskit GPU: {e}")
-                    logger.error("❌ Abortando inicialização quântica para evitar CPU bottleneck")
-                    # Não fazer fallback para CPU para respeitar "estritamente na GPU"
+                    # NÃO fazer fallback - problema de configuração deve ser corrigido
+                    logger.error(f"❌ CRITICAL: Falha ao configurar Qiskit GPU: {e}")
+                    logger.error("   Verifique:")
+                    logger.error("   1. qiskit-aer-gpu está instalado: pip install qiskit-aer-gpu")
+                    logger.error("   2. Variáveis CUDA configuradas ANTES de importar módulos")
+                    logger.error("   3. CUDA_VISIBLE_DEVICES=0 definido")
+                    logger.error(
+                        "   Consulte: docs/canonical/GUIA_SOLUCAO_PROBLEMAS_AMBIENTE_GPU.md"
+                    )
                     raise RuntimeError(f"Quantum GPU backend failed: {e}")
             else:
                 logger.warning(
                     "⚠️ GPU não detectada para QuantumUnconscious - "
                     "CPU será usada (Performance degradada)"
                 )
-                self.backend = QasmSimulator()
+                if AerSimulator is not None:
+                    self.backend = AerSimulator()
+                elif QasmSimulator is not None:
+                    self.backend = QasmSimulator()
+                else:
+                    raise RuntimeError("No Qiskit backend available")
         else:
             # Fallback: simulação clássica com matrizes
             self.quantum_state = np.ones(2**n_qubits, dtype=complex) / np.sqrt(2**n_qubits)
@@ -99,6 +171,9 @@ class QuantumUnconscious:
         Args:
             options: List of numpy arrays OR torch tensors
         """
+
+        # CRITICAL: Garantir que Qiskit foi inicializado
+        _initialize_qiskit()
 
         if QISKIT_AVAILABLE:
             # Qiskit requires numpy/classical data
@@ -140,10 +215,21 @@ class QuantumUnconscious:
         # 4. Medir (COLLAPSE da superposição!)
         self.circuit.measure(self.quantum_core, self.classical_register)
 
-        # 5. Executar
-        job = execute(self.circuit, backend=self.backend, shots=1000)
-        result = job.result()
-        counts = result.get_counts()
+        # 5. Executar circuito (nova API Qiskit 1.0+ ou antiga)
+        # CRITICAL: Não fazer fallback - se GPU configurado, deve funcionar
+        # Se falhar, é problema de configuração, não de hardware
+        if hasattr(self.backend, "run"):
+            # Nova API (Qiskit 1.0+): backend.run()
+            job = self.backend.run(self.circuit, shots=1000)
+            result = job.result()
+            counts = result.get_counts()
+        else:
+            # API antiga: execute()
+            from qiskit import execute  # type: ignore[import-untyped]
+
+            job = execute(self.circuit, backend=self.backend, shots=1000)
+            result = job.result()
+            counts = result.get_counts()
 
         # 6. Selecionar decisão baseada no resultado quântico
         decision = self._select_from_quantum_counts(counts, options)

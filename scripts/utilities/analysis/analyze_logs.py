@@ -74,6 +74,26 @@ class LogAnalyzer:
             "phi_output": re.compile(
                 r"phi.*0|phi.*output", re.IGNORECASE
             ),  # Special case for phi-0 detection
+            # Entropy warnings - detecta quando entropia excede limites
+            "entropy_warning": re.compile(
+                r"entropy.*exceeds.*bekenstein.*bound|entropy.*warning|WARNING.*entropy|entropy.*threshold.*exceeded",
+                re.IGNORECASE
+            ),
+            # Meta cognition failures - CRÍTICO: não executar testes
+            "metacognition_failure": re.compile(
+                r"meta.*cogn.*(?:analysis|action).*failed|metacognition.*(?:analysis|action).*failed|failed.*load.*hash.*chain",
+                re.IGNORECASE
+            ),
+            # Insufficient history - dados insuficientes para cálculos
+            "insufficient_history": re.compile(
+                r"insufficient.*history|history.*insufficient|insufficient.*data|insufficient.*aligned.*history|insufficient.*valid.*causal.*predictions",
+                re.IGNORECASE
+            ),
+            # Padrões numéricos de insufficient history (ex: "4<10", "7<70")
+            "insufficient_history_numeric": re.compile(
+                r"(\d+)\s*<\s*(\d+).*insufficient|insufficient.*\((\d+)\s*<\s*(\d+)\)|insufficient.*history.*\((\d+)\s*<\s*(\d+)\)",
+                re.IGNORECASE
+            ),
         }
 
     def analyze_logs(self) -> Dict[str, Any]:
@@ -275,6 +295,16 @@ class LogAnalyzer:
 
         if "phi_zero_detection" in anomalies:
             recommendations.append("🔵 INFO: Phi-0 outputs detected - enhance silent bug detection")
+
+        if "entropy_warnings" in anomalies:
+            recommendations.append(
+                "🟡 MEDIUM PRIORITY: Monitor entropy warnings - entropy exceeds Bekenstein bound"
+            )
+
+        if "metacognition_failures" in anomalies:
+            recommendations.append(
+                "🔴 CRITICAL: Meta cognition failures detected - NÃO EXECUTAR TESTES até resolver"
+            )
 
         performance = analysis.get("performance", {})
         if "cpu" in performance and performance["cpu"]["high_usage_count"] > 10:

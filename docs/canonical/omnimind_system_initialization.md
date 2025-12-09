@@ -1,6 +1,6 @@
 # 🔌 Inicialização do Sistema OmniMind
 
-**Última Atualização**: 5 de Dezembro de 2025
+**Última Atualização**: 08 de Dezembro de 2025
 **Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
 
 ---
@@ -304,61 +304,61 @@ WantedBy=multi-user.target
 
 Em desenvolvimento, usamos os seguintes scripts de teste que espelham workflows de produção:
 
-### `scripts/run_tests_fast.sh` ⚡ (RECOMENDADO PARA DEV DIÁRIO)
+### Scripts de Teste Ativos
 
-Execução rápida de testes sem testes lentos ou integrações reais.
+**Referência Completa**: `docs/canonical/ANALISE_CONSOLIDACAO_SCRIPTS_E_MARKERS.md`
+
+#### `scripts/run_tests_fast.sh` ⚡ (RECOMENDADO PARA DEV DIÁRIO)
 
 **Características**:
-- ⚡ ~15-20 minutos de execução
-- 🚀 GPU FORÇADA (device_count fallback se is_available() falhar)
-- 🔍 Pula testes caros (marcados `slow` ou `real`)
-- 📊 Perfeito para iteração rápida em desenvolvimento
+- ⏱️ **Tempo**: ~10-15 minutos
+- 📊 **Escopo**: ~3996 testes (suite rápida)
+- 🚀 **GPU**: ✅ FORÇADA (CUDA_VISIBLE_DEVICES=0)
+- 🔍 **Exclui**: Testes marcados com `@pytest.mark.slow` e `@pytest.mark.chaos`
+- ✅ **Inclui**: Testes marcados com `@pytest.mark.real` (sem chaos)
+- 📝 **Logs**: `data/test_reports/output_fast_*.log`
+- 🎯 **Uso**: Validação diária rápida, desenvolvimento iterativo
 
-**Comandos**:
+**Comando**:
 ```bash
-CUDA_VISIBLE_DEVICES=0 \
-OMNIMIND_GPU=true \
-OMNIMIND_FORCE_GPU=true \
-OMNIMIND_DEV=true \
-OMNIMIND_DEBUG=true \
-pytest tests/ \
-  -vv --tb=short \
-  -m "not slow and not real" \
-  ...
+./scripts/run_tests_fast.sh
 ```
 
-### `scripts/run_tests_with_defense.sh` 🛡️ (VALIDAÇÃO SEMANAL)
-
-Suite completa de testes com camada de Autodefesa ativa.
+#### `scripts/run_tests_with_defense.sh` 🛡️ (VALIDAÇÃO SEMANAL)
 
 **Características**:
-- 📊 Suite completa (~3996 testes)
-- 🛡️ Autodefesa: Detecta testes causando crashes (3+ crashes em 5min = label "dangerous")
-- 🚀 GPU FORÇADA
-- ⏱️ 30-60+ minutos (varia baseado em crashes detectados)
-- 📈 Gera relatório de perigo e métricas
+- ⏱️ **Tempo**: 45-90 minutos (varia com crashes detectados)
+- 📊 **Escopo**: ~4004 testes (suite completa + chaos engineering)
+- 🚀 **GPU**: ✅ FORÇADA
+- 🛡️ **Autodefesa**: ✅ Detecta testes perigosos (3+ crashes em 5min = label "dangerous")
+- ⚠️ **ATENÇÃO**: Inclui testes de chaos engineering que **destroem servidor intencionalmente**
+- 📈 **Gera**: Relatório de perigo e métricas em `data/test_reports/`
+- 📝 **Logs**: `data/test_reports/output_*.log`
+- 🎯 **Uso**: Validação semanal completa, certificação de resiliência
 
-### `scripts/quick_test.sh` 🧪 (INTEGRAÇÃO COMPLETA - AVANÇADO)
+**Comando**:
+```bash
+./scripts/run_tests_with_defense.sh
+```
 
-Inicia servidor backend + executa suite completa com autodefesa.
+#### `scripts/quick_test.sh` 🧪 (INTEGRAÇÃO COMPLETA - AVANÇADO)
 
 **Pré-requisito (UMA VEZ)**:
 ```bash
 bash scripts/configure_sudo_omnimind.sh  # Setup NOPASSWD sudo
 ```
 
-**Então execute**:
+**Características**:
+- 🖥️ Inicia servidor backend em localhost:8000
+- 📊 **4004 testes** (completa com chaos)
+- 🚀 GPU FORÇADA
+- ⏱️ **30-45 minutos**
+- 💾 Exige sudo configurado
+
+**Comando**:
 ```bash
 bash scripts/quick_test.sh
 ```
-
-**Características**:
-- 🖥️ Inicia servidor backend em localhost:8000
-- 📊 Suite completa com autodefesa
-- 🚀 GPU FORÇADA
-- ⏱️ 30-45 minutos
-- 💾 Requer sudo (para inicialização do servidor)
-- 🔗 Testa contra servidor real (não isolado)
 
 ---
 

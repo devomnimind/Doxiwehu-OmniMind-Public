@@ -159,7 +159,8 @@ class QuarantineSystem:
                 },
                 timestamp=time.time(),
             )
-            await self.orchestrator.event_bus.publish(event, priority="critical")
+            # Event já contém priority no campo priority (EventPriority enum)
+            await self.orchestrator.event_bus.publish(event)
 
         # Log de auditoria
         if hasattr(self.orchestrator, "audit_system"):

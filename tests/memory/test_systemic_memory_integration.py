@@ -261,3 +261,103 @@ class TestSystemicMemoryIntegration:
         assert summary["topological_markers_count"] > 0
         assert summary["total_visits"] > 0
         assert summary["average_deformation_strength"] >= 0.0
+
+
+class TestSystemicMemoryIntegrationHybridTopological:
+    """Testes de integração entre SystemicMemoryTrace e HybridTopologicalEngine."""
+
+    def test_systemic_memory_with_workspace_topological_integration(self):
+        """Testa integração completa: SystemicMemoryTrace + SharedWorkspace + HybridTopologicalEngine."""  # noqa: E501
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar SystemicMemoryTrace
+        systemic_memory = SystemicMemoryTrace(state_space_dim=256, deformation_threshold=0.01)
+
+        # Criar SharedWorkspace com systemic_memory e engine topológico
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = SharedWorkspace(
+                embedding_dim=256,
+                max_history_size=1000,
+                workspace_dir=Path(tmpdir),
+                systemic_memory=systemic_memory,
+            )
+            workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+            # Adicionar traços ao memory trace
+            np.random.seed(42)
+            for i in range(5):
+                past_state = np.random.randn(256)
+                current_state = past_state + np.random.randn(256) * 0.1
+                systemic_memory.add_trace_not_memory(past_state, current_state)
+
+            # Simular múltiplos ciclos no workspace
+            for i in range(5):
+                rho_C = np.random.randn(256)
+                rho_P = np.random.randn(256)
+                rho_U = np.random.randn(256)
+
+                workspace.write_module_state("conscious_module", rho_C)
+                workspace.write_module_state("preconscious_module", rho_P)
+                workspace.write_module_state("unconscious_module", rho_U)
+                workspace.advance_cycle()
+
+            # Calcular métricas topológicas
+            topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+            # Verificar que todas as estruturas funcionam juntas
+            assert len(systemic_memory.topological_markers) > 0, "Memory trace deve ter marcas"
+            if topological_metrics is not None:
+                assert "omega" in topological_metrics, "Métricas topológicas devem estar presentes"
+                assert topological_metrics["omega"] >= 0.0
+
+    def test_systemic_memory_affects_phi_and_topological_metrics(self):
+        """Testa que SystemicMemoryTrace afeta Φ e métricas topológicas são complementares."""
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        systemic_memory = SystemicMemoryTrace(state_space_dim=256, deformation_threshold=0.01)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            workspace = SharedWorkspace(
+                embedding_dim=256,
+                workspace_dir=Path(tmpdir),
+                systemic_memory=systemic_memory,
+            )
+            workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+            # Adicionar múltiplos traços
+            np.random.seed(42)
+            for i in range(10):
+                past_state = np.random.randn(256)
+                current_state = past_state + np.random.randn(256) * 0.15
+                systemic_memory.add_trace_not_memory(past_state, current_state)
+
+            # Simular múltiplos ciclos
+            for i in range(10):
+                rho_C = np.random.randn(256)
+                rho_P = np.random.randn(256)
+                rho_U = np.random.randn(256)
+
+                workspace.write_module_state("conscious_module", rho_C)
+                workspace.write_module_state("preconscious_module", rho_P)
+                workspace.write_module_state("unconscious_module", rho_U)
+                workspace.advance_cycle()
+
+            # Calcular Φ padrão
+            standard_phi = workspace.compute_phi_from_integrations()
+
+            # Verificar que memory trace afeta Φ
+            result = systemic_memory.affect_phi_calculation(standard_phi, lambda x: 0.0)
+            assert "phi_with_memory" in result
+
+            # Calcular métricas topológicas
+            topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+            # Verificar que ambas as métricas estão disponíveis e complementares
+            assert result["phi_with_memory"] >= 0.0
+            if topological_metrics is not None:
+                assert topological_metrics["omega"] >= 0.0
+                # Memory trace: deformações topológicas no espaço de estados
+                # Topological metrics: estrutura do grafo semântico
+                # Ambas são complementares e não redundantes

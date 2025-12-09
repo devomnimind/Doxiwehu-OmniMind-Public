@@ -9,7 +9,20 @@ echo -e "${GREEN}🚀 Iniciando Sistema OmniMind Completo...${NC}"
 
 # 🔧 CRÍTICO: Ativar venv ANTES de qualquer import Python
 # PROJECT_ROOT deve apontar para a raiz do projeto (1 nível acima de scripts/)
-PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# Se OMNIMIND_PROJECT_ROOT estiver definido (chamado via wrapper), usar ele
+# Caso contrário, calcular a partir de $0
+if [ -n "${OMNIMIND_PROJECT_ROOT:-}" ]; then
+    PROJECT_ROOT="$OMNIMIND_PROJECT_ROOT"
+else
+    # Calcular a partir de $0 (compatibilidade com execução direta)
+    # Se $0 está em canonical/system/, precisa subir 3 níveis
+    SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+    if [[ "$SCRIPT_DIR" == */canonical/system ]]; then
+        PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+    else
+        PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+    fi
+fi
 if [ -f "$PROJECT_ROOT/.venv/bin/activate" ]; then
     source "$PROJECT_ROOT/.venv/bin/activate"
     echo "✅ Venv ativado: $VIRTUAL_ENV"

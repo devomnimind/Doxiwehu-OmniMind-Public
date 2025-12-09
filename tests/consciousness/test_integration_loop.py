@@ -171,13 +171,15 @@ class TestIntegrationLoopInitialization:
 
         assert loop.workspace is not None
         assert loop.enable_logging is True
-        assert len(loop.loop_sequence) == 5
+        # ATUALIZADO: IntegrationLoop agora inclui 'imagination' (6 módulos)
+        assert len(loop.loop_sequence) == 6
         assert loop.loop_sequence == [
             "sensory_input",
             "qualia",
             "narrative",
             "meaning_maker",
             "expectation",
+            "imagination",  # NOVO: Imaginário Lacaniano (Protocolo Livewire)
         ]
         assert loop.cycle_count == 0
         assert len(loop.cycle_history) == 0
@@ -227,7 +229,15 @@ class TestIntegrationLoopExecution:
         loop = IntegrationLoop()
         result = await loop.execute_cycle(collect_metrics=False)
 
-        expected_modules = ["sensory_input", "qualia", "narrative", "meaning_maker", "expectation"]
+        # ATUALIZADO: IntegrationLoop agora inclui 'imagination' (6 módulos)
+        expected_modules = [
+            "sensory_input",
+            "qualia",
+            "narrative",
+            "meaning_maker",
+            "expectation",
+            "imagination",  # NOVO: Imaginário Lacaniano (Protocolo Livewire)
+        ]
         assert result.modules_executed == expected_modules
 
     @pytest.mark.asyncio
@@ -391,6 +401,82 @@ class TestIntegrationLoopIntegration:
 
         assert len(phi_values) > 0
         assert any(p >= 0.0 for p in phi_values)
+
+
+class TestIntegrationLoopHybridTopological:
+    """Testes de integração entre IntegrationLoop e HybridTopologicalEngine."""
+
+    @pytest.mark.asyncio
+    async def test_loop_workspace_has_hybrid_topological_engine(self):
+        """Testa que workspace do loop pode ter HybridTopologicalEngine."""
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar loop com workspace customizado
+        loop = IntegrationLoop(workspace=workspace)
+
+        # Verificar que workspace tem engine
+        assert loop.workspace is not None
+        assert loop.workspace.hybrid_topological_engine is not None
+
+    @pytest.mark.asyncio
+    async def test_loop_cycle_computes_topological_metrics(self):
+        """Testa que ciclo do loop pode computar métricas topológicas."""
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar loop
+        loop = IntegrationLoop(workspace=workspace)
+
+        # Executar múltiplos ciclos para gerar dados
+        for _ in range(3):
+            await loop.execute_cycle(collect_metrics=False)
+
+        # Computar métricas topológicas após ciclos
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que métricas foram calculadas
+        assert (
+            topological_metrics is not None
+        ), "Métricas topológicas devem ser calculadas após ciclos"
+        assert "omega" in topological_metrics, "Omega deve estar presente"
+        assert "sigma" in topological_metrics, "Sigma deve estar presente"
+        assert 0.0 <= topological_metrics["omega"] <= 1.0, "Omega deve estar em [0, 1]"
+
+    @pytest.mark.asyncio
+    async def test_loop_workspace_topological_metrics_integration(self):
+        """Testa integração completa: loop + métricas topológicas."""
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        loop = IntegrationLoop(workspace=workspace)
+
+        # Executar ciclos
+        results = await loop.run_cycles(5, collect_metrics_every=1)
+
+        # Verificar que todos os ciclos foram executados
+        assert len(results) == 5
+
+        # Computar métricas topológicas após todos os ciclos
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar métricas
+        assert topological_metrics is not None
+        assert topological_metrics["omega"] >= 0.0
+        assert topological_metrics["betti_0"] >= 0
+
+        # Verificar que Φ foi calculado nos ciclos
+        phi_values = loop.get_phi_progression()
+        assert len(phi_values) > 0
+        assert all(p >= 0.0 for p in phi_values)
 
 
 if __name__ == "__main__":

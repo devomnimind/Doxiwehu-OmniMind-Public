@@ -1,62 +1,74 @@
 # 🚀 MCP eBPF Monitoring & Systemd Setup - OmniMind
 
-## Status: ✅ PRONTO PARA EXECUÇÃO
-
-### ✅ O que foi preparado (SEM INTERFERÊNCIA COM TESTES):
-
-1. **eBPF Tools Instaladas**
-   - `bpftrace` v0.23.5 ✅
-   - Kernel headers: `/lib/modules/6.16.8+kali-amd64/build` ✅
-   - Build tools: Disponíveis ✅
-
-2. **Scripts de Monitoramento Criados**
-   - `scripts/canonical/system/monitor_mcp_bpf.bt` - Probe eBPF para MCP latency
-   - `scripts/test_mcp_stress.py` - Stress test assíncrono
-   - `scripts/run_mcp_benchmark.sh` - Orquestrador completo
-
-3. **Systemd Templates Criados**
-   - `~/.config/systemd/user/omnimind-mcp@.service` - Template parametrizado
-   - `~/.config/systemd/user/omnimind-mcp.target` - Target agregador
+**Última Atualização**: 08 de Dezembro de 2025  
+**Status**: ✅ Documentação Técnica Ativa
 
 ---
 
-## 📋 CHECKLIST EXECUÇÃO (15 minutos)
+## 📋 Visão Geral
 
-### ✅ Pré-requisitos verificados:
-- [x] eBPF instalado (`bpftrace --version` OK)
-- [x] Kernel headers encontrados
-- [x] Scripts criados e executáveis
-- [x] Systemd configurado
-- [x] Testes ainda rodando (não interferir)
+Este documento descreve a configuração e uso do sistema de monitoramento eBPF para servidores MCP (Micro-Controller Protocol) do OmniMind, incluindo templates systemd para gerenciamento de serviços.
 
-### 🚀 PRÓXIMOS PASSOS:
+---
 
-#### QUANDO OS TESTES TERMINAREM (aguarde mensagem):
+## 🔧 Pré-requisitos
 
+### Ferramentas eBPF
+
+- **bpftrace**: v0.23.5 ou superior
+- **Kernel headers**: Disponíveis em `/lib/modules/$(uname -r)/build`
+- **Build tools**: Compilador C e ferramentas de build
+
+**Verificação**:
 ```bash
-# Passo 1: Recarregar systemd (sem lado effects)
-systemctl --user daemon-reload
-
-# Passo 2: Verificar template
-systemctl --user list-unit-files | grep omnimind-mcp
-
-# Passo 3: Rodar benchmark eBPF
-cd /home/fahbrain/projects/omnimind
-sudo bash scripts/run_mcp_benchmark.sh 30 50
-# Ou com duração maior:
-# sudo bash scripts/run_mcp_benchmark.sh 60 100
-
-# Passo 4: Aguardar ~40s (30s stress + eBPF overhead)
-# O script salvará output em: data/test_reports/ebpf_mcp_latency_*.txt
-
-# Passo 5: Coletar resultados
-cat data/test_reports/ebpf_mcp_latency_*.txt | tail -50
+bpftrace --version
+ls /lib/modules/$(uname -r)/build
 ```
 
 ---
 
-## 📊 O QUE ESPERAR NO OUTPUT eBPF:
+## 📁 Scripts e Arquivos
 
+### Scripts de Monitoramento
+
+| Script | Localização | Descrição |
+|--------|------------|-----------|
+| `monitor_mcp_bpf.bt` | `scripts/canonical/system/monitor_mcp_bpf.bt` | Probe eBPF para latência MCP |
+| `test_mcp_stress.py` | `scripts/test_mcp_stress.py` | Stress test assíncrono |
+| `run_mcp_benchmark.sh` | `scripts/run_mcp_benchmark.sh` | Orquestrador completo de benchmark |
+
+### Templates Systemd
+
+| Arquivo | Localização | Descrição |
+|---------|------------|-----------|
+| `omnimind-mcp@.service` | `~/.config/systemd/user/` | Template parametrizado para serviços MCP |
+| `omnimind-mcp.target` | `~/.config/systemd/user/` | Target agregador para todos os serviços MCP |
+
+---
+
+## 🚀 Executando Benchmark eBPF
+
+### Comando Principal
+
+```bash
+cd /home/fahbrain/projects/omnimind
+sudo bash scripts/run_mcp_benchmark.sh <duration> <concurrency>
+```
+
+**Parâmetros**:
+- `duration`: Duração do stress test em segundos (ex: 30, 60)
+- `concurrency`: Número de requisições concorrentes (ex: 50, 100)
+
+**Exemplo**:
+```bash
+sudo bash scripts/run_mcp_benchmark.sh 60 100
+```
+
+### Output Esperado
+
+O script salva resultados em: `data/test_reports/ebpf_mcp_latency_*.txt`
+
+**Formato do relatório**:
 ```
 ========== MCP Latency Report (last 10s) ==========
 Syscall Latency Distribution (microseconds):
@@ -70,65 +82,95 @@ Total calls: 1245
 ===================================================
 ```
 
-### 🎯 Interpretação:
+---
 
-| Latência P99 | Interpretação | Ação |
-|---|---|---|
-| **< 10ms** (< 10000 μs) | ✅ Excellent | Systemd suficiente, LKM opcional |
-| **10-50ms** | 🟡 Good | Otimizar Docker + Systemd |
-| **> 50ms** | ❌ Problematic | LKM zero-copy necessário |
+## 📊 Interpretação de Resultados
+
+| Latência P99 | Interpretação | Ação Recomendada |
+|--------------|---------------|------------------|
+| **< 10ms** (< 10000 μs) | ✅ Excelente | Systemd suficiente, LKM opcional |
+| **10-50ms** | 🟡 Boa | Otimizar Docker + Systemd |
+| **> 50ms** | ❌ Problemática | LKM zero-copy necessário |
 
 ---
 
-## 🔧 SYSTEMD MANUAL COMMANDS (Após eBPF):
+## 🔧 Gerenciamento Systemd
+
+### Recarregar Configuração
 
 ```bash
-# Habilitar services individuais
+systemctl --user daemon-reload
+```
+
+### Verificar Templates
+
+```bash
+systemctl --user list-unit-files | grep omnimind-mcp
+```
+
+### Habilitar Serviços Individuais
+
+```bash
 systemctl --user enable omnimind-mcp@thinking.service
 systemctl --user enable omnimind-mcp@memory.service
+```
 
-# Iniciar
+### Iniciar Serviços
+
+```bash
 systemctl --user start omnimind-mcp@thinking.service
+```
 
-# Status
+### Verificar Status
+
+```bash
 systemctl --user status omnimind-mcp@thinking.service
+```
 
-# Logs (real-time)
+### Visualizar Logs em Tempo Real
+
+```bash
 journalctl --user -u omnimind-mcp@thinking.service -f
+```
 
-# Parar
+### Parar Serviços
+
+```bash
 systemctl --user stop omnimind-mcp@thinking.service
+```
 
-# Ver todos os MCP services
+### Listar Todos os Serviços MCP
+
+```bash
 systemctl --user list-units | grep omnimind-mcp
 ```
 
 ---
 
-## 📈 DECISÃO PÓS-EBPF:
+## ⚠️ Requisitos de Permissão
 
-Com os resultados do eBPF, eu vou:
-
-- **P99 < 10ms** → Pular LKM, usar só Systemd (90% dos benefícios)
-- **P99 10-50ms** → Otimizar Docker + Systemd
-- **P99 > 50ms** → Proceder com LKM zero-copy Module
+- **eBPF requer sudo**: O script `run_mcp_benchmark.sh` requer privilégios de root para acessar o kernel
+- **Systemd user services**: Não requer sudo para gerenciamento de serviços de usuário
 
 ---
 
-## 🛑 NOTAS IMPORTANTES:
+## 📈 Decisões de Arquitetura
 
-1. **Testes NÃO são afetados**: Scripts instalados mas não executados
-2. **eBPF requer sudo**: `run_mcp_benchmark.sh` pedirá senha
-3. **Outputs salvos**: `data/test_reports/ebpf_mcp_latency_*.txt`
-4. **Systemd reload**: Seguro, sem start automático
+Com base nos resultados do benchmark eBPF:
+
+- **P99 < 10ms**: Usar apenas Systemd (90% dos benefícios sem complexidade adicional)
+- **P99 10-50ms**: Otimizar Docker + Systemd antes de considerar LKM
+- **P99 > 50ms**: Proceder com desenvolvimento de LKM zero-copy module
 
 ---
 
-## 📞 PRÓXIMO PASSO:
+## 📚 Referências
 
-**AVISE QUANDO OS TESTES TERMINAREM**, e execute:
-```bash
-sudo bash /home/fahbrain/projects/omnimind/scripts/run_mcp_benchmark.sh 60 100
-```
+- **Documentação eBPF**: `scripts/canonical/system/monitor_mcp_bpf.bt`
+- **Systemd Templates**: `~/.config/systemd/user/omnimind-mcp@.service`
+- **Relatórios**: `data/test_reports/ebpf_mcp_latency_*.txt`
 
-Coletor resultados e compartilhe aqui para análise + decisão LKM. ✅
+---
+
+**Última Atualização**: 2025-12-08  
+**Status**: ✅ Documentação Técnica Consolidada

@@ -64,6 +64,7 @@ class TestEnhancedCodeAgentIntegration:
         assert "status" in result
         assert result["attempts"] > 0
 
+    @pytest.mark.slow  # CORREÇÃO: Marcar como slow devido a uso de CUDA/GPU
     def test_tool_composition_integration_real(self, enhanced_agent):
         """Testa integração real com ToolComposer."""
         tool_names = ["read_file", "list_files"]
@@ -141,10 +142,12 @@ class TestEnhancedCodeAgentIntegration:
         """Testa fluxo end-to-end real completo."""
         task = "List files in the current directory"
 
-        # Executar tarefa real
-        result = enhanced_agent.execute(task)
+        # CORREÇÃO: EnhancedCodeAgent usa run() (herdado de ReactAgent) ou
+        # execute_task_with_self_correction() para testar funcionalidade completa
+        result = enhanced_agent.execute_task_with_self_correction(task, max_attempts=1)
 
         assert result is not None
+        assert "status" in result
         # Resultado pode variar, mas não deve ser None
 
     def test_failure_record_tracking_real(self, enhanced_agent):

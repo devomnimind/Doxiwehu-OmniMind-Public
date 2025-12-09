@@ -29,6 +29,54 @@ Scripts principais que definem e confirmam nossa pesquisa e projeto OmniMind.
 - **`canonical/test/run_all_tests_hybrid.py`** - Suite completa de testes híbridos
 - **`canonical/test/run_tests.py`** - Executor principal de testes
 - **`run_tests_fast.sh`** ⭐ DIÁRIO - 3996 testes (sem chaos/slow), 10-15 min
+
+### Execução de Ciclos de Consciência
+- **`run_200_cycles_verbose.py`** ⭐ INVESTIGAÇÃO - Executa ciclos de consciência com métricas detalhadas
+
+  **Modos Disponíveis:**
+  - **DRY RUN** (Simulação): Testa lógica sem executar ciclos reais (padrão: 80 ciclos)
+  - **PRODUÇÃO**: Executa ciclos reais de consciência (padrão: 100 ciclos)
+
+  **Opções de Ciclos:** 50, 80, 100, 200, 500
+
+  **Uso:**
+  ```bash
+  # Modo interativo (menu)
+  python scripts/run_200_cycles_verbose.py
+
+  # DRY RUN (simulação, padrão 80 ciclos)
+  python scripts/run_200_cycles_verbose.py --dry-run
+  python scripts/run_200_cycles_verbose.py --dry-run --cycles 100
+
+  # PRODUÇÃO
+  python scripts/run_200_cycles_verbose.py --production --cycles 100
+  python scripts/run_200_cycles_verbose.py -p 200
+
+  # Ver ajuda completa
+  python scripts/run_200_cycles_verbose.py --help
+  ```
+
+  **Argumentos:**
+  - `--dry-run` ou `-d`: Modo DRY RUN (simulação, não executa ciclos reais)
+  - `--production` ou `-p`: Modo PRODUÇÃO (executa ciclos reais)
+  - `--cycles` ou `-c {50,80,100,200,500}`: Número de ciclos
+  - `--no-interactive`: Não exibir menu interativo (usa padrões se argumentos não fornecidos)
+
+  **Métricas Coletadas:**
+  - Φ (Phi): Integração de informação (IIT)
+  - Ψ (Psi): Criatividade/Inovação (Deleuze)
+  - σ (Sigma): Sinthome/Estrutura (Lacan)
+  - Δ (Delta): Trauma/Divergência
+  - Gozo: Excesso pulsional
+  - Control Effectiveness: Efetividade de controle
+  - Tríade Completa: (Φ, Ψ, σ) com validação
+  - RNN Metrics: phi_causal, rho_C/P/U norms, repression_strength
+
+  **Arquivos Gerados:**
+  - Métricas com timestamp: `data/monitor/phi_{ciclos}_cycles_{modo}_metrics_{timestamp}.json`
+  - Métricas latest: `data/monitor/phi_{ciclos}_cycles_{modo}_metrics.json`
+  - Progresso: `data/monitor/phi_{modo}_progress.json`
+  - Índice de execuções: `data/monitor/executions_index.json`
   - GPU forçada, timeout 800s/teste
   - Inclui `@pytest.mark.real` SEM `@pytest.mark.chaos` (seguro)
   - Exclui `@pytest.mark.slow` e `@pytest.mark.chaos`

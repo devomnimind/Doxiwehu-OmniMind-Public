@@ -28,8 +28,8 @@ SUDOERS_FILE="/etc/sudoers.d/omnimind-automation"
 
 # Conteúdo que será adicionado
 SUDOERS_CONTENT="# OmniMind Automation - Permite rodar scripts sem pedir senha
-$CURRENT_USER ALL=(ALL) NOPASSWD: $SCRIPTS_DIR/start_omnimind_system.sh
 $CURRENT_USER ALL=(ALL) NOPASSWD: $SCRIPTS_DIR/start_omnimind_system_sudo.sh
+$CURRENT_USER ALL=(ALL) NOPASSWD: $SCRIPTS_DIR/canonical/system/start_omnimind_system.sh
 $CURRENT_USER ALL=(ALL) NOPASSWD: $SCRIPTS_DIR/canonical/system/run_cluster.sh
 $CURRENT_USER ALL=(ALL) NOPASSWD: /usr/bin/bpftrace
 $CURRENT_USER ALL=(ALL) NOPASSWD: /usr/bin/pkill

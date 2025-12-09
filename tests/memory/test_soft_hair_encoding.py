@@ -328,3 +328,48 @@ class TestIntegration:
         # Both should have reasonable fidelity
         assert fidelity_to_clean >= 0
         assert fidelity_to_noisy >= 0
+
+
+class TestSoftHairEncodingHybridTopological:
+    """Testes de integração entre SoftHairEncoding e HybridTopologicalEngine."""
+
+    def test_soft_hair_encoding_with_topological_metrics(self):
+        """Testa que SoftHairEncoding pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar SoftHairEncoder
+        encoder = SoftHairEncoder()
+
+        # Codificar dados
+        data_arr = np.random.randn(100)
+        data = data_arr.tolist()
+        soft_hair = encoder.encode_to_soft_hair(data)
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert isinstance(soft_hair, SoftHair)
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # SoftHairEncoding: compressão de memória (modos suaves)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

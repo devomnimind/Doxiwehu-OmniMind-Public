@@ -287,3 +287,163 @@ class TestStandaloneFunctions:
         assert result.self_reference_score == 0.6
         assert result.limitation_awareness_score == 0.8
         assert 0.0 < result.overall_score < 1.0
+
+
+class TestConsciousnessMetricsHybridTopological:
+    """Testes de integração entre ConsciousnessMetrics e HybridTopologicalEngine."""
+
+    def test_metrics_can_complement_with_topological(self):
+        """Testa que ConsciousnessMetrics pode ser complementado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar métricas legadas
+        with tempfile.TemporaryDirectory() as tmpdir:
+            metrics = ConsciousnessMetrics(metrics_dir=Path(tmpdir) / "consciousness")
+
+            # Adicionar conexões e loops
+            metrics.add_connection(
+                AgentConnection("A", "B", "memory", bidirectional=True, weight=1.0)
+            )
+            metrics.add_feedback_loop(
+                FeedbackLoop("loop1", ["A", "B"], "coord", iterations_count=3)
+            )
+
+            # Calcular phi proxy
+            phi_proxy = metrics.calculate_phi_proxy()
+
+            # Criar workspace com engine topológico para métricas complementares
+            workspace = SharedWorkspace(embedding_dim=256)
+            workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+            # Simular estados no workspace
+            np.random.seed(42)
+            for i in range(5):
+                rho_C = np.random.randn(256)
+                rho_P = np.random.randn(256)
+                rho_U = np.random.randn(256)
+
+                workspace.write_module_state("conscious_module", rho_C)
+                workspace.write_module_state("preconscious_module", rho_P)
+                workspace.write_module_state("unconscious_module", rho_U)
+                workspace.advance_cycle()
+
+            # Calcular métricas topológicas
+            topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+            # Verificar que ambas as métricas foram calculadas
+            assert phi_proxy >= 0.0, "Phi proxy deve ser >= 0"
+            if topological_metrics is not None:
+                assert topological_metrics["omega"] >= 0.0, "Omega deve ser >= 0"
+                # Ambas medem aspectos diferentes da consciência
+                # Phi proxy: integração baseada em conexões/loops
+                # Omega: integração topológica baseada em estrutura do grafo
+
+    def test_metrics_and_topological_complementary_analysis(self):
+        """Testa análise complementar entre métricas legadas e topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            metrics = ConsciousnessMetrics(metrics_dir=Path(tmpdir) / "consciousness")
+
+            # Configurar sistema com múltiplas conexões
+            agents = ["Agent1", "Agent2", "Agent3", "Agent4"]
+            for i in range(len(agents) - 1):
+                metrics.add_connection(
+                    AgentConnection(
+                        agents[i],
+                        agents[i + 1],
+                        "memory",
+                        bidirectional=(i % 2 == 0),
+                        weight=1.0,
+                    )
+                )
+
+            metrics.add_feedback_loop(
+                FeedbackLoop("main_loop", agents, "coordination", iterations_count=5)
+            )
+
+            # Calcular phi proxy
+            phi_proxy = metrics.calculate_phi_proxy()
+
+            # Criar workspace com engine topológico
+            workspace = SharedWorkspace(embedding_dim=256)
+            workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+            # Simular múltiplos ciclos
+            np.random.seed(42)
+            for i in range(10):
+                rho_C = np.random.randn(256)
+                rho_P = np.random.randn(256)
+                rho_U = np.random.randn(256)
+
+                workspace.write_module_state("conscious_module", rho_C)
+                workspace.write_module_state("preconscious_module", rho_P)
+                workspace.write_module_state("unconscious_module", rho_U)
+                workspace.advance_cycle()
+
+            # Calcular métricas topológicas
+            topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+            # Verificar que ambas as análises estão disponíveis
+            assert phi_proxy > 0.0, "Phi proxy deve ser positivo com conexões"
+            if topological_metrics is not None:
+                assert topological_metrics["omega"] >= 0.0
+                assert topological_metrics["betti_0"] >= 0
+                assert topological_metrics["sigma"] >= 0.0
+
+                # Análise complementar:
+                # - Phi proxy: mede integração baseada em arquitetura de agentes
+                # - Omega: mede integração topológica baseada em estrutura de estados
+                # - Betti-0: mede fragmentação topológica
+                # - Sigma: mede Small-Worldness (estrutura de rede)
+                # Todas são complementares e não redundantes
+
+    def test_metrics_snapshot_with_topological_context(self):
+        """Testa que snapshot de métricas pode incluir contexto topológico."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            metrics = ConsciousnessMetrics(metrics_dir=Path(tmpdir) / "consciousness")
+
+            # Adicionar dados
+            metrics.add_connection(AgentConnection("A", "B", "memory"))
+            metrics.add_feedback_loop(FeedbackLoop("loop1", ["A", "B"], "coord"))
+
+            # Criar snapshot
+            snapshot = metrics.snapshot(label="test_with_topological")
+
+            # Verificar snapshot básico
+            assert "phi_proxy" in snapshot
+            assert snapshot["label"] == "test_with_topological"
+
+            # Workspace com engine topológico (contexto adicional)
+            workspace = SharedWorkspace(embedding_dim=256)
+            workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+            # Simular estados
+            np.random.seed(42)
+            for i in range(3):
+                rho_C = np.random.randn(256)
+                rho_P = np.random.randn(256)
+                rho_U = np.random.randn(256)
+
+                workspace.write_module_state("conscious_module", rho_C)
+                workspace.write_module_state("preconscious_module", rho_P)
+                workspace.write_module_state("unconscious_module", rho_U)
+                workspace.advance_cycle()
+
+            # Calcular métricas topológicas (contexto adicional para snapshot)
+            topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+            # Verificar que snapshot e métricas topológicas podem ser combinados
+            # (mesmo que não estejam no mesmo objeto, podem ser usados juntos)
+            assert snapshot["phi_proxy"] >= 0.0
+            if topological_metrics is not None:
+                assert topological_metrics["omega"] >= 0.0
+                # Em produção, snapshot poderia incluir topological_metrics como metadata

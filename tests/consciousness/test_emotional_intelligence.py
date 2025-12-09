@@ -250,3 +250,46 @@ class TestEmotionalIntelligence:
         assert "emotion_distribution" in stats
         assert "average_confidence" in stats
         assert "timestamp" in stats
+
+
+class TestEmotionalIntelligenceHybridTopological:
+    """Testes de integração entre EmotionalIntelligence e HybridTopologicalEngine."""
+
+    def test_emotional_intelligence_with_topological_metrics(self):
+        """Testa que EmotionalIntelligence pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar EmotionalIntelligence
+        ei = EmotionalIntelligence()
+
+        # Analisar sentimento
+        state = ei.analyze_sentiment("I am so happy and excited about this great success!")
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert state.sentiment in [Sentiment.POSITIVE, Sentiment.NEUTRAL]
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # EmotionalIntelligence: análise emocional
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

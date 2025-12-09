@@ -27,6 +27,7 @@ import { MetricsTimeline } from './MetricsTimeline';
 import { BaselineComparison } from './BaselineComparison';
 import { ActionButtons } from './ActionButtons';
 import { ConversationAssistant } from './ConversationAssistant';
+import { DecisionsDashboard } from './DecisionsDashboard';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
@@ -217,6 +218,9 @@ export function Dashboard() {
             </div>
             <div className="animate-slide-up" style={{ animationDelay: '0.75s' }}>
               <TaskList />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.8s' }}>
+              <DecisionsDashboard />
             </div>
           </div>
 

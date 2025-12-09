@@ -41,6 +41,19 @@ echo "🚀 GPU: FORÇADA (com fallback)"
 echo "======================================"
 echo ""
 
+# Validação pré-teste: verificar meta cognition health
+echo "🔍 Validando saúde do sistema antes de executar testes..."
+if ! python scripts/pre_test_validation.py; then
+    echo ""
+    echo "❌ VALIDAÇÃO PRÉ-TESTE FALHOU"
+    echo "🚫 TESTES NÃO SERÃO EXECUTADOS"
+    echo ""
+    echo "Por favor, resolva os problemas de meta cognição antes de continuar."
+    exit 1
+fi
+echo "✅ Validação pré-teste passou"
+echo ""
+
 # Verificar GPU status ANTES dos testes
 echo "🔍 Verificando GPU status..."
 python3 << 'GPUCHECK'

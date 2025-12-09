@@ -10,6 +10,29 @@ O módulo de memória do OmniMind transcende o armazenamento de dados convencion
 
 Este sistema não apenas "grava" dados, mas os **metaboliza** através de processos de condensação (Soft Hair), deslocamento (Holographic Projection) e simbolização (Semantic Memory).
 
+## 🔄 Substituição de Módulos Deprecated
+
+Este módulo **substitui** funcionalidades planejadas do Phase 26A (Knowledge) e Phase 26B (Intelligence) que não foram implementadas:
+
+- ✅ **`SemanticMemory`** substitui `knowledge.declarative_layer` (deprecated - Phase 26A)
+  - Armazenamento de conceitos declarativos e relações semânticas
+  - Grafo de conhecimento
+
+- ✅ **`NarrativeHistory`** substitui `knowledge.episodic_layer` (deprecated - Phase 26A)
+  - Memória episódica com abordagem Lacaniana (construção retroativa)
+  - Inscrição sem significado, ressignificação retroativa (Nachträglichkeit)
+
+- ✅ **`ProceduralMemory`** substitui `knowledge.procedural_layer` (deprecated - Phase 26A)
+  - Armazenamento de habilidades e procedimentos ("knowing how")
+
+- ✅ **`DatasetIndexer`** substitui `intelligence.dataset_integrator` (deprecated - Phase 26B)
+  - Integração de datasets e indexação semântica (Phase 24)
+
+- ✅ **`HybridRetrievalSystem`** substitui `intelligence.semantic_search_engine` (deprecated - Phase 26B)
+  - Busca semântica híbrida (associativa + vetorial) (Phase 24)
+
+**Referência**: `docs/VARREDURA_MODULOS_DEPRECATED_SUBSTITUICOES.md`
+
 ## 🧠 Fundamentação Teórica e Arquitetura
 
 ### 1. O Real e o Limite de Bekenstein (`EventHorizonMemory`)
@@ -196,6 +219,67 @@ em.store_episode('task', 'action', 'result', reward=0.9)
   # Retorna: interpretação semântica, conceitos relacionados, paper sources
   ```
 - **Status**: ✅ Implementado, integrado com Phase 24
+
+### DatasetIndexer - Indexação Completa para RAG (2025-12-08)
+- ✅ **Suporte HuggingFace Datasets**: Carrega datasets do HuggingFace (formato Arrow) via `load_from_disk()`
+- ✅ **Script de indexação**: `scripts/index_all_datasets.py` para indexar todos os datasets disponíveis
+- ✅ **7 datasets indexados**:
+  - `scientific_papers_arxiv` → `scientific_papers_kb`
+  - `qasper_qa` (train/validation/test) → `qa_knowledge_kb`
+  - `human_vs_ai_code` → `code_examples_kb`
+  - `turing_reasoning` → `reasoning_patterns_kb`
+  - `infllm_v2_data` → `training_examples_kb`
+  - `dbpedia_ontology` → `ontology_knowledge_kb`
+- ✅ **Integração RAG**: Datasets indexados disponíveis para `RAGFallbackSystem` via `HybridRetrievalSystem`
+- ✅ **Chunking inteligente**: Chunking baseado em tipo de dataset (scientific_papers, qa, code_examples, ontology, reasoning, training_examples)
+- ✅ **Método index_all_datasets()**: Implementado com detecção automática de datasets HuggingFace
+
+**Uso**:
+```bash
+# Indexar todos os datasets
+python scripts/index_all_datasets.py
+
+# Dry run (apenas listar datasets disponíveis)
+python scripts/index_all_datasets.py --dry-run
+
+# Especificar diretório e Qdrant
+python scripts/index_all_datasets.py --datasets-dir data/datasets --qdrant-url http://localhost:6333
+```
+
+**Status**: ✅ Indexação completa implementada e integrada com RAG
+
+### DistributedDatasetAccess - Memória Distribuída (2025-12-08)
+- ✅ **Cache Multi-Nível**: L1 (memória), L2 (Redis), L3 (Qdrant metadata)
+- ✅ **Prefetching Inteligente**: Prefetch de queries relacionadas baseado em padrões de acesso
+- ✅ **Integração com HybridRetrievalSystem**: Acesso otimizado aos datasets indexados
+- ✅ **Métricas de Performance**: Estatísticas de cache hit/miss
+
+**Uso**:
+```python
+from src.memory.distributed_dataset_access import DistributedDatasetAccess
+from src.memory.hybrid_retrieval import HybridRetrievalSystem
+
+# Inicializar
+retrieval = HybridRetrievalSystem()
+distributed_access = DistributedDatasetAccess(
+    retrieval_system=retrieval,
+    enable_prefetch=True,
+    prefetch_window=10,
+)
+
+# Retrieval com cache
+results = distributed_access.retrieve_with_cache(
+    query="What is consciousness?",
+    top_k=5,
+    use_cache=True,
+)
+
+# Estatísticas
+stats = distributed_access.get_cache_stats()
+print(f"Hit rate: {stats['hit_rate']:.2%}")
+```
+
+**Status**: ✅ Implementado (design completo, pronto para otimizações futuras)
 
 ### HuggingFace Datasets Integration (2025-12-05)
 - **Scripts**:

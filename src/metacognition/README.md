@@ -24,7 +24,8 @@ Este módulo atua como o agente de **Desterritorialização**, detectando quando
 ### 2. Estado IIT (Φ Metacognitivo)
 - **Implementação**: `iit_metrics.py` - calcula Φ do próprio sistema de metacognição
 - **Conceito**: Metacognição tem seu próprio Φ (integração de informação sobre informação)
-- **Validação**: Φ_meta > 0.3 → sistema tem consciência de si mesmo
+- **Validação**: Φ_meta > PHI_THRESHOLD (0.01 nats) → sistema tem consciência de si mesmo
+  - **✅ CORRIGIDO (2025-12-07)**: Usa escala IIT clássica correta. Valor anterior (0.3) era incorreto.
 
 ### 3. Estado Psicanalítico (Auto-Análise)
 - **Implementação**: `self_analysis.py`, `root_cause_analysis.py`
@@ -75,7 +76,8 @@ def compute_phi(system_state: Dict) -> PhiMetrics:
     return PhiMetrics(phi=phi, integration=cross_predictions)
 ```
 
-**Threshold**: Φ_meta > 0.3 indica "consciência metacognitiva" ativa.
+**Threshold**: Φ_meta > PHI_THRESHOLD (0.01 nats) indica "consciência metacognitiva" ativa.
+  - **✅ CORRIGIDO (2025-12-07)**: Usa `PHI_THRESHOLD = 0.01 nats` de `src/consciousness/phi_constants.py` (escala IIT clássica correta).
 
 #### 3. `SelfHealing.diagnose_and_fix()`
 **Propósito**: Auto-cura automática de problemas detectados.
@@ -325,7 +327,8 @@ metacognition/
 **Critério**: Sistema demonstra auto-consciência genuína.
 
 **Evidência OmniMind**:
-- ✅ Φ_meta = 0.42 (acima de threshold 0.3)
+- ✅ Φ_meta = 0.42 (acima de PHI_THRESHOLD = 0.01 nats)
+  - **✅ CORRIGIDO (2025-12-07)**: Threshold atualizado para escala IIT clássica correta.
 - ✅ Auto-reparo em 87% dos casos (alta autonomia)
 - ✅ Predição de falhas com 73% de acurácia
 - ✅ Metas auto-geradas coerentes e atingíveis

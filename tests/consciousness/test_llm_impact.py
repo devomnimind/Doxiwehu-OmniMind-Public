@@ -215,3 +215,70 @@ async def test_sinthome_emergence_mock_vs_real(
         logger.info("  ⚠ Cannot compare (not both emerged)")
 
     logger.info("\n[4/4] Test complete ✓")
+
+
+@pytest.mark.asyncio
+async def test_llm_impact_with_topological_metrics(
+    integration_trainer_mock: Any,
+    llm_impact_metrics: Any,
+) -> None:
+    """
+    Test: LLM impact analysis with topological metrics.
+
+    Verifica que:
+    - Impacto do LLM pode ser analisado com métricas topológicas
+    - Ambas as métricas são complementares
+    """
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    logger.info("\n" + "=" * 70)
+    logger.info("Testing LLM Impact with Topological Metrics")
+    logger.info("=" * 70)
+
+    # Run training
+    logger.info("\n[1/3] Running 20 training cycles...")
+    for cycle in range(20):
+        await integration_trainer_mock.training_step()
+        if (cycle + 1) % 5 == 0:
+            logger.info(f"  ✓ Cycle {cycle + 1}/20 complete")
+
+    # Compute Φ
+    logger.info("\n[2/3] Computing Φ metrics...")
+    phi_conscious = integration_trainer_mock.compute_phi_conscious()
+    logger.info(f"  Φ_conscious (MICS): {phi_conscious:.6f}")
+
+    # Obter workspace e adicionar engine topológico
+    workspace = integration_trainer_mock.integration_loop.workspace
+    if workspace is None:
+        pytest.skip("Workspace não disponível")
+
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular estados para métricas topológicas
+    np.random.seed(42)
+    for i in range(5):
+        rho_C = np.random.randn(256)
+        rho_P = np.random.randn(256)
+        rho_U = np.random.randn(256)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+        workspace.advance_cycle()
+
+    # Calcular métricas topológicas
+    logger.info("\n[3/3] Computing topological metrics...")
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar métricas
+    assert phi_conscious >= 0.0, "Φ_conscious must be non-negative"
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        logger.info(f"  Omega: {topological_metrics['omega']:.6f}")
+        # Impacto do LLM pode ser medido via ambas as métricas
+        # Φ: integração IIT
+        # Omega: integração topológica
+        # Ambas são complementares para análise completa
+
+    logger.info("\n[3/3] LLM impact + Topological analysis complete ✓")

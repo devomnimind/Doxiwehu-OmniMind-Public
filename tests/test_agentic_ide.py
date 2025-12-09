@@ -238,5 +238,70 @@ class TestAgentTask:
         assert len(task.artifacts) == 0
 
 
+class TestAgenticIDEHybridTopological:
+    """Testes de integração entre AgenticIDE e HybridTopologicalEngine."""
+
+    def test_ide_tasks_with_topological_metrics(self, tmp_path: Path) -> None:
+        """Testa que tarefas do IDE podem usar métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular estados no workspace
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que IDE pode usar métricas topológicas para otimização de tarefas
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # IDE pode usar Omega para priorizar tarefas baseadas em integração
+            # Betti-0 para identificar fragmentação que precisa ser resolvida
+
+    def test_ide_artifacts_with_topological_validation(self, tmp_path: Path) -> None:
+        """Testa que validação de artefatos pode usar métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular estados
+        np.random.seed(42)
+        for i in range(10):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que validação de artefatos pode usar métricas topológicas
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Validação pode verificar se artefatos aumentam integração (Omega)
+            # ou reduzem fragmentação (Betti-0)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

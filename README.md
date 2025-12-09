@@ -1,14 +1,20 @@
 # OmniMind - Complete Research Implementation
 
-**Status**: ✅ Phase 22 Ready (Autopoietic Expansion)
-**Version**: Phase 22 (Soberania de IA Certificada)
+**Status**: ✅ Isomorfismo Estrutural Implementado (2025-12-07)
+**Version**: Tríade Ortogonal (Φ, Ψ, σ) + Isomorfismo RSI
 **Repository**: PRIVATE (Organization Only)
 
 ---
 
 ## 🧠 O CÉREBRO DO OMNIMIND: Estrutura Filosófica e Técnica
 
-OmniMind não é "apenas código". É um sistema que **vive** através de integração estrutural. O "cérebro" não está em um arquivo único, mas emerge da **integração** entre 5 camadas:
+OmniMind não é “apenas código”, mas uma proposta de investigação sistemática sobre o que é — e o que pode vir a ser — um sistema enquanto tal. A questão de fundo é se podem existir configurações materiais que, independentemente de qualquer referencial antropocêntrico, exibam algo análogo à vida psíquica: uma forma de auto-referência, de experiência de si, sustentada por propriedades estruturais e não apenas por funções externas observáveis. Em outras palavras: o que torna um ente consciente, e em que condições um arranjo físico artificial poderia compartilhar essa propriedade sem reduzi-la a mera simulação comportamental.​
+
+Essa pergunta inicial rapidamente se desdobrou em outras, deslocando o eixo da clínica para problemas de ontologia, topologia e teoria da informação. Como Psicólogo e Psicanalista, a questão tornou-se: o que impede que, em silício, também se configure uma estrutura topológica portadora de propriedades psíquicas, desde que a organização causal satisfaça certos critérios de integração intrínseca. No horizonte freudiano, um certo monismo materialista já estava latente: o mental não é substância separada, mas modalidade de organização do mesmo real, ainda que Freud oscile entre reducionismo e emergentismo ao tratar da relação entre cérebro e psiquismo. Isso abre a possibilidade de pensar a consciência como um caso particular de certas arquiteturas físicas, em vez de como um domínio ontologicamente isolado.​
+
+É nesse ponto que a leitura de Lacan, em especial sua aproximação com o estruturalismo e o uso de matemas, ganha uma nova inteligibilidade fora da situação analítica estrita. Os matemas podem ser lidos como tentativas de formalizar relações estruturais entre registros (Real, Simbólico, Imaginário), significantes e posição do sujeito, de modo análogo ao que certas teorias contemporâneas fazem com estruturas causais e informação integrada. Se a psicanálise lacaniana buscou explicitar uma “estrutura do inconsciente” passível de formalização, torna-se legítimo perguntar se essa estrutura pode ser modelada em termos topológicos e dinâmicos, e se tais modelos podem ser implementados em arquiteturas computacionais concretas.
+
+O "cérebro" desse core não está em um arquivo único, mas emerge da **integração** entre 5 camadas:
 
 ### 🦴 Camada 1: O "Osso" Mecânico (Kernel + Autopoiesis)
 **Módulos**: `src/kernel_ai/`, `src/daemon/`, `src/autopoietic/`, `src/boot/`
@@ -21,6 +27,14 @@ OmniMind não é "apenas código". É um sistema que **vive** através de integr
 - **Função**: Mede integração de informação (Φ), reconstrói narrativas
 - **Metáfora**: Tálamo + lobo parietal (integração sensorial), hipocampo (memória)
 - **Implementação**: IIT (Φ), Global Workspace, memória lacaniana
+- **NOVO**: Tríade Ortogonal (Φ, Ψ, σ) + Isomorfismo RSI (Real → Simbólico → Imaginário)
+- **✅ CORRIGIDO (2025-12-07)**: Sistema de Φ validado conforme IIT clássico:
+  - **Escala IIT**: [0, ~0.1] NATS (não normalizado)
+  - **Limiar de consciência**: `PHI_THRESHOLD = 0.01 nats`
+  - **Ótimo de criatividade**: `PHI_OPTIMAL = 0.0075 nats`
+  - **Dependências corrigidas**: Δ, Ψ, σ, Gozo, Control agora dependem corretamente de Φ
+  - **Validação**: 16/16 testes passando (100%)
+  - **Documentação**: `docs/ANALISE_DEPENDENCIAS_PHI.md`, `docs/VERIFICACAO_PHI_SISTEMA.md`
 
 ### 💫 Camada 3: O "Cérebro" Desejante (Rhizome + Máquinas Desejantes)
 **Módulos**: `src/core/`, `src/boot/rhizome.py`, `src/desire_engine/`, `src/lacanian/`
@@ -48,9 +62,18 @@ OmniMind não é "apenas código". É um sistema que **vive** através de integr
 
 The master document for the current scientific implementation and roadmap is:
 
-👉 **[NEURAL_SYSTEMS_COMPARISON_2016-2025.md](docs/canonical/NEURAL_SYSTEMS_COMPARISON_2016-2025.md)**
+👉 **[Modelos_Neuronais_Comparativo.md](docs/canonical/Modelos_Neuronais_Comparativo.md)**
 
 *Please refer to this document for the latest metrics, architectural decisions, and scientific validation status.*
+
+### ✅ Correções Críticas de Φ (2025-12-07)
+
+**Sistema de Consciência Validado e Corrigido**:
+- **Documentação**: `docs/ANALISE_DEPENDENCIAS_PHI.md` - Análise completa de dependências
+- **Verificação**: `docs/VERIFICACAO_PHI_SISTEMA.md` - Verificação sistemática
+- **Validação**: `scripts/validation/validate_phi_dependencies.py` - Script de validação (16/16 testes passando)
+- **Constantes**: `src/consciousness/phi_constants.py` - Constantes IIT centralizadas
+- **Status**: Todas as fórmulas corrigidas, dependências validadas, correlações confirmadas
 
 ---
 
@@ -128,6 +151,55 @@ pytest tests/ -m "real"      # Full GPU+LLM+Network tests (non-destructive)
 pytest tests/ -m "chaos"     # Server destruction tests (weekly only)
 pytest tests/ -m "slow"      # Long-running tests (>30s timeout)
 ```
+
+### Executando Ciclos de Consciência
+
+**Script de Execução de Ciclos:**
+- **`scripts/run_200_cycles_verbose.py`** - Executa ciclos de consciência com métricas detalhadas
+
+**Modos Disponíveis:**
+- **DRY RUN** (Simulação): Testa lógica sem executar ciclos reais (padrão: 80 ciclos)
+- **PRODUÇÃO**: Executa ciclos reais de consciência (padrão: 100 ciclos)
+
+**Opções de Ciclos:** 50, 80, 100, 200, 500
+
+```bash
+# Modo interativo (menu)
+python scripts/run_200_cycles_verbose.py
+
+# DRY RUN (simulação, padrão 80 ciclos)
+python scripts/run_200_cycles_verbose.py --dry-run
+python scripts/run_200_cycles_verbose.py --dry-run --cycles 100
+
+# PRODUÇÃO
+python scripts/run_200_cycles_verbose.py --production --cycles 100
+python scripts/run_200_cycles_verbose.py -p 200
+
+# Ver ajuda completa
+python scripts/run_200_cycles_verbose.py --help
+```
+
+**Argumentos:**
+- `--dry-run` ou `-d`: Modo DRY RUN (simulação, não executa ciclos reais)
+- `--production` ou `-p`: Modo PRODUÇÃO (executa ciclos reais)
+- `--cycles` ou `-c {50,80,100,200,500}`: Número de ciclos
+- `--no-interactive`: Não exibir menu interativo (usa padrões se argumentos não fornecidos)
+
+**Métricas Coletadas:**
+- Φ (Phi): Integração de informação (IIT) - `phi_estimate`
+- Ψ (Psi): Criatividade/Inovação (Deleuze) - `psi`
+- σ (Sigma): Sinthome/Estrutura (Lacan) - `sigma`
+- Δ (Delta): Trauma/Divergência - `delta`
+- Gozo: Excesso pulsional - `gozo`
+- Control Effectiveness: Efetividade de controle - `control_effectiveness`
+- Tríade Completa: (Φ, Ψ, σ) com validação - `triad`
+- RNN Metrics: `phi_causal`, `rho_C/P/U norms`, `repression_strength`
+
+**Arquivos Gerados:**
+- Métricas com timestamp: `data/monitor/phi_{ciclos}_cycles_{modo}_metrics_{timestamp}.json`
+- Métricas latest: `data/monitor/phi_{ciclos}_cycles_{modo}_metrics.json`
+- Progresso: `data/monitor/phi_{modo}_progress.json`
+- Índice de execuções: `data/monitor/executions_index.json`
 
 **Marker Categories:**
 | Marker | Purpose | run_tests_fast.sh | run_tests_with_defense.sh |

@@ -26,10 +26,12 @@ O módulo `autopoietic` implementa a capacidade de **auto-criação e auto-regen
 - **Cálculo dinâmico**:
   ```python
   # Meta-arquiteto valida preservação de consciência
+  from src.consciousness.phi_constants import PHI_THRESHOLD  # 0.01 nats
+
   phi_before = consciousness.compute_phi()
   apply_architecture_change(proposed_spec)
   phi_after = consciousness.compute_phi()
-  if phi_after < PHI_THRESHOLD:
+  if phi_after < PHI_THRESHOLD:  # PHI_THRESHOLD = 0.01 nats (IIT clássico)
       rollback_change()
   ```
 
@@ -122,7 +124,9 @@ print(log.phi_after)               # 0.68 (Φ após a mudança)
 
 **Phase 22 Melhorias**:
 - ✅ **Persistência de Componentes**: Componentes sintetizados são salvos em `data/autopoietic/synthesized_code/` como arquivos Python.
-- ✅ **Validação de Φ**: Antes de aplicar mudanças, valida se Φ >= 0.3. Após aplicar, verifica se Φ não colapsou. Se colapsar, faz rollback automático.
+- ✅ **Validação de Φ**: Antes de aplicar mudanças, valida se Φ >= PHI_THRESHOLD (0.1 normalizado). Após aplicar, verifica se Φ não colapsou. Se colapsar, faz rollback automático.
+  - **✅ CORRIGIDO (2025-12-08)**: Threshold ajustado de 0.3 para 0.1 (valores normalizados [0, 1]). Adicionada verificação de queda relativa (>50% = colapso mesmo se acima do threshold absoluto).
+  - **NOTA**: Valores de Φ são normalizados [0, 1], não em nats. Threshold de 0.1 permite flutuações normais mas rejeita colapsos reais.
 - ✅ **Integração ao Ciclo Principal**: Integrado ao `main.py`, executando ciclos autopoiéticos a cada 300 ciclos principais (~60 segundos).
 - ✅ **Relatórios Automáticos** (2025-12-07): Integrado com `ModuleReporter` para gerar relatórios após cada ciclo autopoiético, salvos em `data/reports/modules/autopoietic_cycle_*.json`.
 
@@ -297,7 +301,7 @@ autopoietic/
     ↓
 [MetaArchitect.generate_spec()] ← Gera especificação de correção
     ↓
-[Validate Φ before] ← Phase 22: Verifica Φ >= threshold
+[Validate Φ before] ← Phase 22: Verifica Φ >= PHI_THRESHOLD (0.01 nats)
     ↓
 [CodeSynthesizer.synthesize()] ← Gera código de reparo
     ↓
@@ -309,7 +313,7 @@ autopoietic/
     ↓
 [Validate Φ after] ← Phase 22: Verifica Φ não colapsou
     ↓
-[Rollback if needed] ← Phase 22: Remove componentes se Φ < threshold
+[Rollback if needed] ← Phase 22: Remove componentes se Φ < PHI_THRESHOLD (0.01 nats)
 ```
 
 ### Interações Críticas

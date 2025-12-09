@@ -488,8 +488,8 @@ class TestIntegration:
     def test_legacy_preservation_under_time_pressure(self) -> None:
         """Test legacy preservation prioritization under time pressure.
 
-        MARKED AS SLOW: Esta teste simula 30 segundos de pressão temporal.
-        Não deveria estar em run_tests_fast.sh (exclui @pytest.mark.slow).
+        MARKED AS SLOW: Este teste simula 30 segundos de pressão temporal.
+        RODA em run_tests_fast.sh (inclui @pytest.mark.slow - cálculos/simulações).
         """
         simulator = MortalitySimulator(expected_lifetime=timedelta(seconds=30))
 

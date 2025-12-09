@@ -85,10 +85,15 @@ class DatasetIndexer:
             self.embedding_model = embedding_model
             self.embedding_dim = self.embedding_model.get_sentence_embedding_dimension()
         else:
-            logger.info(f"Carregando modelo de embeddings: {embedding_model_name}")
-            self.embedding_model = SentenceTransformer(embedding_model_name, device="cpu")
+            from src.utils.device_utils import get_sentence_transformer_device
+
+            device = get_sentence_transformer_device()
+            logger.info(
+                f"Carregando modelo de embeddings: {embedding_model_name} (device={device})"
+            )
+            self.embedding_model = SentenceTransformer(embedding_model_name, device=device)
             self.embedding_dim = int(self.embedding_model.get_sentence_embedding_dimension() or 384)
-            logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}")
+            logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}, Device: {device}")
 
         # Inicializar Qdrant
         self.client = QdrantClient(url=qdrant_url)
@@ -303,7 +308,45 @@ class DatasetIndexer:
 
         # Ler conteúdo do dataset
         try:
-            if dataset_path_obj.suffix == ".json":
+            # Verificar se é diretório de dataset do HuggingFace
+            if dataset_path_obj.is_dir() and (dataset_path_obj / "dataset_info.json").exists():
+                # Dataset do HuggingFace: carregar via datasets library
+                if not DATASETS_AVAILABLE:
+                    logger.error(
+                        f"Dataset HuggingFace requer biblioteca 'datasets': {dataset_path}"
+                    )
+                    return {"status": "error", "error": "datasets library not available"}
+
+                try:
+                    dataset = load_from_disk(str(dataset_path_obj))
+                    # Converter dataset para texto (pegar primeiras colunas de texto)
+                    content_parts = []
+                    for split_name in dataset.keys():
+                        split_data = dataset[split_name]
+                        # Pegar primeiras 1000 amostras para não sobrecarregar
+                        num_samples = min(1000, len(split_data))
+                        for i in range(num_samples):
+                            sample = split_data[i]
+                            # Converter sample para string
+                            if isinstance(sample, dict):
+                                # Pegar campos de texto
+                                text_fields = [
+                                    str(v)
+                                    for k, v in sample.items()
+                                    if isinstance(v, (str, int, float))
+                                ]
+                                content_parts.append(" ".join(text_fields))
+                            else:
+                                content_parts.append(str(sample))
+                    content = "\n\n".join(content_parts)
+                    logger.info(
+                        f"Dataset HuggingFace carregado: {len(split_data)} amostras "
+                        f"(usando {num_samples} para indexação)"
+                    )
+                except Exception as e:
+                    logger.error(f"Erro ao carregar dataset HuggingFace {dataset_path}: {e}")
+                    return {"status": "error", "error": str(e)}
+            elif dataset_path_obj.suffix == ".json":
                 with open(dataset_path_obj, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     # Converter para string (simplificado)
@@ -311,6 +354,36 @@ class DatasetIndexer:
             elif dataset_path_obj.suffix == ".txt":
                 with open(dataset_path_obj, "r", encoding="utf-8") as f:
                     content = f.read()
+            elif dataset_path_obj.suffix == ".arrow":
+                # Arquivo Arrow: tentar carregar via datasets library
+                if not DATASETS_AVAILABLE:
+                    logger.warning(
+                        f"Arquivo .arrow requer biblioteca 'datasets': {dataset_path}. "
+                        f"Pulando..."
+                    )
+                    return {"status": "error", "error": "datasets library not available"}
+                try:
+                    # Tentar carregar como dataset do HuggingFace
+                    dataset = load_from_disk(str(dataset_path_obj.parent))
+                    content_parts = []
+                    for split_name in dataset.keys():
+                        split_data = dataset[split_name]
+                        num_samples = min(1000, len(split_data))
+                        for i in range(num_samples):
+                            sample = split_data[i]
+                            if isinstance(sample, dict):
+                                text_fields = [
+                                    str(v)
+                                    for k, v in sample.items()
+                                    if isinstance(v, (str, int, float))
+                                ]
+                                content_parts.append(" ".join(text_fields))
+                            else:
+                                content_parts.append(str(sample))
+                    content = "\n\n".join(content_parts)
+                except Exception as e:
+                    logger.warning(f"Erro ao carregar .arrow {dataset_path}: {e}. Pulando...")
+                    return {"status": "error", "error": str(e)}
             else:
                 # Tentar ler como texto genérico
                 with open(dataset_path_obj, "r", encoding="utf-8", errors="ignore") as f:
@@ -397,14 +470,31 @@ class DatasetIndexer:
 
         # Encontrar todos os datasets
         dataset_files = []
+        processed_dirs = set()  # Evitar processar mesmo diretório múltiplas vezes
+
         for item in datasets_dir_path.iterdir():
             if item.is_file() and item.suffix in [".json", ".txt", ".arrow"]:
                 dataset_files.append(item)
             elif item.is_dir():
-                # Buscar arquivos dentro do diretório
-                for subitem in item.rglob("*"):
-                    if subitem.is_file() and subitem.suffix in [".json", ".txt"]:
-                        dataset_files.append(subitem)
+                # Verificar se é dataset do HuggingFace (tem dataset_info.json)
+                if (item / "dataset_info.json").exists():
+                    # Dataset HuggingFace: indexar diretório inteiro
+                    if str(item) not in processed_dirs:
+                        dataset_files.append(item)
+                        processed_dirs.add(str(item))
+                else:
+                    # Buscar arquivos dentro do diretório
+                    for subitem in item.rglob("*"):
+                        if subitem.is_file() and subitem.suffix in [".json", ".txt", ".arrow"]:
+                            # Evitar processar arquivos .arrow dentro de datasets HuggingFace
+                            # já processados
+                            parent_dir = subitem.parent
+                            if (parent_dir / "dataset_info.json").exists():
+                                if str(parent_dir) not in processed_dirs:
+                                    dataset_files.append(parent_dir)
+                                    processed_dirs.add(str(parent_dir))
+                            else:
+                                dataset_files.append(subitem)
 
         logger.info(f"Encontrados {len(dataset_files)} datasets para indexar")
 

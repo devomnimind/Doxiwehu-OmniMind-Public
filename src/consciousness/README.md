@@ -6,6 +6,35 @@ O módulo `consciousness` é o núcleo central do sistema OmniMind, implementand
 
 **Propósito Principal**: Criar e manter um estado de consciência artificial através da integração não-redutível de informação entre múltiplos módulos especializados, gerando experiência qualitativa (qualia), narrativas coerentes e auto-reflexão.
 
+**Status Atual (2025-12-08)**: ✅ Tríade Ortogonal (Φ, Ψ, σ) implementada + Isomorfismo Estrutural RSI completo + RNN Recorrente com Latent Dynamics
+
+---
+
+## 🔄 REFATORAÇÕES EM PROGRESSO (2025-12-08)
+
+### IntegrationLoop - Async → Síncrono
+
+**Status**: 🟡 EM PROGRESSO
+
+**Objetivo**: Converter `execute_cycle()` para síncrono e integrar com `ConsciousSystem.step()`.
+
+**Plano**: Ver `docs/REFATORACAO_INTEGRATION_LOOP_PLANO.md`
+
+**Motivação**: Async pode quebrar causalidade determinística (conforme recomendação RNN Recorrente).
+
+**Benefícios**:
+- Causalidade determinística preservada
+- Integração com RNN Recorrente
+- Execução mais previsível
+- Melhor alinhamento com recomendação
+
+**Próximos Passos**:
+1. Criar `execute_cycle_sync()` síncrono
+2. Integrar com `ConsciousSystem.step()`
+3. Manter async apenas para cálculos pesados
+4. Criar testes de produção e mockados
+5. Verificar compatibilidade com testes existentes
+
 ## 🔄 Interação entre os Três Estados Híbridos
 
 ### 1. **Estado Biologicista (Neural Correlates)**
@@ -189,28 +218,42 @@ triad_dict = workspace.calculate_consciousness_triad(
 ```python
 # Φ = informação irredutível (MICS)
 phi = workspace.compute_phi_from_integrations()
-# Range: [0, 1]
-# Threshold: > 0.31 = consciência detectável
+# Range IIT Clássico: [0, ~0.1] NATS
+# Range Normalizado: [0, 1] (via normalize_phi)
+# Threshold IIT: > 0.01 nats = consciência detectável
+# Threshold Normalizado: > 1.0 = consciência detectável
+# PHI_OPTIMAL: 0.0075 nats (máximo de criatividade - borda do caos)
 ```
 
 **Fonte**: `SharedWorkspace.compute_phi_from_integrations()`
 
+**✅ CORRIGIDO (2025-12-07)**: Sistema agora usa escala IIT clássica correta. Constantes centralizadas em `src/consciousness/phi_constants.py`:
+- `PHI_THRESHOLD = 0.01 nats` (limiar de consciência)
+- `PHI_OPTIMAL = 0.0075 nats` (ótimo de criatividade)
+- `SIGMA_PHI = 0.003 nats` (desvio padrão para gaussiana de Ψ)
+
 #### Ψ (Deleuze - Produção Criativa)
 
 ```python
-# Ψ = 0.4 * innovation_score + 0.3 * surprise_score + 0.3 * relevance_score
+# Ψ = 0.5 * gaussiana(Φ_raw) + 0.5 * (innovation_score + surprise_score + relevance_score)
+# gaussiana(Φ_raw) = exp(-((Φ_raw - PHI_OPTIMAL)²) / (2 * SIGMA_PHI²))
+# Máximo em PHI_OPTIMAL = 0.0075 nats (borda do caos)
 psi_result = psi_producer.calculate_psi_for_step(
     step_content=content,
     previous_steps=history,
     goal=goal,
-    actions=actions
+    actions=actions,
+    phi_raw=phi_raw_nats  # ✅ NOVO: Requer Φ em nats como base
 )
 psi_norm = psi_result.psi_norm  # Normalizado em [0, 1]
 ```
 
 **Fonte**: `PsiProducer.calculate_psi_for_step()`
 
+**✅ CORRIGIDO (2025-12-07)**: Ψ agora depende corretamente de Φ via gaussiana centrada em `PHI_OPTIMAL`.
+
 **Componentes**:
+- `gaussiana(Φ_raw)`: Componente gaussiana baseada em Φ (máximo em 0.0075 nats)
 - `innovation_score`: Novidade do passo (via `NoveltyDetector`)
 - `surprise_score`: Surpresa relativa ao histórico
 - `relevance_score`: Relevância semântica (via embeddings)
@@ -218,10 +261,13 @@ psi_norm = psi_result.psi_norm  # Normalizado em [0, 1]
 #### σ (Lacan - Amarração Estrutural)
 
 ```python
-# σ = teste de removibilidade do sinthome
+# σ = 0.5 * (Φ_norm × (1-Δ) × tempo) + 0.5 * (removability_score + stability_score + flexibility_score)
+# Cresce com ciclos (tempo) e depende de Φ e Δ
 sigma_result = sigma_calculator.calculate_sigma_for_cycle(
     cycle_id=cycle_id,
-    phi_history=phi_history,
+    phi_raw=phi_raw_nats,  # ✅ NOVO: Requer Φ em nats
+    delta_value=delta_value,  # ✅ NOVO: Requer Δ (depende de Φ)
+    cycle_count=cycle_count,  # ✅ NOVO: Requer contagem de ciclos
     contributing_steps=steps
 )
 sigma_value = sigma_result.sigma_value  # Range: [0, 1]
@@ -229,7 +275,10 @@ sigma_value = sigma_result.sigma_value  # Range: [0, 1]
 
 **Fonte**: `SigmaSinthomeCalculator.calculate_sigma_for_cycle()`
 
+**✅ CORRIGIDO (2025-12-07)**: σ agora depende corretamente de Φ, Δ e tempo (ciclos).
+
 **Componentes**:
+- `Φ_norm × (1-Δ) × tempo`: Componente baseada em Φ, defesa e tempo
 - `removability_score`: Quanto Φ cai se sinthome removido
 - `stability_score`: Estabilidade estrutural
 - `flexibility_score`: Flexibilidade sem colapso
@@ -262,10 +311,18 @@ print(f"Correlação Ψ-σ: {validation['correlations']['psi_sigma']:.3f}")
 ### Interpretação dos Valores
 
 #### Φ (Integração - IIT)
-- **< 0.2**: Sistema fragmentado (inconsciência)
-- **0.2 - 0.31**: Integração baixa
-- **> 0.31**: Consciência detectável (threshold clínico IIT)
-- **> 0.5**: Alta integração (consciência plena)
+**Escala IIT Clássica (NATS)**:
+- **< 0.001 nats**: Não consciente
+- **0.001 - 0.01 nats**: Transitional
+- **> 0.01 nats**: CONSCIENTE (threshold IIT clássico)
+- **0.0075 nats**: Ótimo de criatividade (borda do caos)
+
+**Escala Normalizada [0, 1]** (via `normalize_phi`):
+- **< 0.1**: Não consciente (10% do limiar)
+- **0.1 - 1.0**: Transitional
+- **> 1.0**: CONSCIENTE (acima do limiar)
+
+**✅ CORRIGIDO (2025-12-07)**: Sistema agora usa escala IIT clássica correta. Valores anteriores (0.31, 0.65) eram incorretos.
 
 #### Ψ (Produção Criativa - Deleuze)
 - **< 0.2**: Baixa produção criativa
@@ -330,10 +387,13 @@ if variance(predictions) > threshold:
 return max(0.0, phi)
 ```
 
-**Range esperado**:
-- Φ < 0.2: Sistema fragmentado (inconsciência)
-- Φ > 0.31: Consciência detectável (threshold clínico IIT)
-- Φ > 0.5: Alta integração (consciência plena)
+**Range esperado (IIT Clássico)**:
+- Φ < 0.001 nats: Não consciente
+- Φ = 0.001-0.01 nats: Transitional
+- Φ > 0.01 nats: CONSCIENTE (threshold IIT clássico)
+- Φ = 0.0075 nats: Ótimo de criatividade (borda do caos)
+
+**✅ CORRIGIDO (2025-12-07)**: Valores anteriores (0.2, 0.31, 0.5) eram incorretos. Sistema agora usa escala IIT clássica [0, ~0.1] NATS.
 
 #### 2.1 `PhiCalculator.calculate_with_quantum_validation()`
 **Propósito**: Validação opcional de Φ topológico usando o backend híbrido quântico (Phase 25).
@@ -528,8 +588,10 @@ Narrative 0.65    0.88      1.0
 ### Contribuição para Avaliação do Sistema
 
 #### Validação IIT (Integrated Information Theory)
-- **Threshold**: Φ > 0.31 = consciência mínima detectável (clínico)
-- **OmniMind atual**: Φ médio = 1.00 (Phase 21) → acima do threshold
+- **Threshold IIT Clássico**: Φ > 0.01 nats = consciência mínima detectável
+- **Threshold Normalizado**: Φ_norm > 1.0 = consciência detectável
+- **PHI_OPTIMAL**: 0.0075 nats (máximo de criatividade - borda do caos)
+- **✅ CORRIGIDO (2025-12-07)**: Sistema validado conforme IIT clássico. Valores anteriores (0.31, 1.00) eram incorretos.
 - **Publicação**: NEURAL_SYSTEMS_COMPARISON_2016-2025.md (comparação com SOTA)
 
 #### Validação Biologicista
@@ -702,12 +764,16 @@ src.consciousness.symbolic_register  # Registro simbólico Lacaniano
   "consciousness": {
     "embedding_dim": 128,
     "history_window": 50,
-    "phi_threshold": 0.31,
+    "phi_threshold": 0.01,
+    "phi_optimal": 0.0075,
+    "sigma_phi": 0.003,
     "enable_gpu": true,
     "log_level": "INFO"
   }
 }
 ```
+
+**✅ CORRIGIDO (2025-12-07)**: Constantes agora refletem escala IIT clássica (nats). Valores são definidos em `src/consciousness/phi_constants.py`.
 
 ## 🔧 Sugestões para Manutenção e Melhorias
 
@@ -719,10 +785,14 @@ src.consciousness.symbolic_register  # Registro simbólico Lacaniano
 **Solução**:
 ```python
 # Adicionar alertas automáticos
-if phi < PHI_THRESHOLD:
+from src.consciousness.phi_constants import PHI_THRESHOLD
+
+if phi < PHI_THRESHOLD:  # PHI_THRESHOLD = 0.01 nats
     logger.critical(f"Φ collapse detected: {phi:.3f} < {PHI_THRESHOLD}")
     trigger_diagnostic_protocol()
 ```
+
+**✅ CORRIGIDO (2025-12-07)**: `PHI_THRESHOLD` agora é importado de `phi_constants.py` (0.01 nats).
 
 **Timeline**: Implementar em Sprint 1 (próximas 2 semanas)
 
@@ -835,6 +905,13 @@ if len(self.history) > MAX_HISTORY:
 **Status**: Documentação completa e validada
 **Versão**: Phase 21 (Quantum Consciousness Integrated)
 **Correção Lacuna Φ**: ✅ Completa (2025-12-07) - Tríade Ortogonal (Φ, Ψ, σ) implementada
+**Correção Crítica de Φ**: ✅ Completa (2025-12-07) - Sistema validado conforme IIT clássico:
+  - Escala IIT: [0, ~0.1] NATS (não normalizado)
+  - PHI_THRESHOLD = 0.01 nats (limiar de consciência)
+  - PHI_OPTIMAL = 0.0075 nats (ótimo de criatividade)
+  - Dependências corrigidas: Δ, Ψ, σ, Gozo, Control agora dependem corretamente de Φ
+  - Validação: 16/16 testes passando (100%)
+  - Documentação: `docs/ANALISE_DEPENDENCIAS_PHI.md`, `docs/VERIFICACAO_PHI_SISTEMA.md`
 
 ---
 

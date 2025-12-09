@@ -213,3 +213,59 @@ if __name__ == "__main__":
 
         traceback.print_exc()
         sys.exit(1)
+
+
+def test_lacanian_integration_with_topological_metrics():
+    """Testa integração lacaniana completa com métricas topológicas."""
+    from src.consciousness.shared_workspace import SharedWorkspace
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    print("🧠 Teste de Integração Lacaniana: Com Topological Metrics")
+    print("=" * 60)
+
+    # Criar workspace com engine topológico
+    workspace = SharedWorkspace(embedding_dim=256)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Inicializar módulos lacanianos
+    affective_memory = TraceMemory()
+    objet_a = ObjetPetitA(
+        remainder_type="impossível",
+        remainder_description="resto_impossível",
+        structural_lack="falta_estrutural",
+    )
+    creative_desire = CreativeDesire(objet_a=objet_a)
+    qualia_field = Symbolic_Qualia_Field()
+    rsi_topology = RSI_Topology_Integrated()
+
+    # Integrar módulos
+    rsi_topology.integrate_affective_memory(affective_memory)
+    rsi_topology.integrate_creative_desire(creative_desire)
+    rsi_topology.integrate_qualia_field(qualia_field)
+
+    # Simular estados no workspace para métricas topológicas
+    np.random.seed(42)
+    for i in range(5):
+        rho_C = np.random.randn(256)
+        rho_P = np.random.randn(256)
+        rho_U = np.random.randn(256)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+        workspace.advance_cycle()
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar que ambas funcionam
+    status = rsi_topology.get_topology_status()
+    assert status["integration_level"] == "rsi_fully_integrated"
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Integração Lacaniana: RSI + Sinthome
+        # Topological: estrutura e integração (Omega, Betti-0)
+        # Ambas são complementares para análise completa
+
+    print("✅ Integração Lacaniana + Topological Metrics verified")

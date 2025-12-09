@@ -388,3 +388,47 @@ class TestIntegration:
         # Depth should be > 1 if children exist
         if stats["child_count"] > 0:
             assert stats["total_hierarchy_depth"] > 1
+
+
+class TestHolographicMemoryHybridTopological:
+    """Testes de integração entre HolographicMemory e HybridTopologicalEngine."""
+
+    def test_holographic_memory_with_topological_metrics(self):
+        """Testa que HolographicMemory pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar HolographicMemory
+        memory = EventHorizonMemory(max_surface_dim=256)
+
+        # Armazenar informação
+        information = {"tensor": np.random.randn(32, 32)}
+        surface = memory.store(information)
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        assert surface is not None
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # HolographicMemory: memória holográfica (Bekenstein bound)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

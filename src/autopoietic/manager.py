@@ -17,7 +17,11 @@ from .metrics_adapter import MetricSample
 logger = logging.getLogger(__name__)
 
 # Threshold mínimo de Φ para aceitar mudanças arquiteturais
-PHI_THRESHOLD = 0.3
+# CORREÇÃO (2025-12-08): Usar threshold baseado em valores empíricos normalizados
+# Valores típicos de Φ normalizado: 0.5-0.8 (sistema saudável)
+# Threshold de 0.3 estava muito alto, rejeitando mudanças válidas
+# Novo threshold: 0.1 (permite flutuações normais, mas rejeita colapsos reais)
+PHI_THRESHOLD = 0.1
 
 
 @dataclass(frozen=True)
@@ -177,13 +181,21 @@ class AutopoieticManager:
 
         # Validação de Φ após aplicar mudanças
         phi_after = self._get_current_phi()
-        if phi_after < self._phi_threshold:
+
+        # CORREÇÃO (2025-12-08): Verificar queda relativa além do threshold absoluto
+        # Uma queda de >50% também indica colapso, mesmo se ainda acima do threshold
+        phi_drop_ratio = (phi_before - phi_after) / phi_before if phi_before > 0 else 0.0
+        significant_drop = phi_drop_ratio > 0.5  # Queda de mais de 50%
+
+        if phi_after < self._phi_threshold or significant_drop:
             self._logger.error(
-                "Cycle %d caused Φ collapse: %.3f -> %.3f (threshold: %.3f). Rolling back.",
+                "Cycle %d caused Φ collapse: %.3f -> %.3f "
+                "(threshold: %.3f, drop: %.1f%%). Rolling back.",
                 cycle_id,
                 phi_before,
                 phi_after,
                 self._phi_threshold,
+                phi_drop_ratio * 100.0,
             )
             # Rollback: remover componentes sintetizados
             for name in new_names:
@@ -330,7 +342,14 @@ class AutopoieticManager:
         Tenta ler de data/monitor/real_metrics.json, com fallback para 0.5.
 
         Returns:
-            Valor de Φ (0.0-1.0).
+            Valor de Φ normalizado (0.0-1.0).
+
+        NOTA: Valores típicos de Φ normalizado:
+        - 0.0-0.1: Sistema desintegrado (colapso)
+        - 0.1-0.3: Sistema instável (threshold mínimo)
+        - 0.3-0.5: Sistema funcional mas abaixo do ideal
+        - 0.5-0.8: Sistema saudável (ideal)
+        - 0.8-1.0: Sistema altamente integrado
         """
         try:
             metrics_path = Path("data/monitor/real_metrics.json")

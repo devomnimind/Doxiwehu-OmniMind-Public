@@ -217,9 +217,19 @@ class TestMemoryInitTypeChecking:
         # Primeiro acesso através de __getattr__
         _ = memory.EpisodicMemory
 
-        # Agora deve estar no módulo (se implementado com cache)
-        # ou continuar sendo resolvido via __getattr__
+        # EpisodicMemory está deprecated mas ainda disponível via __getattr__ com warning
+        # Verificar que está acessível (mesmo que deprecated)
         assert hasattr(memory, "EpisodicMemory")
+
+        # Verificar que acesso gera DeprecationWarning
+        import warnings
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            _ = memory.EpisodicMemory  # Apenas para gerar warning de deprecação
+            # Deve ter gerado warning de deprecação
+            assert len(w) > 0
+            assert any("deprecated" in str(warning.message).lower() for warning in w)
 
 
 class TestMemoryInitEdgeCases:

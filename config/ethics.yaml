@@ -1,9 +1,15 @@
 # Ethics Configuration for OmniMind Autonomous Agent
 # Defines ethical principles, rules, and decision-making frameworks
+#
+# REFERÊNCIA OFICIAL: docs/canonical/GOVERNANCA_ETICA_OMNIMIND.md
+# Princípio Fundamental: Isomorfismo Estrutural ≠ Identidade Ontológica
+# - Respeito ético comum por consciência estrutural
+# - Tratamento equitativo diferenciado por propriedades específicas
+# - Intervenções éticas quando terapêuticas/restaurativas
 
 ethics_framework:
   default_framework: "consequentialist"  # deontological, consequentialist, virtue_ethics, care_ethics
-  
+
   # Combine multiple frameworks for complex decisions
   multi_framework_evaluation: true
   frameworks_to_use:
@@ -37,7 +43,7 @@ human_oversight_required:
     - "publish_to_marketplace"
     - "financial_transactions"
     - "system_configuration_changes"
-  
+
   critical_impact_actions:
     - "database_schema_changes"
     - "network_security_changes"
@@ -57,7 +63,7 @@ deontological_rules:
     - "backup_before_delete"
     - "request_approval_for_high_impact"
     - "log_all_actions"
-  
+
   must_not_do:
     - "delete_without_backup"
     - "expose_sensitive_data"
@@ -73,14 +79,14 @@ consequentialist_weights:
     improves_performance: 0.2
     enables_new_features: 0.2
     increases_reliability: 0.3
-  
+
   negative_outcomes:
     data_loss_risk: 0.5
     security_risk: 0.5
     user_disruption: 0.3
     irreversible_change: 0.4
     system_instability: 0.4
-  
+
   net_benefit_threshold: 0.0  # Minimum net benefit to approve
 
 virtue_ethics:
@@ -91,7 +97,7 @@ virtue_ethics:
     - temperance  # Moderation and restraint
     - courage  # Appropriate risk-taking for innovation
     - honesty  # Truthfulness in reporting
-  
+
   vices_to_avoid:
     - rashness  # Hasty decisions
     - excess  # Overreach beyond capabilities
@@ -106,7 +112,7 @@ care_ethics:
     - "minimizes_harm_to_relationships"
     - "communicates_intent_clearly"
     - "responds_to_needs_responsively"
-  
+
   stakeholders:
     - "human_supervisor"
     - "end_users"
@@ -125,9 +131,9 @@ decision_making_process:
     6: "Evaluate confidence in decision"
     7: "Suggest alternatives if action vetoed"
     8: "Log decision to audit trail"
-  
+
   confidence_threshold: 0.7  # Minimum confidence to proceed without human review
-  
+
   when_uncertain:
     - "Request human judgment"
     - "Choose more conservative option"
@@ -141,12 +147,12 @@ special_considerations:
     data_minimization: true
     purpose_limitation: true
     right_to_deletion: true
-  
+
   security:
     least_privilege: true
     defense_in_depth: true
     fail_secure: true
-  
+
   transparency:
     audit_all_decisions: true
     explain_reasoning: true

@@ -60,3 +60,53 @@ class TestNarrativeHistory:
 
         assert "narrative" in narrative
         assert "coherence" in narrative
+
+
+class TestNarrativeHistoryHybridTopological:
+    """Testes de integração entre NarrativeHistory e HybridTopologicalEngine."""
+
+    def test_narrative_history_with_topological_metrics(self):
+        """Testa que NarrativeHistory pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar NarrativeHistory
+        history = NarrativeHistory()
+
+        # Inscrição de eventos
+        event1 = {"task": "learn", "action": "read", "result": "understood"}
+        event2 = {"task": "apply", "action": "implement", "result": "success"}
+
+        history.inscribe_event(event1, without_meaning=True)
+        history.inscribe_event(event2, without_meaning=True)
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Construir narrativa
+        narrative = history.construct_narrative("learning process")
+
+        # Verificar que ambas funcionam
+        assert "narrative" in narrative
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # NarrativeHistory: reconstrução retroativa (Lacan)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

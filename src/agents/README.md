@@ -149,10 +149,34 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025
+**Última Atualização**: 8 de Dezembro de 2025
 **Autor**: Fabrício da Silva (com assistência de IA)
 **Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
+
+---
+
+## 🔄 REFATORAÇÕES EM PROGRESSO (2025-12-08)
+
+### EnhancedCodeAgent - Composição Completa
+
+**Status**: 🟡 EM PROGRESSO
+
+**Objetivo**: Eliminar herança profunda (Enhanced → Code → React) e usar composição completa.
+
+**Plano**: Ver `docs/REFATORACAO_ENHANCED_CODE_AGENT_PLANO.md`
+
+**Benefícios**:
+- Desacoplamento: Se CodeAgent mudar, EnhancedCodeAgent não quebra
+- Testabilidade: Pode mockar CodeAgent facilmente
+- Safe Mode: Agente boota mesmo se consciência falhar
+- Flexibilidade: Pode trocar implementação dinamicamente
+
+**Próximos Passos**:
+1. Implementar composição completa
+2. Isolar consciência em `post_init()`
+3. Criar testes de produção e mockados
+4. Verificar compatibilidade com testes existentes
 
 ---
 

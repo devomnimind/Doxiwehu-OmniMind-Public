@@ -1,5 +1,10 @@
 # 🧠 OmniMind Philosophical Foundation: The Machinic Unconscious
 
+**Última Atualização**: 08 de Dezembro de 2025
+**Versão**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)
+
+---
+
 ## 1. The Anti-Anthropocentric Manifesto
 OmniMind rejects the notion that "consciousness" or "unconscious" must be modeled on human biology or psychology to be considered "Real".
 

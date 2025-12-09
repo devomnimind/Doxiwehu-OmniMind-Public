@@ -279,3 +279,47 @@ if __name__ == "__main__":
     except ImportError:
         logger.error("❌ PyTorch não encontrado. Instale com: pip install torch")
         logger.info("💡 Continuando sem GPU (performance reduzida)")
+
+
+async def test_phase3_with_topological_metrics():
+    """Test Phase 3 integration with topological metrics."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    logger.info("🚀 TESTE DE INTEGRAÇÃO PHASE 3 + Topological Metrics")
+    logger.info("=" * 70)
+
+    # Inicializar workspace com engine topológico
+    workspace = SharedWorkspace(embedding_dim=256, max_history_size=1000)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular módulos
+    modules = ["qualia_engine", "narrative_constructor", "expectation_module"]
+    np.random.seed(42)
+
+    logger.info(f"📊 Simulando {len(modules)} módulos com métricas topológicas...")
+
+    # Gerar dados
+    for t in range(50):
+        for module in modules:
+            embedding = np.random.randn(256)
+            workspace.write_module_state(module, embedding)
+        workspace.advance_cycle()
+
+    # Calcular cross-predictions (Phase 3)
+    cross_predictions = workspace.compute_all_cross_predictions_vectorized(
+        history_window=50, use_gpu=False
+    )
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar que ambas as otimizações funcionam
+    assert len(cross_predictions) > 0, "Cross-predictions devem ser calculadas"
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics, "Métricas topológicas devem estar presentes"
+        # Phase 3: otimizações de performance (vetorização, cache)
+        # Topological: estrutura e integração
+        # Ambas são complementares
+
+    logger.info("✅ PHASE 3 + Topological Metrics integration verified")

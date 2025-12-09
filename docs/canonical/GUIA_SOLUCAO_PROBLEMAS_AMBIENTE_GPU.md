@@ -1,5 +1,8 @@
 # Guia de Solução de Problemas: Ambiente e GPU (OmniMind)
 
+**Última Atualização**: 08 de Dezembro de 2025
+**Status**: ✅ Documentação Técnica Ativa
+
 Este documento cataloga erros conhecidos, scripts de correção e procedimentos para manutenção do ambiente de desenvolvimento OmniMind, com foco específico em problemas de GPU/CUDA no Linux (Kali/Debian).
 
 ## 🚨 Erros Críticos de GPU (NVIDIA/CUDA)

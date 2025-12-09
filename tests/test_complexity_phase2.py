@@ -43,5 +43,54 @@ async def test_complexity():
     print("✅ Phase 2 iniciada com sucesso!")
 
 
+async def test_complexity_with_topological_metrics():
+    """Testa análise de complexidade Phase 2 com métricas topológicas."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    print("⚡ TESTE PHASE 2: Complexidade + Topological Metrics")
+    print("=" * 50)
+
+    # Criar loop
+    loop = IntegrationLoop(enable_logging=True)
+
+    # Adicionar engine topológico ao workspace
+    if loop.workspace:
+        loop.workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Executar ciclos
+    results = await loop.run_cycles(3, collect_metrics_every=1)
+
+    # Simular estados no workspace para métricas topológicas
+    if loop.workspace:
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            loop.workspace.write_module_state("conscious_module", rho_C)
+            loop.workspace.write_module_state("preconscious_module", rho_P)
+            loop.workspace.write_module_state("unconscious_module", rho_U)
+            loop.workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = loop.workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas são complementares
+        complexities = [r.complexity_metrics for r in results if r.complexity_metrics]
+        if complexities:
+            avg_time = np.mean([c["actual_time_ms"] for c in complexities])
+            print(f"📊 Complexidade média: {avg_time:.1f}ms")
+
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Phase 2: análise de complexidade computacional
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa
+
+    print("✅ Phase 2 + Topological Metrics verified")
+
+
 if __name__ == "__main__":
     asyncio.run(test_complexity())

@@ -1,0 +1,36 @@
+# ============================================================================
+# CORE QUANTUM SYSTEM REQUIREMENTS - OMNIMIND
+# ============================================================================
+# Sistema quântico é CORE e FUNCIONAL - NÃO REMOVER
+#
+# Dependências essenciais para:
+# - quantum_unconscious.py (inconsciente irredutível)
+# - quantum_consciousness/* (cognição quântica)
+# - expectation_module.py (integração quântica)
+# - quantum_backend.py (backend unificado)
+# - quantum_memory.py (memória quântica)
+# - qpu_interface.py (interface QPU)
+#
+# CRITICAL: Estas dependências são OBRIGATÓRIAS para o sistema funcionar
+# ============================================================================
+
+# Qiskit Core (Framework quântico principal)
+# CRITICAL: qiskit-aer-gpu 0.15.x requer Qiskit 1.3.x (não 2.0+)
+# convert_to_target foi removido em Qiskit 2.0, quebrando compatibilidade
+# Usar Qiskit 1.3.x (LTS) para compatibilidade com GPU
+qiskit>=1.3.0,<2.0.0
+qiskit-aer>=0.15.0
+qiskit-aer-gpu>=0.15.0  # CRITICAL: GPU support para quantum_unconscious
+qiskit-algorithms>=0.4.0
+qiskit-ibm-runtime>=0.25.0  # Para backend IBM Quantum (opcional mas recomendado)
+
+# Quantum Optimization
+qiskit-optimization>=0.7.0
+
+# ============================================================================
+# NOTAS:
+# - qiskit-aer-gpu é OBRIGATÓRIO para suporte GPU no quantum_unconscious
+# - Sem qiskit-aer-gpu, sistema usa CPU (performance degradada)
+# - qiskit-ibm-runtime permite uso de hardware quântico real (opcional)
+# ============================================================================
+

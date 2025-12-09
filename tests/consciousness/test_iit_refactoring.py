@@ -5,6 +5,7 @@ Tests that the PhiCalculator correctly identifies MICS.
 IIT puro: apenas conscious_phi (MICS), não existe "Φ_inconsciente".
 """
 
+import numpy as np
 import pytest
 
 torch = pytest.importorskip("torch")
@@ -156,6 +157,96 @@ class TestPhiCalculator:
         # Verify types
         assert isinstance(result.conscious_phi, float)
         assert isinstance(result.conscious_complex, set)
+
+
+class TestIITRefactoringHybridTopological:
+    """Testes de integração entre IIT puro (PhiCalculator) e HybridTopologicalEngine."""
+
+    def test_iit_phi_complementary_with_topological_metrics(self):
+        """Testa que Φ do IIT puro e métricas topológicas são complementares."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar complexo simplicial para IIT puro
+        complex = SimplicialComplex()
+        complex.add_simplex((0,))
+        complex.add_simplex((1,))
+        complex.add_simplex((2,))
+        complex.add_simplex((0, 1))
+        complex.add_simplex((1, 2))
+        complex.add_simplex((0, 1, 2))
+
+        # Calcular Φ usando IIT puro
+        calculator = PhiCalculator(complex)
+        iit_result = calculator.calculate_phi_with_unconscious()
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambos são calculados e complementares
+        assert iit_result.conscious_phi >= 0.0
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # IIT puro: Φ consciente (MICS)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa de consciência
+
+    def test_phi_calculator_with_topological_context(self):
+        """Testa que PhiCalculator pode ser usado com contexto topológico."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar complexo simplicial
+        complex = SimplicialComplex()
+        complex.add_simplex((0,))
+        complex.add_simplex((1,))
+        complex.add_simplex((0, 1))
+
+        # Calcular Φ
+        calculator = PhiCalculator(complex)
+        iit_result = calculator.calculate_phi_with_unconscious()
+
+        # Simular estados no workspace
+        np.random.seed(42)
+        for i in range(10):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambos podem ser usados juntos
+        assert iit_result.conscious_phi >= 0.0
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # IIT puro fornece Φ consciente, topológico fornece estrutura
+            # Ambas são necessárias para análise completa
 
 
 if __name__ == "__main__":

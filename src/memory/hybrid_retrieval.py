@@ -113,11 +113,16 @@ class HybridRetrievalSystem:
             embedding_dim_raw = self.embedding_model.get_sentence_embedding_dimension()
             self.embedding_dim = int(embedding_dim_raw) if embedding_dim_raw is not None else 384
         else:
-            logger.info(f"Carregando modelo de embeddings: {embedding_model_name}")
-            self.embedding_model = SentenceTransformer(embedding_model_name, device="cpu")
+            from src.utils.device_utils import get_sentence_transformer_device
+
+            device = get_sentence_transformer_device()
+            logger.info(
+                f"Carregando modelo de embeddings: {embedding_model_name} (device={device})"
+            )
+            self.embedding_model = SentenceTransformer(embedding_model_name, device=device)
             embedding_dim_raw = self.embedding_model.get_sentence_embedding_dimension()
             self.embedding_dim = int(embedding_dim_raw) if embedding_dim_raw is not None else 384
-            logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}")
+            logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}, Device: {device}")
 
         # Otimizar modelo de embeddings se ModelOptimizer disponível (FASE 3.1)
         if self.model_optimizer and self.embedding_model:
@@ -141,9 +146,12 @@ class HybridRetrievalSystem:
         self.reranker_model: Optional[SentenceTransformer] = None
         if reranker_model_name:
             try:
-                logger.info(f"Carregando reranker: {reranker_model_name}")
-                self.reranker_model = SentenceTransformer(reranker_model_name, device="cpu")
-                logger.info("Reranker carregado")
+                from src.utils.device_utils import get_sentence_transformer_device
+
+                device = get_sentence_transformer_device()
+                logger.info(f"Carregando reranker: {reranker_model_name} (device={device})")
+                self.reranker_model = SentenceTransformer(reranker_model_name, device=device)
+                logger.info(f"Reranker carregado (device={device})")
             except Exception as e:
                 logger.warning(f"Erro ao carregar reranker: {e}. Continuando sem reranking.")
 
@@ -187,13 +195,41 @@ class HybridRetrievalSystem:
             query_embedding = self._generate_embedding(query)
 
             # Buscar no Qdrant
-            # mypy não reconhece método dinâmico do QdrantClient
-            results = self.client.search(  # type: ignore[attr-defined]
-                collection_name=self.collection_name,
-                query_vector=query_embedding,
-                limit=top_k,
-                with_payload=True,
-            )
+            # Prefer newer query_points API, fallback to older search/search_points
+            query_points = getattr(self.client, "query_points", None)
+            if callable(query_points):
+                # Nova API do Qdrant (v1.7+)
+                search_result = query_points(  # type: ignore[attr-defined]
+                    collection_name=self.collection_name,
+                    query=query_embedding,
+                    limit=top_k,
+                    with_payload=True,
+                    with_vectors=False,
+                )
+                results = (
+                    search_result.points if hasattr(search_result, "points") else search_result
+                )
+            else:
+                # Fallback para API antiga
+                search_fn = getattr(self.client, "search", None)
+                if callable(search_fn):
+                    results = search_fn(  # type: ignore[attr-defined]
+                        collection_name=self.collection_name,
+                        query_vector=query_embedding,
+                        limit=top_k,
+                        with_payload=True,
+                    )
+                else:
+                    # Último fallback: search_points
+                    search_points = getattr(self.client, "search_points", None)
+                    if not callable(search_points):
+                        raise AttributeError("QdrantClient query/search APIs indisponíveis")
+                    results = search_points(  # type: ignore[attr-defined]
+                        collection_name=self.collection_name,
+                        vector=query_embedding,
+                        limit=top_k,
+                        with_payload=True,
+                    )
 
             retrieval_results = []
             for hit in results:

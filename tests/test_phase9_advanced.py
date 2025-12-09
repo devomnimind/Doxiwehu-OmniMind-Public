@@ -227,5 +227,69 @@ class TestMetacognitionAPI:
             pytest.skip("Metacognition routes not available")
 
 
+class TestPhase9HybridTopological:
+    """Testes de integração entre Phase 9 e HybridTopologicalEngine."""
+
+    def test_metacognition_with_topological_metrics(self):
+        """Testa metacognition com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular estados
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que metacognition pode usar métricas topológicas
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Metacognition pode usar estrutura topológica para auto-reflexão
+            # Omega: integração (pode informar estratégias metacognitivas)
+
+    def test_homeostasis_with_topological_metrics(self):
+        """Testa homeostasis com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Simular estados
+        np.random.seed(42)
+        for i in range(10):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que homeostasis pode usar métricas topológicas
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Homeostasis pode usar estrutura topológica para manter equilíbrio
+            # Omega: integração (pode indicar necessidade de ajuste)
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

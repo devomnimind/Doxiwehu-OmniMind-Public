@@ -18,6 +18,8 @@ from typing import Any, Dict, List, Optional
 
 import structlog
 
+from src.consciousness.adaptive_weights import PrecisionWeighter
+
 logger = structlog.get_logger(__name__)
 
 
@@ -326,6 +328,7 @@ class CreativeProblemSolver:
         max_solutions_per_problem: int = 10,
         novelty_threshold: float = 0.5,
         min_feasibility: float = 0.3,
+        use_precision_weights: bool = True,
     ) -> None:
         """Initialize Creative Problem Solver.
 
@@ -333,10 +336,15 @@ class CreativeProblemSolver:
             max_solutions_per_problem: Maximum solutions to generate
             novelty_threshold: Minimum novelty for innovative solutions
             min_feasibility: Minimum feasibility to consider
+            use_precision_weights: Se True, usa PrecisionWeighter para pesos dinâmicos
         """
         self.max_solutions_per_problem = max_solutions_per_problem
         self.novelty_threshold = novelty_threshold
         self.min_feasibility = min_feasibility
+        self.use_precision_weights = use_precision_weights
+        self.precision_weighter: Optional[PrecisionWeighter] = (
+            PrecisionWeighter(history_window=50) if use_precision_weights else None
+        )
 
         # Internal state
         self._solution_history: List[Solution] = []
@@ -656,13 +664,30 @@ class CreativeProblemSolver:
         Returns:
             Evaluation score (0.0-1.0)
         """
+        # Componentes da solução
+        component_values = {
+            "novelty": solution.novelty_score,
+            "feasibility": solution.feasibility_score,
+            "effectiveness": solution.effectiveness_score,
+        }
+
+        # Calcular pesos (dinâmicos ou fixos)
         if criteria is None:
-            # Use default criteria
-            criteria = {
-                "novelty": 0.3,
-                "feasibility": 0.3,
-                "effectiveness": 0.4,
-            }
+            if self.use_precision_weights and self.precision_weighter:
+                # Usar PrecisionWeighter para pesos dinâmicos
+                weights = self.precision_weighter.compute_weights(component_values)
+                criteria = weights
+                logger.debug(
+                    "CreativeProblemSolver: Pesos dinâmicos calculados",
+                    weights=weights,
+                )
+            else:
+                # Fallback para pesos hardcoded (compatibilidade)
+                criteria = {
+                    "novelty": 0.3,
+                    "feasibility": 0.3,
+                    "effectiveness": 0.4,
+                }
 
         # Calculate weighted score
         score = (

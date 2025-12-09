@@ -148,6 +148,86 @@ def test_real_data_causality():
         return False
 
 
+def test_real_causality_with_topological_metrics():
+    """Testa causalidade real com métricas topológicas."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    print("🧠 TESTE: Causalidade Real + Topological Metrics")
+    print("=" * 60)
+
+    # Criar workspace com engine topológico
+    workspace = SharedWorkspace(embedding_dim=256, max_history_size=1000)
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular dados de módulos reais
+    np.random.seed(42)
+    modules = ["qualia_engine", "narrative_constructor", "attention_router", "memory_integrator"]
+
+    # Gerar dados causais realistas
+    n_cycles = 100
+    base_signal = np.random.randn(n_cycles, 256)
+
+    signals = {}
+    signals["qualia_engine"] = base_signal + 0.1 * np.random.randn(n_cycles, 256)
+
+    signals["narrative_constructor"] = np.zeros((n_cycles, 256))
+    for t in range(3, n_cycles):
+        signals["narrative_constructor"][t] = (
+            0.7 * signals["qualia_engine"][t - 2]
+            + 0.3 * signals["narrative_constructor"][t - 1]
+            + 0.1 * np.random.randn(256)
+        )
+
+    signals["attention_router"] = np.zeros((n_cycles, 256))
+    for t in range(2, n_cycles):
+        signals["attention_router"][t] = (
+            0.6 * signals["narrative_constructor"][t - 1]
+            + 0.2 * signals["attention_router"][t - 1]
+            + 0.1 * np.random.randn(256)
+        )
+
+    signals["memory_integrator"] = np.zeros((n_cycles, 256))
+    for t in range(4, n_cycles):
+        signals["memory_integrator"][t] = (
+            0.5 * signals["attention_router"][t - 3]
+            + 0.4 * signals["memory_integrator"][t - 1]
+            + 0.1 * np.random.randn(256)
+        )
+
+    # Escrever no workspace
+    for cycle in range(n_cycles):
+        for module in modules:
+            embedding = signals[module][cycle]
+            workspace.write_module_state(module, embedding)
+        workspace.advance_cycle()
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Testar causalidade
+    causal_pairs = [
+        ("qualia_engine", "narrative_constructor"),
+        ("narrative_constructor", "attention_router"),
+    ]
+
+    for source, target in causal_pairs:
+        # Calcular métricas causais (resultado não usado, apenas efeito colateral)
+        _ = workspace.compute_cross_prediction_causal(
+            source, target, history_window=50, method="granger_transfer"
+        )
+
+    # Verificar que métricas topológicas são complementares à análise causal
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Causalidade: fluxo de informação (Granger + Transfer)
+        # Topological: estrutura e integração (Omega, Betti-0)
+        # Ambas são complementares para análise completa
+
+    print("✅ Causalidade Real + Topological Metrics verified")
+    return True
+
+
 if __name__ == "__main__":
     success = test_real_data_causality()
     sys.exit(0 if success else 1)

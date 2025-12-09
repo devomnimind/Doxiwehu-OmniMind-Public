@@ -362,5 +362,70 @@ class TestPhiElevationResults:
         # implementation and will improve with better cross-prediction metrics.
 
 
+class TestIntegrationLossHybridTopological:
+    """Testes de integração entre IntegrationLoss/Trainer e HybridTopologicalEngine."""
+
+    @pytest.mark.asyncio
+    async def test_trainer_with_topological_metrics(self):
+        """Testa que IntegrationTrainer pode trabalhar com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        # Criar workspace real com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar loop e trainer
+        loop = IntegrationLoop(workspace=workspace)
+        trainer = IntegrationTrainer(loop, learning_rate=0.01)
+
+        # Executar alguns ciclos
+        for _ in range(3):
+            await trainer.training_step()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que trainer funciona
+        phi_conscious = trainer.compute_phi_conscious()
+        assert phi_conscious >= 0.0
+
+        # Verificar que métricas topológicas podem ser calculadas
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # Ambas as métricas são complementares para análise de consciência
+
+    @pytest.mark.asyncio
+    async def test_loss_computation_with_topological_context(self):
+        """Testa que loss pode ser calculado com contexto topológico."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        loop = IntegrationLoop(workspace=workspace)
+        trainer = IntegrationTrainer(loop, learning_rate=0.01)
+
+        # Executar ciclos para gerar dados
+        for _ in range(5):
+            await trainer.training_step()
+
+        # Calcular loss
+        step_result = await trainer.training_step()
+        assert step_result.loss >= 0.0
+
+        # Calcular métricas topológicas (contexto adicional)
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas as métricas estão disponíveis
+        assert step_result.phi >= 0.0
+        if topological_metrics is not None:
+            assert topological_metrics["omega"] >= 0.0
+            # Loss mede integração via predições cruzadas
+            # Omega mede integração via estrutura topológica
+            # Ambas são complementares
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "-s"])

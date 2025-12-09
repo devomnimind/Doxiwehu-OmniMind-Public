@@ -372,5 +372,48 @@ class TestAblationRecovery:
         assert recovery_ratio > 0.8, f"Recovery insufficient: {recovery_ratio:.2%} of baseline"
 
 
+class TestContrafactualHybridTopological:
+    """Testes de integração entre Contrafactual (Ablation) e HybridTopologicalEngine."""
+
+    @pytest.mark.asyncio
+    async def test_ablation_with_topological_metrics(self):
+        """Testa que ablação de módulos pode ser analisada com métricas topológicas."""
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar loop
+        loop = IntegrationLoop(enable_logging=False)
+
+        # Adicionar engine topológico ao workspace
+        if loop.workspace:
+            loop.workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Executar ciclos baseline
+        await loop.run_cycles(3, collect_metrics_every=1)
+
+        # Calcular métricas topológicas baseline
+        if loop.workspace and loop.workspace.hybrid_topological_engine:
+            # Simular estados para métricas topológicas
+            np.random.seed(42)
+            for i in range(3):
+                rho_C = np.random.randn(256)
+                rho_P = np.random.randn(256)
+                rho_U = np.random.randn(256)
+
+                loop.workspace.write_module_state("conscious_module", rho_C)
+                loop.workspace.write_module_state("preconscious_module", rho_P)
+                loop.workspace.write_module_state("unconscious_module", rho_U)
+                loop.workspace.advance_cycle()
+
+            baseline_topological = loop.workspace.compute_hybrid_topological_metrics()
+
+            # Verificar que métricas topológicas podem ser usadas na análise de ablação
+            if baseline_topological is not None:
+                assert "omega" in baseline_topological
+                # Ablação: impacto causal de módulos (Δ Φ)
+                # Topological: estrutura e integração (Omega, Betti-0)
+                # Ambas são complementares para análise completa de causalidade
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v", "-s"])

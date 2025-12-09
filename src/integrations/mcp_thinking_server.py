@@ -133,14 +133,25 @@ class ThinkingMCPServer(MCPServer):
         )
 
     def _init_embedding_model(self) -> None:
-        """Inicializa modelo de embedding (lazy, com fallback)."""
+        """Inicializa modelo de embedding (lazy, com fallback robusto)."""
         try:
             from sentence_transformers import SentenceTransformer
 
-            self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
-            logger.debug("Modelo de embedding carregado: all-MiniLM-L6-v2")
+            from src.utils.device_utils import get_sentence_transformer_device
+
+            device = get_sentence_transformer_device()
+            self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device=device)
+            logger.debug(f"Modelo de embedding carregado: all-MiniLM-L6-v2 (device={device})")
         except ImportError:
             logger.debug("SentenceTransformer não disponível, usando fallback hash-based")
+            self._embedding_model = None
+        except (AttributeError, KeyError, Exception) as e:
+            # Tratar erros de incompatibilidade de versão, cache corrompido, etc.
+            logger.warning(
+                "Erro ao carregar modelo de embedding (incompatibilidade/cache corrompido): %s. "
+                "Usando fallback hash-based",
+                e,
+            )
             self._embedding_model = None
 
     def _init_psi_producer(self) -> None:
@@ -744,19 +755,35 @@ class ThinkingMCPServer(MCPServer):
                 metadata={"branch_from_step": step_id, "branch_from_session": session_id},
             )
 
-            # Copiar passos até o ponto de branch
+            # Copiar passos até o ponto de branch (incluindo o passo de branch)
             for s in parent_session.steps:
                 if s.step_id == step_id:
+                    # Incluir o passo original como primeiro passo do branch
+                    original_step_copy = ThinkingStep(
+                        step_id=s.step_id,  # Manter mesmo ID para rastreabilidade
+                        session_id=new_session_id,  # Atualizar session_id
+                        content=s.content,
+                        step_type=s.step_type,
+                        timestamp=s.timestamp,
+                        metadata={**s.metadata, "branch_origin": True},
+                        parent_step_id=s.parent_step_id,
+                        phi=s.phi,
+                        quality_score=s.quality_score,
+                        psi_producer=s.psi_producer,
+                        psi_norm=s.psi_norm,
+                        psi_components=s.psi_components,
+                    )
+                    branch_session.steps.append(original_step_copy)
                     break
                 branch_session.steps.append(s)
 
-            # Adicionar o passo de branch como primeiro passo do novo branch
+            # Adicionar o passo de registro do branch como segundo passo
             branch_step = ThinkingStep(
                 step_id=f"step_{uuid.uuid4().hex[:12]}",
                 session_id=new_session_id,
                 content=f"Branch from step {step_id}: {step.content[:100]}",
                 step_type="thought",
-                metadata={"branch_from": step_id},
+                metadata={"branch_from": step_id, "branch_registration": True},
             )
             branch_session.steps.append(branch_step)
 

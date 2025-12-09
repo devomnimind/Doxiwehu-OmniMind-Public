@@ -723,7 +723,10 @@ class ConvergenceInvestigator:
         ax.set_xlim([0, 0.2])
         ax.set_ylim([0, 0.5])
         ax.grid(True, alpha=0.3)
-        ax.legend()
+        # CORREÇÃO FASE 2: Verificar se há handles antes de chamar legend()
+        handles, labels = ax.get_legend_handles_labels()
+        if handles:
+            ax.legend()
 
         # PLOT 2: Lacan Space
         ax = axes[0, 1]
@@ -759,7 +762,10 @@ class ConvergenceInvestigator:
         ax.set_xlim([-1, 5])
         ax.set_ylim([-0.1, 1.0])
         ax.grid(True, alpha=0.3)
-        ax.legend()
+        # CORREÇÃO FASE 2: Verificar se há handles antes de chamar legend()
+        handles, labels = ax.get_legend_handles_labels()
+        if handles:
+            ax.legend()
 
         # PLOT 3: Neurociência (DMN)
         ax = axes[1, 0]
@@ -788,7 +794,10 @@ class ConvergenceInvestigator:
         ax.set_xlim([0, 1.0])
         ax.set_ylim([0, 1.0])
         ax.grid(True, alpha=0.3)
-        ax.legend()
+        # CORREÇÃO FASE 2: Verificar se há handles antes de chamar legend()
+        handles, labels = ax.get_legend_handles_labels()
+        if handles:
+            ax.legend()
 
         # PLOT 4: Cibernética (Attractors)
         ax = axes[1, 1]
@@ -817,7 +826,10 @@ class ConvergenceInvestigator:
         ax.set_xlim([0, 5])
         ax.set_ylim([0, 1.1])
         ax.grid(True, alpha=0.3)
-        ax.legend()
+        # CORREÇÃO FASE 2: Verificar se há handles antes de chamar legend()
+        handles, labels = ax.get_legend_handles_labels()
+        if handles:
+            ax.legend()
 
         plt.tight_layout()
         plt.savefig(output_file, dpi=150, bbox_inches="tight")

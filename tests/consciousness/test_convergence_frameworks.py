@@ -292,6 +292,55 @@ async def test_all_frameworks_converge(convergence_investigator) -> None:
         print(f"Visualization skipped: {e}")
 
 
+@pytest.mark.asyncio
+async def test_convergence_with_topological_metrics(convergence_investigator) -> None:
+    """Test 5: Convergence investigation with topological metrics."""
+    from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+    import numpy as np
+
+    # Run cycles
+    for _ in range(10):
+        await convergence_investigator.trainer.training_step()
+
+    # Obter workspace
+    workspace = convergence_investigator.trainer.integration_loop.workspace
+    if workspace is None:
+        pytest.skip("Workspace não disponível")
+
+    # Adicionar engine topológico
+    workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+    # Simular estados
+    np.random.seed(42)
+    for i in range(5):
+        rho_C = np.random.randn(256)
+        rho_P = np.random.randn(256)
+        rho_U = np.random.randn(256)
+
+        workspace.write_module_state("conscious_module", rho_C)
+        workspace.write_module_state("preconscious_module", rho_P)
+        workspace.write_module_state("unconscious_module", rho_U)
+        workspace.advance_cycle()
+
+    # Calcular métricas de convergência
+    phi_c = convergence_investigator.trainer.compute_phi_conscious()
+
+    # Calcular métricas topológicas
+    topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+    # Verificar que ambas as métricas estão disponíveis
+    assert isinstance(phi_c, float) and 0 <= phi_c <= 1
+    if topological_metrics is not None:
+        assert "omega" in topological_metrics
+        # Convergência pode ser detectada via múltiplas métricas complementares
+        # IIT: Φ_conscious
+        # Topológico: Omega, Betti numbers
+        # Ambas contribuem para detecção de convergência
+
+    omega_str = topological_metrics.get("omega", "N/A") if topological_metrics else "N/A"
+    print(f"✓ Convergence + Topological: Φ={phi_c:.4f}, Omega={omega_str}")
+
+
 if __name__ == "__main__":
     # Run with: pytest tests/consciousness/test_convergence_frameworks.py -xvs
     pass

@@ -86,11 +86,14 @@ class SemanticCacheLayer:
             embedding_dim_raw = self.embedding_model.get_sentence_embedding_dimension()
             self.embedding_dim = int(embedding_dim_raw) if embedding_dim_raw is not None else 384
         else:
-            logger.info(f"Carregando modelo de embeddings: {model_name}")
-            self.embedding_model = SentenceTransformer(model_name, device="cpu")
+            from src.utils.device_utils import get_sentence_transformer_device
+
+            device = get_sentence_transformer_device()
+            logger.info(f"Carregando modelo de embeddings: {model_name} (device={device})")
+            self.embedding_model = SentenceTransformer(model_name, device=device)
             embedding_dim_raw = self.embedding_model.get_sentence_embedding_dimension()
             self.embedding_dim = int(embedding_dim_raw) if embedding_dim_raw is not None else 384
-            logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}")
+            logger.info(f"Modelo carregado. Dimensões: {self.embedding_dim}, Device: {device}")
 
         # Inicializar Qdrant
         self.client = QdrantClient(url=qdrant_url)

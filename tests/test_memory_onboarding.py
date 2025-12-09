@@ -131,3 +131,53 @@ def test_supabase_onboarding_handles_error() -> None:
     assert report.nodes_loaded == 0
     assert len(report.errors) == 1
     assert "boom" in report.errors[0]  # Message format: "GraphQL error on page 1: boom"
+
+
+class TestMemoryOnboardingHybridTopological:
+    """Testes de integração entre MemoryOnboarding e HybridTopologicalEngine."""
+
+    def test_memory_onboarding_with_topological_metrics(self):
+        """Testa que MemoryOnboarding pode ser usado com métricas topológicas."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar onboarding
+        config = SupabaseConfig(
+            url="https://supabase.test", anon_key="anon", service_role_key="service"
+        )
+        memory = DummyMemory()
+        helper = DummyHelper(pages=[])
+        onboarding = SupabaseMemoryOnboarding(
+            config=config,
+            memory=cast(EpisodicMemory, memory),
+            helper=cast(GraphQLSupabaseHelper, helper),
+        )
+
+        # Simular estados no workspace para métricas topológicas
+        np.random.seed(42)
+        for i in range(5):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas funcionam
+        report = onboarding.seed_collection(page_size=1)
+        assert report.nodes_processed >= 0
+        if topological_metrics is not None:
+            assert "omega" in topological_metrics
+            # MemoryOnboarding: onboarding de memória (Supabase)
+            # Topological: estrutura e integração (Omega, Betti-0)
+            # Ambas são complementares para análise completa

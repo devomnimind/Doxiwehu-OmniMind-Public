@@ -33,6 +33,15 @@ class TestSigmaSinthomeCalculator:
         assert calculator.integration_trainer is None
         assert calculator.workspace is None
         assert calculator.logger is not None
+        # Verificar que PrecisionWeighter está ativo por padrão
+        assert calculator.use_precision_weights is True
+        assert calculator.precision_weighter is not None
+
+    def test_initialization_without_precision_weights(self):
+        """Testa inicialização sem PrecisionWeighter (fallback)."""
+        calculator = SigmaSinthomeCalculator(use_precision_weights=False)
+        assert calculator.use_precision_weights is False
+        assert calculator.precision_weighter is None
 
     def test_initialization_with_dependencies(self):
         """Testa inicialização com dependências."""
@@ -70,6 +79,57 @@ class TestSigmaSinthomeCalculator:
         # Flexibility score deve ser calculado
         assert result.components.flexibility_score >= 0.0
         assert result.components.flexibility_score <= 1.0
+
+
+class TestSigmaSinthomeHybridTopological:
+    """Testes de integração entre SigmaSinthomeCalculator e HybridTopologicalEngine."""
+
+    def test_sigma_with_topological_metrics_complementary(self):
+        """Testa que σ e métricas topológicas são complementares."""
+        from src.consciousness.shared_workspace import SharedWorkspace
+        from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
+        import numpy as np
+
+        # Criar workspace com engine topológico
+        workspace = SharedWorkspace(embedding_dim=256)
+        workspace.hybrid_topological_engine = HybridTopologicalEngine()
+
+        # Criar calculador de sigma com workspace
+        calculator = SigmaSinthomeCalculator(workspace=workspace)
+
+        # Simular múltiplos ciclos
+        np.random.seed(42)
+        phi_history = []
+        for i in range(10):
+            rho_C = np.random.randn(256)
+            rho_P = np.random.randn(256)
+            rho_U = np.random.randn(256)
+
+            workspace.write_module_state("conscious_module", rho_C)
+            workspace.write_module_state("preconscious_module", rho_P)
+            workspace.write_module_state("unconscious_module", rho_U)
+            workspace.advance_cycle()
+
+            # Calcular phi para histórico
+            phi = workspace.compute_phi_from_integrations()
+            phi_history.append(phi)
+
+        # Calcular sigma
+        result = calculator.calculate_sigma_for_cycle(
+            cycle_id="test_cycle", phi_history=phi_history
+        )
+
+        # Calcular métricas topológicas
+        topological_metrics = workspace.compute_hybrid_topological_metrics()
+
+        # Verificar que ambas as métricas foram calculadas
+        assert result.sigma_value >= 0.0
+        assert result.sigma_value <= 1.0
+        if topological_metrics is not None:
+            assert topological_metrics["sigma"] >= 0.0  # Small-Worldness
+            # σ (Sinthome) e sigma (Small-Worldness) são métricas diferentes e complementares
+            # σ: coesão estrutural (Lacan)
+            # sigma: estrutura de rede (Small-Worldness)
 
     def test_calculate_flexibility_score(self):
         """Testa cálculo de flexibility_score (variância de Φ)."""
@@ -300,3 +360,7 @@ class TestSigmaSinthomeCalculator:
 
         assert isinstance(result, SigmaResult)
         assert 0.0 <= result.sigma_value <= 1.0
+
+
+# Nota: TestSigmaSinthomeHybridTopological já está definido acima (linha 84)
+# Esta classe duplicada foi removida para evitar F811 (redefinition of unused)

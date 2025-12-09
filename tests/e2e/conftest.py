@@ -17,7 +17,6 @@ Gerenciamento de estado do servidor:
 
 import json
 import os
-import subprocess
 import time
 from pathlib import Path
 from typing import Generator
@@ -67,6 +66,98 @@ def auth_credentials():
     return get_auth_credentials()
 
 
+def _check_port_in_use(port: int) -> bool:
+    """Verifica se porta está em uso usando lsof (sem matar processos)."""
+    import subprocess
+
+    try:
+        # Usar lsof para verificar se há processo na porta (não mata processos)
+        result = subprocess.run(
+            ["lsof", "-i", f":{port}", "-sTCP:LISTEN"],
+            capture_output=True,
+            text=True,
+            timeout=2.0,
+        )
+        return result.returncode == 0 and result.stdout.strip() != ""
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        # lsof não disponível ou timeout - assumir que porta pode estar em uso
+        return False
+
+
+def _start_server_safely(url: str, state_manager) -> bool:
+    """
+    Inicia servidor apenas se não estiver rodando.
+
+    IMPORTANTE: Não mata processos por sobrecarga de CPU (comportamento normal).
+    Apenas verifica se porta está em uso e inicia se necessário.
+    """
+    import subprocess
+    from pathlib import Path
+
+    port = 8000
+
+    # Verificar se porta está em uso (sem matar processos)
+    if _check_port_in_use(port):
+        print(f"✅ Porta {port} já está em uso - servidor provavelmente rodando")
+        # Aguardar um pouco e verificar health
+        for attempt in range(10):
+            try:
+                response = httpx.get(f"{url}/health/", timeout=2.0)
+                if response.status_code == 200:
+                    print(f"✅ Servidor confirmado rodando em {url}")
+                    state_manager.mark_running()
+                    return True
+            except (httpx.ConnectError, httpx.TimeoutException):
+                if attempt < 9:
+                    time.sleep(1)
+                    continue
+        # Porta em uso mas não responde - pode estar iniciando ainda
+        print(f"⚠️  Porta {port} em uso mas não responde - aguardando...")
+        return False
+
+    # Porta não está em uso - iniciar servidor
+    print(f"🚀 Iniciando servidor OmniMind em {url}...")
+    state_manager.mark_starting()
+
+    root_dir = Path(__file__).parent.parent.parent
+    start_script = root_dir / "scripts" / "canonical" / "system" / "start_omnimind_system.sh"
+
+    if not start_script.exists():
+        print(f"⚠️  Script de inicialização não encontrado: {start_script}")
+        return False
+
+    try:
+        # Iniciar servidor em background (não bloquear)
+        # NOTA: process não é usado diretamente, mas mantido para possível cleanup futuro
+        subprocess.Popen(
+            ["bash", str(start_script)],
+            cwd=str(root_dir),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+
+        # Aguardar servidor iniciar (até 60s)
+        for attempt in range(60):
+            try:
+                response = httpx.get(f"{url}/health/", timeout=2.0)
+                if response.status_code == 200:
+                    print(f"✅ Servidor iniciado com sucesso em {url}")
+                    state_manager.mark_running()
+                    return True
+            except (httpx.ConnectError, httpx.TimeoutException):
+                if attempt < 59:
+                    time.sleep(1)
+                    continue
+
+        # Timeout - servidor não iniciou
+        print("⚠️  Timeout aguardando servidor iniciar")
+        return False
+
+    except Exception as e:
+        print(f"❌ Erro ao iniciar servidor: {e}")
+        return False
+
+
 @pytest.fixture(scope="session")
 def omnimind_server() -> Generator[str, None, None]:
     """
@@ -75,14 +166,16 @@ def omnimind_server() -> Generator[str, None, None]:
 
     Gerenciamento de estado:
     - Adquire propriedade no ServerStateManager
-    - Impede que ServerMonitorPlugin reinicie servidor
+    - Verifica se servidor está rodando (via lsof + health check)
+    - Inicia servidor apenas se não estiver rodando
+    - NÃO mata processos por sobrecarga de CPU (comportamento normal)
     - Libera propriedade ao final da sessão
 
     Yields:
         str: URL do servidor (http://localhost:8000)
 
     Raises:
-        RuntimeError: Se servidor não iniciar
+        RuntimeError: Se servidor não iniciar e não estiver rodando
     """
     # Usar porta principal do sistema (8000)
     port = 8000
@@ -96,121 +189,66 @@ def omnimind_server() -> Generator[str, None, None]:
             "Não conseguiu adquirir propriedade do servidor " "(outro componente já controla)"
         )
 
-    server_process: subprocess.Popen[str] | None = None
+    server_started_by_fixture = False
     try:
-        # Verificar se servidor de teste já está rodando
+        # Verificar se servidor já está rodando e saudável
         try:
-            # Aumentado timeout para 5s para evitar falsos negativos em máquinas lentas
             response = httpx.get(f"{url}/health/", timeout=5.0)
             if response.status_code == 200:
-                print(f"✅ Servidor de teste já rodando em {url}")
+                print(f"✅ Servidor já está rodando e saudável em {url}")
                 state_manager.mark_running()
                 yield url
                 return
         except (httpx.ConnectError, httpx.TimeoutException):
-            # Se der timeout, assumir que está rodando mas lento (não matar!)
-            # Apenas ConnectError confirma que a porta está fechada
-            if isinstance(httpx.TimeoutException, type) and "Timeout" in str(
-                httpx.TimeoutException
-            ):
-                # Double check com socket puro se necessário, mas por segurança não matamos
-                pass
+            # Servidor não responde - verificar se porta está em uso
             pass
 
-        # Se porta estiver ocupada mas não respondeu health check, matar processo
-        # CUIDADO: Só matar se tiver certeza que não é o dev server lento
-        try:
-            # Tentar matar processo na porta 8000
-            subprocess.run(
-                ["fuser", "-k", f"{port}/tcp"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            time.sleep(1)  # Esperar liberar porta
-        except FileNotFoundError:
-            # fuser pode não estar instalado, tentar lsof ou pkill
-            subprocess.run(
-                ["pkill", "-f", "uvicorn.*web.backend.main:app"],
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL,
-            )
-            time.sleep(1)
+        # Verificar se porta está em uso (pode estar iniciando ainda)
+        if _check_port_in_use(port):
+            print(f"🔍 Porta {port} está em uso - aguardando servidor ficar pronto...")
+            # Aguardar até 30s para servidor ficar pronto
+            for attempt in range(30):
+                try:
+                    response = httpx.get(f"{url}/health/", timeout=2.0)
+                    if response.status_code == 200:
+                        print(f"✅ Servidor ficou pronto em {url}")
+                        state_manager.mark_running()
+                        yield url
+                        return
+                except (httpx.ConnectError, httpx.TimeoutException):
+                    if attempt < 29:
+                        time.sleep(1)
+                        continue
 
-        # Iniciar servidor
-        print(f"🚀 Iniciando servidor OmniMind em {url}...")
-        state_manager.mark_starting()
+            # Porta em uso mas não responde - pode estar com problema
+            print(f"⚠️  Porta {port} em uso mas servidor não responde após 30s")
+            print("   Tentando iniciar servidor mesmo assim...")
 
-        # Buscar arquivo main.py
-        cwd = Path(__file__).parent.parent.parent
+        # Servidor não está rodando - iniciar apenas nesses testes E2E
+        if _start_server_safely(url, state_manager):
+            server_started_by_fixture = True
+            yield url
+            return
 
-        # Force credentials for test server
-        env = os.environ.copy()
-        user, password = get_auth_credentials()
-        env["OMNIMIND_DASHBOARD_USER"] = user
-        env["OMNIMIND_DASHBOARD_PASS"] = password
-
-        server_process = subprocess.Popen(
-            [
-                "python",
-                "-m",
-                "uvicorn",
-                "web.backend.main:app",
-                "--host",
-                "0.0.0.0",
-                "--port",
-                str(port),
-                "--log-level",
-                "info",
-                "--timeout-keep-alive",
-                "5",
-            ],
-            cwd=cwd,
-            env=env,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
+        # Se chegou aqui, não conseguiu iniciar nem encontrar servidor rodando
+        print(f"⚠️  Servidor não está acessível em {url}")
+        print("   Para testes E2E, o servidor deve estar rodando via:")
+        print("   - scripts/canonical/system/start_omnimind_system.sh")
+        print("   - Ou via systemd/service manager")
+        state_manager.mark_down()
+        raise RuntimeError(
+            f"Servidor OmniMind não está acessível em {url}. "
+            "Para testes E2E, o servidor deve estar rodando em produção."
         )
 
-        # Aguardar servidor iniciar (máx 120s - máquina tem muita contenção)
-        start_time = time.time()
-        max_wait = 120
-
-        while time.time() - start_time < max_wait:
-            try:
-                response = httpx.get(f"{url}/health/", timeout=5.0)
-                if response.status_code == 200:
-                    print(f"✅ Servidor inicializado em {url}")
-                    state_manager.mark_running()
-                    break
-            except (httpx.ConnectError, httpx.TimeoutException, httpx.HTTPError):
-                time.sleep(2)  # Esperar mais entre tentativas
-        else:
-            stdout, stderr = server_process.communicate(timeout=5)
-            server_process.terminate()
-            state_manager.mark_down()
-            error_msg = f"Servidor não iniciou em {url} após {max_wait}s\n"
-            if stdout:
-                error_msg += f"STDOUT:\n{stdout}\n"
-            if stderr:
-                error_msg += f"STDERR:\n{stderr}\n"
-            raise RuntimeError(error_msg)
-
-        yield url
-
     finally:
-        # Cleanup: parar servidor (apenas se foi iniciado por esta fixture)
-        if server_process is not None:
-            print(f"🛑 Parando servidor em {url}...")
-            state_manager.mark_stopping()
-            server_process.terminate()
-            try:
-                server_process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                server_process.kill()
-                server_process.wait()
-        # Liberar propriedade do servidor
+        # Cleanup: liberar propriedade do servidor
+        # NOTA: Não para servidor em produção - apenas libera propriedade
         state_manager.release_ownership("fixture")
-        print("✅ Propriedade do servidor liberada")
+        if server_started_by_fixture:
+            print("✅ Propriedade do servidor liberada (servidor continua rodando)")
+        else:
+            print("✅ Propriedade do servidor liberada")
 
 
 @pytest.fixture

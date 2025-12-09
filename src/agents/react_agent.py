@@ -180,6 +180,11 @@ class ReactAgent:
         # Registrar agente como módulo no workspace
         if self.workspace:
             try:
+                # CRÍTICO: Garantir que _embedding_model existe antes de usar
+                if not hasattr(self, "_embedding_model") or self._embedding_model is None:
+                    # Tentar inicializar novamente se falhou antes
+                    self._init_embedding_model()
+
                 agent_embedding = self._generate_embedding(f"{self.mode}_{self.__class__.__name__}")
                 if agent_embedding.shape[0] != self.workspace.embedding_dim:
                     if agent_embedding.shape[0] < self.workspace.embedding_dim:
@@ -226,15 +231,92 @@ class ReactAgent:
             self._metrics_collector = None
 
     def _init_embedding_model(self) -> None:
-        """Inicializa modelo de embedding (lazy, com fallback)."""
+        """Inicializa modelo de embedding (lazy, com fallback).
+
+        CORREÇÃO (2025-12-08): Trata erro de meta tensor carregando modelo
+        em CPU primeiro, depois movendo para device desejado se necessário.
+        """
         try:
             from sentence_transformers import SentenceTransformer
 
-            self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
-            logger.debug("Modelo de embedding carregado: all-MiniLM-L6-v2")
+            from src.utils.device_utils import (
+                get_sentence_transformer_device,
+                check_gpu_memory_available,
+            )
+            from src.memory.gpu_memory_consolidator import get_gpu_consolidator
+
+            # Verificar memória GPU disponível antes de escolher device
+            # get_sentence_transformer_device() já verifica memória e retorna "cpu" se insuficiente
+            device = get_sentence_transformer_device(min_memory_mb=100.0)
+
+            try:
+                # CORREÇÃO: Carregar sempre em CPU primeiro para evitar meta tensor error
+                # SentenceTransformer pode inicializar modelos em meta device quando
+                # especificamos device diretamente, causando "Cannot copy out of meta tensor"
+                self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+
+                # Se device desejado não é CPU e há memória suficiente,
+                # tentar mover após carregamento seguro
+                if device != "cpu" and check_gpu_memory_available(min_memory_mb=100.0):
+                    try:
+                        self._embedding_model = self._embedding_model.to(device)
+                        logger.debug(
+                            f"Modelo de embedding carregado: all-MiniLM-L6-v2 (device={device})"
+                        )
+                    except Exception as move_exc:
+                        # Se falhar ao mover (ex: OOM), manter em CPU
+                        if "out of memory" in str(move_exc).lower() or "OOM" in str(move_exc):
+                            logger.warning(f"OOM ao mover para {device}, mantendo em CPU")
+                        elif "meta tensor" in str(move_exc).lower():
+                            logger.warning(
+                                f"Meta tensor error ao mover para {device}, mantendo em CPU"
+                            )
+                        else:
+                            logger.warning(
+                                f"Erro ao mover para {device}: {move_exc}, mantendo em CPU"
+                            )
+                        logger.debug("Modelo de embedding carregado: all-MiniLM-L6-v2 (device=cpu)")
+                else:
+                    # Device é CPU ou não há memória suficiente - já está em CPU
+                    logger.debug("Modelo de embedding carregado: all-MiniLM-L6-v2 (device=cpu)")
+            except Exception as init_exc:
+                # Se OOM durante inicialização, tentar consolidar memórias
+                if "out of memory" in str(init_exc).lower() or "OOM" in str(init_exc):
+                    logger.warning("CUDA OOM ao carregar embedding model. Consolidando memórias...")
+
+                    consolidator = get_gpu_consolidator()
+                    if consolidator.should_consolidate():
+                        memory_items: List[Dict[str, Any]] = (
+                            []
+                        )  # Em produção, coletar memórias ativas
+                        consolidator.consolidate_gpu_memory(
+                            memory_items,
+                            process_context="react_agent_embedding_init",
+                        )
+
+                    # Tentar novamente em CPU após consolidação
+                    logger.info("Tentando carregar em CPU após consolidação...")
+                    self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+                elif "meta tensor" in str(init_exc).lower():
+                    # CORREÇÃO: Se ainda houver meta tensor error mesmo em CPU,
+                    # pode ser problema com SentenceTransformer - usar fallback
+                    logger.warning("Meta tensor error persistente, usando fallback hash-based")
+                    self._embedding_model = None
+                else:
+                    raise
         except ImportError:
             logger.debug("SentenceTransformer não disponível, usando fallback hash-based")
             self._embedding_model = None
+        except Exception as e:
+            # Tratar OOM mesmo no catch-all final
+            if "out of memory" in str(e).lower() or "OOM" in str(e).upper():
+                logger.warning("CUDA OOM detectado no catch-all, usando fallback hash-based")
+                self._embedding_model = None
+            else:
+                logger.warning(
+                    f"Erro ao inicializar embedding model: {e}, usando fallback hash-based"
+                )
+                self._embedding_model = None
 
     def _generate_embedding(self, text: str) -> np.ndarray:
         """Gera embedding para texto (com fallback hash-based)."""
@@ -764,6 +846,23 @@ Your response:"""
             if self._phi_history:
                 phi_history = self._phi_history[-10:]
 
+            # Calcular δ (defesa/repressão) se disponível via workspace
+            delta_value = None
+            cycle_count = state.get("iteration", 0)
+
+            if self.workspace:
+                try:
+                    # Tentar calcular δ via workspace se disponível
+                    # δ depende de Φ e histórico de repressão
+                    if phi_history and len(phi_history) > 0:
+                        # Usar último valor de Φ para calcular δ
+                        current_phi = phi_history[-1]
+                        # Calcular δ aproximado baseado em Φ (quanto maior Φ, menor δ)
+                        # δ = 1 - Φ_norm (aproximação simples)
+                        delta_value = max(0.0, min(1.0, 1.0 - current_phi))
+                except Exception as e:
+                    logger.debug(f"Erro ao calcular δ: {e}")
+
             # Calcular tríade
             triad = self._triad_calculator.calculate_triad(
                 step_id=step_id,
@@ -773,6 +872,8 @@ Your response:"""
                 actions=actions,
                 cycle_id=f"cycle_{self.agent_id}_{state['iteration']}",
                 phi_history=phi_history if phi_history else None,
+                delta_value=delta_value,
+                cycle_count=cycle_count,
             )
 
             # Armazenar última tríade calculada

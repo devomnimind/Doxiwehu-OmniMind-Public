@@ -18,6 +18,7 @@ IIT PURO:
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Set, Tuple
 
+import numpy as np
 import torch
 
 # Detect GPU availability
@@ -198,7 +199,15 @@ class PhiCalculator:
         if not candidates:
             # Se não há candidatos, calcula para o complexo inteiro
             phi_value = self._calculate_phi_for_subsystem(set(range(self.complex.n_vertices)))
-            result.conscious_phi = phi_value
+
+            # FASE 3: Normalizar pelo tamanho da rede
+            network_size = self.complex.n_vertices
+            if network_size > 0:
+                phi_normalized = normalize_topological_phi(phi_value, network_size)
+                result.conscious_phi = phi_normalized
+            else:
+                result.conscious_phi = phi_value
+
             result.conscious_complex = set(range(self.complex.n_vertices))
             return result
 
@@ -214,7 +223,16 @@ class PhiCalculator:
         # MICS = candidato com maior Φ (único locus consciente)
         if candidate_phis:
             mics = candidate_phis[0]
-            result.conscious_phi = float(mics["phi_value"])
+            phi_raw = float(mics["phi_value"])
+
+            # FASE 3: Normalizar pelo tamanho da rede
+            network_size = self.complex.n_vertices
+            if network_size > 0:
+                phi_normalized = normalize_topological_phi(phi_raw, network_size)
+                result.conscious_phi = phi_normalized
+            else:
+                result.conscious_phi = phi_raw
+
             result.conscious_complex = set(mics["subsystem_nodes"])  # type: ignore
             # NOTA: Não preservamos "perdedores" - eles serão medidos como Ψ (Deleuze) separadamente
 
@@ -503,3 +521,35 @@ class LogToTopology:
         if len(logs) < 3:
             return False
         return all(log.get("level") == logs[0].get("level") for log in logs)
+
+
+# FASE 3: Normalização de Φ Topológico baseada em network_size
+def normalize_topological_phi(betti_sum: float, network_size: int) -> float:
+    """
+    Normaliza a soma de Betti pelo tamanho da rede (nós).
+
+    Baseado em Petri et al. (2014). Homological scaffolds of brain functional networks.
+    Journal of the Royal Society Interface.
+
+    O Φ Topológico (baseado em Buracos de Betti e Homologia Persistente) escala
+    com o tamanho da rede. Compará-lo diretamente com o Φ do IIT (Information Integration)
+    sem normalização cria uma "alucinação numérica".
+
+    Args:
+        betti_sum: Soma de números de Betti (ou valor de Φ topológico bruto)
+        network_size: Número de nós na rede
+
+    Returns:
+        Φ normalizado [0, 1]
+    """
+    if network_size == 0:
+        return 0.0
+
+    # Fator de normalização empírico para redes cerebrais pequenas
+    # O valor máximo teórico de Betti-1 escala com O(N)
+    # Para redes pequenas (< 100 nós), usamos fator 0.15
+    # Para redes maiores, o fator pode ser ajustado
+    max_theoretical_complexity = network_size * 0.15
+
+    phi_norm = betti_sum / max_theoretical_complexity
+    return float(np.clip(phi_norm, 0.0, 1.0))

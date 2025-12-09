@@ -39,7 +39,18 @@ class SelfAnalysis:
         try:
             with self.hash_chain_path.open("r", encoding="utf-8") as f:
                 data = json.load(f)
-                return cast(List[Dict[str, Any]], data.get("entries", []))
+                # Handle both dict format (with "entries" key) and list format
+                if isinstance(data, dict):
+                    entries = data.get("entries", [])
+                elif isinstance(data, list):
+                    entries = data
+                else:
+                    logger.warning(f"Unexpected hash chain format: {type(data)}")
+                    return []
+                return cast(List[Dict[str, Any]], entries)
+        except json.JSONDecodeError as exc:
+            logger.error(f"Failed to parse hash chain JSON: {exc}")
+            return []
         except Exception as exc:
             logger.error(f"Failed to load hash chain: {exc}")
             return []

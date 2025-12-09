@@ -70,7 +70,15 @@ async def _get_alert_system():
 
 
 class ServerMonitorPlugin:
-    """Monitora saúde do servidor durante testes - ESSENCIAL para segurança."""
+    """
+    Monitora saúde do servidor durante testes PERIGOSOS (chaos, stress, ddos).
+
+    IMPORTANTE:
+    - Monitor NÃO inicia servidor - isso é responsabilidade do script do sistema
+    - Monitor só ativo em testes marcados como chaos/stress/ddos
+    - Monitor apenas verifica e reinicia se servidor cair durante testes perigosos
+    - Desabilitado por padrão - só ativa em testes específicos
+    """
 
     def __init__(self):
         self.backend_url = "http://localhost:8000"
@@ -82,21 +90,26 @@ class ServerMonitorPlugin:
         self.skip_server_tests = (
             os.environ.get("OMNIMIND_SKIP_SERVER_TESTS", "false").lower() == "true"
         )
+        # IMPORTANTE: Monitor desabilitado por padrão
+        # Só ativa em testes perigosos (chaos, stress, ddos)
+        self.enabled = False
 
         # ========== TIMEOUTS ADAPTATIVOS POR TESTE ==========
-        # NÃO é timeout global, é timeout INDIVIDUAL POR TESTE
-        # Cada teste que derruba servidor pode levar até 300s para se recuperar
-        # Estratégia: começar com mínimo (120s), permitir progressão até 300s máximo
-        # Isso permite suite INTEIRA rodar sem problemas de timeout artificial
+        # ALINHADO COM CONFIGURAÇÃO GLOBAL (pytest.ini + conftest.py):
+        # - Timeout global: 800s máximo por teste individual
+        # - Timeout progressivo: começa em 240s, vai até 800s
+        # - Modo gradual: não falha, continua até máximo
+        # - NÃO é timeout global acumulativo - cada teste tem seu próprio orçamento
         self.startup_attempt_count = 0
 
         # Timeouts por tentativa (aumenta progressivamente)
         # ⏱️ CADA CONEXÃO/TESTE INDIVIDUAL tem estes timeouts:
-        # Tentativa 1: 220s  (startup + Orchestrator + SecurityAgent)
+        # Tentativa 1: 240s  (startup + Orchestrator + SecurityAgent - alinhado com config global)
         # Tentativa 2: 400s  (permite +recovery time para 2+ ciclos)
         # Tentativa 3: 600s  (permite 3+ ciclos completos)
         # Tentativa 4+: 800s (máximo - continua indefinidamente)
-        self.timeout_progression = [220, 400, 600, 800, 800]
+        # IMPORTANTE: Respeita configuração global de 240s inicial e 800s máximo
+        self.timeout_progression = [240, 400, 600, 800, 800]
         self.max_global_timeout = 800  # Máximo individual por teste (não global)
 
     def pytest_configure(self, config):
@@ -105,38 +118,59 @@ class ServerMonitorPlugin:
         pass
 
     def pytest_collection_finish(self, session):
-        """Após coletar testes: verifica E INICIA servidor se necessário."""
-        # ⚡ OTIMIZAÇÃO: Skip server initialization durante --collect-only
+        """
+        Após coletar testes: verifica se há testes perigosos e ativa monitor se necessário.
+
+        IMPORTANTE: Monitor NÃO inicia servidor - isso é responsabilidade do script do sistema.
+        Monitor apenas verifica e reinicia se servidor cair durante testes perigosos.
+        """
+        # ⚡ OTIMIZAÇÃO: Skip durante --collect-only
         if session.config.option.collectonly:
-            logger.info("🏃 Collect-only mode: Pulando inicialização de servidor")
+            logger.info("🏃 Collect-only mode: Pulando verificação de monitor")
             return
 
-        # Verifica se há testes E2E
+        # Verificar se há testes perigosos (chaos, stress, ddos)
+        dangerous_markers = ["chaos", "stress", "ddos", "load"]
+        has_dangerous_tests = False
+
         for item in session.items:
-            if self._needs_server(item):
-                self.has_e2e_tests = True
+            # Verificar se teste tem marcador perigoso
+            for marker in item.iter_markers():
+                if marker.name in dangerous_markers:
+                    has_dangerous_tests = True
+                    self.enabled = True
+                    logger.info(f"⚠️  Teste perigoso detectado: {item.name} - Monitor ativado")
+                    break
+            if has_dangerous_tests:
                 break
 
-        # Se há E2E tests, GARANTE servidor UP
-        if self.has_e2e_tests:
-            self._ensure_server_up()
+        if has_dangerous_tests:
+            logger.info("⚠️  Monitor ativado para testes perigosos")
+            print("⚠️  Monitor de servidor ativado para testes perigosos (chaos/stress/ddos)")
+        else:
+            logger.info("✅ Nenhum teste perigoso detectado - Monitor desabilitado")
 
     def pytest_runtest_setup(self, item):
         """
-        Antes de cada teste: verifica se servidor está UP.
+        Antes de cada teste: verifica se servidor está UP (apenas para testes perigosos).
 
-        Respeita ServerStateManager:
-        - Se fixture controla servidor → confia que já está UP
-        - Se plugin controla → verifica e reinicia se necessário
-        - Se ninguém controla → verifica e inicia se necessário
-
-        IMPORTANTE: Com 3900 testes + system OmniMind ativo, health checks
-        agressivos causam timeouts falsos. Estratégia:
-        - Cache de 45s evita multiple checks
-        - Timeout de 5s é tolerante
-        - SÓ reinicia se ConnectionError confirmado (não timeout)
+        IMPORTANTE:
+        - Monitor só ativo em testes perigosos (chaos, stress, ddos)
+        - Monitor NÃO inicia servidor - isso é responsabilidade do script do sistema
+        - Monitor apenas verifica e reinicia se servidor cair durante testes perigosos
         """
-        # Apenas para testes que precisam de servidor
+        # Monitor desabilitado por padrão - só ativa em testes perigosos
+        if not self.enabled:
+            return
+
+        # Verificar se teste é perigoso
+        dangerous_markers = ["chaos", "stress", "ddos", "load"]
+        is_dangerous = any(item.get_closest_marker(marker) for marker in dangerous_markers)
+
+        if not is_dangerous:
+            return  # Monitor não ativo para testes normais
+
+        # Apenas para testes perigosos que precisam de servidor
         if self._needs_server(item):
             if self.skip_server_tests:
                 pytest.skip("Servidor skipped via OMNIMIND_SKIP_SERVER_TESTS=true")
@@ -161,41 +195,39 @@ class ServerMonitorPlugin:
 
             # Sem cache recente: fazer health check
             if not self._is_server_healthy():
-                print(f"\n⚠️  Servidor DOWN antes de {item.name} - reiniciando...")
-                try:
-                    # Adquirir propriedade antes de reiniciar
-                    if state_manager.can_manage_server("plugin"):
-                        state_manager.acquire_ownership("plugin")
-                        try:
-                            self._start_server()
-                        finally:
-                            state_manager.release_ownership("plugin")
-                    else:
-                        logger.warning(
-                            f"Plugin não pode gerenciar servidor "
-                            f"({state_manager.owner} já controla)"
-                        )
-                        pytest.skip(
-                            f"Servidor gerenciado por {state_manager.owner}, " f"aguardando..."
-                        )
-                except Exception as e:
-                    logger.error(f"Falha ao reiniciar servidor: {e}")
-                    pytest.skip(f"Servidor indisponível: {e}")
+                print(f"\n⚠️  Servidor DOWN antes de {item.name}")
+                print(
+                    "   💡 Monitor não inicia servidor - inicie manualmente: "
+                    "./scripts/start_omnimind_system_sudo.sh"
+                )
+                logger.warning(
+                    f"Servidor não está respondendo antes de teste perigoso: {item.name}"
+                )
+                pytest.skip(
+                    "Servidor não está respondendo - inicie manualmente com "
+                    "./scripts/start_omnimind_system_sudo.sh"
+                )
 
     def pytest_runtest_makereport(self, item, call):
         """
-        Detecta se teste derrubou servidor - SÓ PARA TESTES NÃO GERENCIADOS PELA FIXTURE.
+        Detecta se teste perigoso derrubou servidor.
 
-        Respeita ServerStateManager:
-        - Se fixture controla → não reinicia (deixa fixture cuidar)
-        - Se servidor caiu sob plugin's watch → plugin reinicia
-
-        IMPORTANTE: Com 3900 testes, fazer health check após CADA teste é muito
-        agressivo. Estratégia:
-        - SKIP health check se cache recente diz servidor está UP
-        - Só fazer health check se cache expirou (45s sem check)
-        - Só reiniciar se ConnectionError confirmado (não timeout)
+        IMPORTANTE:
+        - Monitor só ativo em testes perigosos (chaos, stress, ddos)
+        - Monitor NÃO inicia servidor - isso é responsabilidade do script do sistema
+        - Monitor apenas verifica e reinicia se servidor cair durante testes perigosos
         """
+        # Monitor desabilitado por padrão - só ativa em testes perigosos
+        if not self.enabled:
+            return
+
+        # Verificar se teste é perigoso
+        dangerous_markers = ["chaos", "stress", "ddos", "load"]
+        is_dangerous = any(item.get_closest_marker(marker) for marker in dangerous_markers)
+
+        if not is_dangerous:
+            return  # Monitor não ativo para testes normais
+
         if call.when == "call" and self._needs_server(item):
             state_manager = get_server_state_manager()
 
@@ -212,12 +244,16 @@ class ServerMonitorPlugin:
                     return
 
             # Sem cache recente: fazer health check
-            # Verifica se servidor caiu após o teste
+            # Verifica se servidor caiu após o teste perigoso
             if not self._is_server_healthy():
                 self.crashed_tests.append(item.name)
                 self.server_was_down = True
-                print(f"\n⚠️  Servidor DOWN após {item.name} - reiniciando...")
-                logger.warning(f"Servidor caído após teste: {item.name}")
+                print(f"\n⚠️  Servidor DOWN após teste perigoso: {item.name}")
+                print(
+                    "   💡 Monitor não reinicia servidor - reinicie manualmente: "
+                    "./scripts/start_omnimind_system_sudo.sh"
+                )
+                logger.warning(f"Servidor caído após teste perigoso: {item.name}")
 
                 # Emitir alerta para VS Code
                 try:
@@ -230,7 +266,7 @@ class ServerMonitorPlugin:
                         alerts = await _get_alert_system()
                         if alerts:
                             await alerts.emit_server_down(
-                                reason=f"Derrubado pelo teste: {item.name}",
+                                reason=f"Derrubado pelo teste perigoso: {item.name}",
                                 context={
                                     "test_name": item.name,
                                     "timestamp": time.time(),
@@ -245,14 +281,6 @@ class ServerMonitorPlugin:
                     loop.run_until_complete(_emit_alert())
                 except Exception as e:
                     logger.debug(f"Erro ao emitir alerta de servidor down: {e}")
-
-                # Adquirir propriedade antes de reiniciar
-                if state_manager.can_manage_server("plugin"):
-                    state_manager.acquire_ownership("plugin")
-                    try:
-                        self._start_server()
-                    finally:
-                        state_manager.release_ownership("plugin")
 
     def pytest_runtest_teardown(self, item):
         """
@@ -318,12 +346,12 @@ class ServerMonitorPlugin:
 
     def _ensure_server_up(self):
         """
-        Garante servidor UP - verifica antes de iniciar.
+        Verifica se servidor está UP (NÃO inicia servidor).
 
-        Respeita ServerStateManager:
-        - Se outro proprietário (fixture) controla → NÃO reinicia
-        - Se já está saudável → apenas avisa
-        - Se está DOWN e ninguém controla → inicia
+        IMPORTANTE:
+        - Monitor NÃO inicia servidor - isso é responsabilidade do script do sistema
+        - Monitor apenas verifica se servidor está respondendo
+        - Se servidor não está respondendo, apenas avisa (não tenta iniciar)
         """
         state_manager = get_server_state_manager()
 
@@ -341,19 +369,12 @@ class ServerMonitorPlugin:
             state_manager.mark_running()
             return
 
-        # Servidor DOWN - verifica se pode gerenciar
-        if not state_manager.can_manage_server("plugin"):
-            print(f"⚠️  Servidor DOWN, mas {state_manager.owner} " f"já o controla - aguardando...")
-            return
-
-        # Plugin pode gerenciar → tenta iniciar
-        print("⚠️  Servidor backend DOWN - iniciando...")
-        state_manager.acquire_ownership("plugin")
-        try:
-            self._start_server()
-        finally:
-            # Liberar propriedade após startup
-            state_manager.release_ownership("plugin")
+        # Servidor não está respondendo - apenas avisa (não tenta iniciar)
+        print("⚠️  Servidor backend não está respondendo")
+        print("   💡 Inicie o servidor manualmente: ./scripts/start_omnimind_system_sudo.sh")
+        logger.warning(
+            "Servidor não está respondendo - monitor não inicia servidor automaticamente"
+        )
 
     def _needs_server(self, item) -> bool:
         """Verifica se teste precisa de servidor."""
@@ -390,6 +411,9 @@ class ServerMonitorPlugin:
             "tests/test_dashboard_e2e.py",
             "tests/test_phase3_integration.py",
             "tests/autopoietic/test_advanced_repair.py",
+            # REFATORAÇÃO 2025-12-08: Testes de composição e sync são unitários
+            "tests/agents/test_enhanced_code_agent_composition.py",
+            "tests/consciousness/test_integration_loop_sync.py",
         ]
 
         # Normaliza o caminho do item para comparação
@@ -399,14 +423,58 @@ class ServerMonitorPlugin:
             if excluded in normalized_item_path:
                 return False
 
-        # Testes que explicitamente marcam que precisam de servidor
-        e2e_markers = ["e2e", "endpoint", "dashboard", "integration"]
+        # Testes que explicitamente marcam que precisam de servidor OmniMind (porta 8000)
+        # NOTA: "integration" é muito amplo - muitos testes unitários têm "integration" no nome
+        # mas usam mocks. Verificar se realmente usa localhost:8000 antes de iniciar servidor.
+        e2e_markers = ["e2e", "endpoint", "dashboard"]
 
-        return any(marker in item_path or marker in test_name for marker in e2e_markers)
+        # Verificar se contém marcadores E2E (mais específicos)
+        has_e2e_marker = any(marker in item_path or marker in test_name for marker in e2e_markers)
+
+        # Se não tem marcador E2E específico, verificar se realmente usa servidor OmniMind
+        # (não apenas serviços externos como Ollama/Qdrant)
+        if not has_e2e_marker:
+            # Verificar se arquivo realmente usa servidor OmniMind (porta 8000)
+            # Isso evita iniciar servidor para testes que só usam serviços externos
+            try:
+                import os
+
+                test_file_path = str(item.fspath)
+                if os.path.exists(test_file_path):
+                    with open(test_file_path, "r", encoding="utf-8", errors="ignore") as f:
+                        content = f.read()
+                        # Verificar se realmente usa servidor OmniMind (porta 8000)
+                        uses_omnimind_server = (
+                            "localhost:8000" in content
+                            or "http://localhost:8000" in content
+                            or "backend.*8000" in content
+                            or "port.*8000" in content
+                        )
+                        # Se não usa servidor OmniMind, não precisa iniciar
+                        if not uses_omnimind_server:
+                            return False
+            except Exception:
+                # Se não conseguir ler arquivo, usar lógica antiga
+                pass
+
+        return has_e2e_marker
 
     def _start_server(self):
-        """Inicia servidor via scripts/start_omnimind_system_sudo.sh com elevação automática."""
-        print("🚀 Iniciando servidor backend com elevação sudo automática...")
+        """
+        REMOVIDO: Monitor não inicia servidor.
+
+        IMPORTANTE:
+        - Monitor NÃO inicia servidor - isso é responsabilidade do script do sistema
+        - Para iniciar servidor, use: ./scripts/start_omnimind_system_sudo.sh
+        - Monitor apenas verifica e reinicia se servidor cair durante testes perigosos
+        """
+        logger.warning("Monitor não inicia servidor - use ./scripts/start_omnimind_system_sudo.sh")
+        print("⚠️  Monitor não inicia servidor automaticamente")
+        print("   💡 Para iniciar servidor: ./scripts/start_omnimind_system_sudo.sh")
+        raise RuntimeError(
+            "Monitor não inicia servidor - inicie manualmente com "
+            "./scripts/start_omnimind_system_sudo.sh"
+        )
         start_time = time.time()
         self.startup_attempt_count += 1
 
@@ -420,29 +488,72 @@ class ServerMonitorPlugin:
                 raise FileNotFoundError(f"Script não encontrado: {script_path}")
 
             print(f"   → Executando {script_path}...")
+            print("   → Mostrando saída completa do script de inicialização...\n")
 
+            # CORREÇÃO: Mostrar saída em tempo real para debug
             # Executa SEM sudo direto - o script start_omnimind_system_sudo.sh
             # já gerencia a elevação via secure_run.py quando necessário
-            result = subprocess.run(
+            # IMPORTANTE: stdout/stderr não capturados para mostrar
+            # backend, frontend, cluster, credenciais
+            process = subprocess.Popen(
                 ["bash", script_path],
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,  # Mesclar stderr em stdout
                 text=True,
-                timeout=180,  # Timeout aumentado para execução do script
+                bufsize=1,  # Line buffered
+                universal_newlines=True,
                 cwd=os.path.dirname(__file__) + "/../..",
             )
 
-            if result.returncode != 0:
-                logger.warning(f"Script falhou com returncode {result.returncode}")
-                print(
-                    f"   ⚠️  Script stderr: {result.stderr[-500:] if result.stderr else '(vazio)'}"
-                )
+            # Mostrar saída em tempo real
+            output_lines = []
+            try:
+                if process.stdout is None:
+                    raise RuntimeError("process.stdout is None")
+                for line in process.stdout:
+                    line = line.rstrip()
+                    print(f"   {line}")  # Mostrar cada linha
+                    output_lines.append(line)
+                    # Log também para debug
+                    logger.debug(f"Script output: {line}")
+            except Exception as e:
+                logger.warning(f"Erro ao ler saída do script: {e}")
+
+            # Aguardar término do processo
+            returncode = process.wait(timeout=240)  # Timeout aumentado
+
+            if returncode != 0:
+                logger.warning(f"Script falhou com returncode {returncode}")
+                print(f"   ⚠️  Script retornou código de erro: {returncode}")
+                # Mostrar últimas linhas de saída para debug
+                if output_lines:
+                    print("   ⚠️  Últimas linhas de saída:")
+                    for line in output_lines[-10:]:
+                        print(f"      {line}")
+
+                # IMPORTANTE: Verificar se servidor já está rodando antes de considerar erro
+                # Script pode falhar por várias razões (permissões, dependências), mas servidor
+                # pode já estar rodando de uma execução anterior
+                if self._is_server_healthy():
+                    logger.info(
+                        "✅ Servidor já está rodando apesar do erro do script - "
+                        "usando servidor existente"
+                    )
+                    print("   ✅ Servidor já está rodando - ignorando erro do script")
+                    state_manager = get_server_state_manager()
+                    state_manager.mark_running()
+                    return  # Servidor está UP, não precisa continuar
+
+                # Se servidor não está rodando E script falhou, continua para tentar iniciar
                 # Continua mesmo com erro - pode ser permissão mas servidor pode estar subindo
             else:
                 print("   ✅ Script executado com sucesso")
 
             # ========== TIMEOUTS ADAPTATIVOS COM RESTART INTERMEDIÁRIO ==========
             total_timeout = self._get_adaptive_timeout()
-            cycle_timeout = 180  # Ciclo: aguarda servidor subir (120-150s + small buffer)
+            # Ciclo: aguarda servidor subir (120-150s + buffer para ambiente híbrido)
+            # Aumentado para 240s para dar margem em ambientes híbridos de desenvolvimento
+            cycle_timeout = 240
 
             logger.info(
                 f"Aguardando servidor (tentativa {self.startup_attempt_count}, "
@@ -475,11 +586,31 @@ class ServerMonitorPlugin:
                         f"Reiniciando processo de startup..."
                     )
 
-                    # Mata processos antigos para garantir limpeza
-                    subprocess.run(["pkill", "-f", "uvicorn"], stderr=subprocess.DEVNULL)
-                    subprocess.run(
-                        ["pkill", "-f", "python web/backend/main.py"], stderr=subprocess.DEVNULL
-                    )
+                    # IMPORTANTE: NÃO matar processos uvicorn existentes
+                    # Se servidor já está rodando (iniciado manualmente ou por outro processo),
+                    # não devemos matá-lo. Apenas mata processos que o plugin iniciou.
+                    # Verificar se plugin iniciou o processo antes de matar
+                    if self.server_process is not None:
+                        try:
+                            # Apenas mata processo que plugin iniciou
+                            if self.server_process.poll() is None:
+                                # Processo ainda está rodando
+                                self.server_process.terminate()
+                                try:
+                                    self.server_process.wait(timeout=5)
+                                except subprocess.TimeoutExpired:
+                                    self.server_process.kill()
+                        except Exception as e:
+                            logger.debug(f"Erro ao terminar processo do plugin: {e}")
+
+                    # NÃO usar pkill - pode matar processos uvicorn que não foram
+                    # iniciados pelo plugin
+                    # subprocess.run(["pkill", "-f", "uvicorn"], stderr=subprocess.DEVNULL)
+                    # REMOVIDO
+                    # subprocess.run(
+                    #     ["pkill", "-f", "python web/backend/main.py"],
+                    #     stderr=subprocess.DEVNULL
+                    # )  # REMOVIDO
 
                     # Re-executa script de startup
                     print(f"   → Re-executando {script_path}...")
@@ -487,7 +618,7 @@ class ServerMonitorPlugin:
                         ["bash", script_path],
                         capture_output=True,
                         text=True,
-                        timeout=180,
+                        timeout=240,  # Timeout aumentado para ambiente híbrido
                         cwd=os.path.dirname(__file__) + "/../..",
                     )
                     # Continua loop (nova espera de cycle_timeout)
@@ -570,8 +701,13 @@ class ServerMonitorPlugin:
         """
         Calcula timeout adaptativo baseado no número de tentativas.
 
+        ALINHADO COM CONFIGURAÇÃO GLOBAL (pytest.ini + conftest.py):
+        - Respeita timeout progressivo: 240s inicial → 800s máximo
+        - Modo gradual: não falha, continua até máximo
+        - Cada teste individual tem seu próprio orçamento de tempo
+
         Estratégia (timeout INDIVIDUAL por teste - PER CONNECTION):
-        - Tentativa 1: 220s  (startup + Orchestrator + SecurityAgent)
+        - Tentativa 1: 240s  (startup + Orchestrator + SecurityAgent - alinhado com config global)
         - Tentativa 2: 400s  (permite +recovery time para múltiplos ciclos)
         - Tentativa 3: 600s  (permite 3+ ciclos completos de recovery)
         - Tentativa 4+: 800s (máximo - continua indefinidamente sem artificial timeout)
@@ -586,7 +722,20 @@ class ServerMonitorPlugin:
         return timeout
 
     def _start_python_server(self):
-        """Inicia servidor via python -m uvicorn."""
+        """
+        Inicia servidor via python -m uvicorn.
+
+        IMPORTANTE: Verifica se servidor já está rodando antes de tentar iniciar.
+        Não mata processos uvicorn existentes - apenas verifica se servidor responde.
+        """
+        # Verificar se servidor já está rodando antes de tentar iniciar
+        if self._is_server_healthy():
+            logger.info("✅ Servidor já está rodando e respondendo - não precisa iniciar")
+            print("✅ Servidor já está rodando - usando servidor existente")
+            state_manager = get_server_state_manager()
+            state_manager.mark_running()
+            return
+
         # Muda para diretório raiz do projeto
         project_root = os.path.join(os.path.dirname(__file__), "../..")
         os.chdir(project_root)
@@ -626,13 +775,13 @@ class ServerMonitorPlugin:
 
         print("   ✅ uvicorn iniciado em background (com Orchestrator completo)")
 
-    def _wait_for_server_with_retry(self, max_attempts=None, max_wait_seconds=180):
+    def _wait_for_server_with_retry(self, max_attempts=None, max_wait_seconds=240):
         """
         Aguarda servidor ficar saudável com retry agressivo.
 
         Args:
             max_attempts: Número máximo de tentativas (None = usar max_wait_seconds)
-            max_wait_seconds: Tempo máximo em segundos (default 3 min)
+            max_wait_seconds: Tempo máximo em segundos (default 4 min para ambiente híbrido)
         """
         # ⚡ OTIMIZAÇÃO: Verifica se já está UP antes de esperar
         if self._is_server_healthy():

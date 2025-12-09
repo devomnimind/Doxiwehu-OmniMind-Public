@@ -37,10 +37,10 @@ class SolutionLookupEngine:
         self.local_solutions = self._load_local_solutions()
 
         # Initialize embedding model for semantic search
-        # Force CPU to avoid CUDA OOM in tests
-        import os
+        # Auto-detect device (GPU se disponível)
+        from src.utils.device_utils import get_sentence_transformer_device
 
-        device = "cpu" if os.getenv("OMNIMIND_FORCE_GPU") == "true" else None
+        device = get_sentence_transformer_device()
         self.embedder = SentenceTransformer("all-MiniLM-L6-v2", device=device)
 
         logger.info(
