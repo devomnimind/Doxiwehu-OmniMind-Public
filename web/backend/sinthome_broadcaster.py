@@ -28,7 +28,7 @@ class SinthomeBroadcaster:
     grounding the philosophical metrics in physical reality.
     """
 
-    def __init__(self, interval: float = 1.0):
+    def __init__(self, interval: float = 30.0):
         self.interval = interval
         self.metrics_calculator = SinthomeMetrics()
         self.running = False

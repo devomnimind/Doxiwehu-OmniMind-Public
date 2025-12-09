@@ -58,13 +58,11 @@ def test_phase2_adaptive():
     print("Esperado: binding_weight e drainage_rate variam por estado clínico\n")
 
     # Inicializar calculador
+    # Modo adaptativo já está habilitado via use_dynamic_ranges=True
     gozo_calc = GozoCalculator(
         use_precision_weights=True,
         use_dynamic_ranges=True,
     )
-
-    # Ativar modo adaptativo
-    gozo_calc.enable_adaptive_mode(enabled=True)
 
     results = []
 

@@ -9,7 +9,7 @@ print("=" * 60)
 
 # Criar workspace
 ws = SharedWorkspace(embedding_dim=256)
-print(f"✅ SharedWorkspace criado")
+print("✅ SharedWorkspace criado")
 print(f"  ConsciousSystem: {ws.conscious_system is not None}")
 
 if ws.conscious_system:
@@ -29,9 +29,9 @@ if ws.conscious_system:
     print("\n📈 Calculando métricas topológicas...")
     metrics = ws.compute_hybrid_topological_metrics()
     if metrics:
-        print(
-            f"  ✅ Métricas calculadas: omega={metrics.get('omega', 0):.4f}, sigma={metrics.get('sigma', 0):.4f}"
-        )
+        omega = metrics.get('omega', 0)
+        sigma = metrics.get('sigma', 0)
+        print(f"  ✅ Métricas calculadas: omega={omega:.4f}, sigma={sigma:.4f}")
     else:
         print("  ❌ Métricas não calculadas")
 

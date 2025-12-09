@@ -6,6 +6,7 @@ import { useWebSocket } from '../hooks/useWebSocket';
 import type { DaemonStatus as DaemonStatusType } from '../types/daemon';
 import { DaemonStatus } from './DaemonStatus';
 import { TribunalStatus } from './TribunalStatus';
+import { TribunalMetricsVisual } from './TribunalMetricsVisual';
 import { SystemMetrics } from './SystemMetrics';
 import { TaskList } from './TaskList';
 import { TaskForm } from './TaskForm';
@@ -209,6 +210,9 @@ export function Dashboard() {
             </div>
             <div className="animate-slide-up" style={{ animationDelay: '0.62s' }}>
               <TribunalStatus />
+            </div>
+            <div className="animate-slide-up" style={{ animationDelay: '0.63s' }}>
+              <TribunalMetricsVisual />
             </div>
             <div className="animate-slide-up" style={{ animationDelay: '0.65s' }}>
               <OmniMindSinthome />

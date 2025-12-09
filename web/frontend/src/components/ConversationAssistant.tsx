@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useDaemonStore } from '../store/daemonStore';
+import { apiService } from '../services/api';
 
 interface Message {
   id: string;
@@ -82,8 +83,6 @@ export function ConversationAssistant() {
     setInput('');
 
     try {
-      const { apiService } = await import('../services/api');
-
       // Chamar backend com contexto do sistema
       const data = await apiService.post('/api/omnimind/chat', {
         message: userMessage,

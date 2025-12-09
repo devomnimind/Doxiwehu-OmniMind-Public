@@ -826,7 +826,9 @@ class IntegrationLoop:
             "cycle_history": CycleHistory(max_history_size=1000),
             "validator": EmbeddingNarrativeValidator(),
             "triad_class": ConsciousnessTriad,
-            "consistency_guard": TheoreticalConsistencyGuard(raise_on_critical=False),
+            "consistency_guard": TheoreticalConsistencyGuard(
+                raise_on_critical=False, current_phase=7
+            ),  # 🎯 FASE 0: Phase-Aware
         }
 
     async def _build_extended_result(
@@ -1098,6 +1100,7 @@ class IntegrationLoop:
                 gozo=extended_result.gozo,
                 control=extended_result.control_effectiveness,
                 cycle_id=base_result.cycle_number,
+                phase=7,  # 🎯 FASE 0: Passar phase (Zimerman Bonding)
             )
 
             # Logar violações se houver

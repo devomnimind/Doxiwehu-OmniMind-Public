@@ -8,8 +8,6 @@ Autor: GitHub Copilot Agent
 Data: 2025-12-09
 """
 
-import asyncio
-
 import numpy as np
 import pytest
 
@@ -17,7 +15,6 @@ from src.consciousness.integration_loop import (
     IntegrationLoop,
     LoopCycleResult,
     ModuleExecutor,
-    ModuleInterfaceSpec,
 )
 from src.consciousness.shared_workspace import SharedWorkspace
 
@@ -152,7 +149,7 @@ class TestIntegrationLoopComposition:
         loop = IntegrationLoop(enable_logging=False)
 
         # Executar um ciclo
-        result = loop.execute_cycle_sync(collect_metrics=False)
+        loop.execute_cycle_sync(collect_metrics=False)
 
         # Verificar que RNN foi executado
         # (ConsciousSystem.step() atualiza estado interno)
@@ -363,7 +360,7 @@ class TestIntegrationLoopRefactoringValidation:
         loop = IntegrationLoop(enable_logging=False)
 
         # Executar ciclo
-        result = loop.execute_cycle_sync(collect_metrics=False)
+        loop.execute_cycle_sync(collect_metrics=False)
 
         # RNN deve ter executado (step foi chamado)
         if loop.workspace.conscious_system is not None:
@@ -380,7 +377,7 @@ class TestIntegrationLoopRefactoringValidation:
         loop = IntegrationLoop(enable_logging=False)
 
         # Executar ciclo com métricas
-        result = loop.execute_cycle_sync(collect_metrics=True)
+        loop.execute_cycle_sync(collect_metrics=True)
 
         # Se ConsciousSystem disponível, repressão deve ter sido atualizada
         if loop.workspace.conscious_system is not None:

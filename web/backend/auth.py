@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 from pathlib import Path
 from secrets import compare_digest
@@ -15,6 +16,7 @@ from starlette.status import HTTP_401_UNAUTHORIZED
 
 load_dotenv()
 
+logger = logging.getLogger(__name__)
 security = HTTPBasic()
 
 
@@ -30,6 +32,7 @@ def _get_dashboard_credentials() -> Tuple[str, str]:
     env_pass = os.getenv("OMNIMIND_DASHBOARD_PASS") or os.getenv("DASHBOARD_PASS")
 
     if env_user and env_pass:
+        logger.debug(f"Using credentials from environment variables")
         return env_user, env_pass
 
     # 2. Try JSON file (Source of Truth for Local Sovereignty)
@@ -38,11 +41,15 @@ def _get_dashboard_credentials() -> Tuple[str, str]:
         try:
             with auth_file.open("r", encoding="utf-8") as f:
                 data = json.load(f)
-                return data.get("user", ""), data.get("pass", "")
-        except Exception:
-            pass
+                user = data.get("user", "")
+                pass_word = data.get("pass", "")
+                logger.debug(f"Loaded credentials from {auth_file}: user={user}")
+                return user, pass_word
+        except Exception as e:
+            logger.warning(f"Failed to load credentials from {auth_file}: {e}")
 
     # 3. Fallback (Should be avoided in production)
+    logger.warning("Using fallback credentials (admin/omnimind2025!) - NOT PRODUCTION READY")
     return "admin", "omnimind2025!"
 
 
@@ -52,13 +59,17 @@ def verify_credentials(credentials: HTTPBasicCredentials = Depends(security)) ->
     """
     current_user, current_pass = _get_dashboard_credentials()
 
+    logger.debug(f"Verifying credentials: {credentials.username} vs {current_user}")
+
     is_user = compare_digest(credentials.username, current_user)
     is_pass = compare_digest(credentials.password, current_pass)
 
     if not (is_user and is_pass):
+        logger.warning(f"Authentication failed for user: {credentials.username}")
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED,
             detail="Invalid dashboard credentials",
             headers={"WWW-Authenticate": "Basic"},
         )
+    logger.info(f"✅ Authentication successful for user: {credentials.username}")
     return credentials.username

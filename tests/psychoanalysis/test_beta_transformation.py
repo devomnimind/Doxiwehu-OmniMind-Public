@@ -101,6 +101,7 @@ class TestBetaElement:
         assert beta.raw_data == "test data"
         assert beta.emotional_charge == 0.6
         assert beta.source == "test_source"
+        assert beta.metadata is not None
         assert beta.metadata["key"] == "value"
 
 

@@ -1,5 +1,6 @@
 import { useDaemonStore } from '../store/daemonStore';
 import { useState, useEffect } from 'react';
+import { apiService } from '../services/api';
 
 interface StatusThreshold {
   green: { min: number; max: number; label: string };
@@ -88,8 +89,6 @@ export function ConsciousnessMetrics() {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const { apiService } = await import('../services/api');
-
         // Se não tiver token, nem tenta buscar
         if (!apiService.getAuthToken()) {
            return;

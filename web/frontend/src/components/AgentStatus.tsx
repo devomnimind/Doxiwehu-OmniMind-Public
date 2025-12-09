@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { useDaemonStore } from '../store/daemonStore';
+import { apiService } from '../services/api';
+import { useBackendHealth } from '../hooks/useBackendHealth';
 
 const AGENT_TYPE_ICONS = {
   orchestrator: '🪃',
@@ -29,12 +31,18 @@ const STATUS_COLORS = {
 export function AgentStatus() {
   const agents = useDaemonStore((state) => state.agents);
   const setAgents = useDaemonStore((state) => state.setAgents);
+  const { isOnline, consecutiveFailures } = useBackendHealth();
 
   useEffect(() => {
+    // Não fazer polling se backend está offline
+    if (!isOnline) {
+      console.log('[AgentStatus] Backend offline, pausando polling');
+      return;
+    }
+
     // Fetch real agent data from backend API
     const fetchAgents = async () => {
       try {
-        const { apiService } = await import('../services/api');
         const data = await apiService.getAgents();
         if (data && data.agents) {
           setAgents(data.agents);
@@ -45,11 +53,11 @@ export function AgentStatus() {
       }
     };
 
-    // Fetch on component mount and refresh every 10 seconds
+    // Fetch on component mount and refresh every 10 seconds (apenas se online)
     fetchAgents();
     const interval = setInterval(fetchAgents, 10000);
     return () => clearInterval(interval);
-  }, [setAgents]);
+  }, [setAgents, isOnline]);
 
   const formatUptime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -86,7 +94,14 @@ export function AgentStatus() {
         </div>
       </div>
 
-      {agents.length === 0 ? (
+      {!isOnline ? (
+        <div className="text-center text-gray-400 py-8">
+          <div className="text-4xl mb-2">🔌</div>
+          <p>Backend offline</p>
+          <p className="text-sm mt-2">Consecutive failures: {consecutiveFailures}</p>
+          <p className="text-xs mt-1 text-gray-500">Polling paused to reduce load</p>
+        </div>
+      ) : agents.length === 0 ? (
         <div className="text-center text-gray-400 py-8">
           <div className="text-4xl mb-2">🤖</div>
           <p>No agents active</p>

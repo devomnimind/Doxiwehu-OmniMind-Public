@@ -177,7 +177,7 @@ def ensure_tensor_on_real_device(tensor_or_model) -> None:
 
         # Verificar se está em meta device
         if current_device.type == "meta":
-            logger.warning(f"⚠️ Detectado meta device! Migrando para device real...")
+            logger.warning("⚠️ Detectado meta device! Migrando para device real...")
             real_device = get_torch_device()
 
             # Migrar para device real

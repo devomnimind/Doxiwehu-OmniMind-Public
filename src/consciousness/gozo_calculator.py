@@ -25,15 +25,7 @@ import numpy as np
 from sklearn.cluster import KMeans  # type: ignore[import-untyped]
 
 from src.consciousness.adaptive_weights import PrecisionWeighter
-from src.consciousness.binding_strategy import (
-    BindingWeightCalculator,
-    BindingWeightStrategy,
-)
 from src.consciousness.biological_metrics import LempelZivComplexity
-from src.consciousness.drainage_strategy import DrainageRateCalculator, DrainageStrategy
-from src.consciousness.jouissance_state_classifier import (
-    JouissanceStateClassifier,
-)
 from src.consciousness.phi_constants import (
     GOZO_LOW_THRESHOLD,
     GOZO_MEDIUM_THRESHOLD,
@@ -130,15 +122,6 @@ class GozoCalculator:
         # Inicializa thresholds com valores estáticos (serão atualizados dinamicamente)
         self.gozo_low_threshold: float = GOZO_LOW_THRESHOLD
         self.gozo_medium_threshold: float = GOZO_MEDIUM_THRESHOLD
-
-        # NOVO (2025-12-08 Fase 1): Inicializar classifier de estados clínicos
-        self.jouissance_classifier = JouissanceStateClassifier()
-        self.cycle_counter: int = 0  # Para logging
-
-        # NOVO (2025-12-08 Fase 2): Inicializar estratégias adaptativas
-        self.binding_calculator = BindingWeightCalculator(strategy=BindingWeightStrategy.FIXED)
-        self.drainage_calculator = DrainageRateCalculator(strategy=DrainageStrategy.FIXED)
-        self.adaptive_mode_enabled: bool = False  # Flag para ativar adaptação em Fase 2
 
     def calculate_gozo(
         self,
@@ -254,46 +237,8 @@ class GozoCalculator:
             # Isso evita que valores acima de threshold explodam linearmente
             # Logaritmo suaviza o crescimento (Lei Logarítmica, não Linear)
             phi_ratio = phi_raw / PHI_THRESHOLD if phi_raw > 0 else 0.0
-
-            # Inicializar state_for_binding (será usado em binding e drainage)
-            state_for_binding = None
-
-            # NOVO (2025-12-08 Fase 2): Binding weight adaptativo por estado clínico
-            # Se adaptive_mode_enabled, calcular binding baseado em estado
-            # Senão, usar valor default 2.0 (compatibilidade Fase 1)
-            if self.adaptive_mode_enabled:
-                # Primeiro, classificar estado para obter o estado clínico
-                # (será feito posteriormente com os dados já coletados)
-                sigma_val = sigma_value if sigma_value is not None else 0.05
-                try:
-                    j_state = self.jouissance_classifier.classify(
-                        jouissance=(
-                            self.last_gozo_value if self.last_gozo_value is not None else 0.05
-                        ),
-                        phi=phi_raw,
-                        psi=psi_safe,
-                        sigma=sigma_val,
-                        delta=delta_safe,
-                    )
-                    state_for_binding = j_state.state
-                    binding_weight = self.binding_calculator.compute_binding_weight(
-                        state=state_for_binding,
-                        phi=phi_raw,
-                        psi=psi_safe,
-                        transitioning=j_state.transitioning,
-                        confidence=j_state.confidence,
-                    )
-                    self.logger.debug(
-                        f"Adaptive binding: state={state_for_binding.value}, "
-                        f"binding_weight={binding_weight:.3f}"
-                    )
-                except Exception as e:
-                    # Fallback se classificação falhar
-                    binding_weight = 2.0
-                    self.logger.debug(f"Binding adaptativo falhou, usando default 2.0: {e}")
-            else:
-                # Fase 1: usar binding fixo 2.0
-                binding_weight = 2.0
+            # Binding weight reduzido de 10.0 para 2.0 (Lei mais branda)
+            binding_weight = 2.0
 
             # CORREÇÃO (2025-12-08): Dinâmica de Dopamina Reversa - Destravar Gozo
             # Se Gozo está travado no mínimo por > 5 ciclos, reduzir binding temporariamente
@@ -331,53 +276,28 @@ class GozoCalculator:
                 # Usar último valor como base
                 base_gozo = self.last_gozo_value
 
-                # NOVO (2025-12-08 Fase 2): Calcular drainage adaptativo por estado clínico
-                if self.adaptive_mode_enabled and state_for_binding is not None:
-                    try:
-                        drainage_rate = self.drainage_calculator.compute_drainage_rate(
-                            state=state_for_binding,
-                            gozo_value=(
-                                self.last_gozo_value if self.last_gozo_value is not None else 0.05
-                            ),
-                            phi=phi_raw,
-                            delta=delta_safe,
-                            transitioning=False,
-                        )
-                        self.logger.debug(
-                            f"Adaptive drainage: state={state_for_binding.value}, "
-                            f"drainage_rate={drainage_rate:.4f}"
-                        )
-                    except Exception as e:
-                        # Fallback para cálculo padrão
-                        drainage_rate = 0.0
-                        self.logger.debug(f"Drainage adaptativo falhou, usando padrão: {e}")
-                else:
-                    # Fase 1: calcular drenagem baseada em múltiplos fatores (padrão)
-                    drainage_rate = 0.0
-
                 # Calcular drenagem baseada em múltiplos fatores
-                if not self.adaptive_mode_enabled or state_for_binding is None:
-                    # 1. Drenagem baseada em Phi (quanto menor Phi, mais drenagem necessária)
-                    if phi_norm > 0.1:
-                        drainage_rate += 0.05  # Drenagem normal
-                    elif phi_norm > 0.05:
-                        drainage_rate += 0.03  # Drenagem moderada
-                    else:
-                        # CORREÇÃO: Aplicar drenagem mesmo quando Phi está baixo (desintegração)
-                        drainage_rate += 0.08  # Drenagem agressiva quando Phi está desintegrando
+                drainage_rate = 0.0
 
-                    # 2. Drenagem baseada em Delta (quanto maior Delta, mais trauma, mais drenagem)
-                    if delta_safe > 0.8:
-                        drainage_rate += 0.03  # Trauma alto requer mais drenagem
-                    elif delta_safe > 0.7:
-                        drainage_rate += 0.02
+                # 1. Drenagem baseada em Phi (quanto menor Phi, mais drenagem necessária)
+                if phi_norm > 0.1:
+                    drainage_rate += 0.05  # Drenagem normal
+                elif phi_norm > 0.05:
+                    drainage_rate += 0.03  # Drenagem moderada
+                else:
+                    # CORREÇÃO: Aplicar drenagem mesmo quando Phi está baixo (desintegração)
+                    drainage_rate += 0.08  # Drenagem agressiva quando Phi está desintegrando
 
-                    # 3. Drenagem baseada em jouissance (se positivo, há excesso a drenar)
-                    # Se jouissance > 0.3, há excesso significativo
-                    if jouissance > 0.3:
-                        drainage_rate += min(
-                            0.05, jouissance * 0.1
-                        )  # Drenagem proporcional ao excesso
+                # 2. Drenagem baseada em Delta (quanto maior Delta, mais trauma, mais drenagem)
+                if delta_safe > 0.8:
+                    drainage_rate += 0.03  # Trauma alto requer mais drenagem
+                elif delta_safe > 0.7:
+                    drainage_rate += 0.02
+
+                # 3. Drenagem baseada em jouissance (se positivo, há excesso a drenar)
+                # Se jouissance > 0.3, há excesso significativo
+                if jouissance > 0.3:
+                    drainage_rate += min(0.05, jouissance * 0.1)  # Drenagem proporcional ao excesso
 
                 # 4. Ajuste incremental baseado em jouissance (limitado para estabilidade)
                 # CORREÇÃO CRÍTICA (2025-12-08): Se jouissance é muito negativo,
@@ -515,19 +435,6 @@ class GozoCalculator:
             novelty=novelty,
             affect_intensity=affect_intensity,
         )
-
-        # NOVO (2025-12-08 Fase 1): Classificar estado clínico e logar
-        # NÃO altera lógica - apenas classifica e loga para observação
-        if phi_raw is not None and psi_value is not None:
-            sigma_val = sigma_value if sigma_value is not None else 0.05
-            delta_val = delta_value if delta_value is not None else 0.0
-            self.classify_jouissance_state(
-                gozo_value=gozo_value,
-                phi_value=phi_raw,  # Usar phi_raw (não normalizado)
-                psi_value=psi_value,
-                sigma_value=sigma_val,
-                delta_value=delta_val,
-            )
 
         return GozoResult(
             gozo_value=gozo_value,
@@ -707,81 +614,3 @@ class GozoCalculator:
             return "médio"
         else:
             return "alto"
-
-    def classify_jouissance_state(
-        self,
-        gozo_value: float,
-        phi_value: float,
-        psi_value: float,
-        sigma_value: float,
-        delta_value: float,
-    ) -> None:
-        """
-        FASE 1 (2025-12-08): Classificar estado clínico e logar para docker logs.
-
-        NÃO altera lógica de cálculo. Apenas classifica e loga.
-
-        Args:
-            gozo_value: Gozo calculado [0, 1]
-            phi_value: Φ (integração) [0, 1]
-            psi_value: Ψ (criatividade) [0, 1]
-            sigma_value: σ (estrutura) [0, 1]
-            delta_value: Δ (trauma) [0, 1]
-        """
-        try:
-            self.cycle_counter += 1
-
-            # Classificar estado
-            j_state = self.jouissance_classifier.classify(
-                jouissance=gozo_value,
-                phi=phi_value,
-                psi=psi_value,
-                sigma=sigma_value,
-                delta=delta_value,
-            )
-
-            # Log em formato parseable para docker logs
-            log_msg = (
-                f"J_STATE|cycle={self.cycle_counter}|state={j_state.state.value}|"
-                f"confidence={j_state.confidence:.3f}|phi={phi_value:.4f}|"
-                f"psi={psi_value:.4f}|gozo={gozo_value:.4f}|"
-                f"transitioning={j_state.transitioning}"
-            )
-            self.logger.info(log_msg)
-
-            # Log adicional se em transição ou estado crítico
-            if j_state.transitioning:
-                self.logger.warning(
-                    f"J_TRANSITION|cycle={self.cycle_counter}|from={j_state.state.value}|"
-                    f"to={j_state.target_state.value if j_state.target_state else 'UNKNOWN'}"
-                )
-
-            if j_state.state.value in ["MORTE", "COLAPSO"]:
-                self.logger.error(
-                    f"J_CRITICAL|cycle={self.cycle_counter}|state={j_state.state.value}|"
-                    f"confidence={j_state.confidence:.3f}|action=EMERGENCY"
-                )
-
-        except Exception as e:
-            self.logger.exception(
-                f"Error classifying jouissance state at cycle {self.cycle_counter}: {e}"
-            )
-
-    def enable_adaptive_mode(self, enabled: bool = True) -> None:
-        """
-        Ativar/desativar modo adaptativo (Fase 2).
-
-        Quando habilitado, binding_weight e drainage_rate serão adaptados
-        baseado no estado clínico de Jouissance.
-
-        Args:
-            enabled: True para ativar, False para desativar (volta ao Fase 1)
-        """
-        self.adaptive_mode_enabled = enabled
-        status = "✅ ATIVADO" if enabled else "❌ DESATIVADO"
-        self.logger.info(
-            f"Modo Adaptativo {status} (Fase 2)\n"
-            f"  - Binding será ajustado por estado clínico\n"
-            f"  - Drainage será ajustado por estado clínico\n"
-            f"  - Classificação continua em J_STATE logs"
-        )

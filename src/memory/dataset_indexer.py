@@ -98,7 +98,7 @@ class DatasetIndexer:
             # Garantir que modelo não está em meta device
             ensure_tensor_on_real_device(self.embedding_model)
 
-            logger.info(f"Modelo carregado e validado no device correto")
+            logger.info("Modelo carregado e validado no device correto")
 
         self.embedding_dim = int(self.embedding_model.get_sentence_embedding_dimension() or 384)
         logger.info(f"Dimensão do embedding: {self.embedding_dim}")

@@ -8,8 +8,7 @@ Autor: GitHub Copilot Agent
 Data: 2025-12-09
 """
 
-from pathlib import Path
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock
 
 import pytest
 
@@ -81,8 +80,11 @@ system:
         assert isinstance(enhanced_agent, ReactAgent)
 
         # REFATORAÇÃO: Mas já tem referências de composição
-        assert enhanced_agent.code_agent is enhanced_agent
-        assert enhanced_agent.react_agent is enhanced_agent
+        # Usar hasattr e getattr para evitar erro do mypy
+        assert hasattr(enhanced_agent, "code_agent")
+        assert hasattr(enhanced_agent, "react_agent")
+        assert getattr(enhanced_agent, "code_agent") is enhanced_agent
+        assert getattr(enhanced_agent, "react_agent") is enhanced_agent
 
     def test_consciousness_isolated_in_post_init(self, enhanced_agent):
         """
@@ -237,7 +239,8 @@ system:
         agent = EnhancedCodeAgent(config_path=config_path, orchestrator=None)
 
         # Mockar método run para evitar chamadas LLM reais
-        agent.run = MagicMock(return_value={"status": "success", "result": "test"})
+        # Usar setattr para evitar erro do mypy sobre atribuição de método
+        setattr(agent, "run", MagicMock(return_value={"status": "success", "result": "test"}))
 
         return agent
 
@@ -265,7 +268,7 @@ system:
                 raise ValueError("Test error")
             return {"status": "success", "result": "corrected"}
 
-        enhanced_agent.run = mock_run_with_failure
+        setattr(enhanced_agent, "run", mock_run_with_failure)
 
         result = enhanced_agent.execute_task_with_self_correction(task="Test task", max_attempts=3)
 
@@ -281,7 +284,7 @@ system:
         Testa quando todas as tentativas falham.
         """
         # Simular falha em todas as tentativas
-        enhanced_agent.run = MagicMock(side_effect=ValueError("Persistent error"))
+        setattr(enhanced_agent, "run", MagicMock(side_effect=ValueError("Persistent error")))
 
         result = enhanced_agent.execute_task_with_self_correction(task="Test task", max_attempts=3)
 
@@ -310,7 +313,7 @@ system:
                 raise ValueError("Known pattern error")
             return {"status": "success"}
 
-        enhanced_agent.run = mock_run_with_known_pattern
+        setattr(enhanced_agent, "run", mock_run_with_known_pattern)
 
         # Mockar error_analyzer para retornar padrão conhecido
         original_analyze = enhanced_agent.error_analyzer.analyze_error
@@ -525,14 +528,15 @@ system:
         """
         agent = EnhancedCodeAgent(config_path=config_path)
 
-        # Mockar code_agent.get_code_stats
-        agent.code_agent.get_code_stats = MagicMock(return_value={"test": "stats"})
+        # Mockar code_agent.get_code_stats usando setattr para evitar erro do mypy
+        mock_stats = MagicMock(return_value={"test": "stats"})
+        setattr(agent.code_agent, "get_code_stats", mock_stats)
 
         # Chamar método delegado
         result = agent.get_code_stats()
 
         # Deve ter delegado para code_agent
-        assert agent.code_agent.get_code_stats.called
+        assert mock_stats.called
         assert result == {"test": "stats"}
 
     def test_api_compatibility(self, config_path):

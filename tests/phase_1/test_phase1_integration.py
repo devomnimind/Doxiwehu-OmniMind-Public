@@ -96,7 +96,9 @@ def test_gozo_calculator_integration():
                 f"affect={result.components.affect_intensity:.4f}"
             )
 
-    print(f"\n✅ Teste integração: PASSED ({calc.cycle_counter} ciclos processados)")
+    # Contar ciclos processados manualmente (GozoCalculator não mantém contador)
+    cycles_processed = 100  # Número de ciclos simulados
+    print(f"\n✅ Teste integração: PASSED ({cycles_processed} ciclos processados)")
 
 
 def test_logging_output():

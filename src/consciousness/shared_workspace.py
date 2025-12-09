@@ -233,6 +233,7 @@ class SharedWorkspace:
         # PROTOCOLO LIVEWIRE FASE 2.1: Langevin Dynamics (CRÍTICO para evitar convergência)
         # CORREÇÃO (2025-12-08): Reativar LangevinDynamics para garantir variação mínima
         # Sem perturbação estocástica, embeddings convergem e correlações zeram (93% zeros)
+        self.langevin_dynamics: Optional[Any] = None
         try:
             from src.consciousness.langevin_dynamics import LangevinDynamics
 
@@ -240,7 +241,7 @@ class SharedWorkspace:
             logger.info("LangevinDynamics ativado para garantir variação mínima nos embeddings")
         except ImportError:
             logger.warning("LangevinDynamics não disponível - embeddings podem convergir")
-            self.langevin_dynamics = None  # type: ignore[assignment]
+            self.langevin_dynamics = None
 
         # ConsciousSystem - RNN Recorrente com Latent Dynamics (opcional)
         self.conscious_system: Optional[Any] = None
@@ -256,9 +257,7 @@ class SharedWorkspace:
         # Hybrid Topological Engine (opcional, para métricas topológicas avançadas)
         self.hybrid_topological_engine: Optional[Any] = None
         try:
-            from src.consciousness.hybrid_topological_engine import (
-                HybridTopologicalEngine,
-            )
+            from src.consciousness.hybrid_topological_engine import HybridTopologicalEngine
 
             self.hybrid_topological_engine = HybridTopologicalEngine(
                 memory_window=64,
@@ -319,9 +318,10 @@ class SharedWorkspace:
             # Aplicar perturbação estocástica
             # Temperatura será calculada a partir de Ψ se disponível
             psi_value = metadata.get("psi_value") if metadata else None
+            # Usar valor padrão que será substituído internamente se psi_value disponível
             perturbed_embedding = self.langevin_dynamics.perturb_embedding(
                 embedding=embedding,
-                temperature=0.5,  # Default temperature quando Psi não disponível
+                temperature=0.01,  # Padrão, calculado de psi_value se disponível
                 psi_value=psi_value,
             )
 

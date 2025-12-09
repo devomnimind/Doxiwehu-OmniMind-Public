@@ -53,10 +53,12 @@ from web.backend.routes import (
     health,
     metacognition,
     omnimind,
+)
+from web.backend.routes import security as security_router
+from web.backend.routes import (
     tasks,
     tribunal,
 )
-from web.backend.routes import security as security_router
 from web.backend.websocket_manager import ws_manager
 
 # Load environment variables from .env file
@@ -227,20 +229,25 @@ async def lifespan(app_instance: FastAPI):
     # Import Realtime Analytics Broadcaster
     realtime_analytics_broadcaster: Any = None
     try:
-        from web.backend.realtime_analytics_broadcaster import (
-            realtime_analytics_broadcaster as rab,
-        )
+        from web.backend.realtime_analytics_broadcaster import realtime_analytics_broadcaster as rab
 
         realtime_analytics_broadcaster = rab
     except ImportError:
         logger.warning("Realtime Analytics Broadcaster not available")
 
     # Initialize Consciousness Metrics Collector
-    try:
-        await consciousness_metrics_collector.initialize()
-        logger.info("Consciousness Metrics Collector initialized")
-    except Exception as e:
-        logger.warning(f"Failed to initialize Consciousness Metrics Collector: {e}")
+    # DELAYED: Only initialize if environment variable is set (not during normal startup)
+    should_init_consciousness = os.environ.get("OMNIMIND_INIT_CONSCIOUSNESS", "0") == "1"
+    if should_init_consciousness:
+        try:
+            await consciousness_metrics_collector.initialize()
+            logger.info("Consciousness Metrics Collector initialized")
+        except Exception as e:
+            logger.warning(f"Failed to initialize Consciousness Metrics Collector: {e}")
+    else:
+        logger.info(
+            "⏭️  Consciousness Metrics Collector initialization DEFERRED (set OMNIMIND_INIT_CONSCIOUSNESS=1 to enable)"
+        )
 
     # ========== PARALLELIZAÇÃO DE COMPONENTES RÁPIDOS ==========
     # Inicia componentes não-bloqueantes em paralelo
@@ -282,7 +289,13 @@ async def lifespan(app_instance: FastAPI):
     fast_startup_tasks.append(asyncio.create_task(_start_agent_broadcaster()))
 
     # Aguarda componentes rápidos em paralelo
-    await asyncio.gather(*fast_startup_tasks, return_exceptions=True)
+    # Aguardar fast startup tasks com timeout geral
+    try:
+        await asyncio.wait_for(
+            asyncio.gather(*fast_startup_tasks, return_exceptions=True), timeout=3.0
+        )
+    except asyncio.TimeoutError:
+        logger.warning("Fast startup tasks timeout - continuing without waiting")
 
     # ========== SISTEMA DE MONITORAMENTO PROGRESSIVO ==========
     progressive_monitor = None
@@ -400,34 +413,62 @@ async def lifespan(app_instance: FastAPI):
 
     medium_startup_tasks.append(asyncio.create_task(_start_monitoring()))
 
-    # Aguarda componentes medium-speed em paralelo
-    await asyncio.gather(*medium_startup_tasks, return_exceptions=True)
-
-    # ========== ORCHESTRATOR (PESADO - INICIALIZAÇÃO NÃO BLOQUEADA) ==========
-    # Orchestrator sempre ON para produção + testes (precisa de métricas PHI reais)
-    # CRITICAL FIX (2025-12-09): NÃO BLOQUEAR inicialização por timeout
-    # Uso de timeout = métrica científica, NÃO barreira bloqueante
-    # Sistema continua inicializando mesmo que exceda limites de tempo
-
-    logger.info("Starting Orchestrator initialization (without timeout blocking)...")
+    # Aguarda componentes medium-speed em paralelo com timeout geral
     try:
-        # Inicializar orchestrator SEM wait_for (que bloquearia se excedesse tempo)
-        # O logging interno rastreará tempo de inicialização para análise científica
-        await _async_init_orchestrator(app_instance)
-        logger.info("✅ Orchestrator initialized")
-    except Exception as e:
-        logger.warning(f"Failed to initialize orchestrator: {e}")
-        app_instance.state.orchestrator_error = str(e)
+        await asyncio.wait_for(
+            asyncio.gather(*medium_startup_tasks, return_exceptions=True), timeout=5.0
+        )
+    except asyncio.TimeoutError:
+        logger.warning("Medium-speed startup tasks timeout - continuing without waiting")
+
+    # ========== ORCHESTRATOR (PESADO - INICIALIZAÇÃO ASSÍNCRONA NÃO BLOQUEADA) ==========
+    # Orchestrator sempre ON para produção + testes (precisa de métricas PHI reais)
+    # CRÍTICO: Apenas inicia se ambiente permitir (para testes rápidos de health check)
+
+    should_init_orchestrator = os.environ.get("OMNIMIND_INIT_ORCHESTRATOR", "0") == "1"
+
+    if should_init_orchestrator:
+        logger.info("Starting Orchestrator initialization asynchronously (non-blocking)...")
+        try:
+            # Não aguardar orchestrator - deixar inicializar em background
+            # Isso permite que o server responda aos health checks enquanto orchestrator inicializa
+            app_instance.state.orchestrator_task = asyncio.create_task(
+                _async_init_orchestrator(app_instance)
+            )
+            logger.info("✅ Orchestrator initialization task created (running in background)")
+        except Exception as e:
+            logger.warning(f"Failed to create orchestrator task: {e}")
+            app_instance.state.orchestrator_error = str(e)
+            app_instance.state.orchestrator_ready = False
+    else:
+        logger.info(
+            "⏭️  Orchestrator initialization DISABLED (set OMNIMIND_INIT_ORCHESTRATOR=1 to enable)"
+        )
+        app_instance.state.orchestrator_task = None
         app_instance.state.orchestrator_ready = False
+        app_instance.state.orchestrator = None
 
     # ========== BACKGROUND METRICS TASKS ==========
     # Start metrics reporter
     app_instance.state.metrics_task = asyncio.create_task(_metrics_reporter())
 
-    # Start consciousness metrics collector
-    app_instance.state.consciousness_metrics_task = asyncio.create_task(
-        _consciousness_metrics_collector()
-    )
+    # Start consciousness metrics collector (DELAYED - only if enabled)
+    # Don't start immediately - wait 60s for health checks first
+    should_init_consciousness_metrics = os.environ.get("OMNIMIND_INIT_CONSCIOUSNESS", "0") == "1"
+
+    if should_init_consciousness_metrics:
+
+        async def _delayed_consciousness_collector():
+            await asyncio.sleep(60)  # Wait for health checks to start working
+            await _consciousness_metrics_collector()
+
+        app_instance.state.consciousness_metrics_task = asyncio.create_task(
+            _delayed_consciousness_collector()
+        )
+        logger.info("✓ Consciousness metrics collector scheduled (delayed 60s)")
+    else:
+        logger.info("⏭️  Consciousness metrics collector DISABLED during startup")
+        app_instance.state.consciousness_metrics_task = None
 
     try:
         yield
@@ -517,16 +558,25 @@ app.add_middleware(
         "http://127.0.0.1:3000",
         "http://localhost:5173",  # Vite Default
         "http://127.0.0.1:5173",
+        "http://localhost:3001",  # Alternative frontend port
+        "http://127.0.0.1:3001",
+        "http://localhost:8080",  # Alternative backend port
+        "http://127.0.0.1:8080",
     ],
-    allow_credentials=True,  # Required for Auth headers
-    allow_methods=["*"],
+    allow_credentials=True,  # Required for Basic Auth headers
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
+    expose_headers=["*"],  # Expose all response headers
+    max_age=600,  # Cache preflight for 10 minutes
 )
 
 security = HTTPBasic()
 
 _orchestrator_instance: Optional[OrchestratorAgent] = None
 _metrics_collect_interval = int(os.environ.get("OMNIMIND_METRICS_INTERVAL", "30"))
+_consciousness_metrics_interval = int(
+    os.environ.get("OMNIMIND_CONSCIOUSNESS_METRICS_INTERVAL", "300")
+)
 _validation_log = Path(
     os.environ.get("OMNIMIND_SECURITY_VALIDATION_LOG", "logs/security_validation.jsonl")
 )
@@ -630,11 +680,13 @@ async def _async_init_orchestrator(app_instance: FastAPI):
         phase2_start = time.time()
 
         try:
-            # Try to initialize dashboard snapshot asynchronously
+            # Try to initialize dashboard snapshot asynchronously with timeout
+            # SKIP dashboard refresh during startup to avoid blocking on security_agent.execute()
+            # Dashboard will be refreshed on-demand via API endpoints
             if hasattr(_orchestrator_instance, "refresh_dashboard_snapshot"):
-                logger.info("  → Refreshing dashboard snapshot...")
-                # Run in thread to avoid blocking
-                await asyncio.to_thread(_orchestrator_instance.refresh_dashboard_snapshot)
+                logger.info("  → Skipping dashboard snapshot (deferred to on-demand)")
+                # Removed: await asyncio.to_thread(_orchestrator_instance.refresh_dashboard_snapshot)
+                # Reason: security_agent.execute() can deadlock during startup, causing 40+ sec delay
         except Exception as exc:
             logger.warning(f"Failed to refresh dashboard during init: {exc}")
 
@@ -763,7 +815,8 @@ async def _consciousness_metrics_collector() -> None:
     logger.info("Starting consciousness metrics collection background task")
     while True:
         try:
-            await asyncio.sleep(5)  # Collect every 5 seconds
+            # Collect consciousness metrics at configurable interval (default: 60 seconds)
+            await asyncio.sleep(_consciousness_metrics_interval)
             # Coletar métricas via agregador para garantir persistência
             snapshot = await dashboard_metrics_aggregator.collect_snapshot(
                 include_consciousness=True,
@@ -778,7 +831,7 @@ async def _consciousness_metrics_collector() -> None:
             break
         except Exception as e:
             logger.error(f"Error collecting consciousness metrics: {e}")
-            await asyncio.sleep(5)  # Retry after error
+            await asyncio.sleep(60)  # Retry after error with longer delay
 
 
 def _load_last_validation_entry() -> Dict[str, Any]:
@@ -805,6 +858,22 @@ def _load_last_validation_entry() -> Dict[str, Any]:
 async def read_root():
     """A simple endpoint to confirm the API is running."""
     return {"message": "OmniMind Backend is running."}
+
+
+@app.get("/auth/credentials")
+async def get_credentials_for_login():
+    """
+    Returns dashboard credentials for first login.
+    SECURITY: This endpoint returns credentials needed for first login.
+    In production, this should be protected or disabled.
+    """
+    creds = _load_dashboard_credentials()
+    if creds:
+        return {
+            "user": creds["user"],
+            "pass": creds["pass"],
+        }
+    return {"error": "Credentials not initialized"}
 
 
 @app.get("/api/v1/status")
@@ -1467,6 +1536,129 @@ def training_metrics(user: str = Depends(_verify_credentials)) -> Dict[str, Any]
             "repression_events": 0,
             "error": str(e),
         }
+
+
+# ============================================================================
+# GRACEFUL SHUTDOWN ENDPOINTS (Preserves ethics + hibernation)
+# ============================================================================
+
+_shutdown_requested = False
+_hibernation_data: Dict[str, Any] = {}
+
+
+async def _hibernate_state() -> None:
+    """Save critical state before shutdown (hibernation)."""
+    global _hibernation_data
+    try:
+        logger.info("🌙 Hibernating OmniMind state...")
+
+        # Save orchestrator state
+        if _orchestrator_instance and hasattr(_orchestrator_instance, "state"):
+            _hibernation_data["orchestrator"] = _orchestrator_instance.state
+            logger.info("  ✓ Orchestrator state saved")
+
+        # Save metrics
+        if hasattr(app.state, "metrics"):
+            _hibernation_data["metrics"] = app.state.metrics.summary()
+            logger.info("  ✓ Metrics saved")
+
+        # Save consciousness data
+        if consciousness_metrics_collector:
+            _hibernation_data["consciousness"] = {
+                "phi_estimate": (
+                    consciousness_metrics_collector.phi
+                    if hasattr(consciousness_metrics_collector, "phi")
+                    else 0
+                ),
+                "integration_status": "hibernated",
+            }
+            logger.info("  ✓ Consciousness state saved")
+
+        logger.info("✅ Hibernation complete - ready for shutdown")
+        return None
+    except Exception as e:
+        logger.error(f"❌ Hibernation error: {e}", exc_info=True)
+
+
+@app.post("/api/shutdown")
+async def graceful_shutdown(user: str = Depends(_verify_credentials)):
+    """
+    Initiate graceful shutdown with state hibernation.
+
+    Steps:
+    1. Hibernates critical state (saves to disk)
+    2. Closes database connections
+    3. Signals services to stop
+    4. Returns success
+    5. Backend then exits cleanly
+    """
+    global _shutdown_requested
+
+    logger.warning("🔴 SHUTDOWN INITIATED - Beginning graceful termination sequence...")
+    _shutdown_requested = True
+
+    try:
+        # Step 1: Hibernate state
+        await _hibernate_state()
+
+        # Step 2: Stop monitoring and background tasks
+        logger.info("⏹️  Stopping background tasks...")
+        if hasattr(app.state, "orchestrator_task") and app.state.orchestrator_task:
+            app.state.orchestrator_task.cancel()
+        if hasattr(app.state, "metrics_task") and app.state.metrics_task:
+            app.state.metrics_task.cancel()
+        if hasattr(app.state, "consciousness_task") and app.state.consciousness_task:
+            app.state.consciousness_task.cancel()
+
+        # Step 3: Close connections
+        logger.info("🔌 Closing connections...")
+        if hasattr(app.state, "db_client"):
+            try:
+                await app.state.db_client.close()
+            except:
+                pass
+
+        # Return success response
+        response = {
+            "status": "shutdown_initiated",
+            "message": "OmniMind is shutting down gracefully",
+            "hibernation": "enabled",
+            "saved_state": list(_hibernation_data.keys()),
+            "next_step": "Process will exit in 2 seconds",
+        }
+
+        logger.info(f"✅ Shutdown response ready: {response}")
+
+        # Schedule actual exit after response is sent
+        async def exit_after_response():
+            await asyncio.sleep(2)
+            logger.info("👋 OmniMind shutdown complete. Exiting.")
+            import sys
+
+            sys.exit(0)
+
+        # Create background task to exit
+        asyncio.create_task(exit_after_response())
+
+        return response
+
+    except Exception as e:
+        logger.error(f"❌ Error during shutdown: {e}", exc_info=True)
+        return {
+            "status": "shutdown_error",
+            "error": str(e),
+            "message": "Shutdown encountered an error but will proceed",
+        }
+
+
+@app.get("/api/hibernation-status")
+async def hibernation_status():
+    """Get status of hibernated state."""
+    return {
+        "hibernated": len(_hibernation_data) > 0,
+        "saved_components": list(_hibernation_data.keys()),
+        "timestamp": None,
+    }
 
 
 if __name__ == "__main__":

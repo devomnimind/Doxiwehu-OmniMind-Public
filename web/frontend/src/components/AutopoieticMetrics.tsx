@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { apiService } from '../services/api';
 import {
   LineChart,
   Line,
@@ -53,9 +54,6 @@ export function AutopoieticMetrics() {
 
   const fetchData = async () => {
     try {
-      // Importar apiService diretamente (não dinamicamente) para garantir credenciais
-      const { apiService } = await import('../services/api');
-
       // Se não tiver token, nem tenta buscar (evita erro 401 spam)
       if (!apiService.getAuthToken()) {
          return;

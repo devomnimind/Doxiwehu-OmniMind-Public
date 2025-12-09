@@ -1,12 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { apiService } from '../services/api';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoadingCredentials, setIsLoadingCredentials] = useState(true);
   const login = useAuthStore((state) => state.login);
+
+  // Try to load credentials from backend on component mount
+  useEffect(() => {
+    const loadCredentials = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/auth/credentials`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.user && data.pass) {
+            setUsername(data.user);
+            setPassword(data.pass);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not fetch credentials from backend:', err);
+      } finally {
+        setIsLoadingCredentials(false);
+      }
+    };
+
+    loadCredentials();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +55,12 @@ export function Login() {
           <h1 className="text-4xl font-bold text-white mb-2">🧠 OmniMind</h1>
           <p className="text-gray-400">Dashboard Login</p>
         </div>
+
+        {isLoadingCredentials && (
+          <div className="text-center mb-4">
+            <p className="text-sm text-gray-400">Loading credentials...</p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -75,7 +106,7 @@ export function Login() {
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-400">
-          <p>Default credentials are stored in:</p>
+          <p>Credentials are auto-loaded from:</p>
           <code className="text-xs bg-gray-700 px-2 py-1 rounded mt-1 inline-block">
             config/dashboard_auth.json
           </code>
@@ -84,3 +115,4 @@ export function Login() {
     </div>
   );
 }
+

@@ -130,8 +130,56 @@ echo -e "${GREEN}🔐 Credenciais Unificadas do Cluster:${NC}"
 echo "   User: $DASH_USER"
 echo "   Pass: $DASH_PASS"
 
-# 1. Limpeza
-echo "🧹 Limpando processos antigos..."
+# 1. Verificação Inteligente de Serviços Existentes
+echo "🔍 Verificando serviços existentes..."
+SERVICES_RUNNING=false
+
+# Verificar se backend já está respondendo adequadamente
+if curl -s --max-time 3 http://localhost:8000/health/ > /dev/null 2>&1; then
+    echo -e "${YELLOW}⚠️  Backend na porta 8000 já está respondendo${NC}"
+    SERVICES_RUNNING=true
+fi
+
+if curl -s --max-time 3 http://localhost:8080/health/ > /dev/null 2>&1; then
+    echo -e "${YELLOW}⚠️  Backend na porta 8080 já está respondendo${NC}"
+    SERVICES_RUNNING=true
+fi
+
+if curl -s --max-time 3 http://localhost:3001/health/ > /dev/null 2>&1; then
+    echo -e "${YELLOW}⚠️  Backend na porta 3001 já está respondendo${NC}"
+    SERVICES_RUNNING=true
+fi
+
+# Verificar processos Python relacionados
+PYTHON_PROCESSES=$(pgrep -f "uvicorn.*main:app" | wc -l)
+if [ "$PYTHON_PROCESSES" -gt 0 ]; then
+    echo -e "${YELLOW}⚠️  Encontrados $PYTHON_PROCESSES processos Python relacionados${NC}"
+    SERVICES_RUNNING=true
+fi
+
+if [ "$SERVICES_RUNNING" = true ]; then
+    echo "🛑 Serviços detectados. Executando limpeza completa antes de reiniciar..."
+    # Limpeza mais agressiva
+    pkill -9 -f "python web/backend/main.py"
+    pkill -9 -f "uvicorn web.backend.main:app"
+    pkill -9 -f "python -m src.main"
+    pkill -9 -f "vite"
+    pkill -9 -f "bpftrace.*monitor_mcp_bpf" || true
+    sleep 3
+
+    # Verificar se limpeza foi efetiva
+    REMAINING=$(pgrep -f "uvicorn.*main:app" | wc -l)
+    if [ "$REMAINING" -gt 0 ]; then
+        echo -e "${RED}❌ Ainda há $REMAINING processos restantes. Forçando kill...${NC}"
+        pgrep -f "uvicorn.*main:app" | xargs -r sudo kill -9
+        sleep 2
+    fi
+else
+    echo "✅ Nenhum serviço ativo detectado. Prosseguindo com inicialização limpa..."
+fi
+
+# 2. Limpeza
+echo "🧹 Executando limpeza final de processos antigos..."
 pkill -f "python web/backend/main.py"
 pkill -f "uvicorn web.backend.main:app"
 pkill -f "python -m src.main"
@@ -139,12 +187,17 @@ pkill -f "vite"
 pkill -f "bpftrace.*monitor_mcp_bpf" || true
 sleep 2
 
-# 2. Iniciar Backend Cluster (FASE 1: ESSENCIAIS)
+# ============================================================================
+# INICIALIZAÇÃO SEQUENCIAL ROBUSTA
+# ============================================================================
+# Usa script sequencial dedicado para garantir inicialização ordenada
+# com verificação de saúde de cada serviço antes de prosseguir
+# ============================================================================
+
 echo -e "${GREEN}🔌 Iniciando Backend Cluster (Fase 1: Essenciais)...${NC}"
 
 # SEMPRE reiniciar o backend para garantir serviços novos
-# Mesmo que já esteja rodando, fazer restart para confirmar serviços atualizados
-if curl -s http://localhost:8000/health/ > /dev/null 2>&1; then
+if curl -s --max-time 2 http://localhost:8000/health/ > /dev/null 2>&1; then
     echo -e "${YELLOW}⚠️  Backend já está rodando na porta 8000${NC}"
     echo "   Reiniciando para garantir serviços novos..."
     pkill -f "uvicorn web.backend.main:app" || true
@@ -152,98 +205,199 @@ if curl -s http://localhost:8000/health/ > /dev/null 2>&1; then
     sleep 3
 fi
 
+# Iniciar Backend Cluster
 "$PROJECT_ROOT/scripts/canonical/system/run_cluster.sh"
 
-# Aguardar Backend subir
-# ⚠️ CRÍTICO: Uvicorn + Orchestrator + SecurityAgent podem levar 30-60s
-# Aumentado de 10s para 40s para garantir inicialização completa
-echo "⏳ Aguardando Backend inicializar (40s - Orchestrator + SecurityAgent)..."
-sleep 40
+# Função de health check com retry
+check_backend_health() {
+    local port=$1
+    local max_retries=${2:-30}
+    local retry_interval=${3:-3}
+    local stable_checks=${4:-3}
 
-# Verificar Health Check (usando o endpoint /health/ que agora é servido pelo router)
-# Nota: O endpoint raiz /health foi removido do main.py, agora é /health/ (com barra) ou /health (se o router permitir sem barra)
-# O router tem prefix="/health" e @router.get("/"). Então é /health/
-if curl -s http://localhost:8000/health/ > /dev/null; then
-    echo -e "${GREEN}✅ Backend (Primary) Online!${NC}"
-elif curl -s http://localhost:8000/api/v1/status > /dev/null; then
-    echo -e "${GREEN}✅ Backend (Primary) Online (via Status API)!${NC}"
+    local stable_count=0
+
+    for i in $(seq 1 $max_retries); do
+        if curl -s --max-time 5 "http://localhost:${port}/health/" > /dev/null 2>&1; then
+            # Verificar tempo de resposta (proxy para CPU)
+            local response_time=$(curl -s -w "%{time_total}" -o /dev/null "http://localhost:${port}/health/" 2>/dev/null || echo "10.0")
+            if (( $(echo "$response_time < 2.0" | bc -l 2>/dev/null || echo "1") )); then
+                stable_count=$((stable_count + 1))
+                if [ $stable_count -ge $stable_checks ]; then
+                    echo "✅ Backend ${port} estável após ${i} tentativas (~$((i*retry_interval))s)"
+                    return 0
+                fi
+            else
+                stable_count=0  # Reset se resposta lenta
+            fi
+        else
+            stable_count=0  # Reset se não responde
+        fi
+
+        [ $i -lt $max_retries ] && sleep $retry_interval
+    done
+
+    return 1
+}
+
+# Aguardar Backend Primary (CRÍTICO - deve estar saudável)
+echo "⏳ Aguardando Backend Primary (8000) inicializar..."
+if check_backend_health 8000 30 3 3; then
+    echo -e "${GREEN}✅ Backend Primary estável e pronto${NC}"
 else
-    echo -e "${RED}❌ Falha ao conectar no Backend (Port 8000). Verifique logs/backend_8000.log${NC}"
-    tail -n 10 "$PROJECT_ROOT/logs/backend_8000.log" 2>/dev/null || echo "   Log não encontrado"
+    echo -e "${RED}❌ Falha ao estabilizar Backend Primary após 90s${NC}"
+    echo "📊 Diagnóstico:"
+    ps aux | grep -E "(uvicorn|python.*main)" | grep -v grep || echo "   Nenhum processo backend encontrado"
+    tail -n 10 logs/backend_8000.log 2>/dev/null || echo "   Log 8000 não encontrado"
     exit 1
 fi
+
+# Verificar Backends secundários (não críticos, mas desejáveis)
+echo "⏳ Verificando Backends secundários..."
+check_backend_health 8080 10 2 2 && echo "✅ Backend Secondary (8080) estável" || echo -e "${YELLOW}⚠️  Backend Secondary (8080) não estável (continuando...)${NC}"
+check_backend_health 3001 10 2 2 && echo "✅ Backend Fallback (3001) estável" || echo -e "${YELLOW}⚠️  Backend Fallback (3001) não estável (continuando...)${NC}"
 
 # FASE 2: SECUNDÁRIOS (após 30s dos essenciais)
 echo -e "${GREEN}⏰ Aguardando 30s antes de iniciar serviços secundários...${NC}"
 echo "   (Garantindo que serviços essenciais estejam totalmente inicializados)"
 sleep 30
 
-# 2.1. Iniciar MCP Servers (FASE 2: SECUNDÁRIOS)
-echo -e "${GREEN}🌐 Iniciando MCP Servers...${NC}"
+# Verificação de CPU antes de prosseguir (evita bloqueio)
+echo "🔍 Verificando estabilidade de CPU antes de serviços secundários..."
+check_cpu_stable() {
+    local max_cpu=${1:-30}
+    local max_wait=${2:-30}
+    local wait_interval=${3:-3}
+
+    for i in $(seq 1 $((max_wait / wait_interval))); do
+        local cpu=$(ps aux --no-headers -o pcpu -C python 2>/dev/null | awk '{sum+=$1} END {print sum+0}' || echo "0")
+
+        if (( $(echo "$cpu < $max_cpu" | bc -l 2>/dev/null || echo "0") )); then
+            echo "✅ CPU estável ($cpu% < ${max_cpu}%)"
+            return 0
+        fi
+
+        echo "   CPU: ${cpu}% (aguardando estabilização... $i/$((max_wait / wait_interval)))"
+        sleep $wait_interval
+    done
+
+    # Se ainda alta após espera, verificar se é crítica
+    local cpu=$(ps aux --no-headers -o pcpu -C python 2>/dev/null | awk '{sum+=$1} END {print sum+0}' || echo "0")
+    if (( $(echo "$cpu > 80.0" | bc -l 2>/dev/null || echo "0") )); then
+        echo -e "${RED}❌ CPU crítica ($cpu%). Abortando inicialização de serviços secundários.${NC}"
+        echo "   Backend pode estar em loop infinito. Verifique logs/backend_*.log"
+        exit 1
+    fi
+
+    echo -e "${YELLOW}⚠️  CPU ainda alta ($cpu%), mas não crítica. Prosseguindo com cuidado...${NC}"
+    return 0
+}
+
+check_cpu_stable 30 30 3
+echo "✅ Sistema estável. Prosseguindo com serviços secundários..."
+
+# ============================================================================
+# FASE 2: SERVIÇOS SECUNDÁRIOS (Sequencial com Health Checks)
+# ============================================================================
+
+# 2.1. Iniciar MCP Orchestrator (depende de Backend Primary)
+echo -e "${GREEN}🌐 Iniciando MCP Orchestrator...${NC}"
 cd "$PROJECT_ROOT"
 
-# Verificar se MCP Orchestrator já está rodando
-if pgrep -f "run_mcp_orchestrator.py" > /dev/null || pgrep -f "mcp_orchestrator" > /dev/null; then
-    echo -e "${YELLOW}⚠️  MCP Orchestrator já está rodando${NC}"
+if pgrep -f "run_mcp_orchestrator.py" > /dev/null; then
     MCP_ORCHESTRATOR_PID=$(pgrep -f "run_mcp_orchestrator.py" | head -1)
-    echo "   Usando PID existente: $MCP_ORCHESTRATOR_PID"
+    echo -e "${YELLOW}⚠️  MCP Orchestrator já está rodando (PID $MCP_ORCHESTRATOR_PID)${NC}"
 else
-    # Garantir permissão de execução
-    chmod +x "$PROJECT_ROOT/scripts/canonical/system/start_mcp_servers.sh" 2>/dev/null || true
-    chmod +x "$PROJECT_ROOT/scripts/canonical/system/run_mcp_orchestrator.py" 2>/dev/null || true
+    # Verificar que Backend está saudável antes de iniciar
+    if ! curl -s --max-time 3 http://localhost:8000/health/ > /dev/null 2>&1; then
+        echo -e "${RED}❌ Backend não está saudável. Aguardando...${NC}"
+        sleep 5
+    fi
 
-    # Iniciar MCP Orchestrator
+    chmod +x "$PROJECT_ROOT/scripts/canonical/system/run_mcp_orchestrator.py" 2>/dev/null || true
     nohup python "$PROJECT_ROOT/scripts/canonical/system/run_mcp_orchestrator.py" > "$PROJECT_ROOT/logs/mcp_orchestrator.log" 2>&1 &
     MCP_ORCHESTRATOR_PID=$!
     echo $MCP_ORCHESTRATOR_PID > "$PROJECT_ROOT/logs/mcp_orchestrator.pid"
     echo "✓ MCP Orchestrator iniciado (PID $MCP_ORCHESTRATOR_PID)"
-    echo "   Log: tail -f logs/mcp_orchestrator.log"
-    sleep 5
+
+    # Verificar se iniciou corretamente
+    sleep 3
+    if ps -p $MCP_ORCHESTRATOR_PID > /dev/null 2>&1; then
+        echo -e "${GREEN}✅ MCP Orchestrator rodando${NC}"
+    else
+        echo -e "${YELLOW}⚠️  MCP Orchestrator pode ter falhado (verifique logs)${NC}"
+    fi
 fi
 
-# 3. Iniciar Ciclo Principal com Autopoiese (Phase 23)
+# 2.2. Iniciar Ciclo Principal (depende de Backend Primary)
 echo -e "${GREEN}🔄 Iniciando Ciclo Principal OmniMind (Fase 23: Autopoiese + Integração Real-time)...${NC}"
 cd "$PROJECT_ROOT"
 mkdir -p "$PROJECT_ROOT/logs" "$PROJECT_ROOT/data/autopoietic/synthesized_code" "$PROJECT_ROOT/data/monitor"
 
-# Verificar se já está rodando
 if [ -f "$PROJECT_ROOT/logs/main_cycle.pid" ]; then
     OLD_PID=$(cat "$PROJECT_ROOT/logs/main_cycle.pid" 2>/dev/null || echo "")
     if [ -n "$OLD_PID" ] && ps -p "$OLD_PID" > /dev/null 2>&1; then
         echo -e "${YELLOW}⚠️  Ciclo Principal já está rodando (PID $OLD_PID)${NC}"
         MAIN_CYCLE_PID=$OLD_PID
     else
-        # Iniciar ciclo principal em background (Rhizome + Consciência + Autopoiese)
+        # Verificar Backend antes de iniciar
+        if curl -s --max-time 3 http://localhost:8000/health/ > /dev/null 2>&1; then
+            nohup python -m src.main > "$PROJECT_ROOT/logs/main_cycle.log" 2>&1 &
+            MAIN_CYCLE_PID=$!
+            echo $MAIN_CYCLE_PID > "$PROJECT_ROOT/logs/main_cycle.pid"
+            echo "✓ Ciclo Principal iniciado (PID $MAIN_CYCLE_PID)"
+            sleep 3
+            if ps -p $MAIN_CYCLE_PID > /dev/null 2>&1; then
+                echo -e "${GREEN}✅ Ciclo Principal rodando${NC}"
+            else
+                echo -e "${YELLOW}⚠️  Ciclo Principal pode ter falhado (verifique logs)${NC}"
+            fi
+        else
+            echo -e "${RED}❌ Backend não está saudável. Pulando Ciclo Principal.${NC}"
+        fi
+    fi
+else
+    if curl -s --max-time 3 http://localhost:8000/health/ > /dev/null 2>&1; then
         nohup python -m src.main > "$PROJECT_ROOT/logs/main_cycle.log" 2>&1 &
         MAIN_CYCLE_PID=$!
         echo $MAIN_CYCLE_PID > "$PROJECT_ROOT/logs/main_cycle.pid"
         echo "✓ Ciclo Principal iniciado (PID $MAIN_CYCLE_PID)"
+        sleep 3
+        if ps -p $MAIN_CYCLE_PID > /dev/null 2>&1; then
+            echo -e "${GREEN}✅ Ciclo Principal rodando${NC}"
+        fi
+    else
+        echo -e "${RED}❌ Backend não está saudável. Pulando Ciclo Principal.${NC}"
     fi
-else
-    # Iniciar ciclo principal em background (Rhizome + Consciência + Autopoiese)
-    nohup python -m src.main > "$PROJECT_ROOT/logs/main_cycle.log" 2>&1 &
-    MAIN_CYCLE_PID=$!
-    echo $MAIN_CYCLE_PID > "$PROJECT_ROOT/logs/main_cycle.pid"
-    echo "✓ Ciclo Principal iniciado (PID $MAIN_CYCLE_PID)"
 fi
 echo "   Log: tail -f logs/main_cycle.log"
-sleep 3
 
-# 4. Iniciar Daemon
+# 2.3. Iniciar Daemon (depende de Backend Primary)
 echo -e "${GREEN}🤖 Inicializando OmniMind Daemon...${NC}"
 cd "$PROJECT_ROOT"
 
-# Fazer requisição com as credenciais descobertas
-if [ -n "$OMNIMIND_DASHBOARD_PASS" ]; then
-    curl -X POST http://localhost:8000/daemon/start \
-      -u "${OMNIMIND_DASHBOARD_USER}:${OMNIMIND_DASHBOARD_PASS}" \
-      > "$PROJECT_ROOT/logs/daemon_start.log" 2>&1 &
-    DAEMON_START_PID=$!
-    echo "✓ Daemon start request enviado (PID $DAEMON_START_PID)"
+# Verificar Backend antes de iniciar Daemon
+if curl -s --max-time 3 http://localhost:8000/health/ > /dev/null 2>&1; then
+    if [ -n "$OMNIMIND_DASHBOARD_PASS" ]; then
+        curl -X POST http://localhost:8000/daemon/start \
+          -u "${OMNIMIND_DASHBOARD_USER}:${OMNIMIND_DASHBOARD_PASS}" \
+          > "$PROJECT_ROOT/logs/daemon_start.log" 2>&1 &
+        DAEMON_START_PID=$!
+        echo "✓ Daemon start request enviado (PID $DAEMON_START_PID)"
+        sleep 2
+
+        # Verificar se daemon iniciou
+        if curl -s --max-time 3 -u "${OMNIMIND_DASHBOARD_USER}:${OMNIMIND_DASHBOARD_PASS}" http://localhost:8000/daemon/status > /dev/null 2>&1; then
+            echo -e "${GREEN}✅ Daemon iniciado${NC}"
+        else
+            echo -e "${YELLOW}⚠️  Daemon pode estar iniciando (verifique logs)${NC}"
+        fi
+    else
+        echo -e "${YELLOW}⚠️  Senha não encontrada, pulando inicialização do daemon via API${NC}"
+    fi
 else
-    echo -e "${YELLOW}⚠️  Senha não encontrada, pulando inicialização do daemon via API${NC}"
+    echo -e "${RED}❌ Backend não está saudável. Pulando Daemon.${NC}"
 fi
-sleep 2
 
 # 5. Iniciar Frontend
 echo -e "${GREEN}🎨 Iniciando Frontend...${NC}"

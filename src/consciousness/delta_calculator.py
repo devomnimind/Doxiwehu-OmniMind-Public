@@ -250,12 +250,10 @@ class DeltaCalculator:
 
         # Trauma = divergência acima do threshold
         if float(normalized_divergence) > float(self.trauma_threshold):  # type: ignore[arg-type]
+            threshold = float(self.trauma_threshold)  # type: ignore[arg-type]
             trauma_level = min(
                 1.0,
-                (
-                    float(normalized_divergence) - float(self.trauma_threshold)  # type: ignore[arg-type]
-                )
-                / (1.0 - float(self.trauma_threshold)),  # type: ignore[arg-type]
+                (float(normalized_divergence) - threshold) / (1.0 - threshold),
             )
         else:
             trauma_level = 0.0

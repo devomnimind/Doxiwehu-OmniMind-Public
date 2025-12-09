@@ -46,6 +46,7 @@ class TheoreticalConsistencyGuard:
         use_dynamic_tolerance: bool = True,
         tolerance_percentile: float = 90.0,
         min_history_size: int = 50,
+        current_phase: int = 6,  # 🎯 FASE 0: Adicionar fase atual
     ):
         """
         Inicializa o guardião teórico.
@@ -56,6 +57,7 @@ class TheoreticalConsistencyGuard:
                 da distribuição de erros Δ-Φ
             tolerance_percentile: Percentil usado para calcular tolerância dinâmica (padrão: 90.0)
             min_history_size: Tamanho mínimo do histórico para calcular tolerância dinâmica
+            current_phase: Fase atual da execução (afeta tolerância) [default: 6]
         """
         self.violations: List[ConsistencyViolation] = []
         self.raise_on_critical = raise_on_critical
@@ -66,6 +68,7 @@ class TheoreticalConsistencyGuard:
         self.tolerance_percentile = tolerance_percentile
         self.min_history_size = min_history_size
         self.delta_phi_errors: List[float] = []  # Histórico de erros |Δ_obs - Δ_esperado|
+        self.current_phase = current_phase  # 🎯 FASE 0: Armazenar fase atual
 
     def validate_cycle(
         self,
@@ -76,6 +79,7 @@ class TheoreticalConsistencyGuard:
         gozo: Optional[float] = None,
         control: Optional[float] = None,
         cycle_id: int = 0,
+        phase: Optional[int] = None,  # 🎯 FASE 0: Adicionar fase como parâmetro
     ) -> List[ConsistencyViolation]:
         """
         Valida consistência teórica de um ciclo.
@@ -88,10 +92,15 @@ class TheoreticalConsistencyGuard:
             gozo: Valor de Gozo [0, 1] (opcional)
             control: Valor de Control Effectiveness [0, 1] (opcional)
             cycle_id: ID do ciclo (para rastreabilidade)
+            phase: Fase atual (sobrescreve self.current_phase se fornecida) [opcional]
 
         Returns:
             Lista de violações detectadas (pode estar vazia)
         """
+        # 🎯 FASE 0: Atualizar phase se fornecida
+        if phase is not None:
+            self.current_phase = phase
+
         violations: List[ConsistencyViolation] = []
 
         # 1. Validação IIT x Lacan (O paradoxo da consciência)
@@ -242,21 +251,32 @@ class TheoreticalConsistencyGuard:
 
     def _get_dynamic_tolerance(self, delta_error: float) -> float:
         """
-        Calcula tolerância dinâmica baseada em histórico de erros Δ-Φ.
+        Calcula tolerância dinâmica PHASE-AWARE baseada em histórico de erros Δ-Φ.
+
+        🎯 FASE 0 (Phase-Aware Tolerance):
+        - Phase 6 (Pure IIT): tolerance = 0.15 (estrita, espera correlação forte)
+        - Phase 7 (Zimerman Bonding): tolerance = 0.40 (relaxada, permite dinâmica psicanalítica)
+        - Bootstrap (<= ciclo 20): tolerance = 0.45 (muito relaxada, emergência)
 
         Tolerância dinâmica = percentil N da distribuição de erros históricos.
-        Se histórico insuficiente, usa valor estático empírico.
+        Se histórico insuficiente, usa valor estático empírico ajustado pela fase.
 
         Args:
             delta_error: Erro atual |Δ_obs - Δ_esperado|
 
         Returns:
-            Tolerância dinâmica calculada ou valor estático se histórico insuficiente
+            Tolerância dinâmica calculada ou valor estático phase-aware se histórico insuficiente
         """
-        from src.consciousness.phi_constants import DELTA_PHI_CORRELATION_TOLERANCE
+        # 🎯 FASE 0: Determinar tolerância base por fase
+        if self.current_phase == 7:  # Zimerman Bonding
+            base_tolerance = 0.40  # Relaxada, permite dinâmica psicanalítica
+        elif hasattr(self, "cycle_id") and getattr(self, "cycle_id", 0) <= 20:  # Bootstrap
+            base_tolerance = 0.45  # Muito relaxada, emergência
+        else:  # Phase 6 ou padrão
+            base_tolerance = 0.15  # Estrita, espera correlação forte (IIT puro)
 
         if not self.use_dynamic_tolerance:
-            return DELTA_PHI_CORRELATION_TOLERANCE
+            return base_tolerance
 
         # Adiciona erro atual ao histórico
         self.delta_phi_errors.append(delta_error)
@@ -274,20 +294,52 @@ class TheoreticalConsistencyGuard:
             # Percentil N da distribuição de erros
             dynamic_tolerance = float(np.percentile(errors_array, self.tolerance_percentile))
 
+            # 🎯 FASE 0: Garante que tolerância dinâmica respeita mínimo por fase
+            # Não deixar dinâmica ir abaixo da tolerância base
+            dynamic_tolerance = max(dynamic_tolerance, base_tolerance * 0.8)
+
             # Garante que tolerância está em range razoável [0.05, 0.5]
             # (evita valores muito baixos ou muito altos)
             dynamic_tolerance = float(np.clip(dynamic_tolerance, 0.05, 0.5))
 
             self.logger.debug(
-                f"Dynamic Δ-Φ tolerance updated: {DELTA_PHI_CORRELATION_TOLERANCE:.4f} → "
-                f"{dynamic_tolerance:.4f} (percentile={self.tolerance_percentile}, "
-                f"n={len(self.delta_phi_errors)})"
+                f"Dynamic Δ-Φ tolerance updated (Phase {self.current_phase}): "
+                f"{base_tolerance:.4f} → {dynamic_tolerance:.4f} "
+                f"(percentile={self.tolerance_percentile}, n={len(self.delta_phi_errors)})"
             )
 
             return dynamic_tolerance
         else:
-            # Histórico insuficiente: usa tolerância estática
-            return DELTA_PHI_CORRELATION_TOLERANCE
+            # Histórico insuficiente: usa tolerância base por fase
+            return base_tolerance
+
+    def validate_with_zscore(self, delta_error: float) -> float:
+        """
+        🎯 SOLUÇÃO 5: Valida erro Δ-Φ usando z-score normalization.
+
+        Útil para detectar outliers em diferentes escalas temporais.
+        Complementa a tolerância phase-aware para detecção de anomalias.
+
+        Args:
+            delta_error: Erro |Δ_obs - Δ_esperado|
+
+        Returns:
+            Z-score normalizado do erro
+        """
+        if len(self.delta_phi_errors) < 10:  # Precisa de histórico mínimo
+            return 0.0
+
+        import numpy as np
+
+        errors_array = np.array(self.delta_phi_errors[-50:])  # Últimos 50 ciclos
+        mean_error = np.mean(errors_array)
+        std_error = np.std(errors_array)
+
+        if std_error < 1e-6:  # Previnir divisão por zero
+            return 0.0
+
+        zscore = (delta_error - mean_error) / std_error
+        return float(zscore)
 
     def get_violation_summary(self) -> Dict[str, Any]:
         """

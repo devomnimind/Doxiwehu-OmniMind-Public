@@ -19,7 +19,7 @@ else
         fi
         SCRIPT_DIR="$(dirname "$SCRIPT_DIR")"
     done
-    
+
     if [ -z "$CLUSTER_PROJECT_ROOT" ]; then
         # Fallback: subir 3 níveis de scripts/canonical/system/
         CLUSTER_PROJECT_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
@@ -46,6 +46,7 @@ export PYTHONPATH="$CLUSTER_PROJECT_ROOT:${PYTHONPATH}"
 
 # Create logs directory if it doesn't exist
 mkdir -p logs
+chmod 755 logs 2>/dev/null || true
 
 echo "Starting OmniMind Backend Cluster..."
 
@@ -56,6 +57,7 @@ PID_8000=$!
 echo $PID_8000 > logs/backend_8000.pid
 echo "✓ Primary iniciado com PID $PID_8000"
 echo "   Log: tail -f logs/backend_8000.log"
+sleep 1
 
 # Start Secondary Instance (Port 8080)
 echo -e "${GREEN}▶ Iniciando Secondary (Port 8080)...${NC}"
@@ -64,6 +66,7 @@ PID_8080=$!
 echo $PID_8080 > logs/backend_8080.pid
 echo "✓ Secondary iniciado com PID $PID_8080"
 echo "   Log: tail -f logs/backend_8080.log"
+sleep 1
 
 # Start Fallback Instance (Port 3001)
 echo -e "${GREEN}▶ Iniciando Fallback (Port 3001)...${NC}"
@@ -72,6 +75,7 @@ PID_3001=$!
 echo $PID_3001 > logs/backend_3001.pid
 echo "✓ Fallback iniciado com PID $PID_3001"
 echo "   Log: tail -f logs/backend_3001.log"
+sleep 1
 
 echo -e "${GREEN}✅ Cluster rodando${NC}"
 echo "   Logs disponíveis em: logs/backend_*.log"

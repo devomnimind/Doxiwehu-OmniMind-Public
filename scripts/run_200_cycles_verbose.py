@@ -39,13 +39,13 @@ ATUALIZADO: 2025-12-08
 import argparse
 import asyncio
 import json
-import sys
-from pathlib import Path
-from datetime import datetime, timezone
-from typing import Dict, List, Any, Optional
 
 # Adicionar src ao path
 import os
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 project_root = Path(__file__).parent.parent.resolve()  # scripts -> omnimind
 sys.path.insert(0, str(project_root))
@@ -110,11 +110,11 @@ for lib_path in cuda_lib_paths:
 if not ld_lib_path:
     os.environ["LD_LIBRARY_PATH"] = "/usr/lib/x86_64-linux-gnu"
 
-from src.consciousness.integration_loop import IntegrationLoop
 from src.backup.consciousness_snapshot import ConsciousnessSnapshotManager
+from src.consciousness.integration_loop import IntegrationLoop
 
 # Opções de ciclos disponíveis
-CYCLE_OPTIONS = [50, 80, 100, 200, 500]
+CYCLE_OPTIONS = [50, 80, 100, 200, 400, 500]
 DEFAULT_DRY_RUN_CYCLES = 80
 DEFAULT_PRODUCTION_CYCLES = 100
 
@@ -268,7 +268,7 @@ def save_final_metrics(
     all_metrics: List[Dict[str, Any]],
     metrics_file: Path,
     mode: str,
-    metrics_file_latest: Optional[Path] = None
+    metrics_file_latest: Optional[Path] = None,
 ) -> None:
     """Salva métricas finais em arquivo JSON com timestamp e atualiza índice."""
     final_data = {
@@ -293,6 +293,7 @@ def save_final_metrics(
     # Criar cópia como "latest" para compatibilidade (se especificado)
     if metrics_file_latest:
         import shutil
+
         shutil.copy2(metrics_file, metrics_file_latest)
 
     # Atualizar índice de execuções
@@ -342,8 +343,6 @@ def update_executions_index(metrics_file: Path, final_data: Dict[str, Any]) -> N
         json.dump(index, f, indent=2)
 
 
-
-
 async def run_cycles(mode: str, total_cycles: int) -> None:
     """Executa ciclos em modo verboso ou DRY RUN."""
     # Configurar arquivos baseado no modo e número de ciclos
@@ -369,6 +368,7 @@ async def run_cycles(mode: str, total_cycles: int) -> None:
     print("\n🔍 VERIFICAÇÃO DE GPU:")
     try:
         import torch
+
         if torch.cuda.is_available():
             gpu_name = torch.cuda.get_device_name(0)
             gpu_memory_total = torch.cuda.get_device_properties(0).total_memory / (1024**3)
@@ -381,6 +381,7 @@ async def run_cycles(mode: str, total_cycles: int) -> None:
 
             # Verificar memória disponível para uso
             from src.utils.device_utils import check_gpu_memory_available
+
             if check_gpu_memory_available(min_memory_mb=100):
                 print(f"   ✅ GPU pronta para uso (≥100MB livre)")
             else:
@@ -536,7 +537,9 @@ async def run_cycles(mode: str, total_cycles: int) -> None:
                     print(f"   Control Effectiveness: {result.control_effectiveness:.6f}")
                 if result.triad is not None:
                     triad_validation = result.triad.validate()
-                    print(f"   Tríade: Φ={result.triad.phi:.4f}, Ψ={result.triad.psi:.4f}, σ={result.triad.sigma:.4f}")
+                    print(
+                        f"   Tríade: Φ={result.triad.phi:.4f}, Ψ={result.triad.psi:.4f}, σ={result.triad.sigma:.4f}"
+                    )
                     print(f"   Interpretação: {triad_validation.get('interpretation', 'N/A')}")
                     if triad_validation.get("warnings"):
                         print(f"   ⚠️  Avisos: {', '.join(triad_validation['warnings'])}")
@@ -580,7 +583,9 @@ async def run_cycles(mode: str, total_cycles: int) -> None:
         phi_final = all_metrics[-1]["phi"]
         phi_max = max([m["phi"] for m in all_metrics])
         phi_avg = sum([m["phi"] for m in all_metrics]) / len(all_metrics)
-        phi_workspace_final = loop.workspace.compute_phi_from_integrations() if mode == "production" else None
+        phi_workspace_final = (
+            loop.workspace.compute_phi_from_integrations() if mode == "production" else None
+        )
 
         # REFATORAÇÃO: Coletar métricas finais do RNN
         phi_causal_final = None

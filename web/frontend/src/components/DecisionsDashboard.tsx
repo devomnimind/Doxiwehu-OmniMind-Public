@@ -55,10 +55,17 @@ export function DecisionsDashboard() {
         min_trust_level: filters.min_trust_level > 0 ? filters.min_trust_level : undefined,
         limit: filters.limit,
       });
-      setDecisions(data);
+      // Defensive check to ensure data is an array
+      if (Array.isArray(data)) {
+        setDecisions(data);
+      } else {
+        console.error('Expected array from getDecisions, got:', typeof data, data);
+        setDecisions([]);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar decisões');
       console.error('Error fetching decisions:', err);
+      setDecisions([]);
     } finally {
       setLoading(false);
     }
@@ -67,18 +74,30 @@ export function DecisionsDashboard() {
   const fetchStats = useCallback(async () => {
     try {
       const data = await apiService.getDecisionStats();
-      setStats(data);
+      // Validate stats object
+      if (data && typeof data === 'object') {
+        setStats(data as DecisionStats);
+      } else {
+        setStats(null);
+      }
     } catch (err) {
       console.error('Error fetching stats:', err);
+      setStats(null);
     }
   }, []);
 
   const fetchDecisionDetail = useCallback(async (index: number) => {
     try {
       const data = await apiService.getDecisionDetail(index);
-      setSelectedDecision(data);
+      // Validate that data is an object with expected fields
+      if (data && typeof data === 'object' && 'action' in data) {
+        setSelectedDecision(data as DecisionDetail);
+      } else {
+        setSelectedDecision(null);
+      }
     } catch (err) {
       console.error('Error fetching decision detail:', err);
+      setSelectedDecision(null);
     }
   }, []);
 

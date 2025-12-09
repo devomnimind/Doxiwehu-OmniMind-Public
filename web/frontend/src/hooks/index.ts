@@ -5,3 +5,4 @@
 export { useWebSocket } from './useWebSocket';
 export { useTasks } from './useTasks';
 export { useMetrics } from './useMetrics';
+export { useBackendHealth } from './useBackendHealth';
