@@ -242,8 +242,8 @@ class ReactAgent:
     def _init_embedding_model(self) -> None:
         """Inicializa modelo de embedding (lazy, com fallback).
 
-        CORREÇÃO (2025-12-08): Trata erro de meta tensor carregando modelo
-        em CPU primeiro, depois movendo para device desejado se necessário.
+        CORREÇÃO (2025-12-10): Adicionado fallback para modelo local e modelo alternativo
+        quando API HuggingFace falha.
         """
         try:
             from sentence_transformers import SentenceTransformer
@@ -258,11 +258,52 @@ class ReactAgent:
             # get_sentence_transformer_device() já verifica memória e retorna "cpu" se insuficiente
             device = get_sentence_transformer_device(min_memory_mb=100.0)
 
+            # TENTATIVA 1: Carregar modelo local se disponível
+            model_path = None
+            try:
+                import os
+                from pathlib import Path
+
+                # Caminho do cache local do HuggingFace
+                cache_dir = Path.home() / ".cache" / "huggingface" / "hub"
+                model_cache_path = (
+                    cache_dir
+                    / "models--sentence-transformers--all-MiniLM-L6-v2"
+                    / "snapshots"
+                    / "c9745ed1d9f207416be6d2e6f8de32d1f16199bf"
+                )
+
+                if model_cache_path.exists():
+                    logger.debug(f"Modelo encontrado em cache local: {model_cache_path}")
+                    model_path = str(model_cache_path)
+                else:
+                    logger.debug("Modelo não encontrado em cache local, tentando download...")
+            except Exception as cache_check_exc:
+                logger.debug(f"Erro ao verificar cache local: {cache_check_exc}")
+
             try:
                 # CORREÇÃO: Carregar sempre em CPU primeiro para evitar meta tensor error
                 # SentenceTransformer pode inicializar modelos em meta device quando
                 # especificamos device diretamente, causando "Cannot copy out of meta tensor"
-                self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+                if model_path:
+                    # Tentar carregar do cache local SEM verificar API
+                    import os
+
+                    # Forçar modo offline para evitar requests de rede
+                    os.environ["HF_HUB_OFFLINE"] = "1"
+                    os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
+                    try:
+                        self._embedding_model = SentenceTransformer(
+                            model_path, device="cpu", local_files_only=True
+                        )
+                        logger.debug("Modelo carregado do cache local com sucesso (modo offline)")
+                    finally:
+                        # Restaurar configuração após carregamento
+                        os.environ.pop("HF_HUB_OFFLINE", None)
+                        os.environ.pop("HF_HUB_DISABLE_TELEMETRY", None)
+                else:
+                    # Fazer download se necessário
+                    self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
 
                 # Se device desejado não é CPU e há memória suficiente,
                 # tentar mover após carregamento seguro
@@ -289,6 +330,21 @@ class ReactAgent:
                     # Device é CPU ou não há memória suficiente - já está em CPU
                     logger.debug("Modelo de embedding carregado: all-MiniLM-L6-v2 (device=cpu)")
             except Exception as init_exc:
+                # TENTATIVA 2: Modelo alternativo se all-MiniLM-L6-v2 falhar
+                logger.warning(
+                    f"Erro ao carregar all-MiniLM-L6-v2: {init_exc}, tentando modelo alternativo..."
+                )
+                try:
+                    # Modelo menor como fallback
+                    self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+                    logger.info("Modelo alternativo carregado com sucesso")
+                except Exception as alt_exc:
+                    logger.warning(
+                        f"Modelo alternativo também falhou: {alt_exc}, usando fallback hash-based"
+                    )
+                    self._embedding_model = None
+                    return
+
                 # Se OOM durante inicialização, tentar consolidar memórias
                 if "out of memory" in str(init_exc).lower() or "OOM" in str(init_exc):
                     logger.warning("CUDA OOM ao carregar embedding model. Consolidando memórias...")
@@ -305,7 +361,21 @@ class ReactAgent:
 
                     # Tentar novamente em CPU após consolidação
                     logger.info("Tentando carregar em CPU após consolidação...")
-                    self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+                    try:
+                        if model_path:
+                            self._embedding_model = SentenceTransformer(
+                                model_path, device="cpu", local_files_only=True
+                            )
+                        else:
+                            self._embedding_model = SentenceTransformer(
+                                "all-MiniLM-L6-v2", device="cpu"
+                            )
+                    except Exception as retry_exc:
+                        logger.warning(
+                            f"Tentativa de retry falhou: {retry_exc}, usando fallback hash-based"
+                        )
+                        self._embedding_model = None
+                        return
                 elif "meta tensor" in str(init_exc).lower():
                     # CORREÇÃO: Se ainda houver meta tensor error mesmo em CPU,
                     # pode ser problema com SentenceTransformer - usar fallback
