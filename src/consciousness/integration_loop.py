@@ -460,6 +460,7 @@ class IntegrationLoop:
 
         REFATORAÇÃO: Método síncrono para causalidade determinística.
         Integra com ConsciousSystem.step() para dinâmica RNN.
+        Sprint 1 Observability: Adds OpenTelemetry distributed tracing.
 
         If expectation_silent=True, expectation module maintains history but
         blocks output flow (structural ablation: measures falta-a-ser gap).
@@ -467,6 +468,11 @@ class IntegrationLoop:
         start_time = datetime.now()
         self.cycle_count += 1
         self.total_cycles_executed += 1
+
+        # 🎯 Sprint 1 Task 1.2: Create RNN cycle context for distributed tracing
+        workspace_state_hash = str(hash(self.workspace.embedding_dim))
+        cycle_context = RNNCycleContext.create(self.cycle_count, workspace_state_hash)
+        self._current_cycle_context = cycle_context  # Store for step-level tracing
 
         result = LoopCycleResult(
             cycle_number=self.cycle_count,
@@ -476,6 +482,7 @@ class IntegrationLoop:
             cross_prediction_scores={},
             phi_estimate=0.0,
             complexity_metrics=None,  # Será preenchido
+            trace_id=cycle_context.trace_id,  # 🎯 Sprint 1: Add trace_id to result
         )
 
         # Estimar complexidade ANTES da execução
@@ -524,7 +531,8 @@ class IntegrationLoop:
                     repression = self.workspace.conscious_system.repression_strength
                     logger.debug(
                         f"Cycle {self.cycle_count}: RNN step executed "
-                        f"(Φ={phi_causal:.4f}, repression={repression:.3f})"
+                        f"(Φ={phi_causal:.4f}, repression={repression:.3f})",
+                        extra={"trace_id": cycle_context.trace_id},  # 🎯 Sprint 1: Add trace_id
                     )
             except Exception as e:
                 logger.warning(f"Cycle {self.cycle_count}: RNN step failed - {e}")
@@ -954,6 +962,15 @@ class IntegrationLoop:
                 # Se necessário, processar extended results em método async separado
             except Exception as e:
                 logger.debug(f"Falha ao processar extended results: {e}")
+
+        # 🎯 Sprint 1 Task 1.2: Clear cycle context and log completion
+        if hasattr(self, '_current_cycle_context'):
+            if self.enable_logging:
+                logger.debug(
+                    f"Cycle {self.cycle_count} completed (Φ={result.phi_estimate:.4f})",
+                    extra={"trace_id": cycle_context.trace_id, "phi": result.phi_estimate},
+                )
+            self._current_cycle_context = None
 
         return result
 
