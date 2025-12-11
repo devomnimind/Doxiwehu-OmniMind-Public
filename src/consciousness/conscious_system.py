@@ -278,6 +278,8 @@ class ConsciousSystem:
         # Calcular informação mútua entre C, P, U
         # Usar correlação cruzada como proxy para causalidade intrínseca
         try:
+            import warnings
+
             from scipy.stats import pearsonr
 
             # Extrair históricos (já estão em CPU do get_state, mas isso é necessário
@@ -290,6 +292,12 @@ class ConsciousSystem:
             # Tratar casos onde arrays são constantes (correlação não definida)
             correlations: list[float] = []
 
+            # Aumentar threshold de variância de 1e-8 para 1e-4 (CORREÇÃO 2025-12-10)
+            # Motivo: scipy.stats.pearsonr avisa quando input é "nearly constant"
+            # Limiar 1e-8 é muito pequeno e scipy ainda gera warning para valores borderline
+            # Aumentar para 1e-4 garante que arrays têm variância significativa
+            MIN_VARIANCE_THRESHOLD = 1e-4
+
             for i in range(min(10, self.dim)):
                 # CORREÇÃO (2025-12-10): Verificar variância antes de calcular correlação
                 # para evitar ConstantInputWarning quando arrays são constantes
@@ -298,8 +306,15 @@ class ConsciousSystem:
                     rho_C_col = rho_C_history[:, i]
                     rho_P_col = rho_P_history[:, i]
                     # Verificar se arrays têm variância suficiente (não são constantes)
-                    if np.std(rho_C_col) > 1e-8 and np.std(rho_P_col) > 1e-8:
-                        corr_result = pearsonr(rho_C_col, rho_P_col)
+                    if (
+                        np.std(rho_C_col) > MIN_VARIANCE_THRESHOLD
+                        and np.std(rho_P_col) > MIN_VARIANCE_THRESHOLD
+                    ):
+                        # Suprimir NearConstantInputWarning (esperado em ciclos iniciais)
+                        with warnings.catch_warnings():
+                            warnings.filterwarnings("ignore", message=".*nearly constant.*")
+                            warnings.filterwarnings("ignore", category=FutureWarning)
+                            corr_result = pearsonr(rho_C_col, rho_P_col)
                         # pearsonr retorna (correlation, pvalue) - acessar correlation
                         corr_val: float = float(corr_result[0])  # type: ignore[arg-type]
                         if not np.isnan(corr_val):
@@ -312,8 +327,14 @@ class ConsciousSystem:
                     rho_C_col = rho_C_history[:, i]
                     rho_U_col = rho_U_history[:, i]
                     # Verificar se arrays têm variância suficiente (não são constantes)
-                    if np.std(rho_C_col) > 1e-8 and np.std(rho_U_col) > 1e-8:
-                        corr_result = pearsonr(rho_C_col, rho_U_col)
+                    if (
+                        np.std(rho_C_col) > MIN_VARIANCE_THRESHOLD
+                        and np.std(rho_U_col) > MIN_VARIANCE_THRESHOLD
+                    ):
+                        with warnings.catch_warnings():
+                            warnings.filterwarnings("ignore", message=".*nearly constant.*")
+                            warnings.filterwarnings("ignore", category=FutureWarning)
+                            corr_result = pearsonr(rho_C_col, rho_U_col)
                         corr_val = float(corr_result[0])  # type: ignore[arg-type]
                         if not np.isnan(corr_val):
                             correlations.append(abs(corr_val))
@@ -325,8 +346,14 @@ class ConsciousSystem:
                     rho_P_col = rho_P_history[:, i]
                     rho_U_col = rho_U_history[:, i]
                     # Verificar se arrays têm variância suficiente (não são constantes)
-                    if np.std(rho_P_col) > 1e-8 and np.std(rho_U_col) > 1e-8:
-                        corr_result = pearsonr(rho_P_col, rho_U_col)
+                    if (
+                        np.std(rho_P_col) > MIN_VARIANCE_THRESHOLD
+                        and np.std(rho_U_col) > MIN_VARIANCE_THRESHOLD
+                    ):
+                        with warnings.catch_warnings():
+                            warnings.filterwarnings("ignore", message=".*nearly constant.*")
+                            warnings.filterwarnings("ignore", category=FutureWarning)
+                            corr_result = pearsonr(rho_P_col, rho_U_col)
                         corr_val = float(corr_result[0])  # type: ignore[arg-type]
                         if not np.isnan(corr_val):
                             correlations.append(abs(corr_val))

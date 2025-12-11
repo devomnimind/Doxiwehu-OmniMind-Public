@@ -144,7 +144,7 @@ class LangevinDynamics:
         self,
         embedding: np.ndarray,
         previous_embedding: Optional[np.ndarray] = None,
-        min_variance: float = 0.001,
+        min_variance: float = 0.01,
     ) -> np.ndarray:
         """
         Garante variação mínima entre embeddings (evita colapso).
@@ -154,7 +154,7 @@ class LangevinDynamics:
         Args:
             embedding: Embedding atual
             previous_embedding: Embedding anterior (opcional)
-            min_variance: Variação mínima requerida
+            min_variance: Variação mínima requerida (aumentado de 0.001 para 0.01)
 
         Returns:
             Embedding com variação garantida

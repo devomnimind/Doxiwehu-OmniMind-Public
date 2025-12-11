@@ -18,11 +18,10 @@ from .sandbox import create_secure_sandbox
 logger = logging.getLogger(__name__)
 
 # Threshold mínimo de Φ para aceitar mudanças arquiteturais
-# CORREÇÃO (2025-12-08): Usar threshold baseado em valores empíricos normalizados
-# Valores típicos de Φ normalizado: 0.5-0.8 (sistema saudável)
-# Threshold de 0.3 estava muito alto, rejeitando mudanças válidas
-# Novo threshold: 0.1 (permite flutuações normais, mas rejeita colapsos reais)
-PHI_THRESHOLD = 0.1
+# AJUSTE (2025-12-10): Aumentando threshold para permitir mais evolução
+# Valor anterior: 0.1 (muito conservador, rejeitava mudanças válidas)
+# Novo valor: 0.05 (permite flutuações normais, mas previne colapsos)
+PHI_THRESHOLD = 0.05
 
 
 @dataclass(frozen=True)
@@ -384,20 +383,20 @@ class AutopoieticManager:
         if len(self._phi_history) > 10:
             self._phi_history = self._phi_history[-10:]
 
-        # Feedback adaptativo
-        if phi_delta_percent < -10.0:  # Declínio > 10%
+        # Feedback adaptativo - AJUSTE (2025-12-10): Menos conservador
+        if phi_delta_percent < -20.0:  # Declínio > 20% (antes era 10%)
             self._logger.warning(
                 "Φ declinou %.1f%%, preferindo estratégia STABILIZE",
                 abs(phi_delta_percent),
             )
             self._strategy_preference = EvolutionStrategy.STABILIZE
-        elif phi_delta_percent > 10.0:  # Melhoria > 10%
+        elif phi_delta_percent > 5.0:  # Melhoria > 5% (antes era 10%)
             self._logger.info(
                 "Φ melhorou %.1f%%, permitindo estratégias mais agressivas",
                 phi_delta_percent,
             )
             self._strategy_preference = None  # Remove preferência, permite todas
-        elif phi_after < self._phi_threshold * 1.2:  # Φ próximo do threshold
+        elif phi_after < self._phi_threshold * 1.5:  # Φ próximo do threshold (antes era 1.2)
             self._logger.info("Φ próximo do threshold, preferindo STABILIZE")
             self._strategy_preference = EvolutionStrategy.STABILIZE
 

@@ -81,12 +81,17 @@ class LoopCycleResultBuilder:
 
     def _extract_embeddings(self) -> Dict[str, np.ndarray]:
         """
-        Extrai embeddings da workspace.
+        Extrai embeddings da workspace e normaliza dimensões.
 
         Returns:
-            Dict[str, np.ndarray] com embeddings de cada módulo
+            Dict[str, np.ndarray] com embeddings de cada módulo (todas com dimensão normalizada)
         """
-        return self.workspace.embeddings.copy()
+        normalized_embeddings = {}
+        for module_name, embedding in self.workspace.embeddings.items():
+            # Normaliza dimensão automáticamente
+            normalized = self.workspace._normalize_embedding_dimension(embedding, module_name)
+            normalized_embeddings[module_name] = normalized
+        return normalized_embeddings
 
     def _calculate_activations(
         self,
@@ -129,6 +134,16 @@ class LoopCycleResultBuilder:
                         current_emb = np.array(current_emb)
                     if not isinstance(prev_embedding, np.ndarray):
                         prev_embedding = np.array(prev_embedding)
+
+                    # Garante mesma dimensão
+                    current_emb = current_emb.flatten()
+                    prev_embedding = prev_embedding.flatten()
+
+                    if current_emb.shape[0] != prev_embedding.shape[0]:
+                        min_dim = min(current_emb.shape[0], prev_embedding.shape[0])
+                        current_emb = current_emb[:min_dim]
+                        prev_embedding = prev_embedding[:min_dim]
+
                     delta = np.linalg.norm(current_emb - prev_embedding)
                     # Normaliza delta (threshold adaptável)
                     delta_normalized: float = min(
@@ -222,6 +237,8 @@ class LoopCycleResultBuilder:
         """
         Calcula cosine similarity entre dois vetores.
 
+        Garante que ambos são arrays numpy e possuem mesma dimensão.
+
         Args:
             a: Vetor 1
             b: Vetor 2
@@ -229,6 +246,22 @@ class LoopCycleResultBuilder:
         Returns:
             float [-1, 1] representando similaridade
         """
+        # Garantir que são arrays numpy
+        if not isinstance(a, np.ndarray):
+            a = np.array(a)
+        if not isinstance(b, np.ndarray):
+            b = np.array(b)
+
+        # Garantir que são 1D
+        a = a.flatten()
+        b = b.flatten()
+
+        # Se diferentes dimensões, truncar para a menor (ou padding)
+        if a.shape[0] != b.shape[0]:
+            min_dim = min(a.shape[0], b.shape[0])
+            a = a[:min_dim]
+            b = b[:min_dim]
+
         norm_a = np.linalg.norm(a)
         norm_b = np.linalg.norm(b)
 

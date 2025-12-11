@@ -199,9 +199,12 @@ class SupabaseAdapter:
         except APIError as e:
             raise SupabaseAdapterError(e) from e
 
-    def insert_record(self, table: str, record: Dict[str, Any]) -> list[dict[str, Any]]:
+    def insert_record(
+        self, table: str, record: Dict[str, Any], use_admin: bool = False
+    ) -> list[dict[str, Any]]:
+        client = self.admin_client if use_admin and self.admin_client else self.client
         try:
-            response = self.client.table(table).insert(record).execute()
+            response = client.table(table).insert(record).execute()
             return cast(List[Dict[str, Any]], response.data)
         except APIError as e:
             raise SupabaseAdapterError(e) from e

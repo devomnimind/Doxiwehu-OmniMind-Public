@@ -376,6 +376,7 @@ class TestDefaultTasks:
         # Check that we have expected tasks
         task_ids = {t.task_id for t in tasks}
         assert "code_analysis" in task_ids
+        assert "consciousness_snapshot" in task_ids
         assert "test_optimization" in task_ids
         assert "paper_reading" in task_ids
         assert "database_optimization" in task_ids

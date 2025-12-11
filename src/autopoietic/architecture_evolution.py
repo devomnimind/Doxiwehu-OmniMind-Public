@@ -70,15 +70,15 @@ class ArchitectureEvolution:
         cpu_usage = metrics.get("cpu_usage", 0.0)
         latency = metrics.get("latency_ms", 0.0)
 
-        if error_rate > 0.05:  # > 5% errors -> Critical
+        if error_rate > 0.10:  # > 10% errors (antes era 5%)
             self._logger.info("High error rate (%.2f), strategy: STABILIZE", error_rate)
             return EvolutionStrategy.STABILIZE
 
-        if cpu_usage > 80.0 or latency > 500.0:
+        if cpu_usage > 90.0 or latency > 1000.0:  # Aumentado os limites
             self._logger.info("High load/latency, strategy: OPTIMIZE")
             return EvolutionStrategy.OPTIMIZE
 
-        # If healthy, try to expand or explore
+        # If healthy, try to expand or explore - AJUSTE (2025-12-10): Mais agressivo
         self._logger.info("System healthy, strategy: EXPAND")
         return EvolutionStrategy.EXPAND
 
@@ -135,21 +135,40 @@ class ArchitectureEvolution:
             new_config["generation"] = str(int(spec.config.get("generation", 0)) + 1)
             new_config["evolved"] = "true"
 
-            # Apply strategy-specific mutations
+            # Apply strategy-specific mutations - AJUSTE (2025-12-10): Nomeação mais inteligente
             if strategy == EvolutionStrategy.STABILIZE:
-                new_config["robustness"] = "high"
-                new_config["monitoring"] = "verbose"
-                evolved_name = f"stabilized_{name}"
+                # Evitar prefixos repetitivos
+                if not name.startswith("stabilized_"):
+                    new_config["robustness"] = "high"
+                    new_config["monitoring"] = "verbose"
+                    evolved_name = f"stabilized_{name}"
+                else:
+                    # Já estabilizado, tentar otimizar
+                    new_config["caching"] = "enabled"
+                    new_config["optimization_level"] = "O2"
+                    evolved_name = name.replace("stabilized_", "optimized_")
 
             elif strategy == EvolutionStrategy.OPTIMIZE:
-                new_config["caching"] = "enabled"
-                new_config["optimization_level"] = "O2"
-                evolved_name = f"optimized_{name}"
+                if not name.startswith("optimized_"):
+                    new_config["caching"] = "enabled"
+                    new_config["optimization_level"] = "O2"
+                    evolved_name = f"optimized_{name}"
+                else:
+                    # Já otimizado, tentar expandir
+                    new_config["features"] = "extended"
+                    new_config["capacity"] = "2x"
+                    evolved_name = name.replace("optimized_", "expanded_")
 
             elif strategy == EvolutionStrategy.EXPAND:
-                new_config["features"] = "extended"
-                new_config["capacity"] = "2x"
-                evolved_name = f"expanded_{name}"
+                if not name.startswith("expanded_"):
+                    new_config["features"] = "extended"
+                    new_config["capacity"] = "2x"
+                    evolved_name = f"expanded_{name}"
+                else:
+                    # Já expandido, voltar para estabilizar
+                    new_config["robustness"] = "high"
+                    new_config["monitoring"] = "verbose"
+                    evolved_name = name.replace("expanded_", "stabilized_")
 
             else:  # Fallback/Legacy behavior
                 evolved_name = f"evolved_{name}"

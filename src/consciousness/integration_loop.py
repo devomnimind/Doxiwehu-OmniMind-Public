@@ -794,7 +794,36 @@ class IntegrationLoop:
                                 )
 
                 # Compute Φ from workspace state (which already has cross-predictions)
-                result.phi_estimate = self.workspace.compute_phi_from_integrations()
+                phi_returned = self.workspace.compute_phi_from_integrations()
+                # DEBUG: Log what compute_phi_from_integrations returned
+                if phi_returned is None:
+                    logger.warning(
+                        f"Cycle {self.cycle_count}: compute_phi_from_integrations() returned None!"
+                    )
+                    result.phi_estimate = 0.0
+                elif isinstance(phi_returned, float):
+                    result.phi_estimate = phi_returned
+                    if result.phi_estimate == 0.0 and len(self.workspace.cross_predictions) > 0:
+                        logger.warning(
+                            f"Cycle {self.cycle_count}: phi_estimate is 0.0 despite {len(self.workspace.cross_predictions)} cross-predictions"
+                        )
+                else:
+                    # Might be a PhiValue object
+                    if hasattr(phi_returned, "normalized"):
+                        result.phi_estimate = phi_returned.normalized
+                        logger.debug(
+                            f"Cycle {self.cycle_count}: Extracted phi_estimate={result.phi_estimate} from PhiValue.normalized"
+                        )
+                    elif hasattr(phi_returned, "nats"):
+                        result.phi_estimate = phi_returned.nats
+                        logger.debug(
+                            f"Cycle {self.cycle_count}: Extracted phi_estimate={result.phi_estimate} from PhiValue.nats"
+                        )
+                    else:
+                        logger.error(
+                            f"Cycle {self.cycle_count}: Unknown return type from compute_phi_from_integrations: {type(phi_returned)}"
+                        )
+                        result.phi_estimate = 0.0
 
                 # CORREÇÃO CRÍTICA (2025-12-08): Atualizar repressão APÓS cálculo de Φ
                 # Repressão não atualizada estava bloqueando acesso ao Real (Rho_U congelado)
@@ -912,7 +941,23 @@ class IntegrationLoop:
 
                 return extended_result
             except Exception as e:
-                logger.warning(f"Erro ao construir extended result: {e}, retornando base result")
+                # Log verboso para debug de problemas de dimensão
+                logger.error(
+                    f"ERRO ao construir extended result no ciclo {base_result.cycle_number}: {type(e).__name__}: {str(e)}",
+                    exc_info=True,
+                )
+                # Tentar logar informações de debug adicionais
+                try:
+                    if hasattr(self, "workspace") and self.workspace:
+                        modules = self.workspace.get_all_modules()
+                        logger.error(f"  Módulos no workspace: {modules}")
+                        for module in modules:
+                            emb = self.workspace.embeddings.get(module)
+                            if emb is not None:
+                                logger.error(f"    {module}: shape={emb.shape}")
+                except Exception:
+                    pass
+                logger.warning(f"  Retornando base result (sem extended metrics)")
                 return base_result
 
         return base_result
@@ -1397,12 +1442,58 @@ class IntegrationLoop:
             logger.warning(f"Erro ao calcular σ: {e}", exc_info=True)
             extended_result.sigma = None
 
-        # 8. Construir tríade completa
+        # 8. Calcular Epsilon ANTES da tríade (CORREÇÃO 2025-12-10)
+        # MOTIVO: ConsciousnessTriad requer epsilon como argumento obrigatório
+        # Anteriormente estava no passo 11, causando 495 warnings desnecessários
+        try:
+            from src.motivation.intrinsic_rewards import DesireEngine
+
+            if not hasattr(self, "_desire_engine") or self._desire_engine is None:
+                self._desire_engine = DesireEngine()
+
+            # Epsilon baseia-se em: (α_lack × β_potencial × γ_novelty)
+            alpha_lack = 1.0 - (phi_raw_nats / 10.0) if phi_raw_nats > 0 else 0.9
+            beta_potential = extended_result.integration_strength or 0.5
+
+            # Calcular novelty a partir da magnitude de mudança no embedding
+            gamma_novelty = 0.5  # Default
+            if previous_cycle and previous_cycle.module_outputs:
+                sensory_current = extended_result.module_outputs.get("sensory_input")
+                sensory_prev = previous_cycle.module_outputs.get("sensory_input")
+                if (
+                    sensory_current is not None
+                    and sensory_prev is not None
+                    and isinstance(sensory_current, np.ndarray)
+                    and isinstance(sensory_prev, np.ndarray)
+                ):
+                    # Usar diferença normalizada como novidade
+                    diff_norm = np.linalg.norm(sensory_current - sensory_prev)
+                    gamma_novelty = float(
+                        np.clip(diff_norm / (np.linalg.norm(sensory_prev) + 1e-8), 0.0, 1.0)
+                    )
+
+            # Combinar fatores para epsilon
+            epsilon = float(np.clip(alpha_lack * beta_potential * gamma_novelty, 0.0, 1.0))
+            extended_result.epsilon = epsilon
+
+            if self.enable_logging:
+                logger.debug(
+                    f"Epsilon (ϵ): {epsilon:.4f} "
+                    f"(α_lack={alpha_lack:.3f}, β_potential={beta_potential:.3f}, "
+                    f"γ_novelty={gamma_novelty:.3f})"
+                )
+        except Exception as e:
+            logger.warning(f"Erro ao calcular ϵ (Epsilon): {e}")
+            extended_result.epsilon = None
+            epsilon = 0.0
+
+        # 9. Construir tríade completa COM epsilon (CORREÇÃO 2025-12-10)
         try:
             triad = ConsciousnessTriad(
                 phi=base_result.phi_estimate,
                 psi=extended_result.psi or 0.0,
                 sigma=extended_result.sigma or 0.0,
+                epsilon=extended_result.epsilon or 0.0,
                 step_id=extended_result.cycle_id or f"cycle_{base_result.cycle_number}",
                 metadata={
                     "validation_confidence": validation.get("confidence", 0.5),
@@ -1556,6 +1647,24 @@ class IntegrationLoop:
                 extended_result.consistency_violations = violations
         except Exception as e:
             logger.warning(f"Erro ao validar consistência teórica: {e}")
+
+        # 13. Capturar phi_causal e repression_strength
+        try:
+            if self.workspace.conscious_system is not None:
+                extended_result.phi_causal = self.workspace.conscious_system.compute_phi_causal()
+                extended_result.repression_strength = (
+                    self.workspace.conscious_system.repression_strength
+                )
+
+                if self.enable_logging:
+                    logger.debug(
+                        f"Phi causal: {extended_result.phi_causal:.4f}, "
+                        f"Repression: {extended_result.repression_strength:.4f}"
+                    )
+        except Exception as e:
+            logger.warning(f"Erro ao capturar phi_causal/repression_strength: {e}")
+            extended_result.phi_causal = None
+            extended_result.repression_strength = None
 
         return extended_result
 

@@ -50,6 +50,9 @@ class ExtendedLoopCycleResult(LoopCycleResult):
     # Novos campos (Isomorfismo Estrutural)
     gozo: Optional[float] = None  # Gozo (excesso não integrado)
     delta: Optional[float] = None  # δ (defesa psicanalítica)
+    epsilon: Optional[float] = None  # ϵ (desire engine - desejo)
+    phi_causal: Optional[float] = None  # Φ_causal (phi calculado sobre padrões causais RNN)
+    repression_strength: Optional[float] = None  # Força de repressão (defesa estrutural)
     imagination_output: Optional[np.ndarray] = None  # Output do módulo imagination
     control_effectiveness: Optional[float] = None  # Efetividade de controle total
     homeostatic_state: Optional[Dict[str, Any]] = (
@@ -97,6 +100,12 @@ class ExtendedLoopCycleResult(LoopCycleResult):
             base_dict["gozo"] = self.gozo
         if self.delta is not None:
             base_dict["delta"] = self.delta
+        if self.epsilon is not None:
+            base_dict["epsilon"] = self.epsilon
+        if self.phi_causal is not None:
+            base_dict["phi_causal"] = self.phi_causal
+        if self.repression_strength is not None:
+            base_dict["repression_strength"] = self.repression_strength
         if self.imagination_output is not None:
             base_dict["imagination_output"] = (
                 self.imagination_output.tolist()
@@ -122,6 +131,9 @@ class ExtendedLoopCycleResult(LoopCycleResult):
             or self.triad is not None
             or self.gozo is not None
             or self.delta is not None
+            or self.epsilon is not None
+            or self.phi_causal is not None
+            or self.repression_strength is not None
             or self.imagination_output is not None
             or self.control_effectiveness is not None
             or self.homeostatic_state is not None

@@ -18,6 +18,7 @@ from __future__ import annotations
 import asyncio
 import os
 import signal
+import sys
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
@@ -25,8 +26,21 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional
 
+# Ensure project root is in python path
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
 import psutil
 import structlog
+
+# Add autopoietic imports
+from src.autopoietic.manager import AutopoieticManager
+from src.autopoietic.meta_architect import ComponentSpec
+from src.autopoietic.metrics_adapter import collect_metrics
+
+# Add consciousness imports
+from src.memory.consciousness_state_manager import get_consciousness_state_manager
+from src.metrics.real_consciousness_metrics import real_metrics_collector
 
 # Configure structured logging
 structlog.configure(  # type: ignore[attr-defined]
@@ -93,7 +107,7 @@ class SystemMetrics:
 
     def is_idle(self) -> bool:
         """Determine if system is idle enough for background work"""
-        return self.cpu_percent < 20.0 and self.memory_percent < 80.0 and not self.user_active
+        return self.cpu_percent < 30.0 and self.memory_percent < 85.0 and not self.user_active
 
     def is_sleep_time(self) -> bool:
         """Determine if it's sleep time (user likely away)"""
@@ -188,7 +202,10 @@ class OmniMindDaemon:
                 eligible_tasks.append(task)
             elif task.priority == TaskPriority.HIGH and metrics.is_idle():
                 eligible_tasks.append(task)
-            elif task.priority == TaskPriority.MEDIUM and metrics.is_idle():
+            elif task.priority == TaskPriority.MEDIUM and (
+                metrics.is_idle() or metrics.cpu_percent < 50.0
+            ):
+                # AJUSTE: MEDIUM executa quando idle OU CPU < 50%
                 eligible_tasks.append(task)
             elif task.priority == TaskPriority.LOW and metrics.is_sleep_time():
                 eligible_tasks.append(task)
@@ -260,11 +277,35 @@ class OmniMindDaemon:
             try:
                 metrics = self._collect_system_metrics()
 
+                # DEBUG: Log estado do sistema
+                logger.info(
+                    "daemon.check",
+                    state=self.state.value,
+                    cpu=metrics.cpu_percent,
+                    memory=metrics.memory_percent,
+                    is_idle=metrics.is_idle(),
+                    is_sleep_time=metrics.is_sleep_time(),
+                    user_active=metrics.user_active,
+                )
+
                 if metrics.is_sleep_time():
                     self.state = DaemonState.SLEEPING
                 elif metrics.is_idle():
                     self.state = DaemonState.IDLE
                 else:
+                    # Sistema ocupado - verificar se pode executar tarefas MEDIUM
+                    next_task = self._get_next_task(metrics)
+                    if next_task and next_task.priority == TaskPriority.MEDIUM:
+                        logger.info(
+                            "daemon.medium_task_available",
+                            task_id=next_task.task_id,
+                            cpu=metrics.cpu_percent,
+                        )
+                        self.state = DaemonState.WORKING
+                        await self._execute_task(next_task)
+                        self.state = DaemonState.IDLE
+                    else:
+                        logger.debug("daemon.waiting_idle", cpu=metrics.cpu_percent)
                     await asyncio.sleep(self.check_interval)
                     continue
 
@@ -274,6 +315,8 @@ class OmniMindDaemon:
                     self.state = DaemonState.WORKING
                     await self._execute_task(next_task)
                     self.state = DaemonState.IDLE
+                else:
+                    logger.debug("daemon.no_tasks_eligible")
 
                 await asyncio.sleep(self.check_interval)
 
@@ -414,6 +457,89 @@ def create_default_tasks() -> List[DaemonTask]:
         )
     )
 
+    async def take_consciousness_snapshot() -> Dict[str, Any]:
+        """Take consciousness snapshot during idle periods"""
+        logger.info("task.consciousness_snapshot.running")
+
+        try:
+            # Initialize metrics collector if needed
+            await real_metrics_collector.initialize()
+
+            # Collect real consciousness metrics
+            metrics = await real_metrics_collector.collect_real_metrics()
+
+            # Get consciousness state manager
+            manager = get_consciousness_state_manager()
+
+            # Prepare attention state from metrics
+            attention_state = {
+                "temporal_coherence": metrics.ici_components.get("temporal_coherence", 0.0),
+                "marker_integration": metrics.ici_components.get("marker_integration", 0.0),
+                "resonance": metrics.ici_components.get("resonance", 0.0),
+                "anxiety": metrics.anxiety,
+                "flow": metrics.flow,
+                "entropy": metrics.entropy,
+            }
+
+            # Take snapshot with real metrics
+            snapshot_id = manager.take_snapshot(
+                phi_value=metrics.phi,
+                psi_value=0.0,  # TODO: Implement ψ (Deleuze) calculation
+                sigma_value=0.0,  # TODO: Implement σ (Lacan) calculation
+                qualia_signature={
+                    "ici": metrics.ici,
+                    "prs": metrics.prs,
+                    "integration_level": metrics.ici,  # Using ICI as proxy
+                },
+                attention_state=attention_state,
+                integration_level=metrics.ici,
+                metadata={
+                    "source": "daemon_idle_snapshot",
+                    "system_metrics": {
+                        "cpu_percent": psutil.cpu_percent(),
+                        "memory_percent": psutil.virtual_memory().percent,
+                        "disk_usage_percent": psutil.disk_usage("/").percent,
+                    },
+                    "interpretation": metrics.interpretation,
+                },
+            )
+
+            logger.info(
+                "task.consciousness_snapshot.completed",
+                snapshot_id=snapshot_id,
+                phi=metrics.phi,
+                anxiety=metrics.anxiety,
+                flow=metrics.flow,
+            )
+
+            return {
+                "status": "completed",
+                "snapshot_id": snapshot_id,
+                "phi": metrics.phi,
+                "anxiety": metrics.anxiety,
+                "flow": metrics.flow,
+                "entropy": metrics.entropy,
+            }
+
+        except Exception as exc:
+            logger.error(
+                "task.consciousness_snapshot.failed",
+                error=str(exc),
+                exc_info=True,
+            )
+            return {"status": "failed", "error": str(exc)}
+
+    tasks.append(
+        DaemonTask(
+            task_id="consciousness_snapshot",
+            name="Consciousness Snapshot",
+            description="Take consciousness state snapshot during idle periods",
+            priority=TaskPriority.HIGH,  # Execute when system is idle
+            execute_fn=take_consciousness_snapshot,
+            repeat_interval=timedelta(minutes=30),  # More frequent snapshots
+        )
+    )
+
     def optimize_tests() -> dict[str, Any]:
         logger.info("task.test_optimization.running")
         return {"status": "completed", "tests_optimized": 0}
@@ -456,6 +582,72 @@ def create_default_tasks() -> List[DaemonTask]:
             priority=TaskPriority.MEDIUM,
             execute_fn=optimize_database,
             repeat_interval=timedelta(hours=6),
+        )
+    )
+
+    # NOVO (2025-12-10): Ciclo autopoietico automático quando saudável
+    async def run_autopoietic_cycle() -> Dict[str, Any]:
+        """Executa ciclo autopoietico automático quando sistema está saudável."""
+        logger.info("task.autopoietic_cycle.running")
+
+        try:
+            # Coletar métricas atuais
+            metrics = collect_metrics()
+
+            # Verificar se sistema está saudável o suficiente
+            # MetricSample: phi está em raw_metrics, error_rate e cpu_usage são atributos diretos
+            phi_current = metrics.raw_metrics.get("phi", 0.0)
+            error_rate = metrics.error_rate
+            cpu_usage = metrics.cpu_usage
+
+            if phi_current < 0.01 or error_rate > 0.5 or cpu_usage > 95.0:
+                logger.info(
+                    "Sistema não saudável para ciclo autopoietico: Φ=%.3f, errors=%.3f, cpu=%.1f",
+                    phi_current,
+                    error_rate,
+                    cpu_usage,
+                )
+                return {"status": "skipped", "reason": "system_not_healthy"}
+
+            # Executar ciclo usando strategy_inputs()
+            manager = AutopoieticManager()
+            spec = ComponentSpec(
+                name="kernel_process",
+                type="process",
+                config={"priority": "high", "generation": "0"},
+            )
+            manager.register_spec(spec)
+
+            log = manager.run_cycle(metrics.strategy_inputs())
+
+            logger.info(
+                "task.autopoietic_cycle.completed: cycle %d, strategy %s, components %d",
+                log.cycle_id,
+                log.strategy.name,
+                len(log.synthesized_components),
+            )
+
+            return {
+                "status": "completed",
+                "cycle_id": log.cycle_id,
+                "strategy": log.strategy.name,
+                "components_synthesized": len(log.synthesized_components),
+                "phi_before": log.phi_before,
+                "phi_after": log.phi_after,
+            }
+
+        except Exception as exc:
+            logger.error("task.autopoietic_cycle.failed: %s", exc, exc_info=True)
+            return {"status": "failed", "error": str(exc)}
+
+    tasks.append(
+        DaemonTask(
+            task_id="autopoietic_cycle",
+            name="Autopoietic Cycle",
+            description="Execute automatic autopoietic evolution cycle when system is healthy",
+            priority=TaskPriority.MEDIUM,  # AJUSTE: Mudou de LOW para MEDIUM para executar quando idle
+            execute_fn=run_autopoietic_cycle,
+            repeat_interval=timedelta(hours=2),  # AJUSTE: A cada 2 horas (antes 4)
         )
     )
 

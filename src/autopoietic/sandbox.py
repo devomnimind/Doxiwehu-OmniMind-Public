@@ -313,8 +313,8 @@ def create_secure_sandbox(**kwargs) -> AutopoieticSandbox:
         Configured AutopoieticSandbox with security defaults
     """
     return AutopoieticSandbox(
-        max_memory_mb=50,  # Conservative memory limit
-        max_cpu_time_seconds=10,  # Short execution time
-        max_file_size_kb=100,  # Small file creation limit
+        max_memory_mb=100,  # AJUSTE (2025-12-10): Aumentado de 50MB para 100MB
+        max_cpu_time_seconds=30,  # AJUSTE (2025-12-10): Aumentado de 10s para 30s
+        max_file_size_kb=500,  # AJUSTE (2025-12-10): Aumentado de 100KB para 500KB
         **kwargs,
     )

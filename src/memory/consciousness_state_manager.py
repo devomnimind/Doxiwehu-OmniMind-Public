@@ -108,7 +108,8 @@ class ConsciousnessStateManager:
         if not self.supabase:
             return False
         try:
-            self.supabase.insert_record(self.supabase_table, snapshot.to_dict())
+            # Usar admin client para operações de escrita (snapshots)
+            self.supabase.insert_record(self.supabase_table, snapshot.to_dict(), use_admin=True)
             return True
         except (SupabaseAdapterError, Exception) as exc:  # pragma: no cover
             logger.warning("Falha ao salvar snapshot no Supabase: %s", exc)

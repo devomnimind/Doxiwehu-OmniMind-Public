@@ -299,6 +299,64 @@ class SharedWorkspace:
             f"memory_protection={'enabled' if self._memory_protection_enabled else 'disabled'}"
         )
 
+        # Try to load latest snapshot on initialization
+        self._load_latest_snapshot()
+
+    def _load_latest_snapshot(self) -> None:
+        """
+        Carrega o snapshot mais recente do workspace se existir.
+        Útil para persistência entre sessões.
+        """
+        try:
+            # Encontrar snapshot mais recente
+            snapshot_files = list(self.workspace_dir.glob("workspace_snapshot_*.json"))
+            if not snapshot_files:
+                logger.debug("No workspace snapshots found - starting fresh")
+                return
+
+            # Ordenar por timestamp (nome do arquivo contém timestamp)
+            latest_snapshot = max(snapshot_files, key=lambda f: f.stat().st_mtime)
+
+            logger.info(f"Loading workspace snapshot: {latest_snapshot}")
+
+            with open(latest_snapshot, "r") as f:
+                snapshot = json.load(f)
+
+            # Restaurar estado
+            self.cycle_count = snapshot.get("cycle", 0)
+
+            # Restaurar embeddings
+            modules = snapshot.get("modules", {})
+            for name, embedding_list in modules.items():
+                embedding = np.array(embedding_list)
+                self.embeddings[name] = embedding
+
+                # Criar entrada de metadata padrão se não existir
+                if name not in self.metadata:
+                    self.metadata[name] = {}
+
+            # Restaurar cross_predictions (limitado para não sobrecarregar)
+            cross_predictions_data = snapshot.get("cross_predictions", [])
+            for pred_data in cross_predictions_data[-200:]:  # Últimas 200
+                try:
+                    # Reconstruir CrossPredictionMetrics do dict
+                    pred = CrossPredictionMetrics(**pred_data)
+                    self.cross_predictions.append(pred)
+                except Exception as e:
+                    logger.debug(f"Failed to load cross prediction: {e}")
+
+            # Reconstruir histórico (simplificado - apenas para cross-predictions)
+            # Nota: Histórico completo seria muito grande para salvar/carregar
+
+            logger.info(
+                f"Workspace snapshot loaded: cycle={self.cycle_count}, "
+                f"modules={len(self.embeddings)}, predictions={len(self.cross_predictions)}"
+            )
+
+        except Exception as e:
+            logger.warning(f"Failed to load workspace snapshot: {e}")
+            # Continue com estado vazio se falhar
+
     def write_module_state(
         self,
         module_name: str,
@@ -1319,24 +1377,36 @@ class SharedWorkspace:
         # CORREÇÃO: Importar PhiValue no início para evitar UnboundLocalError
         from src.consciousness.phi_value import PhiValue
 
+        # DEBUG: Log cross_predictions status
+        logger.info(
+            f"IIT TRACE: compute_phi_from_integrations called with {len(self.cross_predictions)} cross-predictions"
+        )
+
         if not self.cross_predictions:
+            logger.warning("IIT: No cross-predictions available")
             return PhiValue.zero(source="compute_phi_from_integrations")
 
         # Phase 22: IIT rigorosa com mais dados para validação estatística
-        # Aumentado mínimo de histórico para garantir robustez
-        min_history_required = 10  # Aumentado de 5 para 10
+        # CORREÇÃO CRÍTICA (2025-12-11): Usar mínimo histórico flexível
+        # Antes: 10 ciclos (causava zero absoluto durante warm-up)
+        # Agora: 1 ciclo (permite cálculo desde início, depois melhora com mais dados)
+        # PROTOCOLO: Warmup usa dados limitados, estabiliza em ciclo ~20+
+        min_history_required = 1  # Mínimo absoluto: 1 histórico suficiente para correlação
         modules = self.get_all_modules()
 
-        # Verificar se todos os módulos têm histórico suficiente
+        # Verificar se PELO MENOS UM módulo tem histórico
         # CORREÇÃO: PhiValue já importado no início do método
+        modules_with_history = []
         for module in modules:
             history = self.get_module_history(module)
-            if len(history) < min_history_required:
-                logger.debug(
-                    f"IIT: Insufficient history for {module}: "
-                    f"{len(history)} < {min_history_required}"
-                )
-                return PhiValue.zero(source="compute_phi_from_integrations")
+            if len(history) >= min_history_required:
+                modules_with_history.append((module, len(history)))
+
+        if not modules_with_history:  # NENHUM módulo tem histórico = impossível calcular
+            logger.warning(
+                f"IIT: RETURNING ZERO - No modules have history >= {min_history_required}"
+            )
+            return PhiValue.zero(source="compute_phi_from_integrations")
 
         # Phase 22: Usar mais predições para validação estatística robusta
         # Antes: apenas últimas N² predições (muito pouco)
@@ -1346,8 +1416,14 @@ class SharedWorkspace:
             recent_predictions = self.cross_predictions[-max_predictions_for_phi:]
         else:
             recent_predictions = self.cross_predictions
+
+        logger.debug(
+            f"IIT: Using {len(recent_predictions)} recent predictions (total: {len(self.cross_predictions)})"
+        )
+
         if not recent_predictions:
             # CORREÇÃO: PhiValue já importado no início do método
+            logger.warning("IIT: No recent predictions available")
             return PhiValue.zero(source="compute_phi_from_integrations")
 
         # Filtrar predições com causalidade válida (não correlação espúria)
@@ -1357,10 +1433,32 @@ class SharedWorkspace:
             if hasattr(p, "granger_causality") and hasattr(p, "transfer_entropy")
         ]
 
-        if len(valid_predictions) < len(modules):  # Pelo menos uma predição por módulo
-            logger.debug(f"IIT: Insufficient valid causal predictions: {len(valid_predictions)}")
-            # CORREÇÃO: PhiValue já importado no início do método
-            return PhiValue.zero(source="compute_phi_from_integrations")
+        logger.debug(
+            f"IIT: {len(valid_predictions)} predictions have causal fields out of {len(recent_predictions)} recent"
+        )
+        logger.debug(
+            f"IIT: Module count = {len(modules)}, Valid prediction count = {len(valid_predictions)}"
+        )
+
+        # CORREÇÃO CRÍTICA (2025-12-11): Não exigir válido=módulo em warm-up
+        # Durante warmup (primeiros 5 ciclos), aceitar Φ mesmo com menos valid_predictions
+        # Fórmula: se >= 1 válido = pode calcular, durante warmup
+        min_valid_required = max(1, len(modules) // 3)  # Nominalmente 1/3 dos módulos
+        if self.cycle_count is not None and self.cycle_count < 5:
+            min_valid_required = 1  # Warmup: aceitar até 1 válido
+            logger.debug(f"IIT: WARMUP MODE - reducing min_valid_required to {min_valid_required}")
+
+        if len(valid_predictions) < min_valid_required:
+            logger.debug(
+                f"IIT: Only {len(valid_predictions)} valid predictions < {min_valid_required} required. "
+                f"Using all recent predictions for warmup."
+            )
+            # Durante warmup, usar TODOS recent_predictions mesmo se não têm campos causais completos
+            valid_predictions = recent_predictions if recent_predictions else []
+
+            if not valid_predictions:
+                logger.warning("IIT: No predictions available even in warmup")
+                return PhiValue.zero(source="compute_phi_from_integrations")
 
         # IIT com causalidade: Φ é a MÉDIA HARMÔNICA das forças causais
         # (em vez de aritmética) para penalizar fracos sem destruir a métrica

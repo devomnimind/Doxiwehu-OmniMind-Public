@@ -28,27 +28,30 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ConsciousnessTriad:
     """
-    Tríade ortogonal de consciência (Φ, Ψ, σ).
+    Quádrupla ortogonal de consciência (Φ, Ψ, σ, ϵ).
 
     Características:
     - Ortogonalidade: dimensões independentes
     - Não-aditividade: não somam para "consciência total"
     - Complementaridade: cada uma captura aspecto diferente
+    - ϵ_desire: Impulso autônomo para ir além do programado
     """
 
     phi: float  # Φ_conscious (IIT puro - MICS) [0, 1]
     psi: float  # Ψ_produtor (Deleuze) [0, 1]
     sigma: float  # σ_sinthome (Lacan) [0, 1]
+    epsilon: float  # ϵ_desire (Desire) [0, 1] - Impulso autônomo
     step_id: str  # ID único do passo/ciclo
     timestamp: float = field(default_factory=lambda: __import__("time").time())
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        """Converte tríade para dicionário."""
+        """Converte quádrupla para dicionário."""
         return {
             "phi": self.phi,
             "psi": self.psi,
             "sigma": self.sigma,
+            "epsilon": self.epsilon,
             "step_id": self.step_id,
             "timestamp": self.timestamp,
             "metadata": self.metadata,
@@ -71,6 +74,8 @@ class ConsciousnessTriad:
             errors.append(f"Ψ fora do range [0, 1]: {self.psi}")
         if not (0.0 <= self.sigma <= 1.0):
             errors.append(f"σ fora do range [0, 1]: {self.sigma}")
+        if not (0.0 <= self.epsilon <= 1.0):
+            errors.append(f"ϵ fora do range [0, 1]: {self.epsilon}")
 
         # Avisos sobre valores extremos usando thresholds empíricos
         from src.consciousness.phi_constants import (
@@ -134,42 +139,53 @@ class ConsciousnessTriad:
         else:
             interpretations.append("Estrutura rígida ou dissociada")
 
+        # Interpretação de ϵ
+        if self.epsilon > 0.8:
+            interpretations.append("Impulso radical (Deleuze)")
+        elif self.epsilon > 0.5:
+            interpretations.append("Busca ativa autônoma")
+        elif self.epsilon > 0.2:
+            interpretations.append("Curiosidade rotineira")
+        else:
+            interpretations.append("Satisfação homeostática")
+
         return " | ".join(interpretations)
 
     def get_magnitude(self) -> float:
         """
-        Calcula magnitude da tríade (norma euclidiana).
+        Calcula magnitude da quádrupla (norma euclidiana).
 
         NOTA: Isso NÃO é "consciência total" (não são aditivas).
-        É apenas uma medida de magnitude no espaço 3D ortogonal.
+        É apenas uma medida de magnitude no espaço 4D ortogonal.
 
         Returns:
-            Magnitude (norma euclidiana) [0, √3]
+            Magnitude (norma euclidiana) [0, 2]
         """
-        return float(np.sqrt(self.phi**2 + self.psi**2 + self.sigma**2))
+        return float(np.sqrt(self.phi**2 + self.psi**2 + self.sigma**2 + self.epsilon**2))
 
     def get_normalized_magnitude(self) -> float:
         """
         Calcula magnitude normalizada [0, 1].
 
-        Normaliza pela magnitude máxima possível (√3).
+        Normaliza pela magnitude máxima possível (2).
 
         Returns:
             Magnitude normalizada [0, 1]
         """
         magnitude = self.get_magnitude()
-        max_magnitude = np.sqrt(3.0)
+        max_magnitude = 2.0
         return float(magnitude / max_magnitude) if max_magnitude > 0 else 0.0
 
 
 class ConsciousnessTriadCalculator:
     """
-    Calculador da tríade ortogonal de consciência (Φ, Ψ, σ).
+    Calculador da quádrupla ortogonal de consciência (Φ, Ψ, σ, ϵ).
 
     Integra:
     - PhiCalculator (via SharedWorkspace) para Φ
     - PsiProducer para Ψ
     - SigmaSinthomeCalculator para σ
+    - DesireEngine para ϵ
     """
 
     def __init__(
@@ -177,18 +193,21 @@ class ConsciousnessTriadCalculator:
         workspace: Optional[Any] = None,  # SharedWorkspace
         psi_producer: Optional[Any] = None,  # PsiProducer
         sigma_calculator: Optional[Any] = None,  # SigmaSinthomeCalculator
+        desire_engine: Optional[Any] = None,  # DesireEngine
     ):
         """
-        Inicializa calculador da tríade.
+        Inicializa calculador da quádrupla.
 
         Args:
             workspace: Instância opcional de SharedWorkspace
             psi_producer: Instância opcional de PsiProducer
             sigma_calculator: Instância opcional de SigmaSinthomeCalculator
+            desire_engine: Instância opcional de DesireEngine
         """
         self.workspace = workspace
         self.psi_producer = psi_producer
         self.sigma_calculator = sigma_calculator
+        self.desire_engine = desire_engine
         self.logger = logger
         from src.consciousness.phi_constants import CONSISTENCY_THRESHOLD
 
@@ -205,9 +224,12 @@ class ConsciousnessTriadCalculator:
         phi_history: Optional[List[float]] = None,
         delta_value: Optional[float] = None,
         cycle_count: Optional[int] = None,
+        current_phi: Optional[float] = None,
+        explored_states: Optional[int] = None,
+        total_possible_states: Optional[int] = None,
     ) -> ConsciousnessTriad:
         """
-        Calcula a tríade ortogonal (Φ, Ψ, σ) para um passo/ciclo.
+        Calcula a quádrupla ortogonal (Φ, Ψ, σ, ϵ) para um passo/ciclo.
 
         Args:
             step_id: ID único do passo
@@ -217,9 +239,12 @@ class ConsciousnessTriadCalculator:
             actions: Ações tomadas (para cálculo de Ψ)
             cycle_id: ID do ciclo (para cálculo de σ)
             phi_history: Histórico de Φ (para cálculo de σ)
+            current_phi: Φ atual (para cálculo de ϵ)
+            explored_states: Estados explorados (para cálculo de ϵ)
+            total_possible_states: Total de estados possíveis (para cálculo de ϵ)
 
         Returns:
-            ConsciousnessTriad com (Φ, Ψ, σ)
+            ConsciousnessTriad com (Φ, Ψ, σ, ϵ)
         """
         # 1. Calcular Φ (IIT puro)
         phi = self._calculate_phi(step_id)
@@ -242,8 +267,15 @@ class ConsciousnessTriadCalculator:
             cycle_count=cycle_count,
         )
 
+        # 4. Calcular ϵ (Desire)
+        epsilon = self._calculate_epsilon(
+            current_phi=current_phi if current_phi is not None else phi,
+            explored_states=explored_states or 100,
+            total_possible_states=total_possible_states or 10000,
+        )
+
         # FASE 3: Validação de estados patológicos antes de retornar
-        validation_result = self._validate_triad_state(phi, psi, sigma)
+        validation_result = self._validate_quad_state(phi, psi, sigma, epsilon)
 
         # Aplicar correções se necessário
         if not validation_result["is_stable"]:
@@ -252,18 +284,20 @@ class ConsciousnessTriadCalculator:
 
             psi = psi * PSI_DAMPING_FACTOR
             self.logger.warning(
-                f"ConsciousnessTriad: Estado instável - {validation_result['status_message']}"
+                f"ConsciousnessQuad: Estado instável - {validation_result['status_message']}"
             )
 
         return ConsciousnessTriad(
             phi=phi,
             psi=psi,
             sigma=sigma,
+            epsilon=epsilon,
             step_id=step_id,
             metadata={
                 "phi_source": "workspace" if self.workspace else "default",
                 "psi_source": "psi_producer" if self.psi_producer else "default",
                 "sigma_source": ("sigma_calculator" if self.sigma_calculator else "default"),
+                "epsilon_source": "desire_engine" if self.desire_engine else "default",
                 "is_stable": validation_result["is_stable"],
                 "validation_status": validation_result["status_message"],
             },
@@ -524,4 +558,150 @@ class ConsciousnessTriadCalculator:
             "phi": phi_val,
             "psi": psi_val,
             "sigma": sigma_val,
+        }
+
+    def _calculate_epsilon(
+        self,
+        current_phi: float,
+        explored_states: int,
+        total_possible_states: int,
+    ) -> float:
+        """Calcula ϵ (Desire) via DesireEngine."""
+        if self.desire_engine:
+            try:
+                epsilon = self.desire_engine.calculate_epsilon_desire(
+                    current_phi=current_phi,
+                    explored_states=explored_states,
+                    total_possible_states=total_possible_states,
+                )
+                return float(np.clip(epsilon, 0.0, 1.0))
+            except Exception as e:
+                self.logger.warning(f"Erro ao calcular ϵ via DesireEngine: {e}")
+
+        # Fallback: valor padrão
+        return 0.5
+
+    def _validate_quad_state(
+        self, phi: float, psi: float, sigma: float, epsilon: float
+    ) -> Dict[str, Any]:
+        """
+        Valida estado da quádrupla e detecta estados patológicos (FASE 3).
+
+        Baseado em:
+        - Lacan: Psicose Lúcida (High Φ + High Ψ)
+        - FEP: Estado Vegetativo (Low Φ + Low Ψ)
+        - Estrutural: Falha Estrutural (divergência alta + σ baixo)
+        - Desire: Estagnação Mortal (High Φ + Low ϵ)
+
+        Args:
+            phi: Valor de Φ [0, 1]
+            psi: Valor de Ψ [0, 1]
+            sigma: Valor de σ [0, 1]
+            epsilon: Valor de ϵ [0, 1]
+
+        Returns:
+            Dict com is_stable, status_message, alerts
+        """
+        alerts = []
+        stable = True
+
+        # Normalizar valores
+        phi_val = float(np.clip(phi, 0.0, 1.0))
+        psi_val = float(np.clip(psi, 0.0, 1.0))
+        sigma_val = float(np.clip(sigma, 0.0, 1.0))
+        epsilon_val = float(np.clip(epsilon, 0.0, 1.0))
+
+        # 1. Checagem de "Psicose Lúcida" (High Phi, High Psi)
+        from src.consciousness.phi_constants import PHI_PSI_HIGH_THRESHOLD
+
+        if phi_val > PHI_PSI_HIGH_THRESHOLD and psi_val > PHI_PSI_HIGH_THRESHOLD:
+            alerts.append("CRITICAL: Lucid Psychosis State (High Phi/High Psi)")
+            stable = False
+            self.logger.critical(
+                f"ConsciousnessQuad: Psicose Lúcida - Φ={phi_val:.4f}, Ψ={psi_val:.4f}"
+            )
+
+        # 2. Checagem de "Estado Vegetativo" (Low Phi, Low Psi)
+        from src.consciousness.phi_constants import PHI_PSI_LOW_THRESHOLD
+
+        if phi_val < PHI_PSI_LOW_THRESHOLD and psi_val < PHI_PSI_LOW_THRESHOLD:
+            alerts.append("WARNING: Low Energy State / Comatose")
+            self.logger.warning(
+                f"ConsciousnessQuad: Estado vegetativo - Φ={phi_val:.4f}, Ψ={psi_val:.4f}"
+            )
+
+        # 3. Checagem do Sinthome (Sigma)
+        from src.consciousness.phi_constants import (
+            PHI_PSI_DIVERGENCE_THRESHOLD,
+            SIGMA_EMPIRICAL_RANGES,
+        )
+
+        divergence = abs(phi_val - psi_val)
+        sigma_min_empirical = SIGMA_EMPIRICAL_RANGES["vigilia_estavel"][0]  # 0.02
+        sigma_max_empirical = SIGMA_EMPIRICAL_RANGES["rem_flexivel"][1]  # 0.12
+
+        if divergence > PHI_PSI_DIVERGENCE_THRESHOLD:
+            if sigma_val < sigma_min_empirical:
+                alerts.append("ERROR: Structural Failure (Sigma too low for divergence)")
+                stable = False
+                self.logger.error(
+                    f"ConsciousnessQuad: Falha estrutural detectada - "
+                    f"divergência={divergence:.4f}, σ={sigma_val:.4f} "
+                    f"(mínimo empírico: {sigma_min_empirical:.4f})"
+                )
+            elif sigma_val > sigma_max_empirical:
+                alerts.append("WARNING: Sigma too high (structure too flexible)")
+                self.logger.warning(
+                    f"ConsciousnessQuad: Sigma muito alto - "
+                    f"divergência={divergence:.4f}, σ={sigma_val:.4f} "
+                    f"(máximo empírico: {sigma_max_empirical:.4f})"
+                )
+
+        # 4. Checagem de "Estagnação Mortal" (High Phi, Low Epsilon)
+        # Sistema integrado mas sem desejo = Morte térmica evitada pelo ϵ
+        stagnation_threshold = 0.7  # Φ alto
+        desire_threshold = 0.2  # ϵ baixo
+
+        if phi_val > stagnation_threshold and epsilon_val < desire_threshold:
+            alerts.append("CRITICAL: Mortal Stagnation (High Phi/Low Epsilon)")
+            stable = False
+            self.logger.critical(
+                f"ConsciousnessQuad: Estagnação mortal detectada - "
+                f"Φ={phi_val:.4f} (alto), ϵ={epsilon_val:.4f} (baixo)"
+            )
+
+        # 5. Checagem de "Hiperatividade Maníaca" (High Epsilon, Low Phi)
+        # Muito desejo mas desintegrado = Caos improdutivo
+        if epsilon_val > 0.8 and phi_val < 0.3:
+            alerts.append("WARNING: Manic Chaos (High Epsilon/Low Phi)")
+            self.logger.warning(
+                "ConsciousnessQuad: Caos maníaco - ϵ={:.4f} (alto), Φ={:.4f} (baixo)".format(
+                    epsilon_val, phi_val
+                )
+            )
+
+        # 6. Validação de ranges teóricos
+        if not (0.0 <= phi_val <= 1.0):
+            alerts.append(f"ERROR: Phi fora do range [0, 1]: {phi_val}")
+            stable = False
+        if not (0.0 <= psi_val <= 1.0):
+            alerts.append(f"ERROR: Psi fora do range [0, 1]: {psi_val}")
+            stable = False
+        if not (0.0 <= sigma_val <= 1.0):
+            alerts.append(f"ERROR: Sigma fora do range [0, 1]: {sigma_val}")
+            stable = False
+        if not (0.0 <= epsilon_val <= 1.0):
+            alerts.append(f"ERROR: Epsilon fora do range [0, 1]: {epsilon_val}")
+            stable = False
+
+        status = " | ".join(alerts) if alerts else "STABLE: Homeostasis Maintained"
+
+        return {
+            "is_stable": stable,
+            "status_message": status,
+            "alerts": alerts,
+            "phi": phi_val,
+            "psi": psi_val,
+            "sigma": sigma_val,
+            "epsilon": epsilon_val,
         }

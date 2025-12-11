@@ -21,23 +21,25 @@ import gc
 import json
 import logging
 import os
-import sys
 import resource
-import subprocess
-import signal
 import shutil
+import signal
+import subprocess
+import sys
 import time
-import psutil
-import numpy as np
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+import numpy as np
+import psutil
 
 logger = logging.getLogger(__name__)
 
 # Tentar importar torch para limpeza de cache CUDA
 try:
     import torch
+
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
@@ -82,17 +84,28 @@ if "PYTORCH_CUDA_ALLOC_CONF" not in os.environ:
 _setup_script = project_root / "scripts" / "setup_qiskit_gpu_force.sh"
 if _setup_script.exists():
     try:
-        subprocess.run(["bash", str(_setup_script)], capture_output=True, text=True, env=os.environ.copy())
+        subprocess.run(
+            ["bash", str(_setup_script)], capture_output=True, text=True, env=os.environ.copy()
+        )
     except Exception:
         pass
 
 if "CUDA_VISIBLE_DEVICES" not in os.environ:
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 if "CUDA_HOME" not in os.environ:
-    cuda_paths = ["/usr/local/cuda", "/usr/local/cuda-12.4", "/usr/local/cuda-12.0", "/usr/local/cuda-11.8", "/opt/cuda", "/usr"]
+    cuda_paths = [
+        "/usr/local/cuda",
+        "/usr/local/cuda-12.4",
+        "/usr/local/cuda-12.0",
+        "/usr/local/cuda-11.8",
+        "/opt/cuda",
+        "/usr",
+    ]
     cuda_home = "/usr"
     for path in cuda_paths:
-        if os.path.exists(path) and (os.path.exists(f"{path}/bin/nvcc") or os.path.exists(f"{path}/lib64")):
+        if os.path.exists(path) and (
+            os.path.exists(f"{path}/bin/nvcc") or os.path.exists(f"{path}/lib64")
+        ):
             cuda_home = path
             break
     os.environ["CUDA_HOME"] = cuda_home
@@ -184,15 +197,23 @@ def save_final_metrics(
                 overlap = old_cycles & current_cycles
 
                 if overlap:
-                    print(f"⚠️  AVISO: {len(overlap)} ciclos sobrepostos entre old e memória (removendo duplicatas)")
+                    print(
+                        f"⚠️  AVISO: {len(overlap)} ciclos sobrepostos entre old e memória (removendo duplicatas)"
+                    )
                     # Remover ciclos duplicados de old_metrics (manter apenas os que não estão em all_metrics)
-                    old_metrics_filtered = [m for m in old_metrics if m.get("cycle", 0) not in current_cycles]
-                    print(f"   Mantendo {len(old_metrics_filtered)} ciclos únicos de old (removidos {len(old_metrics) - len(old_metrics_filtered)} duplicatas)")
+                    old_metrics_filtered = [
+                        m for m in old_metrics if m.get("cycle", 0) not in current_cycles
+                    ]
+                    print(
+                        f"   Mantendo {len(old_metrics_filtered)} ciclos únicos de old (removidos {len(old_metrics) - len(old_metrics_filtered)} duplicatas)"
+                    )
                     old_metrics = old_metrics_filtered
 
                 # Combinar: antigas primeiro, depois as recentes
                 complete_metrics = old_metrics + all_metrics
-                print(f"✅ Carregados {len(old_metrics)} ciclos antigos + {len(all_metrics)} recentes = {len(complete_metrics)} total (únicos)")
+                print(
+                    f"✅ Carregados {len(old_metrics)} ciclos antigos + {len(all_metrics)} recentes = {len(complete_metrics)} total (únicos)"
+                )
             else:
                 print(f"⚠️  Arquivo de métricas antigas vazio ou inválido")
         except Exception as e:
@@ -211,7 +232,9 @@ def save_final_metrics(
 
     # Validar que temos todos os ciclos esperados
     if len(complete_metrics) < len(all_metrics):
-        print(f"⚠️  AVISO: Métricas completas ({len(complete_metrics)}) < métricas em memória ({len(all_metrics)})")
+        print(
+            f"⚠️  AVISO: Métricas completas ({len(complete_metrics)}) < métricas em memória ({len(all_metrics)})"
+        )
         print(f"   Usando métricas em memória como fallback")
         complete_metrics = list(all_metrics)
 
@@ -227,11 +250,17 @@ def save_final_metrics(
         "phi_final": complete_metrics[-1]["phi"] if complete_metrics else 0.0,
         "phi_max": max([m["phi"] for m in complete_metrics]) if complete_metrics else 0.0,
         "phi_min": min([m["phi"] for m in complete_metrics]) if complete_metrics else 0.0,
-        "phi_avg": sum([m["phi"] for m in complete_metrics]) / len(complete_metrics) if complete_metrics else 0.0,
+        "phi_avg": (
+            sum([m["phi"] for m in complete_metrics]) / len(complete_metrics)
+            if complete_metrics
+            else 0.0
+        ),
         "metrics": complete_metrics,  # CORREÇÃO: Salvar todos os ciclos
         "execution_timestamp": TIMESTAMP,
         "validation_phases": {
-            "phase_5_bion": check_phase5_metrics(complete_metrics),  # CORREÇÃO: Validar com todos os ciclos
+            "phase_5_bion": check_phase5_metrics(
+                complete_metrics
+            ),  # CORREÇÃO: Validar com todos os ciclos
             "phase_6_lacan": check_phase6_metrics(complete_metrics),
             "phase_7_zimerman": check_phase7_metrics(complete_metrics),
         },
@@ -244,9 +273,15 @@ def save_final_metrics(
         # CORREÇÃO: Adicionar metadados sobre salvamento
         "metadata": {
             "cycles_in_memory": len(all_metrics),
-            "cycles_from_old_file": len(complete_metrics) - len(all_metrics) if len(complete_metrics) > len(all_metrics) else 0,
+            "cycles_from_old_file": (
+                len(complete_metrics) - len(all_metrics)
+                if len(complete_metrics) > len(all_metrics)
+                else 0
+            ),
             "total_cycles_saved": len(complete_metrics),
-            "old_metrics_file_used": str(old_metrics_file) if old_metrics_file and old_metrics_file.exists() else None,
+            "old_metrics_file_used": (
+                str(old_metrics_file) if old_metrics_file and old_metrics_file.exists() else None
+            ),
         },
     }
     metrics_file.parent.mkdir(parents=True, exist_ok=True)
@@ -284,12 +319,21 @@ def check_phase5_metrics(metrics: List[Dict[str, Any]]) -> Dict[str, Any]:
     bion_integrated = False
     try:
         import json
+
         # Verificar se há evidências de uso de Bion nos ciclos
         # Buscar em metadata, module_outputs, ou qualquer campo que possa conter evidências
         for m in metrics[:50]:  # Verificar primeiros 50 ciclos para maior confiança
             m_str = json.dumps(m).lower()
             # Buscar por evidências de processamento via Bion
-            if any(keyword in m_str for keyword in ["bion_alpha_function", "processed_by", "symbolic_potential", "narrative_form"]):
+            if any(
+                keyword in m_str
+                for keyword in [
+                    "bion_alpha_function",
+                    "processed_by",
+                    "symbolic_potential",
+                    "narrative_form",
+                ]
+            ):
                 # Verificar se é realmente relacionado a Bion (não apenas coincidência)
                 if "bion" in m_str or ("alpha" in m_str and "function" in m_str):
                     bion_integrated = True
@@ -313,7 +357,7 @@ def check_phase5_metrics(metrics: List[Dict[str, Any]]) -> Dict[str, Any]:
             "phi_avg": phi_avg,
             "target": 0.026,
             "message": "BionAlphaFunction não está integrado ao IntegrationLoop. "
-                       "Módulo implementado mas não sendo usado durante os ciclos.",
+            "Módulo implementado mas não sendo usado durante os ciclos.",
             "deviation": abs(phi_avg - 0.026),
             "note": "Target 0.026 é para fase isolada (baseline 0.0183), não para sistema completo",
         }
@@ -360,11 +404,20 @@ def check_phase6_metrics(metrics: List[Dict[str, Any]]) -> Dict[str, Any]:
     lacan_integrated = False
     try:
         import json
+
         # Verificar se há evidências de uso de Lacan nos ciclos
         for m in metrics[:50]:  # Verificar primeiros 50 ciclos para maior confiança
             m_str = json.dumps(m).lower()
             # Buscar por evidências de análise de discurso lacaniano
-            if any(keyword in m_str for keyword in ["lacanian_discourse", "discourse_analyzer", "discourse_confidence", "dominant_discourse"]):
+            if any(
+                keyword in m_str
+                for keyword in [
+                    "lacanian_discourse",
+                    "discourse_analyzer",
+                    "discourse_confidence",
+                    "dominant_discourse",
+                ]
+            ):
                 lacan_integrated = True
                 break
     except Exception:
@@ -385,7 +438,7 @@ def check_phase6_metrics(metrics: List[Dict[str, Any]]) -> Dict[str, Any]:
             "phi_avg": phi_avg,
             "target": 0.043,
             "message": "LacanianDiscourseAnalyzer não está integrado ao IntegrationLoop. "
-                       "Módulo implementado mas não sendo usado durante os ciclos.",
+            "Módulo implementado mas não sendo usado durante os ciclos.",
             "deviation": abs(phi_avg - 0.043),
             "note": "Target 0.043 é para fase isolada (baseline 0.026), não para sistema completo",
         }
@@ -444,6 +497,7 @@ def check_bion_module() -> Dict[str, Any]:
     """Verifica se módulo Bion Alpha Function está implementado."""
     try:
         from src.psychoanalysis.bion_alpha_function import BionAlphaFunction
+
         return {
             "status": "implemented",
             "module": "BionAlphaFunction",
@@ -460,7 +514,11 @@ def check_bion_module() -> Dict[str, Any]:
 def check_lacan_discourses() -> Dict[str, Any]:
     """Verifica se módulo Lacan Discourses está implementado."""
     try:
-        from src.lacanian.discourse_discovery import LacanianDiscourseAnalyzer, LacanianDiscourse
+        from src.lacanian.discourse_discovery import (
+            LacanianDiscourse,
+            LacanianDiscourseAnalyzer,
+        )
+
         discourses = [d.name for d in LacanianDiscourse]
         return {
             "status": "implemented",
@@ -481,7 +539,10 @@ def check_zimerman_module() -> Dict[str, Any]:
     """Verifica se módulo Zimerman Bonding está implementado."""
     # Zimerman pode estar integrado em outros módulos
     try:
-        from src.consciousness.theoretical_consistency_guard import TheoreticalConsistencyGuard
+        from src.consciousness.theoretical_consistency_guard import (
+            TheoreticalConsistencyGuard,
+        )
+
         return {
             "status": "integrated",
             "module": "TheoreticalConsistencyGuard",
@@ -502,6 +563,7 @@ def check_decolonial_module() -> Dict[str, Any]:
     decolonial_files = []
     try:
         import os
+
         for root, dirs, files in os.walk("src"):
             for file in files:
                 if file.endswith(".py"):
@@ -509,7 +571,16 @@ def check_decolonial_module() -> Dict[str, Any]:
                     try:
                         with open(filepath, "r", encoding="utf-8") as f:
                             content = f.read().lower()
-                            if any(term in content for term in ["decolonial", "negritude", "racial", "race", "corpo racializado"]):
+                            if any(
+                                term in content
+                                for term in [
+                                    "decolonial",
+                                    "negritude",
+                                    "racial",
+                                    "race",
+                                    "corpo racializado",
+                                ]
+                            ):
                                 decolonial_files.append(filepath)
                     except Exception:
                         pass
@@ -614,21 +685,22 @@ async def run_500_cycles_scientific_validation() -> None:
             found = False
             try:
                 import psutil
+
                 # Padrões de busca para diferentes formas de execução
                 check_patterns = [
-                    server_info['name'],  # mcp_thinking_server
-                    server_info['module'],  # src.integrations.mcp_thinking_server
-                    server_info['module'].replace('.', '/'),  # src/integrations/mcp_thinking_server
-                    server_info['module'].replace('src.integrations.', ''),  # mcp_thinking_server
+                    server_info["name"],  # mcp_thinking_server
+                    server_info["module"],  # src.integrations.mcp_thinking_server
+                    server_info["module"].replace(".", "/"),  # src/integrations/mcp_thinking_server
+                    server_info["module"].replace("src.integrations.", ""),  # mcp_thinking_server
                 ]
 
-                for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                for proc in psutil.process_iter(["pid", "name", "cmdline"]):
                     try:
-                        cmdline = ' '.join(proc.info['cmdline'] or [])
+                        cmdline = " ".join(proc.info["cmdline"] or [])
                         # Verificar se algum padrão está presente no cmdline
                         if any(pattern in cmdline for pattern in check_patterns):
                             found = True
-                            pid = proc.info['pid']
+                            pid = proc.info["pid"]
                             print(f"   ✅ {server_id}: Rodando (PID: {pid})")
                             break
                     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
@@ -663,7 +735,7 @@ async def run_500_cycles_scientific_validation() -> None:
             print(f"   - {server_id}: {server_info['reason']}")
         print("   💡 O script continuará, mas algumas métricas podem não estar disponíveis")
         response = input("\n   Deseja continuar mesmo assim? (s/N): ").strip().lower()
-        if response != 's':
+        if response != "s":
             print("❌ Execução cancelada pelo usuário")
             sys.exit(0)
 
@@ -675,10 +747,12 @@ async def run_500_cycles_scientific_validation() -> None:
 
     # Se há muitos serviços opcionais rodando e memória está baixa, oferecer encerrar
     if running_optional and mem and mem.percent > 80:
-        print(f"\n⚠️  AVISO: {len(running_optional)} serviços opcionais rodando e memória em {mem.percent:.1f}%")
+        print(
+            f"\n⚠️  AVISO: {len(running_optional)} serviços opcionais rodando e memória em {mem.percent:.1f}%"
+        )
         print("   💡 Encerrar serviços opcionais pode liberar recursos")
         response = input("   Deseja encerrar serviços opcionais? (s/N): ").strip().lower()
-        if response == 's':
+        if response == "s":
             print("\n🔄 Encerrando serviços opcionais...")
             for server_name in running_optional:
                 try:
@@ -686,7 +760,7 @@ async def run_500_cycles_scientific_validation() -> None:
                     pid_cmd = f"ps aux | grep '{server_name}' | grep -v grep | awk '{{print $2}}'"
                     pid_result = subprocess.run(pid_cmd, shell=True, capture_output=True, text=True)
                     if pid_result.returncode == 0 and pid_result.stdout.strip():
-                        pids = pid_result.stdout.strip().split('\n')
+                        pids = pid_result.stdout.strip().split("\n")
                         for pid in pids:
                             try:
                                 os.kill(int(pid), signal.SIGTERM)
@@ -702,7 +776,9 @@ async def run_500_cycles_scientific_validation() -> None:
 
             # Verificar memória após encerramento
             mem_after = psutil.virtual_memory()
-            print(f"   📊 Memória após encerramento: {mem_after.percent:.1f}% ({mem_after.available / (1024**3):.2f}GB disponível)")
+            print(
+                f"   📊 Memória após encerramento: {mem_after.percent:.1f}% ({mem_after.available / (1024**3):.2f}GB disponível)"
+            )
 
     # Verificação de recursos do sistema
     print("\n" + "=" * 80)
@@ -719,7 +795,9 @@ async def run_500_cycles_scientific_validation() -> None:
         mem_cached_gb = mem.cached / (1024**3)
         swap_available_gb = (swap.total - swap.used) / (1024**3)
 
-        print(f"📊 Memória: {mem.percent:.1f}% usada ({mem_available_gb:.2f}GB disponível, {mem_cached_gb:.2f}GB cache)")
+        print(
+            f"📊 Memória: {mem.percent:.1f}% usada ({mem_available_gb:.2f}GB disponível, {mem_cached_gb:.2f}GB cache)"
+        )
         print(f"📊 Swap: {swap.percent:.1f}% usado ({swap_available_gb:.2f}GB disponível)")
         print(f"📊 CPU: {cpu_percent:.1f}% usado")
         print(f"📊 Load Average: {load_avg[0]:.2f}, {load_avg[1]:.2f}, {load_avg[2]:.2f}")
@@ -730,7 +808,9 @@ async def run_500_cycles_scientific_validation() -> None:
                 gpu_mem_total = torch.cuda.get_device_properties(0).total_memory / (1024**3)
                 gpu_mem_allocated = torch.cuda.memory_allocated(0) / (1024**3)
                 gpu_mem_free = gpu_mem_total - gpu_mem_allocated
-                print(f"📊 GPU: {gpu_mem_allocated:.2f}GB/{gpu_mem_total:.2f}GB usado ({gpu_mem_free:.2f}GB livre)")
+                print(
+                    f"📊 GPU: {gpu_mem_allocated:.2f}GB/{gpu_mem_total:.2f}GB usado ({gpu_mem_free:.2f}GB livre)"
+                )
             except Exception:
                 pass
 
@@ -746,7 +826,9 @@ async def run_500_cycles_scientific_validation() -> None:
         elif mem_available_gb < 2.0:
             print("⚠️  AVISO: Pouca memória disponível (<2GB)")
             print(f"   💡 Sistema pode usar swap ({swap_available_gb:.2f}GB disponível)")
-            print(f"   💡 Cache pode ser liberado pelo kernel se necessário ({mem_cached_gb:.2f}GB)")
+            print(
+                f"   💡 Cache pode ser liberado pelo kernel se necessário ({mem_cached_gb:.2f}GB)"
+            )
 
         if load_avg[0] > psutil.cpu_count() * 1.5:
             print("⚠️  AVISO: Load average muito alto - verifique processos em loop")
@@ -755,14 +837,20 @@ async def run_500_cycles_scientific_validation() -> None:
 
         # Verificar se há OOM killer ativo
         print("\n🔍 Verificando OOM killer e monitores...")
-        oom_killer_check = os.popen("cat /proc/sys/vm/oom_kill_allocating_task 2>/dev/null").read().strip()
+        oom_killer_check = (
+            os.popen("cat /proc/sys/vm/oom_kill_allocating_task 2>/dev/null").read().strip()
+        )
         if oom_killer_check == "1":
             print("   ⚠️  OOM killer está configurado para matar processos")
         else:
             print("   ✅ OOM killer não está matando processos automaticamente")
 
         # Verificar processos de monitor
-        monitor_processes = os.popen("ps aux | grep -E 'oom|monitor|watchdog' | grep -v grep | wc -l").read().strip()
+        monitor_processes = (
+            os.popen("ps aux | grep -E 'oom|monitor|watchdog' | grep -v grep | wc -l")
+            .read()
+            .strip()
+        )
         if int(monitor_processes) > 0:
             print(f"   ℹ️  {monitor_processes} processos de monitor encontrados (normal)")
     except Exception as e:
@@ -789,6 +877,7 @@ async def run_500_cycles_scientific_validation() -> None:
     print("🔍 VERIFICAÇÃO DE GPU:")
     try:
         import torch
+
         if torch.cuda.is_available():
             gpu_name = torch.cuda.get_device_name(0)
             gpu_memory_total = torch.cuda.get_device_properties(0).total_memory / (1024**3)
@@ -800,6 +889,7 @@ async def run_500_cycles_scientific_validation() -> None:
             print(f"   🆓 Memória Livre: {gpu_memory_free:.2f} GB")
 
             from src.utils.device_utils import check_gpu_memory_available
+
             if check_gpu_memory_available(min_memory_mb=100):
                 print(f"   ✅ GPU pronta para uso (≥100MB livre)")
             else:
@@ -810,6 +900,7 @@ async def run_500_cycles_scientific_validation() -> None:
         print(f"   ⚠️  Erro ao verificar GPU: {e}")
         print("   ℹ️  Continuando com CPU")
         import traceback
+
         traceback.print_exc()
 
     print("=" * 80)
@@ -819,7 +910,9 @@ async def run_500_cycles_scientific_validation() -> None:
     print("🔄 Inicializando IntegrationLoop...")
     print("   (Isso pode levar alguns segundos para carregar modelos...)")
     print("   💡 Se o script for terminado, verifique logs e memória disponível")
-    print(f"   🔧 Threads OpenMP limitadas: OMP_NUM_THREADS={os.environ.get('OMP_NUM_THREADS', '4')}")
+    print(
+        f"   🔧 Threads OpenMP limitadas: OMP_NUM_THREADS={os.environ.get('OMP_NUM_THREADS', '4')}"
+    )
 
     import sys
 
@@ -834,7 +927,9 @@ async def run_500_cycles_scientific_validation() -> None:
         print("   ⏳ Carregando modelos e inicializando módulos...")
         print("   💡 Isso pode levar 10-30 segundos dependendo do sistema")
         print("   ⚠️  OVERFLOW DE CPU NO INÍCIO É NORMAL - aguarde...")
-        print("   ⚠️  Se aparecer erro 'libgomp: Thread creation failed', aumente limite de processos:")
+        print(
+            "   ⚠️  Se aparecer erro 'libgomp: Thread creation failed', aumente limite de processos:"
+        )
         print("      ulimit -u 50000  # ou mais")
 
         # Monitorar CPU durante inicialização
@@ -851,7 +946,9 @@ async def run_500_cycles_scientific_validation() -> None:
         print("   📊 Recursos após inicialização:")
         try:
             mem = psutil.virtual_memory()
-            print(f"      Memória: {mem.percent:.1f}% usada ({mem.available / (1024**3):.2f}GB disponível)")
+            print(
+                f"      Memória: {mem.percent:.1f}% usada ({mem.available / (1024**3):.2f}GB disponível)"
+            )
             print(f"      CPU: {cpu_after:.1f}% (pico inicial é normal)")
         except Exception:
             pass
@@ -862,7 +959,7 @@ async def run_500_cycles_scientific_validation() -> None:
         print(f"❌ Erro de memória ao inicializar IntegrationLoop: {e}")
         print("   💡 Tente fechar outros programas ou reduzir carga do sistema")
         try:
-            mem_info = os.popen('free -h | grep Mem').read().strip()
+            mem_info = os.popen("free -h | grep Mem").read().strip()
             print(f"   📊 Memória disponível: {mem_info}")
         except Exception:
             pass
@@ -870,6 +967,7 @@ async def run_500_cycles_scientific_validation() -> None:
     except Exception as e:
         print(f"❌ Erro ao inicializar IntegrationLoop: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
@@ -924,10 +1022,13 @@ async def run_500_cycles_scientific_validation() -> None:
                     print("   ⚠️  Tentando continuar com fallback...")
                     # Tentar reduzir threads e continuar
                     os.environ["OMP_NUM_THREADS"] = "2"
-                    os.environ["MKL_NUM_THREADS"] = "1"  # Manter 1 para LAPACK (evita init_gelsd failed)
+                    os.environ["MKL_NUM_THREADS"] = (
+                        "1"  # Manter 1 para LAPACK (evita init_gelsd failed)
+                    )
                     os.environ["NUMEXPR_NUM_THREADS"] = "2"
                     # Criar resultado vazio mas continuar
                     from src.consciousness.integration_loop import LoopCycleResult
+
                     result = LoopCycleResult(
                         cycle_number=i,
                         cycle_duration_ms=0.0,
@@ -957,6 +1058,7 @@ async def run_500_cycles_scientific_validation() -> None:
 
                     # Criar resultado vazio mas continuar
                     from src.consciousness.integration_loop import LoopCycleResult
+
                     result = LoopCycleResult(
                         cycle_number=i,
                         cycle_duration_ms=0.0,
@@ -969,7 +1071,11 @@ async def run_500_cycles_scientific_validation() -> None:
                     continue
 
                 # Tratar erro de memória (GPU ou RAM)
-                elif "Memory" in error_msg or "memory" in error_msg.lower() or "allocate" in error_msg.lower():
+                elif (
+                    "Memory" in error_msg
+                    or "memory" in error_msg.lower()
+                    or "allocate" in error_msg.lower()
+                ):
                     print(f"\n⚠️  ERRO DE MEMÓRIA no ciclo {i}: {error_msg}")
                     print("   💡 Limpando memória e tentando continuar...")
 
@@ -984,6 +1090,7 @@ async def run_500_cycles_scientific_validation() -> None:
 
                     # Criar resultado vazio mas continuar
                     from src.consciousness.integration_loop import LoopCycleResult
+
                     result = LoopCycleResult(
                         cycle_number=i,
                         cycle_duration_ms=0.0,
@@ -1002,9 +1109,11 @@ async def run_500_cycles_scientific_validation() -> None:
                 # Erro durante execução do ciclo - logar e continuar
                 print(f"\n⚠️  Erro no ciclo {i}: {type(e).__name__}: {e}")
                 import traceback
+
                 traceback.print_exc()
                 # Criar resultado vazio para não quebrar o loop
                 from src.consciousness.integration_loop import LoopCycleResult
+
                 result = LoopCycleResult(
                     cycle_number=i,
                     cycle_duration_ms=0.0,
@@ -1039,7 +1148,9 @@ async def run_500_cycles_scientific_validation() -> None:
 
                     # Se memória realmente baixa (<2GB disponível), limpar agressivamente
                     if mem_available_gb < 2.0:
-                        print(f"⚠️  Memória baixa ({mem_available_gb:.2f}GB disponível) - limpando...")
+                        print(
+                            f"⚠️  Memória baixa ({mem_available_gb:.2f}GB disponível) - limpando..."
+                        )
                         # Forçar garbage collection
                         gc.collect()
 
@@ -1076,16 +1187,24 @@ async def run_500_cycles_scientific_validation() -> None:
                     if i % 10 == 0:
                         mem = psutil.virtual_memory()
                         swap = psutil.swap_memory()
-                        print(f"   💾 Memória: {mem.percent:.1f}% usada ({mem.available / (1024**3):.2f}GB disponível, {mem.cached / (1024**3):.2f}GB cache)")
-                        print(f"   💾 Swap: {swap.percent:.1f}% usado ({swap.used / (1024**3):.2f}GB/{swap.total / (1024**3):.2f}GB)")
+                        print(
+                            f"   💾 Memória: {mem.percent:.1f}% usada ({mem.available / (1024**3):.2f}GB disponível, {mem.cached / (1024**3):.2f}GB cache)"
+                        )
+                        print(
+                            f"   💾 Swap: {swap.percent:.1f}% usado ({swap.used / (1024**3):.2f}GB/{swap.total / (1024**3):.2f}GB)"
+                        )
 
                         # Verificar GPU se disponível
                         if TORCH_AVAILABLE and torch.cuda.is_available():
                             try:
                                 gpu_mem_allocated = torch.cuda.memory_allocated(0) / (1024**3)
-                                gpu_mem_total = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+                                gpu_mem_total = torch.cuda.get_device_properties(0).total_memory / (
+                                    1024**3
+                                )
                                 gpu_mem_free = gpu_mem_total - gpu_mem_allocated
-                                print(f"   🎮 GPU: {gpu_mem_allocated:.2f}GB/{gpu_mem_total:.2f}GB usado ({gpu_mem_free:.2f}GB livre)")
+                                print(
+                                    f"   🎮 GPU: {gpu_mem_allocated:.2f}GB/{gpu_mem_total:.2f}GB usado ({gpu_mem_free:.2f}GB livre)"
+                                )
                             except Exception:
                                 pass
                 except Exception as e:
@@ -1138,12 +1257,18 @@ async def run_500_cycles_scientific_validation() -> None:
                     cycle_metrics["psi"] = result.psi
                 if result.sigma is not None:
                     cycle_metrics["sigma"] = result.sigma
+                if result.epsilon is not None:
+                    cycle_metrics["epsilon"] = result.epsilon
                 if result.gozo is not None:
                     cycle_metrics["gozo"] = result.gozo
                 if result.delta is not None:
                     cycle_metrics["delta"] = result.delta
                 if result.control_effectiveness is not None:
                     cycle_metrics["control_effectiveness"] = result.control_effectiveness
+                if result.phi_causal is not None:
+                    cycle_metrics["phi_causal"] = result.phi_causal
+                if result.repression_strength is not None:
+                    cycle_metrics["repression_strength"] = result.repression_strength
                 if result.triad is not None:
                     triad_validation = result.triad.validate()
                     cycle_metrics["triad"] = {
@@ -1174,7 +1299,9 @@ async def run_500_cycles_scientific_validation() -> None:
                     with open(old_metrics_file, "a") as f:
                         for metric in old_metrics:
                             f.write(json.dumps(metric) + "\n")
-                    print(f"   💾 {len(old_metrics)} métricas antigas movidas para {old_metrics_file.name} ({len(all_metrics)} em memória)")
+                    print(
+                        f"   💾 {len(old_metrics)} métricas antigas movidas para {old_metrics_file.name} ({len(all_metrics)} em memória)"
+                    )
                 except Exception as e:
                     print(f"⚠️  Erro ao salvar métricas antigas: {e}")
                     # Se falhar, manter tudo em memória (melhor que perder dados)
@@ -1188,8 +1315,15 @@ async def run_500_cycles_scientific_validation() -> None:
                     if i % 50 == 0:
                         # CORREÇÃO: Passar arquivo de métricas antigas para salvar todos os ciclos
                         old_metrics_file = Path(f"data/monitor/phi_500_cycles_old_{TIMESTAMP}.json")
-                        save_final_metrics(all_metrics, metrics_file, metrics_file_latest, old_metrics_file if old_metrics_file.exists() else None)
-                        print(f"💾 Checkpoint salvo: {len(all_metrics)} ciclos em memória (total pode ser maior)")
+                        save_final_metrics(
+                            all_metrics,
+                            metrics_file,
+                            metrics_file_latest,
+                            old_metrics_file if old_metrics_file.exists() else None,
+                        )
+                        print(
+                            f"💾 Checkpoint salvo: {len(all_metrics)} ciclos em memória (total pode ser maior)"
+                        )
                 except Exception as e:
                     print(f"⚠️  Erro ao salvar progresso: {e}")
 
@@ -1238,9 +1372,13 @@ async def run_500_cycles_scientific_validation() -> None:
                 # Verificar memória a cada 50 ciclos
                 try:
                     mem = psutil.virtual_memory()
-                    print(f"   💾 Memória: {mem.percent:.1f}% usada ({mem.available / (1024**3):.2f}GB disponível)")
+                    print(
+                        f"   💾 Memória: {mem.percent:.1f}% usada ({mem.available / (1024**3):.2f}GB disponível)"
+                    )
                     if mem.percent > 90:
-                        print(f"   ⚠️  AVISO: Memória crítica ({mem.percent:.1f}%) - considere parar processos backend")
+                        print(
+                            f"   ⚠️  AVISO: Memória crítica ({mem.percent:.1f}%) - considere parar processos backend"
+                        )
                 except Exception:
                     pass
 
@@ -1271,18 +1409,27 @@ async def run_500_cycles_scientific_validation() -> None:
 
                     if overlap:
                         print(f"⚠️  AVISO: {len(overlap)} ciclos sobrepostos (removendo duplicatas)")
-                        old_metrics_filtered = [m for m in old_metrics if m.get("cycle", 0) not in current_cycles]
+                        old_metrics_filtered = [
+                            m for m in old_metrics if m.get("cycle", 0) not in current_cycles
+                        ]
                         old_metrics = old_metrics_filtered
 
                     complete_metrics = old_metrics + all_metrics
                     complete_metrics.sort(key=lambda m: m.get("cycle", 0))
-                    print(f"✅ Total de ciclos carregados: {len(complete_metrics)} ({len(old_metrics)} antigos únicos + {len(all_metrics)} recentes)")
+                    print(
+                        f"✅ Total de ciclos carregados: {len(complete_metrics)} ({len(old_metrics)} antigos únicos + {len(all_metrics)} recentes)"
+                    )
             except Exception as e:
                 print(f"⚠️  Erro ao carregar métricas antigas: {e}")
                 print(f"   Usando apenas {len(all_metrics)} ciclos em memória")
 
         # Salvar métricas finais com TODOS os ciclos
-        save_final_metrics(complete_metrics, metrics_file, metrics_file_latest, old_metrics_file if old_metrics_file.exists() else None)
+        save_final_metrics(
+            complete_metrics,
+            metrics_file,
+            metrics_file_latest,
+            old_metrics_file if old_metrics_file.exists() else None,
+        )
 
         # Criar snapshot final
         print("\n" + "=" * 80)
@@ -1306,7 +1453,9 @@ async def run_500_cycles_scientific_validation() -> None:
         print(f"Total de ciclos executados: {TOTAL_CYCLES}")
         print(f"Total de ciclos salvos: {len(complete_metrics)}")
         if len(complete_metrics) != TOTAL_CYCLES:
-            print(f"⚠️  AVISO: Discrepância detectada! Esperados {TOTAL_CYCLES}, salvos {len(complete_metrics)}")
+            print(
+                f"⚠️  AVISO: Discrepância detectada! Esperados {TOTAL_CYCLES}, salvos {len(complete_metrics)}"
+            )
         print(f"PHI final: {phi_final:.6f}")
         print(f"PHI máximo: {phi_max:.6f}")
         print(f"PHI mínimo: {phi_min:.6f}")
@@ -1318,9 +1467,15 @@ async def run_500_cycles_scientific_validation() -> None:
         phase7 = check_phase7_metrics(complete_metrics)
 
         print(f"\n📋 VALIDAÇÃO DE FASES:")
-        print(f"   Phase 5 (Bion): {'✅' if phase5.get('valid') else '❌'} Φ={phase5.get('phi_avg', 0):.6f} (target: 0.026)")
-        print(f"   Phase 6 (Lacan): {'✅' if phase6.get('valid') else '❌'} Φ={phase6.get('phi_avg', 0):.6f} (target: 0.043)")
-        print(f"   Phase 7 (Zimerman): ✅ Correlação Δ-Φ={phase7.get('delta_phi_correlation', 'N/A')}")
+        print(
+            f"   Phase 5 (Bion): {'✅' if phase5.get('valid') else '❌'} Φ={phase5.get('phi_avg', 0):.6f} (target: 0.026)"
+        )
+        print(
+            f"   Phase 6 (Lacan): {'✅' if phase6.get('valid') else '❌'} Φ={phase6.get('phi_avg', 0):.6f} (target: 0.043)"
+        )
+        print(
+            f"   Phase 7 (Zimerman): ✅ Correlação Δ-Φ={phase7.get('delta_phi_correlation', 'N/A')}"
+        )
 
         # Validação de módulos
         bion = check_bion_module()
@@ -1329,10 +1484,18 @@ async def run_500_cycles_scientific_validation() -> None:
         decolonial = check_decolonial_module()
 
         print(f"\n📋 VALIDAÇÃO DE MÓDULOS:")
-        print(f"   Bion Alpha Function: {'✅' if bion.get('valid') else '❌'} {bion.get('status', 'unknown')}")
-        print(f"   Lacan Discourses: {'✅' if lacan.get('valid') else '❌'} {lacan.get('count', 0)} discursos")
-        print(f"   Zimerman Bonding: {'✅' if zimerman.get('valid') else '❌'} {zimerman.get('status', 'unknown')}")
-        print(f"   Decolonial Module: {'✅' if decolonial.get('valid') else '⚠️'} {len(decolonial.get('files_found', []))} arquivos encontrados")
+        print(
+            f"   Bion Alpha Function: {'✅' if bion.get('valid') else '❌'} {bion.get('status', 'unknown')}"
+        )
+        print(
+            f"   Lacan Discourses: {'✅' if lacan.get('valid') else '❌'} {lacan.get('count', 0)} discursos"
+        )
+        print(
+            f"   Zimerman Bonding: {'✅' if zimerman.get('valid') else '❌'} {zimerman.get('status', 'unknown')}"
+        )
+        print(
+            f"   Decolonial Module: {'✅' if decolonial.get('valid') else '⚠️'} {len(decolonial.get('files_found', []))} arquivos encontrados"
+        )
 
         print(f"\n📄 Métricas salvas em: {metrics_file}")
         print(f"📸 Snapshot ID: {snapshot_id}")
@@ -1364,14 +1527,22 @@ async def run_500_cycles_scientific_validation() -> None:
                     except Exception:
                         pass
 
-                save_final_metrics(complete_metrics, metrics_file, metrics_file_latest, old_metrics_file if old_metrics_file.exists() else None)
-                print(f"✅ Métricas parciais salvas em: {metrics_file} ({len(complete_metrics)} ciclos)")
+                save_final_metrics(
+                    complete_metrics,
+                    metrics_file,
+                    metrics_file_latest,
+                    old_metrics_file if old_metrics_file.exists() else None,
+                )
+                print(
+                    f"✅ Métricas parciais salvas em: {metrics_file} ({len(complete_metrics)} ciclos)"
+                )
             except Exception as e:
                 print(f"⚠️  Erro ao salvar métricas: {e}")
         sys.exit(130)
     except Exception as e:
         print(f"\n\n❌ Erro durante execução: {e}")
         import traceback
+
         traceback.print_exc()
         if all_metrics:
             try:
@@ -1396,8 +1567,15 @@ async def run_500_cycles_scientific_validation() -> None:
                     except Exception:
                         pass
 
-                save_final_metrics(complete_metrics, metrics_file, metrics_file_latest, old_metrics_file if old_metrics_file.exists() else None)
-                print(f"✅ Métricas parciais salvas em: {metrics_file} ({len(complete_metrics)} ciclos)")
+                save_final_metrics(
+                    complete_metrics,
+                    metrics_file,
+                    metrics_file_latest,
+                    old_metrics_file if old_metrics_file.exists() else None,
+                )
+                print(
+                    f"✅ Métricas parciais salvas em: {metrics_file} ({len(complete_metrics)} ciclos)"
+                )
             except Exception as save_error:
                 print(f"⚠️  Erro ao salvar métricas parciais: {save_error}")
         # Não fazer raise - apenas sair normalmente para não propagar erro
@@ -1420,6 +1598,7 @@ def main() -> None:
 
     # Registrar PID para debug
     import os
+
     pid = os.getpid()
     print(f"🔍 PID do processo: {pid}")
     print(f"🔍 PPID (processo pai): {os.getppid()}")
@@ -1487,6 +1666,7 @@ def main() -> None:
     except Exception as e:
         print(f"\n\n❌ Erro inesperado: {e}")
         import traceback
+
         traceback.print_exc()
         if lock_file.exists():
             lock_file.unlink()
@@ -1502,4 +1682,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

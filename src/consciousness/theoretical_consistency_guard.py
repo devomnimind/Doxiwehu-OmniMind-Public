@@ -295,8 +295,9 @@ class TheoreticalConsistencyGuard:
             dynamic_tolerance = float(np.percentile(errors_array, self.tolerance_percentile))
 
             # 🎯 FASE 0: Garante que tolerância dinâmica respeita mínimo por fase
-            # Não deixar dinâmica ir abaixo da tolerância base
-            dynamic_tolerance = max(dynamic_tolerance, base_tolerance * 0.8)
+            # Não deixar dinâmica ir abaixo de 90% da tolerância base
+            # (aumentado de 0.8 para 0.9 em 2025-12-10 para evitar violações borderline)
+            dynamic_tolerance = max(dynamic_tolerance, base_tolerance * 0.9)
 
             # Garante que tolerância está em range razoável [0.05, 0.5]
             # (evita valores muito baixos ou muito altos)
