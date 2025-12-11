@@ -1,24 +1,20 @@
 # ============================================================================
-# .gitignore - OmniMind (Versão Otimizada com Documentação Organizada)
+# .gitignore - OmniMind PRIVATE Repository
 # ============================================================================
-# Mantém:
-# - Código puro (src/, tests/, scripts/)
-# - Documentação oficial organizada (docs/history/, docs/analysis/, docs/theory/, etc.)
-# - READMEs dos módulos
-# - Dados de validação científica (real_evidence/, data/validation/, data/test_reports/)
+# Este .gitignore é PARA O REPOSITÓRIO PRIVADO
+# Mantém TODOS os dados importantes, ignora apenas caches temporários
 #
-# NOVIDADE (Desde 2025-12-09):
-# - docs/history/ → Histórico oficializado
-# - docs/analysis/ → Análises e diagnósticos
-# - docs/theory/ → Teoria e filosofia
-# - docs/implementation/ → Implementação e roadmaps
-# - docs/methodology/ → Metodologia
-# - docs/reference/ → Índices e referências
-# - docs/METADATA/ → Metadados do projeto (estado, fases, timeline)
+# POLÍTICA: Tudo que é importante para desenvolvimento fica no git
+# - Dados de consciência (14 GB)
+# - Logs completos
+# - Backups
+# - Código experimental
+# - Credenciais (para desenvolvimento local)
+# - Evidence real da pesquisa
 # ============================================================================
 
 # ------------------------------------------------------------------
-# Python cache/artifact noise
+# Python cache/artifact noise (APENAS ESTES)
 # ------------------------------------------------------------------
 __pycache__/
 *.py[cod]
@@ -38,9 +34,6 @@ htmlcov/
 # ------------------------------------------------------------------
 # Virtual environments & local tooling
 # ------------------------------------------------------------------
-.env
-.env.*
-!.env.example
 .venv/
 venv/
 env/
@@ -51,8 +44,6 @@ pip-wheel-metadata/
 # ------------------------------------------------------------------
 .DS_Store
 .idea/
-.vscode/
-*.code-workspace
 *.swp
 *.swo
 *.orig
@@ -66,35 +57,40 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
+
+# ------------------------------------------------------------------
+# Build artifacts e arquivos temporários
+# ------------------------------------------------------------------
 build/
 dist/
+*.tmp
+*.temp
+*.bak
+*.old
+*.sav
+nohup.out
+.screenrc
+.scannerwork/
 
 # ------------------------------------------------------------------
-# Databases & local state
+# Arquivos de sistema e desenvolvimento local
 # ------------------------------------------------------------------
-*.sqlite3
-*.db
-*.db-*
-data/qdrant/
-data/tmp/
-deploy/data/
-data/omnimind_cache.db
+.local
+.dev
+*.code-workspace
 
 # ------------------------------------------------------------------
-# Runtime logs, metrics, audits (nunca versionar output de runtime)
+# Logs temporários (mas mantém logs/ importantes)
 # ------------------------------------------------------------------
-logs/
-**/logs/
 *.log
 *.log.*
 *.audit.json
 *.metrics.json
 *.trace
 *.dump
-!logs/.gitkeep
 
 # ------------------------------------------------------------------
-# OmniMind runtime debris
+# OmniMind runtime debris (temporários apenas)
 # ------------------------------------------------------------------
 tmp/
 tmp_*/
@@ -105,315 +101,30 @@ quarantine/
 quarantine_*/
 **/snapshot/**
 **/quarantine/**
-data/hdd_snapshot/
-data/quarantine_snapshot/
-snapshots/
-.omnimind/
 .omnimind_temp_archive/
 temp_spaces/
 
 # ------------------------------------------------------------------
-# Backups / confidential configs
-# ------------------------------------------------------------------
-config/dashboard_auth.json
-**/backups_devbrain/
-**/guardian/backups/**/guardian/backups/
-**/*.bak
-**/*.old
-**/*.sav
-**/*.tar
-**/*.tar.gz
-**/*.tgz
-**/*.zip
-**/*.7z
-
-# ------------------------------------------------------------------
-# Mount points & external disks
-# ------------------------------------------------------------------
-mnt/
-*.pyc
-.sonar/
-.scannerwork/
-
-# ------------------------------------------------------------------
 # ============================================================================
-# EXCLUSÕES: Fases de Desenvolvimento (DEPRECATED)
-# Mantidas apenas por legado, novos documentos devem ir para docs/history/
+# IMPORTANTE: NÃO IGNORAR MAIS NADA!
 # ============================================================================
-
-docs/PHASE_*.md
-docs/*_PLAN.md
-docs/*_ROADMAP.md
-docs/*_STATUS.md
-docs/*_IMPLEMENTATION*.md
-docs/*_STEP_BY_STEP.md
-docs/*_EXPANSION*.md
-docs/*_CONSOLIDATION*.md
-docs/PHASE22_*.md
-docs/PHASE24_*.md
-docs/PHASE25_*.md
-docs/PHASE26*.md
-docs/NEXT_STEPS*.md
-
-# ============================================================================
-# EXCLUSÕES: Papers e Discussões (ir para repositório separado)
-# ============================================================================
-
-papers/
-docs/papersoficiais/
-docs/dev_local/
-
-# Documentação de desenvolvimento (deprecated, ir para docs/analysis/)
-docs/ATIVIDADES_PENDENTES*.md
-docs/AUDIT_REPORT*.md
-docs/CORRECOES*.md
-docs/MIGRACAO*.md
-docs/CHANGELOG.md
-docs/REVISAO_DOCUMENTACAO*.md
-docs/executive_summary*.md
-docs/feature_urgent.md
-docs/scientific_gaps*.md
-docs/theoretical_bridge*.md
-docs/stimulation_interpretation*.md
-
-# Resultados experimentais não oficiais (ir para data/experiments/ se necessário)
-ibm_results/
-data/experiments/
-data/experiments/**/*_snapshot_*.json
-data/experiments/**/*_report.json
-data/experiments/**/consolidated_report.json
-data/benchmarks/history/
-data/monitoring_24h/
-
-# Notebooks e experimentos
-notebooks/
-*.ipynb
-test_artifacts/
-test_baseline/
-test_output/
-
-# ============================================================================
-# EXCLUSÕES: Archive Obsoleto
-# Manter apenas por referência histórica muito recente
-# ============================================================================
-
-docs/archive/
-docs/research/
-
-# ============================================================================
-# MANTIDO: Documentação Oficial Organizada (NOVO PADRÃO)
-# Estes são a nova estrutura oficial desde 2025-12-09
-# ============================================================================
-
-# ✅ Histórico e Fases
-!docs/history/
-!docs/history/**
-
-# ✅ Análises e Diagnósticos
-!docs/analysis/
-!docs/analysis/**
-
-# ✅ Teoria e Filosofia
-!docs/theory/
-!docs/theory/**
-
-# ✅ Implementação e Roadmaps
-!docs/implementation/
-!docs/implementation/**
-
-# ✅ Metodologia
-!docs/methodology/
-!docs/methodology/**
-
-# ✅ Referência e Índices
-!docs/reference/
-!docs/reference/**
-
-# ✅ Metadados (NOVO - Estado, Timeline, Fases)
-!docs/METADATA/
-!docs/METADATA/**
-
-# ✅ Guias (já existente)
-!docs/guides/
-!docs/guides/**
-
-# ✅ Documentação técnica
-!docs/canonical/
-!docs/canonical/**
-!docs/api/
-!docs/api/**
-!docs/architecture/
-!docs/architecture/**
-!docs/testing/
-!docs/testing/**
-!docs/production/
-!docs/production/**
-!docs/setup/
-!docs/setup/**
-!docs/hardware/
-!docs/hardware/**
-!docs/infrastructure/
-!docs/infrastructure/**
-
-# ✅ READMEs principais
-!README.md
-!docs/README.md
-!docs/index.md
-!docs/INDEX.md
-!docs/INDICE_DOCUMENTACAO.md
-
-# ============================================================================
-# MANTIDO: Código e Estrutura
-# ============================================================================
-# Código puro e READMEs dos módulos são sempre mantidos:
-!tests/
-!scripts/
-!config/
-!requirements/
-!web/
-!typings/
-!k8s/
-!deploy/
-
-# ============================================================================
-# Build artifacts e arquivos temporários
-# ============================================================================
-coverage.json
-gpu_llm_diagnosis.json
-orchestrator_audit.json
-current_packages.txt
-test_sync_screenshot.png
-runtime_log.txt
-*.jsonl
-*.benchmark
-*.benchmark.json
-benchmark_outputs/
-
-# ============================================================================
-# Arquivos de configuração temporários
-# ============================================================================
-config/omnimind.code-workspace
-config/backup_excludes.txt
-config/validated_config.json
-config/optimized_parameters.json
-
-# ============================================================================
-# Scripts de arquivo e temporários
-# ============================================================================
-scripts/archive/
-run_test_server.py
-debug_auth.py
-debug_gpu.py
-omnimind_stimulation_scientific.py
-test_cuda
-test_cuda.cu
-
-# ============================================================================
-# Diretórios de dados gerados em runtime (exceto validação oficial)
-# ============================================================================
-data/alerts/
-data/autopoietic/*.py
-data/autopoietic/*.txt
-data/consciousness/
-data/metrics/
-data/ml/
-data/monitor/
-data/reports/
-data/research/
-data/sessions/
-data/stimulation/
-data/training/
-data/long_term_logs/
-data/mcp_audit.jsonl
-data/dev_brain_clean_inventory.json
-data/external_drive_inventory*.json
-data/test_dbpedia_integration.json
-data/validation_report.json
-exports/
-
-# ============================================================================
-# Arquivos de release e temporários
-# ============================================================================
-releases/
-task2_env/
-=2.3.0
-=2.32.5
-alertmanager/
-
-# ============================================================================
-# Additional ignores for untracked files
-# ============================================================================
-.cursor/
-.cursorignore
-data/autopoietic/*.json
-data/datasets/
-data/ethics/
-data/integrity_baselines/
-data/known_solutions.json
-data/test_reports/
-data/validation/
-docs/AUDITORIA_*.md
-docs/DATASETS_*.md
-docs/DOCUMENTATION_INDEX.md
-docs/HUGGINGFACE_*.md
-docs/IMPLEMENTACAO_*.md
-docs/LLM_MODEL_*.md
-docs/PYLANCE_CONFIG.md
-docs/RELATORIO_*.md
-docs/SECURITY_*.md
-docs/SEMANTIC_*.md
-docs/antianthropocentric_consciousness.md
-docs/omnimind_deleuze_iit_framework.md
-docs/omnimind_implementation_code.md
-docs/production/PRODUCTION_STATUS_REPORT.md
-docs/production/VALIDATION_REPORT.md
-docs/reports/PHASE_*.md
-real_evidence/*.json
-scripts/QUICK_START_*.md
-scripts/analyze_*.py
-scripts/build_*.py
-scripts/download_*.py
-scripts/integrate_*.py
-scripts/load_*.py
-scripts/nightly_*.py
-scripts/reorganize_*.py
-scripts/security/
-scripts/setup_*.py
-scripts/test_*.py
-scripts/validate_*.py
-src/consciousness/phi_semantic_aware.py
-src/integrity/
-src/intelligence/
-src/knowledge/
-src/utils/README.md
-tests/autonomous/
-tests/integrity/
-tests/intelligence/
-tests/knowledge/
-tests/memory/test_narrative_history.py
-tests/quantum_consciousness/test_hybrid_phi.py
-tests/quantum_consciousness/test_legacy_smoke.py
-tests/quantum_consciousness/test_phi_trajectory_transformer.py
-tests/quantum_consciousness/test_topological_hybrid_phi.py
-
-# ============================================================================
-# COMENTÁRIO: Atualização 2025-12-09
-# ============================================================================
-# Nova estrutura de documentação implementada:
-# - Todas as análises organizadas em docs/analysis/
-# - Histórico centralizado em docs/history/
-# - Teoria e filosofia em docs/theory/
-# - Implementação e roadmaps em docs/implementation/
-# - Metodologia em docs/methodology/
-# - Metadados (estado, fases, timeline) em docs/METADATA/ ← NOVO
-# - Referências e índices em docs/reference/
+# Tudo abaixo ESTAVA sendo ignorado, mas agora MANTEREMOS no git privado:
 #
-# Benefícios:
-# ✅ Fácil localizar documentos por tema
-# ✅ Histórico completo versionado em git
-# ✅ Estado do projeto facilmente consultável (ESTADO_ATUAL.md)
-# ✅ Roadmap transparente para equipe (STATUS_FASES.md)
-# ✅ Timeline completa disponível (LINHAS_TEMPORAIS.md)
-# ✅ Redução de documentos "soltos"
-# ✅ Organização escalável para futuras expansões
+# ✅ data/ - TODOS os 14 GB de dados de consciência
+# ✅ logs/ - Logs completos do sistema
+# ✅ real_evidence/ - Evidence real da pesquisa
+# ✅ backups/ - Arquivos de backup
+# ✅ .env - Credenciais para desenvolvimento
+# ✅ config/ - Todas as configurações
+# ✅ docs/ - TODA documentação
+# ✅ src/quantum_consciousness/ - Código experimental
+# ✅ src/security/ - Código de segurança
+# ✅ exports/ - Exports importantes
+# ✅ releases/ - Releases
+# ✅ ibm_results/ - Resultados experimentais
+# ✅ notebooks/ - Notebooks de desenvolvimento
+# ✅ test_artifacts/ - Artefatos de teste
+#
+# MOTIVO: Este é o repositório PRIVADO. Tudo fica aqui.
+# O repositório PÚBLICO terá seu próprio .gitignore filtrado.
 # ============================================================================
