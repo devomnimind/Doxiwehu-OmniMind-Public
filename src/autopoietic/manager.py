@@ -9,6 +9,8 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Mapping, Optional, Union
 
+import psutil
+
 from .architecture_evolution import ArchitectureEvolution, EvolutionStrategy
 from .code_synthesizer import CodeSynthesizer, SynthesizedComponent
 from .meta_architect import ComponentSpec, MetaArchitect
@@ -112,6 +114,20 @@ class AutopoieticManager:
         self._cycle_count += 1
         cycle_id = self._cycle_count
         self._logger.info("Starting autopoietic cycle %d", cycle_id)
+        
+        # 🎯 Sprint 2: Rastrear métricas adicionais do ciclo
+        cycle_start_time = time.time()
+        synthesis_start_time = 0.0
+        synthesis_end_time = 0.0
+        rollback_count = 0
+        validation_success = True
+        
+        # Capturar uso de memória antes do ciclo
+        try:
+            process = psutil.Process()
+            memory_before_mb = process.memory_info().rss / (1024 * 1024)
+        except Exception:
+            memory_before_mb = 0.0
 
         if isinstance(metrics, MetricSample):
             metrics = metrics.strategy_inputs()
@@ -173,6 +189,7 @@ class AutopoieticManager:
                 phi_before,
                 self._phi_threshold,
             )
+            validation_success = False  # 🎯 Sprint 2: Rastrear falha de validação
             log = CycleLog(
                 cycle_id=cycle_id,
                 metrics=dict(metrics),
@@ -186,7 +203,10 @@ class AutopoieticManager:
             self._persist_log(log)
             return log
 
+        # 🎯 Sprint 2: Início da síntese
+        synthesis_start_time = time.time()
         synthesized = self._synthesizer.synthesize(batch.specs)
+        synthesis_end_time = time.time()
         new_names: List[str] = []
 
         # 🛡️ SEGURANÇA: Validar todos os componentes no sandbox antes de qualquer ação
@@ -207,6 +227,8 @@ class AutopoieticManager:
                         name,
                         validation_result.get("error", "Unknown error"),
                     )
+                    # 🎯 Sprint 2: Rastrear falha de validação
+                    validation_success = False
                     # Não adiciona componentes que falharam na validação
 
         # Só prossegue com componentes validados
@@ -259,6 +281,9 @@ class AutopoieticManager:
                 self._phi_threshold,
                 phi_drop_ratio * 100.0,
             )
+            # 🎯 Sprint 2: Contar rollback
+            rollback_count = 1
+            validation_success = False
             # Rollback: remover componentes sintetizados
             for name in new_names:
                 self._specs.pop(name, None)
@@ -324,6 +349,50 @@ class AutopoieticManager:
                 module_name=module_name,
                 metric_name="strategy",
                 value=log.strategy.name if hasattr(log, "strategy") else "unknown",
+                labels={"cycle": cycle_id},
+            )
+
+            # 🎯 Sprint 2 Task 2.1.1: Adicionar novas métricas
+            
+            # Tempo de síntese em milissegundos
+            synthesis_time_ms = 0.0
+            if synthesis_end_time > 0 and synthesis_start_time > 0:
+                synthesis_time_ms = (synthesis_end_time - synthesis_start_time) * 1000.0
+            metrics_collector.record_metric(
+                module_name=module_name,
+                metric_name="synthesis_time_ms",
+                value=float(synthesis_time_ms),
+                labels={"cycle": cycle_id},
+            )
+            
+            # Sucesso da validação (booleano convertido para int)
+            metrics_collector.record_metric(
+                module_name=module_name,
+                metric_name="validation_success",
+                value=int(validation_success),
+                labels={"cycle": cycle_id},
+            )
+            
+            # Contagem de rollbacks
+            metrics_collector.record_metric(
+                module_name=module_name,
+                metric_name="rollback_count",
+                value=int(rollback_count),
+                labels={"cycle": cycle_id},
+            )
+            
+            # Delta de memória em MB
+            try:
+                process = psutil.Process()
+                memory_after_mb = process.memory_info().rss / (1024 * 1024)
+                memory_delta_mb = memory_after_mb - memory_before_mb
+            except Exception:
+                memory_delta_mb = 0.0
+                
+            metrics_collector.record_metric(
+                module_name=module_name,
+                metric_name="memory_delta_mb",
+                value=float(memory_delta_mb),
                 labels={"cycle": cycle_id},
             )
 
