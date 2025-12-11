@@ -343,13 +343,14 @@ class SymbolicRegister:
                 order = msg.symbolic_content.get("order", "unknown")
                 order_counts[order] = order_counts.get(order, 0) + 1
             
-            # Calcular entropia de Shannon
+            # Calcular entropia de Shannon (otimizado)
             total = sum(order_counts.values())
             if total > 0:
+                import math
                 for count in order_counts.values():
                     p = count / total
                     if p > 0:
-                        symbol_diversity -= p * np.log2(p)
+                        symbol_diversity -= p * math.log2(p)
         
         # Calcular narrative_coherence (coerência entre mensagens consecutivas)
         narrative_coherence = 0.0

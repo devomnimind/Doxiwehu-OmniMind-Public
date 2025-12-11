@@ -21,7 +21,7 @@ import sys
 import time
 from dataclasses import dataclass, asdict
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -113,7 +113,7 @@ class MetricsHealthChecker:
             ]
         }
     
-    def check_phi_health(self, phi_value: Optional[float]) -> tuple[str, List[str]]:
+    def check_phi_health(self, phi_value: Optional[float]) -> Tuple[str, List[str]]:
         """
         Verifica saúde do valor de Φ.
         

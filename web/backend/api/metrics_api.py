@@ -12,9 +12,11 @@ Date: 2025-12-11
 
 import json
 import logging
+import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+import numpy as np
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
@@ -227,8 +229,6 @@ async def get_phi_timeseries(
             )
         
         # Calcular estatísticas
-        import numpy as np
-        
         mean_phi = float(np.mean(phi_values))
         min_phi = float(np.min(phi_values))
         max_phi = float(np.max(phi_values))
@@ -268,8 +268,6 @@ async def get_modules_metrics() -> ModulesMetricsResponse:
         ModulesMetricsResponse com métricas de todos os módulos
     """
     try:
-        import time
-        
         # Carregar último snapshot
         snapshot = metrics_storage.load_latest_snapshot()
         
@@ -326,8 +324,6 @@ async def get_health_status() -> HealthStatus:
         HealthStatus com status geral do sistema
     """
     try:
-        import time
-        
         # Carregar health report
         health_report = metrics_storage.load_health_report()
         
