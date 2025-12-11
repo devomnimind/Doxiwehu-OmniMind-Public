@@ -2073,6 +2073,58 @@ class SharedWorkspace:
             "processing_ms": 0.0,
         }
 
+    def get_metrics(self) -> Dict[str, Any]:
+        """
+        Captura métricas do SharedWorkspace para monitoramento.
+        
+        Conforme especificado em Task 2.4.1, captura:
+        - cross_prediction_error: erro médio de predições cruzadas
+        - embedding_variance: variância dos embeddings ativos
+        - convergence_rate: taxa de convergência de Φ
+        - module_count: número de módulos ativos
+        - active_modules: lista de módulos ativos
+        
+        Returns:
+            Dict com métricas do workspace
+        """
+        active_modules = self.get_all_modules()
+        
+        # Calcular cross_prediction_error (erro médio de predições)
+        cross_prediction_error = 0.0
+        if self.cross_predictions:
+            # Erro = 1 - média de R² (quanto mais alto o R², menor o erro)
+            avg_r_squared = np.mean([p.r_squared for p in self.cross_predictions])
+            cross_prediction_error = float(1.0 - avg_r_squared)
+        
+        # Calcular embedding_variance (variância dos embeddings ativos)
+        embedding_variance = 0.0
+        if self.embeddings:
+            all_embeddings = np.array([emb for emb in self.embeddings.values()])
+            embedding_variance = float(np.var(all_embeddings))
+        
+        # Calcular convergence_rate (taxa de convergência de Φ)
+        # Usa histórico recente de Φ para detectar convergência
+        convergence_rate = 0.0
+        if len(self.cross_predictions) >= 10:
+            # Pega últimas 10 predições e calcula variação
+            recent_r_squared = [p.r_squared for p in self.cross_predictions[-10:]]
+            if len(recent_r_squared) > 1:
+                # Convergência = 1 - (desvio padrão / média)
+                # Valores próximos de 1.0 indicam convergência
+                mean_val = np.mean(recent_r_squared)
+                std_val = np.std(recent_r_squared)
+                if mean_val > 0:
+                    convergence_rate = float(1.0 - min(1.0, std_val / mean_val))
+        
+        return {
+            "cross_prediction_error": cross_prediction_error,
+            "embedding_variance": embedding_variance,
+            "convergence_rate": convergence_rate,
+            "module_count": len(active_modules),
+            "active_modules": active_modules,
+            "timestamp": time.time(),
+        }
+
     def get_statistics(self) -> Dict[str, Any]:
         """Retorna estatísticas do workspace."""
         active_modules = len(self.embeddings)
