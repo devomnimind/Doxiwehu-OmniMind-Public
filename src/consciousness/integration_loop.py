@@ -10,6 +10,8 @@ This enables real causal coupling measured by SharedWorkspace cross-prediction m
 import asyncio
 import json
 import logging
+import time
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -24,6 +26,49 @@ if TYPE_CHECKING:
     from src.consciousness.extended_cycle_result import ExtendedLoopCycleResult
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class RNNCycleContext:
+    """
+    Contexto de observabilidade para um ciclo RNN.
+
+    Provides distributed tracing context for correlating events, cycles, and metrics.
+    Uses deterministic UUID generation for reproducibility.
+
+    Attributes:
+        cycle_id: Sequential cycle identifier
+        trace_id: Deterministic UUID for correlation across systems
+        span_id: Unique span identifier for OpenTelemetry
+        start_time: Timestamp when cycle started (seconds since epoch)
+    """
+
+    cycle_id: int
+    trace_id: str
+    span_id: str
+    start_time: float
+
+    @classmethod
+    def create(cls, cycle_id: int, workspace_state_hash: str = "") -> "RNNCycleContext":
+        """
+        Cria TraceID determinístico para reprodutibilidade.
+
+        Args:
+            cycle_id: Sequential cycle number
+            workspace_state_hash: Hash of workspace state for determinism
+
+        Returns:
+            RNNCycleContext with deterministic trace_id
+        """
+        deterministic_seed = f"cycle:{cycle_id}:{workspace_state_hash}"
+        trace_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, deterministic_seed))
+        span_id = str(uuid.uuid4())
+        return cls(
+            cycle_id=cycle_id,
+            trace_id=trace_id,
+            span_id=span_id,
+            start_time=time.time(),
+        )
 
 
 @dataclass
@@ -55,6 +100,7 @@ class LoopCycleResult:
     phi_estimate: float = 0.0
     timestamp: datetime = field(default_factory=datetime.now)
     complexity_metrics: Optional[Dict[str, Any]] = None  # NOVO: métricas de complexidade
+    trace_id: Optional[str] = None  # NOVO: TraceID para correlação distribuída
 
     @property
     def success(self) -> bool:
