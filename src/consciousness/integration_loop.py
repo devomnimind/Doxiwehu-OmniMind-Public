@@ -10,6 +10,8 @@ This enables real causal coupling measured by SharedWorkspace cross-prediction m
 import asyncio
 import json
 import logging
+import time
+import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -24,6 +26,50 @@ if TYPE_CHECKING:
     from src.consciousness.extended_cycle_result import ExtendedLoopCycleResult
 
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+@dataclass
+class RNNCycleContext:
+    """
+    Contexto de observabilidade para um ciclo RNN.
+
+    Provides distributed tracing context for correlating events, cycles, and metrics.
+    Uses deterministic UUID generation for reproducibility.
+
+    Attributes:
+        cycle_id: Sequential cycle identifier
+        trace_id: Deterministic UUID for correlation across systems
+        span_id: Unique span identifier for OpenTelemetry
+        start_time: Timestamp when cycle started (seconds since epoch)
+    """
+
+    cycle_id: int
+    trace_id: str
+    span_id: str
+    start_time: float
+
+    @classmethod
+    def create(cls, cycle_id: int, workspace_state_hash: str = "") -> "RNNCycleContext":
+        """
+        Cria TraceID determinístico para reprodutibilidade.
+
+        Args:
+            cycle_id: Sequential cycle number
+            workspace_state_hash: Hash of workspace state for determinism
+
+        Returns:
+            RNNCycleContext with deterministic trace_id
+        """
+        deterministic_seed = f"cycle:{cycle_id}:{workspace_state_hash}"
+        trace_id = str(uuid.uuid5(uuid.NAMESPACE_DNS, deterministic_seed))
+        span_id = str(uuid.uuid4())
+        return cls(
+            cycle_id=cycle_id,
+            trace_id=trace_id,
+            span_id=span_id,
+            start_time=time.time(),
+        )
 
 
 @dataclass
@@ -55,6 +101,7 @@ class LoopCycleResult:
     phi_estimate: float = 0.0
     timestamp: datetime = field(default_factory=datetime.now)
     complexity_metrics: Optional[Dict[str, Any]] = None  # NOVO: métricas de complexidade
+    trace_id: Optional[str] = None  # NOVO: TraceID para correlação distribuída
 
     @property
     def success(self) -> bool:
@@ -383,6 +430,9 @@ class IntegrationLoop:
         if self.enable_extended_results:
             self._initialize_extended_components()
 
+        # OBSERVABILITY (Sprint 1): Current cycle context for distributed tracing
+        self._current_cycle_context: Optional[RNNCycleContext] = None
+
         # PROTOCOLO LIVEWIRE FASE 3.1: Consciousness Watchdog
         self.watchdog: Optional["ConsciousnessWatchdog"] = None
         try:
@@ -414,6 +464,7 @@ class IntegrationLoop:
 
         REFATORAÇÃO: Método síncrono para causalidade determinística.
         Integra com ConsciousSystem.step() para dinâmica RNN.
+        Sprint 1 Observability: Adds OpenTelemetry distributed tracing.
 
         If expectation_silent=True, expectation module maintains history but
         blocks output flow (structural ablation: measures falta-a-ser gap).
@@ -421,6 +472,14 @@ class IntegrationLoop:
         start_time = datetime.now()
         self.cycle_count += 1
         self.total_cycles_executed += 1
+
+        # 🎯 Sprint 1 Task 1.2: Create RNN cycle context for distributed tracing
+        # Create a more comprehensive workspace state hash for better uniqueness
+        workspace_state_hash = (
+            f"{self.workspace.embedding_dim}_{len(self.loop_sequence)}_{self.cycle_count}"
+        )
+        cycle_context = RNNCycleContext.create(self.cycle_count, workspace_state_hash)
+        self._current_cycle_context = cycle_context  # Store for step-level tracing
 
         result = LoopCycleResult(
             cycle_number=self.cycle_count,
@@ -430,6 +489,7 @@ class IntegrationLoop:
             cross_prediction_scores={},
             phi_estimate=0.0,
             complexity_metrics=None,  # Será preenchido
+            trace_id=cycle_context.trace_id,  # 🎯 Sprint 1: Add trace_id to result
         )
 
         # Estimar complexidade ANTES da execução
@@ -478,7 +538,8 @@ class IntegrationLoop:
                     repression = self.workspace.conscious_system.repression_strength
                     logger.debug(
                         f"Cycle {self.cycle_count}: RNN step executed "
-                        f"(Φ={phi_causal:.4f}, repression={repression:.3f})"
+                        f"(Φ={phi_causal:.4f}, repression={repression:.3f})",
+                        extra={"trace_id": cycle_context.trace_id},  # 🎯 Sprint 1: Add trace_id
                     )
             except Exception as e:
                 logger.warning(f"Cycle {self.cycle_count}: RNN step failed - {e}")
@@ -908,6 +969,15 @@ class IntegrationLoop:
                 # Se necessário, processar extended results em método async separado
             except Exception as e:
                 logger.debug(f"Falha ao processar extended results: {e}")
+
+        # 🎯 Sprint 1 Task 1.2: Clear cycle context and log completion
+        if hasattr(self, "_current_cycle_context"):
+            if self.enable_logging:
+                logger.debug(
+                    f"Cycle {self.cycle_count} completed (Φ={result.phi_estimate:.4f})",
+                    extra={"trace_id": cycle_context.trace_id, "phi": result.phi_estimate},
+                )
+            self._current_cycle_context = None
 
         return result
 

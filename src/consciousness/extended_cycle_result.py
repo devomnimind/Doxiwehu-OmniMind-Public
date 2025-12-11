@@ -46,6 +46,7 @@ class ExtendedLoopCycleResult(LoopCycleResult):
     sigma: Optional[float] = None
     triad: Optional[ConsciousnessTriad] = None
     cycle_id: Optional[str] = None
+    trace_id: Optional[str] = None  # NOVO: TraceID para correlação distribuída (Sprint 1)
 
     # Novos campos (Isomorfismo Estrutural)
     gozo: Optional[float] = None  # Gozo (excesso não integrado)
@@ -96,6 +97,8 @@ class ExtendedLoopCycleResult(LoopCycleResult):
             base_dict["triad"] = self.triad.to_dict()
         if self.cycle_id is not None:
             base_dict["cycle_id"] = self.cycle_id
+        if self.trace_id is not None:
+            base_dict["trace_id"] = self.trace_id
         if self.gozo is not None:
             base_dict["gozo"] = self.gozo
         if self.delta is not None:
