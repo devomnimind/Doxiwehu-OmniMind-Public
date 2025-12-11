@@ -470,7 +470,8 @@ class IntegrationLoop:
         self.total_cycles_executed += 1
 
         # 🎯 Sprint 1 Task 1.2: Create RNN cycle context for distributed tracing
-        workspace_state_hash = str(hash(self.workspace.embedding_dim))
+        # Create a more comprehensive workspace state hash for better uniqueness
+        workspace_state_hash = f"{self.workspace.embedding_dim}_{len(self.loop_sequence)}_{self.cycle_count}"
         cycle_context = RNNCycleContext.create(self.cycle_count, workspace_state_hash)
         self._current_cycle_context = cycle_context  # Store for step-level tracing
 

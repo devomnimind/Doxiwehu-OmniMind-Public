@@ -117,8 +117,8 @@ class OrchestratorEventBus:
         """
         # 🎯 Sprint 1 Task 1.4: Add trace_id to event if not already set
         if event.trace_id is None:
-            # Try to get trace_id from current RNN cycle context (if available)
-            # Otherwise, generate a new one
+            # Generate a new trace_id for this event
+            # Future enhancement: Could retrieve from global RNN cycle context if available
             event.trace_id = str(uuid.uuid4())
         if event.span_id is None:
             event.span_id = str(uuid.uuid4())
@@ -297,7 +297,7 @@ class OrchestratorEventBus:
             with open(log_file, "a") as f:
                 f.write(json.dumps(event_dict) + "\n")
 
-        except Exception as e:
+        except (OSError, IOError, json.JSONEncodeError) as e:
             # Don't fail event publishing if logging fails
             logger.debug(f"Failed to write traced event: {e}")
 
