@@ -105,6 +105,51 @@ quarantine_*/
 temp_spaces/
 
 # ------------------------------------------------------------------
+# RUNTIME GENERATED DATA (10K+ files - do NOT commit)
+# ------------------------------------------------------------------
+# Qdrant runtime data
+data/qdrant/
+deploy/data/qdrant/
+deploy/data/qdrant_backup_*/
+
+# Test reports and metrics (gerados em execução)
+data/test_reports/*.json
+data/test_reports/*.xml
+data/test_reports/*.html
+data/test_reports/coverage_*/
+data/test_reports/*.log
+
+# Consciousness cycles and runtime states
+data/consciousness/
+data/context/snapshot_*.json
+data/context/context_*.jsonl
+
+# Training and datasets
+data/datasets/
+data/training/
+models/phi-3.5-mini-complete/
+
+# Real evidence and experimental outputs
+real_evidence/
+
+# System runtime data
+data/monitor/
+data/autopoietic/cycle_history.jsonl
+data/autopoietic/narrative_history.json
+data/autopoietic/art_gallery.json
+data/autopoietic/synthesized_code_secure/
+
+# Logs
+logs/*.log*
+logs/monitor_snapshot_*.json
+logs/mcp_omnimind_*.pid
+
+# Deploy runtime
+deploy/data/
+report*.nsys-rep
+report*.sqlite
+
+# ------------------------------------------------------------------
 # ============================================================================
 # IMPORTANTE: NÃO IGNORAR MAIS NADA!
 # ============================================================================
