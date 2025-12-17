@@ -116,7 +116,7 @@ class TestFilationIntegration:
         assert anchor is not None, "Lei não foi criada"
         assert anchor.borromean is not None, "Borromean matrix não existe"
         # Validar que eigenvalues são finitos (não chamar verify_reality que causa Inf/NaN)
-        if hasattr(anchor.borromean, 'matrix'):
+        if hasattr(anchor.borromean, "matrix"):
             eigenvalues = np.linalg.eigvals(anchor.borromean.matrix)
             assert np.all(np.isfinite(eigenvalues.real)), "Eigenvalues real contêm Inf/NaN"
             assert np.all(np.isfinite(eigenvalues.imag)), "Eigenvalues imag contêm Inf/NaN"
