@@ -622,10 +622,26 @@ except Exception as e:
         """Clean up sandbox resources."""
         try:
             import shutil
+            import subprocess
 
             if self.temp_dir.exists():
-                shutil.rmtree(self.temp_dir)
-                self._logger.info("🧹 Sandbox cleaned up: %s", self.temp_dir)
+                try:
+                    shutil.rmtree(self.temp_dir)
+                    self._logger.info("🧹 Sandbox cleaned up: %s", self.temp_dir)
+                except PermissionError:
+                    # Fallback: use sudo rm -rf if permission denied
+                    try:
+                        subprocess.run(
+                            ["sudo", "rm", "-rf", str(self.temp_dir)],
+                            capture_output=True,
+                            timeout=5,
+                            check=False,
+                        )
+                        self._logger.info("🧹 Sandbox cleaned up (sudo): %s", self.temp_dir)
+                    except Exception as sudo_e:
+                        self._logger.warning(
+                            "Could not cleanup sandbox (even with sudo): %s", sudo_e
+                        )
         except Exception as e:
             self._logger.error("Failed to cleanup sandbox: %s", e)
 
