@@ -6,8 +6,6 @@ Autor: Fabrício da Silva + assistência de IA
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from src.memory.hybrid_retrieval import HybridRetrievalSystem, RetrievalResult
 
 

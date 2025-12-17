@@ -66,7 +66,7 @@ class BorromeanMatrix:
             current_eigenvalues = np.linalg.eigvals(self.matrix)
             current_hash = hashlib.md5(str(current_eigenvalues).encode()).hexdigest()
             return current_hash == self.eigenvalue_hash
-        except:
+        except Exception:
             return False
 
 

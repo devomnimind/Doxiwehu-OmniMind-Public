@@ -7,8 +7,6 @@ Autor: Fabrício da Silva + assistência de IA
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from src.memory.dataset_indexer import DatasetIndexer
 
 

@@ -6,8 +6,6 @@ Valida criação de trace_id determinístico e contexto de rastreamento.
 
 import time
 
-import pytest
-
 from src.consciousness.integration_loop import RNNCycleContext
 
 

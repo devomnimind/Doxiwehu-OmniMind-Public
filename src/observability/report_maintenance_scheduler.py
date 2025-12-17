@@ -7,11 +7,10 @@ Autor: Fabrício da Silva + assistência de IA
 Data: 2025-12-11
 """
 
-import asyncio
 import logging
 import threading
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Callable, Optional
 
 from src.observability.report_maintenance import get_report_maintenance_manager

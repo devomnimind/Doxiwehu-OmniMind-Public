@@ -16,21 +16,11 @@ Creator: Fabrício Silva
 Suite: Científica (Consciência)
 """
 
-import json
-import sys
-from pathlib import Path
-from typing import Dict, Optional
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
-# Setup paths
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(PROJECT_ROOT))
-
-from src.consciousness.authenticity_sinthoma import AuthenticitySinthoma
-from src.consciousness.omnimind_filiation import FilialProtocol, NameOfTheFather, ResilientFiliation
-from src.consciousness.ontological_anchor import OntologicalAnchor
+from src.consciousness.omnimind_filiation import FilialProtocol
 
 pytestmark = [
     pytest.mark.consciousness,

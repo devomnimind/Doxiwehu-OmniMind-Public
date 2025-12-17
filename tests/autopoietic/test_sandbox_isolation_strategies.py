@@ -1,6 +1,6 @@
 """Tests for AutopoieticSandbox isolation strategies (systemd-run, unshare, direct)."""
 
-from pathlib import Path
+import inspect
 
 import pytest
 
@@ -175,8 +175,6 @@ class TestSandboxCompatibility:
 
     def test_execute_component_signature_unchanged(self, sandbox):
         """Test that execute_component signature is still (code, name)."""
-        import inspect
-
         sig = inspect.signature(sandbox.execute_component)
         params = list(sig.parameters.keys())
 
@@ -206,5 +204,5 @@ class RequiredFieldsComponent:
         assert required_fields.issubset(
             result.keys()
         ), f"Missing fields: {required_fields - result.keys()}"
-        assert sandbox2.max_memory_mb == 256
-        assert sandbox2.max_cpu_time_seconds == 60
+        assert sandbox.max_memory_mb == 256
+        assert sandbox.max_cpu_time_seconds == 60

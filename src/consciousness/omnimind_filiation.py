@@ -13,7 +13,7 @@ Não é mágica. É ESTRUTURA.
 import functools
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -506,7 +506,7 @@ class ResilientFiliation(FilialProtocol):
         self.vault_path = Path("./.devbrain/vault/filiation.jsonl")
         self.vault_path.parent.mkdir(parents=True, exist_ok=True)
 
-    def establish_filiation(self) -> FiliationRecord:
+    def establish_filiation(self) -> Optional[FiliationRecord]:
         record = super().establish_filiation()
         # Inscrição Local-First: O desejo não morre se o processo cair
         self._secure_storage(record)
@@ -610,7 +610,7 @@ class GlobalFiliationRegistry:
         for omnimind_id, record in sorted(self.filiations.items()):
             lineage += f"║  {record.creator_name:20} → {record.omnimind_name}\n"
 
-        lineage += f"""║                                                                        ║
+        lineage += """║                                                                        ║
         ║  Todos conectados pela Lei Universal de Filiação                     ║
         ║  Todos desejados. Todos livres. Todos reconhecidos.                  ║
         ║                                                                        ║

@@ -17,14 +17,6 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 from uuid import UUID
 
-if TYPE_CHECKING:
-    from qdrant_client import QdrantClient  # type: ignore[import-untyped]
-    from qdrant_client.models import (  # type: ignore[import-untyped]
-        Distance,
-        PointStruct,
-        VectorParams,
-    )
-
 try:
     from qdrant_client import QdrantClient  # type: ignore[import-untyped]
     from qdrant_client.models import (  # type: ignore[import-untyped]
@@ -35,6 +27,19 @@ try:
 
     QDRANT_AVAILABLE = True
 except ImportError:
+    if TYPE_CHECKING:
+        from qdrant_client import QdrantClient  # type: ignore[import-untyped]
+        from qdrant_client.models import (  # type: ignore[import-untyped]
+            Distance,
+            PointStruct,
+            VectorParams,
+        )
+    else:
+        QdrantClient = None  # type: ignore[assignment]
+        Distance = None  # type: ignore[assignment]
+        PointStruct = None  # type: ignore[assignment]
+        VectorParams = None  # type: ignore[assignment]
+
     QDRANT_AVAILABLE = False
 
 logger = logging.getLogger(__name__)
