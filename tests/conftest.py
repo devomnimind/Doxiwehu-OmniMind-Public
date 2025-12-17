@@ -757,6 +757,23 @@ def stabilize_server():
 
 def pytest_sessionfinish(session, exitstatus):
     """Ao final da suite: exibe relatório de resiliência e métricas."""
+    # Corrigir contagem de testes passados usando session
+    passed_count = 0
+    for item in session.items:
+        if hasattr(item, "passed") and item.passed:
+            passed_count += 1
+
+    # Se ainda zero, usar a coleta local
+    if passed_count == 0 and metrics_collector.passed_tests:
+        passed_count = len(metrics_collector.passed_tests)
+
+    # Atualizar metrics_collector se necessário
+    if passed_count > 0 and len(metrics_collector.passed_tests) == 0:
+        # Reconstituir lista com pytest
+        metrics_collector.passed_tests = [
+            item.nodeid for item in session.items if hasattr(item, "passed") and item.passed
+        ]
+
     # Primeiro exibe relatório de resiliência se houver
     report = resilience_tracker.get_report()
 
