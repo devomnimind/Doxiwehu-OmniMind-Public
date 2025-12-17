@@ -98,7 +98,34 @@ def _load_embedding_model(model_name: str) -> Optional["SentenceTransformer"]:
         device = get_sentence_transformer_device()
 
         try:
-            return SentenceTransformer(resolved_model_name, token=hf_token, device=device)
+            # CORREÇÃO (2025-12-17): Carregar SEMPRE em CPU primeiro para evitar meta tensor
+            # SentenceTransformer pode inicializar modelos em meta device, causando erro
+            model = SentenceTransformer(resolved_model_name, token=hf_token, device="cpu")
+
+            # Se device desejado não é CPU, tentar mover após carregamento
+            if device != "cpu":
+                try:
+                    # Verificar se há meta tensors antes de tentar mover
+                    has_meta = False
+                    for module in model.modules():
+                        for param in module.parameters():
+                            if param.device.type == "meta":
+                                has_meta = True
+                                break
+                        if has_meta:
+                            break
+
+                    if has_meta:
+                        logger.warning("Meta tensors detectados, usando to_empty()")
+                        model = model.to_empty(device=device)
+                    else:
+                        model = model.to(device)
+                    logger.info(f"✓ Modelo movido para {device}")
+                except Exception as move_exc:
+                    logger.warning(f"Erro ao mover para {device}: {move_exc}, mantendo em CPU")
+                    model = model.to("cpu")
+
+            return model
         except Exception as oom_exc:
             # Se OOM, tentar consolidar memórias antes de fallback
             if "out of memory" in str(oom_exc).lower() or "OOM" in str(oom_exc):

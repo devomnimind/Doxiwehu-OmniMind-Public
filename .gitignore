@@ -113,6 +113,7 @@ deploy/data/qdrant/
 deploy/data/qdrant_backup_*/
 
 # Test reports and metrics (gerados em execução)
+data/test_reports/
 data/test_reports/*.json
 data/test_reports/*.xml
 data/test_reports/*.html
@@ -121,6 +122,7 @@ data/test_reports/*.log
 
 # Consciousness cycles and runtime states
 data/consciousness/
+data/context/
 data/context/snapshot_*.json
 data/context/context_*.jsonl
 
@@ -132,15 +134,32 @@ models/phi-3.5-mini-complete/
 # Real evidence and experimental outputs
 real_evidence/
 
-# System runtime data
+# System runtime data (ONLY runtime generated, NOT code)
 data/monitor/
+
+# Autopoiesis runtime cycles (generated during execution)
 data/autopoietic/cycle_history.jsonl
 data/autopoietic/narrative_history.json
 data/autopoietic/art_gallery.json
-data/autopoietic/synthesized_code_secure/
 
-# Logs
-logs/*.log*
+# Data directories (runtime only - temporary)
+data/backup/
+data/diag/
+data/ethics/
+data/exports/
+data/long_term_logs/
+data/reports/
+data/sessions/
+data/validation/
+
+# Test reports and metrics (gerados em execução)
+data/test_reports/
+
+# Runtime JSON/DB files (NOT the important ones)
+data/*.log
+data/*.db
+
+# Logs (runtime tracking, not code logs)
 logs/monitor_snapshot_*.json
 logs/mcp_omnimind_*.pid
 

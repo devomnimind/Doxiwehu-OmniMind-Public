@@ -21,19 +21,14 @@ from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, cast
 
 try:
-    from sentence_transformers import (
-        SentenceTransformer,  # type: ignore[import-untyped]
-    )
+    from sentence_transformers import SentenceTransformer  # type: ignore[import-untyped]
 
     TRANSFORMERS_AVAILABLE = True
 except ImportError:
     SentenceTransformer = None  # type: ignore[misc,assignment]
     TRANSFORMERS_AVAILABLE = False
 
-from src.integrations.qdrant_integration import (
-    QdrantIntegration,
-    QdrantPoint,
-)
+from src.integrations.qdrant_integration import QdrantIntegration, QdrantPoint
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +87,27 @@ class SemanticMemoryLayer:
         except ImportError:
             resolved_model_name = model_name
 
-        self.embedder = SentenceTransformer(resolved_model_name)  # type: ignore[assignment]
+        # CORREÇÃO (2025-12-17): Carregar SEMPRE em CPU primeiro para evitar meta tensor
+        embedder = SentenceTransformer(resolved_model_name, device="cpu")  # type: ignore[assignment]
+
+        # Garantir que modelo está em device real (não meta)
+        from src.utils.device_utils import (
+            ensure_tensor_on_real_device,
+            get_sentence_transformer_device,
+        )
+
+        ensure_tensor_on_real_device(embedder)
+
+        # Se há GPU disponível, tentar mover
+        device = get_sentence_transformer_device()
+        if device != "cpu":
+            try:
+                embedder = embedder.to(device)
+            except Exception as e:
+                logger.warning(f"Erro ao mover para {device}: {e}, mantendo em CPU")
+                embedder = embedder.to("cpu")
+
+        self.embedder = embedder
         self.embedding_dim = (
             self.embedder.get_sentence_embedding_dimension()  # type: ignore[attr-defined]
         )

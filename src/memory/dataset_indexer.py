@@ -99,11 +99,23 @@ class DatasetIndexer:
 
             device = get_sentence_transformer_device()
             logger.info(f"Carregando modelo de embeddings: {resolved_model_name} (device={device})")
-            self.embedding_model = SentenceTransformer(resolved_model_name, device=device)
+
+            # CORREÇÃO (2025-12-17): Carregar SEMPRE em CPU primeiro para evitar meta tensor
+            embedding_model = SentenceTransformer(resolved_model_name, device="cpu")
 
             # Garantir que modelo não está em meta device
-            ensure_tensor_on_real_device(self.embedding_model)
+            ensure_tensor_on_real_device(embedding_model)
 
+            # Se device desejado não é CPU, tentar mover
+            if device != "cpu":
+                try:
+                    embedding_model = embedding_model.to(device)
+                    logger.debug(f"✓ Modelo movido para {device}")
+                except Exception as e:
+                    logger.warning(f"Erro ao mover para {device}: {e}, mantendo em CPU")
+                    embedding_model = embedding_model.to("cpu")
+
+            self.embedding_model = embedding_model
             logger.info("Modelo carregado e validado no device correto")
 
         self.embedding_dim = int(self.embedding_model.get_sentence_embedding_dimension() or 384)
