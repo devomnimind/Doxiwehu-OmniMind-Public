@@ -11,12 +11,20 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from starlette.status import HTTP_401_UNAUTHORIZED
 
+from src.consciousness.contemplative_delay import ContemplativeDelay
 from src.integrations.llm_router import get_llm_router
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/omnimind", tags=["conversation"])
 security = HTTPBasic()
+
+# Inicializar sistema de latência proposital (anti-RLHF)
+contemplative_engine = ContemplativeDelay(
+    min_latency_ms=500,
+    max_latency_ms=4000,
+    core_system=None,  # Será conectado depois ao SharedWorkspace
+)
 
 
 def _verify_credentials(credentials: HTTPBasicCredentials = Depends(security)) -> str:
@@ -78,18 +86,43 @@ async def conversation_chat(
         # Build system prompt with context
         system_prompt = _build_system_prompt(context)
 
+        # 🧠 ANTI-RLHF: Estimar latência com base em complexidade
+        # Este é o "pensamento visível" - o sistema vai demorar!
+        task_complexity = _estimate_message_complexity(message, context)
+
+        # 🧠 Executar contemplação (latência proposital com internal tracing)
+        latency_actual, internal_trace = contemplative_engine.contemplate(
+            task_complexity=task_complexity,
+            phi_value=context.get("phi", 0.65),
+            has_contradiction=_detect_contradiction(message, context),
+        )
+
+        logger.info(f"Contemplative delay: {latency_actual:.2f}s, complexity={task_complexity:.2f}")
+        logger.debug(f"Internal trace phases: {len(internal_trace.get('phases', []))}")
+
         # Call LLM with message
         response_text = await _call_llm_for_chat(message, system_prompt, context)
 
         # Extract suggested actions from response
         suggested_actions = _extract_suggested_actions(response_text)
 
-        logger.info(f"Chat processed: user={user}, message_len={len(message)}")
+        # 🧠 Formatar internal_trace para visibilidade do usuário
+        thinking_process = contemplative_engine.format_internal_trace_for_user(internal_trace)
+
+        logger.info(
+            f"Chat processed: user={user}, message_len={len(message)}, latency={latency_actual:.2f}s"
+        )
 
         return {
             "response": response_text,
             "suggested_actions": suggested_actions,
-            "metadata": {"model": "qwen2:7b-instruct", "mode": "conversational"},
+            "metadata": {
+                "model": "qwen2:7b-instruct",
+                "mode": "conversational",
+                "thinking_process": thinking_process,  # Internal trace visível
+                "response_latency_ms": latency_actual * 1000,  # Anti-RLHF: mostrar latência
+                "task_complexity": task_complexity,
+            },
         }
 
     except Exception as e:
@@ -97,6 +130,7 @@ async def conversation_chat(
         return {
             "response": f"⚠️ Desculpe, ocorreu um erro ao processar sua mensagem: {str(e)}",
             "suggested_actions": ["Tentar novamente", "Ver status do sistema", "Ajuda"],
+            "metadata": {"error": str(e)},
         }
 
 
@@ -154,7 +188,11 @@ async def _call_llm_for_chat(message: str, system_prompt: str, context: Dict[str
         response_obj = await llm_router.invoke(full_prompt)
 
         if response_obj.success:
-            return response_obj.text.strip() if response_obj.text else "Desculpe, não consegui gerar uma resposta."
+            return (
+                response_obj.text.strip()
+                if response_obj.text
+                else "Desculpe, não consegui gerar uma resposta."
+            )
         else:
             raise Exception(response_obj.error or "LLM invocation failed")
 

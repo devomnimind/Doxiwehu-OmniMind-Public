@@ -20,6 +20,7 @@ logger = logging.getLogger("MemoryCompressionManager")
 @dataclass
 class CompressionMetrics:
     """Métricas de compressão de memória."""
+
     timestamp: str
     memory_percent_before: float
     memory_percent_after: float
@@ -188,9 +189,7 @@ class MemoryCompressionManager:
             "average_compression_ratio": float(avg_ratio),
             "knowledge_vectors_stored": len(self.knowledge_vectors),
             "last_compression": (
-                self.compression_history[-1].timestamp
-                if self.compression_history
-                else None
+                self.compression_history[-1].timestamp if self.compression_history else None
             ),
         }
 
@@ -200,9 +199,7 @@ class MemoryCompressionManager:
             data = {
                 "timestamp": datetime.utcnow().isoformat(),
                 "compression_stats": self.get_compression_stats(),
-                "knowledge_vectors": {
-                    k: v.tolist() for k, v in self.knowledge_vectors.items()
-                },
+                "knowledge_vectors": {k: v.tolist() for k, v in self.knowledge_vectors.items()},
                 "compression_history": [
                     asdict(m) for m in self.compression_history[-100:]  # Últimas 100
                 ],

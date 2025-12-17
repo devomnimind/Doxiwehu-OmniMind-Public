@@ -121,9 +121,7 @@ class ServiceUpdateCommunicator:
             "affected_modules": affected_modules,
         }
 
-    async def _evaluate_impact(
-        self, change: ServiceChange
-    ) -> Dict[str, Any]:
+    async def _evaluate_impact(self, change: ServiceChange) -> Dict[str, Any]:
         """
         Evaluate whether restart is needed.
 
@@ -132,9 +130,7 @@ class ServiceUpdateCommunicator:
         """
 
         # Check if any critical modules affected
-        critical_hit = any(
-            module in self.critical_modules for module in change.affected_modules
-        )
+        critical_hit = any(module in self.critical_modules for module in change.affected_modules)
 
         # Check severity
         is_critical_severity = change.severity in ["critical", "high"]
@@ -144,13 +140,9 @@ class ServiceUpdateCommunicator:
 
         # DECISION LOGIC
         if critical_hit and is_code_change:
-            logger.warning(
-                f"⚠️  CRITICAL: Change to {change.affected_modules} detected"
-            )
+            logger.warning(f"⚠️  CRITICAL: Change to {change.affected_modules} detected")
             self.restart_required = True
-            self.restart_reason = (
-                f"{change.service_name}: Critical module update"
-            )
+            self.restart_reason = f"{change.service_name}: Critical module update"
             return {
                 "action": "restart_now",
                 "reason": f"Critical code change in {change.service_name}",
@@ -168,9 +160,7 @@ class ServiceUpdateCommunicator:
                 "defer_seconds": 60,
             }
 
-        elif any(
-            module in self.deferrable_modules for module in change.affected_modules
-        ):
+        elif any(module in self.deferrable_modules for module in change.affected_modules):
             logger.info(f"✓ Deferrable change: {change.service_name}")
             return {
                 "action": "defer",
