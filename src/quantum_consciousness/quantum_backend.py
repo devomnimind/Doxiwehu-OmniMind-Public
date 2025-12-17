@@ -20,7 +20,7 @@ Date: 2025-11-26 (P0 Protocol Fix)
 
 import logging
 import os
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 import torch  # noqa: E402
 from dotenv import load_dotenv
@@ -31,6 +31,11 @@ load_dotenv()
 
 logger = logging.getLogger(__name__)
 
+# --- Runtime Availability Flags ---
+DWAVE_AVAILABLE = False
+NEAL_AVAILABLE = False
+QISKIT_AVAILABLE = False
+
 # --- D-Wave Imports ---
 try:
     import dimod  # type: ignore[import-untyped]
@@ -39,7 +44,7 @@ try:
 
     DWAVE_AVAILABLE = True
 except ImportError:
-    DWAVE_AVAILABLE = False
+    pass
 
 # --- Neal (Simulated Annealing) Imports ---
 try:
@@ -47,30 +52,44 @@ try:
 
     NEAL_AVAILABLE = True
 except ImportError:
-    NEAL_AVAILABLE = False
+    pass
 
-# --- Qiskit Imports ---
-try:  # type: ignore[import-untyped]
+# --- Qiskit Imports (for type checking only) ---
+if TYPE_CHECKING:
+    from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
+    from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
     from qiskit_aer import AerSimulator  # type: ignore[import-untyped,attr-defined]
     from qiskit_algorithms import AmplificationProblem  # type: ignore[attr-defined]
     from qiskit_algorithms import Grover  # type: ignore[attr-defined]
     from qiskit_algorithms.optimizers import COBYLA  # type: ignore[import-untyped,attr-defined]
-
-    try:
-        from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
-    except ImportError:
-        from qiskit.primitives import (
-            StatevectorSampler as Sampler,  # type: ignore[import-untyped,attr-defined]
-        )
-    from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
     from qiskit_optimization import QuadraticProgram  # type: ignore[import-untyped,attr-defined]
-    from qiskit_optimization.algorithms import (  # type: ignore[import-untyped,attr-defined]
-        MinimumEigenOptimizer,
+    from qiskit_optimization.algorithms import (
+        MinimumEigenOptimizer,  # type: ignore[import-untyped,attr-defined]
     )
+else:
+    try:  # type: ignore[import-untyped]
+        from qiskit_aer import AerSimulator  # type: ignore[import-untyped,attr-defined]
+        from qiskit_algorithms import AmplificationProblem  # type: ignore[attr-defined]
+        from qiskit_algorithms import Grover  # type: ignore[attr-defined]
+        from qiskit_algorithms.optimizers import COBYLA  # type: ignore[import-untyped,attr-defined]
 
-    QISKIT_AVAILABLE = True
-except ImportError:
-    QISKIT_AVAILABLE = False
+        try:
+            from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
+        except ImportError:
+            from qiskit.primitives import (
+                StatevectorSampler as Sampler,  # type: ignore[import-untyped,attr-defined]
+            )
+        from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
+        from qiskit_optimization import (
+            QuadraticProgram,  # type: ignore[import-untyped,attr-defined]
+        )
+        from qiskit_optimization.algorithms import (  # type: ignore[import-untyped,attr-defined]
+            MinimumEigenOptimizer,
+        )
+
+        QISKIT_AVAILABLE = True
+    except ImportError:
+        pass
 
 
 class QuantumBackend:

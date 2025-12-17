@@ -16,43 +16,25 @@ PROJECT_ROOT = Path(__file__).parent
 sys.path.append(str(PROJECT_ROOT))
 
 # Mock imports para simular a estrutura se os arquivos reais não existirem no ambiente
+ArtGenerator = None
+ArtStyle = None
+DesireEngine = None
+MeaningMaker = None
+
 try:
     from src.autopoietic.art_generator import ArtGenerator, ArtStyle
     from src.autopoietic.desire_engine import DesireEngine
     from src.autopoietic.meaning_maker import MeaningMaker
 except ImportError:
-    # Fallback mocks para demonstração isolada
-    class ArtStyle:
-        ABSTRACT = "Abstract"
-        SURREALISM = "Surrealism"
-
-    class ArtGenerator:
-        def __init__(self, seed):
-            pass
-
-        def generate_art(self, **kwargs):
-            class Piece:
-                title = "Mock Art"
-                aesthetic_scores = {"overall": 0.8}
-
-            return Piece()
-
-    class MeaningMaker:
-        def create_meaning_from_experience(self, **kwargs):
-            class Event:
-                meaning = "Meaning found"
-                significance = 0.5
-
-            return Event()
-
-        def values(self):
-            pass
-
-    from src.autopoietic.desire_engine import DesireEngine  # Usa o arquivo gerado acima
+    # Fallback: módulos não disponíveis neste ambiente
+    pass
 
 # Setup Logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
 logger = logging.getLogger("OmniMind_Core")
+
+if ArtGenerator is None:
+    logger.warning("⚠️ Autopoietic modules not available - using stubs only")
 
 
 def main():

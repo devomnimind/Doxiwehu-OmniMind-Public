@@ -177,7 +177,7 @@ class MCPServer:
                 self.end_headers()
                 self.wfile.write(response.encode("utf-8"))
 
-            def log_message(self, fmt: str, *args: Any) -> None:
+            def log_message(self, format: str, *args: Any) -> None:
                 return
 
         return MCPRequestHandler
