@@ -65,9 +65,9 @@ class TestPhiMetric:
         eigenvalues = np.linalg.eigvals(matrix)
         assert len(eigenvalues) > 0, "Eigenvalues não computados"
         # Eigenvalues podem ser complexos em sistemas topológicos
-        assert all(
-            np.isfinite(eigenvalues.real) and np.isfinite(eigenvalues.imag) for _ in [eigenvalues]
-        ), "Eigenvalues contêm Inf/NaN"
+        # Use np.all() para verificar arrays, não all() com generator
+        assert np.all(np.isfinite(eigenvalues.real)), "Eigenvalues real contêm Inf/NaN"
+        assert np.all(np.isfinite(eigenvalues.imag)), "Eigenvalues imag contêm Inf/NaN"
 
     @pytest.mark.slow
     def test_phi_consistency_across_runs(self):
