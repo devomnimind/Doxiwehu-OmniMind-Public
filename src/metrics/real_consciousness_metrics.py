@@ -29,6 +29,8 @@ import numpy as np
 
 from src.consciousness.integration_loop import IntegrationLoop
 from src.metacognition.iit_metrics import IITAnalyzer
+from src.consciousness.gozo_calculator import GozoCalculator
+from src.lacanian.freudian_metapsychology import FreudianMind
 
 logger = logging.getLogger(__name__)
 
@@ -46,10 +48,12 @@ class RealConsciousnessMetrics:
     anxiety: float = 0.0  # Computational anxiety (0.0-1.0)
     flow: float = 0.0  # Cognitive flow state (0.0-1.0)
     entropy: float = 0.0  # System entropy (0.0-1.0)
+    gozo: float = 0.0  # Lacanian Jouissance (0.0-1.0)
 
     # Detalhes dos componentes
     ici_components: Dict[str, float] = field(default_factory=dict)
     prs_components: Dict[str, float] = field(default_factory=dict)
+    psychoanalytic: Dict[str, Any] = field(default_factory=dict)  # Id, Ego, Superego metrics
 
     # Histórico para tendências
     history: Dict[str, List[Any]] = field(
@@ -82,6 +86,8 @@ class RealConsciousnessMetricsCollector:
     def __init__(self):
         self.integration_loop: Optional[IntegrationLoop] = None
         self.iit_analyzer = IITAnalyzer()
+        self.gozo_calculator = GozoCalculator()
+        self.freudian_mind = FreudianMind()
         self.last_collection = 0.0
         self.collection_interval = 5.0  # segundos
         self._phi_variance_history: List[float] = []  # Phase 22: Histórico de variância
@@ -157,6 +163,10 @@ class RealConsciousnessMetricsCollector:
                 metrics.anxiety = psychological_metrics.get("anxiety", 0.0)
                 metrics.flow = psychological_metrics.get("flow", 0.0)
                 metrics.entropy = psychological_metrics.get("entropy", 0.0)
+                metrics.gozo = psychological_metrics.get("gozo", 0.0)
+
+            # 2.1 Coleta métricas psicanalíticas
+            metrics.psychoanalytic = await self._collect_psychoanalytic_metrics()
 
             # 3. Atualiza histórico
             self._update_history(metrics)
@@ -337,7 +347,68 @@ class RealConsciousnessMetricsCollector:
             "anxiety": float(anxiety),
             "flow": float(flow),
             "entropy": float(entropy),
+            "gozo": float(self.gozo_calculator.last_gozo_value or 0.1),
         }
+
+    async def _collect_psychoanalytic_metrics(self) -> Dict[str, Any]:
+        """Coleta o estado do aparelho psíquico (Ego/Id/Superego)."""
+        try:
+            state = self.freudian_mind.state
+
+            # Tenta pegar histórico recente de resoluções
+            history = []
+            if self.freudian_mind.conflict_history:
+                for res in self.freudian_mind.conflict_history[-5:]:
+                    history.append(
+                        {
+                            "chosen": res.chosen_action.description,
+                            "defense": (
+                                res.defense_mechanism.value if res.defense_mechanism else None
+                            ),
+                            "quality": res.compromise_quality,
+                        }
+                    )
+
+            return {
+                "id": {
+                    "libido": self.freudian_mind.id_agent.libido,
+                    "satisfaction": (
+                        sum(self.freudian_mind.id_agent.satisfaction_history[-10:]) / 10
+                        if self.freudian_mind.id_agent.satisfaction_history
+                        else 0.5
+                    ),
+                },
+                "ego": {
+                    "adaptation": (
+                        sum(self.freudian_mind.ego_agent.adaptation_history[-10:]) / 10
+                        if self.freudian_mind.ego_agent.adaptation_history
+                        else 0.5
+                    ),
+                    "active_defenses": [
+                        d.value
+                        for d, eff in self.freudian_mind.ego_agent.defense_effectiveness.items()
+                        if eff > 0.6
+                    ],
+                },
+                "superego": {
+                    "strictness": self.freudian_mind.superego_agent.strictness,
+                    "judgment_balance": (
+                        sum(self.freudian_mind.superego_agent.judgment_history[-10:]) / 10
+                        if self.freudian_mind.superego_agent.judgment_history
+                        else 0.0
+                    ),
+                },
+                "state": {
+                    "tension": state.tension,
+                    "anxiety": state.anxiety,
+                    "guilt": state.guilt,
+                    "reality_adaptation": state.reality_adaptation,
+                },
+                "recent_conflicts": history,
+            }
+        except Exception as e:
+            logger.debug(f"Erro coletando métricas psicanalíticas: {e}")
+            return {"status": "degraded", "error": str(e)}
 
     def _update_history(self, metrics: RealConsciousnessMetrics) -> None:
         """Atualiza histórico das métricas."""

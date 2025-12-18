@@ -89,6 +89,42 @@ class AutonomyObservability:
         self.sandbox_events: list[dict] = []
         self.dlp_alerts: list[dict] = []
         self.alerts: list[str] = []
+        self._systemd_notified = False
+
+    def notify_ready(self) -> None:
+        """Notify systemd that the service is ready."""
+        try:
+            import socket
+
+            notify_socket = os.getenv("NOTIFY_SOCKET")
+            if notify_socket:
+                if notify_socket.startswith("@"):
+                    notify_socket = "\0" + notify_socket[1:]
+                with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as s:
+                    s.connect(notify_socket)
+                    s.sendall(
+                        b"READY=1\nSTATUS=Backend is ready and operational\nMAINPID="
+                        + str(os.getpid()).encode()
+                    )
+                    self._systemd_notified = True
+                    logger.info("Systemd notified: READY=1")
+        except Exception as e:
+            logger.debug(f"Failed to notify systemd: {e}")
+
+    def watchdog_ping(self) -> None:
+        """Send watchdog heartbeat to systemd."""
+        try:
+            import socket
+
+            notify_socket = os.getenv("NOTIFY_SOCKET")
+            if notify_socket:
+                if notify_socket.startswith("@"):
+                    notify_socket = "\0" + notify_socket[1:]
+                with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as s:
+                    s.connect(notify_socket)
+                    s.sendall(b"WATCHDOG=1")
+        except Exception as e:
+            logger.debug(f"Failed to send watchdog ping: {e}")
 
     def record_sandbox_event(self, event: dict) -> None:
         """Record sandbox event for observability."""
@@ -478,6 +514,18 @@ async def lifespan(app_instance: FastAPI):
     else:
         logger.info("⏭️  Consciousness metrics collector DISABLED during startup")
         app_instance.state.consciousness_metrics_task = None
+
+    # ========== SYSTEMD WATCHDOG & READY NOTIFICATION ==========
+    async def _systemd_watchdog_loop():
+        try:
+            while True:
+                autonomy_observability.watchdog_ping()
+                await asyncio.sleep(5)
+        except asyncio.CancelledError:
+            logger.info("Systemd watchdog loop stopped")
+
+    app_instance.state.watchdog_task = asyncio.create_task(_systemd_watchdog_loop())
+    autonomy_observability.notify_ready()
 
     try:
         yield

@@ -27,7 +27,7 @@ class TestConsciousnessTriad:
 
     def test_initialization(self):
         """Testa inicialização da tríade."""
-        triad = ConsciousnessTriad(phi=0.6, psi=0.7, sigma=0.5, step_id="test_step")
+        triad = ConsciousnessTriad(phi=0.6, psi=0.7, sigma=0.5, epsilon=0.5, step_id="test_step")
         assert triad.phi == 0.6
         assert triad.psi == 0.7
         assert triad.sigma == 0.5
@@ -36,7 +36,7 @@ class TestConsciousnessTriad:
 
     def test_to_dict(self):
         """Testa conversão para dicionário."""
-        triad = ConsciousnessTriad(phi=0.6, psi=0.7, sigma=0.5, step_id="test_step")
+        triad = ConsciousnessTriad(phi=0.6, psi=0.7, sigma=0.5, epsilon=0.5, step_id="test_step")
         result = triad.to_dict()
 
         assert result["phi"] == 0.6
@@ -48,7 +48,7 @@ class TestConsciousnessTriad:
 
     def test_validate_valid_triad(self):
         """Testa validação de tríade válida."""
-        triad = ConsciousnessTriad(phi=0.6, psi=0.7, sigma=0.5, step_id="test_step")
+        triad = ConsciousnessTriad(phi=0.6, psi=0.7, sigma=0.5, epsilon=0.5, step_id="test_step")
         validation = triad.validate()
 
         assert validation["valid"] is True

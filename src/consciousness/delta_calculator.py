@@ -253,12 +253,12 @@ class DeltaCalculator:
             threshold = float(self.trauma_threshold)  # type: ignore[arg-type]
             trauma_level = min(
                 1.0,
-                (float(normalized_divergence) - threshold) / (1.0 - threshold),
+                (float(normalized_divergence) - threshold) / (1.0 - threshold),  # type: ignore[arg-type]
             )
         else:
             trauma_level = 0.0
 
-        return float(trauma_level)  # type: ignore[arg-type]
+        return float(trauma_level)
 
     def _calculate_blocking_strength(
         self, trauma_detection: float, integration_strength: Optional[float]

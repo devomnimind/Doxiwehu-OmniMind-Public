@@ -355,7 +355,9 @@ class ResourceProtector:
                 pass
 
         # Ordenar por memória descendente
-        processes.sort(key=lambda x: x["memory_mb"], reverse=True)
+        processes.sort(
+            key=lambda x: float(str(x["memory_mb"])) if x["memory_mb"] else 0.0, reverse=True
+        )
         return processes
 
     def get_resource_status(self) -> dict:

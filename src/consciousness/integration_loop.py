@@ -425,6 +425,9 @@ class IntegrationLoop:
             if self.enable_logging:
                 logger.warning(f"LacanianDiscourseAnalyzer não disponível: {e}")
 
+        # Componentes de psicanálise e motivação
+        self._desire_engine: Optional[Any] = None
+
         # Extended results components (lazy initialization)
         self._extended_components: Optional[Dict[str, Any]] = None
         if self.enable_extended_results:
@@ -992,7 +995,7 @@ class IntegrationLoop:
                 metrics_collector.record_metric(
                     module_name=module_name,
                     metric_name="components_activated",
-                    value=len(result.active_components),
+                    value=len(result.modules_executed),
                     labels={"cycle": self.cycle_count},
                 )
 

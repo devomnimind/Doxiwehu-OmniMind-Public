@@ -29,6 +29,7 @@ import { BaselineComparison } from './BaselineComparison';
 import { ActionButtons } from './ActionButtons';
 import { ConversationAssistant } from './ConversationAssistant';
 import { DecisionsDashboard } from './DecisionsDashboard';
+import { PsychoanalyticDashboard } from './PsychoanalyticDashboard';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
@@ -272,6 +273,11 @@ export function Dashboard() {
           <div className="animate-slide-up" style={{ animationDelay: '0.35s' }}>
             <MetricsTimeline />
           </div>
+        </div>
+
+        {/* Psychoanalytic Dashboard (V3 Consolidation) */}
+        <div className="mb-6 animate-slide-up" style={{ animationDelay: '0.38s' }}>
+          <PsychoanalyticDashboard />
         </div>
 
         {/* Autopoietic Metrics (Phase 22) */}

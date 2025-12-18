@@ -58,7 +58,7 @@ class EventMetricsListener:
         self._logger = logger.getChild(self.__class__.__name__)
 
         # Lazy import para evitar circular dependencies
-        self._metrics_collector = None
+        self._metrics_collector: Optional[Any] = None
 
         self._logger.info("EventMetricsListener inicializado")
 
@@ -166,7 +166,7 @@ class EventMetricsListener:
             }
 
             if event_metrics.cycle_id is not None:
-                labels["cycle"] = event_metrics.cycle_id
+                labels["cycle"] = str(event_metrics.cycle_id)
 
             if event_metrics.trace_id is not None:
                 labels["trace_id"] = event_metrics.trace_id

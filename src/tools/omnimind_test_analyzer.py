@@ -140,35 +140,35 @@ class OmniMindTestAnalyzer:
                     os_version = "Ubuntu 22.04 LTS (jammy)"
                 else:
                     os_version = "Linux (Unknown)"
-        except:
+        except Exception:
             os_version = "Unknown"
 
         # Python
         try:
             result = subprocess.run(["python3", "--version"], capture_output=True, text=True)
             python_version = result.stdout.strip()
-        except:
+        except Exception:
             python_version = "Unknown"
 
         # Pytest
         try:
             result = subprocess.run(["pytest", "--version"], capture_output=True, text=True)
             pytest_version = result.stdout.strip()
-        except:
+        except Exception:
             pytest_version = "Unknown"
 
         # Docker
         try:
             subprocess.run(["docker", "ps"], capture_output=True, timeout=5)
             docker_enabled = True
-        except:
+        except Exception:
             docker_enabled = False
 
         # GPU
         try:
             subprocess.run(["nvidia-smi"], capture_output=True, timeout=5)
             gpu_enabled = True
-        except:
+        except Exception:
             gpu_enabled = False
 
         # Linux Containers
@@ -182,7 +182,7 @@ class OmniMindTestAnalyzer:
         try:
             subprocess.run(["sudo", "-n", "true"], capture_output=True, timeout=5)
             sudo_available = True
-        except:
+        except Exception:
             sudo_available = False
 
         # VirtualEnv
@@ -209,7 +209,8 @@ class OmniMindTestAnalyzer:
         print(f"   {'🐳' if docker_enabled else '❌'} Docker: {'Sim' if docker_enabled else 'Não'}")
         print(f"   {'🔋' if gpu_enabled else '❌'} GPU: {'Sim' if gpu_enabled else 'Não'}")
         print(
-            f"   {'📦' if container_enabled else '❌'} Containers: {'Sim' if container_enabled else 'Não'}"
+            f"   {'📦' if container_enabled else '❌'} Containers: "
+            f"{'Sim' if container_enabled else 'Não'}"
         )
         print(f"   {'🔐' if sudo_available else '❌'} Sudo: {'Sim' if sudo_available else 'Não'}")
         print(f"   {'🐍' if venv_active else '❌'} VEnv: {venv_path or 'Não'}\n")
@@ -226,7 +227,7 @@ class OmniMindTestAnalyzer:
                 content = conftest.read_text(encoding="utf-8", errors="ignore")
                 for match in re.finditer(r"@pytest\.fixture.*?\ndef\s+(\w+)", content, re.DOTALL):
                     fixtures.add(match.group(1))
-            except:
+            except Exception:
                 pass
 
         # Built-in fixtures
@@ -294,7 +295,8 @@ class OmniMindTestAnalyzer:
                 )
 
         print(
-            f"   {GREEN}✅{RESET} Total: {self.metrics.total_tests} testes em {self.metrics.total_files} arquivos\n"
+            f"   {GREEN}✅{RESET} Total: {self.metrics.total_tests} testes "
+            f"em {self.metrics.total_files} arquivos\n"
         )
 
     def detect_compatibility_issues(self):
@@ -340,12 +342,14 @@ class OmniMindTestAnalyzer:
                                         test_file=test_file,
                                         test_name=None,
                                         message=f"Import deprecado: '{alias.name}'",
-                                        suggestion=f"Substitua '{alias.name}' por alternativa moderna",
+                                        suggestion=(
+                                            f"Substitua '{alias.name}' por " "alternativa moderna"
+                                        ),
                                     )
                                 )
                                 issues_found += 1
 
-            except Exception as e:
+            except Exception:
                 pass
 
         print(f"   {YELLOW}⚠️  Problemas encontrados: {issues_found}{RESET}\n")
@@ -446,7 +450,7 @@ class OmniMindTestAnalyzer:
 
             print(f"   {GREEN}✅{RESET} Cobertura: {self.metrics.coverage_percent:.1f}%\n")
 
-        except:
+        except Exception:
             print(f"   {YELLOW}⚠️  Não foi possível analisar cobertura{RESET}\n")
 
     def generate_report(self) -> Dict[str, Any]:
@@ -484,7 +488,7 @@ class OmniMindTestAnalyzer:
 
         return report
 
-    def _generate_recommendations(self) -> List[str]:
+    def _generate_recommendations(self) -> List[Dict[str, Any]]:
         """Gera recomendações baseadas em análise"""
         recommendations = []
 
@@ -505,7 +509,9 @@ class OmniMindTestAnalyzer:
                     {
                         "priority": "medium",
                         "area": "Docker",
-                        "message": "⚠️  Docker não disponível - Testes de containers não funcionarão",
+                        "message": (
+                            "⚠️  Docker não disponível - " "Testes de containers não funcionarão"
+                        ),
                         "action": "Instale Docker ou adicione fixtures para mock de containers",
                     }
                 )
@@ -702,7 +708,10 @@ class OmniMindTestAnalyzer:
                 priority_emoji = {"critical": "🔥", "high": "❌", "medium": "⚠️", "low": "ℹ️"}.get(
                     rec.get("priority", "low"), "ℹ️"
                 )
-                md_content += f"- **{rec.get('area')}** ({priority_emoji} {rec.get('priority', 'low')}): {rec.get('message')}\n"
+                md_content += (
+                    f"- **{rec.get('area')}** ({priority_emoji} "
+                    f"{rec.get('priority', 'low')}): {rec.get('message')}\n"
+                )
                 md_content += f"  - Ação: {rec.get('action')}\n\n"
 
             md_content += "\n## 📋 Próximos Passos\n\n"

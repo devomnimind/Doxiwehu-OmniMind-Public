@@ -125,7 +125,7 @@ class TestTier2Configuration:
         with open(config_file) as f:
             config = json.load(f)
 
-        ports = {}
+        ports: dict[str, int] = {}
         for name, server in config["mcp_servers"].items():
             if server.get("enabled"):
                 port = server["port"]

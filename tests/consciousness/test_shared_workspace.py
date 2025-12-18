@@ -57,7 +57,8 @@ class TestWriteReadModuleState:
         workspace.write_module_state("qualia", embedding)
 
         assert "qualia" in workspace.embeddings
-        # CORREÇÃO: LangevinDynamics adiciona ruído significativo, então usamos tolerância muito maior
+        # CORREÇÃO: LangevinDynamics adiciona ruído significativo,
+        # então usamos tolerância muito maior
         assert np.allclose(workspace.embeddings["qualia"], embedding, rtol=1e-0, atol=1e-0)
         assert len(workspace.history) == 1
 

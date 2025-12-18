@@ -20,7 +20,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qmodels
@@ -95,8 +95,10 @@ class OmniMindEmbeddings:
         try:
             import torch
 
-            self.torch_available = True
+            self.torch = cast(Any, None)
+            self.torch_available = False
             self.torch = torch
+            self.torch_available = True
         except ImportError:
             self.torch_available = False
             self.torch = None
@@ -224,7 +226,7 @@ class OmniMindEmbeddings:
 
         try:
             # Processar em batches menores para controlar uso de memória
-            all_embeddings = []
+            all_embeddings: List[Any] = []
 
             for i in range(0, len(texts), self.batch_size_embeddings):
                 batch_texts = texts[i : i + self.batch_size_embeddings]
@@ -243,7 +245,7 @@ class OmniMindEmbeddings:
                     batch_embeddings = [
                         emb.tolist() if hasattr(emb, "tolist") else list(emb)
                         for emb in batch_embeddings
-                    ]
+                    ]  # type: ignore[assignment]
 
                 all_embeddings.extend(batch_embeddings)
                 self.embedding_batches_processed += 1
@@ -283,10 +285,10 @@ class OmniMindEmbeddings:
             else:
                 embeddings = [
                     emb.tolist() if hasattr(emb, "tolist") else list(emb) for emb in embeddings
-                ]
+                ]  # type: ignore[assignment]  # type: ignore[assignment]
 
             self.embedding_batches_processed += 1
-            return embeddings
+            return cast(List[List[float]], embeddings)
 
         except Exception as e:
             logger.error(f"Erro ao gerar embeddings: {e}")
@@ -547,7 +549,7 @@ class OmniMindEmbeddings:
             # Buscar pontos existentes para este arquivo
             search_result = self.client.query_points(
                 collection_name=self.collection_name,
-                query=[0.0] * self.embedding_dim,  # Query dummy
+                query=[0.0] * (self.embedding_dim or 384),  # Query dummy
                 query_filter=qmodels.Filter(
                     must=[
                         qmodels.FieldCondition(
@@ -565,7 +567,8 @@ class OmniMindEmbeddings:
 
             # Verificar timestamp de modificação
             file_mtime = os.path.getmtime(file_path)
-            stored_mtime = search_result.points[0].payload.get("modified_time", 0)
+            payload = cast(Dict[str, Any], search_result.points[0].payload or {})
+            stored_mtime = payload.get("modified_time", 0)
 
             return file_mtime > stored_mtime
 
@@ -586,7 +589,7 @@ class OmniMindEmbeddings:
             # Extensões para código
             extensions = [".py", ".js", ".ts", ".java", ".cpp", ".c", ".go", ".rs"]
 
-        results = {}
+        results: Dict[str, int] = {}
         directory_path = Path(directory)
 
         # Coletar todos os arquivos primeiro
@@ -683,7 +686,7 @@ class OmniMindEmbeddings:
             cycle_max: Número máximo do ciclo para arquivos integration_loop_cycle_*.json
         """
         project_path = Path(project_root)
-        results = {}
+        results: Dict[str, Dict[str, int]] = {}
 
         # Carregar checkpoint se existir
         checkpoint_path = project_path / checkpoint_file
@@ -972,7 +975,7 @@ class OmniMindEmbeddings:
                 logger.info(f"⏭️ Etapa '{stage_name}' já concluída, pulando...")
                 continue
 
-            stage_config = all_stages[stage_name]
+            stage_config = cast(Dict[str, Any], all_stages[stage_name])
             logger.info(f"📋 Executando etapa: {stage_config['name']} ({stage_name})")
             logger.info(f"   {stage_config['description']}")
 
@@ -1013,10 +1016,11 @@ class OmniMindEmbeddings:
                     logger.info(f"  📁 Indexando {dir_name}...")
 
                     # Configurações específicas da etapa
-                    stage_max_workers = stage_config.get("max_workers", max_workers)
-                    stage_batch_size = stage_config.get("batch_size", None)
-                    stage_skip_patterns = stage_config.get("skip_patterns", skip_patterns or [])
-                    stage_skip_dirs = stage_config.get("skip_dirs", [])
+                    config_dict = cast(Dict[str, Any], stage_config)
+                    stage_max_workers = config_dict.get("max_workers", max_workers)
+                    stage_batch_size = config_dict.get("batch_size", None)
+                    stage_skip_patterns = config_dict.get("skip_patterns", skip_patterns or [])
+                    stage_skip_dirs = config_dict.get("skip_dirs", [])
 
                     # Aplicar filtros de diretório
                     if any(skip_dir in str(dir_path) for skip_dir in stage_skip_dirs):
@@ -1026,7 +1030,7 @@ class OmniMindEmbeddings:
                     # Indexar diretório
                     dir_results = self.index_directory(
                         str(dir_path),
-                        stage_config["extensions"],
+                        config_dict["extensions"],
                         incremental,
                         stage_skip_patterns,
                         min_file_size,
@@ -1125,18 +1129,9 @@ class OmniMindEmbeddings:
     ) -> Dict[str, int]:
         """
         Indexa um diretório recursivamente com paralelização intra-diretório.
-
-        Args:
-            directory: Caminho do diretório
-            extensions: Lista de extensões de arquivo a indexar
-            incremental: Se True, só indexa arquivos modificados
-            skip_patterns: Padrões de arquivo/diretório para pular
-            min_file_size: Tamanho mínimo de arquivo em bytes
-            max_workers_override: Override do número máximo de workers
-            batch_size_override: Override do tamanho do batch
         """
         directory_path = Path(directory)
-        results = {}
+        results: Dict[str, int] = {}
 
         # Usar overrides se fornecidos
         max_workers = max_workers_override if max_workers_override is not None else 4
@@ -1244,13 +1239,15 @@ class OmniMindEmbeddings:
         logger.info(f"  ✅ Diretório {directory}: {len(results)} arquivos, {total_chunks} chunks")
 
         return results
+
+    def index_system_metadata(self) -> Dict[str, int]:
         """
         Indexa metadados do sistema/kernel da máquina para análise de como
         o OmniMind interage com configurações reais vs sandbox.
         """
         logger.info("🔧 Indexando metadados do sistema/kernel")
 
-        results = {}
+        results: Dict[str, int] = {}
 
         # Comandos seguros para coletar informações do sistema
         system_commands = {
@@ -1571,7 +1568,9 @@ if __name__ == "__main__":
 
     # Indexar diretório
     print(f"Indexando código em: {directory}")
-    index_results = embeddings.index_directory(directory)
+    index_results = embeddings.index_directory(
+        directory, extensions=[".py", ".md", ".json", ".txt"]
+    )
 
     total_chunks = sum(index_results.values())
     print(f"Total de chunks indexados: {total_chunks}")

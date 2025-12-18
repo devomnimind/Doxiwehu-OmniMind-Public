@@ -8,7 +8,7 @@ import logging
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List, cast
 
 import aiohttp
 from aiohttp import web
@@ -19,7 +19,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 logger = logging.getLogger(__name__)
 
 # MCP Configuration
-MCPS = {
+MCPS: Dict[str, Dict[str, Any]] = {
     "memory": {"port": 4321, "tier": 1, "type": "consciousness"},
     "thinking": {"port": 4322, "tier": 1, "type": "consciousness"},
     "context": {"port": 4323, "tier": 2, "type": "consciousness"},
@@ -62,7 +62,7 @@ class MCPHealthMonitor:
                 "http_code": 0,
                 "error": "Health check timeout",
             }
-        except aiohttp.ClientConnRefusedError:
+        except aiohttp.ClientConnectorError:
             return {
                 "status": "offline",
                 "port": port,
@@ -77,7 +77,7 @@ class MCPHealthMonitor:
                 "error": str(e),
             }
 
-    async def check_all_mcps(self) -> Dict[str, Dict]:
+    async def check_all_mcps(self) -> Dict[str, Dict[str, Any]]:
         """Verifica saúde de todos MCPs."""
         tasks = [self.check_mcp_health(name, info["port"]) for name, info in MCPS.items()]
         results = await asyncio.gather(*tasks, return_exceptions=True)
@@ -87,7 +87,7 @@ class MCPHealthMonitor:
             if isinstance(result, Exception):
                 health_status[name] = {"status": "error", "error": str(result)}
             else:
-                health_status[name] = {**info, **result}
+                health_status[name] = {**info, **cast(Dict[str, Any], result)}
 
         return health_status
 
@@ -131,7 +131,7 @@ async def handle_metrics(request: web.Request) -> web.Response:
     health_status = await monitor.check_all_mcps()
 
     # Agrupar por tier
-    by_tier = {}
+    by_tier: Dict[int, Dict[str, Any]] = {}
     for name, info in health_status.items():
         tier = MCPS[name]["tier"]
         if tier not in by_tier:

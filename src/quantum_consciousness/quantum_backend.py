@@ -57,6 +57,7 @@ except ImportError:
 # --- Qiskit Imports (with proper fallback handling) ---
 if TYPE_CHECKING:
     from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
+    from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
     from qiskit_aer import AerSimulator  # type: ignore[import-untyped,attr-defined]
     from qiskit_algorithms import AmplificationProblem  # type: ignore[attr-defined]
     from qiskit_algorithms import Grover  # type: ignore[attr-defined]
@@ -504,7 +505,7 @@ class QuantumBackend:
             problem.minimize(linear=linear, quadratic=quadratic)
 
             optimizer = COBYLA(maxiter=50)
-            sampler = Sampler()
+            sampler = Sampler()  # type: ignore[name-defined]
 
             # Use local AerSimulator if available
             if self.mode.startswith("LOCAL"):

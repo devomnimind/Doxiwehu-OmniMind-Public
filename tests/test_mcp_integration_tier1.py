@@ -6,16 +6,15 @@ Valida que MCPs críticos funcionam juntos corretamente
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict
 
 import pytest
-
-PROJECT_ROOT = Path(__file__).parent.parent  # /home/fahbrain/projects/omnimind
-sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.integrations.mcp_context_server import ContextMCPServer
 from src.integrations.mcp_memory_server import MemoryMCPServer
 from src.integrations.mcp_thinking_server import ThinkingMCPServer
+
+PROJECT_ROOT = Path(__file__).parent.parent  # /home/fahbrain/projects/omnimind
+sys.path.insert(0, str(PROJECT_ROOT))
 
 
 class TestMemoryIntegration:
@@ -151,7 +150,7 @@ class TestMCPInteroperability:
                 server, "get_tools"
             ), f"{server.__class__.__name__} missing get_tools method"
             tools = server.get_tools()
-            assert isinstance(tools, list), f"get_tools() should return list"
+            assert isinstance(tools, list), "get_tools() should return list"
             assert len(tools) > 0, f"{server.__class__.__name__} has no tools"
 
     def test_configuration_consistency(self):

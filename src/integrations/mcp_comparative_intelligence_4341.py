@@ -11,7 +11,7 @@ import logging
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -32,7 +32,7 @@ class ComparativeIntelligence:
         self.model_profiles[model_name] = profile_data
         logger.info(f"Added profile for model: {model_name}")
 
-    def compare_success_rates(self) -> Dict[str, Tuple[str, float]]:
+    def compare_success_rates(self) -> Dict[str, float]:
         """Compara taxa de sucesso entre modelos."""
         comparison = {}
         for name, profile in self.model_profiles.items():

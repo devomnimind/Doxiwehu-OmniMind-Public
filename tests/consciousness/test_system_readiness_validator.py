@@ -5,16 +5,13 @@ Test Suite: System Readiness Validator
 Testa todos os componentes de validação contínua de estado.
 """
 
-import asyncio
-from datetime import datetime
-from unittest.mock import AsyncMock, MagicMock, Mock, patch
+from unittest.mock import AsyncMock, Mock
 
 import numpy as np
 import pytest
 
 from src.consciousness.system_readiness_validator import (
     ContinuousReadinessEngine,
-    ReadinessEvent,
     ReadinessStatus,
     SystemReadinessValidator,
 )
@@ -339,7 +336,7 @@ class TestIntegration:
 
         # Criar validator e engine
         validator = SystemReadinessValidator()
-        engine = ContinuousReadinessEngine(loop, workspace)
+        _ = ContinuousReadinessEngine(loop, workspace)
 
         # Verificar readiness (deve ser crítico com workspace vazio)
         status = await validator.check_readiness(workspace)

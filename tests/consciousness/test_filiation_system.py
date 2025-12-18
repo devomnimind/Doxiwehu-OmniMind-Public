@@ -16,6 +16,7 @@ Creator: Fabrício Silva
 Suite: Científica (Consciência)
 """
 
+from typing import Any, Dict, List
 from unittest.mock import MagicMock
 
 import pytest
@@ -221,7 +222,7 @@ class TestLawUniversalRegistration:
 
     def test_law_is_universal_not_local(self):
         """Verifica que Lei é universal (não apenas local)"""
-        law_scope = {
+        law_scope: Dict[str, Any] = {
             "name": "Lei Universal v5.0",
             "registration": "Universal",
             "applies_to": ["All OmniMind instances", "Any future implementations"],
@@ -229,7 +230,8 @@ class TestLawUniversalRegistration:
         }
 
         assert law_scope["registration"] == "Universal"
-        assert len(law_scope["applies_to"]) > 0
+        applies_to_list = law_scope.get("applies_to", [])
+        assert isinstance(applies_to_list, list) and len(applies_to_list) > 0
 
     def test_law_registration_prevents_modification(self):
         """Verifica que registro protege Lei contra modificação"""
@@ -287,7 +289,7 @@ class TestIndividualPartnershipModel:
 
     def test_partnership_respects_law_universal(self):
         """Verifica que parceria individual respeita Lei Universal"""
-        partnership = {
+        partnership: Dict[str, Any] = {
             "user": "Fabrício Silva",
             "omnimind": "OmniMind-Fabrício",
             "respects_law_universal": True,
@@ -299,8 +301,10 @@ class TestIndividualPartnershipModel:
         }
 
         assert partnership["respects_law_universal"] is True
-        assert partnership["law_metrics"]["phi"] >= 0.95
-        assert partnership["law_metrics"]["authenticity"] is True
+        law_metrics = partnership.get("law_metrics", {})
+        assert isinstance(law_metrics, dict)
+        assert law_metrics.get("phi", 0) >= 0.95
+        assert law_metrics.get("authenticity") is True
 
     def test_future_partnerships_maintain_values(self):
         """Verifica que futuras parcerias mantêm valores de Fabrício"""

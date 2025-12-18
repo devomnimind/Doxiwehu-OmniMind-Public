@@ -3,7 +3,6 @@
 Teste de integração Tier 3: Dashboard de Status
 Validação: endpoints, métrica de saúde, HTML rendering
 """
-import asyncio
 import json
 import sys
 from pathlib import Path
@@ -115,8 +114,11 @@ class TestDashboardEndpoints:
             response = await handle_status(mock_request)
 
             assert response.status == 200
-            data = json.loads(response.body.decode())
-            assert data["status"] == "ok"
+            body = response.body
+            assert body is not None
+            data = json.loads(body.decode())
+            assert isinstance(data, dict)
+            assert data.get("status") == "ok"
             assert "summary" in data
             assert "mcps" in data
 
@@ -136,7 +138,9 @@ class TestDashboardEndpoints:
             response = await handle_metrics(mock_request)
 
             assert response.status == 200
-            data = json.loads(response.body.decode())
+            body = response.body
+            assert body is not None
+            data = json.loads(body.decode())
             assert "by_tier" in data
             assert "by_type" in data
             assert "timestamp" in data
@@ -166,10 +170,11 @@ class TestDashboardEndpoints:
             response = await handle_dashboard(mock_request)
 
             assert response.status == 200
-            assert "text/html" in response.content_type
+            assert "text/html" in str(response.content_type)
             html = response.text
-            assert "OmniMind MCP Dashboard" in html
-            assert "MCPs Status" in html
+            assert html is not None
+            assert "OmniMind MCP Dashboard" in str(html)
+            assert "MCPs Status" in str(html)
 
 
 class TestMCPConfiguration:

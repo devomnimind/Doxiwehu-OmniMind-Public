@@ -2119,7 +2119,7 @@ class SharedWorkspace:
                 mean_val = np.mean(recent_r_squared)
                 std_val = np.std(recent_r_squared)
                 if mean_val > 0:
-                    convergence_rate = float(1.0 - min(1.0, std_val / mean_val))
+                    convergence_rate = float(1.0 - min(1.0, float(std_val / mean_val)))
 
         return {
             "cross_prediction_error": cross_prediction_error,

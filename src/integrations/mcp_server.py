@@ -25,6 +25,8 @@ class MCPConfig:
         default_factory=lambda: ["py", "md", "json", "yaml", "yml", "txt", "sh"]
     )
     audit_category: str = "mcp"
+    enabled: bool = True
+    priority: str = "high"
 
     @classmethod
     def load(cls, path: Optional[Union[str, Path]] = None) -> "MCPConfig":
@@ -111,6 +113,7 @@ class MCPServer:
             "list_dir": self.list_dir,
             "stat": self.stat,
             "get_metrics": self.get_metrics,
+            "get_tools": self.get_tools,
         }
 
     def _normalize_roots(self, paths: Iterable[str]) -> List[Path]:
@@ -337,6 +340,15 @@ class MCPServer:
             "allowed_roots": [str(r) for r in self.allowed_roots],
             "metrics": self.metrics,
         }
+
+    def get_tools(self) -> List[Dict[str, Any]]:
+        """Retorna lista de ferramentas disponíveis no servidor."""
+        tools = []
+        for name in self._methods:
+            if name.startswith("_") or name in ["read_file", "write_file", "list_dir", "stat"]:
+                continue
+            tools.append({"name": name, "description": f"MCP tool: {name}"})
+        return tools
 
     def _entry_summary(self, child: Path) -> Dict[str, Any]:
         return {

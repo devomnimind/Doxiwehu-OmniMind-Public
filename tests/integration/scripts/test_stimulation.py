@@ -7,22 +7,16 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
-# Import from the script (assuming it can be imported as a module)
-# We might need to adjust this if the script is not in a package
-try:
-    from scripts.validation.omnimind_stimulation_scientific import (
-        OmniMindStimulator,
-        StimulationParams,
-        NeuralFrequency,
-    )
-except ImportError:
-    # Fallback/Debug if direct import fails
-    sys.path.append(str(PROJECT_ROOT / "scripts" / "validation"))
-    from omnimind_stimulation_scientific import (
-        OmniMindStimulator,
-        StimulationParams,
-        NeuralFrequency,
-    )
+# Ensure validation scripts are in path
+validation_path = str(PROJECT_ROOT / "scripts" / "validation")
+if validation_path not in sys.path:
+    sys.path.append(validation_path)
+
+from omnimind_stimulation_scientific import (
+    OmniMindStimulator,
+    StimulationParams,
+    NeuralFrequency,
+)
 
 
 class TestStimulationScientific:

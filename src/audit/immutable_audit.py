@@ -1015,7 +1015,7 @@ class ImmutableAuditSystem:
                 ),
                 "backup_file": str(backup_file),
                 "message": f"PHASE 2: {events_preserved}/{total_events} eventos preservados "
-                f"({100*events_preserved/max(1,total_events):.1f}%)",
+                f"({100 * events_preserved / max(1, total_events):.1f}%)",
             }
 
             print("\n✅ PHASE 2 Reparo Concluído:")
@@ -1027,7 +1027,7 @@ class ImmutableAuditSystem:
             print(f"   🔒 Eventos anchor protegidos: {result['anchors_protected']}")
             print(f"   🔀 Recuperações bidirecionais: {result['bidirectional_recoveries']}")
 
-            self._log_security_event(result["message"])
+            self._log_security_event(str(result["message"]))
             return result
 
         except Exception as e:

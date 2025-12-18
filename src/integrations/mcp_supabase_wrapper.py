@@ -14,7 +14,7 @@ import logging
 import os
 from typing import Any, Dict, List
 
-from src.integrations.mcp_server import MCPRequestError, MCPServer
+from src.integrations.mcp_server import MCPConfig, MCPRequestError, MCPServer
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +24,8 @@ class SupabaseMCPServer(MCPServer):
 
     def __init__(self, host: str = "127.0.0.1", port: int = 4337):
         """Inicializa servidor Supabase MCP."""
-        super().__init__(host=host, port=port)
+        config = MCPConfig(host=host, port=port)
+        super().__init__(config=config)
 
         # Configuração Supabase externa
         self.supabase_url = os.environ.get(
@@ -151,7 +152,9 @@ if __name__ == "__main__":
     logger.info(f"🚀 Iniciando Supabase MCP Server (externo) em {host}:{port}")
 
     try:
-        server.run()
+        server.start(daemon=False)
+        if server._thread:
+            server._thread.join()
     except KeyboardInterrupt:
         logger.info("🛑 Supabase MCP Server parado pelo usuário")
         sys.exit(0)

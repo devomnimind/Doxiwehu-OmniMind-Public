@@ -1,11 +1,12 @@
 """Project-wide pytest configuration."""
 
+import asyncio
 import json
-import logging
 import os
 import sys
 import time
 from typing import Any, Dict
+from unittest.mock import MagicMock
 
 import pytest
 import requests
@@ -748,6 +749,16 @@ def pytest_sessionfinish(session, exitstatus):
             print(f"Tempo médio de recovery: {report['avg_recovery_time_s']:.2f}s")
             print(f"Tempo mínimo de recovery: {report['min_recovery_time_s']:.2f}s")
             print(f"Tempo máximo de recovery: {report['max_recovery_time_s']:.2f}s")
+
+        # Notifica o OmniMind que uma sessão de testes terminou.
+        try:
+            from src.monitor.resource_manager import resource_manager
+
+            # Não desativamos imediatamente para permitir cooldown,
+            # mas sinalizamos o fim da carga massiva.
+            resource_manager.set_standby_mode(False, reason="pytest_session_finish")
+        except Exception:
+            pass
             print("\n📊 CONCLUSÃO:")
             print("   Φ (Phi) é ROBUSTO a falhas de orquestração")
             print("   Sistema se recupera automaticamente sem perda de dados")
@@ -939,8 +950,7 @@ def print_defense_report(request):
 # Implementação via Mocks/In-Memory para rodar sem Docker.
 # ============================================================================
 
-from unittest.mock import MagicMock, AsyncMock
-import asyncio
+# @pytest.fixture moved mocks to top if needed, but they are already at top now
 
 
 @pytest.fixture
@@ -1103,13 +1113,4 @@ def pytest_sessionstart(session):
         pass
 
 
-def pytest_sessionfinish(session, exitstatus):
-    """Notifica o OmniMind que uma sessão de testes terminou."""
-    try:
-        from src.monitor.resource_manager import resource_manager
-
-        # Não desativamos imediatamente para permitir cooldown,
-        # mas sinalizamos o fim da carga massiva.
-        resource_manager.set_standby_mode(False, reason="pytest_session_finish")
-    except Exception:
-        pass
+# Consolidated into the first pytest_sessionfinish definition

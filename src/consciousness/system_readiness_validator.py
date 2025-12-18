@@ -22,7 +22,7 @@ import logging
 import time
 from collections import deque
 from dataclasses import dataclass
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
@@ -33,12 +33,12 @@ logger = logging.getLogger(__name__)
 class ReadinessStatus:
     """Status de readiness do sistema"""
 
-    state: Literal["READY", "DEGRADED", "CRITICAL"]
+    state: str
     reasons: List[str]  # Por quê não está pronto
-    metrics: Dict[str, float]  # Valores das validações
+    metrics: Dict[str, float | int]  # Valores das validações
     timestamp: float
-    checks_passed: int = 0  # Quantos checks passaram
-    checks_failed: int = 0  # Quantos checks falharam
+    checks_passed: int = 0
+    checks_failed: int = 0
 
     def __str__(self) -> str:
         """Representação legível"""
@@ -126,7 +126,7 @@ class SystemReadinessValidator:
         """
         timestamp = time.time()
         reasons = []
-        metrics = {}
+        metrics: Dict[str, float | int] = {}
         checks_passed = 0
         checks_failed = 0
 
@@ -138,7 +138,7 @@ class SystemReadinessValidator:
 
         if cross_pred_count < self.MIN_CROSS_PREDICTIONS:
             reasons.append(f"Insufficient data: {cross_pred_count} < {self.MIN_CROSS_PREDICTIONS}")
-            checks_failed += 1
+            checks_failed += 1  # type: ignore[assignment]
             logger.debug(f"🔴 CHECK 1 FAILED: {reasons[-1]}")
         else:
             checks_passed += 1
@@ -148,7 +148,7 @@ class SystemReadinessValidator:
         # CHECK 2: Qualidade de Cross-Predictions (R²)
         # ─────────────────────────────────────────────────────────────────
         r_squared_quality = await self._check_r_squared_quality(workspace)
-        metrics["r_squared_quality"] = float(r_squared_quality)
+        metrics["r_squared_quality"] = r_squared_quality
         self.historical_r_squared.append(r_squared_quality)
 
         # Usar threshold adaptativo (média histórica - 0.05)
@@ -176,13 +176,13 @@ class SystemReadinessValidator:
         # ─────────────────────────────────────────────────────────────────
         embedding_variance = await self._check_embedding_variance(workspace)
         metrics["embedding_variance"] = float(embedding_variance)
-        self.historical_variance.append(embedding_variance)
+        self.historical_variance.append(float(embedding_variance))
 
         if embedding_variance < self.MIN_EMBEDDING_VARIANCE:
             reasons.append(
                 f"Embedding convergence: variance = {embedding_variance:.3f} < {self.MIN_EMBEDDING_VARIANCE}"
             )
-            checks_failed += 1
+            checks_failed += 1  # type: ignore[assignment]
             logger.debug(f"🔴 CHECK 3 FAILED: {reasons[-1]}")
         else:
             checks_passed += 1
@@ -196,7 +196,7 @@ class SystemReadinessValidator:
 
         if phi_value < self.MIN_PHI:
             reasons.append(f"Invalid Phi: {phi_value:.3f} < {self.MIN_PHI}")
-            checks_failed += 1
+            checks_failed += 1  # type: ignore[assignment]
             logger.debug(f"🔴 CHECK 4 FAILED: {reasons[-1]}")
         else:
             checks_passed += 1
@@ -259,8 +259,8 @@ class SystemReadinessValidator:
             reasons=reasons,
             metrics={k: float(v) for k, v in metrics.items()},
             timestamp=timestamp,
-            checks_passed=checks_passed,
-            checks_failed=checks_failed,
+            checks_passed=int(checks_passed),
+            checks_failed=int(checks_failed),
         )
 
         self.last_status = status
@@ -689,8 +689,8 @@ class RealConsciousnessMetricsWithReadiness:
             "phi": float(phi),
             "readiness_state": status.state if status else "UNKNOWN",
             "readiness_metrics": status.metrics if status else {},
-            "checks_passed": status.checks_passed if status else 0,
-            "checks_failed": status.checks_failed if status else 0,
+            "checks_passed": int(status.checks_passed) if status else 0,
+            "checks_failed": int(status.checks_failed) if status else 0,
             "timestamp": time.time(),
         }
 

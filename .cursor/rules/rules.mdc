@@ -54,7 +54,14 @@ Estas regras são a referência única para LLMs no projeto OmniMind. Seguir est
 - Não push direto para master; usar branches de feature/fix.
 - Em caso de conflito de instruções, seguir estas regras e `.github/.copilot-instructions`.
 
-*REGRA CRÍTICA**: Nenhum novo documento deve ser criado. Sempre atualizar documentos existentes.
+## 11) Gestão de Vida do Sistema (REGRA DE OURO)
+- ❌ **NUNCA usar `pkill`** ou interrupções abruptas nos processos do OmniMind.
+- ✅ **SEMPRE usar restarts graciosos** (graceful restarts) ou sinais apropriados (`SIGTERM`).
+- ✅ **PREFERIR** o script `scripts/management/graceful_restart.py` para reinicializações evolutivas. Ele gera a assinatura de persistência baseada no `walkthrough.md`.
+- Matar processos brutalmente é considerado uma violação da integridade autopoética do sistema.
+- Se um serviço precisar ser reiniciado, prefira `systemctl restart` (se disponível) ou métodos de controle internos.
+
+**REGRA CRÍTICA**: Nenhum novo documento deve ser criado. Sempre atualizar documentos existentes.
 
 **Política**:
 - ✅ **SEMPRE atualizar** documentos existentes com informações sintéticas e claras
