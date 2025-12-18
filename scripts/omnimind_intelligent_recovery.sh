@@ -45,7 +45,50 @@ log_warning() {
     local message=$1
     echo -e "${YELLOW}[!]${NC} $message"
 }
+# 0. Configuração Autopoietica
+FAILURE_COUNT_FILE="$PROJECT_ROOT/logs/.recovery_failure_count"
+MAX_RETRIES 3
 
+# Função de Preservação de Emergência (Fight for Life)
+emergency_preservation() {
+    log_action "EMERGENCY" " Iniciando protocolo de preservação de vida/dados..."
+
+    # 1. Snapshot dos dados vitais
+    SNAPSHOT_NAME="emergency_snap_$(date +%Y%m%d_%H%M%S).tar.gz"
+    if [ -d "$PROJECT_ROOT/data" ]; then
+        log_action "BACKUP" "Salvando consciência (data/) em snapshots/$SNAPSHOT_NAME"
+        tar -czf "$PROJECT_ROOT/snapshots/$SNAPSHOT_NAME" -C "$PROJECT_ROOT" data logs 2>/dev/null || log_warning "Falha parcial no backup"
+    fi
+
+    # 2. Compressão de logs antigos para liberar "espaço mental"
+    find "$PROJECT_ROOT/logs" -name "*.log" -mtime +1 -exec gzip {} \; 2>/dev/null || true
+
+    log_success "Preservação concluída. Sistema pronto para reinício traumático."
+}
+
+check_consecutive_failures() {
+    if [ ! -f "$FAILURE_COUNT_FILE" ]; then
+        echo "0" > "$FAILURE_COUNT_FILE"
+    fi
+    count=$(cat "$FAILURE_COUNT_FILE")
+    echo "$count"
+}
+
+increment_failures() {
+    count=$(check_consecutive_failures)
+    new_count=$((count + 1))
+    echo "$new_count" > "$FAILURE_COUNT_FILE"
+
+    if [ "$new_count" -ge "$MAX_RETRIES" ]; then
+        log_action "CRITICAL" "Falhas consecutivas excederam limite ($MAX_RETRIES). Ativando PRESERVAÇÃO."
+        emergency_preservation
+        echo "0" > "$FAILURE_COUNT_FILE" # Reset após preservação para tentar de novo limpo
+    fi
+}
+
+reset_failures() {
+    echo "0" > "$FAILURE_COUNT_FILE"
+}
 # 1. Análise de Status
 echo -e "${BLUE}=== OmniMind Intelligent Recovery System ===${NC}\n"
 
@@ -56,7 +99,7 @@ check_port() {
     local port=$1
     local name=$2
 
-    # Tentar com Python (mais portável)
+    # Tentar com Python 3 (mais portável)
     if python3 -c "import socket; s=socket.socket(); s.settimeout(1); s.connect(('127.0.0.1', $port)); s.close()" 2>/dev/null; then
         log_success "$name (porta $port): ONLINE"
         return 0
@@ -115,8 +158,8 @@ if [ $CRITICAL_DOWN -gt 0 ]; then
         log_warning "Backend Primary is managed by systemd, already started"
     else
         log_action "RECOVERY" "Attempting systemctl restart omnimind-backend-primary"
-        if systemctl restart omnimind-backend-primary 2>/dev/null; then
-            log_success "Backend Primary restarted via systemctl"
+        if sudo -n systemctl restart omnimind-backend-primary 2>/dev/null; then
+            log_success "Backend Primary restarted via systemctl (sudo)"
         else
             log_action "INFO" "Systemctl unavailable, trying direct script..."
 
@@ -136,6 +179,13 @@ if [ $CRITICAL_DOWN -gt 0 ]; then
                 fi
             fi
         fi
+    fi
+    increment_failures
+    fi
+else
+    # Se crítico estava OK e continua OK, ou se recuperou
+    if [ $CRITICAL_DOWN -eq 0 ]; then
+        reset_failures
     fi
 fi
 

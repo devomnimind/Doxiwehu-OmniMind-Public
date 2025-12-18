@@ -204,5 +204,5 @@ class RequiredFieldsComponent:
         assert required_fields.issubset(
             result.keys()
         ), f"Missing fields: {required_fields - result.keys()}"
-        assert sandbox.max_memory_mb == 256
-        assert sandbox.max_cpu_time_seconds == 60
+        assert sandbox.max_memory_mb == 512
+        assert sandbox.max_cpu_time_seconds == 30

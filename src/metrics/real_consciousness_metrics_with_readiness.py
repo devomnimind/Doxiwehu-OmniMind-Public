@@ -17,7 +17,6 @@ Implementação:
   - Re-bootstrap automático quando sistema degrada
 """
 
-import asyncio
 import logging
 from typing import Any, Dict, Optional
 

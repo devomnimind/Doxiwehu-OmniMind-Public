@@ -138,11 +138,28 @@ class HybridRetrievalSystem:
             # Se device desejado não é CPU, tentar mover
             if device != "cpu":
                 try:
-                    embedding_model = embedding_model.to(device)
+                    # Verificação explícita de meta tensors
+                    has_meta_tensors = any(
+                        p.device.type == "meta" for p in embedding_model.parameters()
+                    )
+
+                    if has_meta_tensors:
+                        logger.warning("Meta tensors detectados, usando to_empty()")
+                        embedding_model = embedding_model.to_empty(device=device)
+                    else:
+                        embedding_model = embedding_model.to(device)
+
                     logger.debug(f"✓ Modelo movido para {device}")
                 except Exception as e:
                     logger.warning(f"Erro ao mover para {device}: {e}, mantendo em CPU")
-                    embedding_model = embedding_model.to("cpu")
+                    # Se falhou ao mover (ex: meta tensor não resolvido), tenta recuperar em CPU
+                    if "meta" in str(e).lower():
+                        try:
+                            embedding_model = embedding_model.to_empty(device="cpu")
+                        except Exception:
+                            pass
+                    else:
+                        embedding_model = embedding_model.to("cpu")
 
             self.embedding_model = embedding_model
             embedding_dim_raw = self.embedding_model.get_sentence_embedding_dimension()

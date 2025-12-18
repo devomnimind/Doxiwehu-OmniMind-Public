@@ -99,35 +99,23 @@ python3 << 'IBM_CHECK'
 import os
 from qiskit_ibm_runtime import QiskitRuntimeService
 
-ibm_token = os.getenv("QISKIT_IBM_TOKEN")
-if not ibm_token:
-    print("\033[0;31m  ❌ QISKIT_IBM_TOKEN não encontrado em .env\033[0m")
+# Use only IBM_API_KEY with ibm_cloud (CRN tokens no longer work)
+api_key = os.getenv("IBM_API_KEY")
+if not api_key:
+    print("\033[0;31m  ❌ IBM_API_KEY não encontrado em .env\033[0m")
     exit(1)
 
-print(f"  Token: {ibm_token[:40]}...")
+print(f"  API Key: {api_key[:30]}...")
 
-# Tenta com channel padrão para tokens CRN
 try:
-    service = QiskitRuntimeService(channel="ibm_quantum_platform", token=ibm_token)
+    service = QiskitRuntimeService(channel="ibm_cloud", token=api_key)
     backends = service.backends()
     print(f"  Backends disponíveis: {len(backends)}")
-    print(f"  Primeiros 3: {', '.join([b.name for b in backends[:3]])}")
-    print("\033[0;32m  ✅ IBM Quantum OK\033[0m")
+    if backends:
+        print(f"  Nomes: {', '.join([b.name for b in backends[:3]])}")
+    print("\033[0;32m  ✅ IBM Quantum Cloud OK\033[0m")
 except Exception as e:
-    print(f"\033[0;31m  ❌ Erro com ibm_quantum_platform: {e}\033[0m")
-
-    # Tenta alternativa com ibm_cloud
-    try:
-        print("\n  Tentando alternativa com API_KEY e 'ibm_cloud'...")
-        api_key = os.getenv("IBM_API_KEY")
-        if api_key:
-            service = QiskitRuntimeService(channel="ibm_cloud", token=api_key)
-            backends = service.backends()
-            print(f"  ✅ IBM Cloud OK ({len(backends)} backends)")
-        else:
-            print("  ❌ IBM_API_KEY também não disponível")
-    except Exception as e2:
-        print(f"  ❌ ibm_cloud também falhou: {e2}")
+    print(f"\033[0;31m  ❌ Erro: {e}\033[0m")
 IBM_CHECK
 echo ""
 

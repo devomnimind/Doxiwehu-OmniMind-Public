@@ -21,8 +21,7 @@ import asyncio
 import logging
 import time
 from collections import deque
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from dataclasses import dataclass
 from typing import Any, Dict, List, Literal, Optional
 
 import numpy as np
@@ -149,7 +148,7 @@ class SystemReadinessValidator:
         # CHECK 2: Qualidade de Cross-Predictions (R²)
         # ─────────────────────────────────────────────────────────────────
         r_squared_quality = await self._check_r_squared_quality(workspace)
-        metrics["r_squared_quality"] = r_squared_quality
+        metrics["r_squared_quality"] = float(r_squared_quality)
         self.historical_r_squared.append(r_squared_quality)
 
         # Usar threshold adaptativo (média histórica - 0.05)
@@ -176,7 +175,7 @@ class SystemReadinessValidator:
         # CHECK 3: Variação de Embeddings
         # ─────────────────────────────────────────────────────────────────
         embedding_variance = await self._check_embedding_variance(workspace)
-        metrics["embedding_variance"] = embedding_variance
+        metrics["embedding_variance"] = float(embedding_variance)
         self.historical_variance.append(embedding_variance)
 
         if embedding_variance < self.MIN_EMBEDDING_VARIANCE:
@@ -193,7 +192,7 @@ class SystemReadinessValidator:
         # CHECK 4: Phi Válido (Não-zero)
         # ─────────────────────────────────────────────────────────────────
         phi_value = self._calculate_phi(workspace)
-        metrics["phi"] = phi_value
+        metrics["phi"] = float(phi_value)
 
         if phi_value < self.MIN_PHI:
             reasons.append(f"Invalid Phi: {phi_value:.3f} < {self.MIN_PHI}")
@@ -256,9 +255,9 @@ class SystemReadinessValidator:
             logger.warning("🔄 Circuit breaker reset, re-bootstrap eligible again")
 
         status = ReadinessStatus(
-            state=state,
+            state=state,  # type: ignore[arg-type]
             reasons=reasons,
-            metrics=metrics,
+            metrics={k: float(v) for k, v in metrics.items()},
             timestamp=timestamp,
             checks_passed=checks_passed,
             checks_failed=checks_failed,
@@ -300,7 +299,7 @@ class SystemReadinessValidator:
                 logger.warning("No valid r_squared values found")
                 return 0.0
 
-            return np.mean(r_squared_values)
+            return float(np.mean(r_squared_values))
 
         except Exception as e:
             logger.error(f"Error checking r_squared quality: {e}")

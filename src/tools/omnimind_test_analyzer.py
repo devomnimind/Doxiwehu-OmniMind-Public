@@ -7,16 +7,14 @@ Apuração completa para correção da suite pytest
 
 import ast
 import json
-import os
 import re
-import shutil
 import subprocess
 import sys
 from collections import defaultdict
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 
 # Colors
 RED = "\033[91m"
@@ -318,7 +316,7 @@ class OmniMindTestAnalyzer:
                     if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
                         params = [arg.arg for arg in node.args.args]
                         for param in params:
-                            if param not in self.conftest_fixtures and param != "self":
+                            if param not in self.conftest_fixtures and param != "sel":
                                 self.issues.append(
                                     TestIssue(
                                         severity="high",
@@ -596,13 +594,13 @@ class OmniMindTestAnalyzer:
 
         return recommendations
 
-    def _generate_next_steps(self) -> List[Dict[str, str]]:
+    def _generate_next_steps(self) -> List[Dict[str, Any]]:
         """Gera próximos passos"""
         return [
             {
                 "step": 1,
                 "title": "Corrigir Testes Falhando",
-                "command": "pytest -vv --tb=long --lf",
+                "command": "pytest -vv --tb=long --l",
                 "description": "Execute testes com verbose output para identificar failures",
             },
             {
@@ -653,7 +651,7 @@ class OmniMindTestAnalyzer:
     def _create_markdown_report(self, report: Dict[str, Any]):
         """Cria relatório em Markdown"""
         try:
-            md_content = f"""# 🧪 OmniMind Test Suite Analysis Report
+            md_content = """# 🧪 OmniMind Test Suite Analysis Report
 
 **Data**: {report['timestamp']}
 
@@ -737,9 +735,9 @@ def main():
     print(f"{GREEN}🎉 ANÁLISE CONCLUÍDA COM SUCESSO{RESET}")
     print(f"{CYAN}{'='*80}{RESET}\n")
 
-    print(f"📊 Arquivos gerados:")
-    print(f"   - test_analysis_report.json")
-    print(f"   - TEST_ANALYSIS_REPORT.md\n")
+    print("📊 Arquivos gerados:")
+    print("   - test_analysis_report.json")
+    print("   - TEST_ANALYSIS_REPORT.md\n")
 
     return 0
 

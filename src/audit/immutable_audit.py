@@ -122,7 +122,7 @@ class ImmutableAuditSystem:
             return
 
         self._log_security_event(
-            f"🔧 Iniciando recuperação automática da cadeia. "
+            "🔧 Iniciando recuperação automática da cadeia. "
             f"Status: {integrity_check.get('message', 'unknown')}"
         )
 
@@ -737,7 +737,7 @@ class ImmutableAuditSystem:
                 "state_counts": stats,
             }
 
-            print(f"\n✅ Reparo concluído:")
+            print("\n✅ Reparo concluído:")
             print(f"   📊 VÁLIDOS: {stats['VALID']}")
             print(f"   🔄 RECUPERÁVEIS: {stats['RECOVERABLE']}")
             print(f"   ❌ INVÁLIDOS: {stats['INVALID']}")
@@ -920,7 +920,7 @@ class ImmutableAuditSystem:
                 except json.JSONDecodeError:
                     event_state[line_num] = "INVALID_JSON"
 
-            print(f"   ➡️  Forward validation...")
+            print("   ➡️  Forward validation...")
             prev_hash = "0" * 64
 
             for line_num in range(1, len(lines) + 1):
@@ -959,15 +959,15 @@ class ImmutableAuditSystem:
                     if not found_recovery:
                         event_state[line_num] = "INVALID"
 
-            print(f"   ⬅️  Backward validation...")
+            print("   ⬅️  Backward validation...")
             backward_state = self._build_backward_chain(lines, event_data)
 
-            print(f"   🔀 Bidirectional recovery...")
+            print("   🔀 Bidirectional recovery...")
             enhanced_state = self._enhance_with_backward_validation(
                 event_state, backward_state, event_data
             )
 
-            print(f"   💾 Preservação de eventos...")
+            print("   💾 Preservação de eventos...")
             preserved_lines = []
             stats = {
                 "VALID": 0,
@@ -1018,7 +1018,7 @@ class ImmutableAuditSystem:
                 f"({100*events_preserved/max(1,total_events):.1f}%)",
             }
 
-            print(f"\n✅ PHASE 2 Reparo Concluído:")
+            print("\n✅ PHASE 2 Reparo Concluído:")
             print(f"   📊 Total: {total_events} eventos")
             for state_type, count in stats.items():
                 if count > 0:

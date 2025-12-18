@@ -448,6 +448,24 @@ fi
 
 # 5. Iniciar Frontend
 echo -e "${GREEN}🎨 Iniciando Frontend...${NC}"
+echo "   (Aguardando backend estar pronto na porta 8000...)"
+
+MAX_ATTEMPTS=30
+ATTEMPT=1
+while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+    if curl -s --max-time 2 http://localhost:8000/health/ > /dev/null 2>&1; then
+        echo -e "${GREEN}✅ Backend pronto!${NC}"
+        break
+    fi
+    echo -n "."
+    sleep 2
+    ATTEMPT=$((ATTEMPT+1))
+done
+
+if [ $ATTEMPT -gt $MAX_ATTEMPTS ]; then
+    echo -e "${YELLOW}⚠️  Backend demorando para responder, iniciando Frontend mesmo assim...${NC}"
+fi
+
 cd "$PROJECT_ROOT"
 
 # Verificar se diretório frontend existe

@@ -443,7 +443,25 @@ class ReactAgent:
                     return np.concatenate([encoded, padding])
                 return encoded
             except Exception as e:
-                logger.warning("Erro ao gerar embedding com modelo: %s, usando fallback", e)
+                logger.warning(
+                    f"GPU Embedding inference failed: {e}. Attempting fallback to CPU..."
+                )
+                try:
+                    # Move to CPU and retry
+                    self._embedding_model = self._embedding_model.to("cpu")
+                    encoded = self._embedding_model.encode(
+                        text, normalize_embeddings=True, device="cpu"
+                    )
+                    # Truncar/expandir para embedding_dim
+                    if len(encoded) > self.embedding_dim:
+                        return encoded[: self.embedding_dim]
+                    elif len(encoded) < self.embedding_dim:
+                        padding = np.zeros(self.embedding_dim - len(encoded))
+                        return np.concatenate([encoded, padding])
+                    logger.info("✓ CPU fallback successful for embedding generation")
+                    return encoded
+                except Exception as cpu_e:
+                    logger.warning("CPU fallback also failed: %s, using hash fallback", cpu_e)
 
         # Fallback hash-based
         hash_obj = hashlib.sha256(text.encode())

@@ -70,7 +70,11 @@ def setup_offline_mode() -> None:
 
     logger.info("📦 Modelos Críticos:")
     for model, location in critical_models.items():
-        status = f"✅ {location}" if location else "❌ Não encontrado"
+        status = (
+            f"✅ {location}"
+            if location
+            else "⚠️  Não detectado no topo do cache (será buscado recursivamente)"
+        )
         logger.info(f"  {model}: {status}")
 
     return

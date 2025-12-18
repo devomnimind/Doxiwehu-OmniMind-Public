@@ -1,33 +1,33 @@
-"""Componente autopoiético sintetizado: modulo_autopoiesis_data_stabilized_modulo_autopoiesis_data_stabilized_kernel_process
-Gerado em: 2025-12-17 18:20:18
+"""Componente autopoiético sintetizado: auto_stabilized_kernel_process
+Gerado em: 2025-12-18 00:58:00
 """
 
 import logging
 
 # 🔒 SEGURANÇA AUTOPOIÉTICA - COMPONENTE GERADO EM SANDBOX
 # Este arquivo foi gerado automaticamente pelo sistema autopoiético do OmniMind
-# Data: 2025-12-17 18:20:18
+# Data: 2025-12-18 00:58:00
 # Estratégia: STABILIZE
 # ⚠️  NÃO MODIFICAR MANUALMENTE - Pode comprometer a integridade do sistema
 
-class StabilizedModuloAutopoiesisDataStabilizedKernelProcess:
+class StabilizedKernelProcess:
     """Auto‑generated component of type 'process' (Strategy: STABILIZE).
-    🔒 Security Signature: modulo_autopoiesis_data_stabilized_modulo_autopoiesis_data_stabilized_kernel_process
+    🔒 Security Signature: modulo_autopoiesis_data_stabilized_kernel_process
     🧪 Generated in Sandbox Environment
     """
     def __init__(self):
         # Configuration injected by MetaArchitect
-        self.generation = '2'
-        self.initial = 'true'
-        self.parent = 'modulo_autopoiesis_data_stabilized_kernel_process'
+        self.priority = 'high'
+        self.generation = '1'
+        self.parent = 'kernel_process'
         self.strategy = 'STABILIZE'
         self.evolved = 'true'
         self.robustness = 'high'
         self.monitoring = 'verbose'
         # 🔒 Security markers
-        self._security_signature = "modulo_autopoiesis_data_stabilized_modulo_autopoiesis_data_stabilized_kernel_process"
+        self._security_signature = "modulo_autopoiesis_data_stabilized_kernel_process"
         self._generated_in_sandbox = True
-        self._generation_timestamp = "2025-12-17 18:20:18"
+        self._generation_timestamp = "2025-12-18 00:58:00"
         self._logger = logging.getLogger(__name__)
 
     

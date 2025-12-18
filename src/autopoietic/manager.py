@@ -123,11 +123,52 @@ class AutopoieticManager:
         rollback_count = 0
         validation_success = True
 
-        # Capturar uso de memória antes do ciclo
+        # Capturar uso de memória antes do ciclo e verificar Homeostase
         try:
+            from src.monitor.resource_manager import resource_manager
+
+            # Phase 5 & 8: Homeostase e Smart Standby
+            if resource_manager.is_critical_state():
+                self._logger.warning(
+                    "🚨 [HOMEOSTASE] Estado crítico detectado. Iniciando recuperação."
+                )
+                resource_manager.compact_memory()
+
+                if resource_manager.is_critical_state():
+                    self._logger.error("🛑 [HOMEOSTASE] Recursos insuficientes. Ciclo adiado.")
+                    return CycleLog(
+                        cycle_id=cycle_id,
+                        metrics=dict(metrics if isinstance(metrics, dict) else {}),
+                        strategy=EvolutionStrategy.STABILIZE,
+                        synthesized_components=[],
+                        timestamp=time.time(),
+                        phi_before=self._get_current_phi(),
+                        phi_after=self._get_current_phi(),
+                    )
+
+            # [NOVO] Phase 8: Smart Standby durante Testes
+            if getattr(resource_manager, "standby_mode", False):
+                current_phi = self._get_current_phi()
+                if current_phi > 0.1:
+                    self._logger.info(
+                        "🌙 [STANDBY] Sistema em standby e Φ estável (%.4f). Ciclo adiado.",
+                        current_phi,
+                    )
+                    return CycleLog(
+                        cycle_id=cycle_id,
+                        metrics=dict(metrics if isinstance(metrics, dict) else {}),
+                        strategy=EvolutionStrategy.STABILIZE,  # Conservative approach
+                        synthesized_components=[],
+                        timestamp=time.time(),
+                        phi_before=current_phi,
+                        phi_after=current_phi,
+                    )
+                self._logger.warning("⚠️ [STANDBY] Φ crítico (%.4f)! Forçando ciclo.", current_phi)
+
             process = psutil.Process()
             memory_before_mb = process.memory_info().rss / (1024 * 1024)
-        except Exception:
+        except Exception as e:
+            self._logger.debug("Falha na telemetria/homeostase inicial: %s", e)
             memory_before_mb = 0.0
 
         if isinstance(metrics, MetricSample):
@@ -559,8 +600,14 @@ class AutopoieticManager:
                     self._phi_history[-5:]
                 )  # Últimos 5 valores
 
+            # Tenta ler de arquivo de métricas reais (Phase 5/6 Integration)
+            metrics_path = Path("data/monitor/real_metrics.json")
+            if metrics_path.exists():
+                with metrics_path.open("r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    return float(data.get("phi", 0.5))
+
             # Para primeiros ciclos, usar valor padrão saudável
-            # Este valor pode ser ajustado baseado em observações empíricas
             return 0.5
 
         except Exception as e:

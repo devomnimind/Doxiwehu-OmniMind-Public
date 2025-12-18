@@ -146,6 +146,7 @@ def _load_embedding_model(model_name: str) -> Optional["SentenceTransformer"]:
                 logger.info(f"Usando CPU para {resolved_model_name} (fallback após consolidação)")
                 return SentenceTransformer(resolved_model_name, token=hf_token, device="cpu")
             else:
+                # Re-raise se não for OOM
                 raise
     except Exception as exc:
         logger.warning(
@@ -226,13 +227,24 @@ class EpisodicMemory:
                 return [float(x) for x in encoded]  # type: ignore[arg-type,union-attr]
             except Exception as exc:
                 logger.warning(
-                    (
-                        "Embedding model error for text snippet '%s': %s. "
-                        "Using deterministic fallback."
-                    ),
-                    text[:32],
-                    exc,
+                    f"GPU Embedding inference failed for text snippet '{text[:32]}...': {exc}. "
+                    "Attempting fallback to CPU..."
                 )
+                try:
+                    # Tentar mover para CPU e executar novamente
+                    model = model.to("cpu")
+                    encoded = model.encode(text, normalize_embeddings=True, device="cpu")
+                    logger.info("✓ CPU fallback successful for embedding generation")
+                    return [float(x) for x in encoded]  # type: ignore
+                except Exception as cpu_exc:
+                    logger.warning(
+                        (
+                            "CPU fallback also failed for text snippet '%s': %s. "
+                            "Using deterministic fallback."
+                        ),
+                        text[:32],
+                        cpu_exc,
+                    )
         # Phase 8: replace deterministic hash fallback with a resilient
         # hybrid embedding pipeline to avoid semantic drift when primary
         # models become unavailable.

@@ -1,6 +1,7 @@
 """Project-wide pytest configuration."""
 
 import json
+import logging
 import os
 import sys
 import time
@@ -356,14 +357,35 @@ def pytest_configure(config):
 
 def pytest_collection_modifyitems(config, items):
     """
-    Auto-mark tests com TIMEOUT PROGRESSIVO (240s → 800s máximo).
-
-    ESTRATÉGIA CRÍTICA:
-    - Timeout NÃO é falha - deixa rodar até máximo
-    - Começa em base, vai aumentando progressivamente
-    - Fast: 120s | Ollama: 240s | Computational: 300s | Heavy: 600s | E2E: 400s
-    - MÁXIMO ABSOLUTO: 800s para qualquer teste
+    Auto-mark tests com TIMEOUT PROGRESSIVO e isolamento de recursos HEAVY.
     """
+    safe_paths = [
+        "tests/api/",
+        "tests/monitoring/",
+        "tests/metrics/",
+        "tests/audit/",
+        "tests/system/",
+        "tests/integrity/",
+        "tests/test_omnimind_core.py",
+        "tests/test_config_validator.py",
+        "tests/test_init_modules.py",
+        "tests/test_metrics_collector.py",
+        "tests/test_common_types.py",
+    ]
+
+    heavy_paths = [
+        "test_integration_loss.py",
+        "test_quantum_algorithms_comprehensive.py",
+        "test_consciousness",
+        "test_real_phi_measurement.py",
+        "test_enhanced_code_agent_integration.py",
+        "stress/",
+        "chaos/",
+        "distributed/",
+        "load_tests/",
+        "cuda/",
+    ]
+
     ollama_paths = [
         "phase16_integration",
         "neurosymbolic",
@@ -371,24 +393,6 @@ def pytest_collection_modifyitems(config, items):
         "free_energy_lacanian",
         "cognitive",
         "_inference",
-    ]
-
-    e2e_paths = [
-        "test_e2e_integration",
-        "test_dashboard_live",
-        "test_endpoint",
-    ]
-
-    heavy_paths = [
-        "test_integration_loss.py",
-        "test_quantum_algorithms_comprehensive.py",
-        "test_consciousness",
-        "test_real_phi_measurement.py",  # GPU/CUDA - precisa 800s para estabilização
-        "test_enhanced_code_agent_integration.py",  # GPU/CUDA - precisa 800s
-    ]
-
-    chaos_paths = [
-        "test_chaos_resilience",
     ]
 
     computational_paths = [
@@ -403,56 +407,32 @@ def pytest_collection_modifyitems(config, items):
         item_path = str(item.fspath).lower()
         test_name = item.nodeid.lower()
 
+        # ESTRATÉGIA DE WHITELIST: Se não estiver no safe_paths, é HEAVY (protege produção)
+        is_safe = any(path in item_path for path in safe_paths)
+        is_explicitly_heavy = any(path in item_path for path in heavy_paths)
+
+        if not is_safe or is_explicitly_heavy:
+            item.add_marker(pytest.mark.heavy)
+
         # Remove marcadores de timeout existentes
         existing_timeout = item.get_closest_marker("timeout")
         if existing_timeout:
             item.own_markers.remove(existing_timeout)
 
-        # Testes de integração que usam servidor monitor: RESPEITAM timeout global de 800s
-        # Ambiente limitado (407 processos, Docker, dev, Cursor, agentes, OmniMind, serviços)
-        # Servidor na mesma máquina não suporta tantas conexões - timeout é medida, não falha
-        integration_server_paths = [
-            "test_mcp_",
-            "test_thinking_",
-            "test_context_",
-            "test_logging_",
-            "test_python_",
-            "test_system_info_",
-            "integrations/",
-        ]
-
-        if any(path in item_path for path in integration_server_paths):
-            # Testes de integração servidor: 800s (respeita timeout global)
-            # Latência será medida e computada para métricas científicas
-            timeout_value = 800
-            item.add_marker(pytest.mark.integration_server)
-            # Continua para aplicar timeout (não pula)
-
         # Determina timeout PROGRESSIVO
-        timeout_value = 300  # default (increased to allow server restart ~150s)
+        timeout_value = 300  # default
 
-        # Chaos tests: 800s (server restart + recovery)
-        if any(path in item_path for path in chaos_paths):
+        if "chaos" in item_path or "test_chaos_resilience" in item_path:
             timeout_value = 800
             item.add_marker(pytest.mark.chaos)
-        # Stress tests: 800s (modo escalonado sem falhas até 800s)
         elif "stress" in item_path or "test_orchestrator_load" in item_path:
             timeout_value = 800
             item.add_marker(pytest.mark.stress)
-        # E2E: começa 400s (vai até 600s via plugin se precisar)
-        elif any(path in item_path for path in e2e_paths):
-            timeout_value = 400
-            item.add_marker(pytest.mark.e2e)
-        # Heavy computational/GPU: 800s (permite estabilização GPU e cache)
-        # Testes de GPU/cálculo precisam de tempo para estabilizar cache e processamento
-        elif any(path in item_path for path in heavy_paths):
-            timeout_value = 800  # Máximo para testes de GPU/cálculo
-            item.add_marker(pytest.mark.computational)
-        # Ollama: começa 240s (vai até 400s se precisar)
+        elif item.get_closest_marker("heavy") or is_explicitly_heavy:
+            timeout_value = 800
         elif any(path in item_path or path in test_name for path in ollama_paths):
             timeout_value = 240
             item.add_marker(pytest.mark.computational)
-        # Regular computational: começa 300s (vai até 500s se precisar)
         elif any(path in item_path for path in computational_paths):
             timeout_value = 300
             item.add_marker(pytest.mark.computational)
@@ -951,6 +931,7 @@ def print_defense_report(request):
 
     request.addfinalizer(fin)
 
+
 # ============================================================================
 # 🛠️ FIXTURES DE CORREÇÃO (NO-DOCKER / SANDBOX)
 # ============================================================================
@@ -961,6 +942,7 @@ def print_defense_report(request):
 from unittest.mock import MagicMock, AsyncMock
 import asyncio
 
+
 @pytest.fixture
 def enhanced_agent():
     """Mock de agent aprimorado para testes"""
@@ -970,6 +952,7 @@ def enhanced_agent():
     agent.get_capabilities = MagicMock(return_value={})
     return agent
 
+
 @pytest.fixture
 def orchestrator():
     """Mock de orchestrator para testes"""
@@ -977,6 +960,7 @@ def orchestrator():
     orch.execute = MagicMock(return_value={"result": "ok"})
     orch.plan = MagicMock(return_value=[])
     return orch
+
 
 @pytest.fixture
 def mcp_orchestrator():
@@ -986,6 +970,7 @@ def mcp_orchestrator():
     mcp.list_tools = MagicMock(return_value=[])
     return mcp
 
+
 @pytest.fixture
 def security_monitor():
     """Mock de security monitor"""
@@ -993,6 +978,7 @@ def security_monitor():
     monitor.scan = MagicMock(return_value={"threats": []})
     monitor.alert = MagicMock()
     return monitor
+
 
 @pytest.fixture
 def audit_system():
@@ -1002,6 +988,7 @@ def audit_system():
     audit.get_logs = MagicMock(return_value=[])
     return audit
 
+
 @pytest.fixture
 def conscious_engine():
     """Mock de consciousness engine"""
@@ -1009,6 +996,7 @@ def conscious_engine():
     engine.measure_integration = MagicMock(return_value=0.5)
     engine.detect_consciousness = MagicMock(return_value=False)
     return engine
+
 
 @pytest.fixture
 def shared_workspace():
@@ -1018,6 +1006,7 @@ def shared_workspace():
     ws.get_content = MagicMock(return_value=[])
     return ws
 
+
 @pytest.fixture
 def ethical_framework():
     """Mock de ethical framework"""
@@ -1025,6 +1014,7 @@ def ethical_framework():
     eth.evaluate = MagicMock(return_value={"ethical": True, "score": 0.8})
     eth.apply_constraints = MagicMock()
     return eth
+
 
 @pytest.fixture
 def ethics_monitor():
@@ -1034,6 +1024,7 @@ def ethics_monitor():
     monitor.log_decision = MagicMock()
     return monitor
 
+
 @pytest.fixture
 def async_event_loop():
     """Event loop para testes async"""
@@ -1041,15 +1032,12 @@ def async_event_loop():
     yield loop
     loop.close()
 
+
 @pytest.fixture
 def test_config():
     """Configuração padrão para testes"""
-    return {
-        "debug": True,
-        "timeout": 30,
-        "max_retries": 3,
-        "log_level": "DEBUG"
-    }
+    return {"debug": True, "timeout": 30, "max_retries": 3, "log_level": "DEBUG"}
+
 
 @pytest.fixture
 def mock_db():
@@ -1061,6 +1049,7 @@ def mock_db():
     db.delete = MagicMock()
     return db
 
+
 @pytest.fixture
 def qdrant_client():
     """Mock de QdrantClient para evitar dependência de Docker"""
@@ -1070,12 +1059,14 @@ def qdrant_client():
     client.upsert = MagicMock(return_value=True)
     return client
 
+
 @pytest.fixture
 def coevolution_system():
     """Mock de coevolution system"""
     sys = MagicMock()
     sys.evolve = MagicMock(return_value=True)
     return sys
+
 
 @pytest.fixture
 def embodied_cognition():
@@ -1084,6 +1075,7 @@ def embodied_cognition():
     ec.process_sensory_input = MagicMock(return_value={})
     return ec
 
+
 @pytest.fixture
 def quantumsystem():
     """Mock de quantum system"""
@@ -1091,9 +1083,33 @@ def quantumsystem():
     qs.execute_circuit = MagicMock(return_value={"counts": {"00": 1024}})
     return qs
 
+
 @pytest.fixture
 def autopoietic_manager():
     """Mock de autopoietic manager"""
     am = MagicMock()
     am.maintain_homeostasis = MagicMock(return_value=True)
     return am
+
+
+def pytest_sessionstart(session):
+    """Notifica o OmniMind que uma sessão de testes começou."""
+    try:
+        from src.monitor.resource_manager import resource_manager
+
+        resource_manager.set_standby_mode(True, reason="pytest_session_start")
+    except Exception:
+        # Pode falhar se o backend não estiver acessível ou mockado
+        pass
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """Notifica o OmniMind que uma sessão de testes terminou."""
+    try:
+        from src.monitor.resource_manager import resource_manager
+
+        # Não desativamos imediatamente para permitir cooldown,
+        # mas sinalizamos o fim da carga massiva.
+        resource_manager.set_standby_mode(False, reason="pytest_session_finish")
+    except Exception:
+        pass

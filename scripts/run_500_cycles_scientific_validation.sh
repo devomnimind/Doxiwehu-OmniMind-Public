@@ -52,5 +52,5 @@ echo ""
 # Executar script Python
 echo -e "${GREEN}🚀 Executando validação científica (500 ciclos)...${NC}"
 echo ""
-exec python "$PROJECT_ROOT/scripts/run_500_cycles_scientific_validation.py" "$@"
+exec python3 "$PROJECT_ROOT/scripts/run_500_cycles_scientific_validation.py" "$@"
 

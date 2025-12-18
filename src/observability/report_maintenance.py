@@ -65,9 +65,8 @@ class ReportMaintenanceManager:
         self.compression_index = self.archive_dir / "compression_index.jsonl"
 
         logger.info(
-            "ReportMaintenanceManager inicializado",
-            reports_dir=str(self.reports_dir),
-            archive_dir=str(self.archive_dir),
+            f"ReportMaintenanceManager inicializado: "
+            f"reports_dir={self.reports_dir}, archive_dir={self.archive_dir}"
         )
 
     def execute_maintenance(self) -> Dict[str, Any]:
@@ -107,7 +106,7 @@ class ReportMaintenanceManager:
                 f.stat().st_size / (1024 * 1024) for f in self.archive_dir.glob("*.json.gz")
             )
 
-            logger.info("Manutenção concluída", details=json.dumps(stats, indent=2))
+            logger.info(f"Manutenção concluída: {json.dumps(stats, indent=2)}")
             return stats
 
         except Exception as e:
@@ -173,9 +172,12 @@ class ReportMaintenanceManager:
                         # Não recompactar se já existe
                         if archive_path.exists():
                             logger.debug(f"Arquivo {archive_name} já compactado")
-                            stats["files_skipped"] += len(
+                            files_skipped_count: int = stats[
+                                "files_skipped"
+                            ]  # type: ignore[assignment]
+                            stats["files_skipped"] = files_skipped_count + len(
                                 files_by_date[date_key]
-                            )  # type: ignore[operator]
+                            )
                             continue
 
                         # Compactar cada arquivo individualmente
@@ -191,11 +193,20 @@ class ReportMaintenanceManager:
 
                                 size_after = gz_path.stat().st_size
 
-                                stats["files_processed"] += 1  # type: ignore[operator]
-                                before_mb = size_before / (1024 * 1024)  # type: ignore[operator]
-                                after_mb = size_after / (1024 * 1024)  # type: ignore[operator]
-                                stats["size_before_mb"] += before_mb
-                                stats["size_after_mb"] += after_mb
+                                files_processed: int = stats[
+                                    "files_processed"
+                                ]  # type: ignore[assignment]
+                                stats["files_processed"] = files_processed + 1
+                                before_mb = size_before / (1024 * 1024)
+                                after_mb = size_after / (1024 * 1024)
+                                size_before_mb: float = stats[
+                                    "size_before_mb"
+                                ]  # type: ignore[assignment]
+                                size_after_mb: float = stats[
+                                    "size_after_mb"
+                                ]  # type: ignore[assignment]
+                                stats["size_before_mb"] = size_before_mb + before_mb
+                                stats["size_after_mb"] = size_after_mb + after_mb
 
                                 # Remover original
                                 json_file.unlink()
@@ -251,13 +262,15 @@ class ReportMaintenanceManager:
                         size = gz_file.stat().st_size
                         gz_file.unlink()
 
-                        stats["files_deleted"] += 1  # type: ignore[operator]
-                        freed_mb = size / (1024 * 1024)  # type: ignore[operator]
-                        stats["size_freed_mb"] += freed_mb
+                        files_deleted: int = stats["files_deleted"]  # type: ignore[assignment]
+                        stats["files_deleted"] = files_deleted + 1
+                        freed_mb = size / (1024 * 1024)
+                        size_freed_mb: float = stats["size_freed_mb"]  # type: ignore[assignment]
+                        stats["size_freed_mb"] = size_freed_mb + freed_mb
                         deleted_key = file_date.strftime("%Y%m%d")
                         stats["deleted_dates"].append(deleted_key)  # type: ignore[attr-defined]
 
-                        logger.info("Removido arquivo expirado", name=gz_file.name)
+                        logger.info(f"Removido arquivo expirado: {gz_file.name}")
 
                 except Exception as e:
                     logger.error(f"Erro ao remover {gz_file.name}: {e}")

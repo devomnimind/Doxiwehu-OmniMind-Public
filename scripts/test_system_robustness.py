@@ -17,13 +17,15 @@ import numpy as np
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-# Import from the root module
-# Note: We need to ensure the root directory is in sys.path, which we did above.
+# Import from the validation module
 try:
-    from omnimind_stimulation_scientific import OmniMindStimulator, StimulationParams
+    from scripts.validation.omnimind_stimulation_scientific import (
+        OmniMindStimulator,
+        StimulationParams,
+    )
 except ImportError:
-    # Fallback if running from root
-    sys.path.append(os.getcwd())
+    # Fallback attempt
+    sys.path.append(os.path.join(os.path.dirname(__file__), "validation"))
     from omnimind_stimulation_scientific import OmniMindStimulator, StimulationParams
 
 # Setup logging

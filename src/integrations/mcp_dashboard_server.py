@@ -13,8 +13,8 @@ from typing import Any, Dict
 import aiohttp
 from aiohttp import web
 
-sys.path.insert(0, str(PROJECT_ROOT))
 PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 
 logger = logging.getLogger(__name__)
 

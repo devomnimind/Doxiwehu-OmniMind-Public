@@ -12,7 +12,10 @@ import time
 from pathlib import Path
 
 # Add src to path
-PROJECT_ROOT = Path(__file__).parent
+# Add src to path
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+LOGS_DIR = PROJECT_ROOT / "logs"
+LOGS_DIR.mkdir(exist_ok=True)
 sys.path.append(str(PROJECT_ROOT))
 
 # Mock imports para simular a estrutura se os arquivos reais não existirem no ambiente
@@ -27,7 +30,14 @@ except ImportError:
     pass
 
 # Setup Logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(LOGS_DIR / "epsilon_stimulation.log"),
+    ],
+)
 logger = logging.getLogger("OmniMind_Core")
 
 if ArtGenerator is None:

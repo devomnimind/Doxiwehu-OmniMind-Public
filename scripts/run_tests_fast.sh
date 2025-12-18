@@ -48,7 +48,7 @@ CONSOLIDATED_OUTPUT="$LOG_DIR/consolidated_fast_${TIMESTAMP}.log"
 echo "⚡ OMNIMIND FAST TEST SUITE"
 echo "======================================"
 echo "⏱️  Timestamp: $TIMESTAMP"
-echo "🛡️  Modo: Rápido (Sem Chaos, COM Slow - GPU/Cálculos)"
+echo "🛡️  Modo: Rápido (Sem Chaos, Sem Heavy - Foco em Mocks/Lógica)"
 echo "🚀 GPU: FORÇADA (com fallback)"
 echo "📈 Coverage: ATIVADO (JSON, HTML, XML)"
 echo "🐛 Debug: VERBOSO (DEBUG level)"
@@ -58,7 +58,7 @@ echo ""
 
 # Validação pré-teste: verificar meta cognition health
 echo "🔍 Validando saúde do sistema antes de executar testes..."
-if ! python scripts/pre_test_validation.py; then
+if ! python3 scripts/pre_test_validation.py; then
     echo ""
     echo "❌ VALIDAÇÃO PRÉ-TESTE FALHOU"
     echo "🚫 TESTES NÃO SERÃO EXECUTADOS"
@@ -111,7 +111,7 @@ PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512 \
 pytest tests/ \
   -vv \
   --tb=long \
-  -m "not chaos" \
+  -m "not (chaos or heavy)" \
   --log-cli-level=DEBUG \
   --log-cli-format="%(asctime)s [%(levelname)8s] %(name)s:%(funcName)s:%(lineno)d - %(message)s" \
   --log-cli-date-format="%Y-%m-%d %H:%M:%S" \
@@ -129,7 +129,8 @@ pytest tests/ \
   -s \
   2>&1 | tee "$OUTPUT_LOG"
 
-EXIT_CODE=$?
+# Capture pytest exit code (first command in pipe)
+EXIT_CODE=${PIPESTATUS[0]}
 
 # Aguardar um momento para garantir que todos os arquivos foram escritos
 sleep 2

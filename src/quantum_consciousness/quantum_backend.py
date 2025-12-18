@@ -90,7 +90,7 @@ else:
                 )
             except ImportError:
                 # If both fail, we don't need Sampler for core Qiskit ops
-                Sampler = None  # type: ignore[assignment]
+                Sampler = None  # type: ignore[assignment,misc]
 
         QISKIT_AVAILABLE = True
     except ImportError as e:

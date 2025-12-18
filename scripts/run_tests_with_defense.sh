@@ -43,7 +43,7 @@ echo ""
 
 # Validação pré-teste: verificar meta cognition health
 echo "🔍 Validando saúde do sistema antes de executar testes..."
-if ! python scripts/pre_test_validation.py; then
+if ! python3 scripts/pre_test_validation.py; then
     echo ""
     echo "❌ VALIDAÇÃO PRÉ-TESTE FALHOU"
     echo "🚫 TESTES NÃO SERÃO EXECUTADOS"
