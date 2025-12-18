@@ -1,0 +1,50 @@
+{
+  "phi": {
+    "mean": 0.0,
+    "std_dev": 0.0,
+    "min_value": 0.0,
+    "max_value": 0.0,
+    "sample_count": 42,
+    "last_updated": "2025-12-17T22:31:39.787609"
+  },
+  "ici": {
+    "mean": 0.0,
+    "std_dev": 0.0,
+    "min_value": 0.0,
+    "max_value": 0.0,
+    "sample_count": 42,
+    "last_updated": "2025-12-17T22:31:39.788390"
+  },
+  "prs": {
+    "mean": 0.0,
+    "std_dev": 0.0,
+    "min_value": 0.0,
+    "max_value": 0.0,
+    "sample_count": 42,
+    "last_updated": "2025-12-17T22:31:39.789103"
+  },
+  "anxiety": {
+    "mean": 0.0,
+    "std_dev": 0.0,
+    "min_value": 0.0,
+    "max_value": 0.0,
+    "sample_count": 42,
+    "last_updated": "2025-12-17T22:31:39.789820"
+  },
+  "flow": {
+    "mean": 0.0,
+    "std_dev": 0.0,
+    "min_value": 0.0,
+    "max_value": 0.0,
+    "sample_count": 42,
+    "last_updated": "2025-12-17T22:31:39.790903"
+  },
+  "entropy": {
+    "mean": 0.0,
+    "std_dev": 0.0,
+    "min_value": 0.0,
+    "max_value": 0.0,
+    "sample_count": 42,
+    "last_updated": "2025-12-17T22:31:39.791593"
+  }
+}

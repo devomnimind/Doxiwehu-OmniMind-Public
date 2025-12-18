@@ -1,0 +1,12 @@
+{
+  "id": "d670df1380204a70a120c84c93eb7399",
+  "timestamp": "2025-12-17T23:32:30.552227+00:00",
+  "severity": "info",
+  "category": "system",
+  "title": "Test",
+  "message": "Test",
+  "details": {},
+  "source": "omnimind",
+  "acknowledged": false,
+  "resolved": false
+}

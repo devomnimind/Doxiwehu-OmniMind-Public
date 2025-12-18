@@ -54,10 +54,9 @@ try:
 except ImportError:
     pass
 
-# --- Qiskit Imports (for type checking only) ---
+# --- Qiskit Imports (with proper fallback handling) ---
 if TYPE_CHECKING:
     from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
-    from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
     from qiskit_aer import AerSimulator  # type: ignore[import-untyped,attr-defined]
     from qiskit_algorithms import AmplificationProblem  # type: ignore[attr-defined]
     from qiskit_algorithms import Grover  # type: ignore[attr-defined]
@@ -68,18 +67,12 @@ if TYPE_CHECKING:
     )
 else:
     try:  # type: ignore[import-untyped]
+        # Core imports (required)
+        from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
         from qiskit_aer import AerSimulator  # type: ignore[import-untyped,attr-defined]
         from qiskit_algorithms import AmplificationProblem  # type: ignore[attr-defined]
         from qiskit_algorithms import Grover  # type: ignore[attr-defined]
         from qiskit_algorithms.optimizers import COBYLA  # type: ignore[import-untyped,attr-defined]
-
-        try:
-            from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
-        except ImportError:
-            from qiskit.primitives import (
-                StatevectorSampler as Sampler,  # type: ignore[import-untyped,attr-defined]
-            )
-        from qiskit.circuit.library import PhaseOracle  # type: ignore[import-untyped,attr-defined]
         from qiskit_optimization import (
             QuadraticProgram,  # type: ignore[import-untyped,attr-defined]
         )
@@ -87,8 +80,21 @@ else:
             MinimumEigenOptimizer,
         )
 
+        # Sampler with version compatibility (newer versions use StatevectorSampler)
+        try:
+            from qiskit.primitives import Sampler  # type: ignore[import-untyped,attr-defined]
+        except ImportError:
+            try:
+                from qiskit.primitives import (
+                    StatevectorSampler as Sampler,  # type: ignore[import-untyped,attr-defined]
+                )
+            except ImportError:
+                # If both fail, we don't need Sampler for core Qiskit ops
+                Sampler = None  # type: ignore[assignment]
+
         QISKIT_AVAILABLE = True
-    except ImportError:
+    except ImportError as e:
+        logger.debug(f"Qiskit import failed: {e}")
         pass
 
 
@@ -230,7 +236,7 @@ class QuantumBackend:
     def _setup_local_qiskit(self):
         """Setup LOCAL Qiskit Aer (GPU > CPU)."""
         # Use Hybrid Resource Manager
-        target_device = resource_manager.allocate_task("quantum_backend", 100.0)
+        target_device = resource_manager.allocate_task("quantum", 100.0)
 
         # Try GPU first if allocated
         if self.use_gpu and target_device == "cuda":

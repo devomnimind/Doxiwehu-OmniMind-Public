@@ -94,16 +94,15 @@ print("")
 GPUCHECK
 
 # Executa pytest com GPU FORÇADA, logs verbosos, coverage e métricas
-# CRITICAL: CUDA_VISIBLE_DEVICES=0 força dispositivo 0
+# CRITICAL: CUDA 12.1 + PyTorch 2.5.1 + GTX 1650
+# CUDA_VISIBLE_DEVICES=0 força dispositivo 0
 # OMNIMIND_FORCE_GPU=true força detecção com device_count fallback
 # --cov: Ativa coverage
 # --cov-report: Gera relatórios em múltiplos formatos
 # --log-cli-level=DEBUG: Logs verbosos no console
-# --log-cli-format: Formato detalhado dos logs
-# -vv: Verbose máximo
-# -s: Não captura output (mostra prints)
-# --tb=long: Traceback longo para debug
+CUDA_HOME=/usr/local/cuda-12.1 \
 CUDA_VISIBLE_DEVICES=0 \
+LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH \
 OMNIMIND_GPU=true \
 OMNIMIND_FORCE_GPU=true \
 OMNIMIND_DEV=true \

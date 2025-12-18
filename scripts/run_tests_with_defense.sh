@@ -69,14 +69,15 @@ print("")
 GPUCHECK
 
 # Comando completo com GPU FORÇADA + Dev + Debug
-# CRITICAL: CUDA_VISIBLE_DEVICES=0 força dispositivo 0
-# OMNIMIND_FORCE_GPU=true força detecção com device_count fallback
+# CRITICAL: CUDA 12.1 + PyTorch 2.5.1 + GTX 1650
+CUDA_HOME=/usr/local/cuda-12.1 \
 CUDA_VISIBLE_DEVICES=0 \
+LD_LIBRARY_PATH=/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH \
 OMNIMIND_GPU=true \
 OMNIMIND_FORCE_GPU=true \
 OMNIMIND_DEV=true \
 OMNIMIND_DEBUG=true \
-PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb=512 \
+PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512 \
 pytest tests/ \
   -vv \
   --tb=short \

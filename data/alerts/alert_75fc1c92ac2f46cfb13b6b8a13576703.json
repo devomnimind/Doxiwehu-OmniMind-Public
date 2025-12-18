@@ -1,0 +1,15 @@
+{
+  "id": "75fc1c92ac2f46cfb13b6b8a13576703",
+  "timestamp": "2025-12-17T23:32:30.088692+00:00",
+  "severity": "error",
+  "category": "system",
+  "title": "Test",
+  "message": "Test",
+  "details": {
+    "resolution_notes": "Fixed the issue",
+    "resolved_at": "2025-12-17T23:32:30.089073+00:00"
+  },
+  "source": "omnimind",
+  "acknowledged": false,
+  "resolved": true
+}

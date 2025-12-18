@@ -1140,3 +1140,9 @@
 {"timestamp": "2025-12-17T15:06:33.091149+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
 {"timestamp": "2025-12-17T15:06:33.206690+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
 {"timestamp": "2025-12-17T15:06:33.237695+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
+{"timestamp": "2025-12-17T20:36:44.106480+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
+{"timestamp": "2025-12-17T20:36:44.263163+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
+{"timestamp": "2025-12-17T20:36:44.412356+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
+{"timestamp": "2025-12-18T01:29:18.112446+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
+{"timestamp": "2025-12-18T01:29:18.834237+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}
+{"timestamp": "2025-12-18T01:29:19.896625+00:00", "module": "DynamicToolCreator", "level": "info", "message": "DynamicToolCreator inicializado", "context": {"sandbox_enabled": true}}

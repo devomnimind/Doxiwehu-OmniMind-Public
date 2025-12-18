@@ -50,11 +50,14 @@ echo -e "${YELLOW}   Isso levará aproximadamente 8-10 minutos...${NC}"
 echo ""
 
 # Configurar CUDA antes de executar Python (crítico para GPU)
-export CUDA_HOME="/usr/local/cuda-12.4"
+# CUDA 12.1 + PyTorch 2.5.1 + GTX 1650 + Driver 535.274.02
+export CUDA_HOME="/usr/local/cuda-12.1"
 export CUDA_VISIBLE_DEVICES="0"
-export CUDA_PATH="/usr/local/cuda-12.4"
-export LD_LIBRARY_PATH="/usr/local/cuda-12.4/lib64:${LD_LIBRARY_PATH}"
-export PYTORCH_CUDA_ALLOC_CONF="backend:cudaMallocAsync"
+export CUDA_PATH="/usr/local/cuda-12.1"
+export LD_LIBRARY_PATH="/usr/local/cuda-12.1/lib64:${LD_LIBRARY_PATH}"
+export PYTORCH_CUDA_ALLOC_CONF="max_split_size_mb:512"
+export OMNIMIND_FORCE_GPU=true
+export OMNIMIND_GPU=true
 
 PYTHONPATH="$PROJECT_ROOT/src:$PROJECT_ROOT:$PYTHONPATH" \
 python3 scripts/science_validation/run_extended_training.py \

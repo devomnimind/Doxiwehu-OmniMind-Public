@@ -1,0 +1,10 @@
+{
+  "checkpoint_1": {
+    "checkpoint_num": 1,
+    "timestamp": 1766022436.894534,
+    "datetime": "2025-12-18T01:47:16.894535+00:00",
+    "events_count": 100,
+    "last_hash": "1179c032b4b3be0b6dd42cb0390e00ff38c8132eb2c88e6cf19de308e24b1e94",
+    "log_size": 2263
+  }
+}

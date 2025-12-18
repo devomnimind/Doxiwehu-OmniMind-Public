@@ -1,0 +1,12 @@
+{
+  "id": "53057513ef7f4044b7706fbf559507f4",
+  "timestamp": "2025-12-17T23:32:30.397772+00:00",
+  "severity": "warning",
+  "category": "system",
+  "title": "Alert 1",
+  "message": "Message 1",
+  "details": {},
+  "source": "omnimind",
+  "acknowledged": false,
+  "resolved": false
+}
