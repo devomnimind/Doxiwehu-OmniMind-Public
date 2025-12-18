@@ -7,6 +7,8 @@ Estas regras são a referência única para LLMs no projeto OmniMind. Seguir est
 - Repo privado: `/home/fahbrain/projects/omnimind`.
 - Não mover/deletar: `src/`, `scripts/`, `scripts/science_validation/`, `real_evidence/`, `config/`, `tests/`, `web/`, `logs/`, `data/test_reports/`.
 - Python 3.12.8 obrigatório. Ativar venv: `source .venv/bin/activate`.
+- ⚠️ **REGRA CRÍTICA**: Adicione confirmação de que o script está rodando no `.venv` (verifique `sys.prefix` ou `VIRTUAL_ENV`). Não assumir ambiente.
+
 
 ## 2) Execução de testes (somente scripts oficiais)
 - Não rodar `pytest tests` direto.

@@ -17,6 +17,10 @@ python3 << 'EOF'
 import os
 from qiskit_ibm_runtime import QiskitRuntimeService
 from qiskit import QuantumCircuit
+from dotenv import load_dotenv
+
+# Explicitly load .env from current directory to avoid find_dotenv stack issues in heredoc
+load_dotenv(os.path.join(os.getcwd(), ".env"))
 
 api_key = os.getenv("IBM_API_KEY")
 if not api_key:
