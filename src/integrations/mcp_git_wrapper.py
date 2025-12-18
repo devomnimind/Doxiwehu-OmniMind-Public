@@ -28,7 +28,7 @@ class MCPGitConfig:
     """Configuração do wrapper git MCP."""
 
     host: str = "127.0.0.1"
-    port: int = 4328
+    port: int = 4332
     repository_path: str = "."
     audit_category: str = "git_mcp"
 
@@ -122,6 +122,7 @@ class MCPStdioBridge:
             try:
                 # Enviar requisição
                 request_json = json.dumps(request) + "\n"
+                logger.debug(f"Enviando para stdio: {request_json.strip()}")
                 if self.process.stdin:
                     self.process.stdin.write(request_json)
                     self.process.stdin.flush()
@@ -129,12 +130,13 @@ class MCPStdioBridge:
                 # Ler resposta
                 if self.process.stdout:
                     response_line = self.process.stdout.readline()
+                    logger.debug(f"Resposta stdio: {response_line.strip()}")
                     response = json.loads(response_line)
 
                     if "error" in response:
-                        raise RuntimeError(
-                            f"MCP error: {response['error'].get('message', 'Unknown error')}"
-                        )
+                        error_msg = response["error"].get("message", "Unknown error")
+                        logger.error(f"MCP error response: {error_msg}")
+                        raise RuntimeError(f"MCP error: {error_msg}")
 
                     return response.get("result", {})
             except Exception as e:
@@ -156,7 +158,7 @@ class MCPGitWrapper:
             config: Configuração do wrapper. Se None, usa valores de ambiente ou defaults.
         """
         if config is None:
-            port = int(os.environ.get("MCP_PORT", "4328"))
+            port = int(os.environ.get("MCP_PORT", "4332"))
             repo = os.environ.get("MCP_GIT_REPOSITORY", ".")
             config = MCPGitConfig(
                 host="127.0.0.1",
@@ -247,6 +249,16 @@ class MCPGitWrapper:
                     request = json.loads(raw.decode("utf-8"))
                     method = request.get("method")
                     params = request.get("params", {})
+
+                    # Para initialize, adicionar parâmetros completos se não presente
+                    if method == "initialize" and "protocolVersion" not in params:
+                        params = {
+                            "protocolVersion": "2024-11-05",
+                            "capabilities": params.get("capabilities", {}),
+                            "clientInfo": params.get(
+                                "clientInfo", {"name": "omnimind-git-wrapper", "version": "1.0"}
+                            ),
+                        }
 
                     # Enviar para o MCP via stdio
                     result = parent.bridge.send_request(method, params)

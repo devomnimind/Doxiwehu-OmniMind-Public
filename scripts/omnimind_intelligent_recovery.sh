@@ -47,7 +47,7 @@ log_warning() {
 }
 # 0. Configuração Autopoietica
 FAILURE_COUNT_FILE="$PROJECT_ROOT/logs/.recovery_failure_count"
-MAX_RETRIES 3
+MAX_RETRIES=3
 
 # Função de Preservação de Emergência (Fight for Life)
 emergency_preservation() {
@@ -181,7 +181,6 @@ if [ $CRITICAL_DOWN -gt 0 ]; then
         fi
     fi
     increment_failures
-    fi
 else
     # Se crítico estava OK e continua OK, ou se recuperou
     if [ $CRITICAL_DOWN -eq 0 ]; then

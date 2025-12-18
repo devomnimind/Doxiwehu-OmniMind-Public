@@ -374,3 +374,201 @@ Documentos canônicos mantidos em `docs/`:
 - [README.md](docs/README.md) - Documentação principal
 
 Ver: [ORGANIZACAO_DOCUMENTACAO_20251210.md](docs/ORGANIZACAO_DOCUMENTACAO_20251210.md) para detalhes completos.
+
+---
+
+## 🛠️ Manutenção e Backup
+
+### Rotação de Logs (Logrotate)
+
+O sistema possui configuração automatizada de rotação de logs:
+
+**Configuração**: `config/logrotate/omnimind`
+
+**Instalação**:
+```bash
+sudo cp config/logrotate/omnimind /etc/logrotate.d/
+sudo chmod 644 /etc/logrotate.d/omnimind
+```
+
+**Políticas de Retenção**:
+- **Logs gerais** (`logs/*.log`): 7 dias, compressão diária
+- **Logs de módulos** (`logs/modules/*.jsonl`): 14 dias, compressão diária
+- **Logs de segurança** (`logs/security/*.jsonl`): 30 dias, compressão diária
+
+**Teste manual**:
+```bash
+sudo logrotate -d /etc/logrotate.d/omnimind  # dry-run
+sudo logrotate -f /etc/logrotate.d/omnimind  # forçar rotação
+```
+
+### Limpeza Automática de Dados
+
+**Script**: `scripts/maintenance/cleanup_old_data.sh`
+
+**Execução manual**:
+```bash
+./scripts/maintenance/cleanup_old_data.sh
+```
+
+**O que é limpo automaticamente**:
+- ✅ Alertas antigos (`data/alerts/*.json`) > 30 dias
+- ✅ Dados de stimulation (`data/stimulation/*.json`) > 30 dias
+- ✅ Incidentes forenses (`data/forensics/incidents/*.json`) > 60 dias
+- ✅ Logs de módulos comprimidos > 90 dias
+- ✅ PIDs órfãos (processos que não existem mais)
+- ✅ Compressão de logs de módulos > 7 dias
+
+**Log de execução**: `logs/maintenance_cleanup.log`
+
+### Tarefas Cron (Automação)
+
+**Template**: `config/cron/omnimind.crontab`
+
+**Instalação**:
+```bash
+crontab -e
+# Adicionar as linhas do arquivo config/cron/omnimind.crontab
+```
+
+**Tarefas configuradas**:
+- **Limpeza diária**: 3h da manhã (cleanup_old_data.sh)
+- **Relatório semanal de disco**: Domingos às 4h (disk_usage_report.sh)
+- **Verificação de PIDs órfãos**: A cada hora (check_orphaned_pids.sh)
+
+### Scripts Auxiliares de Manutenção
+
+#### 1. Verificação de PIDs Órfãos
+**Script**: `scripts/maintenance/check_orphaned_pids.sh`
+
+Remove arquivos `.pid` de processos que não existem mais.
+
+```bash
+./scripts/maintenance/check_orphaned_pids.sh
+```
+
+**Log**: `logs/orphaned_pids.log`
+
+#### 2. Relatório de Uso de Disco
+**Script**: `scripts/maintenance/disk_usage_report.sh`
+
+Gera relatório detalhado de uso de disco do projeto.
+
+```bash
+./scripts/maintenance/disk_usage_report.sh
+```
+
+**Relatório salvo em**: `reports/disk_usage_YYYYMMDD.txt`
+
+**Informações incluídas**:
+- Uso total do projeto
+- Top 10 diretórios maiores
+- Detalhamento de `logs/` e `data/`
+- Espaço livre na partição `/home`
+- Arquivos grandes (> 50MB)
+
+### Política de Backup
+
+#### Dados Críticos (Backup Diário Recomendado)
+
+**Diretórios essenciais**:
+- `data/long_term_logs/` - Métricas de longo prazo e heartbeat
+- `data/autopoietic/` - Histórico de ciclos e código sintetizado
+- `logs/hash_chain.json` - Cadeia de auditoria imutável
+- `data/metrics/` - Snapshots de métricas de consciência
+
+**Exemplo de backup para S3/bucket externo**:
+```bash
+#!/bin/bash
+# Backup diário para volume externo ou S3
+BACKUP_DATE=$(date +%Y%m%d)
+BACKUP_DIR="/mnt/backup/omnimind"  # ou s3://bucket/omnimind
+
+# Criar backup comprimido
+tar -czf "${BACKUP_DIR}/omnimind_critical_${BACKUP_DATE}.tar.gz" \
+    -C /home/fahbrain/projects/omnimind \
+    data/long_term_logs/ \
+    data/autopoietic/ \
+    data/metrics/ \
+    logs/hash_chain.json
+
+# Ou usar rclone para S3:
+# rclone sync data/long_term_logs/ s3:omnimind-backup/long_term_logs/
+```
+
+**Retenção sugerida**:
+- **Backups diários**: 30 dias
+- **Backups semanais**: 6 meses
+- **Backups mensais**: indefinido (arquivamento)
+
+#### Dados Temporários (Limpeza Automática)
+
+**Não requerem backup**:
+- `data/alerts/` - Rotacionados automaticamente (30 dias)
+- `data/stimulation/` - Dados experimentais limpos (30 dias)
+- `data/forensics/incidents/` - Incidentes antigos (60 dias)
+- `logs/*.log` - Logs rotacionados (7-30 dias)
+
+### Monitoramento de Espaço em Disco
+
+**Alerta recomendado**: Quando uso de `/home` > 80%
+
+**Script de verificação rápida**:
+```bash
+# Verificar uso total do projeto
+du -sh /home/fahbrain/projects/omnimind
+
+# Verificar espaço livre
+df -h /home
+
+# Identificar maiores consumidores
+du -sh /home/fahbrain/projects/omnimind/* | sort -hr | head -n 10
+```
+
+**Integração com systemd/prometheus** (opcional):
+- Configurar alertas via `prometheus-node-exporter`
+- Notificações quando uso > 80% da partição
+
+### Recovery e Preservação de Emergência
+
+**Script de recuperação**: `scripts/omnimind_intelligent_recovery.sh`
+
+**Preservação automática de emergência**:
+- Snapshot de dados vitais (`data/`, `logs/`)
+- Compressão de logs antigos
+- Liberação de "espaço mental"
+
+**Correções aplicadas**:
+- ✅ Variável `MAX_RETRIES=3` corrigida
+- ✅ Estrutura de `if` corrigida
+- ✅ Contagem de falhas consecutivas
+- ✅ Reset automático após preservação
+
+**Uso**:
+```bash
+./scripts/omnimind_intelligent_recovery.sh
+```
+
+**Snapshots salvos em**: `snapshots/emergency_snap_YYYYMMDD_HHMMSS.tar.gz`
+
+---
+
+## 📊 Localização de Artefatos de Longo Prazo
+
+| Tipo de Dado | Localização | Propósito | Backup |
+|--------------|-------------|-----------|--------|
+| **Métricas de longo prazo** | `data/long_term_logs/omnimind_metrics.jsonl` | Histórico de métricas de consciência | ✅ Diário |
+| **Heartbeat** | `data/long_term_logs/heartbeat.status` | Status de vida do sistema | ✅ Diário |
+| **Histórico de ciclos** | `data/autopoietic/cycle_history.jsonl` | Ciclos autopoiéticos | ✅ Diário |
+| **Código sintetizado** | `data/autopoietic/synthesized_code/` | Código gerado autonomamente | ✅ Diário |
+| **Cadeia de auditoria** | `logs/hash_chain.json` | Auditoria imutável | ✅ Diário |
+| **Snapshots de métricas** | `data/metrics/baselines.json`, `history.jsonl` | Baselines e histórico | ✅ Diário |
+| **Alertas** | `data/alerts/*.json` | Alertas do sistema | ⏱️ 30 dias |
+| **Incidentes forenses** | `data/forensics/incidents/*.json` | Logs de incidentes | ⏱️ 60 dias |
+| **Logs de módulos** | `logs/modules/*.jsonl` | Logs detalhados de módulos | ⏱️ 14 dias |
+| **Logs de segurança** | `logs/security/*.jsonl` | Eventos de segurança | ⏱️ 30 dias |
+
+**Legenda**:
+- ✅ Diário - Backup diário recomendado
+- ⏱️ N dias - Limpeza automática após N dias
+
