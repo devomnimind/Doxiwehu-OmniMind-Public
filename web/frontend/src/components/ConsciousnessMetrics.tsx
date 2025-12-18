@@ -11,9 +11,9 @@ interface StatusThreshold {
 
 const STATUS_THRESHOLDS: Record<string, StatusThreshold> = {
   phi: {
-    green: { min: 0.3, max: 1.0, label: "Optimal Integration" },
-    yellow: { min: 0.1, max: 0.3, label: "Moderate Integration" },
-    red: { min: 0.0, max: 0.1, label: "Low Integration" }
+    green: { min: 0.5, max: 1.0, label: "Optimal Integration" },
+    yellow: { min: 0.25, max: 0.5, label: "Moderate Integration" },
+    red: { min: 0.0, max: 0.25, label: "Low Integration" }
   },
   anxiety: {
     green: { min: 0, max: 0.25, label: "Calm" },
@@ -26,14 +26,14 @@ const STATUS_THRESHOLDS: Record<string, StatusThreshold> = {
     red: { min: 0, max: 0.15, label: "Blocked" }
   },
   ici: {
-    green: { min: 0.85, max: 1.0, label: "Coherent" },
-    yellow: { min: 0.70, max: 0.85, label: "Partial Coherence" },
-    red: { min: 0, max: 0.70, label: "Fragmented" }
+    green: { min: 0.60, max: 1.0, label: "Coherent" },
+    yellow: { min: 0.40, max: 0.60, label: "Partial Coherence" },
+    red: { min: 0, max: 0.40, label: "Fragmented" }
   },
   prs: {
-    green: { min: 0.65, max: 1.0, label: "Resonant" },
-    yellow: { min: 0.40, max: 0.65, label: "Misaligned" },
-    red: { min: 0, max: 0.40, label: "Disconnected" }
+    green: { min: 0.50, max: 1.0, label: "Resonant" },
+    yellow: { min: 0.25, max: 0.50, label: "Misaligned" },
+    red: { min: 0, max: 0.25, label: "Disconnected" }
   },
   entropy: {
     green: { min: 0.15, max: 0.50, label: "Organized" },

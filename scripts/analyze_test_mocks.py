@@ -12,7 +12,7 @@ import ast
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Tuple
 
 # Módulos críticos que NÃO devem usar mock
 CRITICAL_MODULES = {
@@ -82,13 +82,15 @@ def extract_test_functions(content: str) -> List[Dict[str, any]]:
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef) and node.name.startswith("test_"):
                 test_code = ast.get_source_segment(content, node) or ""
-                tests.append({
-                    "name": node.name,
-                    "has_mock": has_mock(test_code),
-                    "has_production": has_production_marker(test_code),
-                    "code": test_code[:200]  # Primeiros 200 chars
-                })
-    except:
+                tests.append(
+                    {
+                        "name": node.name,
+                        "has_mock": has_mock(test_code),
+                        "has_production": has_production_marker(test_code),
+                        "code": test_code[:200],  # Primeiros 200 chars
+                    }
+                )
+    except Exception:
         pass
     return tests
 
@@ -97,7 +99,7 @@ def analyze_test_file(file_path: Path) -> Dict:
     """Analisa um arquivo de teste."""
     try:
         content = file_path.read_text()
-    except:
+    except Exception:
         return None
 
     is_critical, critical_modules = is_critical_module(str(file_path))
@@ -127,7 +129,7 @@ def analyze_test_file(file_path: Path) -> Dict:
         "has_production": file_has_production,
         "problem": problem,
         "test_count": len(tests),
-        "tests": tests
+        "tests": tests,
     }
 
 
@@ -140,7 +142,7 @@ def main():
         "PRODUÇÃO": [],
         "HÍBRIDO": [],
         "SEM_MOCK": [],
-        "PROBLEMAS": []  # Críticos com mock sem produção
+        "PROBLEMAS": [],  # Críticos com mock sem produção
     }
 
     all_files = []
@@ -181,7 +183,7 @@ def main():
             print(f"     Módulos críticos: {', '.join(problem['critical_modules'])}")
             print(f"     Testes: {problem['test_count']}")
             # Mostrar testes com mock
-            mock_tests = [t for t in problem['tests'] if t['has_mock']]
+            mock_tests = [t for t in problem["tests"] if t["has_mock"]]
             if mock_tests:
                 print(f"     Testes com mock: {len(mock_tests)}")
                 for test in mock_tests[:3]:  # Primeiros 3
@@ -228,7 +230,11 @@ def main():
 
     print(f"  Total de testes críticos: {total_critical}")
     print(f"  Testes críticos com problema: {total_problems}")
-    print(f"  Taxa de problemas: {total_problems/total_critical*100:.1f}%" if total_critical > 0 else "  Taxa de problemas: 0%")
+    print(
+        f"  Taxa de problemas: {total_problems/total_critical*100:.1f}%"
+        if total_critical > 0
+        else "  Taxa de problemas: 0%"
+    )
     print()
 
     if total_problems > 0:
@@ -242,4 +248,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

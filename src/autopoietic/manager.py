@@ -11,6 +11,8 @@ from typing import Any, Dict, List, Mapping, Optional, Union
 
 import psutil
 
+from src.integrations.supabase_adapter import SupabaseAdapter, SupabaseConfig
+
 from .architecture_evolution import ArchitectureEvolution, EvolutionStrategy
 from .code_synthesizer import CodeSynthesizer, SynthesizedComponent
 from .meta_architect import ComponentSpec, MetaArchitect
@@ -234,7 +236,9 @@ class AutopoieticManager:
         for name, component in validated_components.items():
             # Encontrar spec correspondente - remover prefixo de segurança se presente
             spec_name = name
-            if name.startswith("modulo_autopoiesis_data_"):
+            if name.startswith("auto_"):
+                spec_name = name[len("auto_") :]
+            elif name.startswith("modulo_autopoiesis_data_"):
                 spec_name = name[len("modulo_autopoiesis_data_") :]
 
             matching_spec = None
@@ -253,7 +257,8 @@ class AutopoieticManager:
                 )
                 continue  # Pula este componente
 
-            self._specs[name] = matching_spec
+            # CORREÇÃO: Usar o nome da spec como chave para evitar explosão recursiva de nomes
+            self._specs[matching_spec.name] = matching_spec
             new_names.append(name)
             self._logger.info("Cycle %d synthesized and validated %s", cycle_id, name)
             self._logger.debug("Source preview for %s:\n%s", name, component.source_code[:200])
@@ -425,6 +430,27 @@ class AutopoieticManager:
         return log
 
     def _persist_log(self, log: CycleLog) -> None:
+        # Persist to Supabase (Cloud/Remote)
+        try:
+            config = SupabaseConfig.from_env()
+            if config:
+                adapter = SupabaseAdapter(config)
+                record = {
+                    "cycle_id": log.cycle_id,
+                    "strategy": log.strategy.name,
+                    "phi_before": log.phi_before,
+                    "phi_after": log.phi_after,
+                    "synthesized_components": log.synthesized_components,
+                    "metrics": log.metrics,
+                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(log.timestamp)),
+                }
+                # Attempt to insert into 'autopoietic_logs'
+                adapter.insert_record("autopoietic_logs", record)
+                self._logger.debug("Persisted cycle log to Supabase")
+        except Exception as e:
+            # Log as debug so it doesn't spam if table is missing or config is invalid
+            self._logger.debug("Skipped Supabase persistence: %s", e)
+
         if not self._history_path:
             return
 
@@ -812,4 +838,5 @@ class AutopoieticManager:
 
         report_lines.append("🎉 Sistema autopoietico ativo e aprendendo!")
 
+        return "\n".join(report_lines)
         return "\n".join(report_lines)

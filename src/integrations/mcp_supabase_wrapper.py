@@ -14,7 +14,7 @@ import logging
 import os
 from typing import Any, Dict, List
 
-from src.integrations.mcp_server import MCPServer, MCPRequestError
+from src.integrations.mcp_server import MCPRequestError, MCPServer
 
 logger = logging.getLogger(__name__)
 

@@ -11,7 +11,6 @@ import numpy as np
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
-from datetime import datetime
 
 from src.consciousness.cycle_result_builder import LoopCycleResultBuilder
 from src.consciousness.integration_loop import LoopCycleResult

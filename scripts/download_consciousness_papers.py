@@ -28,8 +28,9 @@ from datetime import datetime, timezone  # noqa: E402
 from memory.semantic_memory_layer import get_semantic_memory  # noqa: E402
 
 try:
-    from datasets import load_dataset  # noqa: E402
     from tqdm import tqdm  # noqa: E402
+
+    from datasets import load_dataset  # noqa: E402
 except ImportError:
     print("❌ Instalar: pip install datasets tqdm")
     sys.exit(1)

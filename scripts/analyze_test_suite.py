@@ -9,13 +9,11 @@ operacionalidade, marcadores, e gera relatório completo.
 Saída: docs/COMPLETE_TEST_SUITE_ANALYSIS.md
 """
 
-import os
 import ast
-import json
-from pathlib import Path
-from collections import defaultdict
-from typing import Dict, List, Set, Tuple, Any
 import re
+from collections import defaultdict
+from pathlib import Path
+from typing import Any, Dict, List
 
 
 class TestAnalyzer(ast.NodeVisitor):
@@ -327,10 +325,10 @@ def generate_report(categories: Dict[str, Any]) -> str:
     report = """# 📊 COMPLETE TEST SUITE ANALYSIS
 ## Comprehensive Breakdown of All Test Properties, Operations & Classifications
 
-**Generated:** Automated Analysis Script  
-**Total Files Analyzed:** {total_files}  
-**Total Test Functions:** {total_tests}  
-**Total Test Classes:** {total_classes}  
+**Generated:** Automated Analysis Script
+**Total Files Analyzed:** {total_files}
+**Total Test Functions:** {total_tests}
+**Total Test Classes:** {total_classes}
 **Total Fixtures:** {total_fixtures}
 
 ---

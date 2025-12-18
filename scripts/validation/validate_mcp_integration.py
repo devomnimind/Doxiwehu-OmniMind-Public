@@ -4,7 +4,6 @@ MCP Integration Validation Script
 Executa ciclo completo: Analyze -> Implement -> Validate (Lint/MyPy/Black) -> Test
 """
 
-import json
 import subprocess
 import sys
 from pathlib import Path

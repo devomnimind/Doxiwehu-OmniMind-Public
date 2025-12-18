@@ -7,15 +7,12 @@ Move arquivos .md para seus devidos lugares baseado na análise.
 Autor: OmniMind Development
 Data: 2025-12-05
 """
-
 from __future__ import annotations
 
 import json
 import shutil
 from pathlib import Path
-from typing import Dict, List, Tuple
-
-from analyze_documentation import DocumentationAnalyzer
+from typing import Any, Dict, List, Tuple
 
 
 class DocumentationReorganizer:
@@ -168,4 +165,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

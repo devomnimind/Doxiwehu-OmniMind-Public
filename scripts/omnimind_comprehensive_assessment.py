@@ -15,7 +15,6 @@ Este script gera um relatório executivo para análise de saúde geral do sistem
 
 import json
 import subprocess
-import sys
 from datetime import datetime
 from pathlib import Path
 

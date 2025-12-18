@@ -253,7 +253,8 @@ async def lifespan(app_instance: FastAPI):
             logger.warning(f"Failed to initialize Consciousness Metrics Collector: {e}")
     else:
         logger.info(
-            "⏭️  Consciousness Metrics Collector initialization DEFERRED (set OMNIMIND_INIT_CONSCIOUSNESS=1 to enable)"
+            "⏭️  Consciousness Metrics Collector initialization DEFERRED"
+            " (set OMNIMIND_INIT_CONSCIOUSNESS=1 to enable)",
         )
 
     # ========== PARALLELIZAÇÃO DE COMPONENTES RÁPIDOS ==========
@@ -326,9 +327,10 @@ async def lifespan(app_instance: FastAPI):
         resource_protector = await get_resource_protector(mode)
         await resource_protector.start()
 
-        # CRITICAL: Register uvicorn process as protected (prevent resource_protector from killing it)
+        # CRITICAL: Register uvicorn process as protected
+        # (prevents resource_protector from killing it)
         resource_protector.register_process(os.getpid())
-        logger.info(f"✅ Uvicorn PID {os.getpid()} registered as protected")
+        logger.info("✅ Uvicorn PID " + str(os.getpid()) + " registered as protected")
 
         # Iniciar sistema de alertas
         alert_system = await get_alert_system()
@@ -683,7 +685,9 @@ async def _async_init_orchestrator(app_instance: FastAPI):
             error_msg = str(phase1_exc)
             if "LocalEntryNotFoundError" in error_msg or "couldn't connect" in error_msg.lower():
                 logger.warning(
-                    f"⚠️  Models not found in local cache. Enabling API fallback... ({error_msg[:100]})"
+                    "⚠️  Models not found in local cache. Enabling API fallback... ("
+                    + error_msg[:100]
+                    + ")"
                 )
                 # Enable fallback to remote API
                 os.environ["HF_HUB_OFFLINE"] = "0"
@@ -698,7 +702,7 @@ async def _async_init_orchestrator(app_instance: FastAPI):
                 raise
 
         phase1_time = time.time() - phase1_start
-        logger.info(f"✅ Phase 1 complete ({phase1_time:.1f}s): Orchestrator initialized")
+        logger.info("✅ Phase 1 complete (" + f"{phase1_time:.1f}s)" + ": Orchestrator initialized")
 
         app_instance.state.orchestrator_ready = True
 
@@ -708,14 +712,16 @@ async def _async_init_orchestrator(app_instance: FastAPI):
 
         try:
             # Try to initialize dashboard snapshot asynchronously with timeout
-            # SKIP dashboard refresh during startup to avoid blocking on security_agent.execute()
+            # SKIP dashboard refresh during startup to avoid blocking
+            # on security_agent.execute()
             # Dashboard will be refreshed on-demand via API endpoints
             if hasattr(_orchestrator_instance, "refresh_dashboard_snapshot"):
                 logger.info("  → Skipping dashboard snapshot (deferred to on-demand)")
-                # Removed: await asyncio.to_thread(_orchestrator_instance.refresh_dashboard_snapshot)
-                # Reason: security_agent.execute() can deadlock during startup, causing 40+ sec delay
+                # Removed the blocking dashboard refresh call to avoid startup hangs
+                # await asyncio.to_thread(_orchestrator_instance.refresh_dashboard_snapshot)
+                # Reason: security_agent.execute() can deadlock during startup.
         except Exception as exc:
-            logger.warning(f"Failed to refresh dashboard during init: {exc}")
+            logger.warning("Failed to refresh dashboard during init: " + str(exc))
 
         # Connect metacognition routes
         try:
@@ -746,9 +752,11 @@ async def _async_init_orchestrator(app_instance: FastAPI):
 
         phase2_time = time.time() - phase2_start
         total_time = time.time() - start_time
-        logger.info(f"✅ Phase 2 complete ({phase2_time:.1f}s)")
+        logger.info("✅ Phase 2 complete (" + f"{phase2_time:.1f}s)")
         logger.info(
-            f"📊 Total Orchestrator initialization: {total_time:.1f}s (metrics for scientific analysis)"
+            "📊 Total Orchestrator initialization: "
+            + f"{total_time:.1f}s"
+            + " (metrics for scientific analysis)"
         )
 
     except asyncio.CancelledError:
@@ -845,13 +853,15 @@ async def _consciousness_metrics_collector() -> None:
             # Collect consciousness metrics at configurable interval (default: 60 seconds)
             await asyncio.sleep(_consciousness_metrics_interval)
             # Coletar métricas via agregador para garantir persistência
-            snapshot = await dashboard_metrics_aggregator.collect_snapshot(
+            await dashboard_metrics_aggregator.collect_snapshot(
                 include_consciousness=True,
                 include_baseline=True,
             )
             metrics = await consciousness_metrics_collector.collect_real_metrics()
             logger.debug(
-                f"Collected consciousness metrics: phi={metrics.phi:.4f}, anxiety={metrics.anxiety:.4f}"
+                "Collected consciousness metrics: phi="
+                + f"{metrics.phi:.4f}, "
+                + f"anxiety={metrics.anxiety:.4f}"
             )
         except asyncio.CancelledError:
             logger.info("Consciousness metrics collection task cancelled")
@@ -1560,7 +1570,11 @@ def training_metrics(user: str = Depends(_verify_credentials)) -> Dict[str, Any]
             "repression_events": repression_events,
             "valid_causal_predictions": valid_causal_predictions,
             "total_causal_predictions": total_causal_predictions,
-            "message": f"based on {valid_causal_predictions}/{total_causal_predictions} valid causal predictions",
+            "message": (
+                "based on "
+                + f"{valid_causal_predictions}/{total_causal_predictions}"
+                + " valid causal predictions"
+            ),
         }
     except Exception as e:
         logger.error(f"Error getting training metrics: {e}")

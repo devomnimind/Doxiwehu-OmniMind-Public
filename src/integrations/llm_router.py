@@ -91,17 +91,14 @@ class LLMProviderInterface(ABC):
     @abstractmethod
     async def invoke(self, prompt: str, config: LLMConfig) -> LLMResponse:
         """Invoca o LLM com o prompt fornecido."""
-        pass
 
     @abstractmethod
     def is_available(self) -> bool:
         """Verifica se o provedor está disponível."""
-        pass
 
     @abstractmethod
     def get_latency_estimate(self) -> int:
         """Retorna estimativa de latência em ms."""
-        pass
 
 
 class OllamaProvider(LLMProviderInterface):
@@ -466,7 +463,6 @@ class HuggingFaceProvider(LLMProviderInterface):
 
     def _load_model(self, model_name: str):
         """Não necessário para Inference API."""
-        pass
 
     async def invoke(self, prompt: str, config: LLMConfig) -> LLMResponse:
         """Invoca HuggingFace Inference API."""

@@ -1,6 +1,7 @@
-import torch
 import os
 import sys
+
+import torch
 
 print(f"Python: {sys.version}")
 print(f"PyTorch: {torch.__version__}")

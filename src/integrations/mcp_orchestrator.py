@@ -19,8 +19,8 @@ from typing import Any, Dict, List, Optional, Union, cast
 
 from src.audit.immutable_audit import get_audit_system
 from src.integrations.mcp_connection_handler import (
-    MCPConnectionHandler,
     ConnectionConfig,
+    MCPConnectionHandler,
 )
 
 logger = logging.getLogger(__name__)

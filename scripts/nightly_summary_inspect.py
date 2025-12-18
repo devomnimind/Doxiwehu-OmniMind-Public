@@ -16,7 +16,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
-
 LOG_DIR = Path("logs/nightly")
 SUMMARY_PATH = LOG_DIR / "nightly_summary.json"
 
@@ -108,5 +107,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

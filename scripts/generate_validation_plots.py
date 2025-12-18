@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Dict, List
+from typing import Dict
 
 import matplotlib.pyplot as plt
 import numpy as np

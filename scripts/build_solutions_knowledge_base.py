@@ -17,8 +17,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from pathlib import Path
 from datetime import datetime, timezone
+from pathlib import Path
 
 # Add src to path
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -26,8 +26,9 @@ sys.path.insert(0, str(BASE_DIR))
 sys.path.insert(0, str(BASE_DIR / "src"))
 
 try:
-    from datasets import load_from_disk  # noqa: E402
     from sentence_transformers import SentenceTransformer  # noqa: E402
+
+    from datasets import load_from_disk  # noqa: E402
 except ImportError:
     print("❌ Instalar: pip install datasets sentence-transformers")
     sys.exit(1)

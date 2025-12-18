@@ -6,7 +6,6 @@ Script para verificar status da execução de 200 ciclos.
 import json
 import sys
 from pathlib import Path
-from datetime import datetime
 
 PROGRESS_FILE = Path("data/monitor/phi_200_cycles_progress.json")
 METRICS_FILE = Path("data/monitor/phi_200_cycles_metrics.json")
@@ -23,6 +22,7 @@ def check_status() -> None:
     if PID_FILE.exists():
         pid = int(PID_FILE.read_text().strip())
         import os
+
         try:
             # Verificar se processo existe (método portável)
             os.kill(pid, 0)  # Signal 0 apenas verifica existência
@@ -30,6 +30,7 @@ def check_status() -> None:
             # Tentar obter info adicional com psutil se disponível
             try:
                 import psutil
+
                 process = psutil.Process(pid)
                 print(f"   CPU: {process.cpu_percent():.1f}%")
                 print(f"   Memória: {process.memory_info().rss / 1024 / 1024:.1f} MB")
@@ -93,6 +94,6 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n❌ Erro ao verificar status: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
-

@@ -17,7 +17,7 @@ import json
 import logging
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, Set
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
@@ -179,13 +179,9 @@ def compare_with_integration_loop(snapshot: Dict[str, Any]) -> None:
         logger.info(f"  IntegrationLoop captura {len(integ_metrics)} métricas por ciclo")
 
         if len(auto_metrics) >= len(EXPECTED_AUTOPOIETIC_METRICS):
-            logger.info(
-                "  ✅ AutopoieticManager está capturando métricas em padrão adequado"
-            )
+            logger.info("  ✅ AutopoieticManager está capturando métricas em padrão adequado")
         else:
-            logger.warning(
-                "  ⚠️  AutopoieticManager pode não estar capturando todas as métricas"
-            )
+            logger.warning("  ⚠️  AutopoieticManager pode não estar capturando todas as métricas")
 
 
 def main() -> int:

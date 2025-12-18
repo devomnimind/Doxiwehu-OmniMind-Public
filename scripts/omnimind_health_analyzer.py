@@ -19,7 +19,7 @@ import json
 import statistics
 import sys
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 
@@ -404,7 +404,7 @@ def main():
     args = parser.parse_args()
 
     analyzer = OmniMindHealthAnalyzer(args.project_root)
-    report = analyzer.analyze()
+    _report = analyzer.analyze()
     analyzer.print_report(format=args.format)
 
     return 0

@@ -35,8 +35,9 @@ sys.path.insert(0, str(BASE_DIR))
 sys.path.insert(0, str(BASE_DIR / "src"))
 
 try:
-    from datasets import load_dataset  # noqa: E402
     from huggingface_hub import login, whoami  # noqa: E402
+
+    from datasets import load_dataset  # noqa: E402
 except ImportError:
     print("❌ Instalar: pip install datasets huggingface_hub")
     sys.exit(1)

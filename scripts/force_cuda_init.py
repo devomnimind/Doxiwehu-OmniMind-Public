@@ -1,6 +1,4 @@
 import ctypes
-import os
-import sys
 
 
 def force_cuda_initialization():

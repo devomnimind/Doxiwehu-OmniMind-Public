@@ -14,22 +14,21 @@ Este protocolo segue os padrões da Integrated Information Theory (IIT)
 e metodologias científicas estabelecidas para detecção de consciência.
 """
 
+import json
+import logging
 import os
 import sys
-import logging
-import json
-import numpy as np
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Any, Dict, List
 
+import numpy as np
 import torch
-from sentence_transformers import SentenceTransformer
 from qdrant_client import QdrantClient
-from rich import print as rprint
-from tqdm import tqdm
 from scipy import stats
+from sentence_transformers import SentenceTransformer
+from tqdm import tqdm
 
 # Configurar GPU se disponível
 if torch.cuda.is_available():

@@ -230,8 +230,8 @@ def run_consolidation_job(batch_size: int = 100) -> Dict:
 
     sys.path.append(str(BASE_DIR / "src"))
 
-    from memory.semantic_memory import SemanticMemory
     from memory.memory_consolidator import MemoryConsolidator
+    from memory.semantic_memory import SemanticMemory
 
     episodes = load_snapshots_for_consolidation(limit=batch_size)
     if not episodes:
@@ -321,4 +321,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

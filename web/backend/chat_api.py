@@ -153,11 +153,15 @@ async def _call_llm_for_chat(message: str, system_prompt: str, context: Dict[str
         # Use Ollama via llm_router
         llm_router = get_llm_router()
         # Build prompt from system_prompt and user_input
-        full_prompt = f"{system_prompt}\n\nUser: {message}\n\nContext: {context}\n\nAssistant:"
+        full_prompt = f"{system_prompt}\n\nUser: {message}\n" f"\nContext: {context}\n\nAssistant:"
         response_obj = await llm_router.invoke(full_prompt)
 
         if response_obj.success:
-            return response_obj.text.strip() if response_obj.text else "Desculpe, não consegui gerar uma resposta."
+            return (
+                response_obj.text.strip()
+                if response_obj.text
+                else "Desculpe, não consegui gerar uma resposta."
+            )
         else:
             raise Exception(response_obj.error or "LLM invocation failed")
 
@@ -175,11 +179,17 @@ def _generate_fallback_response(message: str, context: Dict[str, Any]) -> str:
     if any(word in message_lower for word in ["status", "como", "está"]):
         daemon = "✅ ativo" if context.get("daemon_running") else "❌ inativo"
         tasks = context.get("task_count", 0)
-        return f"O sistema está funcionando bem! Daemon: {daemon}, Tarefas: {tasks}. O que você gostaria de fazer?"
+        return (
+            f"O sistema está funcionando bem! Daemon: {daemon},"
+            f" Tarefas: {tasks}. O que você gostaria de fazer?"
+        )
 
     elif any(word in message_lower for word in ["tarefas", "tasks", "listar"]):
         tasks = context.get("task_count", 0)
-        return f"Você tem {tasks} tarefas ativas. Deseja criar uma nova tarefa ou verificar uma existente?"
+        return (
+            f"Você tem {tasks} tarefas ativas. "
+            f"Deseja criar uma nova tarefa ou verificar uma existente?"
+        )
 
     elif any(
         word in message_lower for word in ["consciência", "phi", "consciousness", "ici", "prs"]

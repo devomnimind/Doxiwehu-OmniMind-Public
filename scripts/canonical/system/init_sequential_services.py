@@ -9,14 +9,11 @@ import asyncio
 import json
 import logging
 import os
-import subprocess
-import sys
-import time
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
@@ -444,7 +441,7 @@ def main():
     asyncio.set_event_loop(loop)
 
     try:
-        results = loop.run_until_complete(initializer.initialize_all())
+        _results = loop.run_until_complete(initializer.initialize_all())
         initializer.print_summary()
         initializer.export_results(f"{project_root}/logs/init_results.json")
     finally:

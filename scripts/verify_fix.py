@@ -1,5 +1,4 @@
 import os
-import sys
 
 # Try Lazy Loading trick
 os.environ["CUDA_MODULE_LOADING"] = "LAZY"

@@ -21,15 +21,17 @@ sys.path.insert(0, str(BASE_DIR))
 sys.path.insert(0, str(BASE_DIR / "src"))
 
 try:
-    from datasets import load_from_disk  # noqa: E402
     from sentence_transformers import SentenceTransformer  # noqa: E402
+
+    from datasets import load_from_disk  # noqa: E402
 except ImportError:
     print("❌ Instalar: pip install datasets sentence-transformers")
     sys.exit(1)
 
+from datetime import datetime, timezone  # noqa: E402
+
 # Phase 24 integration
 from memory.semantic_memory_layer import get_semantic_memory  # noqa: E402
-from datetime import datetime, timezone  # noqa: E402
 
 
 class PhiDatasetLoader:

@@ -223,7 +223,6 @@ class DesiringMachine(ABC):
     @abstractmethod
     def get_desire_description(self) -> str:
         """Qual é o desejo essencial desta máquina?"""
-        pass
 
 
 class QuantumDesiringMachine(DesiringMachine):

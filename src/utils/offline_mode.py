@@ -191,6 +191,5 @@ def resolve_sentence_transformer_name(short_name: str) -> str:
 
     # Return mapped name if available, otherwise return original
     result = name_mapping.get(short_name, short_name)
-    logger.debug(f"🔍 Model name: {short_name} → {result} "
-                 f"(not found in local cache)")
+    logger.debug(f"🔍 Model name: {short_name} → {result} " f"(not found in local cache)")
     return result

@@ -9,13 +9,11 @@ fixtures, operationality patterns, and complete categorization.
 Gera: COMPLETE_TEST_SUITE_DETAILED_REPORT.md (Documento Extenso)
 """
 
-import os
 import ast
-import json
-from pathlib import Path
-from collections import defaultdict
-from typing import Dict, List, Set, Tuple, Any
 import re
+from collections import defaultdict
+from pathlib import Path
+from typing import Any, Dict, List
 
 
 class DetailedTestAnalyzer(ast.NodeVisitor):
@@ -322,11 +320,11 @@ def generate_detailed_report(data: Dict[str, Any]) -> str:
     report = f"""# 📚 COMPLETE DETAILED TEST SUITE ANALYSIS
 ## Comprehensive & Extensible Documentation
 
-**Analysis Date:** 2025-12-02  
-**Total Files:** {data['total_files']}  
-**Total Test Functions:** {data['total_tests']}  
-**Total Test Classes:** {data['total_classes']}  
-**Total Fixtures:** {data['total_fixtures']}  
+**Analysis Date:** 2025-12-02
+**Total Files:** {data['total_files']}
+**Total Test Functions:** {data['total_tests']}
+**Total Test Classes:** {data['total_classes']}
+**Total Fixtures:** {data['total_fixtures']}
 
 ---
 
@@ -429,7 +427,7 @@ def generate_detailed_report(data: Dict[str, Any]) -> str:
     report += "\n\n## Test Infrastructure (Fixtures)\n\n"
     report += "### Fixtures by Scope\n\n"
 
-    total_fixtures = sum(len(v) for v in data["fixtures_by_scope"].values())
+    _total_fixtures = sum(len(v) for v in data["fixtures_by_scope"].values())
     for scope in ["function", "class", "module", "session"]:
         if scope in data["fixtures_by_scope"]:
             fixtures = data["fixtures_by_scope"][scope]

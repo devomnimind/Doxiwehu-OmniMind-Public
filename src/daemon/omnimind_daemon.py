@@ -642,8 +642,9 @@ def create_default_tasks() -> List[DaemonTask]:
         DaemonTask(
             task_id="autopoietic_cycle",
             name="Autopoietic Cycle",
-            description="Execute automatic autopoietic evolution cycle when system is healthy",
-            priority=TaskPriority.MEDIUM,  # AJUSTE: Mudou de LOW para MEDIUM para executar quando idle
+            description=("Execute automatic autopoietic evolution cycle " "when system is healthy"),
+            priority=TaskPriority.MEDIUM,  # AJUSTE: Mudou de LOW para MEDIUM
+            # para executar quando idle
             execute_fn=run_autopoietic_cycle,
             repeat_interval=timedelta(hours=2),  # AJUSTE: A cada 2 horas (antes 4)
         )

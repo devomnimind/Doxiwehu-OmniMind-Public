@@ -11,9 +11,7 @@ import logging
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List
-
-import numpy as np
+from typing import Any, Dict
 
 # Configurar logging
 logging.basicConfig(
@@ -54,13 +52,15 @@ async def test_phase5_isolated() -> Dict[str, Any]:
                     "beta_emotional_charge": metadata.get("beta_emotional_charge"),
                 }
 
-        results.append({
-            "cycle": cycle,
-            "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
-            "bion_processed": bion_processed,
-            "metadata": metadata_info,
-            "modules_executed": result.modules_executed,
-        })
+        results.append(
+            {
+                "cycle": cycle,
+                "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
+                "bion_processed": bion_processed,
+                "metadata": metadata_info,
+                "modules_executed": result.modules_executed,
+            }
+        )
 
         if cycle % 5 == 0:
             print(f"  ✅ Ciclo {cycle}/10 concluído")
@@ -109,13 +109,15 @@ async def test_phase6_isolated() -> Dict[str, Any]:
                     "emotional_signature": metadata.get("emotional_signature"),
                 }
 
-        results.append({
-            "cycle": cycle,
-            "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
-            "lacan_processed": lacan_processed,
-            "discourse": discourse_info,
-            "modules_executed": result.modules_executed,
-        })
+        results.append(
+            {
+                "cycle": cycle,
+                "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
+                "lacan_processed": lacan_processed,
+                "discourse": discourse_info,
+                "modules_executed": result.modules_executed,
+            }
+        )
 
         if cycle % 5 == 0:
             print(f"  ✅ Ciclo {cycle}/10 concluído")
@@ -164,13 +166,15 @@ async def test_phase5_6_combined() -> Dict[str, Any]:
             metadata = narrative_history[0].metadata or {}
             lacan_processed = metadata.get("processed_by") == "lacanian_discourse_analyzer"
 
-        results.append({
-            "cycle": cycle,
-            "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
-            "bion_processed": bion_processed,
-            "lacan_processed": lacan_processed,
-            "modules_executed": result.modules_executed,
-        })
+        results.append(
+            {
+                "cycle": cycle,
+                "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
+                "bion_processed": bion_processed,
+                "lacan_processed": lacan_processed,
+                "modules_executed": result.modules_executed,
+            }
+        )
 
         if cycle % 5 == 0:
             print(f"  ✅ Ciclo {cycle}/10 concluído")
@@ -221,12 +225,14 @@ async def test_full_system() -> Dict[str, Any]:
             metadata = narrative_history[0].metadata or {}
             lacan_processed = metadata.get("processed_by") == "lacanian_discourse_analyzer"
 
-        results.append({
-            "cycle": cycle,
-            "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
-            "bion_processed": bion_processed,
-            "lacan_processed": lacan_processed,
-        })
+        results.append(
+            {
+                "cycle": cycle,
+                "phi": result.phi_estimate if hasattr(result, "phi_estimate") else 0.0,
+                "bion_processed": bion_processed,
+                "lacan_processed": lacan_processed,
+            }
+        )
 
         if cycle % 10 == 0:
             print(f"  ✅ Ciclo {cycle}/50 concluído")
@@ -298,10 +304,14 @@ async def main():
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_file, "w") as f:
-        json.dump({
-            "timestamp": datetime.now().isoformat(),
-            "tests": all_results,
-        }, f, indent=2)
+        json.dump(
+            {
+                "timestamp": datetime.now().isoformat(),
+                "tests": all_results,
+            },
+            f,
+            indent=2,
+        )
 
     print("\n" + "=" * 80)
     print("📊 RESUMO FINAL")
@@ -312,9 +322,13 @@ async def main():
             print(f"❌ {test_name}: ERRO - {result['error']}")
         else:
             if "bion_processed_count" in result:
-                print(f"✅ {test_name}: Bion={result['bion_processed_count']}/{result.get('cycles', 0)} ciclos")
+                print(
+                    f"✅ {test_name}: Bion={result['bion_processed_count']}/{result.get('cycles', 0)} ciclos"
+                )
             if "lacan_processed_count" in result:
-                print(f"✅ {test_name}: Lacan={result['lacan_processed_count']}/{result.get('cycles', 0)} ciclos")
+                print(
+                    f"✅ {test_name}: Lacan={result['lacan_processed_count']}/{result.get('cycles', 0)} ciclos"
+                )
             if "phi_avg" in result:
                 print(f"   Φ médio: {result['phi_avg']:.6f} NATS")
 
@@ -324,4 +338,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-

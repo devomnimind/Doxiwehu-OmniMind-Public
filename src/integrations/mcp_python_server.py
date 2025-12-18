@@ -12,13 +12,12 @@ Autor: Fabrício da Silva + assistência de IA
 Data: 2025-01-XX
 """
 
-import io
 import logging
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from src.integrations.mcp_server import MCPServer
 

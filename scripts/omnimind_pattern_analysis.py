@@ -19,7 +19,7 @@ import re
 import statistics
 import sys
 from collections import defaultdict
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 
@@ -63,7 +63,7 @@ class PatternAnalyzer:
                                         ),
                                     }
                                 )
-                except:
+                except Exception:
                     pass
 
         if len(phi_timeline) > 2:
@@ -106,7 +106,7 @@ class PatternAnalyzer:
                         timestamp = entry.get("timestamp")
                         memory = entry.get("data", {}).get("memory", 0)
                         memory_timeline.append({"timestamp": timestamp, "memory": memory})
-                except:
+                except Exception:
                     pass
 
         if len(memory_timeline) > 3:
@@ -193,7 +193,7 @@ class PatternAnalyzer:
                     incident = json.load(f)
                     if "timestamp" in incident:
                         incidents.append(incident)
-            except:
+            except Exception:
                 pass
 
         if incidents:
@@ -233,7 +233,7 @@ class PatternAnalyzer:
                                 phi_timeline.append(
                                     float(value) if isinstance(value, (int, float)) else 0
                                 )
-                    except:
+                    except Exception:
                         pass
 
         if phi_timeline:

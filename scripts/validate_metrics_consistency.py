@@ -7,14 +7,11 @@ valida métricas de consciência, verifica sessões e treinamento.
 
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-
-import numpy as np
+from typing import Any, Dict, List
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -95,7 +92,7 @@ class MetricsValidator:
             sys.path.insert(0, str(self.project_root))
             from src.consciousness.integration_loop import IntegrationLoop
 
-            loop = IntegrationLoop(enable_logging=False)
+            _loop = IntegrationLoop(enable_logging=False)
             # Não executar ciclo completo, apenas verificar se existe
             self.log_pass("IntegrationLoop importado com sucesso")
         except Exception as e:

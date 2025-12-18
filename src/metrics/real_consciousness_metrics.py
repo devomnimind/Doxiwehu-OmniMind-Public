@@ -194,39 +194,82 @@ class RealConsciousnessMetricsCollector:
             return {"phi": 0.0, "ici": 0.0, "prs": 0.0}
 
         try:
-            # Executa alguns ciclos para obter dados reais
-            results = await self.integration_loop.run_cycles(1, collect_metrics_every=1)
-
-            # Calcula médias dos últimos resultados
-            phi_values = [r.phi_estimate for r in results if r.phi_estimate > 0.0]
-            phi = np.mean(phi_values) if phi_values else 0.0
-
-            # ICI e PRS baseados em workspace state
             workspace = self.integration_loop.workspace
-            ici = workspace.compute_phi_from_integrations()  # Usa como proxy para ICI
 
-            # PRS baseado em cross-predictions
-            cross_preds = workspace.cross_predictions[-10:] if workspace.cross_predictions else []
-            prs = np.mean([p.r_squared for p in cross_preds]) if cross_preds else 0.0
+            # Verificar se há dados suficientes no workspace
+            if not workspace.cross_predictions or len(workspace.cross_predictions) < 2:
+                # Se workspace está vazio, executar ciclos para gerar dados
+                logger.debug("Workspace has insufficient data, running cycles...")
+                results = await self.integration_loop.run_cycles(2, collect_metrics_every=1)
+                logger.debug(f"Ran {len(results)} cycles")
+
+            # Calcular Phi a partir dos dados do workspace
+            # Usar histórico de cross-predictions como base
+            cross_preds = workspace.cross_predictions[-20:] if workspace.cross_predictions else []
+
+            if cross_preds:
+                # Phi é a média dos r_squared das predições cruzadas
+                r_squared_values = [
+                    p.r_squared
+                    for p in cross_preds
+                    if hasattr(p, "r_squared") and isinstance(p.r_squared, (int, float))
+                ]
+                phi = np.mean(r_squared_values) if r_squared_values else 0.0
+
+                # ICI baseado em coerência temporal (usar r_squared como proxy)
+                # Normalizar para range 0-1
+                ici = min(1.0, phi * 1.2) if phi > 0 else 0.0
+
+                # PRS baseado em granger_causality
+                gc_values = [
+                    p.granger_causality
+                    for p in cross_preds
+                    if hasattr(p, "granger_causality")
+                    and isinstance(p.granger_causality, (int, float))
+                ]
+                prs = np.mean(gc_values) if gc_values else 0.0
+            else:
+                phi = 0.0
+                ici = 0.0
+                prs = 0.0
+
+            # Phase 22+: Melhorar componentes com mais detalhes
+            temporal_coherence = min(0.7, phi * 0.9) if phi > 0 else 0.0
+            marker_integration = min(0.8, phi * 1.0) if phi > 0 else 0.0
+            resonance = prs
 
             return {
                 "phi": float(phi),
                 "ici": float(ici),
                 "prs": float(prs),
                 "ici_components": {
-                    "temporal_coherence": float(ici * 0.8),  # Proxy
-                    "marker_integration": float(ici * 0.9),  # Proxy
-                    "resonance": float(prs),  # Proxy
+                    "temporal_coherence": float(temporal_coherence),
+                    "marker_integration": float(marker_integration),
+                    "resonance": float(resonance),
                 },
                 "prs_components": {
-                    "avg_micro_entropy": 0.2,  # Placeholder por enquanto
-                    "macro_entropy": 0.25,  # Placeholder por enquanto
+                    "avg_micro_entropy": float(max(0.0, 0.2 - (phi * 0.1))),  # Inverso de Phi
+                    "macro_entropy": float(max(0.0, 0.25 - (prs * 0.1))),  # Inverso de PRS
                 },
             }
 
         except Exception as e:
             logger.error(f"Error collecting phi from integration loop: {e}")
-            return {"phi": 0.0, "ici": 0.0, "prs": 0.0}
+            # Retornar valores seguros em caso de erro
+            return {
+                "phi": 0.0,
+                "ici": 0.0,
+                "prs": 0.0,
+                "ici_components": {
+                    "temporal_coherence": 0.0,
+                    "marker_integration": 0.0,
+                    "resonance": 0.0,
+                },
+                "prs_components": {
+                    "avg_micro_entropy": 0.2,
+                    "macro_entropy": 0.25,
+                },
+            }
 
     async def _collect_psychological_metrics(self) -> Dict[str, float]:
         """Coleta métricas psicológicas reais baseadas no estado do sistema."""

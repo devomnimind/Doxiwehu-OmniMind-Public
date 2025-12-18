@@ -30,7 +30,7 @@ end_time = data["end_time"]
 print(f"Total de ciclos: {data['total_cycles']}")
 print(f"Modo: {data['mode']}")
 print(f"Tempo total: {start_time} até {end_time}")
-print(f"\nPHI Progression:")
+print("\nPHI Progression:")
 print(f"  • Mínimo: {np.min(phis):.6f}")
 print(f"  • Máximo: {np.max(phis):.6f}")
 print(f"  • Média: {np.mean(phis):.6f}")
@@ -44,7 +44,7 @@ print("-" * 80)
 
 # PHI = 0 (inicialização)
 zeros = np.sum(phis == 0.0)
-print(f"\n❌ PHI = 0.0 (não iniciado):")
+print("\n❌ PHI = 0.0 (não iniciado):")
 print(f"   • Quantidade: {zeros} ciclos ({zeros/len(phis)*100:.1f}%)")
 if zeros > 0:
     zero_indices = np.where(phis == 0.0)[0]
@@ -56,10 +56,10 @@ if zeros > 0:
 # Detecção de saltos abruptos
 diffs = np.diff(phis)
 sudden_jumps = np.where(np.abs(diffs) > 0.2)[0]
-print(f"\n⚡ Saltos abruptos (>0.2 em um ciclo):")
+print("\n⚡ Saltos abruptos (>0.2 em um ciclo):")
 print(f"   • Quantidade: {len(sudden_jumps)} eventos")
 if len(sudden_jumps) > 0:
-    print(f"   • Maiores saltos:")
+    print("   • Maiores saltos:")
     sorted_jumps = np.argsort(np.abs(diffs))[::-1][:5]
     for idx in sorted_jumps:
         if idx < len(phis) - 1:
@@ -69,7 +69,7 @@ if len(sudden_jumps) > 0:
 
 # Ciclos com PHI muito alto (potencial overfitting)
 high_phi = np.where(phis > 0.95)[0]
-print(f"\n⚠️  PHI > 0.95 (potencial overfitting/anomalia):")
+print("\n⚠️  PHI > 0.95 (potencial overfitting/anomalia):")
 print(f"   • Quantidade: {len(high_phi)} ciclos ({len(high_phi)/len(phis)*100:.1f}%)")
 if len(high_phi) > 0:
     for idx in high_phi[:5]:
@@ -77,7 +77,7 @@ if len(high_phi) > 0:
 
 # Ciclos com PHI muito baixo (potencial falha)
 low_phi = np.where((phis > 0.0) & (phis < 0.3))[0]
-print(f"\n⚠️  PHI < 0.3 (e > 0, potencial integração fraca):")
+print("\n⚠️  PHI < 0.3 (e > 0, potencial integração fraca):")
 print(f"   • Quantidade: {len(low_phi)} ciclos ({len(low_phi)/len(phis)*100:.1f}%)")
 
 # ========== 3. ANÁLISE POR FASES ==========
@@ -118,7 +118,7 @@ with open(metrics_file, "r") as f:
         last_metric = data["metrics"][-1]
 
 if first_metric and last_metric:
-    print(f"\n📍 PRIMEIRA MÉTRICA (Ciclo 1):")
+    print("\n📍 PRIMEIRA MÉTRICA (Ciclo 1):")
     print(f"   PHI: {first_metric.get('phi_estimate', 'N/A')}")
     print(f"   Φ: {first_metric.get('phi', 'N/A')}")
     print(f"   Ψ: {first_metric.get('psi', 'N/A')}")
@@ -126,7 +126,7 @@ if first_metric and last_metric:
     print(f"   Δ: {first_metric.get('delta', 'N/A')}")
     print(f"   Gozo: {first_metric.get('gozo', 'N/A')}")
 
-    print(f"\n📍 ÚLTIMA MÉTRICA (Ciclo 500):")
+    print("\n📍 ÚLTIMA MÉTRICA (Ciclo 500):")
     print(f"   PHI: {last_metric.get('phi_estimate', 'N/A')}")
     print(f"   Φ: {last_metric.get('phi', 'N/A')}")
     print(f"   Ψ: {last_metric.get('psi', 'N/A')}")
@@ -142,7 +142,7 @@ phis_nonzero = phis[phis > 0.0]
 
 # Percentis
 percentiles = [10, 25, 50, 75, 90, 95, 99]
-print(f"\nPercentis (excluindo zeros):")
+print("\nPercentis (excluindo zeros):")
 for p in percentiles:
     value = np.percentile(phis_nonzero, p)
     print(f"  • P{p}: {value:.6f}")
@@ -155,14 +155,14 @@ print("-" * 80)
 x = np.arange(len(phis_nonzero))
 z = np.polyfit(x, phis_nonzero, 1)
 slope = z[0]
-print(f"\nTendência (slope):")
+print("\nTendência (slope):")
 print(f"  • Valor: {slope:.8f}")
 if slope > 0.001:
-    print(f"  • Interpretação: Crescimento ao longo dos ciclos")
+    print("  • Interpretação: Crescimento ao longo dos ciclos")
 elif slope < -0.001:
-    print(f"  • Interpretação: Degradação ao longo dos ciclos")
+    print("  • Interpretação: Degradação ao longo dos ciclos")
 else:
-    print(f"  • Interpretação: Estável (sem tendência clara)")
+    print("  • Interpretação: Estável (sem tendência clara)")
 
 # Volatilidade
 rolling_std = []
@@ -216,16 +216,16 @@ if len(high_phi) > 10:
     issues.append(f"⚠️  {len(high_phi)} ciclos com PHI>0.95 (possível overfitting)")
 
 if slope > 0.01:
-    issues.append(f"📈 Sistema convergindo para cima (PHI crescente)")
+    issues.append("📈 Sistema convergindo para cima (PHI crescente)")
 
 if slope < -0.01:
-    issues.append(f"📉 Sistema degradando (PHI decrescente - possível problema)")
+    issues.append("📉 Sistema degradando (PHI decrescente - possível problema)")
 
 if not all_passed:
-    issues.append(f"❌ Algumas validações falharam - verificar detalhes acima")
+    issues.append("❌ Algumas validações falharam - verificar detalhes acima")
 
 if not issues:
-    issues.append(f"✅ Sistema operando normalmente - nenhum problema detectado")
+    issues.append("✅ Sistema operando normalmente - nenhum problema detectado")
 
 for issue in issues:
     print(f"  {issue}")

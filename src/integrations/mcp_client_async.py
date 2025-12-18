@@ -24,8 +24,8 @@ else:
         httpx = None
 
 from src.integrations.mcp_connection_handler import (
-    MCPConnectionHandler,
     ConnectionConfig,
+    MCPConnectionHandler,
     MCPPipeError,
 )
 

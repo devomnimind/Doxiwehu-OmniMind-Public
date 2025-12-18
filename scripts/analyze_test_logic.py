@@ -18,10 +18,9 @@ Regras:
    - Devem rodar diariamente
 """
 
-import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Set
+from typing import Dict
 
 # Módulos críticos que medem métricas
 METRIC_TESTS = {
@@ -136,7 +135,9 @@ def main():
     # - OUTRO ✅
     # - NÃO incluir: MÉTRICA_REAL_CHAOS, DESTRÓI_SERVIDOR
 
-    fast_should_include = len(results["MÉTRICA_REAL_SAFE"]) + len(results["MOCK"]) + len(results["OUTRO"])
+    fast_should_include = (
+        len(results["MÉTRICA_REAL_SAFE"]) + len(results["MOCK"]) + len(results["OUTRO"])
+    )
     fast_should_exclude = len(results["MÉTRICA_REAL_CHAOS"]) + len(results["DESTRÓI_SERVIDOR"])
 
     print(f"✅ run_tests_fast.sh (diário) deve incluir: {fast_should_include} arquivos")
@@ -167,12 +168,11 @@ def main():
         print("\n✅ Todos os testes de métrica têm @pytest.mark.real")
 
     # Testes que destroem servidor sem @pytest.mark.chaos
-    destroys_without_chaos = [
-        f for f in all_files
-        if f["destroys_server"] and not f["has_chaos"]
-    ]
+    destroys_without_chaos = [f for f in all_files if f["destroys_server"] and not f["has_chaos"]]
     if destroys_without_chaos:
-        print(f"\n❌ Testes que destroem servidor SEM @pytest.mark.chaos: {len(destroys_without_chaos)}")
+        print(
+            f"\n❌ Testes que destroem servidor SEM @pytest.mark.chaos: {len(destroys_without_chaos)}"
+        )
         for test in destroys_without_chaos[:5]:
             print(f"   - {Path(test['file']).name}")
     else:
@@ -196,4 +196,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -3,7 +3,6 @@
 Testes de Integração Tier 1: Memory + Thinking + Context
 Valida que MCPs críticos funcionam juntos corretamente
 """
-
 import json
 import sys
 from pathlib import Path
@@ -14,19 +13,21 @@ import pytest
 PROJECT_ROOT = Path(__file__).parent.parent  # /home/fahbrain/projects/omnimind
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from src.integrations.mcp_context_server import ContextMCPServer
+from src.integrations.mcp_memory_server import MemoryMCPServer
+from src.integrations.mcp_thinking_server import ThinkingMCPServer
+
 
 class TestMemoryIntegration:
     """Testes do Memory Server."""
 
     def test_memory_server_imports(self):
         """Testa que MemoryMCPServer pode ser importado."""
-        from src.integrations.mcp_memory_server import MemoryMCPServer
 
         assert MemoryMCPServer is not None
 
     def test_memory_server_tools_defined(self):
         """Testa que ferramentas de memória estão definidas."""
-        from src.integrations.mcp_memory_server import MemoryMCPServer
 
         server = MemoryMCPServer()
         tools = server.get_tools()
@@ -45,7 +46,6 @@ class TestMemoryIntegration:
 
     def test_memory_configuration(self):
         """Testa configuração de memória."""
-        from src.integrations.mcp_memory_server import MemoryMCPServer
 
         server = MemoryMCPServer()
         config = server.config
@@ -60,13 +60,11 @@ class TestThinkingIntegration:
 
     def test_thinking_server_imports(self):
         """Testa que ThinkingMCPServer pode ser importado."""
-        from src.integrations.mcp_thinking_server import ThinkingMCPServer
 
         assert ThinkingMCPServer is not None
 
     def test_thinking_server_tools_defined(self):
         """Testa que ferramentas de pensamento estão definidas."""
-        from src.integrations.mcp_thinking_server import ThinkingMCPServer
 
         server = ThinkingMCPServer()
         tools = server.get_tools()
@@ -85,7 +83,6 @@ class TestThinkingIntegration:
 
     def test_thinking_configuration(self):
         """Testa configuração de pensamento."""
-        from src.integrations.mcp_thinking_server import ThinkingMCPServer
 
         server = ThinkingMCPServer()
         config = server.config
@@ -100,13 +97,11 @@ class TestContextIntegration:
 
     def test_context_server_imports(self):
         """Testa que ContextMCPServer pode ser importado."""
-        from src.integrations.mcp_context_server import ContextMCPServer
 
         assert ContextMCPServer is not None
 
     def test_context_server_tools_defined(self):
         """Testa que ferramentas de contexto estão definidas."""
-        from src.integrations.mcp_context_server import ContextMCPServer
 
         server = ContextMCPServer()
         tools = server.get_tools()
@@ -124,7 +119,6 @@ class TestContextIntegration:
 
     def test_context_configuration(self):
         """Testa configuração de contexto."""
-        from src.integrations.mcp_context_server import ContextMCPServer
 
         server = ContextMCPServer()
         config = server.config
@@ -139,9 +133,6 @@ class TestMCPInteroperability:
 
     def test_all_servers_have_health_endpoint(self):
         """Testa que todos servidores têm endpoint de health."""
-        from src.integrations.mcp_context_server import ContextMCPServer
-        from src.integrations.mcp_memory_server import MemoryMCPServer
-        from src.integrations.mcp_thinking_server import ThinkingMCPServer
 
         servers = [MemoryMCPServer(), ThinkingMCPServer(), ContextMCPServer()]
 
@@ -152,9 +143,6 @@ class TestMCPInteroperability:
 
     def test_all_servers_support_mcp_protocol(self):
         """Testa que todos servidores suportam protocolo MCP."""
-        from src.integrations.mcp_context_server import ContextMCPServer
-        from src.integrations.mcp_memory_server import MemoryMCPServer
-        from src.integrations.mcp_thinking_server import ThinkingMCPServer
 
         servers = [MemoryMCPServer(), ThinkingMCPServer(), ContextMCPServer()]
 
@@ -168,9 +156,6 @@ class TestMCPInteroperability:
 
     def test_configuration_consistency(self):
         """Testa que configurações são consistentes."""
-        from src.integrations.mcp_context_server import ContextMCPServer
-        from src.integrations.mcp_memory_server import MemoryMCPServer
-        from src.integrations.mcp_thinking_server import ThinkingMCPServer
 
         servers = {
             "memory": MemoryMCPServer(),

@@ -4,13 +4,13 @@ Monitor GPU durante testes de consciência.
 Captura métricas em tempo real: GPU %, memória, temperatura, potência.
 """
 
+import json
 import subprocess
+import sys
 import threading
 import time
-import json
 from datetime import datetime
 from pathlib import Path
-import sys
 
 
 class GPUMonitor:

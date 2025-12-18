@@ -25,8 +25,6 @@ logger = logging.getLogger(__name__)
 class SandboxError(Exception):
     """Raised when sandbox execution fails."""
 
-    pass
-
 
 class AutopoieticSandbox:
     """Secure sandbox for executing autopoietic components.

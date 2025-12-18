@@ -68,7 +68,7 @@ class MetricsCollector:
             result = sock.connect_ex(("127.0.0.1", port))
             sock.close()
             return result == 0
-        except:
+        except Exception:
             return False
 
     def collect_critical_metrics(self):
@@ -148,11 +148,11 @@ class MetricsCollector:
                                 value = details.get("value")
                                 if isinstance(value, (int, float)):
                                     phi_value = float(value)
-                    except:
+                    except Exception:
                         pass
 
             return phi_value
-        except:
+        except Exception:
             return 0.0
 
     def _save_metric(self, metric):
@@ -216,7 +216,7 @@ class MetricsCollector:
                 mtype = metric.get("type")
                 timestamp = metric.get("timestamp", "")[-8:]
                 print(f"  [{timestamp}] {mtype}: {metric.get('data', {})}")
-            except:
+            except Exception:
                 pass
 
         print("=" * 80 + "\n")

@@ -345,7 +345,6 @@ def pytest_configure(config):
     # Registrar hook para limpar estado de cor entre testes
     def reset_color_state():
         """Reset color state após cada teste."""
-        pass
 
     config.pluginmanager.register(
         type(

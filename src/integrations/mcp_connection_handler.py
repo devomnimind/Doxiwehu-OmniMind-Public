@@ -79,8 +79,6 @@ class MCPPipeError(Exception):
 class MCPConnectionError(Exception):
     """Erro geral de conexão MCP."""
 
-    pass
-
 
 class MCPConnectionHandler:
     """Handler com tratamento específico para Broken pipe e preservação de Φ.

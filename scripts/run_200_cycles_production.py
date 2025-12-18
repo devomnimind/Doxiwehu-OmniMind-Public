@@ -20,7 +20,6 @@ sys.path.insert(0, str(project_root))
 # Garantir que estamos no diretório correto
 os.chdir(project_root)
 
-from src.backup.consciousness_snapshot import ConsciousnessSnapshotManager
 from src.consciousness.integration_loop import IntegrationLoop
 
 # Configuração
@@ -296,7 +295,7 @@ async def run_cycles() -> None:
             # BONUS: Adicionar delta_progression
             if not hasattr(cycle_metrics, "delta_progression"):
                 try:
-                    delta_val = cycle_metrics.get("delta", 0.5)
+                    _delta_val = cycle_metrics.get("delta", 0.5)
                     # Será agregado depois no final_data
                 except:
                     pass

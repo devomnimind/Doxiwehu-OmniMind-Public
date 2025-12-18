@@ -110,7 +110,6 @@ for lib_path in cuda_lib_paths:
 if not ld_lib_path:
     os.environ["LD_LIBRARY_PATH"] = "/usr/lib/x86_64-linux-gnu"
 
-from src.backup.consciousness_snapshot import ConsciousnessSnapshotManager
 from src.consciousness.integration_loop import IntegrationLoop
 
 # Opções de ciclos disponíveis

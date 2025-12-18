@@ -9,7 +9,7 @@ Data: 2025-12-08
 import os
 import re
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 PROJECT_ROOT = Path(__file__).parent.parent
 
@@ -22,15 +22,15 @@ def extract_excluded_files() -> List[str]:
         content = f.read()
 
     # Extrair lista excluded_files
-    match = re.search(r'excluded_files = \[(.*?)\]', content, re.DOTALL)
+    match = re.search(r"excluded_files = \[(.*?)\]", content, re.DOTALL)
     if not match:
         return []
 
     excluded_str = match.group(1)
     excluded = []
-    for line in excluded_str.split('\n'):
+    for line in excluded_str.split("\n"):
         line = line.strip()
-        if line and not line.strip().startswith('#'):
+        if line and not line.strip().startswith("#"):
             # Extrair string entre aspas
             match_str = re.search(r'["\']([^"\']+)["\']', line)
             if match_str:
@@ -44,9 +44,9 @@ def find_all_test_files() -> List[str]:
     test_files = []
     for root, dirs, files in os.walk(PROJECT_ROOT / "tests"):
         for file in files:
-            if file.startswith('test_') and file.endswith('.py'):
-                rel_path = os.path.join(root, file).replace(str(PROJECT_ROOT) + '/', '')
-                test_files.append(rel_path.replace('\\', '/'))
+            if file.startswith("test_") and file.endswith(".py"):
+                rel_path = os.path.join(root, file).replace(str(PROJECT_ROOT) + "/", "")
+                test_files.append(rel_path.replace("\\", "/"))
     return sorted(test_files)
 
 
@@ -57,19 +57,29 @@ def analyze_test_file(file_path: str) -> Dict[str, bool]:
     if not full_path.exists():
         return {"exists": False}
 
-    with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
+    with open(full_path, "r", encoding="utf-8", errors="ignore") as f:
         content = f.read()
 
     return {
         "exists": True,
-        "has_mock": bool(re.search(r'\b(mock|patch|MagicMock|Mock|@patch)\b', content, re.IGNORECASE)),
-        "has_real_server": bool(re.search(r'\b(localhost:8000|localhost:3000|requests\.|http://|https://)\b', content)),
-        "has_orchestrator": bool(re.search(r'\borchestrator\b', content, re.IGNORECASE)),
-        "has_backend": bool(re.search(r'\bbackend\b', content, re.IGNORECASE)),
-        "has_fixture_server": bool(re.search(r'\b(omnimind_server|server_fixture|@pytest\.fixture.*server)\b', content, re.IGNORECASE)),
-        "has_integration_name": 'integration' in file_path.lower(),
-        "has_e2e_name": 'e2e' in file_path.lower(),
-        "has_dashboard_name": 'dashboard' in file_path.lower(),
+        "has_mock": bool(
+            re.search(r"\b(mock|patch|MagicMock|Mock|@patch)\b", content, re.IGNORECASE)
+        ),
+        "has_real_server": bool(
+            re.search(r"\b(localhost:8000|localhost:3000|requests\.|http://|https://)\b", content)
+        ),
+        "has_orchestrator": bool(re.search(r"\borchestrator\b", content, re.IGNORECASE)),
+        "has_backend": bool(re.search(r"\bbackend\b", content, re.IGNORECASE)),
+        "has_fixture_server": bool(
+            re.search(
+                r"\b(omnimind_server|server_fixture|@pytest\.fixture.*server)\b",
+                content,
+                re.IGNORECASE,
+            )
+        ),
+        "has_integration_name": "integration" in file_path.lower(),
+        "has_e2e_name": "e2e" in file_path.lower(),
+        "has_dashboard_name": "dashboard" in file_path.lower(),
     }
 
 
@@ -200,4 +210,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

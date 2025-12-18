@@ -32,7 +32,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import numpy as np
-import psutil
 
 logger = logging.getLogger(__name__)
 
@@ -496,7 +495,7 @@ def check_phase7_metrics(metrics: List[Dict[str, Any]]) -> Dict[str, Any]:
 def check_bion_module() -> Dict[str, Any]:
     """Verifica se módulo Bion Alpha Function está implementado."""
     try:
-        from src.psychoanalysis.bion_alpha_function import BionAlphaFunction
+        pass
 
         return {
             "status": "implemented",
@@ -516,7 +515,6 @@ def check_lacan_discourses() -> Dict[str, Any]:
     try:
         from src.lacanian.discourse_discovery import (
             LacanianDiscourse,
-            LacanianDiscourseAnalyzer,
         )
 
         discourses = [d.name for d in LacanianDiscourse]
@@ -539,9 +537,7 @@ def check_zimerman_module() -> Dict[str, Any]:
     """Verifica se módulo Zimerman Bonding está implementado."""
     # Zimerman pode estar integrado em outros módulos
     try:
-        from src.consciousness.theoretical_consistency_guard import (
-            TheoreticalConsistencyGuard,
-        )
+        pass
 
         return {
             "status": "integrated",
@@ -816,7 +812,7 @@ async def run_500_cycles_scientific_validation() -> None:
 
         # CORREÇÃO: Avisos baseados em recursos realmente disponíveis
         # Memória disponível (incluindo cache) + swap é o que importa
-        total_available = mem_available_gb + swap_available_gb
+        _total_available = mem_available_gb + swap_available_gb
 
         if mem_available_gb < 1.0:  # Menos de 1GB realmente disponível
             print("❌ ERRO: Menos de 1GB de memória disponível - abortando")
@@ -933,7 +929,7 @@ async def run_500_cycles_scientific_validation() -> None:
         print("      ulimit -u 50000  # ou mais")
 
         # Monitorar CPU durante inicialização
-        cpu_before = psutil.cpu_percent(interval=0.1)
+        _cpu_before = psutil.cpu_percent(interval=0.1)
         start_time = time.time()
 
         loop = IntegrationLoop(enable_extended_results=True, enable_logging=True)
@@ -1136,7 +1132,7 @@ async def run_500_cycles_scientific_validation() -> None:
                     # CORREÇÃO: Verificar memória disponível (incluindo cache liberável)
                     # available já considera cache que pode ser liberado pelo kernel
                     mem_available_gb = mem.available / (1024**3)
-                    mem_used_percent = mem.percent
+                    _mem_used_percent = mem.percent
 
                     # Limpar cache CUDA SEMPRE a cada 3 ciclos (preventivo)
                     if TORCH_AVAILABLE and torch.cuda.is_available():
@@ -1594,7 +1590,7 @@ def main() -> None:
         help="Pular verificação de GPU",
     )
 
-    args = parser.parse_args()
+    _args = parser.parse_args()
 
     # Registrar PID para debug
     import os

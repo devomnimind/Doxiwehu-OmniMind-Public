@@ -9,9 +9,9 @@ Uso:
   python -m pytest tests/consciousness/ 2>&1 | python scripts/phi_metrics_collector.py
 """
 
-import sys
 import json
 import re
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional

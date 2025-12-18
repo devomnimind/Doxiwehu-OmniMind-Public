@@ -175,8 +175,9 @@ def integrate_dbpedia_to_procedural_layer(
         try:
             rule = convert_triple_to_rule(triple)
             # Create Rule object
-            from knowledge.procedural_layer import Rule
             from datetime import datetime, timezone
+
+            from knowledge.procedural_layer import Rule
 
             rule_obj = Rule(
                 id=rule["name"],

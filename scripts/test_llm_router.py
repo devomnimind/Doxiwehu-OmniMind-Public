@@ -16,12 +16,11 @@ Todos os timeouts foram ajustados para produção baseada em testes reais.
 """
 
 import asyncio
-import time
 import logging
-from typing import Dict, List
-
-import sys
 import os
+import sys
+import time
+from typing import Dict
 
 # Adicionar o diretório pai ao path para importar src
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -39,7 +38,7 @@ async def test_llm_provider(provider_name: str, model_name: str, timeout: int) -
     start_time = time.time()
 
     try:
-        from src.integrations.llm_router import get_llm_router, LLMModelTier
+        from src.integrations.llm_router import LLMModelTier, get_llm_router
 
         router = get_llm_router()
 

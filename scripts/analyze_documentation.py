@@ -13,13 +13,12 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 import re
 from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -211,9 +210,7 @@ class DocumentationAnalyzer:
 
             # Validar README vs código
             if module_info.has_readme:
-                module_info.doc_issues = self._validate_module_readme(
-                    module_info, readme_path
-                )
+                module_info.doc_issues = self._validate_module_readme(module_info, readme_path)
 
             self.modules[module_dir.name] = module_info
 
@@ -231,7 +228,7 @@ class DocumentationAnalyzer:
                 py_content = py_file.read_text(encoding="utf-8", errors="ignore")
                 # Extrair classes e funções principais
                 classes = re.findall(r"^class\s+(\w+)", py_content, re.MULTILINE)
-                functions = re.findall(r"^def\s+(\w+)", py_content, re.MULTILINE)
+                _functions = re.findall(r"^def\s+(\w+)", py_content, re.MULTILINE)
 
                 # Verificar se são mencionadas no README
                 for cls in classes:
@@ -308,9 +305,7 @@ class DocumentationAnalyzer:
                 "archive_candidates": len(self.archive_candidates),
                 "outdated_docs": len(self.outdated_docs),
                 "modules_with_readme": sum(1 for m in self.modules.values() if m.has_readme),
-                "modules_without_readme": sum(
-                    1 for m in self.modules.values() if not m.has_readme
-                ),
+                "modules_without_readme": sum(1 for m in self.modules.values() if not m.has_readme),
             },
             "docs": [
                 {
@@ -398,13 +393,10 @@ def main():
     logger.info(f"✅ Relatório salvo em: {output_path}")
     logger.info(f"   Total de documentos: {report['summary']['total_docs']}")
     logger.info(f"   Candidatos a arquivar: {report['summary']['archive_candidates']}")
-    logger.info(
-        f"   Módulos sem README: {report['summary']['modules_without_readme']}"
-    )
+    logger.info(f"   Módulos sem README: {report['summary']['modules_without_readme']}")
 
     return report
 
 
 if __name__ == "__main__":
     main()
-

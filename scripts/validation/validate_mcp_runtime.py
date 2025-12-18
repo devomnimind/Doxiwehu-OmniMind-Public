@@ -4,13 +4,10 @@ MCP Runtime Validation - Inicia MCPs e valida health checks
 Fase 6 do ciclo: Teste de instâncias reais em execução
 """
 
-import asyncio
-import json
 import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import Optional
 
 import requests
 
@@ -78,7 +75,7 @@ class MCPHealthValidator:
             print(f"      ⚠️  Connection refused (port {port} not listening yet)")
             return False
         except requests.Timeout:
-            print(f"      ⚠️  Health check timeout")
+            print("      ⚠️  Health check timeout")
             return False
         except Exception as e:
             print(f"      ⚠️  Error: {str(e)[:50]}")
@@ -92,10 +89,10 @@ class MCPHealthValidator:
             try:
                 proc.terminate()
                 proc.wait(timeout=5)
-                print(f"      ✅ Processo encerrado")
+                print("      ✅ Processo encerrado")
             except subprocess.TimeoutExpired:
                 proc.kill()
-                print(f"      ✅ Processo forçadamente encerrado")
+                print("      ✅ Processo forçadamente encerrado")
             except Exception as e:
                 print(f"      ⚠️  Error: {e}")
 
