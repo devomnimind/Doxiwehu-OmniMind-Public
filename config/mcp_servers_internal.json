@@ -33,7 +33,7 @@
       "priority": "critical",
       "tier": 1,
       "port": 4321,
-      "command": "python",
+      "command": ".venv/bin/python",
       "args": [
         "-m",
         "src.integrations.mcp_memory_server"
@@ -97,7 +97,7 @@
       "priority": "critical",
       "tier": 1,
       "port": 4322,
-      "command": "python",
+      "command": ".venv/bin/python",
       "args": [
         "-m",
         "src.integrations.mcp_thinking_server"
@@ -140,7 +140,7 @@
       "priority": "high",
       "tier": 2,
       "port": 4323,
-      "command": "python",
+      "command": ".venv/bin/python",
       "args": [
         "-m",
         "src.integrations.mcp_context_server"

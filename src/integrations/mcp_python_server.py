@@ -57,8 +57,8 @@ class PythonMCPServer(MCPServer):
         self.allow_package_install = allow_package_install
         self.timeout = timeout
 
-        # Registrar métodos MCP
-        self._methods.update(
+        # Registrar métodos MCP (preserva initialize())
+        self.register_methods(
             {
                 "execute_code": self.execute_code,
                 "install_package": self.install_package,

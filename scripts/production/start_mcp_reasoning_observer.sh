@@ -26,8 +26,15 @@ echo "   • ReasoningCaptureService (4339)"
 echo "   • ModelProfile (4340)"
 echo "   • ComparativeIntelligence (4341)"
 
+# Check if venv exists and use it, otherwise use python3
+if [ -f ".venv/bin/python" ]; then
+    PYTHON_CMD="$PROJECT_ROOT/.venv/bin/python"
+else
+    PYTHON_CMD="python3"
+fi
+
 # Teste rápido
-python3 << 'EOF'
+$PYTHON_CMD << 'EOF'
 import asyncio
 from src.integrations.mcp_reasoning_capture_4339 import ReasoningCaptureService
 from src.integrations.mcp_model_profile_4340 import ModelProfile

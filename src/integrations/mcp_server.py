@@ -108,6 +108,7 @@ class MCPServer:
         self._server: Optional[ThreadingHTTPServer] = None
         self._thread: Optional[threading.Thread] = None
         self._methods: Dict[str, Callable[..., Any]] = {
+            "initialize": self.initialize,
             "read_file": self.read_file,
             "write_file": self.write_file,
             "list_dir": self.list_dir,
@@ -115,6 +116,23 @@ class MCPServer:
             "get_metrics": self.get_metrics,
             "get_tools": self.get_tools,
         }
+
+    def tool(self, name: str) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
+        """Decorator to register a tool method."""
+
+        def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+            self._methods[name] = func
+            return func
+
+        return decorator
+
+    def register_methods(self, methods: Dict[str, Callable[..., Any]]) -> None:
+        """Register multiple methods while preserving existing ones (like initialize).
+
+        Args:
+            methods: Dict of method names to callables
+        """
+        self._methods.update(methods)
 
     def _normalize_roots(self, paths: Iterable[str]) -> List[Path]:
         normalized = []
@@ -214,15 +232,20 @@ class MCPServer:
             duration = perf_counter() - start
             self._record_metrics(method, duration)
             self._audit(method, params, exc, "ERROR")
+            logger.error(f"MCP Error in {method}: {type(exc).__name__}: {exc}", exc_info=True)
             return self._error_response(request_id, -32603, "Internal error")
 
     def _dispatch(self, method: str, params: Any) -> Any:
-        callable_method = self._methods[method]
-        if isinstance(params, dict):
-            return callable_method(**params)
-        if isinstance(params, list):
-            return callable_method(*params)
-        raise MCPRequestError(-32602, "Params must be dict or list", params)
+        try:
+            callable_method = self._methods[method]
+            if isinstance(params, dict):
+                return callable_method(**params)
+            if isinstance(params, list):
+                return callable_method(*params)
+            raise MCPRequestError(-32602, "Params must be dict or list", params)
+        except Exception as e:
+            logger.error(f"Dispatch error for {method} with params {params}: {e}", exc_info=True)
+            raise
 
     def _record_metrics(self, method: str, duration: float) -> None:
         self.metrics["total_requests"] += 1
@@ -278,6 +301,22 @@ class MCPServer:
             "Path outside allowed roots",
             {"resolved": str(resolved), "roots": [str(r) for r in self.allowed_roots]},
         )
+
+    def initialize(
+        self, protocol_version: Optional[str] = None, protocolVersion: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Initialize the MCP server and return capabilities.
+
+        Accepts both protocol_version (snake_case) and protocolVersion (camelCase)
+        for compatibility with different MCP clients.
+        """
+        # Aceitar ambas as formas de entrada
+        version = protocol_version or protocolVersion or "2024-11-05"
+        return {
+            "protocolVersion": version,
+            "capabilities": {"tools": {"listChanged": True}},
+            "serverInfo": {"name": "OmniMind MCP Server", "version": "1.0.0"},
+        }
 
     def read_file(self, path: str, encoding: str = "utf-8") -> str:
         resolved = self._resolve_path(path)

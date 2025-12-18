@@ -111,8 +111,8 @@ class ThinkingMCPServer(MCPServer):
         # SigmaSinthomeCalculator para cálculo de σ (Lacan)
         self._sigma_calculator: Optional[Any] = None
 
-        # Registrar métodos MCP
-        self._methods.update(
+        # Registrar métodos MCP (preserva initialize())
+        self.register_methods(
             {
                 "start_session": self.start_session,
                 "add_step": self.add_step,
@@ -525,9 +525,7 @@ class ThinkingMCPServer(MCPServer):
             sigma_result = None
             if self.workspace:
                 try:
-                    from src.consciousness.sigma_sinthome import (
-                        SigmaSinthomeCalculator,
-                    )
+                    from src.consciousness.sigma_sinthome import SigmaSinthomeCalculator
 
                     # Coletar histórico de Φ (últimos 10 passos)
                     phi_history = [s.phi for s in session.steps[-10:]] if session.steps else [phi]

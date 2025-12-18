@@ -27,10 +27,20 @@ class SupabaseMCPServer(MCPServer):
         config = MCPConfig(host=host, port=port)
         super().__init__(config=config)
 
-        # Configuração Supabase externa
-        self.supabase_url = os.environ.get(
-            "SUPABASE_MCP_URL", "https://mcp.supabase.com/mcp?project_ref=noetzkgvyqcrycdsfnib"
-        )
+        # Configuração Supabase externa - USAR .ENV
+        supabase_project = os.environ.get("OMNIMIND_SUPABASE_PROJECT", "")
+        supabase_url = os.environ.get("OMNIMIND_SUPABASE_URL", "")
+
+        if supabase_project and supabase_url:
+            # Extrair project_ref da URL ou usar direto
+            project_ref = (
+                supabase_project.split(".")[-1] if "." in supabase_project else supabase_project
+            )
+            self.supabase_url = f"https://mcp.supabase.com/mcp?project_ref={project_ref}"
+        else:
+            # Fallback se .env não estiver configurado
+            logger.warning("OMNIMIND_SUPABASE_PROJECT não configurado em .env, usando fallback")
+            self.supabase_url = "https://mcp.supabase.com/mcp?project_ref=disabled"
 
         # Apenas informações básicas, sem acesso a dados reais
         self.external_info = {

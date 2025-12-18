@@ -29,7 +29,14 @@ check_mcps_running
 cd "$PROJECT_ROOT"
 export PYTHONPATH="$PROJECT_ROOT:$PYTHONPATH"
 
-python3 -m src.integrations.mcp_dashboard_server &
+# Check if venv exists and use it, otherwise use python3
+if [ -f ".venv/bin/python" ]; then
+    PYTHON_CMD="$PROJECT_ROOT/.venv/bin/python"
+else
+    PYTHON_CMD="python3"
+fi
+
+$PYTHON_CMD -m src.integrations.mcp_dashboard_server &
 DASHBOARD_PID=$!
 
 echo "✅ Dashboard iniciado (PID: $DASHBOARD_PID)"

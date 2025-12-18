@@ -7,6 +7,13 @@ cd "$BASEDIR"
 
 export PYTHONPATH=$BASEDIR
 
+# Check if venv exists and use it, otherwise use system python
+if [ -f ".venv/bin/python" ]; then
+    PYTHON_CMD="$BASEDIR/.venv/bin/python"
+else
+    PYTHON_CMD="python"
+fi
+
 # External Servers Configuration
 # filesystem: 4331
 # git: 4332
@@ -28,12 +35,12 @@ start_server() {
 
     echo "📦 Starting External $name MCP ($port)..."
     # Set MCP_PORT explicitly to override defaults
-    MCP_PORT=$port nohup python -m "$module" > "logs/mcp_external_$name.log" 2>&1 &
+    MCP_PORT=$port nohup $PYTHON_CMD -m "$module" > "logs/mcp_external_$name.log" 2>&1 &
     echo $! > "logs/mcp_external_$name.pid"
     echo "   PID: $!"
 }
 
-start_server "filesystem" "src.integrations.mcp_filesystem_wrapper" 4331
+start_server "filesystem" "src.integrations.mcp_filesystem_server" 4331
 start_server "git" "src.integrations.mcp_git_wrapper" 4332
 start_server "python" "src.integrations.mcp_python_server" 4333
 start_server "sqlite" "src.integrations.mcp_sqlite_wrapper" 4334

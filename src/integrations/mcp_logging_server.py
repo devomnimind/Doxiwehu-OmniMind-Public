@@ -52,8 +52,8 @@ class LoggingMCPServer(MCPServer):
         self.audit_system = get_audit_system()
         self.log_analyzer = AuditLogAnalyzer(audit_system=self.audit_system)
 
-        # Registrar métodos MCP
-        self._methods.update(
+        # Registrar métodos MCP (preserva initialize())
+        self.register_methods(
             {
                 "search_logs": self.search_logs,
                 "get_recent_logs": self.get_recent_logs,

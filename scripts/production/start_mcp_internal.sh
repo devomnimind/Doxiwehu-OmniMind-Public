@@ -7,6 +7,13 @@ cd "$BASEDIR"
 
 export PYTHONPATH=$BASEDIR
 
+# Check if venv exists and use it, otherwise use system python
+if [ -f ".venv/bin/python" ]; then
+    PYTHON_CMD="$BASEDIR/.venv/bin/python"
+else
+    PYTHON_CMD="python"
+fi
+
 # Internal Servers Configuration
 # memory: 4321
 # sequential_thinking: 4322
@@ -24,7 +31,7 @@ start_server() {
 
     echo "📦 Starting Internal $name MCP ($port)..."
     # Set MCP_PORT explicitly to override defaults
-    MCP_PORT=$port nohup python -m "$module" > "logs/mcp_internal_$name.log" 2>&1 &
+    MCP_PORT=$port nohup $PYTHON_CMD -m "$module" > "logs/mcp_internal_$name.log" 2>&1 &
     echo $! > "logs/mcp_internal_$name.pid"
     echo "   PID: $!"
 }

@@ -66,8 +66,8 @@ class MemoryMCPServer(MCPServer):
         self.procedural_memory = ProceduralMemory()
         self.episodic_memory: Optional[Any] = None  # Lazy init se necessário
 
-        # Registrar métodos MCP
-        self._methods.update(
+        # Registrar métodos MCP (preserva initialize())
+        self.register_methods(
             {
                 "store_memory": self.store_memory,
                 "retrieve_memory": self.retrieve_memory,

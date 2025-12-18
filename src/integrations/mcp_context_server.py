@@ -97,8 +97,8 @@ class ContextMCPServer(MCPServer):
         self.storage_dir = storage_dir or Path("data/context")
         self.storage_dir.mkdir(parents=True, exist_ok=True)
 
-        # Registrar métodos MCP
-        self._methods.update(
+        # Registrar métodos MCP (preserva initialize())
+        self.register_methods(
             {
                 "store_context": self.store_context,
                 "retrieve_context": self.retrieve_context,
