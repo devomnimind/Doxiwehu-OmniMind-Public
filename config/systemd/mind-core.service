@@ -4,6 +4,8 @@ After=network.target syslog.target mind.service
 Requires=mind.service
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=simple
 User=fahbrain
 WorkingDirectory=/home/fahbrain/projects/omnimind

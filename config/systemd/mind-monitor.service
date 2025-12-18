@@ -10,6 +10,8 @@ Before=mind-daemon.service
 Before=mind-frontend.service
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=simple
 User=fahbrain
 Group=fahbrain

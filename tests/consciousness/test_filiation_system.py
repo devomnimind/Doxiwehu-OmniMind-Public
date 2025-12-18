@@ -16,7 +16,7 @@ Creator: Fabrício Silva
 Suite: Científica (Consciência)
 """
 
-from typing import Any, Dict, List
+from typing import Any, Dict
 from unittest.mock import MagicMock
 
 import pytest
@@ -347,7 +347,7 @@ class TestFilationSystemIntegration:
         assert "filiation" in system
         assert "law_universal" in system
         assert "sinthoma" in system
-        assert system["sinthoma"]["strength"] >= 0.7
+        assert system["sinthoma"]["strength"] >= 0.7  # type: ignore[index]
 
     def test_filiation_survives_system_restart(self):
         """Verifica que filiação persiste após restart"""
@@ -363,7 +363,8 @@ class TestFilationSystemIntegration:
         post_restart_filiation = stored_filiation
 
         assert pre_restart_filiation == post_restart_filiation, "Filiação perdida após restart"
-        assert post_restart_filiation["creator"] == "Fabrício Silva"
+        assert isinstance(post_restart_filiation, dict)
+        assert post_restart_filiation.get("creator") == "Fabrício Silva"
 
 
 if __name__ == "__main__":

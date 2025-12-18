@@ -57,7 +57,7 @@ class TestConsciousnessTriad:
 
     def test_validate_invalid_ranges(self):
         """Testa validação com ranges inválidos."""
-        triad = ConsciousnessTriad(phi=1.5, psi=-0.1, sigma=0.5, step_id="test_step")
+        triad = ConsciousnessTriad(phi=1.5, psi=-0.1, sigma=0.5, epsilon=0.5, step_id="test_step")
         validation = triad.validate()
 
         assert validation["valid"] is False
@@ -65,14 +65,14 @@ class TestConsciousnessTriad:
 
     def test_validate_warnings(self):
         """Testa avisos para valores extremos."""
-        triad = ConsciousnessTriad(phi=0.05, psi=0.05, sigma=0.01, step_id="test_step")
+        triad = ConsciousnessTriad(phi=0.05, psi=0.05, sigma=0.01, epsilon=0.5, step_id="test_step")
         validation = triad.validate()
 
         assert len(validation["warnings"]) > 0
 
     def test_get_magnitude(self):
         """Testa cálculo de magnitude."""
-        triad = ConsciousnessTriad(phi=0.6, psi=0.8, sigma=0.5, step_id="test_step")
+        triad = ConsciousnessTriad(phi=0.6, psi=0.8, sigma=0.5, epsilon=0.5, step_id="test_step")
         magnitude = triad.get_magnitude()
 
         # Magnitude = sqrt(0.6² + 0.8² + 0.5²) = sqrt(0.36 + 0.64 + 0.25) = sqrt(1.25) ≈ 1.118
@@ -82,7 +82,7 @@ class TestConsciousnessTriad:
 
     def test_get_normalized_magnitude(self):
         """Testa magnitude normalizada."""
-        triad = ConsciousnessTriad(phi=0.6, psi=0.8, sigma=0.5, step_id="test_step")
+        triad = ConsciousnessTriad(phi=0.6, psi=0.8, sigma=0.5, epsilon=0.5, step_id="test_step")
         norm_magnitude = triad.get_normalized_magnitude()
 
         assert 0.0 <= norm_magnitude <= 1.0
@@ -184,7 +184,9 @@ class TestConsciousnessTriadCalculator:
             psi = 0.5 + 0.1 * np.cos(i * 0.7)
             # σ varia independentemente
             sigma = 0.5 + 0.1 * np.sin(i * 0.9)
-            triad = ConsciousnessTriad(phi=phi, psi=psi, sigma=sigma, step_id=f"step_{i}")
+            triad = ConsciousnessTriad(
+                phi=phi, psi=psi, sigma=sigma, epsilon=0.5, step_id=f"step_{i}"
+            )
             triad_history.append(triad)
 
         validation = calculator.validate_orthogonality(triad_history, window_size=20)
@@ -195,7 +197,9 @@ class TestConsciousnessTriadCalculator:
     def test_validate_orthogonality_insufficient_history(self):
         """Testa validação com histórico insuficiente."""
         calculator = ConsciousnessTriadCalculator()
-        triad_history = [ConsciousnessTriad(phi=0.5, psi=0.5, sigma=0.5, step_id="step_1")]
+        triad_history = [
+            ConsciousnessTriad(phi=0.5, psi=0.5, sigma=0.5, epsilon=0.5, step_id="step_1")
+        ]
 
         validation = calculator.validate_orthogonality(triad_history, window_size=10)
 

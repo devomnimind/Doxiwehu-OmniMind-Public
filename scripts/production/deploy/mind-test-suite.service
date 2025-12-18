@@ -5,6 +5,8 @@ Requires=mind.service mind-qdrant.service
 Wants=mind-qdrant.service
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=oneshot
 User=fahbrain
 Group=fahbrain

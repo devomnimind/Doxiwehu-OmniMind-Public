@@ -80,7 +80,7 @@ nohup.out
 *.code-workspace
 
 # ------------------------------------------------------------------
-# Logs temporários (mas mantém logs/ importantes)
+# Logs temporários (runtime apenas - NÃO logs importantes)
 # ------------------------------------------------------------------
 *.log
 *.log.*
@@ -141,6 +141,16 @@ data/monitor/
 data/autopoietic/cycle_history.jsonl
 data/autopoietic/narrative_history.json
 data/autopoietic/art_gallery.json
+data/autopoietic/evolution_signatures/
+
+# Forensics runtime incidents (generated during execution)
+data/forensics/incidents/incident_*.json
+
+# Stimulation data (generated during experiments)
+data/stimulation/
+
+# MCP audit logs (runtime tracking)
+data/mcp_audit.jsonl
 
 # Data directories (runtime only - temporary)
 data/backup/
@@ -152,9 +162,6 @@ data/reports/
 data/sessions/
 data/validation/
 
-# Test reports and metrics (gerados em execução)
-data/test_reports/
-
 # Runtime JSON/DB files (NOT the important ones)
 data/*.log
 data/*.db
@@ -162,11 +169,24 @@ data/*.db
 # Logs (runtime tracking, not code logs)
 logs/monitor_snapshot_*.json
 logs/mcp_omnimind_*.pid
+logs/.gitkeep
 
 # Deploy runtime
 deploy/data/
 report*.nsys-rep
 report*.sqlite
+
+# ------------------------------------------------------------------
+# Mypy/Pytest/Test artifacts (gerados em execução)
+# ------------------------------------------------------------------
+mypy_full_report.txt
+pytest.ini
+test_list.txt
+
+# ------------------------------------------------------------------
+# MCP config (runtime generated)
+# ------------------------------------------------------------------
+mcp_config.json
 
 # ------------------------------------------------------------------
 # ============================================================================

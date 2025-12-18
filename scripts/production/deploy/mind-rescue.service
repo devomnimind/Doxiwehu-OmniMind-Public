@@ -5,6 +5,8 @@ After=network.target
 PartOf=mind.service
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=oneshot
 User=root
 WorkingDirectory=/home/fahbrain/projects/omnimind

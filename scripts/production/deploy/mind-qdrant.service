@@ -3,6 +3,8 @@ Description=OmniMind Qdrant Vector Database
 After=network.target
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=simple
 User=root
 WorkingDirectory=/home/fahbrain/projects/omnimind

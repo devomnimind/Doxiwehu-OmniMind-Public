@@ -6,6 +6,8 @@ Wants=network-online.target
 Requires=mind.service
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=simple
 User=__OMNIMIND_USER__
 Group=__OMNIMIND_USER__

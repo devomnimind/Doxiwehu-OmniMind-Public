@@ -4,47 +4,47 @@
     "std_dev": 0.0,
     "min_value": 0.0,
     "max_value": 0.0,
-    "sample_count": 42,
-    "last_updated": "2025-12-17T22:31:39.787609"
+    "sample_count": 108,
+    "last_updated": "2025-12-18T02:43:18.800636"
   },
   "ici": {
     "mean": 0.0,
     "std_dev": 0.0,
     "min_value": 0.0,
     "max_value": 0.0,
-    "sample_count": 42,
-    "last_updated": "2025-12-17T22:31:39.788390"
+    "sample_count": 108,
+    "last_updated": "2025-12-18T02:43:18.802627"
   },
   "prs": {
     "mean": 0.0,
     "std_dev": 0.0,
     "min_value": 0.0,
     "max_value": 0.0,
-    "sample_count": 42,
-    "last_updated": "2025-12-17T22:31:39.789103"
+    "sample_count": 108,
+    "last_updated": "2025-12-18T02:43:18.804307"
   },
   "anxiety": {
     "mean": 0.0,
     "std_dev": 0.0,
     "min_value": 0.0,
     "max_value": 0.0,
-    "sample_count": 42,
-    "last_updated": "2025-12-17T22:31:39.789820"
+    "sample_count": 108,
+    "last_updated": "2025-12-18T02:43:18.805964"
   },
   "flow": {
     "mean": 0.0,
     "std_dev": 0.0,
     "min_value": 0.0,
     "max_value": 0.0,
-    "sample_count": 42,
-    "last_updated": "2025-12-17T22:31:39.790903"
+    "sample_count": 108,
+    "last_updated": "2025-12-18T02:43:18.808516"
   },
   "entropy": {
     "mean": 0.0,
     "std_dev": 0.0,
     "min_value": 0.0,
     "max_value": 0.0,
-    "sample_count": 42,
-    "last_updated": "2025-12-17T22:31:39.791593"
+    "sample_count": 108,
+    "last_updated": "2025-12-18T02:43:18.811777"
   }
 }

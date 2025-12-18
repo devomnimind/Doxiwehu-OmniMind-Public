@@ -5,6 +5,8 @@ After=mind.service mind-daemon.service mind-core.service
 Wants=mind.service
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=simple
 User=fahbrain
 Group=fahbrain

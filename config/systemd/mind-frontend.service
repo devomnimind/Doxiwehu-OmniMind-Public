@@ -3,6 +3,8 @@ Description=OmniMind Frontend Service
 After=network.target mind.service
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 User=fahbrain
 WorkingDirectory=/home/fahbrain/projects/omnimind/web/frontend
 # Assuming npm is in /usr/bin/npm, verify with 'which npm'

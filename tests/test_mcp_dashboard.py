@@ -13,7 +13,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.integrations.mcp_dashboard_server import (
+from src.integrations.mcp_dashboard_server import (  # noqa: E402
     MCPS,
     MCPHealthMonitor,
     handle_dashboard,

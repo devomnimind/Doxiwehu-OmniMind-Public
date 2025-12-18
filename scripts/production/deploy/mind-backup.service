@@ -4,6 +4,8 @@ After=network.target
 Requires=network.target
 
 [Service]
+Slice=mind.slice
+OOMScoreAdjust=-1000
 Type=oneshot
 User=root
 Group=root
