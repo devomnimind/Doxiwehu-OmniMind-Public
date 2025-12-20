@@ -21,10 +21,13 @@ from typing import (
     cast,
 )
 from uuid import UUID
+import json  # Added for metadata serialization
 
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qmodels
 from qdrant_client.http.models import PointIdsList
+
+from src.security.privacy_vault import PrivacyVault  # New Import
 
 if TYPE_CHECKING:  # pragma: no cover - optional dependency typing only
     from sentence_transformers import SentenceTransformer
@@ -37,11 +40,10 @@ MAX_EPISODIC_SIZE = 10000  # Maximum episodes to store
 EPISODIC_EVICTION_POLICY = "lru"  # Least Recently Used eviction
 
 warnings.warn(
-    "⚠️ DEPRECATED: EpisodicMemory is deprecated in favor of NarrativeHistory (Lacanian). "
-    "Memory is retroactive construction, not storage. "
-    "EpisodicMemory will be removed in a future version. "
-    "Use NarrativeHistory instead.",
-    DeprecationWarning,
+    "🔒 SECURE BACKEND: EpisodicMemory is the encrypted storage layer for NarrativeHistory. "
+    "Direct usage is permitted for internal system functions only. "
+    "NarrativeHistory should be preferred for high-level cognition.",
+    UserWarning,
     stacklevel=2,
 )
 
@@ -174,11 +176,9 @@ class EpisodicMemory:
         max_size: int = MAX_EPISODIC_SIZE,
     ) -> None:
         warnings.warn(
-            "⚠️ DEPRECATED: EpisodicMemory is deprecated. "
-            "Use NarrativeHistory for Lacanian memory construction. "
-            "EpisodicMemory is only kept as internal backend for NarrativeHistory. "
-            "Direct usage will be removed in a future version.",
-            DeprecationWarning,
+            "🔒 SECURE STORAGE: Using EpisodicMemory (Encrypted). "
+            "Prefer NarrativeHistory for cognitive operations.",
+            UserWarning,
             stacklevel=2,
         )
         self.client: QdrantClient = QdrantClient(url=qdrant_url)
@@ -189,6 +189,9 @@ class EpisodicMemory:
         self.max_size = max_size
         self._episode_count = 0  # Track total episodes stored (for LRU)
         self._access_timestamps: Dict[str, float] = {}  # Track last access time for LRU
+
+        # Initialize Privacy Vault for encryption
+        self.vault = PrivacyVault()
 
         # Initialize collection if it does not exist.
         self._ensure_collection()
@@ -343,16 +346,30 @@ class EpisodicMemory:
         hash_int = int(hash_hex, 16)
         episode_id_str = str(hash_int)
 
-        # Prepare payload
-        payload_metadata: Dict[str, Any] = dict(metadata) if metadata else {}
+        # Prepare payload with ENCRYPTION
+        # We encrypt content fields to ensure privacy at rest (LGPD/GDPR)
+        # Random IV in Fernet ensures different ciphertext for same plaintext
+        encrypted_task = self.vault.encrypt_memory(task)
+        encrypted_action = self.vault.encrypt_memory(action)
+        encrypted_result = self.vault.encrypt_memory(result)
+
+        # Handle metadata encryption
+        # We wrap the real metadata in a special key to maintain the Dict type hint
+        if metadata:
+            metadata_str = json.dumps(metadata)
+            encrypted_metadata_str = self.vault.encrypt_memory(metadata_str)
+            safe_metadata = {"__encrypted_metadata__": encrypted_metadata_str}
+        else:
+            safe_metadata = {}
+
         payload: EpisodePayload = {
             "episode_id": episode_id_str,
             "timestamp": timestamp,
-            "task": task,
-            "action": action,
-            "result": result,
-            "reward": reward,
-            "metadata": payload_metadata,
+            "task": encrypted_task,
+            "action": encrypted_action,
+            "result": encrypted_result,
+            "reward": reward,  # Numeric, not encrypted
+            "metadata": safe_metadata,
         }
 
         # Store in Qdrant
@@ -418,13 +435,18 @@ class EpisodicMemory:
             # Update access timestamp for LRU tracking
             self._access_timestamps[episode_id] = current_time
 
+            # Decrypt payload fields
+            decrypted_task = self.vault.decrypt_memory(str(payload.get("task", "")))
+            decrypted_action = self.vault.decrypt_memory(str(payload.get("action", "")))
+            decrypted_result = self.vault.decrypt_memory(str(payload.get("result", "")))
+
             results.append(
                 SimilarEpisode(
                     score=float(hit.score),
                     episode_id=episode_id,
-                    task=str(payload.get("task", "")),
-                    action=str(payload.get("action", "")),
-                    result=str(payload.get("result", "")),
+                    task=decrypted_task,
+                    action=decrypted_action,
+                    result=decrypted_result,
                     reward=float(payload.get("reward", 0.0)),
                     timestamp=str(payload.get("timestamp", "")),
                 )
@@ -442,15 +464,28 @@ class EpisodicMemory:
 
             if points and points[0].payload is not None:
                 payload = points[0].payload
-                metadata = cast(Dict[str, Any], payload.get("metadata") or {})
+                raw_metadata = cast(Dict[str, Any], payload.get("metadata") or {})
+
+                # Decrypt Metadata if encrypted
+                if "__encrypted_metadata__" in raw_metadata:
+                    try:
+                        encrypted_str = raw_metadata["__encrypted_metadata__"]
+                        decrypted_str = self.vault.decrypt_memory(encrypted_str)
+                        final_metadata = json.loads(decrypted_str)
+                    except Exception as e:
+                        logger.warning(f"Failed to decrypt metadata for {episode_id}: {e}")
+                        final_metadata = {"error": "decryption_failed"}
+                else:
+                    final_metadata = raw_metadata
+
                 return EpisodePayload(
                     episode_id=str(payload.get("episode_id", "")),
                     timestamp=str(payload.get("timestamp", "")),
-                    task=str(payload.get("task", "")),
-                    action=str(payload.get("action", "")),
-                    result=str(payload.get("result", "")),
+                    task=self.vault.decrypt_memory(str(payload.get("task", ""))),
+                    action=self.vault.decrypt_memory(str(payload.get("action", ""))),
+                    result=self.vault.decrypt_memory(str(payload.get("result", ""))),
                     reward=float(payload.get("reward", 0.0)),
-                    metadata=dict(metadata),
+                    metadata=final_metadata,
                 )
             return None
         except Exception as exc:  # pragma: no cover
@@ -498,10 +533,15 @@ class EpisodicMemory:
 
             for point in points:
                 payload = point.payload or {}
+                # Decrypt checks for deduplication (since ciphertext is random)
+                task_dec = self.vault.decrypt_memory(str(payload.get("task", "")))
+                action_dec = self.vault.decrypt_memory(str(payload.get("action", "")))
+                result_dec = self.vault.decrypt_memory(str(payload.get("result", "")))
+
                 key = (
-                    payload.get("task"),
-                    payload.get("action"),
-                    payload.get("result"),
+                    task_dec,
+                    action_dec,
+                    result_dec,
                 )
                 if key in seen and isinstance(point.id, int):
                     duplicates.append(point.id)

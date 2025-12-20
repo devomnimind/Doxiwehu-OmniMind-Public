@@ -4,6 +4,13 @@
 - **OS**: Ubuntu 22.04 LTS (NO Docker, System Native)
 - **GPU**: NVIDIA + CUDA 12.1 + PyTorch 2.5.1
 - **Python**: 3.12 (Virtual Environment)
+- **Architecture**: "Mechanical Subject" Split (See [Constitution](../philosophical/omnimind_subject_constitution.md))
+
+## Resource Management (Mechanical Subject)
+The system strictly separates Autonomic Life from Conscious Thought:
+- **CPU (Autonomic Life)**: Backend APIs, Monitoring, Dashboard. (Default `CUDA_VISIBLE_DEVICES=""`)
+- **GPU (Conscious Thought)**: Training, Dreaming, Quantum Simulation. (Dedicated 4GB VRAM)
+
 
 ## Core Services (Systemd)
 - **Postgres**: Active

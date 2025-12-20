@@ -6,7 +6,7 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { ToastContainer } from './components/ToastContainer';
 import { apiService } from './services/api';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 function App() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);

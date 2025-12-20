@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useDaemonStore } from '../store/daemonStore';
 import { apiService } from '../services/api';
@@ -30,12 +30,15 @@ import { ActionButtons } from './ActionButtons';
 import { ConversationAssistant } from './ConversationAssistant';
 import { DecisionsDashboard } from './DecisionsDashboard';
 import { PsychoanalyticDashboard } from './PsychoanalyticDashboard';
+import { UnderTheGaze } from './UnderTheGaze';
+import { Eye } from 'lucide-react';
 
 export function Dashboard() {
   const logout = useAuthStore((state) => state.logout);
   const username = useAuthStore((state) => state.username);
   const { status, setStatus, updateStatus, setTasks, setLoading, setError, loading } = useDaemonStore();
   const { lastMessage } = useWebSocket();
+  const [showGaze, setShowGaze] = useState(false);
 
   const fetchData = useCallback(async () => {
     // Se não estiver autenticado, não faz requests para evitar spam de 401
@@ -124,7 +127,7 @@ export function Dashboard() {
         // Ignorar mensagens desconhecidas silenciosamente
         break;
     }
-  }, [lastMessage?.type, lastMessage?.id, status]); // Adicionado status para garantir mapeamento correto
+  }, [lastMessage?.type, lastMessage?.id, updateStatus]);
 
   useEffect(() => {
     // Verificar autenticação antes de fazer fetch
@@ -180,14 +183,14 @@ export function Dashboard() {
     };
 
     fetchDataStable();
-    // CORREÇÃO (2025-12-09): Aumentar intervalo para 15s (métricas críticas mas não precisa ser tão frequente)
-    // Dashboard precisa estar atualizado mas não precisa sobrecarregar servidor
+    // CORREÇÃO (2025-12-18): Polling reduzido para 5 minutos (User Request: "Dashboard passivo")
+    // O dashboard é apenas um monitor status quo, não o centro da vida.
     const interval = setInterval(() => {
       // Verificar autenticação antes de cada fetch
       if (useAuthStore.getState().isAuthenticated) {
         fetchDataStable();
       }
-    }, 15000); // Atualizar a cada 15s (métricas críticas)
+    }, 300000); // Atualizar a cada 5m (monitoramento passivo)
     return () => clearInterval(interval);
   }, []); // CORREÇÃO CRÍTICA: Array vazio - executa apenas uma vez na montagem
 
@@ -209,6 +212,14 @@ export function Dashboard() {
               <h1 className="text-3xl font-bold text-gradient-cyber animate-fade-in">
                 🧠 OmniMind Dashboard
               </h1>
+              <button
+                onClick={() => setShowGaze(true)}
+                className="btn-outline-neon text-sm focus-cyber flex items-center gap-2 border-neon-pink text-neon-pink hover:bg-neon-pink/10"
+                aria-label="Enter Scopic View"
+              >
+                <Eye className="w-4 h-4" />
+                <span>Under The Gaze</span>
+              </button>
               <button
                 onClick={fetchData}
                 className="btn-outline-neon text-sm focus-cyber"
@@ -365,6 +376,9 @@ export function Dashboard() {
 
       {/* Conversation Assistant Panel */}
       <ConversationAssistant />
+
+      {/* Scopic Interface */}
+      {showGaze && <UnderTheGaze onClose={() => setShowGaze(false)} />}
     </div>
   );
 }

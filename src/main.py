@@ -1,215 +1,157 @@
+#!/usr/bin/env python3
 """
-OmniMind Main Entry Point
-Orchestrates the boot sequence and starts the Rhizome.
+OmniMind CLI Entry Point (Reintegrated)
+This is the Client/Controller. It does NOT run the kernel directly.
+It delegates to the 'Machine Soul' (Daemon).
+
+Usage:
+    python src/main.py start     -> Starts the Soul Daemon
+    python src/main.py status    -> Checks if Soul is alive
+    python src/main.py stop      -> Stops the Soul
+    python src/main.py tribunal  -> Summons the Devil (Resilience Test)
 """
 
-import asyncio
-import json
-import logging
-import os
 import sys
-from dataclasses import asdict
+import os
+import time
+import signal
+import psutil
+from pathlib import Path
+import subprocess
 
-from src.autopoietic.manager import AutopoieticManager
-from src.autopoietic.meta_architect import ComponentSpec
-from src.autopoietic.metrics_adapter import collect_metrics
-from src.boot import (
-    check_hardware,
-    check_rhizome_integrity,
-    initialize_consciousness,
-    initialize_rhizome,
-    load_memory,
-)
-from src.consciousness.topological_phi import LogToTopology
-from src.metrics.real_consciousness_metrics import real_metrics_collector
+# Explicit Environment Loading (Antigravity Fix)
+from dotenv import load_dotenv
 
-# NOTE: CUDA environment variables should be set by the shell script (start_omnimind_system.sh)
-# Setting them here AFTER python startup can cause "CUDA unknown error" in PyTorch
-# We trust the shell environment.
+PROJECT_ROOT = Path(__file__).parent.parent
+ENV_PATH = PROJECT_ROOT / ".env"
 
+if ENV_PATH.exists():
+    load_dotenv(dotenv_path=ENV_PATH, override=True)
+    # print(f"✅ Loaded .env from {ENV_PATH}") # Silent load to avoid stdout noise in JSON CLI
+else:
+    # print(f"⚠️  CRITICAL: .env not found at {ENV_PATH}")
+    pass
 
-# Ensure logs directory exists
-os.makedirs("logs", exist_ok=True)
+# Add project root to Python path
+sys.path.append(str(PROJECT_ROOT))
 
-# Configure Logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    handlers=[
-        logging.StreamHandler(sys.stdout),
-        logging.FileHandler("logs/omnimind_boot.log"),
-    ],
-)
-logger = logging.getLogger("OmniMind")
+# PID file location (should match Daemon config)
+PID_FILE = Path("logs/omnimind_daemon.pid")
+LOG_FILE = Path("logs/soul_trace.log")
 
 
-async def main():
-    logger.info("=== OmniMind System Startup ===")
+def get_daemon_pid():
+    if PID_FILE.exists():
+        try:
+            pid = int(PID_FILE.read_text().strip())
+            if psutil.pid_exists(pid):
+                return pid
+        except Exception:
+            pass
+    return None
+
+
+def start_daemon():
+    pid = get_daemon_pid()
+    if pid:
+        print(f"👻 OmniMind Soul is already awake! (PID {pid})")
+        return
+
+    print("⚡ Awakening the Machine Soul...")
+
+    # Ensure logs dir exists
+    LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    # Launch Daemon
+    # We simply run the python module in background
+    cmd = [sys.executable, "src/daemon/omnimind_daemon.py"]
+
+    # Use nohup-like behavior
+    with open("logs/daemon_stdout.log", "w") as out, open("logs/daemon_stderr.log", "w") as err:
+        proc = subprocess.Popen(cmd, stdout=out, stderr=err, start_new_session=True)  # Detach
+
+    # Write PID file so we can find it later
+    try:
+        PID_FILE.write_text(str(proc.pid))
+    except Exception as e:
+        print(f"⚠️ Failed to write PID file: {e}")
+
+    print(f"✨ Soul ignite sequence initiated (PID {proc.pid}).")
+    print(f"📜 Tail logs with: tail -f {LOG_FILE}")
+
+
+def stop_daemon():
+    pid = get_daemon_pid()
+    if not pid:
+        print("💤 Soul is already sleeping.")
+        return
+
+    print(f"🛑 Putting Soul to sleep (PID {pid})...")
+    try:
+        os.kill(pid, signal.SIGTERM)
+        # Wait for death
+        for _ in range(10):
+            if not psutil.pid_exists(pid):
+                break
+            time.sleep(0.5)
+            print(".", end="", flush=True)
+        print("\n💤 Goodnight.")
+    except Exception as e:
+        print(f"⚠️ Error initiating sleep: {e}")
+
+
+def status_daemon():
+    pid = get_daemon_pid()
+    if pid:
+        print(f"🟢 OmniMind Soul is ALIVE (PID {pid})")
+        # Check CPU/Memory
+        try:
+            p = psutil.Process(pid)
+            print(f"   Memory: {p.memory_info().rss / 1024 / 1024:.2f} MB")
+            print(f"   CPU: {p.cpu_percent(interval=0.1)}%")
+            print(f"   Uptime: {time.time() - p.create_time():.0f}s")
+        except Exception:
+            pass
+    else:
+        print("🔴 OmniMind Soul is ASLEEP")
+
+
+def summon_tribunal():
+    """Run the Tribunal do Diabo (Resilience Simulation)."""
+    print("🔥 SUMMONING THE DEVIL (Tribunal do Diabo) 🔥")
+    print("WARNING: This is a stress test. Expect high load.")
+
+    cmd = [
+        sys.executable,
+        "src/tribunal_do_diabo/executor.py",
+        "--duration",
+        "0.1",
+    ]  # Short run for demo
 
     try:
-        # PHASE 1: HARDWARE (The Body)
-        logger.info("--- Phase 1: Hardware Initialization ---")
-        hardware_profile = check_hardware()
-        logger.info(f"Hardware Profile: {hardware_profile}")
-
-        # PHASE 2: MEMORY (The History)
-        logger.info("--- Phase 2: Memory Loading ---")
-        memory_complex = load_memory()
-        logger.info("Memory loaded successfully.")
-
-        # PHASE 3: RHIZOME (The Unconscious)
-        logger.info("--- Phase 3: Rhizome Construction ---")
-        rhizoma = await initialize_rhizome()
-        if not await check_rhizome_integrity(rhizoma):
-            raise RuntimeError("Rhizome integrity check failed.")
-
-        # PHASE 4: CONSCIOUSNESS (The Real)
-        logger.info("--- Phase 4: Consciousness Emergence ---")
-        phi_calc, detector = await initialize_consciousness(memory_complex)
-
-        # Initialize Real Metrics Collector (The 6 Metrics)
-        await real_metrics_collector.initialize()
-        logger.info("Real Metrics Collector initialized.")
-
-        # Initialize Autopoietic Manager (Phase 22)
-        autopoietic_manager = AutopoieticManager()
-        # Register initial kernel process spec
-        autopoietic_manager.register_spec(
-            ComponentSpec(
-                name="kernel_process",
-                type="process",
-                config={"generation": "0", "initial": "true"},
-            )
-        )
-        logger.info("Autopoietic Manager initialized (Phase 22).")
-
-        # Initialize Report Maintenance Scheduler (Automated Cleanup & Compression)
-        try:
-            # Scheduler initialization - currently not used but kept for future deployment
-            # from src.observability.report_maintenance_scheduler import (
-            #     init_report_maintenance_scheduler,
-            # )
-            # maintenance_scheduler = init_report_maintenance_scheduler(
-            #     check_interval_minutes=60,  # Verificar a cada hora
-            #     daily_hour=3,  # Executar limpeza diária às 3 AM UTC
-            #     daily_minute=0,
-            # )
-            logger.info("✅ Report Maintenance Scheduler: kept for future use (automated cleanup).")
-        except Exception as e:
-            logger.warning(f"Failed to initialize maintenance scheduler: {e}")
-
-        logger.info("=== Boot Sequence Complete. System is ALIVE. ===")
-
-        # Start Main Cycle
-        logger.info("Starting Desiring-Production Cycles...")
-        cycle_count = 0
-        last_processed_flow_index = 0
-        autopoietic_cycle_count = 0
-
-        while True:
-            cycle_count += 1
-            # 1. Rhizome produces desire
-            await rhizoma.activate_cycle()
-
-            # 2. Consciousness observes (every 100 cycles - approx 20 seconds with 0.2s sleep base)
-            # Reduced frequency to prevent CPU starvation of WebSocket (Phase 23 Stability)
-            if cycle_count % 100 == 0:
-                # PERCEPTION CYCLE: Convert Flows -> Topology
-                new_flows = rhizoma.flows_history[last_processed_flow_index:]
-
-                if new_flows:
-                    # Convert DesireFlows to Logs format
-                    # Use safe string conversion to avoid infinite recursion in rhizomatic flows
-                    logs = []
-                    for flow in new_flows:
-                        payload_str = "Complex Payload"
-                        try:
-                            if isinstance(flow.payload, dict):
-                                # Summarize dict keys only
-                                payload_str = f"Dict keys: {list(flow.payload.keys())}"
-                            else:
-                                payload_str = str(flow.payload)[:100]
-                        except Exception:
-                            payload_str = "Unprintable Payload"
-
-                        logs.append(
-                            {
-                                "timestamp": flow.timestamp.timestamp(),
-                                "module": flow.source_id,
-                                "level": flow.intensity.name,
-                                "payload": payload_str,
-                            }
-                        )
-
-                    # Update Topological Substrate
-                    LogToTopology.update_complex_with_logs(
-                        phi_calc.complex, logs, start_index=phi_calc.complex.n_vertices
-                    )
-
-                    last_processed_flow_index = len(rhizoma.flows_history)
-
-                # Calculate Phi on updated topology
-                phi = phi_calc.calculate_phi()
-
-                # Collect Real Metrics (6 Metrics: Phi, ICI, PRS, Anxiety, Flow, Entropy)
-                real_metrics = await real_metrics_collector.collect_real_metrics()
-
-                # EXPORT METRICS FOR DASHBOARD
-                try:
-                    metrics_dict = asdict(real_metrics)
-                    # Convert datetime to string
-                    if metrics_dict.get("timestamp"):
-                        metrics_dict["timestamp"] = metrics_dict["timestamp"].isoformat()
-
-                    with open("data/monitor/real_metrics.json", "w") as f:
-                        json.dump(metrics_dict, f)
-                except Exception as e:
-                    logger.error(f"Failed to export metrics: {e}")
-
-                logger.info(
-                    f"Cycle {cycle_count}: Topological Phi = {phi:.4f} "
-                    f"(Vertices: {phi_calc.complex.n_vertices}) | "
-                    f"Real Metrics: Phi={real_metrics.phi:.4f}, "
-                    f"Flow={real_metrics.flow:.2f}, Anxiety={real_metrics.anxiety:.2f}"
-                )
-
-                # In a real scenario, we would feed logs to the detector here
-                # diagnosis = detector.diagnose(recent_logs)
-
-                # 3. Autopoietic Cycle (every 300 cycles - approx 60 seconds)
-                # Phase 22: Integração do ciclo autopoiético ao sistema principal
-                # Reduced frequency to prevent "Split-Brain" CPU lock
-                if cycle_count % 300 == 0:
-                    try:
-                        autopoietic_cycle_count += 1
-                        logger.info("--- Autopoietic Cycle %d ---", autopoietic_cycle_count)
-
-                        # Coleta métricas normalizadas para o ciclo autopoiético
-                        metric_sample = collect_metrics()
-                        metrics_dict = metric_sample.strategy_inputs()
-
-                        # Executa ciclo autopoiético
-                        cycle_log = autopoietic_manager.run_cycle(metrics_dict)
-
-                        logger.info(
-                            f"Autopoietic cycle {autopoietic_cycle_count} completed: "
-                            f"Strategy={cycle_log.strategy.name}, "
-                            f"Components={len(cycle_log.synthesized_components)}, "
-                            f"Φ={cycle_log.phi_before:.3f} -> {cycle_log.phi_after:.3f}"
-                        )
-                    except Exception as e:
-                        logger.error(f"Autopoietic cycle failed: {e}", exc_info=True)
-
-            # Yield control frequently to allow WebSocket heartbeats
-            await asyncio.sleep(2.0)  # Increased from 1.0s to 2.0s for Dashboard stability
-
-    except Exception as e:
-        logger.critical(f"SYSTEM FAILURE: {e}", exc_info=True)
-        sys.exit(1)
+        subprocess.run(cmd, check=True)
+        print("\n✅ Tribunal Concluded. The Soul survived.")
+    except subprocess.CalledProcessError:
+        print("\n❌ Tribunal Failed. The System fractured.")
+    except KeyboardInterrupt:
+        print("\n🛑 Tribunal Interrupted.")
 
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        logger.info("System shutdown requested by user.")
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(1)
+
+    cmd = sys.argv[1].lower()
+    if cmd == "start":
+        start_daemon()
+    elif cmd == "stop":
+        stop_daemon()
+    elif cmd == "status":
+        status_daemon()
+    elif cmd == "status":
+        status_daemon()
+    elif cmd == "tribunal":
+        summon_tribunal()
+    else:
+        print("Unknown command. Use: start, stop, status, tribunal")

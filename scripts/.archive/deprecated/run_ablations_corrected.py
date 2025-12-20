@@ -22,6 +22,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict
 
+import numpy as np
+import pytest
+from sklearn.manifold import TSNE
+
+# Fix F821
+LOGS_DIR = Path("logs")
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",

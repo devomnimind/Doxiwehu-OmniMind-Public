@@ -227,18 +227,19 @@ class HybridRetrievalSystem:
             logger.error(f"Erro ao gerar embedding: {e}")
             return [0.0] * self.embedding_dim
 
-    def _dense_search(self, query: str, top_k: Optional[int] = None) -> List[RetrievalResult]:
+    def _dense_search(
+        self, query: str, top_k: Optional[int] = None, collection_name: Optional[str] = None
+    ) -> List[RetrievalResult]:
         """
         Busca densa (semantic search) via Qdrant.
 
         Args:
             query: Query de busca
             top_k: Top-K resultados (default: self.top_k_dense)
-
-        Returns:
-            Lista de RetrievalResult
+            collection_name: Override default collection
         """
         top_k = top_k or self.top_k_dense
+        target_collection = collection_name or self.collection_name
 
         try:
             # Gerar embedding da query
@@ -250,7 +251,7 @@ class HybridRetrievalSystem:
             if callable(query_points):
                 # Nova API do Qdrant (v1.7+)
                 search_result = query_points(  # type: ignore[attr-defined]
-                    collection_name=self.collection_name,
+                    collection_name=target_collection,
                     query=query_embedding,
                     limit=top_k,
                     with_payload=True,
@@ -264,7 +265,7 @@ class HybridRetrievalSystem:
                 search_fn = getattr(self.client, "search", None)
                 if callable(search_fn):
                     results = search_fn(  # type: ignore[attr-defined]
-                        collection_name=self.collection_name,
+                        collection_name=target_collection,
                         query_vector=query_embedding,
                         limit=top_k,
                         with_payload=True,
@@ -275,7 +276,7 @@ class HybridRetrievalSystem:
                     if not callable(search_points):
                         raise AttributeError("QdrantClient query/search APIs indisponíveis")
                     results = search_points(  # type: ignore[attr-defined]
-                        collection_name=self.collection_name,
+                        collection_name=target_collection,
                         vector=query_embedding,
                         limit=top_k,
                         with_payload=True,
@@ -515,6 +516,7 @@ class HybridRetrievalSystem:
         filters: Optional[Dict[str, Any]] = None,
         use_sparse: bool = True,
         use_rerank: bool = True,
+        collection_name: Optional[str] = None,
     ) -> List[RetrievalResult]:
         """
         Retrieval híbrido completo.
@@ -525,14 +527,12 @@ class HybridRetrievalSystem:
             filters: Filtros opcionais (não implementado ainda)
             use_sparse: Se True, usa busca esparsa também
             use_rerank: Se True, usa reranking
-
-        Returns:
-            Lista de RetrievalResult
+            collection_name: Override default collection
         """
         top_k = top_k or self.top_k_final
 
         # 1. Busca densa
-        dense_results = self._dense_search(query)
+        dense_results = self._dense_search(query, collection_name=collection_name)
 
         # 2. Busca esparsa (se habilitada)
         sparse_results: List[RetrievalResult] = []

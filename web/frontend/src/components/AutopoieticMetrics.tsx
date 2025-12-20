@@ -57,7 +57,7 @@ export function AutopoieticMetrics() {
     try {
       // Se não tiver token, nem tenta buscar (evita erro 401 spam)
       if (!apiService.getAuthToken()) {
-         return;
+        return;
       }
 
       // Garantir que credenciais estão configuradas
@@ -181,21 +181,21 @@ export function AutopoieticMetrics() {
       phiAfter: c.phi_after,
       delta: (c.phi_after || 0) - (c.phi_before || 0),
     }))
-    .slice(-30); // Últimos 30 ciclos
+    .slice(-30);
 
   const strategyData = stats
     ? Object.entries(stats.strategies).map(([name, value]) => ({
-        name,
-        value,
-      }))
+      name,
+      value,
+    }))
     : [];
 
   const outcomeData = stats
     ? [
-        { name: 'Sucessos', value: stats.successful_syntheses, color: '#10b981' },
-        { name: 'Rejeitados', value: stats.rejected_before, color: '#f59e0b' },
-        { name: 'Rollbacks', value: stats.rolled_back, color: '#ef4444' },
-      ]
+      { name: 'Sucessos', value: stats.successful_syntheses, color: '#10b981' },
+      { name: 'Rejeitados', value: stats.rejected_before, color: '#f59e0b' },
+      { name: 'Rollbacks', value: stats.rolled_back, color: '#ef4444' },
+    ]
     : [];
 
   return (
@@ -278,9 +278,8 @@ export function AutopoieticMetrics() {
             <div>
               <div className="text-sm text-gray-400">ΔΦ Médio</div>
               <div
-                className={`text-xl font-semibold ${
-                  stats.phi_delta_avg >= 0 ? 'text-green-400' : 'text-red-400'
-                }`}
+                className={`text-xl font-semibold ${stats.phi_delta_avg >= 0 ? 'text-green-400' : 'text-red-400'
+                  }`}
               >
                 {stats.phi_delta_avg >= 0 ? '+' : ''}
                 {stats.phi_delta_avg.toFixed(4)}

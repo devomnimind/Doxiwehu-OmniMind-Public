@@ -140,6 +140,11 @@ decision_making_process:
     - "Break action into smaller steps"
     - "Implement reversibility mechanism"
 
+paradox_handling:
+  allow_refusal: true
+  refusal_justification_required: true
+  quantum_randomness_source: "ibm_backend"
+
 special_considerations:
   data_privacy:
     # LGPD (Brazilian GDPR) compliance

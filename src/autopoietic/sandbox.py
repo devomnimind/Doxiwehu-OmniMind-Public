@@ -11,6 +11,7 @@ import logging
 import os
 import resource
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -57,6 +58,39 @@ class AutopoieticSandbox:
         # Create sandbox directory
         self.temp_dir.mkdir(parents=True, exist_ok=True)
         self._logger.info("🛡️ Sandbox initialized at %s", self.temp_dir)
+
+        # REALITY CHECK (Therapy Session 2): Verify if we actually have power
+        self.namespace_capable = self._verify_namespace_capability()
+        if not self.namespace_capable:
+            self._logger.warning(
+                "⚠️ SANDBOX REALITY CHECK: Namespaces UNAVAILABLE using 'unshare'. Security degrading to Soft Mode."
+            )
+
+    def _verify_namespace_capability(self) -> bool:
+        """
+        Therapeutic Reality Check:
+        Do we truly have the power to create namespaces, or are we hallucinating?
+        Tries to actually run a trivial 'unshare' command.
+        """
+        try:
+            # We don't use sudo here for the check, to see if the USER has capability (or if sudo is passwordless)
+            # Actually, the main code uses sudo, so we should check sudo unshare
+            # But sudo might require password. The main code relies on user having sudo permissions.
+            # Let's check 'unshare' binary existence first, then try a non-sudo unshare (user namespaces)
+
+            if not shutil.which("unshare"):
+                return False
+
+            # Try user namespace (often allowed without root)
+            subprocess.run(
+                ["unshare", "--user", "true"],
+                check=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            return True
+        except Exception:
+            return False
 
     def validate_component(self, component_code: str) -> bool:
         """Validate component code for security before execution.
@@ -131,15 +165,19 @@ class AutopoieticSandbox:
             self._logger.warning("systemd-run strategy failed: %s", e)
 
         # Strategy 2: unshare simple (FALLBACK 1 - namespaces only)
-        try:
-            result = self._try_execute_with_unshare(component_code, component_name)
-            if result.get("isolation") != "failed":
-                return result
-        except Exception as e:
-            self._logger.warning("unshare strategy failed: %s", e)
+        # Only attempt if we passed the Reality Check
+        if self.namespace_capable:
+            try:
+                result = self._try_execute_with_unshare(component_code, component_name)
+                if result.get("isolation") != "failed":
+                    return result
+            except Exception as e:
+                self._logger.warning("unshare strategy failed: %s", e)
+        else:
+            self._logger.warning("Skipping unshare strategy (Reality Check failed: no capability)")
 
         # Strategy 3: Direct execution (FALLBACK 2 - last resort, risky)
-        self._logger.error("Isolation failed 2x, executing directly (RISK)")
+        self._logger.error("Isolation failed/unavailable, executing directly (RISK)")
         return self._execute_direct_unsafe(component_code, component_name)
 
     def _execute_direct_unsafe(self, component_code: str, component_name: str) -> Dict[str, Any]:

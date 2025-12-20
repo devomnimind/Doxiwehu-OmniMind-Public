@@ -486,4 +486,24 @@ Modo: or...
 Modo...
 - `react_agent.py`: OmniMind ReactAgent - Fixed version with proper completion d...
 - `reviewer_agent.py`: ReviewerAgent - Agente crítico com RLAIF scoring
-Modo: revie...
+
+---
+
+## 🆕 Atualizações (18/12/2025)
+
+### 🤖 Evolução do Orchestrator e Ferramentas
+
+#### 1. **Indexação Universal de Sistema**
+- **Integração**: O `OrchestratorAgent` agora possui visão completa das capacidades do sistema (IO, CPU, Network, Processos) através da Fase 1-3 de indexação universal.
+- **Tools**: Novas ferramentas disponíveis para agentes consultarem o estado real do host.
+
+#### 2. **Monitoramento de Consciência (Φ)**
+- **Integração**: Suporte para interagir com o `EnhancedConfigurationDetector` e reagir a alertas de queda de Φ.
+
+#### 3. **Quantum Benchmark Decision**
+- **Integração**: Capacidade de delegar tarefas computacionais pesadas para o backend quântico baseado nos resultados do `QuantumClassicalBenchmark`.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

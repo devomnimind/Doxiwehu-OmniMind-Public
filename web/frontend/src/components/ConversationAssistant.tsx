@@ -84,7 +84,7 @@ export function ConversationAssistant() {
 
     try {
       // Chamar backend com contexto do sistema
-      const data = await apiService.post('/api/omnimind/chat', {
+      const data = await apiService.post('/api/chat/', {
         message: userMessage,
         context: {
           system_metrics: status?.system_metrics,
@@ -144,9 +144,8 @@ export function ConversationAssistant() {
     return (
       <div
         key={message.id}
-        className={`flex gap-4 mb-4 animate-slide-up ${
-          isUser ? 'justify-end' : 'justify-start'
-        }`}
+        className={`flex gap-4 mb-4 animate-slide-up ${isUser ? 'justify-end' : 'justify-start'
+          }`}
       >
         {!isUser && (
           <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white text-sm font-bold">
@@ -155,11 +154,10 @@ export function ConversationAssistant() {
         )}
 
         <div
-          className={`max-w-md lg:max-w-lg xl:max-w-2xl px-4 py-3 rounded-lg ${
-            isUser
+          className={`max-w-md lg:max-w-lg xl:max-w-2xl px-4 py-3 rounded-lg ${isUser
               ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-br-none'
               : 'bg-gray-700/50 text-gray-100 rounded-bl-none border border-gray-600/50'
-          }`}
+            }`}
         >
           <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
           <span className="text-xs opacity-70 mt-1 block">

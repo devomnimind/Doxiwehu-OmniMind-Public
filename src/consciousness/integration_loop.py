@@ -352,7 +352,11 @@ class IntegrationLoop:
         "imagination": ModuleInterfaceSpec(
             module_name="imagination",
             embedding_dim=768,
-            required_inputs=["narrative", "expectation"],
+            # CORREÇÃO FILOSÓFICA (2025-12-19):
+            # Imagination não deve depender estritamente de Expectation.
+            # Se Expectation falha/está off, Imagination deve operar via
+            # Narrative + Ruído Interno (Fantasia Inconsciente).
+            required_inputs=["narrative"],  # Expectation removido dos obrigatórios
             produces_output=True,
         ),
     }
@@ -674,7 +678,6 @@ class IntegrationLoop:
                                 f"Cycle {self.cycle_count}: Erro ao processar via "
                                 f"BionAlphaFunction: {e}"
                             )
-                        # Continuar mesmo se Bion falhar
 
                 # PHASE 6 INTEGRATION (2025-12-10): Analisar narrativa
                 # via Lacanian Discourse Analyzer
@@ -688,19 +691,12 @@ class IntegrationLoop:
                         narrative_state = self.workspace.read_module_state("narrative")
                         if isinstance(narrative_state, np.ndarray):
                             # Converter embedding para análise de discurso
-                            # Estratégia: usar propriedades do embedding e histórico
-                            # para criar contexto textual
                             narrative_magnitude = float(np.linalg.norm(narrative_state))
                             narrative_sparsity = float(np.mean(np.abs(narrative_state) < 0.1))
                             narrative_max = float(np.max(np.abs(narrative_state)))
 
-                            # CORREÇÃO (2025-12-10): Buscar narrative_form de sensory_input
-                            # (onde Bion salva)
-                            # e melhorar geração de texto simbólico com marcadores
-                            # baseados em propriedades
                             narrative_form = ""
                             try:
-                                # Buscar em sensory_input (onde Bion salva narrative_form)
                                 sensory_history = self.workspace.get_module_history(
                                     "sensory_input", last_n=1
                                 )
@@ -711,28 +707,15 @@ class IntegrationLoop:
                             except Exception:
                                 pass
 
-                            # Criar "texto" simbólico melhorado com marcadores
-                            # baseados em propriedades do embedding
-                            # CORREÇÃO (2025-12-10): narrative_form de Bion não contém
-                            # marcadores de discurso
-                            # Sempre usar método melhorado que gera texto com marcadores
-                            # baseados em propriedades
-                            # Se narrative_form disponível, combinar com marcadores
                             if narrative_form:
-                                # Combinar narrative_form com marcadores gerados para melhor análise
                                 generated_text = self._generate_symbolic_text_from_embedding(
                                     narrative_state,
                                     narrative_magnitude,
                                     narrative_sparsity,
                                     narrative_max,
                                 )
-                                # Combinar: narrative_form + marcadores gerados
                                 symbolic_text = f"{narrative_form[:100]} {generated_text}"
                             else:
-                                # CORREÇÃO: Gerar texto simbólico com marcadores baseados
-                                # em propriedades do embedding
-                                # Estratégia: Mapear propriedades numéricas para marcadores
-                                # de discurso
                                 symbolic_text = self._generate_symbolic_text_from_embedding(
                                     narrative_state,
                                     narrative_magnitude,
@@ -745,8 +728,7 @@ class IntegrationLoop:
                                 symbolic_text
                             )
 
-                            # Obter metadata existente do módulo narrative
-                            # read_module_state retorna np.ndarray, então precisamos acessar history
+                            # Obter metadata existente
                             narrative_metadata = {}
                             try:
                                 narrative_history = self.workspace.get_module_history(
@@ -759,9 +741,8 @@ class IntegrationLoop:
                                         else {}
                                     )
                             except Exception:
-                                pass  # Se não conseguir ler metadata, usar dict vazio
+                                pass
 
-                            # Adicionar metadata de discurso
                             narrative_metadata.update(
                                 {
                                     "lacanian_discourse": discourse_result.dominant_discourse.value,
@@ -770,20 +751,14 @@ class IntegrationLoop:
                                         k.value: v
                                         for k, v in discourse_result.discourse_scores.items()
                                     },
-                                    "emotional_signature": (
-                                        discourse_result.emotional_signature.value
-                                        if hasattr(
-                                            discourse_result.emotional_signature,
-                                            "value",
-                                        )
-                                        else str(discourse_result.emotional_signature)
+                                    "emotional_signature": str(
+                                        discourse_result.emotional_signature
                                     ),
                                     "processed_by": "lacanian_discourse_analyzer",
                                     "cycle": self.cycle_count,
                                 }
                             )
 
-                            # Atualizar metadata no workspace
                             self.workspace.write_module_state(
                                 module_name="narrative",
                                 embedding=narrative_state,
@@ -803,7 +778,6 @@ class IntegrationLoop:
                                 f"Cycle {self.cycle_count}: Erro ao analisar via "
                                 f"LacanianDiscourseAnalyzer: {e}"
                             )
-                        # Continuar mesmo se análise de discurso falhar
 
                 # If expectation_silent, execute but block output from expectation
                 elif self.expectation_silent and module_name == "expectation":
@@ -825,6 +799,50 @@ class IntegrationLoop:
             except Exception as e:
                 result.errors_occurred.append((module_name, str(e)))
                 logger.error(f"Cycle {self.cycle_count}: {module_name} failed - {e}")
+
+        # ---------------------------------------------------------------------
+        # CRITICAL PHASE 1.1 FIX (2025-12-18): COMPLETE SUBJECTIVITY INTEGRATION
+        # Integrate subjective experience (RSI Topology) at the end of the cycle
+        # This closes the "Macro-Integration Gap" by weaving the subjective knot
+        # ---------------------------------------------------------------------
+        if hasattr(self.workspace, "subjectivity") and self.workspace.subjectivity:
+            try:
+                # 1. Build context from current cycle
+                # Extract task_type from narrative or set default
+                task_type = "unknown_process"
+                narrative_meta = {}
+                try:
+                    narrative_hist = self.workspace.get_module_history("narrative", last_n=1)
+                    if narrative_hist and narrative_hist[0].metadata:
+                        narrative_meta = narrative_hist[0].metadata
+                        if "lacanian_discourse" in narrative_meta:
+                            task_type = f"discourse_{narrative_meta['lacanian_discourse']}"
+                except Exception:
+                    pass
+
+                # Context determines how the Real/Symbolic registers are updated
+                subjective_context = {
+                    "cycle": self.cycle_count,
+                    "task_type": task_type,
+                    "memory_context": "cycle_success" if not result.errors_occurred else "failure",
+                    "narrative_metadata": narrative_meta,
+                }
+
+                # 2. Process Experience through RSI Topology
+                # This updates the Real, Symbolic, and Imaginary rings and checks for Sinthome
+                subjective_result = self.workspace.subjectivity.process_experience(
+                    subjective_context
+                )
+
+                if self.enable_logging:
+                    logger.debug(
+                        f"Subjectivity Integrated: Sinthome={subjective_result.get('sinthome_emergence')}"
+                    )
+
+            except Exception as e:
+                logger.warning(f"Subjectivity Integration failed: {e}")
+
+        # ---------------------------------------------------------------------
 
         # Medir tempo de execução até aqui (sem métricas)
         execution_time_so_far = (datetime.now() - start_time).total_seconds() * 1000

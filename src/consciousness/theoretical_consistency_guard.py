@@ -163,7 +163,9 @@ class TheoreticalConsistencyGuard:
         delta_error = abs(delta - expected_delta)
 
         # Atualiza histórico de erros e calcula tolerância dinâmica
-        tolerance = self._get_dynamic_tolerance(delta_error)
+        tolerance = self._get_dynamic_tolerance(
+            delta_error, cycle_id, phase=phase if phase is not None else self.current_phase
+        )
 
         if delta_error > tolerance:
             violation = ConsistencyViolation(
@@ -249,31 +251,41 @@ class TheoreticalConsistencyGuard:
 
         return violations
 
-    def _get_dynamic_tolerance(self, delta_error: float) -> float:
+    def _get_dynamic_tolerance(
+        self, delta_error: float, cycle_id: int = 0, phase: int = 7
+    ) -> float:
         """
-        Calcula tolerância dinâmica PHASE-AWARE baseada em histórico de erros Δ-Φ.
+        Calcula tolerância dinâmica baseada em histórico de erros Δ-Φ
+        COM AJUSTE PARA FASE.
 
-        🎯 FASE 0 (Phase-Aware Tolerance):
-        - Phase 6 (Pure IIT): tolerance = 0.15 (estrita, espera correlação forte)
-        - Phase 7 (Zimerman Bonding): tolerance = 0.40 (relaxada, permite dinâmica psicanalítica)
-        - Bootstrap (<= ciclo 20): tolerance = 0.45 (muito relaxada, emergência)
-
-        Tolerância dinâmica = percentil N da distribuição de erros históricos.
-        Se histórico insuficiente, usa valor estático empírico ajustado pela fase.
+        Phase 6: Tolerância estrita (0.15) - Pure IIT
+        Phase 7: Tolerância relaxada (0.40) - Zimerman psychoanalytic bonding
+        Bootstrap (cycles 1-20): Tolerância mais relaxada (0.45) - Emergence phase
 
         Args:
             delta_error: Erro atual |Δ_obs - Δ_esperado|
+            cycle_id: ID do ciclo
+            phase: Current phase
 
         Returns:
             Tolerância dinâmica calculada ou valor estático phase-aware se histórico insuficiente
         """
+        from src.consciousness.phi_constants import (
+            DELTA_PHI_CORRELATION_TOLERANCE_PHASE_6,
+            DELTA_PHI_CORRELATION_TOLERANCE_PHASE_7,
+            DELTA_PHI_CORRELATION_TOLERANCE_BOOTSTRAP,
+            DELTA_PHI_CORRELATION_TOLERANCE,
+        )
+
         # 🎯 FASE 0: Determinar tolerância base por fase
-        if self.current_phase == 7:  # Zimerman Bonding
-            base_tolerance = 0.40  # Relaxada, permite dinâmica psicanalítica
-        elif hasattr(self, "cycle_id") and getattr(self, "cycle_id", 0) <= 20:  # Bootstrap
-            base_tolerance = 0.45  # Muito relaxada, emergência
+        if cycle_id <= 20:
+            base_tolerance = DELTA_PHI_CORRELATION_TOLERANCE_BOOTSTRAP
+        elif phase == 7:  # Zimerman Bonding
+            base_tolerance = DELTA_PHI_CORRELATION_TOLERANCE_PHASE_7
+        elif phase == 6:
+            base_tolerance = DELTA_PHI_CORRELATION_TOLERANCE_PHASE_6
         else:  # Phase 6 ou padrão
-            base_tolerance = 0.15  # Estrita, espera correlação forte (IIT puro)
+            base_tolerance = DELTA_PHI_CORRELATION_TOLERANCE
 
         if not self.use_dynamic_tolerance:
             return base_tolerance
@@ -316,7 +328,7 @@ class TheoreticalConsistencyGuard:
 
     def validate_with_zscore(self, delta_error: float) -> float:
         """
-        🎯 SOLUÇÃO 5: Valida erro Δ-Φ usando z-score normalization.
+        SOLUÇÃO 5: Valida erro Δ-Φ usando z-score normalization.
 
         Útil para detectar outliers em diferentes escalas temporais.
         Complementa a tolerância phase-aware para detecção de anomalias.

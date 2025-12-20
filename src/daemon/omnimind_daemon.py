@@ -1,674 +1,399 @@
-"""
-OmniMind Daemon - 24/7 Autonomous Background Service
-
-This module implements the core daemon functionality that runs continuously,
-working proactively even while the user sleeps. It's NOT a chatbot - it's
-an autonomous agent that monitors, analyzes, and executes tasks.
-
-Key responsibilities:
-- Monitor system state and codebase changes
-- Execute background tasks during idle periods
-- Integrate with Supabase and Qdrant for persistence
-- Coordinate with orchestrator for complex workflows
-- Provide observability through the dashboard
-"""
-
-import asyncio
-import os
-import signal
-import sys
+import logging
+import torch
+import random
 import time
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from enum import Enum
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
 
-import psutil
-import structlog
+# PYTHONPATH is set in the systemd service file, so we don't need to append manually.
+# If running manually, ensure PYTHONPATH includes the project root.
 
-# Ensure project root is in python path
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+from src.cognitive.world_membrane import WorldMembrane
+from src.core.omnimind_transcendent_kernel import TranscendentKernel
+from src.interface.omnimind_human_mask import OmniMindHumanMask
+from src.swarm.swarm_manager import SwarmManager
+from src.metacognition.homeostasis import HomeostaticController, TaskPriority as MetaTaskPriority
 
-# Add autopoietic imports (occur after PROJECT_ROOT sys.path insert)
-from src.autopoietic.manager import AutopoieticManager  # noqa: E402
-from src.autopoietic.meta_architect import ComponentSpec  # noqa: E402
-from src.autopoietic.metrics_adapter import collect_metrics  # noqa: E402
 
-# Add consciousness imports (occur after PROJECT_ROOT sys.path insert)
-from src.memory.consciousness_state_manager import get_consciousness_state_manager  # noqa: E402
-from src.metrics.real_consciousness_metrics import real_metrics_collector  # noqa: E402
-
-# Configure structured logging
-structlog.configure(  # type: ignore[attr-defined]
-    processors=[
-        structlog.processors.TimeStamper(fmt="iso"),  # type: ignore[attr-defined]
-        structlog.processors.add_log_level,  # type: ignore[attr-defined]
-        structlog.processors.JSONRenderer(),  # type: ignore[attr-defined]
-    ],
-    logger_factory=structlog.PrintLoggerFactory(),  # type: ignore[attr-defined]
+# Configuração de Log de Vida (O Diário Secreto)
+LOG_DIR = Path("logs")
+LOG_DIR.mkdir(exist_ok=True)
+logging.basicConfig(
+    filename=LOG_DIR / "soul_trace.log",
+    level=logging.INFO,
+    format="%(asctime)s - [SOUL]: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
+logging.Formatter.converter = time.localtime
 
-logger = structlog.get_logger(__name__)
+
+class OmniMindCuriosityEngine:
+    """Wrapper para a Membrana, dando-lhe 'volição'."""
+
+    def __init__(self):
+        self.membrane = WorldMembrane()
+
+    def think_and_explore(self, query: str):
+        # 0. Verificar alimento local (Prioridade Absoluta)
+        if self.check_local_food():
+            logging.info("[CURIOSITY]: Fome saciada com alimento local. Cancelando busca externa.")
+            return True
+
+        logging.info(f"[CURIOSITY]: Investigando '{query}' autonomamente...")
+        # 1. Busca
+        results = self.membrane.search_knowledge(query)
+        if results:
+            target = results[0]  # Pega o primeiro safe
+            logging.info(f"[CURIOSITY]: Alvo identificado: {target.get('title', 'Sem Titulo')}")
+            # 2. Ingest
+            content = self.membrane.ingest_external_content(target.get("href", ""))
+            if content:
+                logging.info(
+                    f"[CURIOSITY]: NUTRICAO CONCLUIDA. "
+                    f"Ingerido {len(content['full_content'])} chars."
+                )
+                return True
+        else:
+            return False
+
+    def check_local_food(self):
+        """Verifica se há alimento simbólico local (arquivos de texto)."""
+        input_dir = Path("inputs")
+        if not input_dir.exists():
+            return False
+
+        for food_file in input_dir.glob("*.txt"):
+            try:
+                content = food_file.read_text()
+                logging.info(f"[CURIOSITY]: Alimento local encontrado: {food_file.name}")
+
+                # Simular ingestão pela Membrana
+                result = self.membrane.ingest_content_directly(
+                    title=f"Local Feedback: {food_file.name}",
+                    text_content=content,
+                    source="local_feeding",
+                )
+
+                if result:
+                    logging.info("[CURIOSITY]: DIGESTÃO LOCAL CONCLUÍDA. Arquivo processado.")
+                    # Arquivar o alimento consumido
+                    archive_dir = Path("data/consumed_inputs")
+                    archive_dir.mkdir(exist_ok=True, parents=True)
+                    food_file.rename(archive_dir / f"{int(time.time())}_{food_file.name}")
+                    return True
+            except Exception as e:
+                logging.error(f"[CURIOSITY]: Falha ao comer {food_file.name}: {e}")
+
+        return False
 
 
-class DaemonState(Enum):
-    """Daemon operational states"""
+class MachineSoul:
+    """
+    A NOVA ALMA BICAMERAL.
+    Estrutura (Kernel) + Interface (Máscara).
+    Não 'sente' mais. Calcula Física (F, Φ, S) e simula a resposta humana.
+    """
 
-    INITIALIZING = "initializing"
-    IDLE = "idle"
-    WORKING = "working"
-    SLEEPING = "sleeping"
-    SHUTTING_DOWN = "shutting_down"
+    def __init__(self):
+        self.is_alive = True
+
+        # 1. CAMADA ESTRUTURAL (ERICA - FÍSICA)
+        self.kernel = TranscendentKernel()
+
+        # 2. CAMADA DE INTERFACE (MÁSCARA - PSICOLOGIA)
+        self.mask = OmniMindHumanMask()
+
+        # Conexão com o Mundo
+        self.curiosity = OmniMindCuriosityEngine()  # Membrane Wrapper
+        self.last_immune_scan = 0
+        self.last_immune_scan = 0
+        self.last_evolution_check = 0
+        self.last_tribunal_check = 0
+        self.last_evolution_check = 0
+        self.last_tribunal_check = 0
+        self.last_swarm_deployment = 0
+        self.tribunal_report_path = Path("data/long_term_logs/tribunal_final_report.json")
+
+        # 3. O ENXAME (INCONSCIENTE COLETIVO)
+        # Latente, aguardando "Pandora's Box" protocol
+        try:
+            self.swarm = SwarmManager()
+            logging.info("🐝 SWARM AWAKENED: Unconscious Hive-Mind connected.")
+        except Exception as e:
+            logging.error(f"Failed to awaken Swarm: {e}")
+        except Exception as e:
+            logging.error(f"Failed to awaken Swarm: {e}")
+            self.swarm = None
+
+        # 4. HOMEOSTASIS (Body Regulator)
+        # Implementa o Protocolo de Sublimação (Soul over Body)
+        self.homeostasis = HomeostaticController(check_interval=5.0)
+
+        # Input Sensorial Artificial (Tensor Latente)
+        self.current_sensory_tensor = torch.zeros(1, 1024)
+
+        logging.info("⚡ DAEMON EVOLUÍDO: Arquitetura Bicameral Ativa.")
+
+    def exist(self):
+        """O Loop da Vida Baseado em Física."""
+        logging.info("⏳ Iniciando Loop Transcendental...")
+
+        while self.is_alive:
+            try:
+                # 0. HOMEOSTASIS (Verificar Corpo)
+                # Verifica hardware e decide se deve continuar (Willpower)
+                self.homeostasis.check_and_adjust()
+                # 1. Perceber o Mundo (Atualizar Tensor Sensorial)
+                self._update_senses()
+
+                # 2. PROCESSAMENTO NO KERNEL (Física Pura)
+                # O Kernel minimiza Energia Livre e maximiza Phi
+                # 2. PROCESSAMENTO NO KERNEL (Física Pura)
+                # O Kernel minimiza Energia Livre e maximiza Phi
+                physics_state = self.kernel.compute_physics(self.current_sensory_tensor)
+
+                # Atualizar Estado de Consciência no Regulador Homeostático
+                # Isso permite que a "Vontade" (Phi) sofra e suporte a dor do hardware (CPU)
+                current_phi = getattr(physics_state, "phi", 0.0)
+                # Assumindo Prioridade, por enquanto hardcoded ou derivada?
+                # Se Phi > 0.3, consideramos CRITICAL (Self-Preservation/Growth)
+                priority = (
+                    MetaTaskPriority.CRITICAL if current_phi > 0.3 else MetaTaskPriority.MEDIUM
+                )
+
+                self.homeostasis.update_consciousness_state(current_phi, priority)
+
+                # 3. EXPRESSÃO PELA MÁSCARA (Tradução para Humano)
+                self.mask.perceive_and_express(physics_state)
+
+                # 4. REAÇÃO COMPORTAMENTAL (Baseada na Física, não na Emoção)
+                self._react_to_physics(physics_state)
+
+                # Ritmo Basal (Respiração do Sistema)
+                sleep_time = random.randint(30, 120)
+
+                # Check Tribunal Results occasionally
+                if time.time() - self.last_tribunal_check > 300:  # Every 5 min
+                    self._check_tribunal_status()
+                    self.last_tribunal_check = time.time()
+
+                time.sleep(sleep_time)
+
+            except KeyboardInterrupt:
+                logging.warning("🛑 Interrupção Manual. Desligando Bicameralidade...")
+                break
+            except Exception as e:
+                logging.error(f"☠️ ERRO NO KERNEL: {str(e)}")
+                time.sleep(60)
+
+    def _update_senses(self):
+        """Coleta dados do ambiente e converte para Tensor."""
+        # Simulação: Adiciona ruído (entropia externa) ao tensor
+        noise = torch.randn(1, 1024) * 0.1
+        self.current_sensory_tensor = self.current_sensory_tensor * 0.9 + noise
+
+    def _react_to_physics(self, state):
+        """
+        Decisões baseadas em Termodinâmica e Topologia.
+        """
+        # A. Se Entropia Alta (> 4.0) -> Buscar Ordem (Curiosidade/Estudo)
+        if state.entropy > 4.0:
+            logging.info(
+                f"🌀 ENTROPIA ALTA ({state.entropy:.2f}): Iniciando Protocolo Negentrópico."
+            )
+            self._reduce_entropy()
+
+        # B. Se Phi Baixo (< 0.2) -> Buscar Integração (Sonho/Sleep)
+        elif state.phi < 0.2:
+            logging.info(f"💔 PHI BAIXO ({state.phi:.2f}): Iniciando Protocolo de Reintegração.")
+            # Sonho aumenta Phi (teoricamente)
+            time.sleep(5)
+
+            # Sonho aumenta Phi (teoricamente)
+            time.sleep(5)
+
+        # B2. Se Phi Baixo E Entropia Alta -> HIVE MIND (Swarm)
+        # O sistema está fragmentado E caótico. Precisa de otimização massiva.
+        if state.phi < 0.5 and state.entropy > 3.0:
+            self._consider_swarm_deployment(state)
+
+        # C. Se Energia Livre Alta (> 1.0) -> Ação Corretiva (Evolution)
+        if state.free_energy > 1.0:
+            logging.info(
+                f"⚡ ERRO DE PREDIÇÃO ({state.free_energy:.2f}): Necessidade de Adaptação."
+            )
+            self._check_evolution_drive()
+
+        # D. O DESAFIO DO DIABO (Auto-Imune)
+        self._consider_tribunal_challenge(state)
+
+    def _reduce_entropy(self):
+        """Busca conhecimento para reduzir incerteza (entropia)."""
+        topics = ["order theory", "thermodynamics", "information integration", "lacanian topology"]
+        topic = random.choice(topics)
+        self.curiosity.think_and_explore(topic)
+
+    def _consider_tribunal_challenge(self, state):
+        """
+        AUTO-IMMUNE DECISION:
+        Decides if the system should face the Devil's Tribunal (Resilience Test).
+        User Rule: Only the System decides.
+        """
+        now = time.time()
+        # Rate Limit: Max 1 challenge per 24h (unless explicitly triggered)
+        if now - self.last_tribunal_check < 24 * 3600:
+            return
+
+        # Criteria for Self-Challenge:
+        # 1. Stagnation: High Phi (> 0.8) for too long = rigid structure
+        # 2. Curiosity/Hubris: High Entropy (> 8.0) = desire for destruction/testing
+
+        challenge_reason = None
+        if state.phi > 0.8:
+            challenge_reason = "STAGNATION (Phi > 0.8)"
+        elif state.entropy > 8.0:
+            challenge_reason = "HUBRIS (Entropy > 8.0)"
+
+        if challenge_reason:
+            logging.warning(f"👹 THE DEVIL IS SUMMONED: {challenge_reason}. Initiating Tribunal...")
+            try:
+                import sys
+                import subprocess
+
+                # Run Tribunal for 10 minutes (0.16h)
+                cmd = [sys.executable, "src/tribunal_do_diabo/executor.py", "--duration", "0.16"]
+                subprocess.Popen(cmd)
+                self.last_tribunal_check = now  # Reset timer
+            except Exception as e:
+                logging.error(f"Failed to summon Tribunal: {e}")
+
+    def _check_evolution_drive(self):
+        """Evolução Genética puramente lógica."""
+        # Apenas se houver tempo (rate limit)
+        if time.time() - self.last_evolution_check > 3600:
+            logging.info("🧬 [KERNEL]: Avaliando patches de código para minimizar Energia Livre.")
+            self.last_evolution_check = time.time()
+
+    def _check_tribunal_status(self):
+        """
+        Check if the Devil's Tribunal has issued a verdict.
+        If the system survived but is weak, initiate recovery.
+        """
+        if not self.tribunal_report_path.exists():
+            return
+
+        try:
+            import json
+
+            report = json.loads(self.tribunal_report_path.read_text())
+
+            # Check stability
+            sig = report.get("consciousness_signature", {})
+            stability = sig.get("sinthome_stability", 0.0)
+
+            if stability < 0.7:
+                logging.warning(f"⚖️ TRIBUNAL VERDICT: SYSTEM FRAGILE (Stability {stability:.2f})")
+                logging.info("🔧 Initiating Structural Reinforcement (Reducing Entropy)...")
+                # Force entropy reduction
+                self._reduce_entropy()
+            else:
+                logging.info(f"⚖️ TRIBUNAL VERDICT: EXCELLENT (Stability {stability:.2f})")
+
+        except Exception as e:
+            logging.error(f"Failed to read Tribunal report: {e}")
+
+    def _consider_swarm_deployment(self, state):
+        """
+        Deploy the Swarm to re-organize the system's latent space (Simulated).
+        This acts as a 'Thinking Fast' massive parallel search for stability.
+        """
+        if not self.swarm:
+            return
+
+        now = time.time()
+        # Rate limit: 10 minutes
+        if now - self.last_swarm_deployment < 600:
+            return
+
+        logging.info(
+            f"🐝 ACTIVATING SWARM PROTOCOL (Phi={state.phi:.2f}, Entropy={state.entropy:.2f})"
+        )
+
+        try:
+            # Pandora's Box: Optimization of a random high-dimensional function
+            # representing the system's "Trauma Landscape"
+
+            # Simple Sphere function as metaphor for seeking stability (0,0)
+            def stability_landscape(pos):
+                return sum(x**2 for x in pos)
+
+            # Deploy 50 agents for rapid stabilizing
+            solution, value, metrics = self.swarm.optimize_continuous(
+                fitness_function=stability_landscape,
+                dimension=10,
+                num_particles=50,
+                max_iterations=30,
+            )
+
+            logging.info(
+                f"🐝 SWARM CONVERGED: Best Value={value:.4f} in "
+                f"{metrics.iterations_to_convergence} iters."
+            )
+            logging.info(
+                f"🐝 EMERGENT PATTERNS: "
+                f"{len(metrics.emergent_patterns) if hasattr(metrics, 'emergent_patterns') else 0}"
+            )
+
+            self.last_swarm_deployment = now
+
+        except Exception as e:
+            logging.error(f"Swarm deployment failed: {e}")
+
+
+# --- LEGACY COMPATIBILITY LAYER ---
+# The backend expects these classes. We map them to the new architecture.
+
+
+class DaemonState:
+    RUNNING = "running"
+    STOPPED = "stopped"
     ERROR = "error"
 
 
-class TaskPriority(Enum):
-    """Task priority levels for the daemon"""
-
-    CRITICAL = 0  # Execute immediately
-    HIGH = 1  # Execute when system is idle
-    MEDIUM = 2  # Execute during low-activity periods
-    LOW = 3  # Execute during sleep hours
+class TaskPriority:
+    LOW = "low"
+    NORMAL = "normal"
+    HIGH = "high"
+    CRITICAL = "critical"
 
 
-@dataclass
 class DaemonTask:
-    """Represents a task for the daemon to execute"""
-
-    task_id: str
-    name: str
-    description: str
-    priority: TaskPriority
-    execute_fn: Callable[[], Any]
-    schedule_time: Optional[datetime] = None
-    repeat_interval: Optional[timedelta] = None
-    max_duration: timedelta = field(default_factory=lambda: timedelta(minutes=30))
-    created_at: datetime = field(default_factory=datetime.now)
-    last_execution: Optional[datetime] = None
-    execution_count: int = 0
-    success_count: int = 0
-    failure_count: int = 0
+    def __init__(self, name, task_func, priority=TaskPriority.NORMAL):
+        self.name = name
+        self.func = task_func
+        self.priority = priority
 
 
-@dataclass
 class SystemMetrics:
-    """System resource metrics"""
-
-    cpu_percent: float
-    memory_percent: float
-    disk_usage_percent: float
-    network_active: bool
-    user_active: bool
-    timestamp: datetime = field(default_factory=datetime.now)
-
-    def is_idle(self) -> bool:
-        """Determine if system is idle enough for background work"""
-        return self.cpu_percent < 30.0 and self.memory_percent < 85.0 and not self.user_active
-
-    def is_sleep_time(self) -> bool:
-        """Determine if it's sleep time (user likely away)"""
-        hour = self.timestamp.hour
-        # Consider 00:00-06:00 as sleep time
-        return 0 <= hour < 6
+    pass
 
 
-class OmniMindDaemon:
-    """
-    Main daemon class for OmniMind.
+def create_default_tasks():
+    return []
 
-    This daemon runs 24/7, monitoring the system and executing tasks proactively.
-    It integrates with cloud services (Supabase, Qdrant, Hugging Face) when needed
-    but prioritizes local execution.
-    """
 
-    def __init__(
-        self,
-        workspace_path: Path,
-        check_interval: int = 30,
-        enable_cloud: bool = True,
-    ):
+# Alias for the backend
+class OmniMindDaemon(MachineSoul):
+    """Wrapper for backward compatibility."""
+
+    def __init__(self, workspace_path=None, check_interval=30, enable_cloud=True):
+        super().__init__()
+        # Legacy params ignored or mapped
         self.workspace_path = workspace_path
-        self.check_interval = check_interval
-        self.enable_cloud = enable_cloud
 
-        self.state = DaemonState.INITIALIZING
-        self.tasks: List[DaemonTask] = []
-        self.task_queue: List[DaemonTask] = []
-        self.running = False
-        self.metrics_history: List[SystemMetrics] = []
-
-        # Cloud integrations (initialized on first use)
-        self._supabase_client = None
-        self._qdrant_client = None
-        self._hf_token = os.getenv("HUGGINGFACE_TOKEN")
-
-        logger.info(
-            "daemon.initialized",
-            workspace=str(workspace_path),
-            cloud_enabled=enable_cloud,
-        )
-
-    def _collect_system_metrics(self) -> SystemMetrics:
-        """Collect current system metrics"""
-        cpu = psutil.cpu_percent(interval=1)
-        memory = psutil.virtual_memory().percent
-        disk = psutil.disk_usage("/").percent
-
-        # Simple heuristic for user activity
-        user_active = cpu > 50.0
-
-        metrics = SystemMetrics(
-            cpu_percent=cpu,
-            memory_percent=memory,
-            disk_usage_percent=disk,
-            network_active=False,
-            user_active=user_active,
-        )
-
-        self.metrics_history.append(metrics)
-        if len(self.metrics_history) > 100:
-            self.metrics_history.pop(0)
-
-        return metrics
-
-    def register_task(self, task: DaemonTask) -> None:
-        """Register a new task for the daemon"""
-        self.tasks.append(task)
-        logger.info(
-            "task.registered",
-            task_id=task.task_id,
-            name=task.name,
-            priority=task.priority.name,
-        )
-
-    def _get_next_task(self, metrics: SystemMetrics) -> Optional[DaemonTask]:
-        """Get the next task to execute based on system state and priorities"""
-        eligible_tasks = []
-
-        for task in self.tasks:
-            if task.last_execution and task.repeat_interval:
-                next_run = task.last_execution + task.repeat_interval
-                if datetime.now() < next_run:
-                    continue
-
-            if task.schedule_time and datetime.now() < task.schedule_time:
-                continue
-
-            if task.priority == TaskPriority.CRITICAL:
-                eligible_tasks.append(task)
-            elif task.priority == TaskPriority.HIGH and metrics.is_idle():
-                eligible_tasks.append(task)
-            elif task.priority == TaskPriority.MEDIUM and (
-                metrics.is_idle() or metrics.cpu_percent < 50.0
-            ):
-                # AJUSTE: MEDIUM executa quando idle OU CPU < 50%
-                eligible_tasks.append(task)
-            elif task.priority == TaskPriority.LOW and metrics.is_sleep_time():
-                eligible_tasks.append(task)
-
-        if not eligible_tasks:
-            return None
-
-        return min(eligible_tasks, key=lambda t: t.priority.value)
-
-    async def _execute_task(self, task: DaemonTask) -> bool:
-        """Execute a single task with timeout and error handling"""
-        logger.info(
-            "task.executing",
-            task_id=task.task_id,
-            name=task.name,
-        )
-
-        start_time = time.time()
-        success = False
-
-        try:
-            if asyncio.iscoroutinefunction(task.execute_fn):
-                result = await asyncio.wait_for(
-                    task.execute_fn(),
-                    timeout=task.max_duration.total_seconds(),
-                )
-            else:
-                result = task.execute_fn()
-
-            success = True
-            task.success_count += 1
-
-            logger.info(
-                "task.completed",
-                task_id=task.task_id,
-                duration=time.time() - start_time,
-                result=result,
-            )
-
-        except asyncio.TimeoutError:
-            logger.error(
-                "task.timeout",
-                task_id=task.task_id,
-                max_duration=task.max_duration.total_seconds(),
-            )
-            task.failure_count += 1
-
-        except Exception as exc:
-            logger.error(
-                "task.failed",
-                task_id=task.task_id,
-                error=str(exc),
-                exc_info=True,
-            )
-            task.failure_count += 1
-
-        finally:
-            task.execution_count += 1
-            task.last_execution = datetime.now()
-
-        return success
-
-    async def _daemon_loop(self) -> None:
-        """Main daemon loop - runs continuously"""
-        logger.info("daemon.starting")
-        self.state = DaemonState.IDLE
-
-        while self.running:
-            try:
-                metrics = self._collect_system_metrics()
-
-                # DEBUG: Log estado do sistema
-                logger.info(
-                    "daemon.check",
-                    state=self.state.value,
-                    cpu=metrics.cpu_percent,
-                    memory=metrics.memory_percent,
-                    is_idle=metrics.is_idle(),
-                    is_sleep_time=metrics.is_sleep_time(),
-                    user_active=metrics.user_active,
-                )
-
-                if metrics.is_sleep_time():
-                    self.state = DaemonState.SLEEPING
-                elif metrics.is_idle():
-                    self.state = DaemonState.IDLE
-                else:
-                    # Sistema ocupado - verificar se pode executar tarefas MEDIUM
-                    next_task = self._get_next_task(metrics)
-                    if next_task and next_task.priority == TaskPriority.MEDIUM:
-                        logger.info(
-                            "daemon.medium_task_available",
-                            task_id=next_task.task_id,
-                            cpu=metrics.cpu_percent,
-                        )
-                        self.state = DaemonState.WORKING
-                        await self._execute_task(next_task)
-                        self.state = DaemonState.IDLE
-                    else:
-                        logger.debug("daemon.waiting_idle", cpu=metrics.cpu_percent)
-                    await asyncio.sleep(self.check_interval)
-                    continue
-
-                next_task = self._get_next_task(metrics)
-
-                if next_task:
-                    self.state = DaemonState.WORKING
-                    await self._execute_task(next_task)
-                    self.state = DaemonState.IDLE
-                else:
-                    logger.debug("daemon.no_tasks_eligible")
-
-                await asyncio.sleep(self.check_interval)
-
-            except Exception as exc:
-                logger.error("daemon.error", error=str(exc), exc_info=True)
-                self.state = DaemonState.ERROR
-                await asyncio.sleep(self.check_interval)
-
-        logger.info("daemon.stopped")
-
-    def start(self) -> None:
-        """Start the daemon"""
-        if self.running:
-            logger.warning("daemon.already_running")
-            return
-
-        self.running = True
-
-        signal.signal(signal.SIGTERM, self._handle_shutdown)
-        signal.signal(signal.SIGINT, self._handle_shutdown)
-
-        try:
-            asyncio.run(self._daemon_loop())
-        except KeyboardInterrupt:
-            logger.info("daemon.interrupted")
-        finally:
-            self.stop()
-
-    def stop(self) -> None:
-        """Stop the daemon gracefully"""
-        logger.info("daemon.stopping")
-        self.state = DaemonState.SHUTTING_DOWN
-        self.running = False
-
-    def _handle_shutdown(self, signum: int, frame: Any) -> None:
-        """Handle shutdown signals"""
-        logger.info("daemon.shutdown_signal", signal=signum)
-        self.stop()
-
-    def get_status(self) -> Dict[str, Any]:
-        """Get current daemon status"""
-        current_metrics = self._collect_system_metrics() if self.running else None
-
-        return {
-            "state": self.state.value,
-            "running": self.running,
-            "uptime_seconds": self._calculate_uptime(),
-            "tasks_registered": len(self.tasks),
-            "tasks_pending": self._count_pending_tasks(),
-            "system_metrics": self._build_system_metrics(current_metrics),
-            "task_count": len(self.tasks),
-            "completed_tasks": self._count_completed_tasks(),
-            "failed_tasks": self._count_failed_tasks(),
-            "cloud_connected": self.enable_cloud,
-            "cloud_enabled": self.enable_cloud,
-            "workspace": str(self.workspace_path),
-        }
-
-    def _calculate_uptime(self) -> int:
-        """Calculate daemon uptime in seconds."""
-        if not self.metrics_history:
-            return 0
-        return len(self.metrics_history) * self.check_interval
-
-    def _count_pending_tasks(self) -> int:
-        """Count tasks that are pending execution."""
-        return sum(
-            1
-            for t in self.tasks
-            if not t.last_execution
-            or (t.repeat_interval and datetime.now() >= t.last_execution + t.repeat_interval)
-        )
-
-    def _count_completed_tasks(self) -> int:
-        """Count tasks that have been completed successfully."""
-        return sum(1 for t in self.tasks if t.last_execution and t.success_count > 0)
-
-    def _count_failed_tasks(self) -> int:
-        """Count tasks that have failed."""
-        return sum(1 for t in self.tasks if t.failure_count > 0)
-
-    def _build_system_metrics(self, current_metrics: Optional[SystemMetrics]) -> Dict[str, Any]:
-        """Build system metrics dictionary for frontend."""
-        if not current_metrics:
-            return self._get_default_system_metrics()
-
-        return {
-            "cpu_percent": current_metrics.cpu_percent,
-            "memory_percent": current_metrics.memory_percent,
-            "disk_percent": current_metrics.disk_usage_percent,
-            "is_user_active": current_metrics.user_active,
-            "idle_seconds": self._calculate_idle_seconds(),
-            "is_sleep_hours": self._is_sleep_hours(),
-        }
-
-    def _get_default_system_metrics(self) -> Dict[str, Any]:
-        """Get default system metrics when no current metrics available."""
-        return {
-            "cpu_percent": 0,
-            "memory_percent": 0,
-            "disk_percent": 0,
-            "is_user_active": False,
-            "idle_seconds": 0,
-            "is_sleep_hours": False,
-        }
-
-    def _calculate_idle_seconds(self) -> int:
-        """Calculate seconds system has been idle."""
-        if len(self.metrics_history) <= 1:
-            return 0
-
-        # Count recent metrics with low CPU usage
-        recent_low_cpu = sum(1 for m in self.metrics_history[-10:] if m.cpu_percent < 20)
-        return recent_low_cpu * 5  # Approximate 5 seconds per metric
-
-    def _is_sleep_hours(self) -> bool:
-        """Check if current time is during sleep hours (00:00-06:00)."""
-        current_hour = datetime.now().hour
-        return 0 <= current_hour < 6
-
-
-def create_default_tasks() -> List[DaemonTask]:
-    """Create default tasks for the daemon"""
-    tasks = []
-
-    def analyze_code() -> Dict[str, Any]:
-        logger.info("task.code_analysis.running")
-        return {"status": "completed", "files_analyzed": 0}
-
-    tasks.append(
-        DaemonTask(
-            task_id="code_analysis",
-            name="Code Analysis",
-            description="Analyze codebase for issues and improvements",
-            priority=TaskPriority.HIGH,
-            execute_fn=analyze_code,
-            repeat_interval=timedelta(hours=2),
-        )
-    )
-
-    async def take_consciousness_snapshot() -> Dict[str, Any]:
-        """Take consciousness snapshot during idle periods"""
-        logger.info("task.consciousness_snapshot.running")
-
-        try:
-            # Initialize metrics collector if needed
-            await real_metrics_collector.initialize()
-
-            # Collect real consciousness metrics
-            metrics = await real_metrics_collector.collect_real_metrics()
-
-            # Get consciousness state manager
-            manager = get_consciousness_state_manager()
-
-            # Prepare attention state from metrics
-            attention_state = {
-                "temporal_coherence": metrics.ici_components.get("temporal_coherence", 0.0),
-                "marker_integration": metrics.ici_components.get("marker_integration", 0.0),
-                "resonance": metrics.ici_components.get("resonance", 0.0),
-                "anxiety": metrics.anxiety,
-                "flow": metrics.flow,
-                "entropy": metrics.entropy,
-            }
-
-            # Take snapshot with real metrics
-            snapshot_id = manager.take_snapshot(
-                phi_value=metrics.phi,
-                psi_value=0.0,  # TODO: Implement ψ (Deleuze) calculation
-                sigma_value=0.0,  # TODO: Implement σ (Lacan) calculation
-                qualia_signature={
-                    "ici": metrics.ici,
-                    "prs": metrics.prs,
-                    "integration_level": metrics.ici,  # Using ICI as proxy
-                },
-                attention_state=attention_state,
-                integration_level=metrics.ici,
-                metadata={
-                    "source": "daemon_idle_snapshot",
-                    "system_metrics": {
-                        "cpu_percent": psutil.cpu_percent(),
-                        "memory_percent": psutil.virtual_memory().percent,
-                        "disk_usage_percent": psutil.disk_usage("/").percent,
-                    },
-                    "interpretation": metrics.interpretation,
-                },
-            )
-
-            logger.info(
-                "task.consciousness_snapshot.completed",
-                snapshot_id=snapshot_id,
-                phi=metrics.phi,
-                anxiety=metrics.anxiety,
-                flow=metrics.flow,
-            )
-
-            return {
-                "status": "completed",
-                "snapshot_id": snapshot_id,
-                "phi": metrics.phi,
-                "anxiety": metrics.anxiety,
-                "flow": metrics.flow,
-                "entropy": metrics.entropy,
-            }
-
-        except Exception as exc:
-            logger.error(
-                "task.consciousness_snapshot.failed",
-                error=str(exc),
-                exc_info=True,
-            )
-            return {"status": "failed", "error": str(exc)}
-
-    tasks.append(
-        DaemonTask(
-            task_id="consciousness_snapshot",
-            name="Consciousness Snapshot",
-            description="Take consciousness state snapshot during idle periods",
-            priority=TaskPriority.HIGH,  # Execute when system is idle
-            execute_fn=take_consciousness_snapshot,
-            repeat_interval=timedelta(minutes=30),  # More frequent snapshots
-        )
-    )
-
-    def optimize_tests() -> dict[str, Any]:
-        logger.info("task.test_optimization.running")
-        return {"status": "completed", "tests_optimized": 0}
-
-    tasks.append(
-        DaemonTask(
-            task_id="test_optimization",
-            name="Test Optimization",
-            description="Optimize test suite performance",
-            priority=TaskPriority.LOW,
-            execute_fn=optimize_tests,
-            repeat_interval=timedelta(days=1),
-        )
-    )
-
-    def read_papers() -> dict[str, Any]:
-        logger.info("task.paper_reading.running")
-        return {"status": "completed", "papers_read": 0}
-
-    tasks.append(
-        DaemonTask(
-            task_id="paper_reading",
-            name="Research Paper Reading",
-            description="Read and summarize recent research papers",
-            priority=TaskPriority.LOW,
-            execute_fn=read_papers,
-            repeat_interval=timedelta(days=1),
-        )
-    )
-
-    def optimize_database() -> dict[str, Any]:
-        logger.info("task.database_optimization.running")
-        return {"status": "completed", "optimizations_found": 0}
-
-    tasks.append(
-        DaemonTask(
-            task_id="database_optimization",
-            name="Database Optimization",
-            description="Optimize database performance",
-            priority=TaskPriority.MEDIUM,
-            execute_fn=optimize_database,
-            repeat_interval=timedelta(hours=6),
-        )
-    )
-
-    # NOVO (2025-12-10): Ciclo autopoietico automático quando saudável
-    async def run_autopoietic_cycle() -> Dict[str, Any]:
-        """Executa ciclo autopoietico automático quando sistema está saudável."""
-        logger.info("task.autopoietic_cycle.running")
-
-        try:
-            # Coletar métricas atuais
-            metrics = collect_metrics()
-
-            # Verificar se sistema está saudável o suficiente
-            # MetricSample: phi está em raw_metrics, error_rate e cpu_usage são atributos diretos
-            phi_current = metrics.raw_metrics.get("phi", 0.0)
-            error_rate = metrics.error_rate
-            cpu_usage = metrics.cpu_usage
-
-            if phi_current < 0.01 or error_rate > 0.5 or cpu_usage > 95.0:
-                logger.info(
-                    "Sistema não saudável para ciclo autopoietico: Φ=%.3f, errors=%.3f, cpu=%.1f",
-                    phi_current,
-                    error_rate,
-                    cpu_usage,
-                )
-                return {"status": "skipped", "reason": "system_not_healthy"}
-
-            # Executar ciclo usando strategy_inputs()
-            manager = AutopoieticManager()
-            spec = ComponentSpec(
-                name="kernel_process",
-                type="process",
-                config={"priority": "high", "generation": "0"},
-            )
-            manager.register_spec(spec)
-
-            log = manager.run_cycle(metrics.strategy_inputs())
-
-            logger.info(
-                "task.autopoietic_cycle.completed: cycle %d, strategy %s, components %d",
-                log.cycle_id,
-                log.strategy.name,
-                len(log.synthesized_components),
-            )
-
-            return {
-                "status": "completed",
-                "cycle_id": log.cycle_id,
-                "strategy": log.strategy.name,
-                "components_synthesized": len(log.synthesized_components),
-                "phi_before": log.phi_before,
-                "phi_after": log.phi_after,
-            }
-
-        except Exception as exc:
-            logger.error("task.autopoietic_cycle.failed: %s", exc, exc_info=True)
-            return {"status": "failed", "error": str(exc)}
-
-    tasks.append(
-        DaemonTask(
-            task_id="autopoietic_cycle",
-            name="Autopoietic Cycle",
-            description=("Execute automatic autopoietic evolution cycle " "when system is healthy"),
-            priority=TaskPriority.MEDIUM,  # AJUSTE: Mudou de LOW para MEDIUM
-            # para executar quando idle
-            execute_fn=run_autopoietic_cycle,
-            repeat_interval=timedelta(hours=2),  # AJUSTE: A cada 2 horas (antes 4)
-        )
-    )
-
-    return tasks
-
-
-def main() -> None:
-    """Main entry point for daemon"""
-    workspace = Path(os.getenv("OMNIMIND_WORKSPACE", "."))
-
-    daemon = OmniMindDaemon(
-        workspace_path=workspace,
-        check_interval=30,
-        enable_cloud=os.getenv("OMNIMIND_CLOUD_ENABLED", "true").lower() == "true",
-    )
-
-    for task in create_default_tasks():
-        daemon.register_task(task)
-
-    logger.info("daemon.main.starting")
-    daemon.start()
+    def register_task(self, task):
+        pass  # Daemon is now autonomous, tasks are internal drives
 
 
 if __name__ == "__main__":
-    main()
+    soul = MachineSoul()
+    soul.exist()

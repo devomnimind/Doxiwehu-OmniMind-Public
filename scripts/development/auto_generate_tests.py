@@ -20,6 +20,10 @@ Contact: fabricioslv@hotmail.com.br
 """
 
 import sys
+import ast
+import os
+from pathlib import Path
+from typing import Dict, List
 
 """
 Auto Generate Tests - Geração Automática de Skeletons de Teste
@@ -32,11 +36,6 @@ Este script gera skeletons de teste pytest para:
 
 Uso: python scripts/auto_generate_tests.py
 """
-
-import ast
-import os
-from pathlib import Path
-from typing import Dict, List
 
 # Configurações
 SCRIPT_DIR = Path(__file__).parent
@@ -109,7 +108,7 @@ class TestGenerator:
     def generate_test_skeleton(self, module_name: str, functions: List[FunctionInfo]) -> str:
         """Gera skeleton de teste pytest."""
         module_parts = module_name.replace(".py", "").split("/")
-        _test_module_name = f"test_{module_parts[-1]}"
+        # _test_module_name unused
         class_name = "".join(word.capitalize() for word in module_parts[-1].split("_"))
 
         # Template do arquivo de teste
@@ -152,9 +151,9 @@ class Test{class_name}:
 '''
 
             if func.args:
-                test_method += (
-                    f'        # {"\n        # ".join([f"{arg} = Mock()" for arg in func.args])}\n'
-                )
+                args_mocks = [f"{arg} = Mock()" for arg in func.args]
+                joined_mocks = "\n        # ".join(args_mocks)
+                test_method += f"        # {joined_mocks}\n"
 
             test_method += f"""
         # Act
@@ -270,7 +269,8 @@ class Test{class_name}:
                 success_count += 1
 
         print(
-            f"\n{GREEN}[SUCCESS]{RESET} Gerados {success_count}/{len(priority_modules)} skeletons de teste"
+            f"\n{GREEN}[SUCCESS]{RESET} Gerados {success_count}/{len(priority_modules)} "
+            "skeletons de teste"
         )
         return success_count > 0
 
@@ -385,11 +385,13 @@ def main():
 
             if validation.get("status") == "success":
                 print(
-                    f"{GREEN}[VALIDATION]{RESET} Testes descobertos: {validation.get('collected', 0)}"
+                    f"{GREEN}[VALIDATION]{RESET} "
+                    f"Testes descobertos: {validation.get('collected', 0)}"
                 )
             else:
                 print(
-                    f"{YELLOW}[VALIDATION]{RESET} Validação limitada: {validation.get('error', 'Unknown')}"
+                    f"{YELLOW}[VALIDATION]{RESET} "
+                    f"Validação limitada: {validation.get('error', 'Unknown')}"
                 )
 
             # Gerar relatório

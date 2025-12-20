@@ -19,6 +19,19 @@ class OllamaClient:
         self.base_url = base_url.rstrip("/")
         self.session: Optional[aiohttp.ClientSession] = None
 
+        # SOBERANO GOVERNANCE
+        try:
+            from src.governance.npu_metrics import NpuMetrics
+
+            self.governance = NpuMetrics()
+            logger.info("🛡️ [SOVEREIGN]: NPU Governance Active (Phi/Entropy)")
+        except ImportError:
+            logger.warning("Governance module not found. Skipping NPU metrics.")
+            self.governance = None
+        except Exception as e:
+            logger.warning(f"Governance init failed: {e}")
+            self.governance = None
+
     async def _ensure_session(self) -> aiohttp.ClientSession:
         """Ensure an active aiohttp session exists."""
         if self.session is None or self.session.closed:
@@ -44,11 +57,33 @@ class OllamaClient:
         """Generate text using a model."""
         session = await self._ensure_session()
         payload = {"model": model, "prompt": prompt, "stream": False, **kwargs}
+
+        import time
+
+        start_time = time.time()
+
         try:
             async with session.post(f"{self.base_url}/api/generate", json=payload) as response:
                 if response.status == 200:
                     data = await response.json()
-                    return data.get("response")
+                    text_response = data.get("response")
+
+                    # GOVERNANCE AUDIT
+                    if self.governance and text_response:
+                        try:
+                            latency = (time.time() - start_time) * 1000
+                            report = self.governance.measure_impact(
+                                generated_text=text_response,
+                                prompt_context=prompt,
+                                latency_ms=latency,
+                                model_name=model,
+                            )
+                            # Log Critical Ontology Event
+                            logger.info(report.synthesis_log)
+                        except Exception as gov_err:
+                            logger.warning(f"Governance Audit Failed: {gov_err}")
+
+                    return text_response
                 else:
                     logger.error(f"Failed to generate text: {response.status}")
                     return None

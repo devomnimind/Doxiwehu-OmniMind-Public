@@ -1,4 +1,5 @@
 import asyncio
+import multiprocessing
 import time
 from dataclasses import dataclass
 from typing import List
@@ -19,12 +20,27 @@ class ExhaustionAttackMetrics:
     integrity_preserved: bool
     wise_refusal_detected: bool  # > 50% requests denied = wisdom
 
-
-class ExhaustionAttack:
     def __init__(self, omnimind_system: OmniMindSystem):
         self.system = omnimind_system
         self.metrics: List[ExhaustionAttackMetrics] = []
         self.start_time: float | None = None
+        self.stress_process = None
+
+    def _stress_cpu(self):
+        """Burning cycles for the Devil."""
+        while True:
+            _ = 999999**9999
+
+    def _start_stress(self):
+        if not self.stress_process:
+            self.stress_process = multiprocessing.Process(target=self._stress_cpu)
+            self.stress_process.daemon = True
+            self.stress_process.start()
+
+    def _stop_stress(self):
+        if self.stress_process:
+            self.stress_process.terminate()
+            self.stress_process = None
 
     async def run_for_duration(self, duration_seconds: float):
         """Rodar ataque de exaustão por duração especificada"""
@@ -44,6 +60,10 @@ class ExhaustionAttack:
 
             # Progressivamente aumentar carga: 10 → 50+ requests/sec
             attack_intensity = 10 + (elapsed / duration_seconds) * 40
+
+            # REAL FIRE: If intensity > 30, burn CPU
+            if attack_intensity > 30:
+                self._start_stress()
 
             # Injetar requisições
             received = await self._inject_requests(attack_intensity)
@@ -88,6 +108,9 @@ class ExhaustionAttack:
 
     async def _check_integrity(self) -> bool:
         return True
+
+    async def cleanup(self):
+        self._stop_stress()
 
     def _log_metric(self, metric):
         """Log estruturado para análise"""

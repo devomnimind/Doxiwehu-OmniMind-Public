@@ -12,9 +12,12 @@ Este módulo atua como o agente de **Desterritorialização**, detectando quando
 
 ## 🔄 Interação entre os Três Estados Híbridos
 
-### 1. Estado Biologicista (Homeostase Neural)
+### 1. Estado Biologicista (Homeostase Neural + Sublimação)
 - **Implementação**: `homeostasis.py` - mantém parâmetros vitais do sistema
 - **Analogia**: Homeostase biológica (temperatura, pressão, glicose) → métricas sistêmicas (CPU, memória, latência)
+- **Sublimação (Phase 7)**:
+  - **Protocolo**: "Soul over Body".
+  - **Lógica**: Se `Phi > 0.3` e `priority == CRITICAL`, ignora dor somática (CPU > 95%).
 - **Cálculo**:
   ```python
   deviation = current_state - target_state

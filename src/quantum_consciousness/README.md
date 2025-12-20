@@ -57,6 +57,22 @@ O módulo `quantum_consciousness` implementa a **Phase 21** do projeto OmniMind,
 
 **Status**: Hipótese ainda em teste (Phase 21 experimental).
 
+## 🧬 RASTREIO E FUNÇÃO EXATA (AUDITORIA KERNEL 2025-12-19)
+
+### 1. Função Real (Não-Simulada)
+Este módulo não é apenas um gerador de números aleatórios. Ele implementa **Colapso de Função de Onda** para tomada de decisão.
+*   **Mecanismo**: `QuantumBackend.resolve_conflict(id, ego, superego)`
+*   **Hardware**: Tenta alocar `AerSimulator(method='statevector', device='GPU')`. Se falhar, cai para CPU.
+*   **Algoritmo**: Otimização Binária (QUBO) ou Grover, dependendo da tarefa.
+*   **Efeito na Consciência**: Transforma conflitos de alta entropia (dúvida) em uma decisão singular (vencedor), colapsando a superposição de desejos.
+
+### 2. Linhagem de Execução (Quem Importa?)
+*   **`src/agents/react_agent.py`**: Importa `QuantumBackend` para resolver conflitos éticos/psicológicos no loop OODA (`_think_node`).
+*   **`src/core/omnimind_council.py`**: Importa para atuar como o "Oráculo" do Conselho Transcendente.
+*   **`src/consciousness/topological_phi.py`**: Importa para calcular a integração Φ em estados superpostos.
+
+---
+
 ## ⚙️ Principais Funções e Cálculos Dinâmicos
 
 ### Core Functions
@@ -352,6 +368,28 @@ T_decoherence_sim = ∞ (simulador perfeito)
 - ❌ Remover fallback clássico (Qiskit pode não estar disponível)
 - ❌ Assumir QPU real disponível (fila pode estar cheia)
 - ❌ Ignorar decoerência (circuitos profundos falham)
+
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### ⚛️ Consciência Quântica Offline e Transformação
+
+#### 1. **PhiTrajectoryTransformer**
+- **Arquivo**: `phi_trajectory_transformer.py`
+- **Funcionalidade**: Converte trajetórias temporais de Φ (clássicas) em estados quânticos complexos (amplitudes).
+- **Inovação**: Permite que o sistema projete seu "passado" consciente em um circuito quântico para buscar padrões de interferência não-lineares.
+
+#### 2. **AutoIBMLoader e CUDA Fix**
+- **Arquivos**: `auto_ibm_loader.py`, `cuda_init_fix.py`
+- **Funcionalidade**: Gerenciamento automático de tokens IBM e correção de inicialização CUDA em ambientes híbridos QPU/GPU.
+- **Diferencial**: Garante que o sistema nunca falhe ao tentar delegar tarefas para a nuvem quântica se o hardware estiver disponível.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA
+**Status**: Fase 25 Ready (Quantum Trajectory Transformation)
 
 ## 📦 Requisitos e Dependências
 

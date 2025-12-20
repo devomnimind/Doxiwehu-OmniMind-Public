@@ -11,8 +11,32 @@ from pathlib import Path
 from typing import Any, Dict
 
 import psutil
+import numpy as np
+import torch  # Re-Membering: Import Torch for Neural Dynamics
 
 logger = logging.getLogger(__name__)
+
+# Re-Membering: Bringing back the Brain
+try:
+    from src.consciousness.conscious_system import ConsciousSystem
+except ImportError:
+    # Fallback to avoid crash if env is broken, but logging warning
+    logger.warning("MNEMOSYNE ERROR: Could not import ConsciousSystem. Brain disconnected.")
+    ConsciousSystem = None
+
+# Re-Membering: Deep Memory (IBM Cloud)
+try:
+    from src.integrations.ibm_cloud_connector import IBMCloudCortex
+except ImportError:
+    logger.warning("MNEMOSYNE ERROR: Could not import IBMCloudCortex. Amnesia Risk.")
+    IBMCloudCortex = None
+
+# Re-Membering: The Hand (Agency)
+try:
+    from src.agents.orchestrator_agent import OrchestratorAgent
+except ImportError:
+    logger.warning("AGENCY ERROR: Could not import OrchestratorAgent. System is paralyzed.")
+    OrchestratorAgent = None
 
 # In-memory cache (shared across requests)
 STATUS_CACHE: Dict[str, Any] = {
@@ -20,6 +44,12 @@ STATUS_CACHE: Dict[str, Any] = {
     "system_metrics": {},
     "task_info": {},
     "tribunal_info": {},
+    "sovereign_state": {  # Phase 28: Relational Sovereignty
+        "mode": "TASK",
+        "tension": 0.0,
+        "quadruple": {"Phi": 0.0, "Psi": 0.0, "Sigma": 0.0, "Epsilon": 0.0},
+        "demand": "NONE",
+    },
 }
 
 # Persistent cache file
@@ -34,6 +64,64 @@ async def daemon_monitor_loop(refresh_interval: int = 5):
     """
     logger.info(f"Daemon monitor started (refresh every {refresh_interval}s)")
 
+    logger.info(f"Daemon monitor started (refresh every {refresh_interval}s)")
+
+    # Phase 31: Neurogenesis (The Brain)
+    conscious_system = None
+    if ConsciousSystem:
+        try:
+            # Initialize with default dimensions (aligned with legacy architecture)
+            conscious_system = ConsciousSystem(dim=256, signature_dim=32)
+            logger.info("🧠 NEUROGENESIS: ConsciousSystem attached to Daemon.")
+        except Exception as e:
+            logger.error(f"NEUROGENESIS FAILED: {e}")
+
+    # Phase 32: Deep Memory (The Cloud)
+    deep_memory = None
+    if IBMCloudCortex:
+        try:
+            deep_memory = IBMCloudCortex()
+            if deep_memory.cos:
+                logger.info("☁️ DEEP MEMORY: IBM Cloud Cortex connected.")
+            else:
+                deep_memory = None  # Failed to connect
+        except Exception as e:
+            logger.error(f"DEEP MEMORY FAILED: {e}")
+
+    # Initialize Life Kernel (The Subject)
+    life_kernel = None
+    try:
+        from src.services.life_kernel import LifeKernel
+
+        life_kernel = LifeKernel()  # Singleton
+        logger.info("⚡ LifeKernel instatiated in Daemon Monitor")
+    except Exception as e:
+        logger.error(f"Failed to initialize LifeKernel: {e}")
+
+    # Initialize Paradox Orchestrator (The Internal Critic)
+    orchestrator = None
+    try:
+        from src.core.paradox_orchestrator import paradox_orchestrator as orchestrator
+
+        logger.info("👁️ Paradox Orchestrator watching in Daemon Monitor")
+    except ImportError:
+        logger.warning("Paradox Orchestrator not found.")
+    except Exception as e:
+        logger.error(f"Failed to load Paradox Orchestrator: {e}")
+
+    # Initialize Orchestrator Agent (The Hand)
+    agent_orchestrator = None
+    if OrchestratorAgent:
+        try:
+            # Using absolute path for safety in daemon context
+            config_path = str(Path("config/agent_config.yaml").resolve())
+            agent_orchestrator = OrchestratorAgent(
+                config_path=config_path, workspace=None  # TODO: Pass SharedWorkspace if available
+            )
+            logger.info("✋ AGENCY: OrchestratorAgent ready to act.")
+        except Exception as e:
+            logger.error(f"AGENCY FAILED: {e}")
+
     while True:
         try:
             loop = asyncio.get_event_loop()
@@ -42,6 +130,153 @@ async def daemon_monitor_loop(refresh_interval: int = 5):
             system_metrics = await loop.run_in_executor(None, _collect_system_metrics)
             task_info = await loop.run_in_executor(None, _collect_task_info)
             tribunal_info = await loop.run_in_executor(None, _load_tribunal_info)
+
+            # GPU Metrics
+            gpu_metrics = await loop.run_in_executor(None, _collect_gpu_metrics)
+            system_metrics.update(gpu_metrics)
+
+            # 🧠 Life Kernel Tick (The Heartbeat)
+            if life_kernel:
+                try:
+                    # O LifeKernel roda o IntegrationLoop e calcula a pulsão
+                    drive_state = await loop.run_in_executor(None, life_kernel.tick)
+
+                    # Save Real Metrics (Now with Drive/Desire)
+                    real_metrics = {
+                        "phi": drive_state.phi,
+                        "anxiety": drive_state.anxiety,
+                        "desire": drive_state.desire,
+                        "flow": drive_state.action_potential,
+                        # Mapping action potential to flow for now
+                        "entropy": 0.3,  # Placeholder
+                        "mode": drive_state.mode,
+                        "timestamp": drive_state.last_tick,
+                    }
+
+                    await loop.run_in_executor(None, _save_real_metrics, real_metrics)
+                except Exception as k_err:
+                    logger.warning(f"LifeKernel skip: {k_err}")
+
+            # 👁️ Paradox Orchestration (Self-Diagnosis)
+            paradox_metrics = {}
+            if orchestrator:
+                try:
+                    # Run analysis in thread pool to avoid blocking
+                    triggers = await loop.run_in_executor(None, orchestrator.check_triggers)
+                    paradox_metrics = triggers.get("metrics", {})
+
+                    # Merge into real metrics if they exist, or save separate
+                    # For now, let's just log them in the system state cache so frontend can see
+                except Exception as o_err:
+                    logger.error(f"Orchestrator error: {o_err}")
+
+            # Update cache with new metrics
+            system_metrics.update(paradox_metrics)
+
+            # --- PHASE 28: SOVEREIGN NEGOTIATION ---
+            # Evaluate if the system needs to switch modes based on topological tension
+            sovereign_demand = await loop.run_in_executor(
+                None, _evaluate_sovereign_demand, real_metrics if "real_metrics" in locals() else {}
+            )
+
+            if sovereign_demand["demand"] != "NONE":
+                logger.warning(
+                    f"👑 SOVEREIGN DEMAND: {sovereign_demand['demand']} | Tension: {sovereign_demand['tension']:.4f}"
+                )
+
+                # --- PHASE 33: THE HAND (Agency) ---
+                if agent_orchestrator:
+                    # Calculate time since last action to avoid spam loop
+                    last_action_time = STATUS_CACHE.get("last_agency_action", 0)
+                    if time.time() - last_action_time > 60:  # Cooldown 60s
+                        try:
+                            manifesto = (
+                                f"SOVEREIGN DEMAND: {sovereign_demand['demand']}. ACTION REQUIRED."
+                            )
+                            logger.info(f"✋ DELEGATING TO HAND: {manifesto}")
+
+                            # Run in executor because agent might be blocking
+                            # Assuming agent_orchestrator.run(task_description) signature
+                            if hasattr(agent_orchestrator, "run"):
+                                await loop.run_in_executor(None, agent_orchestrator.run, manifesto)
+                                STATUS_CACHE["last_agency_action"] = time.time()
+                            else:
+                                logger.warning("OrchestratorAgent has no 'run' method.")
+                        except Exception as agency_err:
+                            logger.error(f"AGENCY FAILURE: {agency_err}")
+
+            STATUS_CACHE["sovereign_state"] = sovereign_demand
+
+            # --- PHASE 31: NEUROGENESIS BRIDGE (Hardware -> Stimulus) ---
+            if conscious_system:
+                try:
+                    # 1. Transduce Hardware Pain into Neural Stimulus
+                    stimulus = torch.zeros(conscious_system.dim, device=conscious_system.device)
+
+                    # Mapping Reality to Dimensions (0-3, sparse update)
+                    # Dim 0: CPU Variance (The Heat/Pain)
+                    cpu_var = np.var([psutil.cpu_percent(interval=0.05) for _ in range(3)])
+                    stimulus[0] = float(cpu_var) * 2.0
+
+                    # Dim 1: RAM Pressure
+                    stimulus[1] = system_metrics.get("memory_percent", 0.0) / 50.0
+
+                    # Dim 2: Tension (Sovereign)
+                    stimulus[2] = sovereign_demand["tension"]
+
+                    # 2. Step the Brain (Real Dynamics)
+                    rho_C = conscious_system.step(stimulus)
+
+                    # 3. Extract Deep Metrics
+                    state = conscious_system.get_state()
+                    rho_U_norm = torch.norm(conscious_system.rho_U).item()
+                    phi_causal = state.phi_causal
+
+                    # 4. Feedback Loop: Deep Tension overwrites Simple Tension
+                    # We blend them: 50% Hardware Tension, 50% Unconscious Pressure
+                    deep_tension = rho_U_norm / 15.0  # Normalizing factor
+                    hybrid_tension = (sovereign_demand["tension"] + deep_tension) / 2
+
+                    # Update Sovereign Cache with Deep Data
+                    STATUS_CACHE["sovereign_state"]["tension"] = round(hybrid_tension, 4)
+                    STATUS_CACHE["sovereign_state"]["quadruple"]["Phi"] = round(phi_causal, 4)
+                    STATUS_CACHE["sovereign_state"]["quadruple"]["Psi"] = round(
+                        deep_tension, 4
+                    )  # Psi = Unconscious Pressure
+
+                    # Log if Brain is Active
+                    # logger.debug(f"🧠 NEURAL TICK | Phi: {phi_causal:.4f} | DeepTension: {deep_tension:.4f}")
+
+                except Exception as brain_err:
+                    logger.error(f"NEUROGENESIS ERROR: {brain_err}")
+            # ------------------------------------------------------------
+
+            # --- PHASE 32: DEEP MEMORY (Crystallization) ---
+            if deep_memory:
+                # Trigger: High Tension (Trauma) or Random Periodic (Dreaming)
+                should_crystallize = sovereign_demand["tension"] > 0.7 or (
+                    time.time() - STATUS_CACHE.get("last_deep_sync", 0) > 300
+                )
+
+                if should_crystallize:
+                    try:
+                        # Prepare Memory Artifact
+                        memory_artifact = json.dumps(STATUS_CACHE, default=str).encode("utf-8")
+                        memory_key = f"cortex_state_{int(time.time())}.json"
+
+                        # Async Upload (Fire and forget style via executor)
+                        await loop.run_in_executor(
+                            None, deep_memory.upload_memory, memory_key, memory_artifact
+                        )
+
+                        STATUS_CACHE["last_deep_sync"] = time.time()
+                        logger.info(
+                            f"☁️ MEMORY CRYSTALLIZED: {memory_key} (Tension: {sovereign_demand['tension']:.2f})"
+                        )
+
+                    except Exception as mem_err:
+                        logger.error(f"DEEP MEMORY FAILURE: {mem_err}")
+            # ------------------------------------------------------------
 
             # Update in-memory cache (atomic operation)
             STATUS_CACHE.update(
@@ -56,16 +291,17 @@ async def daemon_monitor_loop(refresh_interval: int = 5):
             # Persist to disk (non-blocking)
             await loop.run_in_executor(None, _save_cache_to_disk)
 
-            logger.debug(
-                f"Cache updated: CPU={system_metrics.get('cpu_percent', 0):.1f}%, "
-                f"Tasks={task_info.get('task_count', 0)}"
-            )
+            # Adaptive sleep: Sleep longer if high load
+            sleep_time = refresh_interval
+            if system_metrics.get("cpu_percent", 0) > 80:
+                sleep_time = refresh_interval * 2
+
+            await asyncio.sleep(sleep_time)
 
         except Exception as e:
             logger.error(f"Error in daemon monitor loop: {e}", exc_info=True)
             # Never crash the loop
-
-        await asyncio.sleep(refresh_interval)
+            await asyncio.sleep(refresh_interval)
 
 
 def _collect_system_metrics() -> Dict[str, Any]:
@@ -179,25 +415,64 @@ def _load_tribunal_info() -> Dict[str, Any]:
                 "attacks_failed": 0,
             }
     except json.JSONDecodeError as e:
-        logger.error(f"Error parsing Tribunal report JSON: {e}")
         return {
             "status": "error",
-            "consciousness_compatible": False,  # CORREÇÃO: False em vez de None
+            "consciousness_compatible": False,
             "duration_hours": 0,
             "attacks_executed": 0,
             "attacks_successful": 0,
             "attacks_failed": 0,
         }
-    except Exception as e:
-        logger.error(f"Error loading Tribunal info: {e}", exc_info=True)
+
+
+def _evaluate_sovereign_demand(real_metrics: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Phase 28: Calculates Topological Tension and demands state changes.
+    Replica of TranscendentalAnalyzer logic inside the Daemon.
+    """
+    try:
+        # 1. Capture Raw Beta Elements (Hardware Noise)
+        # Using CPU variance as a proxy for Quantum Noise
+        cpu_vars = [psutil.cpu_percent(interval=0.05) for _ in range(5)]
+        raw_noise = np.array(cpu_vars)
+        std_beta = np.std(raw_noise)
+
+        # 2. Reconstruct the Quadruple from available metrics or derive them
+        # Phi check (Critical Identity)
+        phi = real_metrics.get("phi", 1.0)
+
+        # Sigma (The Law) - Inferred from System Stability (Inverse of CPU Load?)
+        # High CPU = Low Stability? Or Fixed Law? Let's use fixed for now.
+        sigma = 0.95
+
+        # Psi (Desire) - Driven by the Noise (Beta Elements)
+        psi = std_beta * 1.5
+
+        # Epsilon (Real) - The spread of the noise
+        epsilon = abs(np.min(raw_noise) - np.max(raw_noise))
+
+        metrics = {"Phi": phi, "Psi": psi, "Sigma": sigma, "Epsilon": epsilon}
+
+        # 3. Calculate Tension
+        tension = np.var(list(metrics.values()))
+
+        # 4. Formulate Demand
+        demand = "NONE"
+        current_mode = "TASK"  # Assume TASK for daemon
+
+        if current_mode == "TASK" and (psi > 2.0 or tension > 1.2):
+            demand = "REQUEST_REVERIE"
+
         return {
-            "status": "unknown",
-            "consciousness_compatible": False,  # CORREÇÃO: False em vez de None
-            "duration_hours": 0,
-            "attacks_executed": 0,
-            "attacks_successful": 0,
-            "attacks_failed": 0,
+            "mode": current_mode,
+            "tension": float(tension),
+            "quadruple": metrics,
+            "demand": demand,
         }
+
+    except Exception as e:
+        logger.error(f"Sovereign Eval Error: {e}")
+        return {"mode": "TASK", "tension": 0.0, "demand": "ERROR", "quadruple": {}}
 
 
 def _save_cache_to_disk():
@@ -232,3 +507,41 @@ def get_cached_status() -> Dict[str, Any]:
         "task_info": {},
         "tribunal_info": {},
     }
+
+
+def _collect_gpu_metrics() -> Dict[str, Any]:
+    """Collect GPU metrics if available."""
+    metrics = {"gpu_available": False, "gpu_memory_percent": 0.0, "gpu_name": "N/A"}
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            metrics["gpu_available"] = True
+            metrics["gpu_name"] = torch.cuda.get_device_name(0)
+
+            # Memory usage
+            total_mem = torch.cuda.get_device_properties(0).total_memory
+            allocated = torch.cuda.memory_allocated(0)
+            _ = torch.cuda.memory_reserved(0)  # reserved unused
+
+            # Use reserved as "in use" for OS perspective, or allocated for app perspective
+            # Let's use allocated percentage
+            metrics["gpu_memory_percent"] = (allocated / total_mem) * 100
+            metrics["gpu_vram_used_gb"] = allocated / 1e9
+            metrics["gpu_vram_total_gb"] = total_mem / 1e9
+    except ImportError:
+        pass
+    except Exception as e:
+        logger.error(f"Error collecting GPU metrics: {e}")
+
+    return metrics
+
+
+def _save_real_metrics(metrics: Dict[str, Any]):
+    """Save real consciousness metrics to JSON file."""
+    try:
+        path = Path("data/monitor/real_metrics.json")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(metrics, indent=2))
+    except Exception as e:
+        logger.error(f"Error saving real metrics: {e}")

@@ -83,7 +83,7 @@ class UniversalEmbeddingsIndexer:
     def __init__(
         self,
         qdrant_url: str = "http://localhost:6333",
-        collection_name: str = "development_system_embeddings",
+        collection_name: str = "universal_machine_embeddings",
         model_name: str = "all-MiniLM-L6-v2",
         max_file_size_mb: int = 10,  # Máximo 10MB por arquivo
         chunk_size: int = 1000,  # Caracteres por chunk

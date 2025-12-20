@@ -131,6 +131,21 @@ print(log.phi_after)               # 0.68 (Φ após a mudança)
 - ✅ **Integração ao Ciclo Principal**: Integrado ao `main.py`, executando ciclos autopoiéticos a cada 300 ciclos principais (~60 segundos).
 - ✅ **Relatórios Automáticos** (2025-12-07): Integrado com `ModuleReporter` para gerar relatórios após cada ciclo autopoiético, salvos em `data/reports/modules/autopoietic_cycle_*.json`.
 
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 🧩 Homeostase Convidada por Contexto
+
+#### 1. **Integração com SystemCapabilitiesManager**
+- **Diferencial**: O Kernel de Autopoiese agora consulta o `SystemCapabilitiesManager` para entender se uma falha é devida a código quebrado ou a limitações físicas do host (falta de RAM, GPU ocupada).
+- **Ação Autônoma**: O sistema pode suspender ciclos de "Geração de Arte" (alto consumo) para priorizar "Auto-Reparo" se detectar recursos escassos via indexação de runtime.
+
+#### 2. **Validação de Φ em Tempo Real**
+- **Correção**: Implementado threshold dinâmico para evitar rollbacks excessivos durante picos legítimos de processamento detectados pelo novo monitor de CPU.
+
+---
+
 > Para ciclos reais, use `metrics_adapter.collect_metrics()` que combina métricas de consciência (`data/monitor/real_metrics.json`) e telemetria do sistema (psutil), retornando entradas normalizadas (`error_rate`, `cpu_usage`, `latency_ms`) para o `AutopoieticManager`.
 
 #### 4. `AdvancedRepair.diagnose_and_fix()`

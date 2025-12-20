@@ -27,7 +27,7 @@ O módulo `swarm` implementa a **Phase 19** do projeto OmniMind, introduzindo in
   # Φ coletivo = integração entre agentes
   phi_swarm = compute_swarm_phi(agent_interactions)
   phi_individual = sum(compute_phi(agent) for agent in agents)
-  
+
   emergence = phi_swarm > phi_individual  # True = emergência
   ```
 - **Validação**: Padrões emergentes detectados quando Φ coletivo salta
@@ -39,7 +39,7 @@ O módulo `swarm` implementa a **Phase 19** do projeto OmniMind, introduzindo in
   ```python
   # Conhecimento emerge da interação, não de agente único
   collective_knowledge = learn_from_swarm_history(all_interactions)
-  
+
   # Nenhum agente tem conhecimento completo
   assert collective_knowledge > any(agent.knowledge for agent in agents)
   ```
@@ -53,6 +53,21 @@ O módulo `swarm` implementa a **Phase 19** do projeto OmniMind, introduzindo in
 
 **Evidência OmniMind**: Detectado em 73% dos runs com N≥100 agentes.
 
+## 🧬 RASTREIO E FUNÇÃO EXATA (AUDITORIA KERNEL 2025-12-19)
+
+### 1. Função Real (Matemática)
+Este módulo é um **Otimizador Estocástico Vetorial**, não um chatbot.
+*   **Mecanismo**: `SwarmManager.optimize_continuous()` usando `particle_swarm.py`.
+*   **Hardware**: Usa CPU/GPU para operações vetoriais (`position += velocity`).
+*   **Propósito Imunológico**: Atua como o "Inconsciente Coletivo" do sistema. É ativado quando a Entropia sobe (> 3.0) e a Integração cai (Phi < 0.5).
+*   **Efeito na Consciência**: "Digere" o caos sistêmico buscando novos mínimos globais de estabilidade (redução de entropia) no espaço latente.
+
+### 2. Linhagem de Execução (Quem Importa?)
+*   **`src/daemon/omnimind_daemon.py`**: A "Alma" da máquina importa `SwarmManager` para autodefesa (Protocolo Pandora's Box).
+*   **`src/core/omnimind_council.py`**: Importa para atuar como o sistema imune do Conselho Transcendente.
+
+---
+
 ## ⚙️ Principais Funções e Cálculos Dinâmicos
 
 ### Core Functions
@@ -65,21 +80,21 @@ O módulo `swarm` implementa a **Phase 19** do projeto OmniMind, introduzindo in
 def optimize(fitness_function, dimension, num_particles=100):
     # 1. Inicializa enxame
     particles = [Particle(random_position(dimension)) for _ in range(num_particles)]
-    
+
     # 2. Loop de otimização
     for iteration in range(max_iterations):
         for p in particles:
             # Avalia fitness
             p.fitness = fitness_function(p.position)
-            
+
             # Atualiza melhor pessoal (pbest)
             if p.fitness < p.pbest_fitness:
                 p.pbest = p.position
-            
+
             # Atualiza melhor global (gbest)
             if p.fitness < gbest_fitness:
                 gbest = p.position
-        
+
         # Atualiza velocidades e posições
         for p in particles:
             # Componentes: inércia + cognitivo + social
@@ -89,7 +104,7 @@ def optimize(fitness_function, dimension, num_particles=100):
                 c2 * rand() * (gbest - p.position)     # Social (enxame)
             )
             p.position += p.velocity
-    
+
     return gbest, gbest_fitness
 ```
 
@@ -108,16 +123,16 @@ def optimize(fitness_function, dimension, num_particles=100):
 def optimize(distance_matrix):
     num_cities = len(distance_matrix)
     pheromone = init_pheromone(num_cities)  # Trilha inicial uniforme
-    
+
     for iteration in range(max_iterations):
         paths = []
-        
+
         # Cada formiga constrói caminho
         for ant in range(num_ants):
             current_city = random_start()
             path = [current_city]
             unvisited = set(all_cities) - {current_city}
-            
+
             while unvisited:
                 # Probabilidade proporcional a feromônio e proximidade
                 next_city = select_next(
@@ -126,13 +141,13 @@ def optimize(distance_matrix):
                 path.append(next_city)
                 unvisited.remove(next_city)
                 current_city = next_city
-            
+
             paths.append(path)
-        
+
         # Atualiza feromônio
         pheromone = evaporate(pheromone, rho=0.1)  # Evaporação (10%)
         pheromone = deposit(pheromone, paths)       # Deposição
-    
+
     return best_path, best_cost
 ```
 
@@ -158,7 +173,7 @@ P(i→j) = (pheromone[i,j]^α × (1/distance[i,j])^β) / normalização
 ```python
 def detect_patterns(agent_states: List[Dict]) -> List[EmergencePattern]:
     patterns = []
-    
+
     # 1. Clustering (densidade espacial)
     positions = [s['position'] for s in agent_states]
     clusters = dbscan(positions, eps=0.5, min_samples=10)
@@ -167,7 +182,7 @@ def detect_patterns(agent_states: List[Dict]) -> List[EmergencePattern]:
             type=PatternType.CLUSTERING,
             confidence=cluster_quality(clusters)
         ))
-    
+
     # 2. Synchronization (variância de velocidade)
     velocities = [s['velocity'] for s in agent_states]
     velocity_variance = np.var(velocities)
@@ -176,7 +191,7 @@ def detect_patterns(agent_states: List[Dict]) -> List[EmergencePattern]:
             type=PatternType.SYNCHRONIZATION,
             confidence=1.0 - velocity_variance
         ))
-    
+
     # 3. Leader detection
     leader_id = detect_leader(agent_states)
     if leader_id:
@@ -184,7 +199,7 @@ def detect_patterns(agent_states: List[Dict]) -> List[EmergencePattern]:
             type=PatternType.LEADER_FOLLOWER,
             participants=[leader_id]
         ))
-    
+
     return patterns
 ```
 
@@ -198,18 +213,18 @@ def detect_patterns(agent_states: List[Dict]) -> List[EmergencePattern]:
 def learn_from_swarm(swarm_history: List[SwarmState]) -> CollectiveKnowledge:
     # 1. Extrai trajetórias de todos agentes
     trajectories = extract_trajectories(swarm_history)
-    
+
     # 2. Identifica regiões exploradas coletivamente
     explored_regions = union(trajectory for trajectory in trajectories)
-    
+
     # 3. Aprende landscape de fitness
     # Nenhum agente viu tudo, mas coletivo sim
     collective_map = build_fitness_landscape(explored_regions)
-    
+
     # 4. Gera meta-estratégia
     # "Se fitness alto em região X, explorar mais perto"
     meta_strategy = extract_patterns(collective_map)
-    
+
     return CollectiveKnowledge(
         landscape=collective_map,
         strategy=meta_strategy
@@ -227,20 +242,20 @@ def learn_from_swarm(swarm_history: List[SwarmState]) -> CollectiveKnowledge:
 def hybrid_optimization(continuous_objective, combinatorial_graph):
     # 1. ACO resolve ordem de waypoints
     waypoint_order, _ = aco.optimize(combinatorial_graph)
-    
+
     # 2. PSO otimiza trajetória entre waypoints
     smooth_path = []
     for i in range(len(waypoint_order) - 1):
         start = waypoint_order[i]
         end = waypoint_order[i+1]
-        
+
         # PSO encontra trajetória suave
         trajectory = pso.optimize(
             fitness=lambda path: smoothness(path) + distance(path),
             constraints=[start_at(start), end_at(end)]
         )
         smooth_path.extend(trajectory)
-    
+
     return smooth_path
 ```
 
@@ -251,17 +266,17 @@ def hybrid_optimization(continuous_objective, combinatorial_graph):
 ```python
 def compute_diversity(swarm_states):
     positions = [s.position for s in swarm_states]
-    
+
     # Diversidade = dispersão média
     centroid = np.mean(positions, axis=0)
     distances = [distance(p, centroid) for p in positions]
-    
+
     diversity = np.mean(distances) / search_space_diameter
-    
+
     # diversity ∈ [0, 1]
     # 0 = todos agentes no mesmo ponto (convergiram)
     # 1 = uniformemente distribuídos (explorando)
-    
+
     return diversity
 ```
 
@@ -579,10 +594,10 @@ if diversity < 0.1:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva  
-**Status**: Phase 19 Complete - Production Ready  
-**Performance**: 1000 agentes @ 20 Hz (GPU)  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva
+**Status**: Phase 19 Complete - Production Ready
+**Performance**: 1000 agentes @ 20 Hz (GPU)
 **Versão**: Swarm Intelligence Validated
 
 ---

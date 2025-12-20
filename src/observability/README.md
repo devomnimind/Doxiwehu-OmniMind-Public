@@ -56,6 +56,25 @@ Módulo implementa funcionalidades especializadas através de:
 - ✅ `ModuleMetricsCollector` - Relatórios a cada 100 entradas de consciência
 - ✅ `AutopoieticManager` - Relatórios após cada ciclo autopoiético
 
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 📊 Observabilidade de Baixo Nível
+
+#### 1. **System Awareness Integration**
+- **Diferencial**: O `PerformanceAnalyzer` agora correlaciona picos de carga com as capacidades reais indexadas pelo `SystemCapabilitiesManager`.
+- **Insight**: Permite distinguir entre "Módulo Ineficiente" e "Host Sobrecarregado", reduzindo falsos positivos em incidentes de performance.
+
+#### 2. **ReportMaintenanceScheduler**
+- **Arquivo**: `report_maintenance_scheduler.py`
+- **Funcionalidade**: Orquestra a limpeza e arquivamento de relatórios antigos (JSON/Markdown) para evitar saturação do disco em ambientes de produção contínua.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA
+
 **Nota Teórica**: O sistema de auditoria e componentes do inconsciente não são auditados, conforme fundamentação teórica do OmniMind.
 
 ## 📊 Estrutura do Código

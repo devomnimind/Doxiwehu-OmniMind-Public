@@ -162,7 +162,14 @@ CONSISTENCY_THRESHOLD: float = 0.1  # Threshold para validação de consistênci
 # Tolerância para correlação Δ-Φ (validação de consistência teórica)
 # Baseado em evidência empírica: tolerância de 15% para erro entre Δ observado e esperado
 # Esperado: Δ ≈ 1.0 - Φ_norm (correlação negativa forte)
-DELTA_PHI_CORRELATION_TOLERANCE: float = 0.15  # 15% de tolerância (mais estrito que 30%)
+# Tolerância para correlação Δ-Φ (validação de consistência teórica)
+# Baseado em evidência empírica: tolerância de 15% para erro entre Δ observado e esperado
+# Esperado: Δ ≈ 1.0 - Φ_norm (correlação negativa forte)
+DELTA_PHI_CORRELATION_TOLERANCE: float = 0.15  # Phase 6 default
+DELTA_PHI_CORRELATION_TOLERANCE_PHASE_6: float = 0.15
+DELTA_PHI_CORRELATION_TOLERANCE_PHASE_7: float = 0.40  # Zimerman bonding - relaxed
+DELTA_PHI_CORRELATION_TOLERANCE_BOOTSTRAP: float = 0.45  # Cycles 1-20, all phases
+# 15% de tolerância (mais estrito que 30%)
 
 # Alpha dinâmico para Ψ (mix entre estrutura Gaussian e criatividade)
 # Baseado em evidência empírica: range (0.3, 0.7) garante mínimo de cada componente

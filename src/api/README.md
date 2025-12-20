@@ -203,3 +203,22 @@ Configurações específicas em:
 **Total:** 1 arquivos
 
 - `main.py`: 1 classes, 4 functions
+
+---
+
+## 🆕 Atualizações (18/12/2025)
+
+### 🚀 Evolução da API e Monitoramento
+
+#### 1. **Integração com EnhancedConfigurationDetector**
+- **Descrição**: A API agora suporta consultas de status do detector de configuração para expor a integridade do sistema em dashboards externos.
+- **Impacto**: Permite que administradores visualizem problemas de `phi_impact` em tempo real.
+
+#### 2. **Endpoints de Alertas de Produção**
+- **Descrição**: Novos endpoints para consultar o histórico de alertas críticos registrados pelo `ProductionAlertsSystem`.
+- **Match**: `GET /api/v1/monitor/alerts/critical`.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

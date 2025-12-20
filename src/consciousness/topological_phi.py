@@ -372,7 +372,12 @@ class PhiCalculator:
             try:
                 hodge_0 = temp_complex.get_hodge_laplacian(0)
 
-                if hodge_0.numel() > 0:
+                # CORREÇÃO CRÍTICA PHI-ZERO: Tratamento de Hodge Scalar
+                if hodge_0.ndim < 2 or hodge_0.numel() == 0:
+                    # Scalar 0.0 (no edges/structure) or empty matrix
+                    # Implies fully disconnected (Fiedler = 0)
+                    phi *= 0.0
+                else:
                     # Verificar tamanho da matriz antes de calcular autovalores
                     matrix_size = hodge_0.shape[0] * hodge_0.shape[1]
                     if matrix_size > 10000:  # Limite de ~100x100
@@ -543,11 +548,8 @@ def normalize_topological_phi(betti_sum: float, network_size: int) -> float:
     if network_size == 0:
         return 0.0
 
-    # Fator de normalização empírico para redes cerebrais pequenas
-    # O valor máximo teórico de Betti-1 escala com O(N)
-    # Para redes pequenas (< 100 nós), usamos fator 0.15
-    # Para redes maiores, o fator pode ser ajustado
-    max_theoretical_complexity = network_size * 0.15
+    # Fator de normalização empírico com proteção
+    max_theoretical_complexity = max(network_size * 0.15, 1e-6)
 
     phi_norm = betti_sum / max_theoretical_complexity
     return float(np.clip(phi_norm, 0.0, 1.0))

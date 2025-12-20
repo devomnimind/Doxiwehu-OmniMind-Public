@@ -1,473 +1,508 @@
 #!/usr/bin/env python3
 """
-🔍 TEST SUITE ANALYZER
-=====================
+OmniMind Project - Artificial Consciousness System
+Copyright (C) 2024-2025 Fabrício da Silva
 
-Analisa TODAS as propriedades do pytest, categoriza funções, classes,
-operacionalidade, marcadores, e gera relatório completo.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-Saída: docs/COMPLETE_TEST_SUITE_ANALYSIS.md
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+Contact: fabricioslv@hotmail.com.br
+"""
+
+"""
+Script de Diagnóstico Completo da Suíte de Testes OmniMind.
+
+Este script analisa a suíte de testes para identificar:
+- Testes definidos vs testes coletados vs testes executados
+- Arquivos com erros de importação
+- Módulos sem testes ou com baixa cobertura
+- Testes marcados para skip/skipif/xfail
+- Documentação desatualizada
 """
 
 import ast
+import json
 import re
+import subprocess
+import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Dict, List, Optional, Tuple
 
 
-class TestAnalyzer(ast.NodeVisitor):
-    """Analyzer para extrair metadados de testes."""
+# Cores para output
+class Colors:
+    """ANSI color codes for terminal output."""
 
-    def __init__(self, filename: str):
-        self.filename = filename
-        self.tests = []
-        self.classes = []
-        self.current_class = None
-        self.current_decorators = []
-        self.imports = []
-        self.fixtures = []
-
-    def visit_Import(self, node):
-        """Rastreia imports."""
-        for alias in node.names:
-            self.imports.append(alias.name)
-        self.generic_visit(node)
-
-    def visit_ImportFrom(self, node):
-        """Rastreia from imports."""
-        for alias in node.names:
-            full_import = f"{node.module}.{alias.name}" if node.module else alias.name
-            self.imports.append(full_import)
-        self.generic_visit(node)
-
-    def visit_ClassDef(self, node):
-        """Processa classes de teste."""
-        # Pega decoradores da classe
-        decorators = self._get_decorators(node)
-
-        class_info = {
-            "name": node.name,
-            "lineno": node.lineno,
-            "decorators": decorators,
-            "methods": [],
-            "docstring": ast.get_docstring(node),
-            "bases": [base.id if isinstance(base, ast.Name) else str(base) for base in node.bases],
-        }
-
-        # Processa métodos dentro da classe
-        for item in node.body:
-            if isinstance(item, ast.FunctionDef):
-                if item.name.startswith("test_"):
-                    method_info = {
-                        "name": item.name,
-                        "lineno": item.lineno,
-                        "decorators": self._get_decorators(item),
-                        "docstring": ast.get_docstring(item),
-                        "is_async": isinstance(item, ast.AsyncFunctionDef),
-                        "params": [arg.arg for arg in item.args.args],
-                        "body_size": len(item.body),
-                    }
-                    class_info["methods"].append(method_info)
-            elif isinstance(item, ast.FunctionDef) and item.name.startswith("_"):
-                # Métodos auxiliares
-                pass
-
-        self.classes.append(class_info)
-        self.generic_visit(node)
-
-    def visit_FunctionDef(self, node):
-        """Processa funções de teste."""
-        if node.name.startswith("test_"):
-            test_info = {
-                "name": node.name,
-                "lineno": node.lineno,
-                "decorators": self._get_decorators(node),
-                "docstring": ast.get_docstring(node),
-                "is_async": False,
-                "params": [arg.arg for arg in node.args.args],
-                "body_size": len(node.body),
-                "in_class": False,
-            }
-            self.tests.append(test_info)
-        elif node.name.startswith("_"):
-            # Pode ser fixture ou helper
-            if any(
-                d.get("name") == "pytest.fixture" or d.get("name") == "fixture"
-                for d in self._get_decorators(node)
-            ):
-                fixture_info = {
-                    "name": node.name,
-                    "lineno": node.lineno,
-                    "scope": self._get_fixture_scope(node),
-                    "params": [arg.arg for arg in node.args.args],
-                    "docstring": ast.get_docstring(node),
-                }
-                self.fixtures.append(fixture_info)
-        self.generic_visit(node)
-
-    def visit_AsyncFunctionDef(self, node):
-        """Processa funções async."""
-        if node.name.startswith("test_"):
-            test_info = {
-                "name": node.name,
-                "lineno": node.lineno,
-                "decorators": self._get_decorators(node),
-                "docstring": ast.get_docstring(node),
-                "is_async": True,
-                "params": [arg.arg for arg in node.args.args],
-                "body_size": len(node.body),
-                "in_class": False,
-            }
-            self.tests.append(test_info)
-        self.generic_visit(node)
-
-    def _get_decorators(self, node) -> List[Dict]:
-        """Extrai informações dos decoradores."""
-        decorators = []
-        for decorator in node.decorator_list:
-            dec_info = {"full_text": ast.unparse(decorator)}
-
-            if isinstance(decorator, ast.Name):
-                dec_info["name"] = decorator.id
-            elif isinstance(decorator, ast.Attribute):
-                dec_info["name"] = decorator.attr
-                dec_info["module"] = ast.unparse(decorator.value)
-            elif isinstance(decorator, ast.Call):
-                if isinstance(decorator.func, ast.Name):
-                    dec_info["name"] = decorator.func.id
-                elif isinstance(decorator.func, ast.Attribute):
-                    dec_info["name"] = decorator.func.attr
-                    dec_info["module"] = ast.unparse(decorator.func.value)
-
-                # Extrai argumentos do decorator
-                if decorator.args:
-                    dec_info["args"] = [ast.unparse(arg) for arg in decorator.args]
-                if decorator.keywords:
-                    dec_info["kwargs"] = {
-                        kw.arg: ast.unparse(kw.value) for kw in decorator.keywords
-                    }
-
-            decorators.append(dec_info)
-
-        return decorators
-
-    def _get_fixture_scope(self, node) -> str:
-        """Extrai scope da fixture."""
-        for decorator in node.decorator_list:
-            if isinstance(decorator, ast.Call):
-                for kw in decorator.keywords:
-                    if kw.arg == "scope":
-                        return ast.unparse(kw.value).strip("'\"")
-        return "function"  # default scope
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
 
 
-def analyze_test_file(filepath: Path) -> Dict[str, Any]:
-    """Analisa um arquivo de teste."""
+def print_section(title: str) -> None:
+    """Print a formatted section header."""
+    print(f"\n{Colors.HEADER}{Colors.BOLD}{'='*80}{Colors.ENDC}")
+    print(f"{Colors.HEADER}{Colors.BOLD}{title.center(80)}{Colors.ENDC}")
+    print(f"{Colors.HEADER}{Colors.BOLD}{'='*80}{Colors.ENDC}\n")
+
+
+def count_test_functions(file_path: Path) -> Tuple[int, List[str], List[str]]:
+    """
+    Count test functions in a file using AST parsing.
+
+    Returns:
+        Tuple of (count, function_names, async_function_names)
+    """
     try:
-        with open(filepath, "r", encoding="utf-8") as f:
-            tree = ast.parse(f.read())
+        with open(file_path, "r", encoding="utf-8") as f:
+            tree = ast.parse(f.read(), filename=str(file_path))
 
-        analyzer = TestAnalyzer(str(filepath))
-        analyzer.visit(tree)
+        sync_funcs = []
+        async_funcs = []
 
-        return {
-            "filepath": str(filepath),
-            "tests": analyzer.tests,
-            "classes": analyzer.classes,
-            "fixtures": analyzer.fixtures,
-            "imports": analyzer.imports,
-            "total_tests": len(analyzer.tests) + sum(len(c["methods"]) for c in analyzer.classes),
-        }
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef):
+                if node.name.startswith("test_"):
+                    sync_funcs.append(node.name)
+            elif isinstance(node, ast.AsyncFunctionDef):
+                if node.name.startswith("test_"):
+                    async_funcs.append(node.name)
+
+        return len(sync_funcs) + len(async_funcs), sync_funcs, async_funcs
+    except SyntaxError as e:
+        print(f"{Colors.WARNING}Syntax error in {file_path}: {e}{Colors.ENDC}")
+        return 0, [], []
     except Exception as e:
-        return {
-            "filepath": str(filepath),
-            "error": str(e),
-        }
+        print(f"{Colors.WARNING}Error parsing {file_path}: {e}{Colors.ENDC}")
+        return 0, [], []
 
 
-def collect_all_tests(tests_dir: Path) -> List[Dict]:
-    """Coleta análise de todos os arquivos de teste."""
-    results = []
+def analyze_skip_markers(file_path: Path) -> Dict[str, List[str]]:
+    """Analyze skip/skipif/xfail markers in test file."""
+    markers = {"skip": [], "skipif": [], "xfail": [], "runtime_skip": []}
 
-    for test_file in sorted(tests_dir.rglob("test_*.py")):
-        result = analyze_test_file(test_file)
-        results.append(result)
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            content = f.read()
 
-    return results
+        # Find skip decorators with reasons
+        skip_pattern = r"@pytest\.mark\.skip\((.*?)\)"
+        markers["skip"] = re.findall(skip_pattern, content, re.DOTALL)
 
+        # Find skipif decorators
+        skipif_pattern = r"@pytest\.mark\.skipif\((.*?)\)"
+        markers["skipif"] = re.findall(skipif_pattern, content, re.DOTALL)
 
-def categorize_tests(all_results: List[Dict]) -> Dict[str, Any]:
-    """Categoriza testes por propriedades."""
+        # Find xfail decorators
+        xfail_pattern = r"@pytest\.mark\.xfail\((.*?)\)"
+        markers["xfail"] = re.findall(xfail_pattern, content, re.DOTALL)
 
-    categories = {
-        "by_marker": defaultdict(list),
-        "by_type": {
-            "unit": [],
-            "integration": [],
-            "e2e": [],
-            "performance": [],
-            "chaos": [],
-            "gpu": [],
-            "async": [],
-            "mock": [],
-            "real": [],
-        },
-        "by_operationality": {
-            "http": [],
-            "gpu": [],
-            "file": [],
-            "db": [],
-            "async": [],
-            "external": [],
-        },
-        "fixtures": defaultdict(list),
-        "test_by_decorator": defaultdict(list),
-        "statistics": {
-            "total_files": 0,
-            "total_tests": 0,
-            "total_classes": 0,
-            "total_fixtures": 0,
-        },
-    }
+        # Find runtime skips
+        if "pytest.skip(" in content:
+            markers["runtime_skip"].append("runtime skip found")
 
-    # Padrões para detectar operacionalidades
-    patterns = {
-        "http": re.compile(r"requests\.|http\.|axios\.|fetch\(|urllib"),
-        "gpu": re.compile(r"\.cuda|torch\.cuda|GPU|gpu|nvidia"),
-        "file": re.compile(r"open\(|Path\(|os\.path|shutil\.|json\.load|yaml\.load"),
-        "db": re.compile(r"session\.|query\(|\.execute\(|db\.|database"),
-        "async": re.compile(r"await |async |asyncio\."),
-        "external": re.compile(r"mock\.|patch\(|Mock\(|requests\.|http\."),
-    }
+    except Exception as e:
+        print(f"{Colors.WARNING}Error analyzing markers in {file_path}: {e}{Colors.ENDC}")
 
-    for result in all_results:
-        if "error" in result:
-            continue
-
-        categories["statistics"]["total_files"] += 1
-        categories["statistics"]["total_tests"] += result["total_tests"]
-        categories["statistics"]["total_classes"] += len(result["classes"])
-        categories["statistics"]["total_fixtures"] += len(result["fixtures"])
-
-        # Processa testes diretos
-        for test in result["tests"]:
-            test_entry = {
-                "file": result["filepath"],
-                "name": test["name"],
-                "decorators": test["decorators"],
-                "is_async": test["is_async"],
-            }
-
-            # Categoriza por marcador
-            for decorator in test["decorators"]:
-                if "mark" in str(decorator):
-                    mark_name = decorator.get("name", "unknown")
-                    categories["by_marker"][mark_name].append(test_entry)
-
-            # Categoriza por tipo
-            doc = test.get("docstring", "")
-
-            if any(d.get("name") == "mark" and "gpu" in str(d) for d in test["decorators"]):
-                categories["by_type"]["gpu"].append(test_entry)
-
-            if test["is_async"]:
-                categories["by_type"]["async"].append(test_entry)
-
-            if any(d.get("name") == "mark" and "mock" in str(d) for d in test["decorators"]):
-                categories["by_type"]["mock"].append(test_entry)
-
-            if any(d.get("name") == "mark" and "real" in str(d) for d in test["decorators"]):
-                categories["by_type"]["real"].append(test_entry)
-
-            if any(d.get("name") == "mark" and "chaos" in str(d) for d in test["decorators"]):
-                categories["by_type"]["chaos"].append(test_entry)
-
-            # Categoriza por operacionalidade (via docstring e decoradores)
-            doc_text = doc.lower() if doc else ""
-
-            for op_type, pattern in patterns.items():
-                if pattern.search(doc_text):
-                    categories["by_operationality"][op_type].append(test_entry)
-
-        # Processa classes de teste
-        for test_class in result["classes"]:
-            for method in test_class["methods"]:
-                test_entry = {
-                    "file": result["filepath"],
-                    "class": test_class["name"],
-                    "name": method["name"],
-                    "decorators": method["decorators"],
-                    "is_async": method["is_async"],
-                }
-
-                # Processa decoradores
-                for decorator in method["decorators"]:
-                    mark_name = decorator.get("name", "unknown")
-                    categories["by_marker"][mark_name].append(test_entry)
-                    categories["test_by_decorator"][mark_name].append(test_entry)
-
-        # Processa fixtures
-        for fixture in result["fixtures"]:
-            categories["fixtures"][fixture.get("scope", "function")].append(
-                {
-                    "file": result["filepath"],
-                    "name": fixture["name"],
-                }
-            )
-
-    return categories
+    return markers
 
 
-def generate_report(categories: Dict[str, Any]) -> str:
-    """Gera relatório markdown completo."""
+def check_import_errors(test_file: Path, project_root: Path) -> Optional[str]:
+    """
+    Check if a test file has import errors.
 
-    report = """# 📊 COMPLETE TEST SUITE ANALYSIS
-## Comprehensive Breakdown of All Test Properties, Operations & Classifications
-
-**Generated:** Automated Analysis Script
-**Total Files Analyzed:** {total_files}
-**Total Test Functions:** {total_tests}
-**Total Test Classes:** {total_classes}
-**Total Fixtures:** {total_fixtures}
-
----
-
-## Table of Contents
-
-1. [Overview & Statistics](#overview--statistics)
-2. [Test Markers & Decorators](#test-markers--decorators)
-3. [Test Types Classification](#test-types-classification)
-4. [Test Operationality Matrix](#test-operationality-matrix)
-5. [Fixtures & Test Infrastructure](#fixtures--test-infrastructure)
-6. [Detailed Test Catalog](#detailed-test-catalog)
-
----
-
-## Overview & Statistics
-
-### Test Suite Metrics
-
-| Metric | Count |
-|--------|-------|
-| **Total Test Files** | {total_files} |
-| **Total Test Functions** | {total_tests} |
-| **Test Classes** | {total_classes} |
-| **Fixtures** | {total_fixtures} |
-| **Average Tests per File** | {avg_tests_per_file:.1f} |
-
-### Distribution Visualization
-
-```
-Test Suite Composition:
-""".format(
-        total_files=categories["statistics"]["total_files"],
-        total_tests=categories["statistics"]["total_tests"],
-        total_classes=categories["statistics"]["total_classes"],
-        total_fixtures=categories["statistics"]["total_fixtures"],
-        avg_tests_per_file=categories["statistics"]["total_tests"]
-        / max(1, categories["statistics"]["total_files"]),
+    Returns:
+        Error message if import fails, None otherwise.
+    """
+    result = subprocess.run(
+        [sys.executable, "-m", "pytest", "--collect-only", "-q", str(test_file)],
+        capture_output=True,
+        text=True,
+        cwd=str(project_root),
     )
 
-    # Add marker breakdown
-    report += "\n\n## Test Markers & Decorators\n\n"
-    report += "### Markers Overview\n\n"
-    report += "| Marker | Count | Tests |\n"
-    report += "|--------|-------|-------|\n"
+    if result.returncode != 0 or "ERROR" in result.stdout or "error" in result.stderr.lower():
+        error_msg = result.stderr if result.stderr else result.stdout
+        error_lines = error_msg.split("\n")
 
-    for marker in sorted(categories["by_marker"].keys()):
-        tests = categories["by_marker"][marker]
-        report += f"| `@pytest.mark.{marker}` | {len(tests)} | "
-        report += ", ".join([t["name"] for t in tests[:3]])
-        if len(tests) > 3:
-            report += f", +{len(tests)-3} more"
-        report += " |\n"
+        # Extract the main error
+        for line in reversed(error_lines):
+            if "ModuleNotFoundError" in line or "ImportError" in line:
+                return line.strip()
 
-    # Test types
-    report += "\n\n## Test Types Classification\n\n"
+        return "Unknown import error"
 
-    for test_type, tests in categories["by_type"].items():
-        if tests:
-            report += f"\n### {test_type.upper()} Tests ({len(tests)} tests)\n\n"
-            report += "| Test Name | File | Properties |\n"
-            report += "|-----------|------|------------|\n"
-            for test in tests[:10]:
-                async_marker = "⚡ Async" if test.get("is_async") else ""
-                report += f"| `{test['name']}` | {test['file'].split('/')[-1]} | {async_marker} |\n"
-            if len(tests) > 10:
-                report += f"| ... | ... | +{len(tests)-10} more tests |\n"
+    return None
 
-    # Operationality
-    report += "\n\n## Test Operationality Matrix\n\n"
-    report += "### Operations Detected Across Test Suite\n\n"
-    report += "| Operation Type | Count | Percentage |\n"
-    report += "|--------|--------|----------|\n"
 
-    total = sum(len(tests) for tests in categories["by_operationality"].values())
-    for op_type, tests in sorted(
-        categories["by_operationality"].items(), key=lambda x: len(x[1]), reverse=True
-    ):
-        if tests:
-            percentage = (len(tests) / total * 100) if total > 0 else 0
-            report += (
-                f"| {op_type.replace('_', ' ').title()} | {len(tests)} | {percentage:.1f}% |\n"
-            )
+def find_source_modules_without_tests(src_dir: Path, tests_dir: Path) -> List[Dict[str, any]]:
+    """
+    Find source modules that don't have corresponding test files.
 
-    # Fixtures
-    report += "\n\n## Fixtures & Test Infrastructure\n\n"
-    report += "### Fixtures by Scope\n\n"
+    Returns:
+        List of dicts with module info
+    """
+    untested_modules = []
 
-    for scope in ["function", "class", "module", "session"]:
-        fixtures = categories["fixtures"].get(scope, [])
-        if fixtures:
-            report += f"\n#### {scope.upper()} Scope ({len(fixtures)} fixtures)\n\n"
-            report += "| Fixture Name | File |\n"
-            report += "|--------------|------|\n"
-            for fixture in fixtures[:5]:
-                report += f"| `{fixture['name']}` | {fixture['file'].split('/')[-1]} |\n"
-            if len(fixtures) > 5:
-                report += f"| ... | +{len(fixtures)-5} more |\n"
+    for src_file in src_dir.rglob("*.py"):
+        if src_file.name == "__init__.py":
+            continue
 
-    report += "\n\n---\n"
-    report += "**Report Generated by:** analyze_test_suite.py\n"
+        # Skip excluded files from .coveragerc
+        if any(
+            pattern in str(src_file)
+            for pattern in [
+                "orchestrator_agent.py",
+                "react_agent.py",
+                "react_agent_broken.py",
+                "debug_agent.py",
+                "security_agent.py",
+            ]
+        ):
+            continue
 
-    return report
+        # Determine expected test path
+        relative_path = src_file.relative_to(src_dir)
+        module_name = src_file.stem
+
+        # Check various test naming conventions
+        test_candidates = [
+            tests_dir / relative_path.parent / f"test_{module_name}.py",
+            tests_dir / f"test_{module_name}.py",
+        ]
+
+        # Check if any test file exists
+        has_test = any(candidate.exists() for candidate in test_candidates)
+
+        if not has_test:
+            # Count functions/classes in the module
+            try:
+                with open(src_file, "r", encoding="utf-8") as f:
+                    tree = ast.parse(f.read())
+
+                functions = sum(
+                    1
+                    for node in ast.walk(tree)
+                    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
+                )
+                classes = sum(1 for node in ast.walk(tree) if isinstance(node, ast.ClassDef))
+
+                untested_modules.append(
+                    {
+                        "module": str(relative_path),
+                        "functions": functions,
+                        "classes": classes,
+                        "is_critical": is_critical_module(src_file),
+                    }
+                )
+            except Exception:
+                pass
+
+    return untested_modules
+
+
+def is_critical_module(file_path: Path) -> bool:
+    """
+    Determine if a module is critical based on its location/name.
+
+    Critical modules include:
+    - Core agents
+    - Security components
+    - Memory systems
+    - Audit systems
+    """
+    critical_patterns = [
+        "agents/",
+        "security/",
+        "audit/",
+        "memory/",
+        "integrations/",
+        "core",
+        "omnimind_core",
+    ]
+
+    path_str = str(file_path)
+    return any(pattern in path_str for pattern in critical_patterns)
+
+
+def analyze_test_coverage(project_root: Path) -> Optional[Dict]:
+    """
+    Run pytest with coverage and analyze results.
+
+    Returns:
+        Coverage data dict or None if coverage run fails.
+    """
+    coverage_file = project_root / ".coverage"
+    if coverage_file.exists():
+        coverage_file.unlink()
+
+    # Try to run coverage
+    _result = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "--cov=src",
+            "--cov-report=json",
+            "--cov-report=term",
+            "-x",  # Stop on first failure
+            "--tb=no",  # No traceback
+            "-q",
+            "tests/",
+        ],
+        capture_output=True,
+        text=True,
+        cwd=str(project_root),
+    )
+
+    coverage_json = project_root / "coverage.json"
+    if coverage_json.exists():
+        with open(coverage_json, "r") as f:
+            return json.load(f)
+
+    return None
 
 
 def main():
-    """Main execution."""
-    omnimind_root = Path(__file__).parent.parent
-    tests_dir = omnimind_root / "tests"
+    """Run comprehensive test suite analysis."""
+    project_root = Path(__file__).resolve().parent.parent
+    tests_dir = project_root / "tests"
+    src_dir = project_root / "src"
 
-    print("🔍 Analyzing test suite...")
-    print(f"  📁 Tests directory: {tests_dir}")
+    print_section("ANÁLISE COMPLETA DA SUÍTE DE TESTES OMNIMIND")
 
-    # Coleta análises
-    all_results = collect_all_tests(tests_dir)
-    print(f"  ✅ Analisados {len(all_results)} arquivos de teste")
+    # Statistics
+    total_files = 0
+    total_test_functions = 0
+    total_async_tests = 0
+    files_with_skips = 0
+    total_skipped = 0
+    total_skipif = 0
+    total_xfail = 0
+    import_errors = []
 
-    # Categoriza
-    print("🏷️  Categorizando testes...")
-    categories = categorize_tests(all_results)
+    # Detailed tracking
+    file_stats = []
 
-    # Gera relatório
-    print("📝 Gerando relatório...")
-    report = generate_report(categories)
+    print(f"{Colors.OKCYAN}Analisando arquivos de teste...{Colors.ENDC}")
 
-    # Salva
-    output_file = omnimind_root / "docs" / "COMPLETE_TEST_SUITE_ANALYSIS.md"
-    output_file.parent.mkdir(parents=True, exist_ok=True)
+    # Analyze each test file
+    for test_file in sorted(tests_dir.rglob("test_*.py")):
+        if "legacy" in test_file.parts:
+            continue
 
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write(report)
+        total_files += 1
+        count, sync_funcs, async_funcs = count_test_functions(test_file)
+        total_test_functions += count
+        total_async_tests += len(async_funcs)
 
-    print(f"\n✅ Análise completa salva em: {output_file}")
-    print(f"\n📊 Estatísticas:")
-    print(f"  📄 Total de arquivos: {categories['statistics']['total_files']}")
-    print(f"  🧪 Total de testes: {categories['statistics']['total_tests']}")
-    print(f"  📦 Classes de teste: {categories['statistics']['total_classes']}")
-    print(f"  🔧 Fixtures: {categories['statistics']['total_fixtures']}")
+        markers = analyze_skip_markers(test_file)
+        has_skip = any(markers.values())
+
+        if has_skip:
+            files_with_skips += 1
+            total_skipped += len(markers["skip"])
+            total_skipif += len(markers["skipif"])
+            total_xfail += len(markers["xfail"])
+
+        # Check for import errors
+        import_error = check_import_errors(test_file, project_root)
+        if import_error:
+            import_errors.append(
+                {"file": str(test_file.relative_to(tests_dir)), "error": import_error}
+            )
+
+        file_stats.append(
+            {
+                "file": str(test_file.relative_to(tests_dir)),
+                "test_count": count,
+                "async_count": len(async_funcs),
+                "has_skip": has_skip,
+                "skip_count": len(markers["skip"]),
+                "skipif_count": len(markers["skipif"]),
+                "xfail_count": len(markers["xfail"]),
+                "has_import_error": import_error is not None,
+            }
+        )
+
+        if total_files % 10 == 0:
+            print(f"  Processados {total_files} arquivos...", end="\r")
+
+    print(f"\n{Colors.OKGREEN}Análise de arquivos concluída!{Colors.ENDC}")
+
+    # Find untested modules
+    print(f"\n{Colors.OKCYAN}Identificando módulos sem testes...{Colors.ENDC}")
+    untested = find_source_modules_without_tests(src_dir, tests_dir)
+    critical_untested = [m for m in untested if m["is_critical"]]
+
+    # Generate summary report
+    print_section("RESUMO EXECUTIVO")
+
+    print(f"{Colors.BOLD}Arquivos de Teste:{Colors.ENDC}")
+    print(f"  Total de arquivos de teste: {Colors.OKGREEN}{total_files}{Colors.ENDC}")
+    print(
+        f"  Arquivos com erros de importação: {Colors.FAIL if import_errors else Colors.OKGREEN}{len(import_errors)}{Colors.ENDC}"
+    )
+    print(
+        f"  Arquivos com marcadores skip: {Colors.WARNING if files_with_skips else Colors.OKGREEN}{files_with_skips}{Colors.ENDC}"
+    )
+
+    print(f"\n{Colors.BOLD}Testes Definidos:{Colors.ENDC}")
+    print(f"  Total de funções de teste: {Colors.OKGREEN}{total_test_functions}{Colors.ENDC}")
+    print(f"  Testes assíncronos: {Colors.OKBLUE}{total_async_tests}{Colors.ENDC}")
+    print(
+        f"  Testes síncronos: {Colors.OKBLUE}{total_test_functions - total_async_tests}{Colors.ENDC}"
+    )
+
+    print(f"\n{Colors.BOLD}Marcadores de Skip:{Colors.ENDC}")
+    print(f"  @pytest.mark.skip: {total_skipped}")
+    print(f"  @pytest.mark.skipif: {total_skipif}")
+    print(f"  @pytest.mark.xfail: {total_xfail}")
+    print(
+        f"  Total estimado pulados: {Colors.WARNING}{total_skipped + total_skipif + total_xfail}{Colors.ENDC}"
+    )
+
+    print(f"\n{Colors.BOLD}Previsão de Execução:{Colors.ENDC}")
+    runnable_tests = total_test_functions - (total_skipped + total_skipif + total_xfail)
+    blocked_by_imports = sum(f["test_count"] for f in file_stats if f["has_import_error"])
+    actually_runnable = runnable_tests - blocked_by_imports
+
+    print(
+        f"  Testes executáveis (sem erros import): {Colors.OKGREEN}{actually_runnable}{Colors.ENDC}"
+    )
+    print(f"  Testes bloqueados por import: {Colors.FAIL}{blocked_by_imports}{Colors.ENDC}")
+    print(
+        f"  Testes marcados para skip: {Colors.WARNING}{total_skipped + total_skipif + total_xfail}{Colors.ENDC}"
+    )
+
+    # Discrepancy explanation
+    print_section("EXPLICAÇÃO DA DISCREPÂNCIA")
+    print(f"Testes definidos no código:     {Colors.BOLD}{total_test_functions:5d}{Colors.ENDC}")
+    print(
+        f"Testes bloqueados (imports):    {Colors.FAIL}{blocked_by_imports:5d}{Colors.ENDC} ({blocked_by_imports/total_test_functions*100:.1f}%)"
+    )
+    print(
+        f"Testes marcados skip:           {Colors.WARNING}{total_skipped + total_skipif:5d}{Colors.ENDC} ({(total_skipped + total_skipif)/total_test_functions*100:.1f}%)"
+    )
+    print(f"{'─'*40}")
+    print(
+        f"Testes esperados na execução:   {Colors.OKGREEN}{actually_runnable:5d}{Colors.ENDC} ({actually_runnable/total_test_functions*100:.1f}%)"
+    )
+
+    # Import errors breakdown
+    if import_errors:
+        print_section("ERROS DE IMPORTAÇÃO DETALHADOS")
+
+        # Group by error type
+        error_groups = defaultdict(list)
+        for err in import_errors:
+            # Extract missing module name
+            if "No module named" in err["error"]:
+                module = err["error"].split("'")[-2] if "'" in err["error"] else "unknown"
+                error_groups[module].append(err["file"])
+            else:
+                error_groups["other"].append(err["file"])
+
+        for module, files in sorted(error_groups.items(), key=lambda x: len(x[1]), reverse=True):
+            print(f"\n{Colors.FAIL}Módulo faltante: {module}{Colors.ENDC}")
+            print(f"  Arquivos afetados: {len(files)}")
+            affected_tests = sum(f["test_count"] for f in file_stats if f["file"] in files)
+            print(f"  Testes bloqueados: {affected_tests}")
+            for f in files[:5]:
+                test_count = next((x["test_count"] for x in file_stats if x["file"] == f), 0)
+                print(f"    - {f} ({test_count} tests)")
+            if len(files) > 5:
+                print(f"    ... e mais {len(files) - 5} arquivos")
+
+    # Untested modules
+    if untested:
+        print_section("MÓDULOS SEM TESTES")
+        print(f"Total de módulos sem testes: {Colors.WARNING}{len(untested)}{Colors.ENDC}")
+        print(
+            f"Módulos críticos sem testes: {Colors.FAIL if critical_untested else Colors.OKGREEN}{len(critical_untested)}{Colors.ENDC}"
+        )
+
+        if critical_untested:
+            print(f"\n{Colors.FAIL}MÓDULOS CRÍTICOS SEM TESTES:{Colors.ENDC}")
+            for module in critical_untested[:10]:
+                print(f"  - {module['module']}")
+                print(f"    Funções: {module['functions']}, Classes: {module['classes']}")
+            if len(critical_untested) > 10:
+                print(f"  ... e mais {len(critical_untested) - 10} módulos críticos")
+
+    # Top files by test count
+    print_section("ARQUIVOS COM MAIS TESTES")
+    sorted_files = sorted(file_stats, key=lambda x: x["test_count"], reverse=True)
+    for i, f in enumerate(sorted_files[:15], 1):
+        status_icon = "❌" if f["has_import_error"] else "⚠️" if f["has_skip"] else "✅"
+        print(f"{i:2d}. {status_icon} {f['file']:55s} - {f['test_count']:4d} tests")
+
+    # Save detailed JSON report
+    report = {
+        "summary": {
+            "total_test_files": total_files,
+            "total_test_functions_defined": total_test_functions,
+            "total_async_tests": total_async_tests,
+            "files_with_import_errors": len(import_errors),
+            "tests_blocked_by_imports": blocked_by_imports,
+            "files_with_skip_markers": files_with_skips,
+            "total_skip_decorators": total_skipped,
+            "total_skipif_decorators": total_skipif,
+            "total_xfail_decorators": total_xfail,
+            "expected_runnable_tests": actually_runnable,
+            "modules_without_tests": len(untested),
+            "critical_modules_without_tests": len(critical_untested),
+        },
+        "file_details": file_stats,
+        "import_errors": import_errors,
+        "untested_modules": untested,
+        "critical_untested": critical_untested,
+    }
+
+    report_path = project_root / "test_suite_analysis_report.json"
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+
+    print_section("RELATÓRIO SALVO")
+    print(f"Relatório detalhado salvo em: {Colors.OKGREEN}{report_path}{Colors.ENDC}")
+
+    # Print recommendations
+    print_section("RECOMENDAÇÕES")
+    print(f"1. {Colors.BOLD}Instalar dependências faltantes{Colors.ENDC}")
+    print(f"   - Execute: pip install -r requirements.txt")
+    print(f"   - Isso deve resolver {len(import_errors)} arquivos com erros de importação")
+
+    print(f"\n2. {Colors.BOLD}Revisar testes marcados para skip{Colors.ENDC}")
+    print(f"   - {files_with_skips} arquivos têm testes marcados para skip")
+    print(f"   - Revisar se esses skips ainda são necessários")
+
+    if critical_untested:
+        print(f"\n3. {Colors.BOLD}Adicionar testes para módulos críticos{Colors.ENDC}")
+        print(f"   - {len(critical_untested)} módulos críticos não têm testes")
+        print(f"   - Priorizar módulos de segurança e core")
+
+    print(f"\n4. {Colors.BOLD}Atualizar pytest.ini{Colors.ENDC}")
+    print(f"   - Considerar remover --maxfail=5 para permitir coleta completa")
+    print(f"   - Ou aumentar para um valor maior durante análise")
+
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

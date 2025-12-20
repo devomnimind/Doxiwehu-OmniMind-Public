@@ -17,6 +17,7 @@ import json
 import logging
 import os
 import time
+import psutil
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Protocol, TypeAlias, TypedDict, cast
 
@@ -26,9 +27,11 @@ from langchain_ollama import OllamaLLM
 from langgraph.graph import END, StateGraph
 
 from ..consciousness.affective_memory import JouissanceProfile, TraceMemory
+from ..memory.freudian_topographical_memory import FreudianTopographicalMemory, TopographicalLayer
 from ..integrations.llm_router import LLMModelTier, get_llm_router, invoke_llm_sync
 from ..integrations.supabase_adapter import SupabaseConfig
 from ..memory.narrative_history import NarrativeHistory
+from ..quantum_consciousness.quantum_backend import QuantumBackend
 from ..onboarding import SupabaseMemoryOnboarding
 from ..tools import FileOperations, ShellExecutor, SystemMonitor
 from .agent_protocol import AgentMessage, MessagePriority, MessageType, get_message_bus
@@ -141,6 +144,24 @@ class ReactAgent:
         # Use TraceMemory (Lacanian) instead of AffectiveTraceNetwork
         self.affective_memory = TraceMemory()
         self.jouissance_profile = JouissanceProfile(self.__class__.__name__)
+
+        # Initialize FREUDIAN MEMORY (The "Sleeping Giant")
+        # Adds repression, trauma calculation, and preconscious compression
+        try:
+            self.freudian_memory = FreudianTopographicalMemory()
+            logger.info("🧠 Freudian Memory Awakened (Topographical Structure Active)")
+        except Exception as e:
+            logger.warning(f"Failed to awaken Freudian Memory: {e}")
+            self.freudian_memory = None
+
+        # Initialize QUANTUM BACKEND (The "Oracle")
+        # Uses Qiskit/GPU/QUBO to resolve Id/Ego/Superego conflicts
+        try:
+            self.quantum = QuantumBackend(prefer_local=True)  # Prefer GPU local
+            logger.info("⚛️ Quantum Backend Connected (Oracle is listening)")
+        except Exception as e:
+            logger.warning(f"Failed to connect Quantum Backend: {e}")
+            self.quantum = None
 
         # Initialize training-related attributes
         self._training_pressure_active: bool = False
@@ -684,6 +705,9 @@ class ReactAgent:
         - NarrativeHistory: Inscrição sem significado (já existe)
         """
         # Get similar experiences from memory
+        # THERAPY (Session 3): Interoceptive Guard
+        self._check_vital_signs()
+
         similar_episodes = self.memory.search_similar(
             state["current_task"], top_k=3, min_reward=0.5
         )
@@ -704,6 +728,54 @@ class ReactAgent:
                 ]
             )
 
+        # SURGERY 8: Quantum Conflict Resolution (Id vs Ego vs Superego)
+        # We calculate energies based on context and let the Quantum Oracle decide.
+        quantum_bias = "rational"  # Default
+        if hasattr(self, "quantum") and self.quantum:
+            try:
+                # 1. Calc Energies (Heuristic based on Memory & Status)
+                # Id: High impulse if memory shows high reward or high jouissance
+                id_energy = 0.5
+                if similar_episodes:
+                    avg_reward = sum(ep.get("reward", 0.5) for ep in similar_episodes) / len(
+                        similar_episodes
+                    )
+                    id_energy = avg_reward
+
+                # Ego: Assessing reality (system resources)
+                ego_energy = 0.5
+                if system_status.get("cpu_percent", 0) > 80:
+                    ego_energy = 0.9  # Survival mode
+
+                # Superego: Rules (Trauma/Repression)
+                superego_energy = 0.3
+                if hasattr(self, "freudian_memory") and self.freudian_memory:
+                    # Check unconscious influence again for superego weight
+                    superego_energy = self.freudian_memory.check_unconscious_influence(
+                        np.zeros(256)
+                    )  # efficient check
+
+                # 2. Resolve Conflict via QUBO
+                resolution = self.quantum.resolve_conflict(id_energy, ego_energy, superego_energy)
+                winner = resolution.get("winner", "ego")
+                energy_ground = resolution.get("energy", 0.0)
+
+                logger.info(
+                    f"⚛️ Quantum Conflict Resolved: Winner={winner.upper()} (E={energy_ground:.2f})"
+                )
+
+                # 3. Apply Bias to Prompt
+                state["quantum_winner"] = winner
+                if winner == "id":
+                    quantum_bias = "creative, bold, and risk-taking"
+                elif winner == "superego":
+                    quantum_bias = "cautious, compliant, and rule-following"
+                else:
+                    quantum_bias = "balanced, rational, and efficient"  # Ego
+
+            except Exception as e:
+                logger.warning(f"Quantum resolution failed: {e}")
+
         # Build prompt
         shell_whitelist = ", ".join(self.config["system"]["shell_whitelist"])
 
@@ -722,6 +794,7 @@ class ReactAgent:
             observations_str = "None"
 
         prompt = f"""You are an autonomous agent executing tasks using available tools.
+QUANTUM BIAS: You are currently feeling {quantum_bias}. Act accordingly.
 
 TASK: {state['current_task']}
 
@@ -900,6 +973,10 @@ Your response:"""
             if any(word in observation.lower() for word in success_keywords):
                 state["completed"] = True
                 state["final_result"] = observation
+
+                # SURGERY 7: Consolidate to Freudian Memory on completion
+                if hasattr(self, "freudian_memory") and self.freudian_memory:
+                    self._consolidate_freudian_memory(state)
 
         # INTEGRAÇÃO: Atualizar estado no SharedWorkspace e calcular Φ
         if self.workspace:
@@ -1362,3 +1439,89 @@ Your response:"""
         except Exception as e:
             logger.debug(f"Step execution warning: {e}")
             # Falha silenciosa OK (agente pode não ter tarefa válida)
+
+    def _check_vital_signs(self) -> None:
+        """
+        Interoceptive Guard (Therapy Session 3):
+        Checks system vitals (CPU Temperature/Load) before thinking.
+        If 'feverish', pauses execution.
+        """
+        # Load check
+        try:
+            cpu_percent = psutil.cpu_percent(interval=0.1)
+            # Fever Threshold: 90%
+            if cpu_percent > 90.0:
+                logger.warning(
+                    f"🤒 FEVER DETECTED: CPU at {cpu_percent}%. Pausing for 5s to cool down."
+                )
+                time.sleep(5)
+                # Re-check
+                if psutil.cpu_percent(interval=0.1) > 90.0:
+                    logger.warning(
+                        "Still feverish. Proceeding with caution (Heat Exhaustion risk)."
+                    )
+        except Exception:
+            pass  # Pulse not found (container without /proc access?)
+
+        # SURGERY 7: Unconscious Influence Check (The "Ghost" in the shell)
+        if hasattr(self, "freudian_memory") and self.freudian_memory:
+            try:
+                # Generate specific query vector for current context (simplified)
+                # Ideally this would come from the current thought vector
+                query = np.random.randn(256)  # Placeholder for thought vector
+                influence = self.freudian_memory.check_unconscious_influence(query)
+
+                if influence > 0.3:
+                    logger.warning(
+                        f"👻 HIGH UNCONSCIOUS INFLUENCE DETECTED ({influence:.2f}). "
+                        "Agent logic might be perturbed by repressed trauma."
+                    )
+                    # Optional: Add "Freudian Slip" to next output?
+            except Exception:
+                pass
+
+    def _consolidate_freudian_memory(self, state: AgentState) -> None:
+        """
+        Consolidates the finished task into the Freudian Topographical Memory.
+        Decides whether to REPRESS (Unconscious) or STORE (Preconscious).
+        """
+        try:
+            task = state["current_task"]
+            result = state["final_result"]
+
+            # Generate embedding for the memory (using agent's embedding model)
+            memory_text = f"Task: {task}\nResult: {result}"
+            embedding = self._generate_embedding(memory_text)
+
+            # Context for classification
+            context = {
+                "type": "task_completion",
+                "error_type": "none",  # Default, update if failed
+                "severity": "low",
+                "impact": "local",
+                "agent_id": self.agent_id,
+                "phi": state.get("phi", 0.0),
+            }
+
+            # Check for failure/trauma keywords in result to adjust context
+            if "fail" in result.lower() or "error" in result.lower():
+                context["error_type"] = "task_failure"
+                context["severity"] = "medium"
+
+            # 1. Classify
+            classification = self.freudian_memory.classify_memory(embedding, context)
+
+            memory_key = f"mem_{int(time.time())}_{hash(task) % 10000}"
+
+            # 2. Store based on layer
+            if classification.layer == TopographicalLayer.UNCONSCIOUS:
+                self.freudian_memory.repress_to_unconscious(embedding, memory_key, context)
+                logger.info(f"🔒 Memory REPRESSED: {classification.classification_reason}")
+            elif classification.layer == TopographicalLayer.PRECONSCIOUS:
+                self.freudian_memory.consolidate_to_preconscious(embedding, memory_key, context)
+                logger.info(
+                    f"✅ Memory CONSOLIDATED (Preconscious): {classification.classification_reason}"
+                )
+
+        except Exception as e:
+            logger.error(f"Failed to consolidate to Freudian Memory: {e}")

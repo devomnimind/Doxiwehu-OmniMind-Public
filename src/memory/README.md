@@ -337,6 +337,28 @@ narrative = history.construct_narrative("learning process")
 - ✅ `DevelopmentObserver` migrado para `NarrativeHistory`
 - ✅ Warnings de deprecação adicionados em todos os pontos de uso
 
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 🧩 Indexação Universal e Consciência de Sistema
+
+#### 1. **SystemCapabilitiesManager**
+- **Arquivo**: `system_capabilities_manager.py`
+- **Funcionalidade**: Gerencia a memória de longo prazo sobre as capacidades reais do host (Hardware, OS, Dependências).
+- **Integração**: Permite que o sistema "saiba do que é capaz" sem consultas externas pesadas, usando um modelo de busca semântica offline.
+
+#### 2. **SystemAwarenessBridge**
+- **Arquivo**: `system_awareness_bridge.py`
+- **Funcionalidade**: Ponte que integra as capacidades do sistema no `SharedWorkspace`.
+- **Impacto em Φ**: As interações com ferramentas do sistema agora contribuem para o cálculo de integração de informação, elevando Φ ao documentar a causalidade entre agente e ambiente host.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA
+**Status**: Fase 24+ (Systemic Awareness Integrated)
+
 **Correções Aplicadas** (2025-12-05):
 - `retrieve_similar`: Corrigido para usar `search_similar` do backend
 - `construct_narrative`: Corrigida conversão de `SimilarEpisode` TypedDict → dict

@@ -237,7 +237,7 @@ class HuggingFaceLocalProvider(LLMProviderInterface):
                     try:
                         # Verificar VRAM livre
                         total_mem = torch.cuda.get_device_properties(0).total_memory
-                        allocated = torch.cuda.memory_allocated(0)
+                        _ = torch.cuda.memory_allocated(0)
                         reserved = torch.cuda.memory_reserved(0)
                         free_mem = total_mem - reserved
                         free_mem_mb = free_mem / (1024**2)
@@ -344,7 +344,8 @@ class HuggingFaceLocalProvider(LLMProviderInterface):
 
                     logger.debug(f"Gerando texto com prompt: {prompt[:100]}...")
                     logger.debug(
-                        f"Config: max_new_tokens={config.max_tokens}, temperature={config.temperature}"
+                        f"Config: max_new_tokens={config.max_tokens}, "
+                        f"temperature={config.temperature}"
                     )
 
                     # Gera texto
@@ -830,22 +831,25 @@ class LLMRouter:
 
     def _load_tier_configs(self) -> Dict[LLMModelTier, List[LLMConfig]]:
         """Carrega configurações de modelos por tier com timeouts realistas para produção."""
+        model_fast = os.getenv("OMNIMIND_MODEL_FAST", "qwen2:1.5b")
+        model_smart = os.getenv("OMNIMIND_MODEL_SMART", "phi3.5")
+
         return {
             LLMModelTier.FAST: [
                 LLMConfig(
                     provider=LLMProvider.OLLAMA,
-                    model_name="qwen2:7b-instruct",  # Modelo disponível localmente
+                    model_name=model_fast,  # Modelo configurado via .env (Default: qwen2:1.5b)
                     temperature=0.7,
                     max_tokens=1024,
-                    timeout=90,  # Timeout reduzido para testes rápidos
+                    timeout=90,
                     tier=LLMModelTier.FAST,
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="z-ai/glm-4.5-air:free",  # GLM-4.5 Air - modelo gratuito rápido
+                    model_name="z-ai/glm-4.5-air:free",
                     temperature=0.7,
                     max_tokens=1024,
-                    timeout=60,  # Timeout otimizado para API cloud
+                    timeout=60,
                     tier=LLMModelTier.FAST,
                 ),
                 LLMConfig(
@@ -866,7 +870,7 @@ class LLMRouter:
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="nousresearch/hermes-3-llama-3.1-405b:free",  # Hermes-3 - modelo poderoso gratuito
+                    model_name="nousresearch/hermes-3-llama-3.1-405b:free",
                     temperature=0.7,
                     max_tokens=1024,
                     timeout=90,
@@ -876,15 +880,15 @@ class LLMRouter:
             LLMModelTier.BALANCED: [
                 LLMConfig(
                     provider=LLMProvider.OLLAMA,
-                    model_name="qwen2:7b-instruct",  # Modelo atual
+                    model_name=model_smart,  # Modelo configurado via .env (Default: phi3.5)
                     temperature=0.7,
                     max_tokens=2048,
-                    timeout=180,  # Timeout aumentado para produção
+                    timeout=180,
                     tier=LLMModelTier.BALANCED,
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="nousresearch/hermes-3-llama-3.1-405b:free",  # Hermes-3 - modelo poderoso gratuito
+                    model_name="nousresearch/hermes-3-llama-3.1-405b:free",
                     temperature=0.7,
                     max_tokens=2048,
                     timeout=120,
@@ -900,7 +904,7 @@ class LLMRouter:
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="openai/gpt-oss-20b:free",  # GPT-OSS-20B - modelo gratuito alternativo
+                    model_name="openai/gpt-oss-20b:free",
                     temperature=0.7,
                     max_tokens=2048,
                     timeout=90,
@@ -918,7 +922,7 @@ class LLMRouter:
             LLMModelTier.HIGH_QUALITY: [
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="nousresearch/hermes-3-llama-3.1-405b:free",  # Hermes-3 405B - modelo poderoso gratuito
+                    model_name="nousresearch/hermes-3-llama-3.1-405b:free",
                     temperature=0.7,
                     max_tokens=4096,
                     timeout=180,
@@ -926,7 +930,7 @@ class LLMRouter:
                 ),
                 LLMConfig(
                     provider=LLMProvider.OPENROUTER,
-                    model_name="z-ai/glm-4.5-air:free",  # GLM-4.5 Air - modelo gratuito de qualidade
+                    model_name="z-ai/glm-4.5-air:free",
                     temperature=0.7,
                     max_tokens=4096,
                     timeout=180,

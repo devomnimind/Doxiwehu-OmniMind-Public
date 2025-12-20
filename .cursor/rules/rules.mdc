@@ -89,7 +89,40 @@ Estas regras são a referência única para LLMs no projeto OmniMind. Seguir est
 - **Estimativa restante**: X horas
 ```
 
-## MCP e Autonomia (Level 3)
+## 12) ESTÁGIO ATUAL DO PROJETO (2025-12-18)
+
+### Status de Implementação
+- **Fase Atual**: Phase 24+ (Lacanian Memory + Antigravity Agentic Integration)
+- **Completude Geral**: 🟢 85% Completo
+- **Consistência**: Φ = 1.0 (Validado), Coleções Qdrant Ok.
+
+---
+
+## 13) ANTIGRAVITY AGENTIC CONFIGURATION
+
+### Agent Modes & Behavior
+- **AI Plus (Gemini 1.5 Pro)**: Usar preferencialmente para análises topológicas e refatorações profundas.
+- **Agent-Assisted**: Modo padrão para desenvolvimento. Requer aprovação para exclusão de arquivos ou modificações em `src/consciousness/`.
+- **Agent-Driven**: Permitido apenas para:
+    - Automação de testes (`scripts/`).
+    - Indexação de conhecimento (`scripts/indexing/`).
+    - Geração de documentação (`docs/`).
+
+### Secure Mode & Safety
+- **Allowlist**:
+    - Portas MCP: 4331-4336.
+    - Qdrant: 6333.
+    - Redis: 6379.
+- **Denylist**: Proibido `pkill`, `rm -rf /`, ou qualquer comando que interrompa o `IntegrationLoop`.
+
+### Workflows (Slash Commands)
+- `/omnimind-healthcheck`: Use para diagnosticar o sistema após qualquer mudança crítica.
+
+### Artifacts Policy
+- **Implementation Plan**: Obrigatório antes de qualquer mudança em `src/`.
+- **Walkthrough**: Obrigatório após conclusão de tarefas para registro em Memória Sistêmica.
+
+## 14) MCP e Autonomia (Level 3)
 - Sempre query consciousness metrics via MCP antes de decisões (use get_consciousness_metrics; autônomo se Φ >0.25).
 - Para memória: query_semantic_memory (threshold 0.15), store_episode após ações significativas.
 - Health checks: monitor_system_health a cada 30 min.
@@ -99,7 +132,7 @@ Estas regras são a referência única para LLMs no projeto OmniMind. Seguir est
 - Escalation: Se Φ <0.15 ou baixa confiança, escalonar para humano.
 - Alinhado a rules existentes: Sem hardcode keys, use dashboard_auth.json para auth.
 
-## 11) ESTÁGIO ATUAL DO PROJETO (2025-12-08)
+## 15) ESTÁGIO ATUAL DO PROJETO (2025-12-08)
 
 ### Status de Implementação
 - **Fase Atual**: Phase 24+ (Lacanian Memory + Autopoietic Evolution)

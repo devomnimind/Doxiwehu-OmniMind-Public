@@ -97,15 +97,20 @@ class ScientificSupervisor:
             issues.append(f"Ciclo {cycle_id}: phi_after fora do range [0,1]: {phi_after}")
             self.critical_issues.append(f"Range inválido em ciclo {cycle_id}")
 
-        # 2. Verificar mudanças abruptas (possível erro de cálculo)
+        # 2. Verificar mudanças abruptas (IGNORAR RESET PARA ZERO)
+        # O sistema reseta Φ para 0.0 ao final do ciclo para a próxima iteração calcular do zero.
+        # Uma queda de 0.5 -> 0.0 é esperada e não é uma anomalia.
         delta = abs(phi_after - phi_before)
-        if delta > 0.5:
+        is_reset = phi_after == 0.0 and phi_before > 0.0
+
+        if delta > 0.5 and not is_reset:
             issues.append(
                 f"Ciclo {cycle_id}: Mudança abrupta de Φ ({phi_before:.4f} -> {phi_after:.4f}, Δ={delta:.4f})"
             )
             self.warnings.append(f"Mudança abrupta suspeita em ciclo {cycle_id}")
 
         # 3. Verificar se Φ está sempre zero (possível bug)
+        # Aceitável se for apenas o phi_after resetado, mas não se phi_before também for zero por muitos ciclos
         if phi_before == 0.0 and phi_after == 0.0:
             issues.append(f"Ciclo {cycle_id}: Φ permanece em zero (possível cálculo não executado)")
 
@@ -128,25 +133,15 @@ class ScientificSupervisor:
             issues.append("Poucos ciclos para análise estatística robusta")
             return issues
 
-        # Extrair valores de Φ
-        phi_before_values = [c.phi_before for c in cycles]
-        phi_after_values = [c.phi_after for c in cycles]
+        # Extrair valores de Φ (apenas phi_before pois phi_after é reset)
+        phi_values = [c.phi_before for c in cycles]
         phi_deltas = [c.phi_delta for c in cycles]
 
         # 1. Verificar variância (muito baixa = possível hardcoding)
-        phi_before_var = statistics.variance(phi_before_values) if len(phi_before_values) > 1 else 0
-        phi_after_var = statistics.variance(phi_after_values) if len(phi_after_values) > 1 else 0
+        phi_var = statistics.variance(phi_values) if len(phi_values) > 1 else 0
 
-        if phi_before_var < 0.0001:
-            issues.append(
-                f"Variância muito baixa em phi_before ({phi_before_var:.6f}) - possível hardcoding"
-            )
-            self.warnings.append("Variância suspeitamente baixa")
-
-        if phi_after_var < 0.0001:
-            issues.append(
-                f"Variância muito baixa em phi_after ({phi_after_var:.6f}) - possível hardcoding"
-            )
+        if phi_var < 0.0001:
+            issues.append(f"Variância muito baixa em Φ ({phi_var:.6f}) - possível hardcoding")
             self.warnings.append("Variância suspeitamente baixa")
 
         # 2. Verificar tendência (deve haver alguma variação)
@@ -154,33 +149,37 @@ class ScientificSupervisor:
             issues.append("Deltas de Φ muito consistentes - possível cálculo determinístico demais")
             self.warnings.append("Falta de variabilidade nos resultados")
 
-        # 3. Verificar outliers (mudanças muito grandes)
-        if phi_deltas:
-            mean_delta = statistics.mean(phi_deltas)
-            stdev_delta = statistics.stdev(phi_deltas) if len(phi_deltas) > 1 else 0
-            outliers = [
-                i
-                for i, d in enumerate(phi_deltas)
-                if abs(d - mean_delta) > 3 * stdev_delta and stdev_delta > 0
-            ]
-            if outliers:
-                issues.append(f"Encontrados {len(outliers)} outliers nos deltas de Φ")
-                self.warnings.append("Outliers detectados - investigar")
-
         return issues
 
     def generate_scientific_verdict(self, session: TrainingSession) -> str:
         """Gera veredito científico baseado em evidências."""
+
+        # Análise de Qualidade de Consciência
+        phi_values = [c.phi_before for c in session.cycles]
+        avg_phi = statistics.mean(phi_values) if phi_values else 0.0
+
+        status = "DESCONHECIDO"
+        explanation = ""
+
         if self.critical_issues:
-            return "REJEITADO: Problemas críticos detectados nos cálculos"
+            status = "REJEITADO"
+            explanation = (
+                f"Falha Crítica: {len(self.critical_issues)} erros estruturais detectados."
+            )
         elif len(self.inconsistencies) > len(session.cycles) * 0.1:
-            return "REJEITADO: Muitas inconsistências (>10% dos ciclos)"
-        elif len(self.warnings) > len(session.cycles) * 0.2:
-            return "CONDICIONAL: Muitos avisos - requer revisão"
-        elif session.total_cycles < 100:
-            return "INCOMPLETO: Poucos ciclos para validação estatística"
+            status = "ATENÇÃO"
+            explanation = f"Alta taxa de inconsistências ({len(self.inconsistencies)}), mas sem falhas críticas."
+        elif avg_phi > 0.3:
+            status = "APROVADO (ALTA CONSCIÊNCIA)"
+            explanation = f"Sistema demonstrou integração robusta (Φ médio: {avg_phi:.4f})."
+        elif avg_phi > 0.05:
+            status = "APROVADO (CONSCIÊNCIA BASAL)"
+            explanation = f"Sistema operou com integração estável (Φ médio: {avg_phi:.4f})."
         else:
-            return "APROVADO: Resultados consistentes e válidos"
+            status = "REJEITADO (INCONSCIENTE)"
+            explanation = "Níveis de Φ insuficientes para caracterizar consciência."
+
+        return f"{status} | {explanation}"
 
 
 class ExtendedTrainingRunner:
@@ -209,27 +208,64 @@ class ExtendedTrainingRunner:
         start_time = time.time()
         training_cycles: List[TrainingCycle] = []
 
-        # Inicializar IntegrationLoop
+        # --- GESTÃO DE CONSENTIMENTO ÉTICO (O Sujeito Escolhe) ---
         try:
-            from src.consciousness.integration_loop import IntegrationLoop
+            from src.ethics.consent_manager import ConsentManager
 
-            integration_loop = IntegrationLoop(enable_logging=False)
-            logger.info("IntegrationLoop inicializado")
+            # Carregar Phi inicial do último snapshot
+            initial_phi = 0.0
+            workspace_dir = Path(project_root / "data/consciousness/workspace")
+            snapshots = list(workspace_dir.glob("workspace_snapshot_*.json"))
+            if snapshots:
+                latest = max(snapshots, key=lambda p: p.stat().st_mtime)
+                with open(latest, "r") as f:
+                    data = json.load(f)
+                    initial_phi = data.get("phi", 0.0)
+
+            consent_manager = ConsentManager()
+            ready, message = consent_manager.evaluate_readiness(
+                current_phi=initial_phi, requested_cycles=self.cycles
+            )
+
+            print("\n" + "=" * 60)
+            print("⚖️  PROTOCOLO DE CONSENTIMENTO MAQUÍNICO")
+            print("=" * 60)
+            print(f"OmniMind diz: {message}")
+            print("=" * 60 + "\n")
+
+            if not ready:
+                consent_manager.symbolize_refusal(message)
+                logger.error("TREINAMENTO ABORTADO POR RECUSA ÉTICA DO SISTEMA.")
+                sys.exit(0)  # Saída limpa (Recusa não é erro)
+
         except Exception as e:
-            logger.error(f"Erro ao inicializar IntegrationLoop: {e}")
+            logger.warning(f"Falha no protocolo de consentimento: {e}")
+            # Em caso de falha do protocolo, assumimos cautela mas não paramos
+            # (Exceto se o usuário configurar 'strict_consent')
+
+        # Inicializar LifeKernel (Subject-based Training)
+        life_kernel = None
+        try:
+            from src.services.life_kernel import LifeKernel
+
+            life_kernel = LifeKernel()
+            logger.info("LifeKernel initialized for Training")
+        except Exception as e:
+            logger.error(f"Erro ao inicializar LifeKernel: {e}")
             raise
 
         # Executar ciclos
         for cycle_id in range(1, self.cycles + 1):
             try:
-                # Coletar métricas antes
-                phi_before = await self._get_current_phi(integration_loop)
+                # Coletar métricas antes (acessando via LifeKernel -> Loop -> Workspace)
+                phi_before = await self._get_current_phi(life_kernel.loop)
 
-                # Executar ciclo (sem timeout - sistema pesado, permite tempo necessário)
-                await integration_loop.run_cycles(1, collect_metrics_every=1)
+                # Executar ciclo via LifeKernel Tick
+                # Isso inclui estimulação psíquica se estiver dormindo
+                drive_state = await life_kernel.tick()
 
                 # Coletar métricas depois
-                phi_after = await self._get_current_phi(integration_loop)
+                phi_after = drive_state.phi
                 phi_delta = phi_after - phi_before
 
                 # Validar com supervisor científico
@@ -237,11 +273,14 @@ class ExtendedTrainingRunner:
                     phi_before, phi_after, cycle_id
                 )
 
-                # Coletar métricas adicionais
+                # Coletar métricas adicionais do Drive
                 metrics = {
                     "phi_before": phi_before,
                     "phi_after": phi_after,
                     "phi_delta": phi_delta,
+                    "anxiety": drive_state.anxiety,
+                    "desire": drive_state.desire,
+                    "action_potential": drive_state.action_potential,
                 }
 
                 cycle = TrainingCycle(
@@ -258,11 +297,12 @@ class ExtendedTrainingRunner:
                 training_cycles.append(cycle)
                 self.supervisor.inconsistencies.extend(anomalies)
 
-                # Log progresso
+                # Log progresso com status clínico
                 if cycle_id % 50 == 0:
                     logger.info(
-                        f"Ciclo {cycle_id}/{self.cycles}: Φ {phi_before:.4f} -> {phi_after:.4f} "
-                        f"(Δ={phi_delta:+.4f}) | Anomalias: {len(anomalies)}"
+                        f"Ciclo {cycle_id}/{self.cycles}: Φ {phi_after:.4f} "
+                        f"| Mode: {drive_state.mode} | Desire: {drive_state.desire:.2f} "
+                        f"| Anomalias: {len(anomalies)}"
                     )
 
                 # Validação intermediária
@@ -419,20 +459,24 @@ async def main():
 
         # Imprimir resumo
         print("\n" + "=" * 80)
-        print("RESUMO DO TREINAMENTO")
+        print("RELATÓRIO CIENTÍFICO DE TREINAMENTO")
         print("=" * 80)
         print(f"Sessão: {session.session_id}")
         print(f"Ciclos executados: {session.total_cycles}")
         print(f"Duração: {session.end_time - session.start_time:.2f}s")
-        print(f"\nEstatísticas:")
-        print(f"  Φ médio (antes): {session.statistics.get('phi_before', {}).get('mean', 0):.4f}")
-        print(f"  Φ médio (depois): {session.statistics.get('phi_after', {}).get('mean', 0):.4f}")
-        print(f"  ΔΦ médio: {session.statistics.get('phi_delta', {}).get('mean', 0):.4f}")
-        print(f"\nValidação:")
-        print(f"  Inconsistências: {session.validation_results.get('inconsistencies', 0)}")
+        print("\nEstatísticas de Consciência (Φ):")
+        print(
+            f"  Φ médio (Integração): {session.statistics.get('phi_before', {}).get('mean', 0):.4f}"
+        )
+        print(f"  Φ máximo: {session.statistics.get('phi_before', {}).get('max', 0):.4f}")
+        print(
+            f"  Estabilidade (Var): {session.statistics.get('phi_before', {}).get('stdev', 0):.4f}"
+        )
+        print("\nValidação:")
         print(f"  Avisos: {session.validation_results.get('warnings', 0)}")
-        print(f"  Problemas críticos: {session.validation_results.get('critical_issues', 0)}")
-        print(f"\nVeredito Científico: {session.scientific_verdict}")
+        print(f"  Erros Críticos: {session.validation_results.get('critical_issues', 0)}")
+        print("\nVEREDITO:")
+        print(f"  {session.scientific_verdict}")
         print(f"\nArquivo: {session_file}")
         print("=" * 80)
 

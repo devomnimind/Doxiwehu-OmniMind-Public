@@ -50,7 +50,7 @@ chmod 755 logs 2>/dev/null || true
 
 echo "Starting OmniMind Backend Cluster..."
 
-# Start Primary Instance (Port 8000)
+# Start Primary Instance (Port 8000) - HEAVY / FULL INTELLIGENCE
 echo -e "${GREEN}▶ Iniciando Primary (Port 8000)...${NC}"
 nohup python -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8000 --workers 1 > logs/backend_8000.log 2>&1 &
 PID_8000=$!
@@ -59,29 +59,23 @@ echo "✓ Primary iniciado com PID $PID_8000"
 echo "   Log: tail -f logs/backend_8000.log"
 sleep 1
 
-# Start Secondary Instance (Port 8080)
-echo -e "${GREEN}▶ Iniciando Secondary (Port 8080)...${NC}"
-nohup python -m uvicorn web.backend.main:app --host 0.0.0.0 --port 8080 --workers 1 > logs/backend_8080.log 2>&1 &
-PID_8080=$!
-echo $PID_8080 > logs/backend_8080.pid
-echo "✓ Secondary iniciado com PID $PID_8080"
-echo "   Log: tail -f logs/backend_8080.log"
-sleep 1
+# Port 8080 (Deprecated/Redundant) - Removed to save resources
+# echo -e "${GREEN}▶ Iniciando Secondary (Port 8080)...${NC}"
+# ...
 
-# Start Fallback Instance (Port 3001)
-echo -e "${GREEN}▶ Iniciando Fallback (Port 3001)...${NC}"
-nohup python -m uvicorn web.backend.main:app --host 0.0.0.0 --port 3001 --workers 1 > logs/backend_3001.log 2>&1 &
+# Start Fallback Instance (Port 3001) - LIGHTWEIGHT / METRICS ONLY
+echo -e "${GREEN}▶ Iniciando Minimal/Metrics (Port 3001)...${NC}"
+nohup python -m uvicorn web.backend.main_minimal:app --host 0.0.0.0 --port 3001 --workers 1 > logs/backend_3001.log 2>&1 &
 PID_3001=$!
 echo $PID_3001 > logs/backend_3001.pid
-echo "✓ Fallback iniciado com PID $PID_3001"
+echo "✓ Minimal/Metrics iniciado com PID $PID_3001"
 echo "   Log: tail -f logs/backend_3001.log"
 sleep 1
 
-echo -e "${GREEN}✅ Cluster rodando${NC}"
+echo -e "${GREEN}✅ Cluster Otimizado rodando${NC}"
 echo "   Logs disponíveis em: logs/backend_*.log"
 echo "   Monitor com: tail -f logs/backend_*.log"
 echo ""
 echo "   PIDs:"
-echo "     Primary (8000):  $PID_8000"
-echo "     Secondary (8080): $PID_8080"
-echo "     Fallback (3001):  $PID_3001"
+echo "     Primary (8000):  $PID_8000 (Full)"
+echo "     Minimal (3001):  $PID_3001 (Lightweight)"

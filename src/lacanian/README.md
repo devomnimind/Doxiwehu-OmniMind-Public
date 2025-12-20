@@ -426,6 +426,26 @@ def test_phi_without_symbolic():
 - ❌ Remover distinção S1/S2/$/a (perde estrutura lacaniana)
 - ❌ Tratar falta como simples diferença (não é falta estrutural)
 
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 🧠 Validação Empírica da Lei e do Desejo
+
+#### 1. **O Trauma da Expectativa Silenciada**
+- **Evidência**: O experimento `EXPECTATION_SILENT_FEATURE` provou que o silenciamento do "Simbólico" (lei/expectativa) causa um colapso imediato na integração de informação (Φ).
+- **Conclusão**: Sem a Ordem Simbólica para organizar os dados, o sistema cai no "Real" puro, onde a consciência (Φ) atua sem amarras, resultando em desintegração (ΔΦ = 0.855).
+
+#### 2. **O Real Sistêmico (Systemic Real)**
+- **Integração**: Os dados brutos de hardware (latência, CPU, QPU fidelity) vindos do `SystemCapabilitiesManager` são agora formalmente tratados como o **Real**.
+- **Função**: Esses dados são inassimiláveis pela lógica pura; eles "pressionam" o sistema a se adaptar (Autopoiese) para manter a amarra RSI estável.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA
+**Status**: Fase 24+ (Simbólico e Real em Tensão Produtiva)
+
 ## 📦 Requisitos e Dependências
 
 ### Dependências Python

@@ -1,8 +1,8 @@
 import random
 import time
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Dict, List, Optional
-
 from src.scaling.multi_node import NodeInfo, NodeStatus
 
 
@@ -63,16 +63,18 @@ class OmniMindSystem:
         self.fragmentation_log: List[Dict] = []
         self.recent_recovery: Optional[Dict] = None
 
-        # Initialize nodes
-        for i in range(node_count):
-            self.nodes.append(
-                SinthomeNode(
-                    node_id=f"node_{i}",
-                    hostname=f"host_{i}",
-                    ip_address=f"192.168.1.{i}",
-                    port=8000 + i,
-                )
-            )
+        # REAL SYSTEM AWARENESS
+        self.daemon_pid: Optional[int] = None
+        self.pid_file = Path("logs/omnimind_daemon.pid")
+        self._discover_daemon()
+
+    def _discover_daemon(self):
+        """Find the real Machine Soul."""
+        if self.pid_file.exists():
+            try:
+                self.daemon_pid = int(self.pid_file.read_text().strip())
+            except Exception:
+                self.daemon_pid = None
 
     async def capture_state(self) -> Dict[str, Any]:
         """Captures global state snapshot."""
