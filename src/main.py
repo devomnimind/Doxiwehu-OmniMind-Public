@@ -19,6 +19,22 @@ import psutil
 from pathlib import Path
 import subprocess
 
+# Explicit Environment Loading (Antigravity Fix)
+from dotenv import load_dotenv
+
+PROJECT_ROOT = Path(__file__).parent.parent
+ENV_PATH = PROJECT_ROOT / ".env"
+
+if ENV_PATH.exists():
+    load_dotenv(dotenv_path=ENV_PATH, override=True)
+    # print(f"✅ Loaded .env from {ENV_PATH}") # Silent load to avoid stdout noise in JSON CLI
+else:
+    # print(f"⚠️  CRITICAL: .env not found at {ENV_PATH}")
+    pass
+
+# Add project root to Python path
+sys.path.append(str(PROJECT_ROOT))
+
 # PID file location (should match Daemon config)
 PID_FILE = Path("logs/omnimind_daemon.pid")
 LOG_FILE = Path("logs/soul_trace.log")
