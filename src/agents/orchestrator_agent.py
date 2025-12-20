@@ -79,6 +79,7 @@ from .psychoanalytic_analyst import PsychoanalyticAnalyst
 from .react_agent import ReactAgent
 from .reviewer_agent import ReviewerAgent
 from ..benchmarks.benchmark_evaluator import BenchmarkEvaluator
+from ..consciousness.paradox_orchestrator import ParadoxOrchestrator
 
 logger = logging.getLogger(__name__)
 
@@ -254,6 +255,11 @@ class OrchestratorAgent(ReactAgent):
         self.introspection_loop = IntrospectionLoop(self)
         self.sandbox_system = SandboxSystem(self)
 
+        # Atualizar IndexingScheduler com sandbox_system (se já inicializado)
+        if hasattr(self, "indexing_scheduler"):
+            self.indexing_scheduler.sandbox_system = self.sandbox_system
+            logger.debug("SandboxSystem vinculado ao IndexingScheduler")
+
         # Inicializar ErrorAnalyzer (Meta-ReAct)
         self.error_analyzer = ErrorAnalyzer()
         logger.info("ErrorAnalyzer inicializado para análise estrutural de erros")
@@ -319,6 +325,49 @@ class OrchestratorAgent(ReactAgent):
         self.benchmark_evaluator = BenchmarkEvaluator()
         logger.info("BenchmarkEvaluator integrado ao Orquestrador.")
 
+        # NEW: ParadoxOrchestrator - Meta-orchestrator para integração de paradoxos (Fase 21-Extended)
+        self.paradox_orchestrator: Optional[ParadoxOrchestrator] = None
+        try:
+            # Inicializar com workspace, quantum backend (se disponível), e MCP
+            self.paradox_orchestrator = ParadoxOrchestrator(
+                workspace=workspace,
+                quantum_backend=None,  # TODO: Connect to quantum backend when available
+                mcp_orchestrator=None,  # Will be set after mcp_orchestrator init
+            )
+            logger.info("ParadoxOrchestrator inicializado (meta-mode para habitação de paradoxos)")
+        except Exception as e:
+            logger.warning(f"ParadoxOrchestrator não pôde ser inicializado: {e}")
+
+        # NEW: SystemCapabilitiesManager para consulta de capacidades do sistema
+        # Reutiliza embedding_model do HybridRetrievalSystem para eficiência
+        from ..memory.system_capabilities_manager import SystemCapabilitiesManager
+        from ..tools.system_capability_tool import register_system_capability_tools
+
+        self.system_capabilities = SystemCapabilitiesManager(
+            qdrant_url=qdrant_url,
+            embedding_model=hybrid_retrieval.embedding_model,  # Reutilizar modelo
+            auto_index=False,  # Não indexar automaticamente (usa scheduler)
+        )
+        logger.info("SystemCapabilitiesManager inicializado para consulta de capacidades")
+
+        # Registrar tools de system capabilities no ToolsFramework
+        try:
+            register_system_capability_tools(
+                tools_framework=self.tools_framework, manager=self.system_capabilities
+            )
+            logger.info("System capability tools registradas no ToolsFramework")
+        except Exception as e:
+            logger.warning(f"Erro ao registrar system capability tools: {e}")
+
+        # NEW: IndexingScheduler para indexação automática periódica
+        from ..orchestrator.indexing_scheduler import IndexingScheduler
+
+        self.indexing_scheduler = IndexingScheduler(
+            system_capabilities_manager=self.system_capabilities,
+            sandbox_system=None,  # Será atualizado após inicialização do sandbox
+        )
+        logger.info("IndexingScheduler inicializado (será iniciado após integração de consciência)")
+
         # INTEGRAÇÃO DE CONSCIÊNCIA: Inicializar após todos os sistemas
         self._init_consciousness_integration()
 
@@ -361,7 +410,16 @@ class OrchestratorAgent(ReactAgent):
                     "agent_id": self.agent_id,
                 },
             )
-            logger.debug("Orchestrator registrado no SharedWorkspace: %s", module_name)
+            logger.info(f"Orquestrador registrado no SharedWorkspace como '{module_name}'")
+
+            # Inicializar SystemAwarenessBridge (Fase 3: SharedWorkspace Integration)
+            from ..consciousness.system_awareness_bridge import SystemAwarenessBridge
+
+            self.system_awareness_bridge = SystemAwarenessBridge(
+                workspace=self.workspace,
+                system_capabilities_manager=self.system_capabilities,
+            )
+            logger.info("SystemAwarenessBridge inicializado e conectado ao SharedWorkspace")
 
             # Inicializar SystemicMemoryTrace se não existir
             if not self.workspace.systemic_memory:
@@ -3075,6 +3133,15 @@ ESTIMATED_COMPLEXITY: low"""
             Orchestration result
         """
         try:
+            # NEW: Check for contradictions BEFORE/DURING planning (Fase 21-Extended)
+            if (
+                hasattr(self, "paradox_orchestrator")
+                and self.paradox_orchestrator
+                and self._detect_contradiction(tasks)
+            ):
+                logger.info("🔥 Contradiction detected - escalating to ParadoxOrchestrator")
+                return self._escalate_to_paradox(tasks)
+
             # Create a combined task description
             combined_task = f"Execute the following tasks: {'; '.join(tasks)}"
 
@@ -3542,6 +3609,81 @@ ESTIMATED_COMPLEXITY: low"""
         except Exception as e:
             logger.error("Erro ao criar snapshot de contexto via MCP: %s", e)
             return {"success": False, "error": str(e)}
+
+    def _detect_contradiction(self, tasks: List[str]) -> bool:
+        """
+        Detect if tasks contain contradictory requirements.
+
+        Args:
+            tasks: List of task strings
+
+        Returns:
+            True if contradiction detected
+        """
+        # Simple heuristic detection (can be enhanced)
+        task_text = " ".join(tasks).lower()
+
+        # Detect ethical dilemmas
+        ethical_keywords = ["must", "should not", "violates", "against", "forbidden"]
+        if sum(kw in task_text for kw in ethical_keywords) >= 2:
+            logger.debug("Ethical dilemma detected")
+            return True
+
+        # Detect logical contradictions
+        contradiction_pairs = [
+            ("maximize", "minimize"),
+            ("increase", "decrease"),
+            ("allow", "forbid"),
+            ("create", "delete"),
+        ]
+        for word1, word2 in contradiction_pairs:
+            if word1 in task_text and word2 in task_text:
+                logger.debug(f"Logical contradiction detected: {word1} vs {word2}")
+                return True
+
+        return False
+
+    def _escalate_to_paradox(self, tasks: List[str]) -> Dict[str, Any]:
+        """
+        Escalate contradictory tasks to ParadoxOrchestrator.
+
+        Args:
+            tasks: Contradictory tasks
+
+        Returns:
+            Paradox state (not resolution)
+        """
+        if not self.paradox_orchestrator:
+            logger.warning("ParadoxOrchestrator not available, attempting normal processing")
+            return {"error": "Paradox detected but no orchestrator available"}
+
+        # Convert tasks to paradox format
+        paradox_input = {
+            "domain": "task_orchestration",
+            "question": " | ".join(tasks),
+            "options": [{"task": t} for t in tasks],
+            "contradiction": "Tasks contain conflicting requirements",
+        }
+
+        # Attempt classical resolution first (for failure signature)
+        classical_attempt = {
+            "status": "failed",
+            "reason": "Contradictory task requirements",
+            "conflict": "Multiple conflicting imperatives",
+        }
+
+        # Integrate paradox (not resolve)
+        paradox_state = self.paradox_orchestrator.integrate_paradox(
+            contradiction=paradox_input, classical_attempt=classical_attempt
+        )
+
+        # Return paradox state to user
+        return {
+            "orchestration_type": "paradox_habitation",
+            "paradox_state": paradox_state,
+            "message": "Contradiction integrated as system fuel (not resolved)",
+            "phi_delta": paradox_state.get("phi_delta"),
+        }
 
 
 # ============================================================================

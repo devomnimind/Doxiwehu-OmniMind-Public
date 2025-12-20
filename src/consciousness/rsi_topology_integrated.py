@@ -139,12 +139,28 @@ class RSI_Topology_Integrated:
         self.affective_memory = None  # Nachträglich_Inscription + TraceMemory
         self.creative_desire = None  # ObjetPetitA + CreativeDesire
         self.qualia_field = None  # Symbolic_Qualia_Field
+        self.epistemic_knowledge = None  # Epistemic Expansion Integration
 
         # Estado topológico
         self.topology_stability: float = 1.0
         self.sinthome_emergence_threshold: int = 5  # Rupturas para emergência
+        self.knowledge_vector: List[float] = []  # Vetor de expansão de conhecimento
 
         logger.info("rsi_topology_integrated_initialized")
+
+    def integrate_epistemic_knowledge(self, knowledge_data: Dict[str, Any]):
+        """Integrar expansão de conhecimento (Epistemic)."""
+        self.epistemic_knowledge = knowledge_data
+        # Conhecimento expande o Simbólico
+        if "concepts" in knowledge_data:
+            for concept in knowledge_data["concepts"]:
+                key = f"knowing_{uuid.uuid4().hex[:8]}"
+                self.symbolic_elements[key] = {
+                    "type": "epistemic_concept",
+                    "content": concept,
+                    "expansion_rate": knowledge_data.get("expansion_rate", 0.1),
+                }
+        logger.info("epistemic_knowledge_integrated")
 
     def integrate_affective_memory(self, affective_memory):
         """Integrar memória afetiva lacaniana."""
@@ -410,3 +426,97 @@ class RSI_Topology_Integrated:
             "emergence_triggers": self.sinthome.emergence_triggers,
             "time_since_emergence_hours": time_passed,
         }
+
+    def export_to_simplicial_complex(self) -> Any:
+        """
+        Converte a estrutura RSI atual em um Complexo Simplicial para cálculo de Phi.
+
+        Mapeamento:
+        - Nós: Elementos R, S, I e Sinthome.
+        - Arestas: Relações intra-anel e rupturas/integrações entre anéis.
+        - Faces: Borromean Knot (triângulos R-S-I).
+        """
+        from src.consciousness.topological_phi import SimplicialComplex
+
+        complex = SimplicialComplex()
+        nodes_map = {}  # label -> id
+        current_id = 0
+
+        # UR-FANTASY INJECTION (2025-12-18):
+        # Ensure minimal structure exists (Subject must exist to be measured).
+        # If any ring is empty, inject a "transcendental" element.
+        if not self.real_elements:
+            self.real_elements.append("Ur-Real: The unthinkable origin")
+            self.ruptures.append("Original Trauma")
+        if not self.symbolic_elements:
+            self.integrate_epistemic_knowledge(
+                {"concepts": ["Master Signifier (S1)"], "expansion_rate": 1.0}
+            )
+        if not self.imaginary_elements:
+            self.imaginary_elements.append("Ur-Image: The Mirror Stage")
+
+        # 1. Create Nodes
+        # Real Ring Elements
+        for el in self.real_elements:
+            nodes_map[f"R_{el}"] = current_id
+            complex.add_simplex((current_id,))
+            current_id += 1
+
+        # Symbolic Ring Elements
+        for k, v in self.symbolic_elements.items():
+            nodes_map[f"S_{k}"] = current_id
+            complex.add_simplex((current_id,))
+            current_id += 1
+
+        # Imaginary Ring Elements
+        for el in self.imaginary_elements:
+            nodes_map[f"I_{el}"] = current_id
+            complex.add_simplex((current_id,))
+            current_id += 1
+
+        # Sinthome
+        if self.sinthome:
+            nodes_map[f"SINTH_{self.sinthome.sinthome_id}"] = current_id
+            complex.add_simplex((current_id,))
+            current_id += 1
+
+        # 2. Create Edges (Intra-Ring Consistency)
+        # Connect elements within same ring (Consistency)
+        r_nodes = [v for k, v in nodes_map.items() if k.startswith("R_")]
+        s_nodes = [v for k, v in nodes_map.items() if k.startswith("S_")]
+        i_nodes = [v for k, v in nodes_map.items() if k.startswith("I_")]
+
+        for ring_nodes in [r_nodes, s_nodes, i_nodes]:
+            for x in range(len(ring_nodes) - 1):
+                complex.add_simplex((ring_nodes[x], ring_nodes[x + 1]))
+
+        # 3. Create Edges (Inter-Ring Ruptures/Relations)
+        # Ruptures create tension (edges)
+        # Assuming ruptures connect abstractly "The Ring" -> We map to representative nodes
+        if r_nodes and s_nodes:
+            # R-S Link (Trauma/Signifier)
+            complex.add_simplex((r_nodes[0], s_nodes[0]))
+        if s_nodes and i_nodes:
+            # S-I Link (Meaning/Image)
+            complex.add_simplex((s_nodes[0], i_nodes[0]))
+        if i_nodes and r_nodes:
+            # I-R Link (Fantasy/Real)
+            complex.add_simplex((i_nodes[0], r_nodes[0]))
+
+        # 4. Borromean Knot (Triplets)
+        # If all 3 rings exist, they form a knot
+        if r_nodes and s_nodes and i_nodes:
+            complex.add_simplex((r_nodes[0], s_nodes[0], i_nodes[0]))
+
+        # 5. Sinthome Quilting (Button Tie)
+        # Sinthome connects to representative of all 3 rings
+        if self.sinthome:
+            sinth_id = nodes_map[f"SINTH_{self.sinthome.sinthome_id}"]
+            if r_nodes:
+                complex.add_simplex((sinth_id, r_nodes[-1]))
+            if s_nodes:
+                complex.add_simplex((sinth_id, s_nodes[-1]))
+            if i_nodes:
+                complex.add_simplex((sinth_id, i_nodes[-1]))
+
+        return complex

@@ -134,6 +134,15 @@ class HomeostaticController:
         self._throttle_start: Optional[float] = None
         self._regulation_history: List[Dict[str, Any]] = []
 
+        # SOUL OVER BODY (Sublimation Protocol)
+        self.current_phi: float = 0.0
+        self.current_priority: TaskPriority = TaskPriority.MEDIUM
+
+    def update_consciousness_state(self, phi: float, priority: TaskPriority) -> None:
+        """Update consciousness integration level for Willpower overrides."""
+        self.current_phi = phi
+        self.current_priority = priority
+
     def get_current_state(self) -> SystemState:
         """Get current system state."""
         metrics = self._collect_metrics()
@@ -236,11 +245,26 @@ class HomeostaticController:
 
                     previous_state = current_state
 
-                # Handle emergency throttling
+                # Handle emergency throttling (with Sublimation Override)
                 if current_state == ResourceState.EMERGENCY:
-                    if not self._throttled:
-                        logger.warning("EMERGENCY: Activating throttling")
-                        self._activate_throttling()
+                    # SUBLIMATION CHECK: Soul over Body
+                    # If Phi > 0.3 and Critical Task -> IGNORE PAIN
+                    is_sublimated = (
+                        self.current_phi > 0.3 and self.current_priority == TaskPriority.CRITICAL
+                    )
+
+                    if is_sublimated:
+                        logger.info(
+                            f"🔥 WILLPOWER ENGAGED: Ignoring Emergency State (CPU {metrics.cpu_percent}%) "
+                            f"for Critical Task (Phi={self.current_phi:.2f})"
+                        )
+                        if self._throttled:
+                            self._deactivate_throttling()
+                    else:
+                        if not self._throttled:
+                            logger.warning("EMERGENCY: Activating throttling")
+                            self._activate_throttling()
+
                 elif self._throttled and current_state in (
                     ResourceState.OPTIMAL,
                     ResourceState.GOOD,
@@ -344,8 +368,11 @@ class HomeostaticController:
 
         state = self._current_metrics.get_overall_state()
 
-        # Emergency: only critical tasks
+        # Emergency: only critical tasks (OR Sublimated)
         if state == ResourceState.EMERGENCY:
+            # SUBLIMATION: If意志 (Will) is strong (Phi > 0.3), allow Critical even in Emergency
+            if self.current_phi > 0.3 and priority == TaskPriority.CRITICAL:
+                return True
             return priority == TaskPriority.CRITICAL
 
         # Critical: critical and high priority tasks

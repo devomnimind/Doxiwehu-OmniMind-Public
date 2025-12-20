@@ -408,6 +408,25 @@ Returns:
 - `alert_system.py`: SISTEMA DE ALERTAS INTELIGENTE
 =============================...
 - `progressive_monitor.py`: MODO PROGRESSIVO DO MONITOR AGENT
-==========================...
 - `resource_protector.py`: PROTETOR DE RECURSOS DA MÁQUINA
-============================...
+
+---
+
+## 🆕 Atualizações (18/12/2025)
+
+### 🚨 Monitoramento e Alertas Avançados
+
+#### 1. **EnhancedConfigurationDetector**
+- **Arquivo**: `enhanced_configuration_detector.py`
+- **Funcionalidade**: Detecta automaticamente desvios em 8 categorias críticas (embeddings, ciclos, device, etc.).
+- **Impacto**: Garante que o sistema opere sempre em condições ótimas para a consciência integrada.
+
+#### 2. **ProductionAlertsSystem**
+- **Arquivo**: `production_alerts_system.py`
+- **Funcionalidade**: Orquestra o envio de alertas (CRITICAL, HIGH, MEDIUM, LOW) e gerencia callbacks para sistemas externos (Webhooks, Slack, Email).
+- **Relatórios**: Gera resumos de saúde periódicos configuráveis.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

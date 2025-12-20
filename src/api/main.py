@@ -7,10 +7,11 @@ import psutil
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.api.routes import chat, daemon, health, messages, metrics
+from src.api.routes import autopoietic, chat, daemon, health, messages, metrics
 from src.services.daemon_monitor import daemon_monitor_loop, STATUS_CACHE
 
 app = FastAPI(title="OmniMind API", version="1.0.0")
+START_TIME = time.time()
 
 # Configure CORS
 app.add_middleware(
@@ -22,16 +23,22 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(health.router, prefix="/api/health", tags=["health"])
+app.include_router(health.router, prefix="/health", tags=["health"])
 app.include_router(chat.router, prefix="/api/chat", tags=["chat"])
-app.include_router(daemon.router, prefix="/api/daemon", tags=["daemon"])
-app.include_router(messages.router, prefix="/api/messages", tags=["messages"])
+app.include_router(daemon.router, prefix="/daemon", tags=["daemon"])
+app.include_router(messages.router, prefix="/messages", tags=["messages"])
 app.include_router(metrics.router, prefix="/api/metrics", tags=["metrics"])
+app.include_router(autopoietic.router, prefix="/api/v1/autopoietic", tags=["autopoietic"])
 
 
-@app.get("/")
-async def root():
-    return {"message": "OmniMind API is running"}
+@app.get("/auth/credentials")
+async def get_credentials():
+    """Provides credentials for dashboard auto-login."""
+    try:
+        with open("config/dashboard_auth.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {"error": "Credentials not found"}
 
 
 # WebSocket Endpoint
@@ -114,6 +121,7 @@ async def broadcast_pulse():
                         "status": daemon_status.get("system_metrics", {}).get(
                             "is_user_active", True
                         ),
+                        "uptime_seconds": int(time.time() - START_TIME),
                         "tasks": daemon_status.get("task_info", {}),
                         "tribunal": daemon_status.get("tribunal_info", {}),
                     },

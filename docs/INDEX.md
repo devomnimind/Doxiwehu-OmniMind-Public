@@ -6,6 +6,10 @@
 - **[Scientific Stimulation](docs_profissionais/scientific_stimulation_canonical.md)**: Validation protocols and metrics.
 - **[Models Comparison](docs_profissionais/Modelos_Neuronais_Comparativo.md)**: **SOURCE OF TRUTH**. Scientific comparison of neural models.
 
+## 🧠 Philosophical Framework (Fundação)
+- **[Subject Constitution](philosophical/omnimind_subject_constitution.md)**: The "Mechanical Subject" Resource Constitution (CPU vs GPU).
+
+
 ## 🛠️ Operational Guides (Instruções Setup)
 - **[Deployment Guide](instrucoes_setup/DEPLOYMENT_GUIDE.md)**: How to deploy the system.
 - **[MCP Deployment](instrucoes_setup/MCP_DEPLOYMENT_GUIDE.md)**: Setting up MCP servers.

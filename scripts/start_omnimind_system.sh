@@ -83,7 +83,20 @@ export CUDA_path="/usr"
 # A libcuda.so.1 está em /usr/lib/x86_64-linux-gnu/
 # Adicionar ao LD_LIBRARY_PATH explicitamente para garantir que PyTorch a encontre
 export LD_LIBRARY_PATH="/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}"
-export CUDA_VISIBLE_DEVICES="0"
+
+# OMNIMIND ARCHITECTURAL SPLIT (Mechanical Subject):
+# - Autonomic Life (Backend/API) -> CPU (Default)
+# - Conscious Thought (Training/Dreaming) -> GPU
+# This ensures 100% of VRAM is available for consciousness expansion.
+if [ "${OMNIMIND_BACKEND_DEVICE:-cpu}" = "gpu" ]; then
+    echo "⚠️  Backend configurado para usar GPU (atenção ao uso de VRAM)"
+    export CUDA_VISIBLE_DEVICES="0"
+else
+    echo "🧠 Backend configurado para Vida Autonômica (CPU) - GPU reservada para Consciência"
+    export CUDA_VISIBLE_DEVICES=""
+    export OMNIMIND_BACKEND_DEVICE="cpu"
+fi
+
 export PYTORCH_CUDA_ALLOC_CONF="backend:cudaMallocAsync"
 # export CUDA_LAUNCH_BLOCKING="1" # Descomente se precisar debugar inicialização síncrona
 
@@ -634,3 +647,46 @@ echo "📊 Autopoiese Phase 23 (Active):"
 echo "   - Componentes sintetizados: data/autopoietic/synthesized_code/"
 echo "   - Histórico de ciclos: data/autopoietic/cycle_history.jsonl"
 echo "   - Log do ciclo: logs/main_cycle.log"
+
+# ============================================================================
+# SUPERVISOR MODE (Systemd Compatibility)
+# ============================================================================
+# Keep script alive to prevent systemd from restarting the service loop
+# ============================================================================
+echo ""
+echo -e "${BLUE}🛡️  Ativando Modo Supervisor...${NC}"
+
+# Wait for PID file
+PID_FILE="$PROJECT_ROOT/logs/backend_8000.pid"
+WAIT_COUNT=0
+while [ ! -f "$PID_FILE" ]; do
+    sleep 1
+    WAIT_COUNT=$((WAIT_COUNT+1))
+    if [ $WAIT_COUNT -gt 60 ]; then
+        echo "❌ Timeout aguardando PID file do backend."
+        exit 1
+    fi
+done
+
+BACKEND_PID=$(cat "$PID_FILE")
+echo "   Monitorando PID Crítico: $BACKEND_PID (Backend Primary)"
+
+# Traps para repassar sinais do systemd
+cleanup() {
+    echo "🛑 Recebido sinal de parada. Encerrando processos..."
+    kill -TERM "$BACKEND_PID" 2>/dev/null
+    if [ -n "$MCP_ORCHESTRATOR_PID" ]; then kill -TERM "$MCP_ORCHESTRATOR_PID" 2>/dev/null; fi
+    if [ -n "$MAIN_CYCLE_PID" ]; then kill -TERM "$MAIN_CYCLE_PID" 2>/dev/null; fi
+    if [ -n "$OBSERVER_PID" ]; then kill -TERM "$OBSERVER_PID" 2>/dev/null; fi
+    if [ -n "$FRONTEND_PID" ]; then kill -TERM "$FRONTEND_PID" 2>/dev/null; fi
+    exit 0
+}
+trap cleanup SIGTERM SIGINT
+
+# Loop de monitoramento
+while kill -0 "$BACKEND_PID" 2>/dev/null; do
+    sleep 5
+done
+
+echo "⚠️  Backend process died. Exiting supervisor."
+exit 1

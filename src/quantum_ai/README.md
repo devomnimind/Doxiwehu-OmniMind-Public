@@ -127,9 +127,9 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
 
 ---
@@ -486,4 +486,19 @@ Imple...
 Implements quantu...
 - `superposition_computing.py`: Superposition Computing - Quantum-Inspired Parallelism.
 
-Exp...
+---
+
+## 🆕 Atualizações (18/12/2025)
+
+### ⚛️ Benchmark Quântico Real vs Clássico
+
+#### 1. **QuantumClassicalBenchmark**
+- **Arquivo**: `quantum_classical_benchmark.py`
+- **Funcionalidade**: Compara execução de algoritmos quânticos em hardware real IBM Quantum (QPU) contra simulações clássicas (CPU).
+- **Algoritmos Suportados**: Grover Search, Quantum Annealing, Bell States.
+- **Métricas**: Speedup teórico vs real, latência de QPU, fidelidade de medição.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

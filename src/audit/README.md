@@ -490,3 +490,22 @@ Provides query interf...
 - `retention_policy.py`: Data Retention Policy Module for OmniMind
 Implements configu...
 - `robust_audit_system.py`: Sistema de Auditoria Robusta com Merkle Tree e Cadeamento Cr...
+
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 🕵️ Rastreamento Forense de Baixo Nível
+
+#### 1. **Hardware Interaction Tracing**
+- **Diferencial**: O `AuditLogAnalyzer` agora rastreia não apenas ações lógicas (API, arquivos), mas também interações com hardware via `SystemCapabilitiesManager`.
+- **Garantia**: Cada consulta a GPU ou sensor é hasheada na cadeia P0, impedindo o "gaslighting" do sistema sobre o uso de recursos reais.
+
+#### 2. **Validação Post-Restart**
+- **Funcionalidade**: O script `scripts/management/graceful_restart.py` agora aciona automaticamente o `ImmutableAuditSystem.verify_chain_integrity()` após cada reinicialização evolutiva.
+- **Resultado**: Garante que o estado persistido não foi adulterado durante o período de inatividade ("Cold Storage Tamper Protection").
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

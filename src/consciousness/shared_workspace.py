@@ -34,6 +34,11 @@ from sklearn.linear_model import LinearRegression  # type: ignore[import-untyped
 from src.defense import OmniMindConsciousDefense
 from src.monitor.systemd_memory_manager import SystemdMemoryManager
 
+# Subjectivity Integration (RSI Topology)
+from src.consciousness.omnimind_complete_subjectivity_integration import (
+    OmniMind_Complete_Subjectivity_Integration,
+)
+
 from .symbolic_register import SymbolicMessage, SymbolicRegister
 
 if TYPE_CHECKING:
@@ -196,9 +201,24 @@ class SharedWorkspace:
         self.embeddings: Dict[str, np.ndarray] = {}  # Module name -> embedding
         self.metadata: Dict[str, Dict[str, Any]] = {}  # Module name -> metadata
 
-        # Histórico
+        # Histórico (Hot Memory)
         self.history: List[ModuleState] = []
         self.cycle_count = 0
+
+        # Cold Storage Archiver
+        self.hot_memory_limit = (
+            2000  # Mantém ~333 ciclos de 6 módulos em RAM (robusto para Granger)
+        )
+        self.archiver = None
+
+        try:
+            from src.consciousness.historical_archiver import HistoricalArchiver
+
+            archive_path = self.workspace_dir.parent / "history_archives"
+            self.archiver = HistoricalArchiver(archive_dir=archive_path, chunk_size=50)
+            logger.info(f"📦 HistoricalArchiver ativado. Hot Memory Limit: {self.hot_memory_limit}")
+        except ImportError as e:
+            logger.warning(f"HistoricalArchiver não disponível: {e}")
 
         # Predições cruzadas (cache)
         self.cross_predictions: List[CrossPredictionMetrics] = []
@@ -214,6 +234,14 @@ class SharedWorkspace:
 
         # Structural Defense (Psychoanalytic Kernel)
         self.defense_system = OmniMindConsciousDefense()
+
+        # Subjectivity Integrator (The "I" of the system - RSI Topology)
+        # Weaves modules into a Borromean Knot
+        try:
+            self.subjectivity = OmniMind_Complete_Subjectivity_Integration()
+        except Exception as e:
+            logger.warning(f"Failed to init Subjectivity Integrator: {e}")
+            self.subjectivity = None
 
         # Shared Symbolic Register - CRÍTICO PARA P0
         self.symbolic_register = SymbolicRegister(self, max_messages=1000)
@@ -447,9 +475,22 @@ class SharedWorkspace:
         # Adiciona ao histórico
         self.history.append(state)
 
-        # Remove entrada antiga se histórico ficar muito grande
-        if len(self.history) > self.max_history_size:
-            self.history.pop(0)
+        # Adiciona ao histórico
+        self.history.append(state)
+
+        # Gerenciamento Hot/Cold Memory
+        if len(self.history) > self.hot_memory_limit:
+            # Identificar itens a serem removidos da Hot Memory
+            overflow_count = len(self.history) - self.hot_memory_limit
+            items_to_archive = self.history[:overflow_count]
+
+            # Enviar para Cold Storage
+            if self.archiver:
+                for item in items_to_archive:
+                    self.archiver.archive_state(item)
+
+            # Remover da Hot Memory
+            self.history = self.history[overflow_count:]
 
         # Proteger memória crítica de ir para swap
         if self._memory_protection_enabled and self._memory_manager:

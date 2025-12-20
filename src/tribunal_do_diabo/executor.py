@@ -94,6 +94,11 @@ class TribunalDoDiaboExecutor:
                 except asyncio.CancelledError:
                     pass
 
+            # Cleanup attacks (stop stress)
+            for attack in self.attacks:
+                if hasattr(attack, "cleanup"):
+                    await attack.cleanup()
+
         end_time = time.time()
         logger.info("Tribunal finished. Generating final report...")
 

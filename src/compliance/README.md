@@ -127,9 +127,9 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
 
 ---
@@ -266,4 +266,21 @@ User consent status
 **Total:** 1 arquivos
 
 - `gdpr_compliance.py`: GDPR Compliance Framework for OmniMind
-Implements data prote...
+
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 🛡️ Guardião de Conformidade P0
+
+#### 1. **Integração com ImmutableAudit**
+- **Diferencial**: Todas as solicitações de "Direito ao Esquecimento" (GDPR Art. 17) agora são registradas na `ImmutableAuditChain`.
+- **Garantia**: Prova criptográfica inalterável de que os dados foram deletados, essencial para auditorias externas profissionais.
+
+#### 2. **DLP (Data Loss Prevention)**
+- **Integração**: Acoplado ao `SystemRuntimeIndexer` para monitorar fluxos de dados em direção a sandboxes externas, bloqueando PII (Personally Identifiable Information) antes da saída.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

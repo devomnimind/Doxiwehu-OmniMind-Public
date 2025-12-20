@@ -668,6 +668,11 @@ class QuantumBenchmarkSuite:
 
         # Fidelity = |⟨ψ|φ⟩|²
         fidelity = abs(np.dot(np.conj(s1), s2)) ** 2
+
+        # Ensure it's a scalar value (fix for "only length-1 arrays can be converted to Python scalars")
+        if isinstance(fidelity, np.ndarray):
+            fidelity = fidelity.item()
+
         return float(fidelity)
 
     def _test_uniformity(self, decisions: List[Dict]) -> Dict[str, Any]:
@@ -803,7 +808,8 @@ def main():
     print("=" * 70)
 
     # Carregar token IBM
-    load_dotenv()
+    # Explicitly load .env from current directory to avoid find_dotenv stack issues
+    load_dotenv(os.path.join(os.getcwd(), ".env"))
     ibm_token = os.getenv("IBM_API_KEY")
 
     if not ibm_token:

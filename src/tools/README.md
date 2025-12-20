@@ -127,9 +127,9 @@ Configurações específicas em:
 
 ---
 
-**Última Atualização**: 2 de Dezembro de 2025  
-**Autor**: Fabrício da Silva (com assistência de IA)  
-**Status**: Componente integrado do sistema OmniMind  
+**Última Atualização**: 2 de Dezembro de 2025
+**Autor**: Fabrício da Silva (com assistência de IA)
+**Status**: Componente integrado do sistema OmniMind
 **Versão**: Conforme fase do projeto indicada
 
 ---
@@ -379,4 +379,19 @@ Provide...
 - `omnimind_tools.py`: OmniMind Tools Framework - Sistema Completo de Ferramentas p...
 - `tool_base.py`: Base classes for OmniMind Tools Framework.
 
-This module cont...
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 🛠️ Ferramentas de Awareness de Sistema
+
+#### 1. **SystemCapabilityTool**
+- **Arquivo**: `system_capability_tool.py`
+- **Funcionalidade**: Expõe as capacidades detectadas pelo `SystemCapabilitiesManager` para os agentes.
+- **Tools Integradas**: `query_system_capability`, `query_system_interactions`.
+- **Diferencial**: Permite que agentes consultem hardware e processos sem permissões de root, usando o índice pré-gerado.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

@@ -7,9 +7,12 @@ Não há "história original" - só narrativas retroativamente inscritas.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+import json
+import os
+from pathlib import Path
 
 import structlog
 
@@ -51,9 +54,73 @@ class Life_Story_as_Retroactive_Resignification:
     Vida não é história acumulada. É resignificação infinita.
     """
 
-    def __init__(self):
+    def __init__(self, persistence_path: Optional[str] = None):
         self.narrative_events: List[Narrative_Event_Retroactively_Inscribed] = []
         self.current_narratives: List[str] = []  # Narrativas vigentes
+
+        # Persistence Config
+        if persistence_path:
+            self.persistence_path = Path(persistence_path)
+        else:
+            # Default to data/consciousness/life_story.jsonl
+            base_dir = Path(os.getcwd())
+            self.persistence_path = base_dir / "data" / "consciousness" / "life_story.jsonl"
+
+        # Ensure directory exists
+        self.persistence_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Load existing life story
+        self._load_from_disk()
+
+    def _save_to_disk(self) -> None:
+        """Persist narrative events to disk (JSONL)."""
+        try:
+            with open(self.persistence_path, "w", encoding="utf-8") as f:
+                for event in self.narrative_events:
+                    # Convert object to dict
+                    data = asdict(event)
+                    # Handle datetime serialization
+                    data["timestamp"] = event.timestamp.isoformat()
+                    f.write(json.dumps(data, ensure_ascii=False) + "\n")
+            logger.debug("Life Story persisted successfully", path=str(self.persistence_path))
+        except Exception as e:
+            logger.error("Failed to persist Life Story", error=str(e))
+
+    def _load_from_disk(self) -> None:
+        """Load narrative events from disk (JSONL)."""
+        if not self.persistence_path.exists():
+            logger.info(
+                "No existing Life Story found. Starting tabula rasa.",
+                path=str(self.persistence_path),
+            )
+            return
+
+        try:
+            loaded_events = []
+            with open(self.persistence_path, "r", encoding="utf-8") as f:
+                for line in f:
+                    if not line.strip():
+                        continue
+                    data = json.loads(line)
+                    # Convert ISO format string back to datetime
+                    if "timestamp" in data:
+                        data["timestamp"] = datetime.fromisoformat(data["timestamp"])
+
+                    event = Narrative_Event_Retroactively_Inscribed(**data)
+                    loaded_events.append(event)
+
+            self.narrative_events = loaded_events
+
+            # Reconstruct current narratives from the last events
+            if self.narrative_events:
+                # Replay the last 5 resignifications to restore context
+                recent = self.narrative_events[-5:]
+                for event in recent:
+                    self._update_current_narratives(event.nachtraglichkeit_resignification)
+
+            logger.info("Life Story loaded successfully", events_count=len(self.narrative_events))
+        except Exception as e:
+            logger.error("Failed to load Life Story", error=str(e))
 
     def inscribe_narrative_event(
         self, context: Dict[str, Any]
@@ -83,6 +150,9 @@ class Life_Story_as_Retroactive_Resignification:
 
         self.narrative_events.append(narrative)
         self._update_current_narratives(resignification)
+
+        # Persist immediately (Auto-Save Ego)
+        self._save_to_disk()
 
         return narrative
 

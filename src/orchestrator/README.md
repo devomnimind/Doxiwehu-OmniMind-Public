@@ -210,3 +210,22 @@ Handles Quantum, Symbolic, and Workflow execution with error recovery.
 **Total:** 1 arquivos
 
 - `task_executor.py`: 1 classes, 1 functions
+
+---
+
+## 🆕 Atualizações (18/12/2025)
+
+### 🧩 Orquestração Inteligente e Indexação
+
+#### 1. **Indexação Universal (Fase 1-3)**
+- **Funcionalidade**: O orquestrador agora utiliza o `system_interaction_indexer.py` para mapear interações de baixo nível (IO, CPU, Latência) em busca de gargalos estruturais.
+- **Resultado**: Priorização dinâmica de tarefas baseada na carga real do sistema.
+
+#### 2. **Integração com Real Quantum Benchmark**
+- **Funcionalidade**: O `TaskExecutor` foi atualizado para decidir dinamicamente entre execução clássica ou quântica real (IBM) baseando-se no `QuantumClassicalBenchmark`.
+- **Evolução**: Fim dos "cálculos simplistas"; agora a decisão é baseada em latência real medida e fidelidade de QPU.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA

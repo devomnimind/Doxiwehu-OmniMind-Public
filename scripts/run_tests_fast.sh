@@ -30,6 +30,10 @@ set -e
 
 cd /home/fahbrain/projects/omnimind
 
+if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+fi
+
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 LOG_DIR="data/test_reports"
 mkdir -p "$LOG_DIR"

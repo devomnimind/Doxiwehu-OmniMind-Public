@@ -74,6 +74,7 @@ class TestImmutableAuditSystem:
         audit.audit_log_file = temp_log_dir / "audit_chain.log"
         audit.hash_chain_file = temp_log_dir / "hash_chain.json"
         audit.security_log = temp_log_dir / "security_events.log"
+        audit.lock_file = temp_log_dir / "audit.lock"
         audit.last_hash = "0" * 64
 
         result = audit.verify_chain_integrity()

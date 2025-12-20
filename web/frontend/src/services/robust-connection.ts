@@ -103,22 +103,22 @@ class RobustConnectionService {
 
     // Load persisted queue
     try {
-        const savedQueue = localStorage.getItem('omnimind_msg_queue');
-        if (savedQueue) {
-            this.messageQueue = JSON.parse(savedQueue);
-            console.log(`[Connection] Restored ${this.messageQueue.length} messages from persistence`);
-        }
+      const savedQueue = localStorage.getItem('omnimind_msg_queue');
+      if (savedQueue) {
+        this.messageQueue = JSON.parse(savedQueue);
+        console.log(`[Connection] Restored ${this.messageQueue.length} messages from persistence`);
+      }
     } catch (e) {
-        console.error('[Connection] Failed to load persisted queue:', e);
+      console.error('[Connection] Failed to load persisted queue:', e);
     }
   }
 
   private persistQueue() {
-      try {
-          localStorage.setItem('omnimind_msg_queue', JSON.stringify(this.messageQueue));
-      } catch (e) {
-          console.error('[Connection] Failed to persist queue:', e);
-      }
+    try {
+      localStorage.setItem('omnimind_msg_queue', JSON.stringify(this.messageQueue));
+    } catch (e) {
+      console.error('[Connection] Failed to persist queue:', e);
+    }
   }
 
   private start() {
@@ -154,8 +154,8 @@ class RobustConnectionService {
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
       const host = window.location.hostname;
 
-      // Try multiple ports: 8000, 8080, 3001 (fallback)
-      const ports = ['8000', '8080', '3001'];
+      // Try multiple ports: 8000 (Main), 3001 (Minimal/Metrics)
+      const ports = ['8000', '3001'];
       const port = ports[this.reconnectAttempts % ports.length];
 
       let url = `${protocol}//${host}:${port}/ws`;
