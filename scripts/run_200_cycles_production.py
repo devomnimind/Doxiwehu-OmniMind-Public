@@ -37,7 +37,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.resolve()
 sys.path.insert(0, str(PROJECT_ROOT))
 
 # Imports
-from src.consciousness.gozo_calculator import GozoCalculator
+from src.consciousness.gozo_calculator import GozoCalculator  # noqa: E402
 
 
 def run_200_cycles_production() -> bool:
@@ -128,7 +128,8 @@ def run_200_cycles_production() -> bool:
             # Log a cada 20 ciclos
             if cycle % 20 == 0:
                 print(
-                    f"  ✓ Ciclo {cycle:3d}: φ={phi:.4f} Ψ={psi:.4f} σ={sigma:.4f} Δ={delta:.4f} Gozo={result.gozo_value:.4f}"
+                    f"  ✓ Ciclo {cycle:3d}: φ={phi:.4f} Ψ={psi:.4f} σ={sigma:.4f} "
+                    f"Δ={delta:.4f} Gozo={result.gozo_value:.4f}"
                 )
 
         print("✅ Fase 1 completa: 100 ciclos\n")
@@ -228,7 +229,8 @@ def run_200_cycles_production() -> bool:
             # Log a cada 20 ciclos
             if (cycle - 100) % 20 == 0:
                 print(
-                    f"  ✓ Ciclo {cycle:3d}: φ={phi:.4f} Ψ={psi:.4f} σ={sigma:.4f} Δ={delta:.4f} Gozo={result.gozo_value:.4f} State={state_name}"
+                    f"  ✓ Ciclo {cycle:3d}: φ={phi:.4f} Ψ={psi:.4f} σ={sigma:.4f} "
+                    f"Δ={delta:.4f} Gozo={result.gozo_value:.4f} State={state_name}"
                 )
 
         print("✅ Fase 2 completa: 100 ciclos\n")

@@ -1,5 +1,5 @@
 import json
-import os
+
 import hashlib
 import ibm_boto3
 from ibm_botocore.client import Config, ClientError
@@ -49,10 +49,13 @@ class IBMCloudCortex:
                 endpoint_url=COS_ENDPOINT,
             )
             # Verify bucket exists
-            # Note: The provided instruction's bucket check `if self.cos.Bucket(self.bucket) not in self.cos.buckets.all():`
+            # Note: The provided instruction's bucket check:
+            # `if self.cos.Bucket(self.bucket) not in self.cos.buckets.all():`
             # is not a direct way to check bucket existence with ibm_boto3.
-            # A more robust check would be to list buckets and check names, or attempt to access the bucket.
-            # For faithfulness to the instruction, I'll keep the provided logic, but it might need adjustment.
+            # A more robust check would be to list buckets and check names,
+            # or attempt to access the bucket.
+            # For faithfulness to the instruction, I'll keep the provided logic,
+            # but it might need adjustment.
 
             # A more typical check would be:
             # buckets = [b.name for b in self.cos.buckets.all()]
@@ -70,7 +73,8 @@ class IBMCloudCortex:
             # by default Python object comparison (unless `__eq__` is defined to compare names).
             # A safer interpretation of the intent is to check if a bucket with that name exists.
 
-            # To be faithful to the *spirit* of the instruction's bucket check while making it functional:
+            # To be faithful to the *spirit* of the instruction's bucket check
+            # while making it functional:
             bucket_exists = False
             for b in self.cos.buckets.all():
                 if b.name == self.bucket:

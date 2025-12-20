@@ -221,7 +221,8 @@ class FederatedOmniMind:
         self.disagreements = []
 
         logger.info(
-            f"🔗 Federação OmniMind inicializada: A ↔ B como sujeitos mútuos (seeds: {seed_a}, {seed_b})"
+            f"🔗 Federação OmniMind inicializada: A ↔ B como sujeitos mútuos "
+            f"(seeds: {seed_a}, {seed_b})"
         )
 
     def run_federation(self, n_cycles: Optional[int] = None):

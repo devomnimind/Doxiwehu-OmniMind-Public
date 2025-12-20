@@ -49,6 +49,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
+from dotenv import load_dotenv
 import numpy as np
 
 # Load .env from project root (three levels above this script) for a stable path
@@ -59,8 +60,8 @@ project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-import structlog
-from qiskit import QuantumCircuit
+import structlog  # noqa: E402
+from qiskit import QuantumCircuit  # noqa: E402
 
 from src.quantum_consciousness.qpu_interface import BackendType, QPUInterface
 from src.quantum_consciousness.quantum_cognition import (
@@ -309,7 +310,6 @@ class QuantumBenchmarkSuite:
         search_spaces = [4, 8, 16]  # 2^2, 2^3, 2^4
 
         for search_space in search_spaces:
-            _num_qubits = int(np.log2(search_space))
 
             logger.info(f"Testing Grover search in space of {search_space} items")
 
@@ -671,7 +671,8 @@ class QuantumBenchmarkSuite:
         # Fidelity = |⟨ψ|φ⟩|²
         fidelity = abs(np.dot(np.conj(s1), s2)) ** 2
 
-        # Ensure it's a scalar value (fix for "only length-1 arrays can be converted to Python scalars")
+        # Ensure it's a scalar value
+        # (fix for "only length-1 arrays can be converted to Python scalars")
         if isinstance(fidelity, np.ndarray):
             fidelity = fidelity.item()
 
