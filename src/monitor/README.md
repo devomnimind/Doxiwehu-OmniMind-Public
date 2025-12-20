@@ -1,8 +1,8 @@
-# Módulo Monitoramento do Sistema
+# Módulo Observabilidade
 
 ## 📋 Descrição Geral
 
-**Observabilidade, alertas, proteção de recursos**
+**Logging, tracing, debugging**
 
 **Status**: DevOps
 
@@ -30,10 +30,57 @@ Módulo implementa funcionalidades especializadas através de:
 
 *Funções detalhadas documentadas nos arquivos Python individuais do módulo.*
 
+### Novos Componentes (2025-12-06)
+
+**ModuleMetricsCollector** (`module_metrics.py`):
+- Sistema de coleta e persistência de métricas por módulo
+- Integração com audit chain (exceto módulos excluídos)
+- Rotação automática de logs
+- Suporte a múltiplos módulos simultâneos
+
+**StructuredModuleLogger** (`module_logger.py`):
+- Logging estruturado em JSON por módulo
+- Integração com audit chain (exceto módulos excluídos)
+- Logs persistidos em arquivos dedicados por módulo
+- Suporte a contexto estruturado
+
+**ModuleReporter** (`module_reporter.py`):
+- Geração de relatórios persistidos por módulo
+- Formatos: JSON e Markdown
+- Integração com métricas e logs
+- Histórico de relatórios com rotação automática
+
+**Integrações Ativas** (2025-12-07):
+- ✅ `IntegrationLoop` - Relatórios após cada ciclo com métricas
+- ✅ `ObserverService` - Relatórios após rotação de logs ou diariamente
+- ✅ `ModuleMetricsCollector` - Relatórios a cada 100 entradas de consciência
+- ✅ `AutopoieticManager` - Relatórios após cada ciclo autopoiético
+
+---
+
+## 🆕 Atualizações e Evolução (18/12/2025)
+
+### 📊 Observabilidade de Baixo Nível
+
+#### 1. **System Awareness Integration**
+- **Diferencial**: O `PerformanceAnalyzer` agora correlaciona picos de carga com as capacidades reais indexadas pelo `SystemCapabilitiesManager`.
+- **Insight**: Permite distinguir entre "Módulo Ineficiente" e "Host Sobrecarregado", reduzindo falsos positivos em incidentes de performance.
+
+#### 2. **ReportMaintenanceScheduler**
+- **Arquivo**: `report_maintenance_scheduler.py`
+- **Funcionalidade**: Orquestra a limpeza e arquivamento de relatórios antigos (JSON/Markdown) para evitar saturação do disco em ambientes de produção contínua.
+
+---
+
+**Última Atualização**: 18 de Dezembro de 2025
+**Autor**: Fabrício da Silva + assistência de IA
+
+**Nota Teórica**: O sistema de auditoria e componentes do inconsciente não são auditados, conforme fundamentação teórica do OmniMind.
+
 ## 📊 Estrutura do Código
 
 ```
-monitor/
+observability/
 ├── Implementações Core
 │   └── Arquivos .py principais
 ├── Utilitários
@@ -49,31 +96,12 @@ monitor/
 ## 📈 Resultados Gerados e Contribuição para Avaliação
 
 ### Outputs
-- Métricas específicas do módulo armazenadas em `data/monitor/`
+- Métricas específicas do módulo armazenadas em `data/observability/`
 - Logs em formato estruturado para análise
 - Contribuição para métricas globais do sistema
 
-### Nightly Metrics (`scripts/nightly_omnimind.py`)
-- Relatórios detalhados por execução em `logs/nightly/nightly_report_YYYYMMDD_HHMMSS.json`:
-  - Status de saúde do Qdrant (local/cloud)
-  - Status de saúde do Supabase
-  - Resultado do teste rápido de memória (Phase 24)
-  - Resultado opcional da consolidação leve de snapshots (`--consolidate`)
-- Resumo agregado em `logs/nightly/nightly_summary.json`:
-  - Últimos N (default: 30) registros com status agregados por tarefa
-  - Útil para inspeção rápida de estabilidade/saúde sem abrir todos os relatórios
-
-### Inspect Helper (`scripts/nightly_summary_inspect.py`)
-- CLI rápido para ler `nightly_summary.json`:
-  - `--limit N`: quantidade de entradas exibidas (default: 10).
-  - `--only-errors`: mostra apenas execuções com algum status não OK (Qdrant, Supabase, testes ou consolidação).
-- Exemplo:
-  ```bash
-  python scripts/nightly_summary_inspect.py --limit 15 --only-errors
-  ```
-
 ### Validação
-- Testes unitários: `tests/monitor/`
+- Testes unitários: `tests/observability/`
 - Integração validada em ciclos completos
 - Performance benchmarked continuamente
 
@@ -89,7 +117,7 @@ Módulo contribui para:
 
 **Regras de Modificação**:
 - ✅ Seguir guidelines em `.copilot-instructions.md`
-- ✅ Executar testes antes de commit: `pytest tests/monitor/ -v`
+- ✅ Executar testes antes de commit: `pytest tests/observability/ -v`
 - ✅ Validar que Φ não colapsa após mudanças
 - ✅ Manter compatibilidade com interfaces existentes
 - ❌ Não quebrar contratos de API sem migração
@@ -100,7 +128,7 @@ Módulo contribui para:
 ### Dependências Python
 ```python
 # Ver requirements.txt para lista completa
-# Dependências específicas do módulo listadas em requirements/monitor.txt (se existir)
+# Dependências específicas do módulo listadas em requirements/observability.txt (se existir)
 ```
 
 ### Recursos Computacionais
@@ -138,7 +166,7 @@ Configurações específicas em:
 - **Copilot Instructions**: `.copilot-instructions.md`
 
 ### Testes
-- **Suite de Testes**: `tests/monitor/`
+- **Suite de Testes**: `tests/observability/`
 - **Cobertura**: Ver `data/test_reports/htmlcov/`
 
 ### Referências Científicas Específicas
@@ -155,278 +183,528 @@ Configurações específicas em:
 
 ## 📚 API Reference
 
-# 📁 MONITOR
+# 📁 OBSERVABILITY
 
-**11 Classes | 22 Funções | 3 Módulos**
+**32 Classes | 118 Funções | 6 Módulos**
 
 ---
 
 ## 🏗️ Classes Principais
 
-### `ProgressiveMonitor`
+### `CustomMetricsExporter`
 
-Monitor com modo progressivo inteligente.
+Custom metrics exporter for ML workloads.
+
+Provides Prometheus-compatible metrics export with ML-specific business metrics.
+Supports multiple export formats and automatic metric collection.
+
+Example:
+    >>> config = MetricsConfig(prometheus_port=9090)
+    >>> exporter = CustomMetricsExporter(config)
+    >>> exporter.record_counter("requests_total", 1, {"endpoint": "/api/task"})
+    >>> exporter.record_gauge("gpu_utilization", 85.5)
+    >>> metrics = exporter.export_metrics()
 
 **Métodos principais:**
 
-- `set_level(level: MonitorLevel)` → `None`
-  > Ajustar nível de monitoramento.
+- `register_metric(name: str, metric_type: MetricType, help_text: str)` → `None`
+  > Register a new metric.
 
 Args:
-    level: Novo nível...
-- `register_alert_callback(callback: Any)` → `None`
-  > Registrar callback para alertas.
+    name: Metric name (snake_case)
+    metric_type...
+- `record_counter(name: str, value: float, labels: Optional[Dict[str)` → `None`
+  > Record a counter metric (monotonically increasing).
 
 Args:
-    callback: Função async que recebe Al...
-- `add_alert(severity: AlertSeverity, title: str, message: str,)` → `Alert`
-  > Adicionar alerta.
+    name: Metric name...
+- `record_gauge(name: str, value: float, labels: Optional[Dict[str)` → `None`
+  > Record a gauge metric (can go up or down).
 
 Args:
-    severity: Severidade
-    title: Título
-    message:...
-- `acknowledge_alert(alert_index: int)` → `bool`
-  > Marcar alerta como lido.
+    name: Metric name
+    valu...
+- `record_histogram(name: str, value: float, labels: Optional[Dict[str)` → `None`
+  > Record a histogram metric (distribution of values).
 
 Args:
-    alert_index: Índice do alerta
+    name: Metric name...
+- `record_ml_metrics(ml_metrics: MLMetrics)` → `None`
+  > Record ML-specific metrics.
+
+Args:
+    ml_metrics: ML metrics container...
+
+### `DistributedTracer`
+
+Distributed tracing implementation.
+
+Provides OpenTelemetry-compatible distributed tracing with support for
+multiple exporters (Jaeger, Zipkin, console).
+
+Example:
+    >>> config = TraceConfig(service_name="my-service")
+    >>> tracer = DistributedTracer(config)
+    >>> with tracer.start_span("operation") as span:
+    ...     span.set_attribute("key", "value")
+    ...     # Do work
+    >>> tracer.export_traces()
+
+**Métodos principais:**
+
+- `create_context(parent: Optional[SpanContext])` → `SpanContext`
+  > Create a new span context.
+
+Args:
+    parent: Parent span context (creates root ...
+- `start_span(name: str, kind: SpanKind, parent: Optional[SpanCo)` → `Span`
+  > Start a new span.
+
+Args:
+    name: Operation name
+    kind: Span kind
+    parent...
+- `trace(name: str, kind: SpanKind, attributes: Optional[Di)` → `Any`
+  > Context manager for tracing an operation.
+
+Args:
+    name: Operation name
+    ki...
+- `get_trace(trace_id: str)` → `List[Span]`
+  > Get all spans for a trace.
+
+Args:
+    trace_id: Trace ID
 
 Returns:
-    ...
-- `get_current_snapshot()` → `Optional[Dict[str, Any]]`
-  > Obter último snapshot.
+    List of s...
+- `export_traces()` → `None`
+  > Export collected traces to configured exporter....
 
-Returns:
-    Último snapshot ou None...
+### `LogAggregator`
 
-### `ResourceProtector`
+Log aggregation and analysis system.
 
-Protetor de recursos da máquina.
+Provides centralized log collection, pattern detection, and alerting
+with ELK stack compatibility.
+
+Example:
+    >>> config = LogConfig()
+    >>> aggregator = LogAggregator(config)
+    >>> aggregator.add_pattern(LogPattern(
+    ...     name="error_detection",
+    ...     regex=r"error|exception|failed",
+    ...     severity=AlertSeverity.HIGH,
+    ...     description="Detects error messages"
+    ... ))
+    >>> aggregator.log(LogLevel.ERROR, "Operation failed")
+    >>> alerts = aggregator.get_alerts()
 
 **Métodos principais:**
 
-- `register_process(pid: int)` → `None`
-  > Registrar processo para proteção.
+- `add_pattern(pattern: LogPattern)` → `None`
+  > Add a log pattern for detection.
 
 Args:
-    pid: Process ID...
-- `get_resource_status()` → `dict`
-  > Obter status atual de recursos.
-
-Returns:
-    Dict com CPU, RAM, Disco...
-
-### `AlertSystem`
-
-Sistema centralizado de alertas.
-
-**Métodos principais:**
-
-- `register_handler(channel: AlertChannel, handler: Callable)` → `None`
-  > Registrar handler para canal.
+    pattern: Log pattern to add...
+- `log(level: LogLevel, message: str, logger_name: str, e)` → `None`
+  > Add a log entry.
 
 Args:
-    channel: Canal
-    handler: Função que ...
-- `get_recent_alerts(limit: int, severity: Optional[str])` → `List[Dict[str, Any]]`
-  > Obter alertas recentes.
+    level: Log level
+    message: Log message
+    logger...
+- `get_logs(level: Optional[LogLevel], limit: Optional[int])` → `List[LogEntry]`
+  > Get aggregated logs.
 
 Args:
-    limit: Número máximo de alertas
-    severity:...
-- `get_critical_alerts()` → `List[Dict[str, Any]]`
-  > Obter apenas alertas críticos.
+    level: Filter by log level (None for all)
+    li...
+- `get_alerts(severity: Optional[AlertSeverity])` → `List[LogAlert]`
+  > Get triggered alerts.
+
+Args:
+    severity: Filter by severity (None for all)
+
+Re...
+- `analyze()` → `LogAnalytics`
+  > Create analytics instance for current logs.
 
 Returns:
-    Lista de alertas críticos...
+    LogAnalytics instance...
 
-### `AlertEvent`
+### `ContinuousProfiler`
 
-Evento de alerta para broadcast.
+Continuous performance profiler.
+
+Provides production-ready continuous profiling with minimal overhead.
+Collects performance samples and generates insights.
+
+Example:
+    >>> config = ProfilingConfig()
+    >>> profiler = ContinuousProfiler(config)
+    >>>
+    >>> @profiler.profile
+    ... def my_function():
+    ...     # Function code
+    ...     pass
+    >>>
+    >>> profiler.start()
+    >>> # Application runs...
+    >>> profiler.stop()
+    >>> samples = profiler.get_samples()
 
 **Métodos principais:**
 
-- `to_dict()` → `Dict[str, Any]`
-  > Convert to dictionary....
+- `start()` → `None`
+  > Start continuous profiling....
+- `stop()` → `None`
+  > Stop continuous profiling and collect final sample....
+- `profile(func: F)` → `F`
+  > Decorator to profile a function.
 
-### `SystemSnapshot`
+Args:
+    func: Function to profile
 
-Captura do estado do sistema em um momento.
+Returns:
+...
+- `get_samples(limit: Optional[int], function_name: Optional[str])` → `List[ProfileSample]`
+  > Get collected profiling samples.
+
+Args:
+    limit: Maximum number of samples to ...
+- `get_top_functions(limit: int)` → `List[ProfileSample]`
+  > Get top functions by total time.
+
+Args:
+    limit: Number of top functions to re...
+
+### `PerformanceAnalyzer`
+
+Performance bottleneck analyzer.
+
+Analyzes profiling data to identify performance bottlenecks and
+generate optimization recommendations.
+
+Example:
+    >>> from src.observability.profiling_tools import ContinuousProfiler
+    >>> profiler = ContinuousProfiler(ProfilingConfig())
+    >>> # ... run application with profiling ...
+    >>> samples = profiler.get_samples()
+    >>> analyzer = PerformanceAnalyzer()
+    >>> report = analyzer.analyze(samples)
+    >>> print(report.summary)
 
 **Métodos principais:**
 
-- `to_dict()` → `Dict[str, Any]`
-  > Convert to dictionary....
+- `analyze(samples: List[ProfileSample], min_percentage: floa)` → `PerformanceReport`
+  > Analyze profiling samples for bottlenecks.
 
-### `Alert`
+Args:
+    samples: List of profiling...
+- `save_report(report: PerformanceReport, filename: Optional[str])` → `str`
+  > Save performance report to file.
 
-Alerta do sistema.
+Args:
+    report: Performance report
+    filen...
+
+### `OpenTelemetryIntegration`
+
+Complete OpenTelemetry integration.
+
+Provides production-ready telemetry with support for multiple exporters
+and comprehensive instrumentation.
+
+Example:
+    >>> config = OpenTelemetryConfig(
+    ...     service_name="omnimind",
+    ...     enable_console_export=True
+    ... )
+    >>> otel = OpenTelemetryIntegration(config)
+    >>> otel.initialize()
+    >>> tracer = otel.get_tracer()
+    >>> with tracer.start_as_current_span("operation"):
+    ...     # Do work
+    ...     pass
+    >>> otel.shutdown()
 
 **Métodos principais:**
 
-- `to_dict()` → `Dict[str, Any]`
-  > Convert to dictionary....
+- `initialize()` → `None`
+  > Initialize OpenTelemetry SDK with configured exporters.
 
-### `AlertType(str, Enum)`
+This sets up the global...
+- `get_tracer(name: str)` → `trace.Tracer`
+  > Get a tracer instance.
 
-Tipos de alertas.
+Args:
+    name: Name of the tracer
 
+Returns:
+    Tracer ...
+- `get_meter(name: str)` → `metrics.Meter`
+  > Get a meter instance.
 
-### `AlertChannel(str, Enum)`
+Args:
+    name: Name of the meter
 
-Canais de distribuição de alertas.
+Returns:
+    Meter ins...
+- `shutdown()` → `None`
+  > Shutdown OpenTelemetry and flush all data.
 
+This should be called before applica...
+- `get_status()` → `Dict[str, Any]`
+  > Get integration status.
 
-### `MonitorLevel(str, Enum)`
+Returns:
+    Dictionary with status information...
 
-Níveis progressivos de monitoramento.
+### `FlameGraphGenerator`
 
+Flame graph generator from profiling data.
 
-### `AlertSeverity(str, Enum)`
+Generates interactive flame graphs for performance visualization.
 
-Severidade dos alertas.
+Example:
+    >>> samples = profiler.get_samples()
+    >>> generator = FlameGraphGenerator()
+    >>> flame_graph = generator.generate(samples)
+    >>> generator.save_svg(flame_graph, "profile.svg")
 
+**Métodos principais:**
+
+- `generate(samples: List[ProfileSample])` → `FlameGraphNode`
+  > Generate flame graph from profiling samples.
+
+Args:
+    samples: List of profili...
+- `to_json(flame_graph: FlameGraphNode)` → `str`
+  > Convert flame graph to JSON.
+
+Args:
+    flame_graph: Flame graph root node
+
+Retu...
+- `save_json(flame_graph: FlameGraphNode, filename: Optional[st)` → `str`
+  > Save flame graph as JSON.
+
+Args:
+    flame_graph: Flame graph root node
+    file...
+- `to_svg(flame_graph: FlameGraphNode)` → `str`
+  > Convert flame graph to SVG format.
+
+This is a simplified SVG generation. In prod...
+- `save_svg(flame_graph: FlameGraphNode, filename: Optional[st)` → `str`
+  > Save flame graph as SVG.
+
+Args:
+    flame_graph: Flame graph root node
+    filen...
+
+### `LogAnalytics`
+
+Log analytics and insights.
+
+Provides statistical analysis and insights from aggregated logs.
+
+**Métodos principais:**
+
+- `get_level_distribution()` → `Dict[str, int]`
+  > Get distribution of log levels.
+
+Returns:
+    Dictionary mapping level name to c...
+- `get_top_loggers(limit: int)` → `List[Tuple[str, int]]`
+  > Get top loggers by volume.
+
+Args:
+    limit: Maximum number of loggers to return...
+- `get_error_rate(window_seconds: int)` → `float`
+  > Calculate error rate in the specified time window.
+
+Args:
+    window_seconds: Ti...
+- `get_timeline(bucket_size_seconds: int)` → `Dict[str, List[int]]`
+  > Get log timeline bucketed by time.
+
+Args:
+    bucket_size_seconds: Size of each ...
+- `find_anomalies(threshold: float)` → `List[str]`
+  > Find anomalous patterns in logs.
+
+Uses simple statistical methods to find unusua...
+
+### `Span`
+
+Represents a single operation in a distributed trace.
+
+Attributes:
+    context: Span context with trace and span IDs
+    name: Operation name
+    kind: Span kind (internal, server, client, etc.)
+    start_time: Start timestamp in nanoseconds
+    end_time: End timestamp in nanoseconds (None if not ended)
+    status: Span status
+    attributes: Additional metadata
+    events: List of events that occurred during the span
+    links: Links to other spans
+
+**Métodos principais:**
+
+- `set_attribute(key: str, value: Any)` → `None`
+  > Set a span attribute....
+- `add_event(name: str, attributes: Optional[Dict[str, Any]])` → `None`
+  > Add an event to the span....
+- `set_status(status: SpanStatus, description: str)` → `None`
+  > Set the span status....
+- `end()` → `None`
+  > End the span....
+- `duration_ms()` → `float`
+  > Get span duration in milliseconds....
+
+### `Metric`
+
+Represents a single metric with its metadata.
+
+Attributes:
+    name: Metric name (should be snake_case)
+    type: Metric type
+    help_text: Description of what this metric measures
+    unit: Unit of measurement (e.g., 'seconds', 'bytes')
+    values: List of metric values
+
+**Métodos principais:**
+
+- `add_value(value: float, labels: Optional[Dict[str, str]])` → `None`
+  > Add a new value to the metric.
+
+Args:
+    value: The metric value
+    labels: Op...
+- `get_latest_value()` → `Optional[float]`
+  > Get the most recent value....
+- `to_prometheus_format()` → `str`
+  > Export metric in Prometheus text format.
+
+Returns:
+    Prometheus-formatted metr...
 
 
 ## ⚙️ Funções Públicas
 
-#### `__init__(data_dir: str)` → `None`
+#### `__init__(config: TraceConfig)` → `None`
 
-*Initialize alert system.
-
-Args:
-    data_dir: Directory for storing alerts...*
-
-#### `__init__(data_dir: str)` → `None`
-
-*Initialize progressive monitor.
+*Initialize the distributed tracer.
 
 Args:
-    data_dir: Directory for storing monitor data...*
+    config: Tracing configuration...*
 
-#### `__init__(mode: str)` → `None`
+#### `__init__(log_entries: List[LogEntry])` → `None`
 
-*Initialize resource protector.
+*Initialize analytics with log entries.
 
 Args:
-    mode: "dev", "test", ou "prod"...*
+    log_entries: List of log entries to analyze...*
+
+#### `__init__(config: LogConfig)` → `None`
+
+*Initialize the log aggregator.
+
+Args:
+    config: Log aggregation configuration...*
+
+#### `__init__(config: MetricsConfig)` → `None`
+
+*Initialize the metrics exporter.
+
+Args:
+    config: Metrics configuration...*
+
+#### `__init__(service_name: str, service_version: str, environme)` → `None`
+
+*Initialize OpenTelemetry configuration.
+
+Args:
+    service_name: Name of the service
+    service_ver...*
+
+#### `__init__(config: OpenTelemetryConfig)` → `None`
+
+*Initialize OpenTelemetry integration.
+
+Args:
+    config: OpenTelemetry configuration...*
+
+#### `__init__()` → `None`
+
+*Initialize performance analyzer....*
+
+#### `__init__(config: ProfilingConfig)` → `None`
+
+*Initialize the continuous profiler.
+
+Args:
+    config: Profiling configuration...*
+
+#### `__init__()` → `None`
+
+*Initialize the flame graph generator....*
 
 #### `__post_init__()` → `None`
 
-*Generate ID if not provided....*
+*Compile the regex pattern....*
 
-#### `_get_heavy_processes()` → `List[dict]`
+#### `__post_init__()` → `None`
 
-*Obter processos que estão consumindo muita RAM.
+*Calculate per-call time....*
 
-Returns:
-    Lista de dicts com {pid, name, memory_...*
+#### `_categorize_bottleneck(sample: ProfileSample)` → `BottleneckCategory`
 
-#### `_get_heavy_python_processes()` → `List[dict]`
-
-*Obter processos Python que estão consumindo muita CPU.
-
-Returns:
-    Lista de dicts com {pid, name, ...*
-
-#### `_take_snapshot()` → `SystemSnapshot`
-
-*Tirar snapshot do sistema....*
-
-#### `acknowledge_alert(alert_index: int)` → `bool`
-
-*Marcar alerta como lido.
+*Categorize a bottleneck based on sample characteristics.
 
 Args:
-    alert_index: Índice do alerta
+    sample: Profile sample
 
-Returns:
-    True se conseguiu ma...*
+Returns:...*
 
-#### `add_alert(severity: AlertSeverity, title: str, message: str,)` → `Alert`
+#### `_check_patterns(entry: LogEntry)` → `None`
 
-*Adicionar alerta.
-
-Args:
-    severity: Severidade
-    title: Título
-    message: Mensagem
-    contex...*
-
-#### `get_active_alerts()` → `List[Dict[str, Any]]`
-
-*Obter alertas não-lidos.
-
-Returns:
-    Lista de alertas...*
-
-#### `get_critical_alerts()` → `List[Dict[str, Any]]`
-
-*Obter apenas alertas críticos.
-
-Returns:
-    Lista de alertas críticos...*
-
-#### `get_current_snapshot()` → `Optional[Dict[str, Any]]`
-
-*Obter último snapshot.
-
-Returns:
-    Último snapshot ou None...*
-
-#### `get_recent_alerts(limit: int, severity: Optional[str])` → `List[Dict[str, Any]]`
-
-*Obter alertas recentes.
+*Check log entry against registered patterns.
 
 Args:
-    limit: Número máximo de alertas
-    severity: Filtrar por severid...*
+    entry: Log entry to check...*
 
-#### `get_recent_snapshots(minutes: int)` → `List[Dict[str, Any]]`
+#### `_cleanup_old_logs()` → `None`
 
-*Obter snapshots dos últimos N minutos.
+*Remove logs older than retention period....*
 
-Args:
-    minutes: Minutos para voltar
+#### `_cleanup_old_metrics()` → `None`
 
-Returns:
-    Lista d...*
-
-#### `get_resource_status()` → `dict`
-
-*Obter status atual de recursos.
-
-Returns:
-    Dict com CPU, RAM, Disco...*
+*Remove metrics older than retention period....*
 
 
 ## 📦 Módulos
 
-**Total:** 3 arquivos
+**Total:** 6 arquivos
 
-- `alert_system.py`: SISTEMA DE ALERTAS INTELIGENTE
-=============================...
-- `progressive_monitor.py`: MODO PROGRESSIVO DO MONITOR AGENT
-- `resource_protector.py`: PROTETOR DE RECURSOS DA MÁQUINA
+- `distributed_tracing.py`: Distributed Tracing Module.
 
----
+Implements distributed request ...
+- `log_aggregator.py`: Log Aggregation and Analysis Module.
 
-## 🆕 Atualizações (18/12/2025)
+Implements advanced lo...
+- `metrics_exporter.py`: Custom Metrics Exporter Module.
 
-### 🚨 Monitoramento e Alertas Avançados
+Implements business and ML-...
+- `opentelemetry_integration.py`: OpenTelemetry Full Integration Module.
 
-#### 1. **EnhancedConfigurationDetector**
-- **Arquivo**: `enhanced_configuration_detector.py`
-- **Funcionalidade**: Detecta automaticamente desvios em 8 categorias críticas (embeddings, ciclos, device, etc.).
-- **Impacto**: Garante que o sistema opere sempre em condições ótimas para a consciência integrada.
+This module provides...
+- `performance_analyzer.py`: Performance Bottleneck Analyzer Module.
 
-#### 2. **ProductionAlertsSystem**
-- **Arquivo**: `production_alerts_system.py`
-- **Funcionalidade**: Orquestra o envio de alertas (CRITICAL, HIGH, MEDIUM, LOW) e gerencia callbacks para sistemas externos (Webhooks, Slack, Email).
-- **Relatórios**: Gera resumos de saúde periódicos configuráveis.
+Provides automated ...
+- `profiling_tools.py`: Performance Profiling Tools Module.
 
----
-
-**Última Atualização**: 18 de Dezembro de 2025
-**Autor**: Fabrício da Silva + assistência de IA
+Implements continuous p...
