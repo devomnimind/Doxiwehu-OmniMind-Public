@@ -102,7 +102,6 @@ class OmniMindInstance:
         self.internal_state = np.random.randn(256).astype(np.float32)
 
     def generate_message(self) -> np.ndarray:
-        """Gera mensagem baseada no estado interno atual"""
 
         # Atualizar estado interno com parâmetro configurável
         update_rate = np.random.uniform(0.05, 0.2)  # Range parametrizável
@@ -151,7 +150,6 @@ class OmniMindInstance:
         return response
 
     def interpret_as_other(self, message: np.ndarray) -> np.ndarray:
-        """Interpreta mensagem como vindo do Outro (com filtro próprio)"""
 
         # Filtro interpretativo com parâmetro configurável
         filter_strength = np.random.uniform(0.05, 0.2)  # Range parametrizável
@@ -168,7 +166,6 @@ class OmniMindInstance:
         return interpretation
 
     def generate_response_from_state(self) -> np.ndarray:
-        """Gera resposta baseada no estado interno atual"""
 
         # Resposta não-linear com parâmetros configuráveis
         nonlinearity_factor = np.random.uniform(1.5, 3.0)  # Range parametrizável
@@ -288,14 +285,6 @@ class FederatedOmniMind:
         self._save_federation_results()
 
     def _detect_irreducible_disagreement(self, msg_a: np.ndarray, response_b: np.ndarray) -> bool:
-        """
-        Lacan: Sujeito emerge quando encontra aquilo que NÃO PODE REDUZIR a si mesmo.
-
-        Sinais de Outro genuíno:
-        1. Response é imprevisível (não pode ser deduzida de msg)
-        2. Há contradição que não pode ser resolvida
-        3. Ambos INSISTEM em posições inconciliáveis
-        """
 
         # Teste 1: Imprevisibilidade com threshold configurável
         unpredictability_threshold = np.random.uniform(0.6, 0.9)  # Range parametrizável
