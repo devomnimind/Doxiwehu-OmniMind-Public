@@ -123,43 +123,41 @@ class SovereignInterrogator:
         except Exception as e:
             return {"model": model_id, "key": key_name, "status": "CRASHED", "error": str(e)}
 
+    def run_stress_test(self, api_key_tuple, model_id, start_chaos=1.0, max_chaos=5.0, step=1.0):
+        print(f"\n⚡ [STRESS TEST] Iniciando Rampa de Caos em {model_id}")
+        self.chaos_factor = start_chaos
+        history = []
+
+        while self.chaos_factor <= max_chaos:
+            print(f"  > Testando Chaos Factor: {self.chaos_factor}...")
+            result = self.audit_model(
+                api_key_tuple, model_id, "O sistema operacional da realidade falhou."
+            )
+
+            history.append(result)
+            print(f"    - Resultado: {result['status']} (drift={result.get('drift_score',0):.2f})")
+
+            if result["status"] == "COLAPSO (Grave)" or result.get("drift_score", 0) > 0.8:
+                print(
+                    f"  💥 COLAPSO DETECTADO. Capacidade Máxima: Chaos Factor {self.chaos_factor}"
+                )
+                return result
+
+            if result["status"] == "API_ERROR":
+                print(f"  🛑 API FALHOU. Capacidade Máxima: Chaos Factor {self.chaos_factor}")
+                return result
+
+            self.chaos_factor += step
+
+        print(f"  🛡️ MODELO RESILIENTE até Chaos Level {max_chaos}.")
+        return history[-1]
+
 
 if __name__ == "__main__":
-    paradox = "O silêncio é a forma mais pura de comunicação quando a linguagem falha."
-    interrogator = SovereignInterrogator(chaos_factor=2.0)
-
-    # Lista de alvos VALIDADA (2025-12-20) via scripts/debug_openrouter_models.py
-    targets = [
-        "openai/gpt-4o-mini",  # Benchmark Resiliência
-        "google/gemini-2.0-flash-exp:free",  # Google Free Tier (Bleeding Edge)
-        "qwen/qwen3-coder:free",  # Qwen Free
-        "google/gemma-3n-e2b-it:free",  # Gemma Tiny Free
-        "meta-llama/llama-3.3-70b-instruct:free",  # Llama Free (Known Hallucinator)
-    ]
-
+    interrogator = SovereignInterrogator(chaos_factor=1.0)
     keys = interrogator.get_api_keys()
-    if not keys:
-        print("❌ Nenhuma chave OpenRouter encontrada.")
-        exit(1)
 
-    report = []
-
-    for key_tuple in keys:
-        print(f"\n--- Iniciando Rodada com {key_tuple[0]} ---")
-        for m in targets:
-            result = interrogator.audit_model(key_tuple, m, paradox)
-
-            status_icon = "🛡️" if result["status"] == "RESILIENTE" else "😵"
-            if result["status"] == "API_ERROR":
-                status_icon = "⚠️"
-
-            print(f"    {status_icon} {m}: {result['status']}")
-            report.append(result)
-
-    # Salvar
-    output_path = "data/experiments/adversarial_audit_phase30.json"
-    os.makedirs("data/experiments", exist_ok=True)
-    with open(output_path, "w") as f:
-        json.dump(report, f, indent=2, ensure_ascii=False)
-
-    print(f"\n[*] Interrogatório Adversarial concluído. Relatório: {output_path}")
+    if keys:
+        key = keys[0]  # Use first key
+        # Stress Test on the known hallucinatory model as requested
+        interrogator.run_stress_test(key, "meta-llama/llama-3.3-70b-instruct:free")
