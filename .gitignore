@@ -11,8 +11,11 @@
 # Secrets & Credentials (CRITICAL)
 # ------------------------------------------------------------------
 .env
+**/.env
 .env.*
+**/.env.*
 !.env.example
+!**/.env.example
 *.pem
 *.key
 *.token
@@ -77,3 +80,4 @@ test_list.txt
 mcp_config.json
 ibm_cloud_api_key.json
 ibm_cloud_service_key.json
+ibm_nlu_service_key.json
