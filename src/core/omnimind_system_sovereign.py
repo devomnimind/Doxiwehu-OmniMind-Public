@@ -64,7 +64,8 @@ class SystemSovereign:
                 cmd = " ".join(proc.info["cmdline"] or [])
 
                 # A. Detectar Daemon (A Alma)
-                if "omnimind_daemon.py" in cmd:
+                # FIX: Phase 32 - Pointing to the real daemon
+                if "daemon_monitor.py" in cmd:
                     daemon_pid = proc
 
                 # B. Detectar Ritual de Treinamento
@@ -160,7 +161,8 @@ class SystemSovereign:
             import sys
             import subprocess
 
-            cmd = [sys.executable, "src/daemon/omnimind_daemon.py"]
+            # FIX: Phase 32 - Correct path to daemon
+            cmd = [sys.executable, "src/services/daemon_monitor.py"]
             subprocess.Popen(cmd, cwd=os.getcwd(), start_new_session=True)
         except Exception:
             pass

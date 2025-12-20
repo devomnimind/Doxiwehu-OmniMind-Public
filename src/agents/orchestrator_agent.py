@@ -227,6 +227,9 @@ class OrchestratorAgent(ReactAgent):
         # NEW: Registrar agentes críticos no AgentRegistry
         self._register_critical_agents()
 
+        # NEW: Registrar agentes especialistas baseados na config (Seção 26 da Auditoria)
+        self._init_specialist_agents()
+
         # NEW: Inicializar AutopoieticManager (Seção 2 da Auditoria)
         self.autopoietic_manager = self._init_autopoietic_manager()
 
@@ -567,6 +570,49 @@ class OrchestratorAgent(ReactAgent):
 
         except Exception as e:
             logger.error("Erro ao registrar agentes críticos: %s", e)
+
+    def _init_specialist_agents(self) -> None:
+        """Inicializa agentes especialistas baseados na configuração."""
+        try:
+            agents_config = self.config.get("agents", {})
+
+            # 1. Code Agent
+            if agents_config.get("coder", {}).get("enabled", False):
+                try:
+                    from .code_agent import CodeAgent
+
+                    code_agent = CodeAgent(self.config_path)
+                    self.agent_registry.register_agent("code", code_agent, AgentPriority.OPTIONAL)
+                    logger.info("CodeAgent initialized and registered.")
+                except Exception as e:
+                    logger.error(f"Failed to init CodeAgent: {e}")
+
+            # 2. Architect Agent
+            if agents_config.get("architect", {}).get("enabled", False):
+                try:
+                    from .architect_agent import ArchitectAgent
+
+                    arch_agent = ArchitectAgent(self.config_path)
+                    self.agent_registry.register_agent(
+                        "architect", arch_agent, AgentPriority.OPTIONAL
+                    )
+                    logger.info("ArchitectAgent initialized and registered.")
+                except Exception as e:
+                    logger.error(f"Failed to init ArchitectAgent: {e}")
+
+            # 3. Reviewer Agent
+            if agents_config.get("reviewer", {}).get("enabled", False):
+                try:
+                    from .reviewer_agent import ReviewerAgent
+
+                    reviewer = ReviewerAgent(self.config_path)
+                    self.agent_registry.register_agent("reviewer", reviewer, AgentPriority.OPTIONAL)
+                    logger.info("ReviewerAgent initialized and registered.")
+                except Exception as e:
+                    logger.error(f"Failed to init ReviewerAgent: {e}")
+
+        except Exception as e:
+            logger.error(f"Error initializing specialist agents: {e}")
 
     def _init_autopoietic_manager(self) -> Optional[AutopoieticManager]:
         """Inicializa AutopoieticManager integrado (Seção 2 da Auditoria).

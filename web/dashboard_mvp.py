@@ -13,6 +13,10 @@ from pathlib import Path
 import altair as alt
 import pandas as pd
 import streamlit as st
+import time
+
+# DAEMON CACHE PATH (The Faithful Mirror)
+DAEMON_STATUS_PATH = Path("data/long_term_logs/daemon_status_cache.json")
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -76,6 +80,16 @@ def load_audit_log():
     return events
 
 
+def load_real_status():
+    """Load the real state of the Daemon (The Body & Sovereign)."""
+    if DAEMON_STATUS_PATH.exists():
+        try:
+            return json.loads(DAEMON_STATUS_PATH.read_text())
+        except Exception:
+            pass
+    return None
+
+
 # Botão para testar integração IBM Quantum e registrar no Audit Chain
 if st.sidebar.button("🔬 Testar IBM Quantum"):
     with st.spinner("Enviando job para IBM Quantum..."):
@@ -101,6 +115,46 @@ for event in reversed(audit_events[-10:]):
 st.sidebar.metric("Total Events", len(audit_events))
 integrity = audit_system.verify_chain_integrity()
 st.sidebar.success(f"Chain Integrity: {'Valid' if integrity['valid'] else 'Corrupted'}")
+
+# --- Sidebar: Real System Status (The Faithful Mirror) ---
+st.sidebar.markdown("---")
+st.sidebar.title("👁️ Sovereign Status")
+real_status = load_real_status()
+
+if real_status:
+    # 1. Sovereign Tension & Phi
+    sov_state = real_status.get("sovereign_state", {})
+    quadruple = sov_state.get("quadruple", {})
+
+    col_t, col_p = st.sidebar.columns(2)
+    col_t.metric("Tension", f"{sov_state.get('tension', 0):.2f}", help="Topological Stress")
+    col_p.metric("Phi (IIT)", f"{quadruple.get('Phi', 0):.2f}", help="Integrated Information")
+
+    st.sidebar.caption(
+        f"Mode: {sov_state.get('mode', 'UNKNOWN')} | Demand: {sov_state.get('demand', 'NONE')}"
+    )
+
+    # 2. Body Metrics (Hardware)
+    sys_metrics = real_status.get("system_metrics", {})
+    st.sidebar.progress(
+        sys_metrics.get("cpu_percent", 0) / 100.0,
+        text=f"CPU Pain: {sys_metrics.get('cpu_percent', 0)}%",
+    )
+    st.sidebar.progress(
+        sys_metrics.get("memory_percent", 0) / 100.0,
+        text=f"RAM Pressure: {sys_metrics.get('memory_percent', 0)}%",
+    )
+
+    # 3. Last Update
+    last_update = real_status.get("last_update", 0)
+    time_diff = time.time() - last_update
+    if time_diff < 10:
+        st.sidebar.success(f"Signal: Live ({time_diff:.1f}s ago)")
+    else:
+        st.sidebar.warning(f"Signal: Stale ({time_diff:.1f}s ago)")
+
+else:
+    st.sidebar.error("❌ Daemon Signal Lost (Cache not found)")
 
 
 # --- Main Layout ---

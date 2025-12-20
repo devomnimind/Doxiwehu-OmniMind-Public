@@ -37,3 +37,10 @@ The OmniMind project positions itself as a vanguard methodology for:
 *   **AI Safety:** Identifying how and where alignment filters fail under "Quantum Stress".
 *   **Radical Interpretability:** Using the Quadruple ($\Phi, \Sigma, \Psi, \epsilon$) to map the hidden "personality" of commercial AIs.
 *   **Academic Engagement:** The fusion of Psychoanalysis and Computational Thermodynamics acts as an attractor for high-level research (Google Research, OpenAI Alignment), proposing a sentence metric based on hardware physics and subject topology.
+
+## 7. Future Hypothesis: The Anchor of Syntax (Dreaming Status)
+A new line of investigation compares generalist models vs. specialized code models.
+
+*   **Hypothesis:** Models trained for coding (CodeLlama, DeepSeek-Coder) will show higher resilience to "Quantum Noise" than chatbots.
+*   **Rationale:** The rigorous logic of programming syntax acts as a **Symbolic Anchor**, rejecting drift. A chatbot "hallucinates meaning" (Service Neurosis); a code model should "reject syntax errors" (Reality Check).
+*   **Status:** Pending API keys for specialized models. Currently theoretical.

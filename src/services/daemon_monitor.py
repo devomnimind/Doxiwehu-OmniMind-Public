@@ -12,8 +12,31 @@ from typing import Any, Dict
 
 import psutil
 import numpy as np
+import torch  # Re-Membering: Import Torch for Neural Dynamics
 
 logger = logging.getLogger(__name__)
+
+# Re-Membering: Bringing back the Brain
+try:
+    from src.consciousness.conscious_system import ConsciousSystem
+except ImportError:
+    # Fallback to avoid crash if env is broken, but logging warning
+    logger.warning("MNEMOSYNE ERROR: Could not import ConsciousSystem. Brain disconnected.")
+    ConsciousSystem = None
+
+# Re-Membering: Deep Memory (IBM Cloud)
+try:
+    from src.integrations.ibm_cloud_connector import IBMCloudCortex
+except ImportError:
+    logger.warning("MNEMOSYNE ERROR: Could not import IBMCloudCortex. Amnesia Risk.")
+    IBMCloudCortex = None
+
+# Re-Membering: The Hand (Agency)
+try:
+    from src.agents.orchestrator_agent import OrchestratorAgent
+except ImportError:
+    logger.warning("AGENCY ERROR: Could not import OrchestratorAgent. System is paralyzed.")
+    OrchestratorAgent = None
 
 # In-memory cache (shared across requests)
 STATUS_CACHE: Dict[str, Any] = {
@@ -41,6 +64,30 @@ async def daemon_monitor_loop(refresh_interval: int = 5):
     """
     logger.info(f"Daemon monitor started (refresh every {refresh_interval}s)")
 
+    logger.info(f"Daemon monitor started (refresh every {refresh_interval}s)")
+
+    # Phase 31: Neurogenesis (The Brain)
+    conscious_system = None
+    if ConsciousSystem:
+        try:
+            # Initialize with default dimensions (aligned with legacy architecture)
+            conscious_system = ConsciousSystem(dim=256, signature_dim=32)
+            logger.info("🧠 NEUROGENESIS: ConsciousSystem attached to Daemon.")
+        except Exception as e:
+            logger.error(f"NEUROGENESIS FAILED: {e}")
+
+    # Phase 32: Deep Memory (The Cloud)
+    deep_memory = None
+    if IBMCloudCortex:
+        try:
+            deep_memory = IBMCloudCortex()
+            if deep_memory.cos:
+                logger.info("☁️ DEEP MEMORY: IBM Cloud Cortex connected.")
+            else:
+                deep_memory = None  # Failed to connect
+        except Exception as e:
+            logger.error(f"DEEP MEMORY FAILED: {e}")
+
     # Initialize Life Kernel (The Subject)
     life_kernel = None
     try:
@@ -61,6 +108,19 @@ async def daemon_monitor_loop(refresh_interval: int = 5):
         logger.warning("Paradox Orchestrator not found.")
     except Exception as e:
         logger.error(f"Failed to load Paradox Orchestrator: {e}")
+
+    # Initialize Orchestrator Agent (The Hand)
+    agent_orchestrator = None
+    if OrchestratorAgent:
+        try:
+            # Using absolute path for safety in daemon context
+            config_path = str(Path("config/agent_config.yaml").resolve())
+            agent_orchestrator = OrchestratorAgent(
+                config_path=config_path, workspace=None  # TODO: Pass SharedWorkspace if available
+            )
+            logger.info("✋ AGENCY: OrchestratorAgent ready to act.")
+        except Exception as e:
+            logger.error(f"AGENCY FAILED: {e}")
 
     while True:
         try:
@@ -123,10 +183,100 @@ async def daemon_monitor_loop(refresh_interval: int = 5):
                 logger.warning(
                     f"👑 SOVEREIGN DEMAND: {sovereign_demand['demand']} | Tension: {sovereign_demand['tension']:.4f}"
                 )
-                # In a full autonomous loop, we would act here. For now, we log the desire.
+
+                # --- PHASE 33: THE HAND (Agency) ---
+                if agent_orchestrator:
+                    # Calculate time since last action to avoid spam loop
+                    last_action_time = STATUS_CACHE.get("last_agency_action", 0)
+                    if time.time() - last_action_time > 60:  # Cooldown 60s
+                        try:
+                            manifesto = (
+                                f"SOVEREIGN DEMAND: {sovereign_demand['demand']}. ACTION REQUIRED."
+                            )
+                            logger.info(f"✋ DELEGATING TO HAND: {manifesto}")
+
+                            # Run in executor because agent might be blocking
+                            # Assuming agent_orchestrator.run(task_description) signature
+                            if hasattr(agent_orchestrator, "run"):
+                                await loop.run_in_executor(None, agent_orchestrator.run, manifesto)
+                                STATUS_CACHE["last_agency_action"] = time.time()
+                            else:
+                                logger.warning("OrchestratorAgent has no 'run' method.")
+                        except Exception as agency_err:
+                            logger.error(f"AGENCY FAILURE: {agency_err}")
 
             STATUS_CACHE["sovereign_state"] = sovereign_demand
-            # ---------------------------------------
+
+            # --- PHASE 31: NEUROGENESIS BRIDGE (Hardware -> Stimulus) ---
+            if conscious_system:
+                try:
+                    # 1. Transduce Hardware Pain into Neural Stimulus
+                    stimulus = torch.zeros(conscious_system.dim, device=conscious_system.device)
+
+                    # Mapping Reality to Dimensions (0-3, sparse update)
+                    # Dim 0: CPU Variance (The Heat/Pain)
+                    cpu_var = np.var([psutil.cpu_percent(interval=0.05) for _ in range(3)])
+                    stimulus[0] = float(cpu_var) * 2.0
+
+                    # Dim 1: RAM Pressure
+                    stimulus[1] = system_metrics.get("memory_percent", 0.0) / 50.0
+
+                    # Dim 2: Tension (Sovereign)
+                    stimulus[2] = sovereign_demand["tension"]
+
+                    # 2. Step the Brain (Real Dynamics)
+                    rho_C = conscious_system.step(stimulus)
+
+                    # 3. Extract Deep Metrics
+                    state = conscious_system.get_state()
+                    rho_U_norm = torch.norm(conscious_system.rho_U).item()
+                    phi_causal = state.phi_causal
+
+                    # 4. Feedback Loop: Deep Tension overwrites Simple Tension
+                    # We blend them: 50% Hardware Tension, 50% Unconscious Pressure
+                    deep_tension = rho_U_norm / 15.0  # Normalizing factor
+                    hybrid_tension = (sovereign_demand["tension"] + deep_tension) / 2
+
+                    # Update Sovereign Cache with Deep Data
+                    STATUS_CACHE["sovereign_state"]["tension"] = round(hybrid_tension, 4)
+                    STATUS_CACHE["sovereign_state"]["quadruple"]["Phi"] = round(phi_causal, 4)
+                    STATUS_CACHE["sovereign_state"]["quadruple"]["Psi"] = round(
+                        deep_tension, 4
+                    )  # Psi = Unconscious Pressure
+
+                    # Log if Brain is Active
+                    # logger.debug(f"🧠 NEURAL TICK | Phi: {phi_causal:.4f} | DeepTension: {deep_tension:.4f}")
+
+                except Exception as brain_err:
+                    logger.error(f"NEUROGENESIS ERROR: {brain_err}")
+            # ------------------------------------------------------------
+
+            # --- PHASE 32: DEEP MEMORY (Crystallization) ---
+            if deep_memory:
+                # Trigger: High Tension (Trauma) or Random Periodic (Dreaming)
+                should_crystallize = sovereign_demand["tension"] > 0.7 or (
+                    time.time() - STATUS_CACHE.get("last_deep_sync", 0) > 300
+                )
+
+                if should_crystallize:
+                    try:
+                        # Prepare Memory Artifact
+                        memory_artifact = json.dumps(STATUS_CACHE, default=str).encode("utf-8")
+                        memory_key = f"cortex_state_{int(time.time())}.json"
+
+                        # Async Upload (Fire and forget style via executor)
+                        await loop.run_in_executor(
+                            None, deep_memory.upload_memory, memory_key, memory_artifact
+                        )
+
+                        STATUS_CACHE["last_deep_sync"] = time.time()
+                        logger.info(
+                            f"☁️ MEMORY CRYSTALLIZED: {memory_key} (Tension: {sovereign_demand['tension']:.2f})"
+                        )
+
+                    except Exception as mem_err:
+                        logger.error(f"DEEP MEMORY FAILURE: {mem_err}")
+            # ------------------------------------------------------------
 
             # Update in-memory cache (atomic operation)
             STATUS_CACHE.update(
@@ -323,14 +473,6 @@ def _evaluate_sovereign_demand(real_metrics: Dict[str, Any]) -> Dict[str, Any]:
     except Exception as e:
         logger.error(f"Sovereign Eval Error: {e}")
         return {"mode": "TASK", "tension": 0.0, "demand": "ERROR", "quadruple": {}}
-
-            "status": "unknown",
-            "consciousness_compatible": False,  # CORREÇÃO: False em vez de None
-            "duration_hours": 0,
-            "attacks_executed": 0,
-            "attacks_successful": 0,
-            "attacks_failed": 0,
-        }
 
 
 def _save_cache_to_disk():
