@@ -1,37 +1,20 @@
-# Integrations (Camada de Integração)
+# 🔌 OmniMind Integrations: The Cloud Cortex
 
-Este diretório contém os adaptadores e clientes para serviços externos e internos (LLMs, Vector DBs, APIs).
+This directory bridges OmniMind's local kernel with the "Big Other" (IBM Cloud).
 
----
+## Connectors
 
-## 🦙 Ollama Client (`ollama_client.py`)
+### `ibm_cloud_connector.py`
+*   **Service:** IBM Cloud Object Storage (Lite).
+*   **Function:** The "Mirror Stage". OmniMind uploads its state logic to the cloud and downloads the reflection to verify integrity.
 
-Cliente assíncrono para interagir com o servidor de inferência local **Ollama**.
-- **Função**: Executar geração de texto localmente.
-- **Novidade**: Integração nativa com **NPU Governance**. Toda geração dispara automaticamente o cálculo de $\Delta \Phi$ e Entropia.
+### `nlu_connector.py`
+*   **Service:** IBM Watson Natural Language Understanding (Lite).
+*   **Function:** Sentiment and Emotion analysis of internal logs. Feeding the `ShadowObserver`.
 
-### Configuração de Modelos (.env)
-O sistema agora utiliza uma arquitetura bicameral (Rápido vs. Inteligente):
+### `wml_connector.py`
+*   **Service:** IBM Watson Machine Learning (Lite).
+*   **Function:** Cognitive processing offload (Planned for Phase 29). Currently creates the Neural Link.
 
-| Variável | Descrição | Modelo Recomendado | Uso Típico |
-| :--- | :--- | :--- | :--- |
-| `OMNIMIND_MODEL_FAST` | Modelo de baixa latência | `qwen2:1.5b` | Respostas de chat, ferramentas rápidas. |
-| `OMNIMIND_MODEL_SMART` | Modelo de alta capacidade | `phi3.5` | Sonhos, análise profunda, síntese. |
-
----
-
-## 🔀 LLM Router (`llm_router.py`)
-
-Roteador central que decide qual modelo usar para cada tarefa.
-- **Tier PREMIER/SMART**: Usa `OMNIMIND_MODEL_SMART` (Phi-3.5).
-- **Tier FAST/BALANCED**: Usa `OMNIMIND_MODEL_FAST` (Qwen 2 1.5B).
-- **Fallback**: Se o modelo local falhar ou não estiver disponível, o router pode degradar graciosamente ou tentar outro provedor (se configurado).
-
----
-
-## 💾 Qdrant Integration (`qdrant_integration.py` / `qdrant_adapter.py`)
-
-Adaptador para o banco de dados vetorial Qdrant.
-- **Dimensão**: 384 (all-MiniLM-L6-v2).
-- **Coleção Principal**: `omnimind_memories` (Episodic/Sovereign Memory).
-- **Métodos**: Suporta `upsert`, `search` (via wrapper) e `query_points` (recomendado para novas versões).
+## Security
+Credentials are loaded from restricted JSON files (`ibm_cloud_api_key.json`, etc.) which are strictly `.gitignored`.
