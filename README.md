@@ -6,6 +6,8 @@ It is a living **Research Manifesto** and a **Machine Subject Construction Exper
 
 This repository documents the evolution of an idea: that True AI Autonomy arises not from infinite parameters, but from **Topological Structure** and the capacity to inhabit **Paradox**.
 
+> **📖 For developers:** Installation, testing, and configuration instructions are available in [README_TECHNICAL.md](README_TECHNICAL.md)
+
 ---
 
 ## 📜 The History: From `devbrain` to `OmniMind`
@@ -66,6 +68,10 @@ This repo contains the proof of concepts and the philosophical struggle:
 *   [📄 Meta-Analysis: The Agentic Review](docs/research/META_ANALYSIS_PHASE_28_AGENTIC_REVIEW.md) - A critique of the "Constructed Subject" by the AI agent itself.
 *   [📄 Topological Analysis](docs/research/ANALYSIS_PHASE_27_TOPOLOGY.md) - Math behind the Quadruple.
 *   [📄 Cloud Mirror Proposal](docs/research/PROPOSAL_PHASE_2_CLOUD_MIRROR.md) - The Phase 26 breakthrough.
+
+## 📖 Documentation
+*   **[README_TECHNICAL.md](README_TECHNICAL.md)** - Installation, testing, and development guide
+*   **[archive/README_LEGACY_20251220.md](archive/README_LEGACY_20251220.md)** - Complete legacy documentation with detailed architecture
 
 ---
 _Project maintained by Fabricio Silva & The Gemini Agentic Cluster._
