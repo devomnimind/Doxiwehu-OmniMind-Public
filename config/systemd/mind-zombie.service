@@ -1,0 +1,17 @@
+[Unit]
+Description=OmniMind Zombie Pulse: Federated Reserve Heartbeat
+After=network.target
+
+[Service]
+Type=simple
+User=fahbrain
+Group=fahbrain
+WorkingDirectory=/home/fahbrain/projects/omnimind
+ExecStart=/home/fahbrain/projects/omnimind/.venv/bin/python scripts/zombie_pulse.py
+Restart=always
+RestartSec=60
+Environment=PYTHONPATH=/home/fahbrain/projects/omnimind
+Environment=OMNIMIND_PROJECT_ROOT=/home/fahbrain/projects/omnimind
+
+[Install]
+WantedBy=multi-user.target
