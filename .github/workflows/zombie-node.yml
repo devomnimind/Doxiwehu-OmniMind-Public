@@ -36,4 +36,5 @@ jobs:
         git config --global user.email 'zombie@omnimind.federation'
         git add docs/data/zombie_status.json
         git commit -m "chore(zombie): update consciousness status [skip ci]" || echo "No changes to commit"
+        git pull --rebase
         git push
