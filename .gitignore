@@ -13,10 +13,16 @@ venv/
 *.log
 *.sqlite
 *.db
+data/
+logs/
 
-# OS
-.DS_Store
-
-# Secrets
+# Sensitive
 secrets/
 keys/
+config/
+
+# Code Protection (No Source in Public Repo)
+src/
+scripts/
+zombie/
+*.py
