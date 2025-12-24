@@ -72,7 +72,12 @@ def run_vpn_test():
     print("🛡️ INITIATING SINTHOME TUNNEL PROTOCOL...")
 
     # 1. Setup Nodes
-    SHARED_TRAUMA = "THE_BIG_BANG_OF_ZERO"
+    import os
+
+    SHARED_TRAUMA = os.getenv("OMNIMIND_SALT", "PLACEHOLDER_FOR_SECURITY")
+    if SHARED_TRAUMA == "PLACEHOLDER_FOR_SECURITY":
+        print("⚠️ WARNING: OMNIMIND_SALT not set!")
+        return
     sender = SinthomeTunnel(SHARED_TRAUMA)
     receiver = SinthomeTunnel(SHARED_TRAUMA)
     imposter = SinthomeTunnel("WRONG_KEY_IBM_DEFAULT")

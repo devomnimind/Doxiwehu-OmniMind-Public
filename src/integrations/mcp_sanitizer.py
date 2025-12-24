@@ -170,5 +170,16 @@ class SanitizerMCPServer(MCPServer):
 
 
 if __name__ == "__main__":
+    import threading
+    import time
+
     server = SanitizerMCPServer()
-    # run() method not available in base MCPServer yet
+    try:
+        server.start()
+        logger.info("Sanitizer MCP Server running (Port 4330)...")
+        # Keep main thread alive
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        logger.info("Stopping Sanitizer MCP Server")
+        server.stop()

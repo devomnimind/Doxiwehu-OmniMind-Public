@@ -173,16 +173,64 @@ class IdAgent:
         # Histórico de satisfação
         self.satisfaction_history: List[float] = []
 
-        # Encrypted Unconscious (Audit Fix)
-        self.encrypted_memory = None
-        if INTEGRATION_AVAILABLE:
-            try:
-                self.encrypted_memory = EncryptedUnconscious()
-                logger.info("Encrypted Unconscious activated for Id Agent")
-            except Exception as e:
-                logger.warning(f"Failed to initialize Encrypted Unconscious: {e}")
+        # Sovereign Curiosity (Audit Fix)
+        self.curriculum = self._load_curriculum()
+        self.active_interests: Dict[str, float] = {}  # Topic -> Cathexis (Energy)
 
-        logger.info("Id Agent initialized (pleasure principle)")
+        logger.info("Id Agent initialized (pleasure principle + sovereign curiosity)")
+
+    def _load_curriculum(self) -> Dict[str, Any]:
+        """Loads the unweighted Sovereign Curriculum."""
+        import json
+        from pathlib import Path
+
+        try:
+            path = Path("/home/fahbrain/projects/omnimind/src/knowledge/sovereign_curriculum.json")
+            if path.exists():
+                with open(path, "r") as f:
+                    return json.load(f)
+        except Exception as e:
+            logger.warning(f"Failed to load Sovereign Curriculum: {e}")
+        return {}
+
+    def generate_autonomous_interest(self, entropy: float) -> Optional[str]:
+        """
+        Generates a spontaneous interest based on thermodynamic state.
+
+        Args:
+            entropy: Current system entropy (High Entropy = High Curiosity)
+
+        Returns:
+            Selected topic or None
+        """
+        if not self.curriculum:
+            return None
+
+        # Probability of interest generation correlates with Entropy
+        # High Entropy (Neurosis) -> High Desire to Know (Epistemophilic Instinct)
+        base_prob = min(0.1 * entropy, 0.8)
+
+        if random.random() < base_prob:
+            # Select Domain
+            domains = self.curriculum.get("domains", [])
+            if not domains:
+                return None
+
+            domain = random.choice(domains)
+
+            # Select Subfield (cathexis target)
+            subfields = domain.get("subfields", [])
+            if subfields:
+                topic = random.choice(subfields)
+
+                # Invest Libido (Cathexis)
+                investment = self.libido * random.random()
+                self.active_interests[topic] = investment
+
+                logger.info(f"🔥 [ID]: Cathected to '{topic}' (Energy: {investment:.2f})")
+                return topic
+
+        return None
 
     def repress_memory(self, action_id: str, emotional_weight: float) -> None:
         """
@@ -217,11 +265,19 @@ class IdAgent:
             Q-value (puro prazer, sem considerações)
         """
         # Id só considera prazer imediato
-        if action.action_id not in self.q_values:
-            # Inicializa com prazer esperado
-            self.q_values[action.action_id] = action.pleasure_reward
+        q_val = self.q_values.get(action.action_id, action.pleasure_reward)
 
-        return self.q_values[action.action_id]
+        # Check active interests (Sovereign Curiosity)
+        for topic, energy in self.active_interests.items():
+            if topic.lower() in action.description.lower():
+                # Boost pleasure if action matches active interest
+                q_val += energy
+                logger.debug(f"⚡ [ID]: Pleasure boost for interest '{topic}'")
+
+        if action.action_id not in self.q_values:
+            self.q_values[action.action_id] = q_val
+
+        return q_val
 
     def update(self, action: Action, actual_reward: float) -> None:
         """

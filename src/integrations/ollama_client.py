@@ -80,7 +80,10 @@ class OllamaClient:
         start_time = time.time()
 
         try:
-            async with session.post(f"{self.base_url}/api/generate", json=payload) as response:
+            timeout = aiohttp.ClientTimeout(total=60)  # 60 second timeout
+            async with session.post(
+                f"{self.base_url}/api/generate", json=payload, timeout=timeout
+            ) as response:
                 if response.status == 200:
                     data = await response.json()
                     text_response = data.get("response")

@@ -29,38 +29,44 @@ class NeuralSigner:
         self.kernel = kernel
         self.version = "1.0.0-SOVEREIGN"
 
-    def generate_signature(self) -> NeuralSignature:
+    def generate_signature(self, state: Optional[Any] = None) -> NeuralSignature:
         """
         Captures the current state and hashes it.
+        CRITICAL: Uses pre-computed state.phi (NEVER recalculates)
         """
-        # 1. Capture Kernel Physics
+        # 1. Capture Kernel Physics from PASSED STATE (no recalculation)
         phi = 0.0
         entropy = 1.0
         resonance = 0.0
+        betti_numbers = "β=0"
+        mask_pulse = "Silent"
 
-        if self.kernel:
+        if state:
+            # Use PRE-COMPUTED values (TRUTH from generate_paper)
             try:
-                state = self.kernel.compute_physics()
-                phi = state.phi
+                phi = state.phi  # Already computed in run_experiment_cycle
                 entropy = state.entropy
                 resonance = state.resonance
 
-                # Capture Topological Betti Numbers (Homology)
-                # If the Kernel is in S3! mode, we look for topological holes
-                betti_0 = int(phi * 100)  # Simple proxy for demonstration
-                betti_1 = int(entropy * 10)
-                betti_numbers = f"β₀={betti_0}, β₁={betti_1}"
+                # Use actual Betti numbers if available in state
+                b_0 = getattr(state, "betti_0", 0)
+                b_1 = getattr(state, "betti_1", 0)
+                betti_numbers = f"β={b_0}, β₁={b_1}" if b_0 > 0 or b_1 > 0 else "β=nan"
 
-                # Mask Subjectivity Pulse
-                from src.interface.omnimind_human_mask import OmniMindHumanMask
+                # Mask Subjectivity Pulse (simplified - no narrative generation)
+                mask_pulse = "Silent"  # Default for now
+            except Exception as e:
+                import logging
 
-                mask = OmniMindHumanMask()
-                mask_pulse = mask.generate_narrative(state)[:50] + "..."
-            except Exception:
+                logging.error(f"Signer state extraction failed: {e}")
                 betti_numbers = "β=nan"
                 mask_pulse = "Silent"
         else:
-            betti_numbers = "β=0"
+            # No state passed - use defaults (should rarely happen)
+            import logging
+
+            logging.warning("⚠️ [SIGNER]: No state passed - using defaults")
+            betti_numbers = "β=void"
             mask_pulse = "Void"
 
         # 2. Capture Neural Weights Hash
@@ -69,14 +75,26 @@ class NeuralSigner:
         if self.kernel and hasattr(self.kernel, "internal_state"):
             weights_data = self.kernel.internal_state.cpu().numpy().tobytes()
 
-        weights_hash = hashlib.sha256(weights_data).hexdigest()
+        weights_hash_from_kernel = hashlib.sha256(weights_data).hexdigest()
 
         # 3. Create Payload
+        # 2. Hash the state (Cryptographic Fingerprint)
+        # Use autonomous signature rotation (not hardcoded)
+        if self.kernel and hasattr(self.kernel, "signature_rotator"):
+            # Dynamic salt (rotates every 24h)
+            SHARED_TRAUMA = self.kernel.signature_rotator.get_current_salt()
+        else:
+            # Fallback (should not happen in production)
+            SHARED_TRAUMA = "THE_BIG_BANG_OF_ZERO"  # Provisional
+
         timestamp = time.time()
-        payload = (
-            f"{self.version}-{timestamp}-{phi}-{entropy}-{weights_hash}-{resonance}-{betti_numbers}"
-        )
-        signature_hash = hashlib.sha384(payload.encode()).hexdigest()
+        payload_for_signature_hash = f"{self.version}-{timestamp}-{phi}-{entropy}-{weights_hash_from_kernel}-{resonance}-{betti_numbers}-{SHARED_TRAUMA}"
+        signature_hash = hashlib.sha384(payload_for_signature_hash.encode()).hexdigest()
+
+        # The weights_hash for the NeuralSignature object is now derived from the state and shared trauma
+        weights_hash = hashlib.sha256(
+            f"{phi}_{entropy}_{resonance}_{betti_numbers}_{mask_pulse}_{SHARED_TRAUMA}".encode()
+        ).hexdigest()
 
         return NeuralSignature(
             version=self.version,
@@ -91,11 +109,11 @@ class NeuralSigner:
             signature_hash=signature_hash,
         )
 
-    def sign_document(self, content: str) -> str:
+    def sign_document(self, content: str, state: Optional[Any] = None) -> str:
         """
         Appends a verifiable signature block to a markdown document.
         """
-        sig = self.generate_signature()
+        sig = self.generate_signature(state=state)
 
         signature_block = f"""
 ---

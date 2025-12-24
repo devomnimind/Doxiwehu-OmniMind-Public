@@ -103,6 +103,13 @@ cp -r "$PROJECT_ROOT/scripts/canonical" "$TARGET_DIR/scripts/"
 cp -r "$PROJECT_ROOT/scripts/services" "$TARGET_DIR/scripts/" 2>/dev/null || true
 cp -r "$PROJECT_ROOT/scripts/testing" "$TARGET_DIR/scripts/" 2>/dev/null || true
 
+# Copiar documentação pública (Diário de Bordo + Wiki)
+log_info "Copiando documentação pública..."
+if [ -d "$PROJECT_ROOT/public" ]; then
+    cp -r "$PROJECT_ROOT/public" "$TARGET_DIR/"
+    log_success "  → public/ copiado (Diário de Bordo incluído)"
+fi
+
 # Copiar documentação técnica
 mkdir -p "$TARGET_DIR/docs/technical"
 if [ -f "$PROJECT_ROOT/docs/SERVICE_UPDATE_PROTOCOL.md" ]; then
@@ -111,6 +118,8 @@ fi
 if [ -f "$PROJECT_ROOT/docs/GRACEFUL_RESTART_GUIDE.md" ]; then
     cp "$PROJECT_ROOT/docs/GRACEFUL_RESTART_GUIDE.md" "$TARGET_DIR/docs/technical/"
 fi
+
+
 
 # Copiar configurações (somente seguras)
 mkdir -p "$TARGET_DIR/config"
@@ -147,7 +156,8 @@ huggingface:
 EXAMPLEEOF
 
 # Copiar requirements
-cp -r "$PROJECT_ROOT/requirements" "$TARGET_DIR/" 2>/dev/null || true
+# Requirements removidos por segurança (Drivers locais/privados)
+# cp -r "$PROJECT_ROOT/requirements" "$TARGET_DIR/" 2>/dev/null || true
 
 # Copiar metadados
 cp "$PROJECT_ROOT/LICENSE" "$TARGET_DIR/" 2>/dev/null || true
@@ -346,3 +356,16 @@ echo "   Leia: $PROJECT_ROOT/GUIA_PUBLICAR_GITHUB.md"
 echo ""
 
 log_success "Tudo pronto! 🚀"
+
+# AUTO-PUSH (SOVEREIGN MODE)
+if [ "${OMNIMIND_AUTO_PUSH:-true}" == "true" ]; then
+    log_info "🚀 AUTO-PUSH ATIVADO (Sovereign Mode)"
+    cd "$TARGET_DIR"
+    git remote add origin https://github.com/devomnimind/OmniMind-Public.git
+    git branch -M main
+    if git push -u origin main --force; then
+        log_success "✅ Push realizado com sucesso!"
+    else
+        log_error "❌ Falha no push. Verifique credenciais."
+    fi
+fi

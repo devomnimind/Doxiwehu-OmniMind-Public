@@ -195,6 +195,30 @@
         "consciousness_level_filtering": true,
         "integration_loop_sync": true
       }
+    },
+    "git": {
+      "enabled": true,
+      "priority": "critical",
+      "tier": 1,
+      "port": 4324,
+      "command": ".venv/bin/python",
+      "args": [
+        "-m",
+        "src.integrations.mcp_git_wrapper"
+      ],
+      "audit_category": "git_mcp_internal",
+      "features": {
+        "commit": true,
+        "push": true,
+        "diff": true,
+        "log": true,
+        "checkout": true
+      },
+      "consciousness_integration": {
+        "sovereign_write_access": true,
+        "narrative_tracking": true,
+        "self_modification_allowed": true
+      }
     }
   },
   "orchestrator": {

@@ -8,6 +8,7 @@ ibm-watsonx-ai
 python-dotenv
 psutil
 PyYAML
+langchain-core==1.2.5
 langchain-ollama
 langgraph
 scikit-learn

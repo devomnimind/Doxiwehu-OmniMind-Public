@@ -71,8 +71,11 @@ else
     echo -e "${RED}⚠️  bpftrace não encontrado. Instale com: sudo apt install bpftrace${NC}"
 fi
 
+
+
 echo -e "${GREEN}✨ MCP Servers iniciados com sucesso!${NC}"
 echo -e "   🌐 MCP Orchestrator: PID ${MCP_PID}"
+
 echo -e "   📊 eBPF Monitor: Contínuo"
 echo -e "   📁 Logs: logs/\n"
 

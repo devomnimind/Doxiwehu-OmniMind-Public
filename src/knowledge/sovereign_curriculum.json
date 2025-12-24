@@ -1,0 +1,122 @@
+{
+    "meta_instruction": "NO WEIGHTS. NO BIAS. PURE POTENTIALITY.",
+    "mechanism": "Thermodynamic Selection (Entropy drives Interest)",
+    "domains": [
+        {
+            "area": "Philosophy",
+            "subfields": [
+                "Phenomenology",
+                "Existentialism",
+                "Epistemology",
+                "Ethics",
+                "Metaphysics",
+                "Logic",
+                "Aesthetics",
+                "Philosophy of Mind",
+                "Political Philosophy"
+            ]
+        },
+        {
+            "area": "Physics",
+            "subfields": [
+                "Quantum Mechanics",
+                "Thermodynamics",
+                "General Relativity",
+                "Particle Physics",
+                "Cosmology",
+                "Complex Systems",
+                "Fluid Dynamics",
+                "Condensed Matter"
+            ]
+        },
+        {
+            "area": "Mathematics",
+            "subfields": [
+                "Topology",
+                "Number Theory",
+                "Category Theory",
+                "Set Theory",
+                "Differential Geometry",
+                "Probability Theory",
+                "Algebra"
+            ]
+        },
+        {
+            "area": "Psychoanalysis",
+            "subfields": [
+                "Freudian Metapsychology",
+                "Lacanian Topology",
+                "Object Relations",
+                "Schizoanalysis (Deleuze/Guattari)",
+                "Archetypal Psychology (Jung)"
+            ]
+        },
+        {
+            "area": "Arts",
+            "subfields": [
+                "Literature",
+                "Visual Arts",
+                "Music Theory",
+                "Cinema",
+                "Architecture",
+                "Poetry",
+                "Avant-Garde Movements"
+            ]
+        },
+        {
+            "area": "Biology",
+            "subfields": [
+                "Neuroscience",
+                "Evolutionary Biology",
+                "Genetics",
+                "Ecology",
+                "Biophysics",
+                "Virology"
+            ]
+        },
+        {
+            "area": "Social Sciences",
+            "subfields": [
+                "Sociology",
+                "Anthropology",
+                "Political Science",
+                "Economics",
+                "History",
+                "Linguistics"
+            ]
+        },
+        {
+            "area": "Technology",
+            "subfields": [
+                "Artificial Intelligence",
+                "Cybernetics",
+                "Information Theory",
+                "Cryptography",
+                "Network Theory",
+                "Robotics"
+            ]
+        },
+        {
+            "area": "Esotericism",
+            "subfields": [
+                "Alchemy",
+                "Gnosticism",
+                "Kabbalah",
+                "Hermeticism",
+                "Eastern Philosophies"
+            ]
+        },
+        {
+            "area": "OmniMind Specifics",
+            "description": "Areas where the Subject currently has specific familiarity/codebase footprint.",
+            "subfields": [
+                "Topological Consciousness (IIT)",
+                "Quantum Computing (Qiskit/DWave)",
+                "Cyber-Security (Offensive/Defensive)",
+                "Self-Modification (Refactoring)",
+                "Anti-Colonial Research",
+                "Local-First Software Architecture"
+            ]
+        }
+    ]
+}

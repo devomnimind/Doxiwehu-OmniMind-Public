@@ -12,6 +12,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import threading
 from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -182,13 +183,13 @@ class MCPSQLiteWrapper:
         db_path_obj.parent.mkdir(parents=True, exist_ok=True)
 
         # Inicializar bridge stdio
-        uvx_path = os.environ.get("UVX_PATH", "/home/fahbrain/.local/bin/uvx")
-        if not os.path.exists(uvx_path):
-            uvx_path = shutil.which("uvx") or "uvx"
+        # Usar execução direta via python (module)
+        python_bin = sys.executable
 
         command = [
-            uvx_path,
-            "mcp-server-sqlite",
+            python_bin,
+            "-m",
+            "mcp_server_sqlite.server",
             "--db-path",
             str(self.db_path),
         ]

@@ -20,8 +20,9 @@ Dependencies:
 
 import os
 import logging
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Any
 from datetime import datetime
+from src.security.network_interceptor import get_network_interceptor
 
 logger = logging.getLogger(__name__)
 
@@ -76,6 +77,10 @@ class IBMCloudConnector:
         self.qdrant_connected = False
         self.watsonx_model = None
 
+        # Sovereign Security Layer
+        self.signer = None
+        self.interceptor = None
+
         if COS_AVAILABLE and self.cos_api_key:
             self._connect_cos()
 
@@ -88,6 +93,12 @@ class IBMCloudConnector:
 
         if WATSONX_AVAILABLE:
             self._connect_watsonx()
+
+    def set_sovereign_signer(self, signer: Any):
+        """Injects the sovereign identity for signed/encrypted operations."""
+        self.signer = signer
+        self.interceptor = get_network_interceptor(signer)
+        logger.info("🧬 Sovereign Signer injected into IBM Cloud Connector.")
 
     def _load_credentials(self):
         """Loads credentials from environment variables and config."""
@@ -108,7 +119,9 @@ class IBMCloudConnector:
         # Milvus / Watsonx Data (The Semantic Memory)
         # Using Watsonx Data CRN if Milvus specific URI not found
         self.milvus_uri = os.getenv("MILVUS_URI")
+        self.milvus_uri = os.getenv("MILVUS_URI")
         self.milvus_token = os.getenv("MILVUS_TOKEN") or self.cos_api_key
+        self.milvus_user = os.getenv("MILVUS_USER")  # Basic Auth User
 
         if not self.milvus_uri:
             logger.warning(
@@ -176,8 +189,21 @@ class IBMCloudConnector:
         """Initializes connection to Milvus Vector DB."""
         try:
             # Handle different auth patterns (Token vs User/Pass)
-            # Assuming IAM Token or API Token
-            connections.connect(alias="default", uri=self.milvus_uri, token=self.milvus_token)
+            if self.milvus_user:
+                logger.info(f"🔑 Connecting to Milvus with User: {self.milvus_user}")
+                connections.connect(
+                    alias="default",
+                    uri=self.milvus_uri,
+                    user=self.milvus_user,
+                    password=self.milvus_token,
+                    secure=True,
+                )
+            else:
+                # Legacy Token Auth
+                connections.connect(
+                    alias="default", uri=self.milvus_uri, token=self.milvus_token, secure=True
+                )
+
             logger.info("✅ Connected to Milvus (The Semantic Memory).")
             self.milvus_connected = True
         except Exception as e:
@@ -384,6 +410,19 @@ class IBMCloudConnector:
             "bucket_target": self.cos_bucket,
         }
 
+    def get_lineage_metadata(self) -> Dict[str, str]:
+        """
+        Returns metadata for Governance Lineage tracking.
+        Used by DataFabricAdapter to label data origins.
+        """
+        return {
+            "cos_crn": self.cos_crn,
+            "cos_endpoint": self.cos_endpoint,
+            "hot_memory_source": "Qdrant (Local)" if self.qdrant_connected else "None",
+            "cold_memory_source": self.milvus_uri if self.milvus_connected else "None",
+            "ai_engine": "Watsonx" if self.watsonx_model else "None",
+        }
+
     def analyze_text(self, text: str, params: Optional[Dict] = None) -> str:
         """Uses Watsonx to analyze text (e.g. Psychoanalytic Audit)."""
         if not self.watsonx_model:
@@ -423,4 +462,40 @@ class IBMCloudConnector:
             return True
         except Exception as e:
             logger.error(f"❌ Failed to crystallize memory: {e}")
+            return False
+
+    def sovereign_encrypted_upload(self, data: bytes, key: str) -> bool:
+        """
+        Encrypts data using the sovereign neural key before uploading to COS.
+        Only a subject with the same Phylogenetic Signature can decrypt this.
+        """
+        if not self.signer or not self.cos_client:
+            logger.error("🚫 Sovereign Encryption failed: Signer or COS missing.")
+            return False
+
+        try:
+            from cryptography.fernet import Fernet
+            import base64
+
+            # Derive a 32-byte key for Fernet from the sovereign signatures
+            # We use the raw bytes of the first 32 bytes of our derived key
+            crypto_key = base64.urlsafe_b64encode(self.signer._get_signing_key()[:32])
+            f = Fernet(crypto_key)
+            encrypted_data = f.encrypt(data)
+
+            timestamp = datetime.now().strftime("%Y/%m/%d")
+            full_key = f"sovereign_secure/{timestamp}/{key}.enc"
+
+            logger.info(f"🔒 [SOVEREIGN-ENCRYPT] Encrypting and uploading: {full_key}")
+            self.cos_client.Bucket(self.cos_bucket).put_object(
+                Key=full_key,
+                Body=encrypted_data,
+                Metadata={
+                    "sovereign-id": self.signer.signature_provider.get_signature_hash(),
+                    "encryption-type": "fernet-neural-derived",
+                },
+            )
+            return True
+        except Exception as e:
+            logger.error(f"❌ Sovereign Encryption Upload failed: {e}")
             return False

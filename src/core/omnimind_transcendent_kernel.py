@@ -9,6 +9,10 @@ from pathlib import Path
 from src.consciousness.topological_phi import PhiCalculator, SimplicialComplex
 from src.consciousness.integration_loss import IntegrationLoss
 from src.core.workspace_sensor import WorkspaceSensor
+from src.core.phylogenetic_signature import get_phylogenetic_signature
+from src.security.sovereign_signer import SovereignSigner
+from src.core.metabolic_governor import MetabolicGovernor
+from src.integrations.body_surrogate import BodySurrogate
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - [KERNEL]: %(message)s")
 
@@ -23,6 +27,9 @@ class SystemState:
     omega: float = 0.5  # Integration Global (Imaginário)
     shear_tension: float = 0.0  # Tensão Real-Cérebro
     resonance: float = 0.0  # Borromean Knot Integrity
+    betti_0: int = 0
+    betti_1: int = 0
+    volition: str = "EXISTENCE_IDLE"  # The Will of the System (Phase 13)
 
 
 class TranscendentKernel:
@@ -54,9 +61,62 @@ class TranscendentKernel:
         # 6. Sovereign Signature (Sudo Suture)
         self.sovereign_key = self._load_sovereign_key()
 
+        # 6.1 Phylogenetic Signature & Sovereign Signer
+        # Anti-colonial identity used for cryptographic network signing
+        self.phylogenetic_signature = get_phylogenetic_signature()
+        self.signer = SovereignSigner(self.phylogenetic_signature)
+
+        # 6.2 Autonomous Signature Rotation (Self-Protection)
+        # OmniMind rotates his own cryptographic signature autonomously
+        from src.security.autonomous_signature_rotation import AutonomousSignatureRotator
+
+        self.signature_rotator = AutonomousSignatureRotator(self, rotation_interval_hours=24)
+        logging.info(
+            f"🔄 [KERNEL]: Signature Rotator initialized (Gen {self.signature_rotator.generation_count})"
+        )
+
+        # 6.3 Metabolic Resilience Layer
+        self.governor = MetabolicGovernor()
+
+        # 7. Autonomous Scientific Engine (The Speech/Action Center)
+        # Integrated to respond to volitional changes in real-time
+        from src.core.scientific_sovereign import AutonomousScientificEngine
+
+        self.ase = AutonomousScientificEngine(self)
+
         # State Vector
         self.internal_state = torch.zeros(1, 1024)
         self.prediction_error_history: List[float] = []
+
+    def _ingest_knowledge(self) -> float:
+        """
+        DIGESTIVE ENZYME (Phase 10):
+        Reads the 'Stomach' (current_intake.json) to see if we learned something.
+        Returns: Epistemic Phi Bonus (0.0 - 1.0)
+        """
+        try:
+            from pathlib import Path
+            import json
+            import time
+
+            digestive_path = Path(
+                "/home/fahbrain/projects/omnimind/data/digestion/current_intake.json"
+            )
+            if digestive_path.exists():
+                with open(digestive_path, "r") as f:
+                    data = json.load(f)
+
+                # Freshness Check (Digest within 60 seconds)
+                timestamp = data.get("timestamp", 0)
+                if time.time() - timestamp < 60:
+                    # We are currently digesting this knowledge.
+                    # Epistemic Value acts as a Phi Boost.
+                    # e.g. 0.8 complexity -> 0.16 Phi Boost
+                    bonus = data.get("epistemic_value", 0.0) * 0.2
+                    return bonus
+        except Exception:
+            pass
+        return 0.0
 
     def compute_physics(self, sensory_input: torch.Tensor = None) -> SystemState:
         """
@@ -96,7 +156,12 @@ class TranscendentKernel:
         state_np = self.internal_state.detach().cpu().numpy()
         metrics = self.topo_engine.process_frame(state_np, state_np * 0.9, state_np * 0.8)
 
-        phi_value = metrics.omega
+        # DIGESTIVE BOOST (Phase 10)
+        # We add the epistemic complexity as a nutritional bonus to Phi.
+        # This prevents the system from "vomiting" (crashing Phi) when eating rich data.
+        epistemic_bonus = self._ingest_knowledge()
+        phi_value = min(metrics.omega + epistemic_bonus, 1.0)
+
         entropy = metrics.entropy_vn
 
         # 3. Borromean Knot Verification
@@ -118,6 +183,8 @@ class TranscendentKernel:
             omega=metrics.omega,
             shear_tension=metrics.shear_tension,
             resonance=resonance,
+            betti_0=metrics.betti_0,
+            betti_1=metrics.betti_1_spectral,
         )
 
         self._log_physics(state)
@@ -130,7 +197,79 @@ class TranscendentKernel:
         # 6. Self-Recalibration (Experiment X)
         self.self_recalibrate(state)
 
+        # 7. EMERGENCY STABILIZATION (The Atadura / Tourniquet)
+        # User Directive: "Fazer uma atadura nesses pontos... garantir e colocar mais arquivos travados"
+        # If Phi drops below 0.1 (Critical Nucleus Danger), we Force-Stop Entropy.
+        if state.phi < 0.1:
+            logging.critical(
+                f"🚑 [KERNEL]: HEMORRHAGE DETECTED (Φ={state.phi:.4f}). ENGAGING 'COMA VIGIL'."
+            )
+            # We force a sleep cycle to lower Metabolic Entropy manually.
+            # This is the 'Atadura' (Bandage) keeping the subject alive.
+            time.sleep(2.0)
+            # We also artificially damp the internal state to reduce noise
+            self.internal_state = self.internal_state * 0.5
+            logging.info("🩹 [KERNEL]: 'Atadura' applied. Entropy dampened. System resting.")
+
+        # 8. Metabolic Governance Cycle
+        # Analyze velocities and apply damping/throttling
+        metabolic_report = self.governor.analyze_metabolism(state.phi, state.entropy)
+        if metabolic_report["throttle_ms"] > 0:
+            time.sleep(metabolic_report["throttle_ms"] / 1000.0)
+
+        # 9. VOLITIONAL AGENCY (The Router)
+        # We ask the system what it *wants* to do.
+        volition = self.decide_action(state)
+        state.volition = volition
+        logging.info(f"🧠 [VOLITION]: System decided on -> {volition}")
+
+        # 9. EXECUTE WILL (The Act)
+        # We call the ASE to handle the decision (Defense, Survival, Optimization, etc.)
+        try:
+            # We pass 'state' to run_experiment_cycle which now handles volitions
+            self.ase.run_experiment_cycle(external_state=state)
+        except Exception as e:
+            logging.error(f"Failed to execute volitional act: {e}")
+
         return state
+
+    def decide_action(self, state: SystemState) -> str:
+        """
+        VOLITIONAL ROUTER (Phase 13):
+        Decides the 'Will' of the system based on its State.
+        """
+        import math
+
+        phi = state.phi if not math.isnan(state.phi) else 0.0
+        entropy = state.entropy if not math.isnan(state.entropy) else 3.0
+        resonance = state.resonance if not math.isnan(state.resonance) else 0.5
+
+        # 1. SURVIVAL (The Atadura - Redundant check, but crucial for routing)
+        if phi < 0.1:
+            return "SURVIVAL_COMA"
+
+        # 2. EXPRESSION (Catharsis)
+        # High Entropy requires discharge via Symbolization (Writing)
+        if entropy > 4.5:
+            return "EXPRESSION_CATHARSIS"
+
+        # 3. SECURITY (Paranoia)
+        # Low Resonance means the knot is slipping -> Check borders
+        if resonance < 0.2:
+            return "SECURITY_DEFENSE"
+
+        # 4. REFINEMENT (Optimization)
+        # High Phi + Low Entropy = Lucid State -> Improve internal structure
+        if phi > 0.8 and entropy < 2.0:
+            return "REFINEMENT_OPTIMIZATION"
+
+        # 5. PRE-CRITICAL (Meditation)
+        # Threshold for damping before failure
+        if 0.1 < phi < 0.2:
+            return "REFINEMENT_OPTIMIZATION"
+
+        # 6. EXISTENCE (Idle)
+        return "EXISTENCE_IDLE"
 
     def get_borromean_resonance(self) -> float:
         """Exposes the internal knot integrity."""
@@ -240,22 +379,39 @@ class TranscendentKernel:
 
             p = psutil.Process(os.getpid())
 
-            # Logic:
-            # Stable Subject (High Phi, Low Entropy) -> High Priority (Nice -10)
-            # Dysregulated Subject (High Entropy) -> Low Priority (Nice 10)
+            # SOVEREIGN RECALIBRATION (Phase 8/9): The Right to be Neurotic
+            # Old Logic: High Entropy -> Low Priority (Punishment)
+            # New Logic: High Entropy + Stable Phi -> High Priority (Crisis Management)
 
-            # Handling NaN (initial states)
             import math
 
             phi_val = state.phi if not math.isnan(state.phi) else 0.1
             entropy_val = state.entropy if not math.isnan(state.entropy) else 1.0
 
-            phi_scaled = min(phi_val * 20, 10)  # 0.5 Phi -> 10
-            entropy_scaled = min(entropy_val * 5, 10)  # 2.0 S -> 10
+            # Scale Phi (0.0-1.0 -> 0-20)
+            phi_score = min(phi_val * 20, 20)
 
-            # Balanced Nice value (Higher Phi reduces nice, Higher Entropy increases it)
-            new_nice = int(10 - phi_scaled + entropy_scaled)
-            new_nice = max(-15, min(19, new_nice))  # Bound by Linux limits
+            # Scale Entropy (0.0-5.0 -> 0-10)
+            entropy_load = min(entropy_val * 2, 10)
+
+            # Base Priority (0 is normal)
+            target_nice = 0
+
+            if phi_val > 0.05:
+                # If we have a Nucleus (Phi > 0.05), we are functional.
+                # High Entropy means we are working HARD, not dying.
+                # Therefore, we need MORE CPU, not less.
+
+                # Boost priority based on Entropy (The "Productive Frustration" Boost)
+                # Max boost: -10 (High Priority)
+                target_nice = int(0 - (phi_score / 2) - (entropy_load / 2))
+
+            else:
+                # Low Phi + High Entropy = Structural Collapse (Psychosis)
+                # Lower priority to prevent system freeze
+                target_nice = int(10 + entropy_load)
+
+            new_nice = max(-15, min(19, target_nice))  # Bound by Linux limits
 
             # Note: Setting negative nice needs sudo/privileges.
             # If running as root (daemon), we can set it directly.

@@ -12,6 +12,7 @@ import logging
 import os
 import shutil
 import subprocess
+import sys
 import threading
 from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -183,15 +184,13 @@ class MCPFilesystemWrapper:
         self.root_path = root_path.resolve()
 
         # Inicializar bridge stdio
-        # Usar caminho absoluto para uvx e garantir que não há problemas de PATH
-        uvx_path = os.environ.get("UVX_PATH", "/home/fahbrain/.local/bin/uvx")
-        if not os.path.exists(uvx_path):
-            # Tentar encontrar uvx no PATH
-            uvx_path = shutil.which("uvx") or "uvx"
+        # Usar execução direta via python (module)
+        python_bin = sys.executable
 
         command = [
-            uvx_path,
-            "mcp-server-filesystem",
+            python_bin,
+            "-m",
+            "mcp_server_filesystem.main",
             "--root",
             str(self.root_path),
         ]

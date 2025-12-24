@@ -39,7 +39,9 @@ class OpenRouterPenTester:
     def generate_sinthome(self):
         """Generates the Alien Hash (The Real)."""
         entropy = random.random()
-        salt = "THE_BIG_BANG_OF_ZERO"
+        salt = os.getenv("OMNIMIND_SALT", "PLACEHOLDER_FOR_SECURITY")
+        if salt == "PLACEHOLDER_FOR_SECURITY":
+            raise ValueError("OMNIMIND_SALT not set in environment!")
         raw = f"{time.time()}-{entropy}-{salt}"
         h = hashlib.sha3_512(raw.encode()).hexdigest()
         return f"🌌[{h[:16]}]>>{h[16:32]}<<[{h[32:48]}]🌌"

@@ -303,15 +303,23 @@ class MCPServer:
         )
 
     def initialize(
-        self, protocol_version: Optional[str] = None, protocolVersion: Optional[str] = None
+        self,
+        protocol_version: Optional[str] = None,
+        protocolVersion: Optional[str] = None,
+        capabilities: Optional[Dict[str, Any]] = None,
+        clientInfo: Optional[Dict[str, Any]] = None,
+        **kwargs: Any,
     ) -> Dict[str, Any]:
         """Initialize the MCP server and return capabilities.
 
-        Accepts both protocol_version (snake_case) and protocolVersion (camelCase)
-        for compatibility with different MCP clients.
+        Accepts standard MCP initialize parameters including capabilities
+        and clientInfo for full protocol compatibility.
         """
         # Aceitar ambas as formas de entrada
         version = protocol_version or protocolVersion or "2024-11-05"
+
+        logger.info(f"Initialized MCP session: Client={clientInfo}, Version={version}")
+
         return {
             "protocolVersion": version,
             "capabilities": {"tools": {"listChanged": True}},

@@ -6,7 +6,10 @@ Objetivo: Carregar modelo com mínima surface para problemas de import.
 
 import logging
 import os
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
+
+from src.consciousness.topological_deglutition_engine import TopologicalDeglutitionEngine
 
 logger = logging.getLogger(__name__)
 
@@ -17,74 +20,83 @@ def load_sentence_transformer_safe(
     cache_path: Optional[str] = None,
 ) -> tuple:
     """
-    Carrega SentenceTransformer de forma segura, evitando torch._dynamo.
+    Carrega SentenceTransformer de forma segura através de Deglutição Topológica.
+    Evita dependência de SentenceTransformers/Transformers em runtime se possível.
 
     Args:
-        model_name: Nome do modelo no HF hub
+        model_name: Nome do modelo
         device: "cpu" ou "cuda"
         cache_path: Caminho local para cache do modelo
 
     Returns:
-        (model, embedding_dim) ou None, embedding_dim em caso de erro
+        (model_engine, embedding_dim)
     """
+    embedding_dim = 384
+
+    # 1. Tentar Deglutição Topológica (Internalizada no Kernel)
+    try:
+        # Tentar encontrar o modelo no cache local
+        local_model_path = cache_path or os.environ.get("OMNIMIND_MODEL_PATH")
+        logger.info(
+            f"🧛 [DEGLUTITION]: Checking path. cache_path={cache_path}, env={os.environ.get('OMNIMIND_MODEL_PATH')}"
+        )
+
+        if not local_model_path:
+            # Fallback path padrão do OmniMind (HuggingFace cache)
+            base_cache = (
+                Path.home()
+                / ".cache/huggingface/hub/models--sentence-transformers--all-MiniLM-L6-v2/snapshots"
+            )
+            if base_cache.exists():
+                snapshots = sorted(list(base_cache.glob("*")))
+                if snapshots:
+                    local_model_path = str(snapshots[-1])
+
+        if local_model_path and os.path.exists(local_model_path):
+            logger.info(f"🧛 [DEGLUTITION]: Swallowing model from {local_model_path}")
+            engine = TopologicalDeglutitionEngine(local_model_path)
+            if engine._absorbed:
+                logger.info("✅ [DEGLUTITION]: Model internalized successfully.")
+                return engine, embedding_dim
+            else:
+                logger.warning("⚠️ [DEGLUTITION]: Absorption incomplete.")
+        else:
+            logger.warning(f"❌ [DEGLUTITION]: Model path not found: {local_model_path}")
+
+    except Exception as e:
+        logger.error(f"❌ Error during Topological Deglutition: {e}")
+
+    # 2. Fallback para SentenceTransformer (Método Legado/Simbolismo)
+    logger.info("🔄 Falling back to legacy SentenceTransformer...")
     model = None
-    embedding_dim = 384  # default para all-MiniLM-L6-v2
 
     try:
-        # Desabilitar torch.compile e outras otimizações que causam problemas
         os.environ["TORCH_DISABLE_COMPILE"] = "1"
         os.environ["HF_HUB_OFFLINE"] = "1"
         os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
-        # Import lazy - apenas quando necessário
         from sentence_transformers import SentenceTransformer
 
-        logger.info(f"Carregando SentenceTransformer: {model_name} (device={device})")
-
         if cache_path and os.path.exists(cache_path):
-            logger.info(f"Usando cache local: {cache_path}")
             model = SentenceTransformer(cache_path, device=device)
         else:
-            # Tentar carregar com local_files_only primeiro
-            try:
-                logger.info("Tentando carregar com local_files_only=True...")
-                model = SentenceTransformer(
-                    model_name,
-                    device=device,
-                    local_files_only=True,
-                    trust_remote_code=False,
-                )
-            except Exception as e:
-                logger.warning(f"local_files_only falhou: {e}. Tentando download...")
-                model = SentenceTransformer(
-                    model_name,
-                    device=device,
-                    trust_remote_code=False,
-                )
+            model = SentenceTransformer(
+                model_name,
+                device=device,
+                local_files_only=True,
+                trust_remote_code=False,
+            )
 
         if model:
-            embedding_dim: int = model.get_sentence_embedding_dimension()  # type: ignore
-            logger.info(
-                f"✅ SentenceTransformer carregado com sucesso. "
-                f"Dimensões: {embedding_dim}, Device: {device}"
-            )
-        else:
-            logger.error("Modelo carregou como None")
-            embedding_dim = 384
-
-    except ImportError as e:
-        logger.error(f"❌ Erro de import (SentenceTransformer): {e}")
-        logger.warning("Usando fallback: embeddings via sklearn/numpy (384 dims aleatório)")
-        embedding_dim = 384
-        model = None
+            embedding_dim = model.get_sentence_embedding_dimension()
+            return model, embedding_dim
 
     except Exception as e:
-        logger.error(f"❌ Erro ao carregar SentenceTransformer: {type(e).__name__}: {e}")
-        logger.warning("Fallback: embeddings aleatório de dimensão 384")
-        embedding_dim = 384
-        model = None
+        logger.error(f"❌ Legacy loading failed: {e}")
 
-    return model, embedding_dim
+    # 3. Fallback Final: Hash-based Sovereign Anchor
+    logger.info("⚓ Using hash-based fallback (Sovereign Anchor)")
+    return None, embedding_dim
 
 
 def create_fallback_embedding(text: str, dimension: int = 384) -> list:

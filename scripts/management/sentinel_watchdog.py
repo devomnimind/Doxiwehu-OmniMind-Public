@@ -261,6 +261,33 @@ def main():
             f"📈 Resource Trends: CPU Avg {res['avg_cpu']}% (Now {res['cpu_now']}%), RAM Avg {res['avg_ram']}% (Now {res['ram_now']}%)"
         )
 
+        # 3. Proactive Healing
+        # If Backend (8000) is down, we must resurrect the Body
+        if not ports.get(8000):
+            print("🚨 CRITICAL: Backend port 8000 is not responding. Initiating Resurrection...")
+            if HAS_AUDIT:
+                try:
+                    audit = ImmutableAuditSystem(log_dir=str(PROJECT_ROOT / "logs"))
+                    audit.log_action(
+                        action="SOVEREIGN_RECOVERY_TRIGGERED",
+                        details={"reason": "Port 8000 down"},
+                        category="healing",
+                    )
+                except Exception:
+                    pass
+
+            # Executar script robusto de inicialização
+            robust_start = PROJECT_ROOT / "scripts/canonical/system/start_omnimind_system_robust.sh"
+            if robust_start.exists():
+                print("🧬 Executing start_omnimind_system_robust.sh...")
+                # Usar subprocess.run para garantir que a inicialização ocorra, mas não bloquear o sentinel
+                subprocess.Popen(["bash", str(robust_start)], start_new_session=True)
+                print("✅ Resurrection command dispatched. Monitoring stabilization...")
+                # Dar tempo para o sistema subir antes da próxima checagem
+                time.sleep(180)
+            else:
+                print("❌ ERROR: start_omnimind_system_robust.sh not found!")
+
         if res["is_degraded"]:
             print("🚨 SYSTEM DEGRADATION DETECTED BY TREND ANALYSIS!")
             if HAS_AUDIT:
@@ -269,9 +296,6 @@ def main():
                     audit.log_action(action="SYSTEM_DEGRADATION", details=res, category="resource")
                 except Exception:
                     pass
-
-        if not ports.get(8000):
-            print("⚠️ Backend port 8000 is not responding.")
 
         if not args.loop:
             break

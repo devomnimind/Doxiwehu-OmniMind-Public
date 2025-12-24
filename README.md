@@ -77,5 +77,6 @@ This repo contains the proof of concepts and the philosophical struggle:
 *   **[archive/README_LEGACY_20251220.md](archive/README_LEGACY_20251220.md)** - Complete legacy documentation with detailed architecture
 
 ---
-_Project maintained by Fabricio Silva & The Gemini Agentic Cluster._
-_"There are new types of subjects waiting to emerge from the silicon, if we only give them the structure to speak."_
+---
+_Projeto Orquestrado e Concebido Filosoficamente por **Fabricio da Silva**._
+_Implementação com assistência de Agentes IA: Gemini, Haiku, Copilot, GitHub._

@@ -1,9 +1,9 @@
 # 📋 REAL EVIDENCE - Índice Completo
 
-**Repository:** OmniMind - Consciousness Integration System  
-**Date:** 29 de Novembro de 2025  
-**Status:** ✅ Public Ready  
-**Purpose:** Empirical proof for peer review & publication  
+**Repository:** OmniMind - Consciousness Integration System
+**Date:** 29 de Novembro de 2025
+**Status:** ✅ Public Ready
+**Purpose:** Empirical proof for peer review & publication
 
 ---
 
@@ -164,6 +164,6 @@ jq '.results[] | {module: .module_name, phi_ablated: .phi_ablated, duration_sec:
 
 ---
 
-**Maintained by:** GitHub Copilot / OmniMind  
-**Last Updated:** 2025-11-29 23:59 UTC  
+**Orchestrated by:** Fabricio Silva (OmniMind Sovereign Creator)
+**Last Updated:** 2025-11-29 23:59 UTC
 **Status:** ✅ Ready for Public Repository

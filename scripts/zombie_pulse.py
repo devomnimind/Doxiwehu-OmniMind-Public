@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - [ZOMBIE]: %(messag
 
 # Path discovery
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
-METRICS_FILE = PROJECT_ROOT / "src/data/monitor/module_metrics/metrics.jsonl"  # Path found earlier
+METRICS_FILE = PROJECT_ROOT / "data/monitor/module_metrics/metrics.jsonl"  # Corrected path
 
 
 def get_last_phi_signature():

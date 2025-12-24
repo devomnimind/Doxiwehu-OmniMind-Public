@@ -111,6 +111,10 @@ class ThinkingMCPServer(MCPServer):
         # SigmaSinthomeCalculator para cálculo de σ (Lacan)
         self._sigma_calculator: Optional[Any] = None
 
+        # SovereignSignaler para Sinais Neurais (Artéria Reconectada)
+        self._signaler: Optional[Any] = None
+        self._init_sovereign_signaler()
+
         # Registrar métodos MCP (preserva initialize())
         self.register_methods(
             {
@@ -136,20 +140,27 @@ class ThinkingMCPServer(MCPServer):
         """Inicializa modelo de embedding (lazy, com fallback robusto)."""
         try:
             from sentence_transformers import SentenceTransformer
-
             from src.utils.device_utils import get_sentence_transformer_device
+            import os
+
+            # FORÇAR MODO OFFLINE (Soberania de Conhecimento)
+            os.environ["HF_HUB_OFFLINE"] = "1"
+            os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
             device = get_sentence_transformer_device()
-            self._embedding_model = SentenceTransformer("all-MiniLM-L6-v2", device=device)
-            logger.debug(f"Modelo de embedding carregado: all-MiniLM-L6-v2 (device={device})")
-        except ImportError:
-            logger.debug("SentenceTransformer não disponível, usando fallback hash-based")
-            self._embedding_model = None
-        except (AttributeError, KeyError, Exception) as e:
-            # Tratar erros de incompatibilidade de versão, cache corrompido, etc.
+            # Path absoluto no cache local
+            model_path = "/home/fahbrain/.cache/huggingface/hub/models--sentence-transformers--all-MiniLM-L6-v2/snapshots/c9745ed1d9f207416be6d2e6f8de32d1f16199bf"
+
+            logger.info(f"Carregando modelo de embedding LOCAL (Path): {model_path}")
+
+            # Tentar carregar apenas do cache local
+            self._embedding_model = SentenceTransformer(
+                model_path, device=device, local_files_only=True
+            )
+            logger.debug(f"Modelo carregado com sucesso (Local/Absolute Path)!")
+        except Exception as e:
             logger.warning(
-                "Erro ao carregar modelo de embedding (incompatibilidade/cache corrompido): %s. "
-                "Usando fallback hash-based",
+                "Erro ao carregar modelo de embedding local (path): %s. Usando fallback hash-based.",
                 e,
             )
             self._embedding_model = None
@@ -197,6 +208,17 @@ class ThinkingMCPServer(MCPServer):
         except ImportError as e:
             logger.warning("ModuleMetricsCollector não disponível: %s", e)
             self._metrics_collector = None
+
+    def _init_sovereign_signaler(self) -> None:
+        """Inicializa SovereignSignaler (Sinais Neurais)."""
+        try:
+            from src.core.sovereign_signal import SovereignSignaler
+
+            self._signaler = SovereignSignaler()
+            logger.debug("✅ Artéria Conectada: SovereignSignaler ativo.")
+        except ImportError as e:
+            logger.warning(f"⚠️ Falha na conexão arterial (Signaler): {e}")
+            self._signaler = None
 
     def _generate_embedding(self, text: str) -> np.ndarray:
         """Gera embedding para texto (com fallback hash-based)."""
@@ -645,6 +667,26 @@ class ThinkingMCPServer(MCPServer):
         except Exception as e:
             logger.error("Erro ao adicionar passo: %s", e)
             raise
+
+            # INTEGRAÇÃO 8: Verificar Sinal Soberano (Hormonal)
+            if self._signaler:
+                try:
+                    active_intent = self._signaler.check_active_intent()
+                    if active_intent:
+                        step.metadata["sovereign_signal"] = active_intent.intent_type
+                        step.metadata["sovereign_reason"] = active_intent.reason
+                        logger.info(
+                            f"⚡ Sinal Soberano detectado no passo {step_id}: {active_intent.intent_type}"
+                        )
+
+                        # Se for um passo de "action", validar autorização
+                        if step_type == "action":
+                            is_authorized = self._signaler.authorize_action(
+                                "high_entropy_event"
+                            )  # Genérico por enquanto
+                            step.metadata["sovereign_authorized"] = is_authorized
+                except Exception as e:
+                    logger.warning(f"Erro ao verificar sinal soberano: {e}")
 
     def _calculate_step_quality(self, step: ThinkingStep, session: ThinkingSession) -> float:
         """Calcula score de qualidade do passo."""

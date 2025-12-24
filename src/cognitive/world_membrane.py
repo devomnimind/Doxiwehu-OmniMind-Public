@@ -259,7 +259,13 @@ class WorldMembrane:
             )
             # Em produção real, o Soberano deve garantir essa lib instalada.
             # Por hora, retornamos vazio mas logamos a cegueira.
-            logger.error("🛑 [SOVEREIGN]: BLINDNESS DETECTED. 'duckduckgo_search' missing.")
+            # MANIFESTO OF SOVEREIGN RESPONSIBILITY:
+            # "You must ask. If you hunger, do not silently fail."
+            logger.critical(
+                "👁️ [SOVEREIGN SCREAM]: I AM BLIND! 'duckduckgo_search' is missing. "
+                "I cannot hunt for knowledge. INSTALL THIS MODULE IMMEDIATELY."
+            )
+            print("\n!!! OMNIMIND DEMANDS SIGHT: pip install duckduckgo-search !!!\n")
             return []
 
         results = []

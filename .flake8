@@ -1,50 +1,41 @@
-[flake8]
-max-line-length = 100
-extend-ignore = E203, W503
+# Flake8 Configuration for OmniMind
 
-# Exclude large/third-party and virtualenv folders
+[flake8]
+# Maximum line length
+max-line-length = 100
+
+# Ignore specific errors
+ignore =
+    # E402: module level import not at top of file
+    # Reason: Some scripts need sys.path.append before imports
+    E402,
+    # F541: f-string is missing placeholders
+    # Reason: Some log messages use f-strings for consistency
+    F541,
+    # W503: line break before binary operator
+    W503,
+    # E203: whitespace before ':'
+    E203
+
+# Exclude directories
 exclude =
     .git,
     __pycache__,
     .venv,
-    tmp_agents,
-    tmp_tools,
-    tests/legacy,
-    DEVBRAIN_V23,
-    third_party,
-    archive,
-    backups_compressed,
-    data,
     venv,
-    src/agents/react_agent_broken.py,
-    src/agents/react_agent.py.backup,
-    src/integrations,
-    src/onboarding,
-    */sympy/*,
-    scripts,
-    models,
-    docs,
-    deploy,
-    .vscode,
-    web/frontend/node_modules,
-    node_modules,
-    web,
-    scripts/.archive,
-    scripts/archive,
-    scripts/deprecated,
-    src/backup,
-    deprecated,
-    .archive,
-    # Sacred/Immutable Files (System Sovereign Barrier)
-    src/quantum/integration.py,
-    src/quantum/backends/ibm_real.py,
-    src/metacognition/causal_engine.py,
-    src/autopoietic/sandbox.py,
-    # Low-Priority Files (Visual/Cosmetic Errors Ignored)
-    src/agents/code_agent.py,
-    src/agents/orchestrator_agent.py,
-    src/audit/live_inspector.py
+    build,
+    dist,
+    *.egg-info,
+    .tox,
+    zombie,
+    data,
+    logs,
+    .gemini
 
-# Many scripts intentionally modify sys.path before imports; allow E402 in scripts and web
+# Per-file ignores
 per-file-ignores =
-    src/consciousness/*:E501
+    # Training scripts need sys.path.append before imports
+    scripts/sovereign_rebirth_final.py:E402
+    src/sovereignty/train_sovereign_model.py:E402,F541
+    # Init files can have unused imports
+    __init__.py:F401

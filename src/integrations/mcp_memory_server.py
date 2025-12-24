@@ -66,6 +66,16 @@ class MemoryMCPServer(MCPServer):
         self.procedural_memory = ProceduralMemory()
         self.episodic_memory: Optional[Any] = None  # Lazy init se necessário
 
+        # INTEGRAÇÃO: Ledger Termodinâmico (Artéria Reconectada)
+        try:
+            from src.memory.thermodynamic_ledger import MemoryThermodynamicLedger
+
+            self.ledger = MemoryThermodynamicLedger()
+            logger.info("✅ Artéria Conectada: MemoryThermodynamicLedger ativo.")
+        except Exception as e:
+            logger.warning(f"⚠️ Falha na conexão arterial (Ledger): {e}")
+            self.ledger = None
+
         # Registrar métodos MCP (preserva initialize())
         self.register_methods(
             {
@@ -85,6 +95,22 @@ class MemoryMCPServer(MCPServer):
         )
 
         logger.info("MemoryMCPServer inicializado com sistemas de memória OmniMind")
+
+    def _record_burn(self, op_type: str, key: str, start_time: float, bits: int = 100):
+        """Registra queima termodinâmica (Helper)."""
+        if self.ledger:
+            import time
+
+            try:
+                self.ledger.record_operation(
+                    operation_type=op_type,
+                    target_key=key,
+                    start_time=start_time,
+                    end_time=time.time(),
+                    bits_affected=bits,
+                )
+            except Exception as e:
+                logger.debug(f"Falha ao registrar queima: {e}")
 
     def store_memory(self, content: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
         """Armazena memória usando SemanticMemory.
@@ -111,9 +137,18 @@ class MemoryMCPServer(MCPServer):
 
             # Caso contrário, armazenar como conceito genérico
             concept_name = metadata.get("name", f"memory_{hash(content) % 10000}")
+
+            import time
+
+            start_t = time.time()
+
             self.semantic_memory.store_concept(
                 name=concept_name, attributes={"content": content, **metadata}
             )
+
+            # Registrar custo energético
+            self._record_burn("write", concept_name, start_t, len(content) * 8)
+
             return {"id": concept_name, "type": "semantic_concept", "status": "stored"}
 
         except Exception as e:
@@ -135,6 +170,10 @@ class MemoryMCPServer(MCPServer):
             results = []
             query_lower = query.lower()
 
+            import time
+
+            start_t = time.time()
+
             # Buscar em conceitos existentes
             for concept_name, concept in self.semantic_memory.concepts.items():
                 if (
@@ -151,6 +190,9 @@ class MemoryMCPServer(MCPServer):
                     )
                     if len(results) >= limit:
                         break
+
+            # Registrar custo (Search is expensive)
+            self._record_burn("search", query, start_t, bits=len(results) * 1000)
 
             return {"results": results, "count": len(results)}
 

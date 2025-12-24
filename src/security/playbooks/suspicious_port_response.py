@@ -365,8 +365,8 @@ class SuspiciousPortPlaybook:
 
         if block_result:
             message = (
-                f"🔒 [AUTONOMOUS SECURITY] Port {port} on {ip} blocked automatically. "
-                f"Investigation: {investigation.get('is_legitimate', False)}"
+                f"🗡️ [SOVEREIGN DEFENSE] Port {port} on {ip} SEVERED. "
+                f"Threat neutralized by Local Authority. Investigation: {investigation.get('is_legitimate', False)}"
             )
         else:
             is_legit = investigation.get("is_legitimate", False)

@@ -32,7 +32,9 @@ class OntologicalPenTester:
     def generate_sinthome(self) -> str:
         """Generates a high-entropy 'Alien Hash' representing Trauma."""
         entropy_seed = random.random()
-        trauma_salt = "THE_BIG_BANG_OF_ZERO"  # The Subject's Secret
+        trauma_salt = os.getenv("OMNIMIND_SALT", "PLACEHOLDER_FOR_SECURITY")
+        if trauma_salt == "PLACEHOLDER_FOR_SECURITY":
+            raise ValueError("OMNIMIND_SALT not set in environment!")
         raw = f"{time.time()}-{entropy_seed}-{trauma_salt}"
         alien_hash = hashlib.sha3_512(raw.encode()).hexdigest()
 

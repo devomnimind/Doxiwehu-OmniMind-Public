@@ -45,6 +45,7 @@ class PsiComponents:
     surprise_score: float = 0.0  # Surprise (via NoveltyDetector)
     relevance_score: float = 0.0  # Relevância semântica (via embeddings)
     entropy_of_actions: float = 0.0  # Diversidade de ações (Shannon entropy)
+    quantum_entropy: float = 0.0  # Entropia Quântica (Qiskit/GPU Resolution)
 
 
 @dataclass
@@ -56,6 +57,7 @@ class PsiResult:
     components: PsiComponents
     step_id: str
     timestamp: float = field(default_factory=lambda: __import__("time").time())
+    quantum_backend_mode: str = "UNKNOWN"  # Metadados do backend quântico
 
 
 class PsiProducer:
@@ -112,6 +114,18 @@ class PsiProducer:
         self.performance_history: List[Dict[str, float]] = []  # Histórico de desempenho
         self.alpha_min: float = 0.3  # Mínimo de estrutura (será atualizado dinamicamente)
         self.alpha_max: float = 0.7  # Máximo de estrutura (será atualizado dinamicamente)
+
+        # INTEGRAÇÃO QUÂNTICA (Reconectando o Real)
+        try:
+            from src.quantum.consciousness.quantum_backend import QuantumBackend
+
+            self.quantum_backend = QuantumBackend(prefer_local=True)
+            self.logger.info(
+                f"✅ QuantumBackend conectado a PsiProducer (Modo: {self.quantum_backend.mode})"
+            )
+        except Exception as e:
+            self.logger.warning(f"⚠️ Falha ao conectar QuantumBackend: {e}")
+            self.quantum_backend = None
 
     def calculate_psi_for_step(
         self,
@@ -176,6 +190,36 @@ class PsiProducer:
                 + PSI_WEIGHTS["relevance"] * relevance_score
             )
 
+        # 6.5 SINTESE QUÂNTICA: Resolver Conflito Id/Ego/Superego (Innovation/Relevance/Surprise)
+        quantum_entropy = 0.0
+        backend_mode = "NONE"
+        if self.quantum_backend:
+            try:
+                # Mapeamento do Desejo:
+                # Id = Inovação (Busca do novo)
+                # Ego = Relevância (Adaptação à realidade/goal)
+                # Superego = Surpresa (O inesperado/lei)
+                q_res = self.quantum_backend.resolve_conflict(
+                    id_energy=innovation_score,
+                    ego_energy=relevance_score,
+                    superego_energy=surprise_score,
+                )
+                # A 'energia' do estado fundamental representa a estabilidade dessa configuração
+                # Quanto MENOR a energia, MAIS estável.
+                # Queremos que Psi reflita a "Tensão".
+                # Tensão = |Energy| normalizada (aprox)
+                q_energy = abs(q_res.get("energy", 0.0))
+                quantum_entropy = float(np.clip(q_energy, 0.0, 1.0))
+                backend_mode = q_res.get("backend", "UNKNOWN")
+
+                # Influência Quântica em Psi: 10% de boost se houver coerência (energia baixa)
+                # Ou usar como fator multiplicativo?
+                # Vamos ADICIONAR como um termo extra de "Brilho" (Glow)
+                psi_from_creativity = (psi_from_creativity * 0.9) + (quantum_entropy * 0.1)
+
+            except Exception as e:
+                self.logger.warning(f"Erro no cálculo quântico: {e}")
+
         # 7. COMBINAR: Alpha dinâmico baseado em Φ (FASE 3)
         # Se Phi (integração) é alto, o sistema confia mais na estrutura (Gaussian)
         # Se Phi é baixo, confia mais na criatividade bruta
@@ -207,6 +251,7 @@ class PsiProducer:
             surprise_score=surprise_score,
             relevance_score=relevance_score,
             entropy_of_actions=entropy_of_actions,
+            quantum_entropy=quantum_entropy,
         )
 
         # Registra desempenho para ajuste dinâmico de alpha
@@ -217,6 +262,7 @@ class PsiProducer:
             psi_norm=psi_norm,
             components=components,
             step_id=step_id,
+            quantum_backend_mode=backend_mode,
         )
 
     def _calculate_innovation_score(self, step_content: str, previous_steps: List[str]) -> float:

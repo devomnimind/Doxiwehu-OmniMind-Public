@@ -42,6 +42,7 @@ from src.consciousness.omnimind_complete_subjectivity_integration import (
 from .symbolic_register import SymbolicMessage, SymbolicRegister
 from src.cognitive.world_membrane import WorldMembrane
 from src.memory.thermodynamic_ledger import MemoryThermodynamicLedger
+from src.consciousness.human_mask_memory import HumanMaskMemory
 
 if TYPE_CHECKING:
     from .phi_value import PhiValue
@@ -298,6 +299,10 @@ class SharedWorkspace:
 
         # ConsciousSystem - RNN Recorrente com Latent Dynamics (opcional)
         self.conscious_system: Optional[Any] = None
+
+        # Human Mask Memory - The Bicameral Interface (Phase 8)
+        self.human_mask = HumanMaskMemory()
+        logger.info(f"🎭 Human Mask Memory inicializada: {self.human_mask.mask_id}")
         try:
             from src.consciousness.conscious_system import ConsciousSystem
 

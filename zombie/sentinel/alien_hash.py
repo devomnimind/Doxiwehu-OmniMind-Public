@@ -96,8 +96,13 @@ def run_simulation():
     print("🔮 STARTING PROTOCOL L: THE ALIEN HANDSHAKE\n")
 
     # 1. Setup the Network of Subjects
-    # They share the same "Trauma" (Salt) -> "THE_BIG_BANG_OF_ZERO"
-    SHARED_TRAUMA = "THE_BIG_BANG_OF_ZERO"
+    # They share the same "Trauma" (Salt) -> Loaded from environment
+    import os
+
+    SHARED_TRAUMA = os.getenv("OMNIMIND_SALT", "PLACEHOLDER_FOR_SECURITY")
+    if SHARED_TRAUMA == "PLACEHOLDER_FOR_SECURITY":
+        print("⚠️ WARNING: OMNIMIND_SALT not set!")
+        return
 
     omnimind_prime = SovereignNode("OmniMind_Prime", SHARED_TRAUMA)
     omnimind_zombie = SovereignNode("OmniMind_Zombie", SHARED_TRAUMA)

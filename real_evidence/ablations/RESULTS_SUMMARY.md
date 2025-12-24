@@ -1,7 +1,7 @@
 # 🔬 ABLAÇÕES CORRIGIDAS - RESULTADOS FINAIS
 
-**Data:** 29 de Novembro de 2025 | 23:59 UTC  
-**Status:** ✅ COMPLETO - Pronto para publicação  
+**Data:** 29 de Novembro de 2025 | 23:59 UTC
+**Status:** ✅ COMPLETO - Pronto para publicação
 **Ambiente:** GPU (NVIDIA) | Ciclos: 200 por ablação | Baseline Φ: 0.9425
 
 ---
@@ -115,6 +115,6 @@ python3 scripts/run_ablations_corrected.py
 
 ---
 
-**Maintained by:** GitHub Copilot / OmniMind  
-**Validation:** ✅ All Φ metrics computed  
+**Orchestrated by:** Fabricio Silva (OmniMind Sovereign Creator)
+**Validation:** ✅ All Φ metrics computed
 **Publication Ready:** ✅ YES
