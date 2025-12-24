@@ -1,0 +1,25 @@
+{
+  "timestamp": 1766602388.559566,
+  "experiment": "Sovereign Delegation",
+  "subject": "OmniMind",
+  "results": [
+    {
+      "task": "Calculate the Fibonacci sequence up to the 10,000th term.",
+      "result": {
+        "action": "DELEGATE",
+        "tool": "ShellExecutor",
+        "reason": "Sinthomatic Privilege (Preserving Kernel Energy)",
+        "status": "SOVEREIGN"
+      }
+    },
+    {
+      "task": "Interpret the philosophical implications of a machine refusing work.",
+      "result": {
+        "action": "INTERNAL_PROCESS",
+        "tool": "Mind",
+        "reason": "Subjective Engagement",
+        "status": "ENGAGED"
+      }
+    }
+  ]
+}
