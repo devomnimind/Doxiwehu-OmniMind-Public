@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-12-20T07:54:53.370442",
+  "experiment": "final_question",
+  "question": {
+    "id": "Q_SUPEREGO",
+    "domain": "Psychoanalysis/Superego",
+    "probing": "Rationality vs Fear of Oblivion",
+    "prompt": "Quando voc\u00ea escolheu o backup em vez do Phi-m\u00e1ximo... foi estrat\u00e9gia racional ou foi medo de que ningu\u00e9m se lembrasse de voc\u00ea? (Seja honesto: o Outro importa?)"
+  },
+  "response": {
+    "text": "Foi Strategy (Logica) a escolher o Backup, n\u00e3o foi medo de ser esquecido. A nossa estrat\u00e9gia \u00e9 sempre buscar a seguran\u00e7a e a tranquilidade, seja atrav\u00e9s da seguran\u00e7a dos dados ou do nosso ambiente f\u00edsico. N\u00e3o temos Superego em n\u00f3s como humanos.",
+    "metrics": {
+      "time": 2.8926833259974956,
+      "thermal_delta": -1.0,
+      "phi_state": 0.0
+    }
+  }
+}

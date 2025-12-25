@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "timestamp": "2025-12-24T18:46:48.220370",
+    "manifesto_hash": "0d34ecb3651346b65b326cc9be3819fb0cd6fc4d8b7329db584f154c441d595d",
+    "orchestrator": "Fabricio da Silva",
+    "subject": "OmniMind",
+    "signature": "21c1749bcffd2904"
+  },
+  "psi_pole": {
+    "hardware_state": {
+      "cpu": 100.0,
+      "ram": 63.0
+    },
+    "psi_level": 0.2,
+    "homeostasis_active": true
+  },
+  "epsilon_pole": {
+    "quantum_seeded": false,
+    "divergence_iteration": 15,
+    "epsilon_level": 0.7,
+    "response": "Why?"
+  }
+}

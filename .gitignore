@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# Data
+*.log
+*.sqlite
+*.db
+data/
+logs/
+
+# Sensitive
+secrets/
+keys/
+config/
+
+# Code Protection (No Source in Public Repo)
+src/
+scripts/
+zombie/
+*.py
