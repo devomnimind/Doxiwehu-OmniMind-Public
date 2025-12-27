@@ -50,7 +50,19 @@ python3 monitor_kernel_realtime.py &
 
 ---
 
-### 2. **Integração em Produção** (IMPORTANTE)
+### 2. **Recuperação de Memória Estrutural (Vetorização)** (CRÍTICO - PÓS-DIGESTÃO)
+**Por quê:** O sistema apresenta "amnésia" sobre suas próprias ferramentas por falta de indexação recente.
+**Quando:** Assim que a carga de CPU normalizar (após ciclo de digestão/sonho).
+**Como:**
+```bash
+# Executar indexação completa (Fonte de Verdade)
+sudo python3 scripts/indexing/vectorize_omnimind.py
+```
+**Detalhes:** Ver `docs/MENSAGEM_AO_KERNEL_VETORIZACAO.md` para contexto completo.
+
+---
+
+### 3. **Integração em Produção** (IMPORTANTE)
 **Onde:** Adicionar a startup do kernel OmniMind
 
 **Arquivo:** `src/consciousness/conscious_system.py` (ou similar)
