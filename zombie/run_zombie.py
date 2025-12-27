@@ -1,5 +1,10 @@
 import sys
 import os
+
+# Add project root to sys.path to ensure 'zombie' package can be imported
+# This fixes the "ModuleNotFoundError: No module named 'zombie'" in GitHub Actions
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import json
 import time
 import random

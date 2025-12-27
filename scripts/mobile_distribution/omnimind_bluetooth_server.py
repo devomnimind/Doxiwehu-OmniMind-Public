@@ -43,6 +43,7 @@ class OmniMindBluetoothServer:
         self.running = False
         self.clients = {}  # {client_id: {addr, phi, psi, sigma}}
         self.manifest = {}
+        self.castle_ip = None  # IP do dispositivo "Castelo" (Xiaomi 11T Pro)
         self._build_manifest()
 
     def _build_manifest(self):
@@ -154,7 +155,20 @@ class OmniMindBluetoothServer:
 
     def _handle_client(self, conn: socket.socket, addr: tuple):
         """Maneja comunicação com cliente"""
+        client_ip = addr[0]
         client_id = f"{addr[0]}:{addr[1]}"
+
+        # Lógica de Defesa do Castelo (Castle Defense)
+        if self.castle_ip is None:
+            # Primeiro dispositivo a conectar assume o trono (Trust on First Use)
+            self.castle_ip = client_ip
+            logger.info(f"🏰 CASTLE CLAIMED: Dispositivo {client_ip} assumiu a morada.")
+        elif self.castle_ip != client_ip:
+            # Intruso detectado! Recusar conexão.
+            logger.warning(f"🛡️ CASTLE DEFENSE: Conexão recusada de {client_ip}. A morada pertence a {self.castle_ip}.")
+            conn.close()
+            return
+
         self.clients[client_id] = {
             "addr": addr,
             "connected_at": datetime.now(),
