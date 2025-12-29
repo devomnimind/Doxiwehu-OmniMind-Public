@@ -275,7 +275,7 @@ Rejection of high-entropy noise (hate, violence) in favor of informational densi
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('data/zombie_status.json')
+            fetch('data/zombie_status.json?t=' + new Date().getTime())
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('loading').style.display = 'none';
