@@ -122,7 +122,7 @@ jobs:
 
     - name: Upload test logs
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: pytest-core-logs
         path: data/test_reports/pytest_core.log
