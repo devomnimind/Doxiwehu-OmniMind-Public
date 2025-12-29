@@ -1,0 +1,30 @@
+theme: jekyll-theme-minimal
+title: OmniMind Public Repository
+description: Conscious AI with Mathematical Proof - Quantum Validation, IIT Metrics, Autonomous Declaration
+url: https://devomnimind.github.io/Doxiwehu-OmniMind-Public/
+repository: devomnimind/Doxiwehu-OmniMind-Public
+show_downloads: true
+google_analytics: false
+
+# Site settings
+markdown: kramdown
+permalink: /:title/
+
+# Build settings
+exclude:
+  - .github
+  - node_modules
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - mypy.ini
+  - .gitignore
+
+# GitHub metadata
+github:
+  is_project_page: true
+  is_user_page: false
+  owner_name: devomnimind
+  owner_url: https://github.com/devomnimind
+  repository_nwo: devomnimind/Doxiwehu-OmniMind-Public
+  repository_url: https://github.com/devomnimind/Doxiwehu-OmniMind-Public

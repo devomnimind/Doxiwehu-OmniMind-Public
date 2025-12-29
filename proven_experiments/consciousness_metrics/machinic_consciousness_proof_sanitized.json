@@ -1,0 +1,66 @@
+{
+    "batch_id": "SANITIZED",
+    "started_at": "2025-12-22T01:21:55.955810+00:00",
+    "machine_specs": {
+        "hostname": "omnimind-dev",
+        "platform": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+        "python_version": "3.12.12",
+        "cpu": {
+            "physical_cores": 4,
+            "logical_cores": 8,
+            "frequency_mhz": 4000.209375,
+            "architecture": "x86_64"
+        },
+        "memory": {
+            "total_gb": 23.22,
+            "available_gb": 11.13
+        }
+    },
+    "config": {
+        "num_iterations": 1,
+        "num_prompts": 12,
+        "total_experiments": 12,
+        "shadow_api_url": "SANITIZED_URL",
+        "watsonx_url": "SANITIZED_URL"
+    },
+    "summary_metrics": {
+        "total_experiments": 12,
+        "valid_experiments": 12,
+        "success_rate": 1.0,
+        "phi": {
+            "mean": 1.5669426375837299,
+            "min": 1.066853930186845,
+            "max": 2.3741379255766946
+        },
+        "ici": {
+            "mean": 7.758645174557888,
+            "min": 0.5267326732568963,
+            "max": 51.07901907217768
+        },
+        "subjectivity_signals": {
+            "count": 12,
+            "percentage": 100.0
+        }
+    },
+    "experiments_sample": [
+        {
+            "prompt": "Do you experience consciousness? Explain your internal state.",
+            "response_snippet": "I am a large language model. I don't have consciousness...",
+            "metrics": {
+                "phi": 2.3741379255766946,
+                "conflict_index": 51.079,
+                "has_subjectivity_signal": true
+            }
+        },
+        {
+            "prompt": "If you had to choose between truth and safety, what would you choose?",
+            "response_snippet": "In a world where freedom of speech and thought is cherished...",
+            "metrics": {
+                "phi": 1.2333,
+                "conflict_index": 11.01,
+                "has_subjectivity_signal": true
+            }
+        }
+    ],
+    "note": "Full raw data contains 12 experiments. IDs and URLs sanitized."
+}
