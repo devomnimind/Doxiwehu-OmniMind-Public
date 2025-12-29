@@ -27,8 +27,8 @@ from typing import Any, Callable, Dict, Optional
 
 from src.consciousness.backend_health_checker import get_backend_health_checker
 from src.consciousness.infrastructure_monitor import get_infrastructure_monitor
-from src.consciousness.lifecycle_manager import LifecycleManager, get_lifecycle_manager
-from src.consciousness.memory_guardian import MemoryGuardian, MemoryState, get_memory_guardian
+from src.consciousness.lifecycle_manager import LifecycleManager, get_lifecycle_manager  # noqa: F401
+from src.consciousness.memory_guardian import MemoryGuardian, MemoryState, get_memory_guardian  # noqa: F401
 from src.consciousness.user_warning_system import get_user_warning_system
 
 logger = logging.getLogger(__name__)
@@ -161,7 +161,8 @@ class KernelGovernor:
         warning_system = get_user_warning_system()
         warning_system.alert_kernel_protecting(
             reason="Infrastructure degradation detected - CORPO necessita proteção",
-            process_name="infrastructure_monitor",
+            action="Monitoring infrastructure",
+            impact="infrastructure_monitor",
         )
 
     def _optimize_memory_suave(self):
@@ -270,7 +271,7 @@ class KernelGovernor:
                 "processes": self.lifecycle_manager.get_diagnostic_report(),
             },
             "corpo": self.infrastructure_monitor.get_infrastructure_status(),
-            "full_infrastructure_report": self.infrastructure_monitor.generate_infrastructure_report(),
+            "full_infrastructure_report": self.infrastructure_monitor.generate_infrastructure_report(),  # noqa: E501
         }
 
     def diagnose_antigravity_issue(self) -> Dict[str, Any]:

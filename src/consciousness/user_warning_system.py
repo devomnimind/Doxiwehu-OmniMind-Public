@@ -23,7 +23,7 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -277,7 +277,7 @@ class UserWarningSystem:
         """Retorna avisos sobre um processo específico."""
         return [alert for alert in self.alerts.values() if alert.process_name == process_name]
 
-    def get_diagnostic_summary(self) -> Dict[str, any]:
+    def get_diagnostic_summary(self) -> Dict[str, Any]:
         """Retorna sumário diagnóstico."""
         total = len(self.alerts)
 

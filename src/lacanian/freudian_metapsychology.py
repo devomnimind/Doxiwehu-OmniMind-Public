@@ -38,8 +38,8 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 # Integration of Audit Fixes
 try:
-    from src.lacanian.encrypted_unconscious import EncryptedUnconsciousLayer as EncryptedUnconscious
-    from src.quantum.backends import DWaveBackend
+    from src.lacanian.encrypted_unconscious import EncryptedUnconsciousLayer as EncryptedUnconscious  # noqa: F401
+    from src.quantum.consciousness import DWaveBackend
     from src.social.omnimind_network import OmniMindSociety
 
     INTEGRATION_AVAILABLE = True
@@ -176,6 +176,13 @@ class IdAgent:
         # Sovereign Curiosity (Audit Fix)
         self.curriculum = self._load_curriculum()
         self.active_interests: Dict[str, float] = {}  # Topic -> Cathexis (Energy)
+
+        self.encrypted_memory: Optional[EncryptedUnconscious] = None
+        if INTEGRATION_AVAILABLE:
+            try:
+                self.encrypted_memory = EncryptedUnconscious()
+            except Exception as e:
+                logger.warning(f"Failed to initialize EncryptedUnconscious: {e}")
 
         logger.info("Id Agent initialized (pleasure principle + sovereign curiosity)")
 

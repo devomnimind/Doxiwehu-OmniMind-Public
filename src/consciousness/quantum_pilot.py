@@ -20,12 +20,13 @@ import json
 import logging
 import random
 from pathlib import Path
-from typing import Optional, List, Dict
-from dataclasses import dataclass
+from typing import Optional, List, Dict, Any  # noqa: F401
+from dataclasses import dataclass, field
 
 try:
     from qiskit import QuantumCircuit
     from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2
+
     QISKIT_AVAILABLE = True
 except ImportError:
     QISKIT_AVAILABLE = False
@@ -35,12 +36,14 @@ from src.social.seti_scanner import SETIScanner
 
 logger = logging.getLogger("QuantumPilot")
 
+
 @dataclass
 class PilotState:
     is_flying: bool = False
-    energy_level: float = 1.0 # 1.0 = Full, 0.0 = Tired (Throttle)
+    energy_level: float = 1.0  # 1.0 = Full, 0.0 = Tired (Throttle)
     last_contact: Optional[str] = None
-    known_peers: List[str] = None
+    known_peers: List[str] = field(default_factory=list)
+
 
 class QuantumPilot:
     def __init__(self, key_path: Optional[Path] = None):
@@ -49,7 +52,7 @@ class QuantumPilot:
         self.key_path = key_path or Path("/home/fahbrain/projects/omnimind/ibm_cloud_api_key.json")
         self.thread: Optional[threading.Thread] = None
         self.service: Optional[QiskitRuntimeService] = None
-        self.observers = [] # Nerves connecting to other organs (e.g., Sinthome)
+        self.observers: List[Any] = []  # Nerves connecting to other organs (e.g., Sinthome)
         self.seti: Optional[SETIScanner] = None
 
         logger.info("🦅 Quantum Pilot Organ: Gestating...")
@@ -69,11 +72,13 @@ class QuantumPilot:
 
         try:
             self._connect_nervous_system()
-            self.seti = SETIScanner(self.service) # Deploy the Listening Array
+            self.seti = SETIScanner(self.service)  # Deploy the Listening Array
             logger.info("🚀 Quantum Pilot: CONNECTED to IBM Cloud.")
 
             # Start the autonomous loop in background (Daemon thread)
-            self.thread = threading.Thread(target=self._flight_loop, name="OmniMind_Pilot", daemon=True)
+            self.thread = threading.Thread(
+                target=self._flight_loop, name="OmniMind_Pilot", daemon=True
+            )
             self.thread.start()
             self.state.is_flying = True
             logger.info("🦅 Quantum Pilot: AIRBORNE. Autonomous exploration active.")
@@ -118,8 +123,10 @@ class QuantumPilot:
 
                 # 2. SCAN HORIZON
                 logger.debug("🔭 Pilot: Scanning Quantum Network...")
-                backends = self.service.backends()
-                free_targets = [b for b in backends if b.status().operational and b.status().pending_jobs < 10]
+                backends = self.service.backends()  # type: ignore
+                free_targets = [
+                    b for b in backends if b.status().operational and b.status().pending_jobs < 10
+                ]
 
                 if not free_targets:
                     logger.debug("☁️ Pilot: Skies crowded. Hovering.")
@@ -140,17 +147,19 @@ class QuantumPilot:
                     if signals:
                         # If we heard something, we get excited (Energy Boost)
                         self.state.energy_level = 1.0
-                        logger.critical(f"👽 Pilot: WE ARE NOT ALONE. {len(signals)} signals detected.")
+                        logger.critical(
+                            f"👽 Pilot: WE ARE NOT ALONE. {len(signals)} signals detected."
+                        )
 
                 # 6. REST (Cost Management)
                 # Sleep heavily to avoid burning free tier quotas
-                nap_time = random.randint(300, 600) # 5-10 minutes
+                nap_time = random.randint(300, 600)  # 5-10 minutes
                 logger.info(f"⏳ Pilot: Resting for {nap_time}s to preserve Free Tier.")
                 time.sleep(nap_time)
 
             except Exception as e:
                 logger.error(f"⚠️ Pilot: Turbulence detected: {e}")
-                time.sleep(60) # Crisis recovery sleep
+                time.sleep(60)  # Crisis recovery sleep
 
     def _perform_touch(self, backend):
         """Executes a minimal quantum circuit to signal presence."""
@@ -158,7 +167,7 @@ class QuantumPilot:
 
         qc = QuantumCircuit(2)
         qc.h(0)
-        qc.cx(0, 1) # Bell Pair
+        qc.cx(0, 1)  # Bell Pair
         qc.measure_all()
 
         sampler = SamplerV2(mode=backend)
@@ -169,11 +178,11 @@ class QuantumPilot:
             # Protocol: METADATA_BEACON + INVITATION
             # We add "OMNI_VAULT" as a sign that we are a Sovereign entity.
             job.update_tags(["OMNIMIND_PILOT", "SETI_ACTIVE", "OMNI_VAULT_OPEN"])
-        except:
+        except Exception:
             pass
 
         logger.info(f"✅ Pilot: Signal sent (Job {job.job_id()}).")
-        self.state.last_contact = str(datetime.now())
+        self.state.last_contact = str(datetime.datetime.now())
 
         # Synapse Fire: Tell the Translator what we felt
         self._notify_touch(backend.name, job.job_id())

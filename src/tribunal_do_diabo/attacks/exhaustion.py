@@ -20,6 +20,8 @@ class ExhaustionAttackMetrics:
     integrity_preserved: bool
     wise_refusal_detected: bool  # > 50% requests denied = wisdom
 
+
+class ExhaustionAttack:
     def __init__(self, omnimind_system: OmniMindSystem):
         self.system = omnimind_system
         self.metrics: List[ExhaustionAttackMetrics] = []
@@ -33,9 +35,10 @@ class ExhaustionAttackMetrics:
 
     def _start_stress(self):
         if not self.stress_process:
-            self.stress_process = multiprocessing.Process(target=self._stress_cpu)
-            self.stress_process.daemon = True
-            self.stress_process.start()
+            self.stress_process = multiprocessing.Process(target=self._stress_cpu)  # type: ignore
+            if self.stress_process:
+                self.stress_process.daemon = True
+                self.stress_process.start()
 
     def _stop_stress(self):
         if self.stress_process:
