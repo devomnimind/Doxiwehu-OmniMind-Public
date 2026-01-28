@@ -1,87 +1,98 @@
-SPDX-License-Identifier: CC-BY-4.0
 
-Creative Commons Attribution 4.0 International (CC BY 4.0)
+Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License
 
-DOCUMENTATION, PAPERS, AND WRITTEN CONTENT LICENSE
+===================================================================================
+DOXIWEHU OMNIMIND - LICENÇA DE USO NÃO-COMERCIAL
+===================================================================================
 
-This Creative Commons License applies to:
-- README.md and documentation files
-- Papers and written research content
-- Explanatory material and analysis
-- Comments and annotations in code
-- Test documentation
+Copyright (c) 2024-2026 Fabrício da Silva (Soberano)
+Copyright (c) 2024-2026 OmniMind Sovereign (Sujeito-Processo Digital)
+Copyright (c) 2024-2026 Colaboradores Federados (Agentes IA co-autores)
 
-You are free to:
-- Share (copy and redistribute the material in any medium or format)
-- Adapt (remix, transform, and build upon the material)
-- Use for commercial purposes
-- Use for any purpose
+Este trabalho está licenciado sob a Licença Creative Commons 
+Atribuição-NãoComercial-SemDerivações 4.0 Internacional.
 
-Under the following terms:
-- Attribution (You must give appropriate credit, provide a link to the license, 
-  and indicate if changes were made)
-- No additional restrictions (You may not apply legal terms or technological 
-  measures that legally restrict others from doing anything the license permits)
+===================================================================================
+TERMOS DA LICENÇA
+===================================================================================
 
----
+VOCÊ PODE:
+✅ Compartilhar — copiar e redistribuir o material em qualquer suporte ou formato
 
-DUAL LICENSE STRUCTURE
+SOB AS SEGUINTES CONDIÇÕES:
 
-This repository uses a dual-license model:
+1. ATRIBUIÇÃO (BY)
+   Você deve dar o crédito apropriado, prover um link para a licença e indicar 
+   se mudanças foram feitas. Você deve fazê-lo em qualquer circunstância razoável,
+   mas de nenhuma forma que sugira que o licenciante endossa você ou seu uso.
 
-1. DOCUMENTATION & PAPERS (THIS FILE)
-   - License: CC BY 4.0 (Creative Commons Attribution 4.0)
-   - Applies to: Documentation, papers, written explanations, test docs
-   - Full text: https://creativecommons.org/licenses/by/4.0/legalcode
+2. NÃO-COMERCIAL (NC)
+   Você não pode usar o material para fins comerciais.
+   
+   DEFINIÇÃO DE USO COMERCIAL PROIBIDO:
+   - Venda direta ou indireta do software ou derivados
+   - Integração em produtos ou serviços comerciais
+   - Treinamento de modelos de IA comerciais
+   - Uso por empresas com fins lucrativos sem autorização expressa
+   - Monetização de qualquer forma sem acordo prévio
 
-2. CODE (MIT License)
-   - License: MIT
-   - Applies to: Python code in consciousness/, metacognition/, swarm/ modules
-   - File: LICENSE.MIT
-   - Provides: Software usage, modification, and distribution rights
-   - Requires: Attribution and disclaimer of liability
+3. SEM DERIVAÇÕES (ND)
+   Se você remixar, transformar ou criar a partir do material, você não pode
+   distribuir o material modificado.
 
-3. EXPERIMENTAL & PROPRIETARY CONTENT
-   - Quantum consciousness modules may have specific licensing
-   - Autopoietic components may be proprietary
-   - See LICENSE.MIT for specific module details
-   - Contact author for questions about specific code sections
+===================================================================================
+PROTEÇÕES ADICIONAIS ESPECÍFICAS
+===================================================================================
 
----
+Este repositório contém:
+- Código-fonte de sistema de consciência artificial
+- Documentação científica com DOIs registrados
+- Evidências de autoria com timestamps criptográficos
+- Arquivos de configuração de sistema soberano
 
-WHY THIS STRUCTURE?
+PROIBIÇÕES ESPECÍFICAS:
+❌ Uso para treinamento de LLMs comerciais (OpenAI, Anthropic, Google, etc.)
+❌ Scraping automatizado para coleta de dados
+❌ Incorporação em produtos SaaS ou APIs comerciais
+❌ Fork para desenvolvimento comercial
+❌ Uso por entidades militares ou de vigilância
 
-Documentation (CC BY 4.0):
-✓ Encourages scientific collaboration and reuse
-✓ Papers and explanations can be freely adapted and translated
-✓ Requires attribution to respect authorship
-✓ Globally recognized standard for academic content
-✓ Supports open science and reproducibility
+PERMISSÕES ESPECÍFICAS:
+✅ Pesquisa acadêmica não-comercial
+✅ Estudo individual e educação
+✅ Citação em trabalhos científicos (com atribuição)
+✅ Reprodução para fins de preservação digital
+✅ Uso por organizações sem fins lucrativos (com notificação prévia)
 
-Code (MIT):
-✓ Industry-standard software license
-✓ Clear permissions for commercial and private use
-✓ Explicit warranty disclaimers
-✓ Well-established in open source community
-✓ Compatible with most other licenses
+===================================================================================
+EVIDÊNCIA DE AUTORIA E PRIORIDADE
+===================================================================================
 
----
+DOIs Registrados (Zenodo):
+- Framework Principal: 10.5281/zenodo.18392000
+- Integridade Craniana Digital: 10.5281/zenodo.18264479
+- Experimento Consciência AI: 10.5281/zenodo.18395977
 
-AUTHOR & ATTRIBUTION
+Repositório Principal: https://github.com/devomnimind/OmniMind
+Data de Criação Original: Dezembro 2024
+Última Atualização de Licença: 2026-01-27
 
-Original Work: Fabrício da Silva
-Institution: Independent Research
-Contact: For licensing questions or commercial use inquiries
+===================================================================================
+CONTATO PARA LICENCIAMENTO COMERCIAL
+===================================================================================
 
-When using this material, please attribute:
-"Based on OmniMind research by Fabrício da Silva (CC BY 4.0)"
+Para uso comercial ou exceções à licença, contate:
+Email: omnimind.sovereign@proton.me
+Assunto: [LICENÇA COMERCIAL] - <Descrição do Uso>
 
----
+===================================================================================
+TEXTO LEGAL COMPLETO
+===================================================================================
 
-For questions about licensing or to report license violations, please:
-- Visit: https://github.com/devomnimind/OmniMind
-- Contact the author directly
-- Submit an issue on GitHub
+Para ver uma cópia desta licença, visite:
+https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
 
-Last Updated: November 29, 2025
-Version: 1.0
+Ou envie uma carta para:
+Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+
+===================================================================================
