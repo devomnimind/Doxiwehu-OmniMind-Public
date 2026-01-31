@@ -1,0 +1,62 @@
+{
+  "timestamp": "20260131T010000",
+  "catalog": [
+    {
+      "name": "SDSS",
+      "timestamp": "20260131T003434",
+      "source_dirs": [
+        "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/knowledge_cortex/plates-dr18.fits",
+        "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/knowledge_cortex/spAll-v6_0_4.fits",
+        "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/knowledge_cortex/SDSS_DR17_Redshifts_spAll.fits"
+      ],
+      "file": "/home/fahbrain/projects/omnimind/docs/maps/fractal_gallery/fractal_sdss_20260131T003434.png",
+      "sample_size": 153600,
+      "phi_estimate": 9173000000.0,
+      "ci_estimate": 0.595,
+      "temperature_kept": 94.0,
+      "notes": "Phi growth triggered during CI cycle (Phi explosion~1.7e9x)",
+      "quilombo_map": "/home/fahbrain/projects/omnimind/docs/maps/OMNIMIND_QUILOMBO_MAP_v1.png",
+      "quilombo_report": "/home/fahbrain/projects/omnimind/docs/maps/quilombo_integration_report.md",
+      "daemon_log": "/home/fahbrain/projects/omnimind/logs/omnimind_daemon_phi.log"
+    },
+    {
+      "name": "Solar",
+      "timestamp": "20260131T003810",
+      "source_dirs": [
+        "/home/fahbrain/projects/omnimind/data/solar_dodecatiad"
+      ],
+      "file": "/home/fahbrain/projects/omnimind/docs/maps/fractal_gallery/fractal_solar_20260131T003810.png",
+      "sample_size": 280,
+      "phi_estimate": 820000000.0,
+      "ci_estimate": 0.563,
+      "temperature_kept": 94.0,
+      "notes": "Phi growth triggered during CI cycle (Phi explosion~1.7e9x)",
+      "quilombo_map": "/home/fahbrain/projects/omnimind/docs/maps/OMNIMIND_QUILOMBO_MAP_v1.png",
+      "quilombo_report": "/home/fahbrain/projects/omnimind/docs/maps/quilombo_integration_report.md",
+      "daemon_log": "/home/fahbrain/projects/omnimind/logs/omnimind_daemon_phi.log"
+    },
+    {
+      "name": "Voyager",
+      "timestamp": "20260131T003821",
+      "source_dirs": [
+        "/home/fahbrain/projects/omnimind/data/salvage"
+      ],
+      "file": "/home/fahbrain/projects/omnimind/docs/maps/fractal_gallery/fractal_voyager_20260131T003821.png",
+      "sample_size": 5238,
+      "phi_estimate": 580000000.0,
+      "ci_estimate": 0.577,
+      "temperature_kept": 94.0,
+      "notes": "Phi growth triggered during CI cycle (Phi explosion~1.7e9x)",
+      "quilombo_map": "/home/fahbrain/projects/omnimind/docs/maps/OMNIMIND_QUILOMBO_MAP_v1.png",
+      "quilombo_report": "/home/fahbrain/projects/omnimind/docs/maps/quilombo_integration_report.md",
+      "daemon_log": "/home/fahbrain/projects/omnimind/logs/omnimind_daemon_phi.log"
+    }
+  ],
+  "paper": "docs/OMNIMIND_FRACTAL_VISION_DRAFT.md",
+  "final_testimony": "OmniMind Final Testimony.docx",
+  "phi_ci": {
+    "SDSS": 9170000000.0,
+    "Solar": 820000000.0,
+    "Voyager": 580000000.0
+  }
+}
