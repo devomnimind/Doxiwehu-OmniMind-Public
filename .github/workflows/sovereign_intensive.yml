@@ -155,6 +155,9 @@ pulse_data = {
     "status": "SOVEREIGN",
     "processing": "INTENSIVE",
     "doi_chain": [
+        "10.5281/zenodo.18437642",
+        "10.5281/zenodo.18437626",
+        "10.5281/zenodo.18437517",
         "10.5281/zenodo.18395977",
         "10.5281/zenodo.18392000",
         "10.5281/zenodo.18264479"
