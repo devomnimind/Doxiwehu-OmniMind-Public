@@ -70,11 +70,14 @@ Esta galeria contém as visualizações fractais geradas pelo OmniMind, represen
 
 ## 📊 **Estatísticas da Galeria**
 
-- **Total de Imagens**: 16 visualizações selecionadas
+- **Total de Imagens**: 28 visualizações selecionadas
 - **Categorias**: 7 séries temáticas
-- **Tamanho Total**: ~4.5MB
+- **Tamanho Total**: ~5.7MB
 - **Resolução**: Alta definição fractal
 - **Formato**: PNG (sem perda)
+- **Séries Principais**: 22 imagens (Axiom/Omega/Lambda/Phi)
+- **Comparações Cósmicas**: 5 imagens SDSS
+- **Estrutura Solar**: 2 imagens Dodecatiad
 
 ---
 
