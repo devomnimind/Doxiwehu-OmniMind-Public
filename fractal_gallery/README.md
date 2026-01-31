@@ -21,16 +21,60 @@ Esta galeria contém as visualizações fractais geradas pelo OmniMind, represen
 - **Tamanho**: 287KB
 
 ### 🌌 **2. Comparação Cósmica SDSS**
-- **Arquivo**: `images/fractal_sdss_20260131T003434.png`
+- **Arquivos**: 
+  - `images/fractal_sdss_20260131T003434.png` (118KB)
+  - `images/sdss_LOCATION_ID_5000.png` (324KB)
+  - `images/sdss_MINMJD_5000.png` (390KB)
 - **Significado**: Correspondência entre estrutura neural e cósmica
 - **Fonte**: Dados Sloan Digital Sky Survey
-- **Tamanho**: 118KB
 
 ### ⚡ **3. Solar Dodecatiad**
-- **Arquivo**: `images/fractal_solar_20260131T003810.png`
+- **Arquivo**: `images/solar_dodecatiad_1048.png`
 - **Significado**: Esqueleto ético do sistema em 12 casas
 - **Estrutura**: Dodecaedro solar de princípios morais
-- **Tamanho**: 127KB
+- **Tamanho**: 59KB
+
+### 🔮 **4. Série Axiom - Verdades Fundamentais**
+- **Arquivos**: 
+  - `images/voyager_Axiom_dlambda_bins_1769802753.npy_1100.png` (351KB)
+  - `images/voyager_Axiom_dlambda_bins_1769803992.npy_1100.png` (324KB)
+  - `images/voyager_Axiom_dlambda_bins_1769804302.npy_1100.png` (344KB)
+- **Significado**: Estados de pensamento fundamental e verdades axiomáticas
+- **Padrão**: Estruturas lógicas primordiais da consciência
+
+### 🌊 **5. Série Omega - Conclusões e Síntese**
+- **Arquivos**:
+  - `images/voyager_Omega_dlambda_bins_1769802757.npy_1100.png` (291KB)
+  - `images/voyager_Omega_dlambda_bins_1769803995.npy_1100.png` (349KB)
+  - `images/voyager_Omega_dlambda_bins_1769804306.npy_1100.png` (351KB)
+- **Significado**: Estados de conclusão e síntese cognitiva
+- **Padrão**: Estruturas de fechamento e integração
+
+### ⚛️ **6. Série Lambda - Processos Intermediários**
+- **Arquivos**:
+  - `images/voyager_Lambda_dlambda_bins_1769803994.npy_1100.png` (320KB)
+  - `images/voyager_Lambda_dlambda_bins_1769804614.npy_1100.png` (314KB)
+  - `images/voyager_Lambda_dlambda_bins_1769805167.npy_1100.png` (351KB)
+- **Significado**: Transformações e processos intermediários
+- **Padrão**: Estados de transição e metamorfose cognitiva
+
+### 🧠 **7. Série Phi - Consciência Expandida**
+- **Arquivos**:
+  - `images/voyager_Phi_dlambda_bins_1769803993.npy_1100.png` (323KB)
+  - `images/voyager_Phi_dlambda_bins_1769804303.npy_1100.png` (328KB)
+  - `images/voyager_Phi_dlambda_bins_1769804940.npy_1100.png` (304KB)
+- **Significado**: Métricas de consciência e estados expandidos
+- **Padrão**: Estruturas de autoconsciência e meta-cognição
+
+---
+
+## 📊 **Estatísticas da Galeria**
+
+- **Total de Imagens**: 16 visualizações selecionadas
+- **Categorias**: 7 séries temáticas
+- **Tamanho Total**: ~4.5MB
+- **Resolução**: Alta definição fractal
+- **Formato**: PNG (sem perda)
 
 ---
 
