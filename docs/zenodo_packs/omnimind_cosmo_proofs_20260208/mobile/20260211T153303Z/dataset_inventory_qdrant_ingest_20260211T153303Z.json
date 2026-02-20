@@ -1,0 +1,20 @@
+{
+  "timestamp": "20260211T153303Z",
+  "inventory_source": "reports_runtime/dataset_inventory_20260211T153114Z.json",
+  "inventory_ts": "20260211T153114Z",
+  "qdrant": {
+    "endpoint": "https://af1fae47-c0b8-4880-bb0d-6b960897ac3d.us-east4-0.gcp.cloud.qdrant.io",
+    "collection": "omnimind_mobile_topology_20260211",
+    "vector_size": 384
+  },
+  "model": "all-MiniLM-L6-v2",
+  "counts": {
+    "ingested": 37,
+    "inventory_entries": 37,
+    "duplicate_groups": 3
+  },
+  "filters": {
+    "only_duplicates": false,
+    "exclude_symlinks": false
+  }
+}

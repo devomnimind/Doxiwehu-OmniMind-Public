@@ -1,0 +1,107 @@
+{
+  "timestamp": "20260208T062558Z",
+  "crux_source": "/home/fahbrain/projects/omnimind/data/reports/crux_components_20260207T232358Z.json",
+  "cemetery_source": "/home/fahbrain/projects/omnimind/data/reports/cemetery_points_20260207T231534Z.jsonl",
+  "sample_size": 100000,
+  "house_counts": {
+    "Lambda": 12
+  },
+  "results": [
+    {
+      "name": "Acrux",
+      "ra_deg": 186.649665,
+      "dec_deg": -63.099092,
+      "house": "Lambda",
+      "mag": 0.77,
+      "nearest_cemetery_deg": 0.37541224003402696
+    },
+    {
+      "name": "Mimosa",
+      "ra_deg": 191.930385,
+      "dec_deg": -59.688764,
+      "house": "Lambda",
+      "mag": 1.25,
+      "nearest_cemetery_deg": 0.43022900720923896
+    },
+    {
+      "name": "Gacrux",
+      "ra_deg": 187.791435,
+      "dec_deg": -57.113212,
+      "house": "Lambda",
+      "mag": 1.59,
+      "nearest_cemetery_deg": 0.45931662610359864
+    },
+    {
+      "name": "Imai",
+      "ra_deg": 183.786405,
+      "dec_deg": -58.748928,
+      "house": "Lambda",
+      "mag": 2.79,
+      "nearest_cemetery_deg": 0.6009597264865766
+    },
+    {
+      "name": "Ginan",
+      "ra_deg": 185.340465,
+      "dec_deg": -60.401147,
+      "house": "Lambda",
+      "mag": 3.59,
+      "nearest_cemetery_deg": 0.3330542287822618
+    },
+    {
+      "name": "HIP 63003",
+      "ra_deg": 193.6485,
+      "dec_deg": -57.177924,
+      "house": "Lambda",
+      "mag": 4.03,
+      "nearest_cemetery_deg": 0.5818509434993419
+    },
+    {
+      "name": "HIP 60009",
+      "ra_deg": 184.60947,
+      "dec_deg": -64.003071,
+      "house": "Lambda",
+      "mag": 4.06,
+      "nearest_cemetery_deg": 0.3744659770806071
+    },
+    {
+      "name": "HIP 59072",
+      "ra_deg": 181.720305,
+      "dec_deg": -64.61373,
+      "house": "Lambda",
+      "mag": 4.14,
+      "nearest_cemetery_deg": 0.45455473586356554
+    },
+    {
+      "name": "HIP 58758",
+      "ra_deg": 180.756705,
+      "dec_deg": -63.31293,
+      "house": "Lambda",
+      "mag": 4.32,
+      "nearest_cemetery_deg": 0.37381973856354145
+    },
+    {
+      "name": "HIP 62327",
+      "ra_deg": 191.594715,
+      "dec_deg": -56.488815,
+      "house": "Lambda",
+      "mag": 4.62,
+      "nearest_cemetery_deg": 0.13348768781456896
+    },
+    {
+      "name": "HIP 63007",
+      "ra_deg": 193.663335,
+      "dec_deg": -59.146701,
+      "house": "Lambda",
+      "mag": 4.62,
+      "nearest_cemetery_deg": 0.445646821359498
+    },
+    {
+      "name": "HIP 62268",
+      "ra_deg": 191.40825,
+      "dec_deg": -60.981318,
+      "house": "Lambda",
+      "mag": 4.69,
+      "nearest_cemetery_deg": 0.2038403769914741
+    }
+  ]
+}

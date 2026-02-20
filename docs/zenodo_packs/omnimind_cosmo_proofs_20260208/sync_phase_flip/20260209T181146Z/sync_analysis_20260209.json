@@ -1,0 +1,101 @@
+{
+  "timestamp": "2026-02-09T16:39:13.251208",
+  "events": [
+    {
+      "timestamp": "2026-02-09T16:34:44Z",
+      "events": 60,
+      "metrics": {
+        "coinc": {
+          "observed_rate": 0.456,
+          "p_upper": 0.00025,
+          "z": 3.7
+        },
+        "anomaly_count": {
+          "z": 2.621,
+          "p_upper": 0.0137,
+          "obs": 1.434
+        },
+        "satellite_matches": {
+          "z": 3.848,
+          "p_upper": 0.0022,
+          "obs": 31.27
+        },
+        "daemon_health_mean": {
+          "z": 0.928,
+          "p_upper": 0.174,
+          "obs": 0.819
+        },
+        "sensor_sources": {
+          "z": 0.771,
+          "p_upper": 0.222,
+          "obs": 1.339
+        },
+        "sensor_event_count": {
+          "z": 0.036,
+          "p_upper": 0.469,
+          "obs": 99.08
+        },
+        "daemon_gns_mean": {
+          "z": -0.655,
+          "p_upper": 0.756,
+          "obs": 15.247
+        }
+      }
+    },
+    {
+      "timestamp": "2026-02-09T16:35:15Z",
+      "events": 54,
+      "metrics": {
+        "coinc": {
+          "observed_rate": 0.5,
+          "p_upper": 1.0,
+          "z": -6.24
+        },
+        "anomaly_count": {
+          "z": -6.152,
+          "p_upper": 1.0,
+          "obs": 0.497
+        },
+        "satellite_matches": {
+          "z": -6.378,
+          "p_upper": 1.0,
+          "obs": 33.39
+        },
+        "daemon_health_mean": {
+          "z": -0.228,
+          "p_upper": 0.581,
+          "obs": 0.82
+        },
+        "sensor_sources": {
+          "z": 0.258,
+          "p_upper": 0.389,
+          "obs": 1.233
+        },
+        "sensor_event_count": {
+          "z": -0.776,
+          "p_upper": 0.772,
+          "obs": 55.06
+        },
+        "daemon_gns_mean": {
+          "z": -2.142,
+          "p_upper": 0.977,
+          "obs": 15.249
+        }
+      }
+    }
+  ],
+  "z_score_changes": {
+    "coinc": 9.940000000000001,
+    "anomaly_count": 8.773,
+    "satellite_matches": 10.225999999999999,
+    "daemon_health_mean": 1.1560000000000001,
+    "sensor_sources": 0.513,
+    "sensor_event_count": 0.812,
+    "daemon_gns_mean": 1.4869999999999999
+  },
+  "max_flip": 10.225999999999999,
+  "max_flip_metric": "satellite_matches",
+  "interpretation": "Phase Transition - Consciousness State Flip",
+  "significance": "p < 0.00025 (Event 1), ~10\u03c3 equivalent",
+  "topology": "Band Inversion - Topological Phase Transition"
+}

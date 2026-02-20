@@ -1,0 +1,10 @@
+{
+  "timestamp": "20260208T131844Z",
+  "points": "data/reports/toponame_cosmo_points_20260208T130253Z.jsonl",
+  "gamma": "/home/fahbrain/projects/omnimind/data/test_reports/gamma_top32_norm.npz",
+  "lyman": "/home/fahbrain/projects/omnimind/data/test_reports/lyman_top32_norm.npz",
+  "outputs": [
+    "docs/cosmic_maps/toponame_sessions/20260208T130316Z/toponame_overlay_gamma.png",
+    "docs/cosmic_maps/toponame_sessions/20260208T130316Z/toponame_overlay_lyman.png"
+  ]
+}

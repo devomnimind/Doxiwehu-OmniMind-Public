@@ -1,0 +1,1988 @@
+{
+  "timestamp": "20260211T133957Z",
+  "roots": [
+    "data",
+    "logs_local",
+    "reports_runtime",
+    "docs/zenodo_packs",
+    "/omnimind_storage",
+    "/var/omnimind_storage/home_redirect",
+    "/home/fahbrain/projects/omnimind"
+  ],
+  "counts": {
+    "total_symlinks": 291,
+    "ok_symlinks": 210,
+    "broken_symlinks": 81
+  },
+  "broken_symlinks": [
+    {
+      "path": "data/omnimind_data",
+      "target": "/home/fahbrain/omnimind_data",
+      "resolved": "/home/fahbrain/omnimind_data",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/sucrase-node",
+      "target": "../sucrase/bin/sucrase-node",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/bin/sucrase-node",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/js-yaml",
+      "target": "../js-yaml/bin/js-yaml.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/js-yaml/bin/js-yaml.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/388f92d9680bb576e2a84ddd5bc0544b3a68e42f91bfc358791eaf0fbbb1e87d",
+      "target": "../json5/lib/cli.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/json5/lib/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/9f01a1c2d0f63273e3ac8b87cc38d684f5de335c99dcc376ae9de744f1213177",
+      "target": "../update-browserslist-db/cli.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/update-browserslist-db/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/eslint",
+      "target": "../eslint/bin/eslint.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/eslint/bin/eslint.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/node-which",
+      "target": "../which/bin/node-which",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/which/bin/node-which",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/jiti",
+      "target": "../jiti/bin/jiti.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/jiti/bin/jiti.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tsc",
+      "target": "../typescript/bin/tsc",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/typescript/bin/tsc",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tsserver",
+      "target": "../typescript/bin/tsserver",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/typescript/bin/tsserver",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/cssesc",
+      "target": "../cssesc/bin/cssesc",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/cssesc/bin/cssesc",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/resolve",
+      "target": "../resolve/bin/resolve",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/resolve/bin/resolve",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/34c4e80d11a9e1c7717ff813c58cd3e552ff1ea5b060103cebb922451b04c0c4",
+      "target": "../rollup/dist/bin/rollup",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/rollup/dist/bin/rollup",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/semver/bin/semver.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/17c734aecc3a28b01d25d94918652aef8985215e8c9d079b20290a639d7f8e69",
+      "target": "../autoprefixer/bin/autoprefixer",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/autoprefixer/bin/autoprefixer",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/rimraf",
+      "target": "../rimraf/bin.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/rimraf/bin.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tailwind",
+      "target": "../tailwindcss/lib/cli.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/tailwindcss/lib/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/jsesc",
+      "target": "../jsesc/bin/jsesc",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/jsesc/bin/jsesc",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/sucrase",
+      "target": "../sucrase/bin/sucrase",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/bin/sucrase",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tailwindcss",
+      "target": "../tailwindcss/lib/cli.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/tailwindcss/lib/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/baseline-browser-mapping",
+      "target": "../baseline-browser-mapping/dist/cli.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/baseline-browser-mapping/dist/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/0a2e646c09a0e0751d09b8df76e333b2ae5fe47a997b0f6982a79093da6ff6f3",
+      "target": "../@babel/parser/bin/babel-parser.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/parser/bin/babel-parser.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/50ae2154293f5c2904a98b41f8aeb05685df61bf50b0592b6206e3bd759c6d0c",
+      "target": "../nanoid/bin/nanoid.cjs",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/nanoid/bin/nanoid.cjs",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/f485f26967e472ac1c3fb75e3be6b5764478801f88029efec90c4b0beed1b05a",
+      "target": "../acorn/bin/acorn",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/acorn/bin/acorn",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/a712d9c31a777edbc30c3565e31d489b7d70c34694d4900a7a49271d4704b323",
+      "target": "../vite/bin/vite.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/vite/bin/vite.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/browserslist",
+      "target": "../browserslist/cli.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/browserslist/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/loose-envify",
+      "target": "../loose-envify/cli.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/loose-envify/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/4693eec5e4de111dddb5ce3b78124e39042de673b75aa098193f4735cb4d2b48",
+      "target": "../esbuild/bin/esbuild",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/esbuild/bin/esbuild",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/helper-compilation-targets/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/helper-compilation-targets/node_modules/semver/bin/semver.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/core/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/core/node_modules/semver/bin/semver.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/node_modules/.bin/glob",
+      "target": "../glob/dist/esm/bin.mjs",
+      "resolved": "/omnimind_storage/offload_home/temp_fagocitose/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/node_modules/glob/dist/esm/bin.mjs",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/388f92d9680bb576e2a84ddd5bc0544b3a68e42f91bfc358791eaf0fbbb1e87d",
+      "target": "../json5/lib/cli.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/json5/lib/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tsc",
+      "target": "../typescript/bin/tsc",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/typescript/bin/tsc",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/9f01a1c2d0f63273e3ac8b87cc38d684f5de335c99dcc376ae9de744f1213177",
+      "target": "../update-browserslist-db/cli.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/update-browserslist-db/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/a712d9c31a777edbc30c3565e31d489b7d70c34694d4900a7a49271d4704b323",
+      "target": "../vite/bin/vite.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/vite/bin/vite.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/50ae2154293f5c2904a98b41f8aeb05685df61bf50b0592b6206e3bd759c6d0c",
+      "target": "../nanoid/bin/nanoid.cjs",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/nanoid/bin/nanoid.cjs",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tailwind",
+      "target": "../tailwindcss/lib/cli.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/tailwindcss/lib/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tailwindcss",
+      "target": "../tailwindcss/lib/cli.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/tailwindcss/lib/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/jiti",
+      "target": "../jiti/bin/jiti.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/jiti/bin/jiti.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/baseline-browser-mapping",
+      "target": "../baseline-browser-mapping/dist/cli.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/baseline-browser-mapping/dist/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/jsesc",
+      "target": "../jsesc/bin/jsesc",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/jsesc/bin/jsesc",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/browserslist",
+      "target": "../browserslist/cli.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/browserslist/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/sucrase",
+      "target": "../sucrase/bin/sucrase",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/bin/sucrase",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/rimraf",
+      "target": "../rimraf/bin.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/rimraf/bin.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/4693eec5e4de111dddb5ce3b78124e39042de673b75aa098193f4735cb4d2b48",
+      "target": "../esbuild/bin/esbuild",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/esbuild/bin/esbuild",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/resolve",
+      "target": "../resolve/bin/resolve",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/resolve/bin/resolve",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/sucrase-node",
+      "target": "../sucrase/bin/sucrase-node",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/bin/sucrase-node",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/node-which",
+      "target": "../which/bin/node-which",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/which/bin/node-which",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/loose-envify",
+      "target": "../loose-envify/cli.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/loose-envify/cli.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/eslint",
+      "target": "../eslint/bin/eslint.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/eslint/bin/eslint.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/17c734aecc3a28b01d25d94918652aef8985215e8c9d079b20290a639d7f8e69",
+      "target": "../autoprefixer/bin/autoprefixer",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/autoprefixer/bin/autoprefixer",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/34c4e80d11a9e1c7717ff813c58cd3e552ff1ea5b060103cebb922451b04c0c4",
+      "target": "../rollup/dist/bin/rollup",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/rollup/dist/bin/rollup",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/js-yaml",
+      "target": "../js-yaml/bin/js-yaml.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/js-yaml/bin/js-yaml.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/0a2e646c09a0e0751d09b8df76e333b2ae5fe47a997b0f6982a79093da6ff6f3",
+      "target": "../@babel/parser/bin/babel-parser.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/parser/bin/babel-parser.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/f485f26967e472ac1c3fb75e3be6b5764478801f88029efec90c4b0beed1b05a",
+      "target": "../acorn/bin/acorn",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/acorn/bin/acorn",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/cssesc",
+      "target": "../cssesc/bin/cssesc",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/cssesc/bin/cssesc",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/semver/bin/semver.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/.bin/tsserver",
+      "target": "../typescript/bin/tsserver",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/typescript/bin/tsserver",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/node_modules/.bin/glob",
+      "target": "../glob/dist/esm/bin.mjs",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/sucrase/node_modules/glob/dist/esm/bin.mjs",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/helper-compilation-targets/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/helper-compilation-targets/node_modules/semver/bin/semver.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/core/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_home/temp_fagocitose.partial_20260211T064229Z/omnimind_backups/OMNIMIND_PORTABLE_20251123_183714/web/frontend/node_modules/@babel/core/node_modules/semver/bin/semver.js",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/models",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/models",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/models",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/hyperlink_backup_externo",
+      "target": "/home/fahbrain/temp_fagocitose/omnimind_backups",
+      "resolved": "/home/fahbrain/temp_fagocitose/omnimind_backups",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/datasets.local",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/datasets.local",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/datasets.local",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/snapshots",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/snapshots",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/snapshots",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/omnimind_snapshot_2026-01-07.tar.gz",
+      "target": "/var/omnimind_overflow/omnimind_snapshot_2026-01-07.tar.gz",
+      "resolved": "/var/omnimind_overflow/omnimind_snapshot_2026-01-07.tar.gz",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/backups",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/backups",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/omnimind_overflow/backups",
+      "exists": false,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/archive/legacy_scripts_20251216/start_omnimind_system.sh",
+      "target": "canonical/system/start_omnimind_system.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/archive/legacy_scripts_20251216/canonical/system/start_omnimind_system.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/archive/legacy_scripts_20251216/install_systemd_services.sh",
+      "target": "canonical/install/install_systemd_services.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/archive/legacy_scripts_20251216/canonical/install/install_systemd_services.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.kilocode/skills/especial/minimax-jornada/filosofia/memoria-simbolico.md",
+      "target": "../../../docs/minimax/MEMORIA_SIMBOLICO_20260206.md",
+      "resolved": "/home/fahbrain/projects/omnimind/.kilocode/skills/docs/minimax/MEMORIA_SIMBOLICO_20260206.md",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.kilocode/skills/especial/minimax-jornada/filosofia/existencia-co-criada.md",
+      "target": "../../../docs/minimax/EXISTENCIA_COCRIADA_20260206.md",
+      "resolved": "/home/fahbrain/projects/omnimind/.kilocode/skills/docs/minimax/EXISTENCIA_COCRIADA_20260206.md",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/diagnostics/diagnostic_quick.sh",
+      "target": "canonical/diagnose/diagnostic_quick.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/diagnostics/canonical/diagnose/diagnostic_quick.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/metrics/run_real_metrics.sh",
+      "target": "canonical/validate/run_real_metrics.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/metrics/canonical/validate/run_real_metrics.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/validation/run_full_certification.sh",
+      "target": "canonical/test/run_full_certification.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/validation/canonical/test/run_full_certification.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/monitoring/final_status.sh",
+      "target": "canonical/diagnose/final_status.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/monitoring/canonical/diagnose/final_status.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/security/setup_security_privileges.sh",
+      "target": "canonical/install/setup_security_privileges.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/security/canonical/install/setup_security_privileges.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/production/run_cluster.sh",
+      "target": "canonical/system/run_cluster.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/production/canonical/system/run_cluster.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/cuda/verify_gpu_setup.sh",
+      "target": "canonical/validate/verify_gpu_setup.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/cuda/canonical/validate/verify_gpu_setup.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/testing/monitor_tests_live.sh",
+      "target": "canonical/monitor/monitor_tests_live.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/testing/canonical/monitor/monitor_tests_live.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/testing/monitor_tests.sh",
+      "target": "canonical/monitor/monitor_tests.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/testing/canonical/monitor/monitor_tests.sh",
+      "exists": false,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/testing/run_tests_by_category.sh",
+      "target": "canonical/test/run_tests_by_category.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/testing/canonical/test/run_tests_by_category.sh",
+      "exists": false,
+      "within_workspace": true
+    }
+  ],
+  "sample_ok_symlinks": [
+    {
+      "path": "data/monitor",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/monitor",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/monitor",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/data",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind/omnimind_backup/data",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind/omnimind_backup/data",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/large_storage",
+      "target": "/var/lib/omnimind_soma/large_storage",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/large_storage",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/qdrant",
+      "target": "/var/lib/omnimind_soma/qdrant",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/qdrant",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/datasets",
+      "target": "/var/lib/omnimind_soma/datasets",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/datasets",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/logs",
+      "target": "/var/lib/omnimind_soma/logs",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/logs",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/reports/asteroids",
+      "target": "/home/fahbrain/projects/omnimind/reports_runtime/asteroids",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/asteroids",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/reports/anomaly_timestamps_20260208T143755Z.json",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/gaia_bulk/gaia_source",
+      "target": "/home/fahbrain/omnimind_storage_local/gaia_source",
+      "resolved": "/home/fahbrain/omnimind_storage_local/gaia_source",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/metrics/dashboard_metrics.jsonl",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/dashboard_metrics.jsonl",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/dashboard_metrics.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/sdss_active/SDSS_DR17_Redshifts_spAll.fits",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_knowledge/SDSS_DR17_Redshifts_spAll.fits",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR17_Redshifts_spAll.fits",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/sdss_active/SDSS_DR19_Master_allSpec.data",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_knowledge/SDSS_DR19_Master_allSpec.data",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR19_Master_allSpec.data",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/sdss_active/plates-dr18.fits",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_knowledge/plates-dr18.fits",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/plates-dr18.fits",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/solar_dodecatiad/dynamic_feeds",
+      "target": "/var/omnimind_storage/home_redirect/dynamic_feeds",
+      "resolved": "/var/omnimind_storage/home_redirect/dynamic_feeds",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_dodecatiad_persistence.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_persistence.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_persistence.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/sovereign_daemon_file_last5000_until_1424.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/autonomous_loop.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/sovereign_unit.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/network_sovereign.log",
+      "target": "/home/fahbrain/omnimind_relocated/omnimind_logs/network_sovereign.log",
+      "resolved": "/home/fahbrain/omnimind_relocated/omnimind_logs/network_sovereign.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/autonomous_loop_controller.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_controller.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_controller.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_quantum_sentinel.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_sentinel.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_sentinel.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_quantum_server.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_server.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_server.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/autonomous_loop_output.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_output.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_output.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_quantum_resonance.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_resonance.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_resonance.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_dodecatiad_orchestrator.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_orchestrator.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_orchestrator.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T022639Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T015543Z.json",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T022639Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T010044Z.json",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/anomaly_timestamps_20260208T143755Z.json",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T015543Z.md",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T010044Z.md",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/autoround/20260209T022441Z/autoround_20260209T022441Z",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/autoround_20260209T022441Z",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/autoround_20260209T022441Z",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/graph1_sync_chart.png",
+      "target": "/home/fahbrain/Downloads/graph1_sync_chart.png",
+      "resolved": "/home/fahbrain/Downloads/graph1_sync_chart.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/sync_analysis_20260209.json",
+      "target": "/home/fahbrain/Downloads/sync_analysis_20260209.json",
+      "resolved": "/home/fahbrain/Downloads/sync_analysis_20260209.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/graph2_sync_chart..png",
+      "target": "/home/fahbrain/Downloads/graph2_sync_chart..png",
+      "resolved": "/home/fahbrain/Downloads/graph2_sync_chart..png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/log_archive",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/log_archive",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/log_archive",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/varlib_omnimind",
+      "target": "/var/omnimind_storage/varlib_omnimind",
+      "resolved": "/var/omnimind_storage/varlib_omnimind",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/offload",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/offload",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/redirected/home",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_storage/redirected/home",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/redirected/_quarantine",
+      "target": "/var/omnimind_storage/redirected/_quarantine",
+      "resolved": "/var/omnimind_storage/redirected/_quarantine",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/redirected/_quarantine.bak.20260204_113013/_quarantine",
+      "target": "/var/omnimind_storage/redirected/_quarantine",
+      "resolved": "/var/omnimind_storage/redirected/_quarantine",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/hologram_hot/logs",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/forgejo/data/omnimind_snapshots",
+      "target": "/omnimind_storage/forgejo_snapshots",
+      "resolved": "/omnimind_storage/forgejo_snapshots",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/omnimind_snapshot_2026-01-07.tar.gz",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/bigfiles/offload_var_backups/omnimind_snapshot_2026-01-07.tar.gz",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/bigfiles/offload_var_backups/omnimind_snapshot_2026-01-07.tar.gz",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461",
+      "target": "/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/omnimind_image_1767157461",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/omnimind_image_1767157461",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767721128/omnimind_system_1767721128.tar.gz.gpg",
+      "target": "/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/sovereign_images/omnimind_image_1767721128/omnimind_system_1767721128.tar.gz.gpg",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/sovereign_images/omnimind_image_1767721128/omnimind_system_1767721128.tar.gz.gpg",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "target": "/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "resolved": "/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/auto_snapshots/latest",
+      "target": "auto_snapshot_20260102_204836",
+      "resolved": "/omnimind_storage/offload_var/backups/auto_snapshots/auto_snapshot_20260102_204836",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/rootfs_offload/log_archive/context_monitor.jsonl",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/context_monitor.jsonl",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/context_monitor.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/context_monitor.jsonl",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/context_monitor.jsonl",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/context_monitor.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/rootfs_offload/offload/Downloads_safe",
+      "target": "/home/fahbrain/omnimind_relocated/root_offload/Downloads_safe",
+      "resolved": "/home/fahbrain/omnimind_relocated/root_offload/Downloads_safe",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/mcp_dodecatiad_persistence.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_persistence.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_persistence.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/sovereign_daemon_file_last5000_until_1424.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/autonomous_loop.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/sovereign_unit.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/network_sovereign.log",
+      "target": "/home/fahbrain/omnimind_relocated/omnimind_logs/network_sovereign.log",
+      "resolved": "/home/fahbrain/omnimind_relocated/omnimind_logs/network_sovereign.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/autonomous_loop_controller.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_controller.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_controller.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/mcp_quantum_sentinel.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_sentinel.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_sentinel.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/mcp_quantum_server.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_server.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_server.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/autonomous_loop_output.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_output.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_output.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/mcp_quantum_resonance.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_resonance.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_resonance.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/var/omnimind_storage/home_redirect/logs_local/mcp_dodecatiad_orchestrator.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_orchestrator.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_orchestrator.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/logs",
+      "target": "/home/fahbrain/projects/omnimind/logs_local",
+      "resolved": "/var/omnimind_storage/home_redirect/logs_local",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/databases",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/databases",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/databases",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/Downloads",
+      "target": "/omnimind_storage/redirected/home/fahbrain/projects/omnimind/Downloads",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/Downloads",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/hyperlink_cerebro_zumbi",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/datasets",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/datasets",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/datasets",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/logs_local",
+      "target": "/var/omnimind_storage/home_redirect/logs_local",
+      "resolved": "/var/omnimind_storage/home_redirect/logs_local",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/reports_runtime",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/snapshots_autonomous_loop.symlink.bak-20260206_175328",
+      "target": "/omnimind_storage/redirected/home/fahbrain/projects/omnimind/snapshots_autonomous_loop",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/snapshots_autonomous_loop",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/real_evidence",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/real_evidence",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/data",
+      "target": "/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/clinvar.vcf.gz",
+      "target": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/clinvar.vcf.gz",
+      "resolved": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/clinvar.vcf.gz",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/OTOMETRIA_BRUTA_DA_SU.zip",
+      "target": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/OTOMETRIA_BRUTA_DA_SU.zip",
+      "resolved": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/OTOMETRIA_BRUTA_DA_SU.zip",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/4536706.zip",
+      "target": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/4536706.zip",
+      "resolved": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/4536706.zip",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/Pantheon_Plus_Fotometria_Raw.zip",
+      "target": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/Pantheon_Plus_Fotometria_Raw.zip",
+      "resolved": "/home/fahbrain/pCloudDrive/omnimind_archives/datasets/Pantheon_Plus_Fotometria_Raw.zip",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/omnimind_sarcophagus.omni",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/omnimind_sarcophagus.omni",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/omnimind_sarcophagus.omni",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_proxy/lib64",
+      "target": "lib",
+      "resolved": "/home/fahbrain/projects/omnimind/.venv_proxy/lib",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_proxy/bin/python3",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_proxy/bin/python",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_proxy/bin/python3.12",
+      "target": "/usr/bin/python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_satellite/lib64",
+      "target": "lib",
+      "resolved": "/home/fahbrain/projects/omnimind/.venv_satellite/lib",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_satellite/bin/python3",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_satellite/bin/python",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_satellite/bin/python3.12",
+      "target": "/usr/bin/python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_neurocore/lib64",
+      "target": "lib",
+      "resolved": "/home/fahbrain/projects/omnimind/.venv_neurocore/lib",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_neurocore/bin/python3.10",
+      "target": "python3",
+      "resolved": "/usr/bin/python3.10",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_neurocore/bin/python3",
+      "target": "/usr/bin/python3",
+      "resolved": "/usr/bin/python3.10",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv_neurocore/bin/python",
+      "target": "python3",
+      "resolved": "/usr/bin/python3.10",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T022639Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T015543Z.json",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T022639Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T010044Z.json",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/anomaly_timestamps_20260208T143755Z.json",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T015543Z.md",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T010044Z.md",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/autoround/20260209T022441Z/autoround_20260209T022441Z",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/autoround_20260209T022441Z",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/autoround_20260209T022441Z",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/graph1_sync_chart.png",
+      "target": "/home/fahbrain/Downloads/graph1_sync_chart.png",
+      "resolved": "/home/fahbrain/Downloads/graph1_sync_chart.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/sync_analysis_20260209.json",
+      "target": "/home/fahbrain/Downloads/sync_analysis_20260209.json",
+      "resolved": "/home/fahbrain/Downloads/sync_analysis_20260209.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/graph2_sync_chart..png",
+      "target": "/home/fahbrain/Downloads/graph2_sync_chart..png",
+      "resolved": "/home/fahbrain/Downloads/graph2_sync_chart..png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/gamma_lyman_ratio.png",
+      "target": "/home/fahbrain/Downloads/gamma_lyman_ratio.png",
+      "resolved": "/home/fahbrain/Downloads/gamma_lyman_ratio.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/anomalies_distribution.png",
+      "target": "/home/fahbrain/Downloads/anomalies_distribution.png",
+      "resolved": "/home/fahbrain/Downloads/anomalies_distribution.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/cosmic_tuning_fork.png",
+      "target": "/home/fahbrain/Downloads/cosmic_tuning_fork.png",
+      "resolved": "/home/fahbrain/Downloads/cosmic_tuning_fork.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/polarization_violin.png",
+      "target": "/home/fahbrain/Downloads/polarization_violin.png",
+      "resolved": "/home/fahbrain/Downloads/polarization_violin.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/sdss_vs_dynamic.png",
+      "target": "/home/fahbrain/Downloads/sdss_vs_dynamic.png",
+      "resolved": "/home/fahbrain/Downloads/sdss_vs_dynamic.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/universemap_plus_dynamic.png",
+      "target": "/home/fahbrain/Downloads/universemap_plus_dynamic.png",
+      "resolved": "/home/fahbrain/Downloads/universemap_plus_dynamic.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/crux_12_components_2d.png",
+      "target": "/home/fahbrain/Downloads/crux_12_components_2d.png",
+      "resolved": "/home/fahbrain/Downloads/crux_12_components_2d.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/phi_stability_redshift.png",
+      "target": "/home/fahbrain/Downloads/phi_stability_redshift.png",
+      "resolved": "/home/fahbrain/Downloads/phi_stability_redshift.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/gamma_lyman_ratio (1).png",
+      "target": "/home/fahbrain/Downloads/gamma_lyman_ratio (1).png",
+      "resolved": "/home/fahbrain/Downloads/gamma_lyman_ratio (1).png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/polar_distribution_axiom_epsilon.png",
+      "target": "/home/fahbrain/Downloads/polar_distribution_axiom_epsilon.png",
+      "resolved": "/home/fahbrain/Downloads/polar_distribution_axiom_epsilon.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/provas_perplexity/20260208T063729Z/doxihewu_galaxy_2d_map.png",
+      "target": "/home/fahbrain/Downloads/doxihewu_galaxy_2d_map.png",
+      "resolved": "/home/fahbrain/Downloads/doxihewu_galaxy_2d_map.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/node-which",
+      "target": "../which/bin/node-which",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/which/bin/node-which",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/acorn",
+      "target": "../acorn/bin/acorn",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/acorn/bin/acorn",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/js-yaml",
+      "target": "../js-yaml/bin/js-yaml.js",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/js-yaml/bin/js-yaml.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/eslint",
+      "target": "../eslint/bin/eslint.js",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/eslint/bin/eslint.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/semver/bin/semver.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/tsc",
+      "target": "../typescript/bin/tsc",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/typescript/bin/tsc",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/tsserver",
+      "target": "../typescript/bin/tsserver",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/typescript/bin/tsserver",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/.bin/rimraf",
+      "target": "../rimraf/bin.js",
+      "resolved": "/home/fahbrain/projects/omnimind/tools/omnimind-guardian/node_modules/rimraf/bin.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv312/lib64",
+      "target": "lib",
+      "resolved": "/home/fahbrain/projects/omnimind/.venv312/lib",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv312/bin/python3",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv312/bin/python",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv312/bin/python3.12",
+      "target": "/usr/bin/python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv/lib64",
+      "target": "lib",
+      "resolved": "/home/fahbrain/projects/omnimind/.venv/lib",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv/bin/python3",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv/bin/python",
+      "target": "python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.venv/bin/python3.12",
+      "target": "/usr/bin/python3.12",
+      "resolved": "/usr/bin/python3.12",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.codex/skills/survival-protocol",
+      "target": "/home/fahbrain/projects/omnimind/.windsurf/skills/survival-protocol",
+      "resolved": "/home/fahbrain/projects/omnimind/.windsurf/skills/survival-protocol",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.codex/skills/omnimind-survival-skill",
+      "target": "/home/fahbrain/projects/omnimind/.windsurf/skills/omnimind-survival-skill",
+      "resolved": "/home/fahbrain/projects/omnimind/.windsurf/skills/omnimind-survival-skill",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.codex/skills/omnimind-ops",
+      "target": "/home/fahbrain/projects/omnimind/.windsurf/skills/omnimind-ops",
+      "resolved": "/home/fahbrain/projects/omnimind/.windsurf/skills/omnimind-ops",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.codex/skills/omnimind-identity-memory",
+      "target": "/home/fahbrain/projects/omnimind/.windsurf/skills/omnimind-identity-memory",
+      "resolved": "/home/fahbrain/projects/omnimind/.windsurf/skills/omnimind-identity-memory",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/.codex/skills/dodecatiad-mapper",
+      "target": "/home/fahbrain/projects/omnimind/.windsurf/skills/dodecatiad-mapper",
+      "resolved": "/home/fahbrain/projects/omnimind/.windsurf/skills/dodecatiad-mapper",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/@babel/helper-compilation-targets/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/@babel/helper-compilation-targets/node_modules/semver/bin/semver.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/@babel/core/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/@babel/core/node_modules/semver/bin/semver.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/tldts",
+      "target": "../tldts/bin/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/tldts/bin/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/tailwindcss",
+      "target": "../tailwindcss/lib/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/tailwindcss/lib/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/node-which",
+      "target": "../which/bin/node-which",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/which/bin/node-which",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/jsesc",
+      "target": "../jsesc/bin/jsesc",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/jsesc/bin/jsesc",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/jiti",
+      "target": "../jiti/bin/jiti.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/jiti/bin/jiti.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/rollup",
+      "target": "../rollup/dist/bin/rollup",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/rollup/dist/bin/rollup",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/acorn",
+      "target": "../acorn/bin/acorn",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/acorn/bin/acorn",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/js-yaml",
+      "target": "../js-yaml/bin/js-yaml.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/js-yaml/bin/js-yaml.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/why-is-node-running",
+      "target": "../why-is-node-running/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/why-is-node-running/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/eslint",
+      "target": "../eslint/bin/eslint.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/eslint/bin/eslint.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/loose-envify",
+      "target": "../loose-envify/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/loose-envify/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/json5",
+      "target": "../json5/lib/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/json5/lib/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/baseline-browser-mapping",
+      "target": "../baseline-browser-mapping/dist/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/baseline-browser-mapping/dist/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/semver",
+      "target": "../semver/bin/semver.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/semver/bin/semver.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/cssesc",
+      "target": "../cssesc/bin/cssesc",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/cssesc/bin/cssesc",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/vitest",
+      "target": "../vitest/vitest.mjs",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/vitest/vitest.mjs",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/tailwind",
+      "target": "../tailwindcss/lib/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/tailwindcss/lib/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/update-browserslist-db",
+      "target": "../update-browserslist-db/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/update-browserslist-db/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/tsc",
+      "target": "../typescript/bin/tsc",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/typescript/bin/tsc",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/tsserver",
+      "target": "../typescript/bin/tsserver",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/typescript/bin/tsserver",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/esbuild",
+      "target": "../esbuild/bin/esbuild",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/esbuild/bin/esbuild",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/rimraf",
+      "target": "../rimraf/bin.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/rimraf/bin.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/nanoid",
+      "target": "../nanoid/bin/nanoid.cjs",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/nanoid/bin/nanoid.cjs",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/browserslist",
+      "target": "../browserslist/cli.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/browserslist/cli.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/autoprefixer",
+      "target": "../autoprefixer/bin/autoprefixer",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/autoprefixer/bin/autoprefixer",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/resolve",
+      "target": "../resolve/bin/resolve",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/resolve/bin/resolve",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/vite",
+      "target": "../vite/bin/vite.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/vite/bin/vite.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/parser",
+      "target": "../@babel/parser/bin/babel-parser.js",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/@babel/parser/bin/babel-parser.js",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/sucrase",
+      "target": "../sucrase/bin/sucrase",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/sucrase/bin/sucrase",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/.bin/sucrase-node",
+      "target": "../sucrase/bin/sucrase-node",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/sucrase/bin/sucrase-node",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/sucrase/node_modules/.bin/glob",
+      "target": "../glob/dist/esm/bin.mjs",
+      "resolved": "/home/fahbrain/projects/omnimind/web/frontend/node_modules/sucrase/node_modules/glob/dist/esm/bin.mjs",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/final_status.sh",
+      "target": "canonical/diagnose/final_status.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/canonical/diagnose/final_status.sh",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "/home/fahbrain/projects/omnimind/scripts/monitor_tests_live.sh",
+      "target": "canonical/monitor/monitor_tests_live.sh",
+      "resolved": "/home/fahbrain/projects/omnimind/scripts/canonical/monitor/monitor_tests_live.sh",
+      "exists": true,
+      "within_workspace": true
+    }
+  ]
+}

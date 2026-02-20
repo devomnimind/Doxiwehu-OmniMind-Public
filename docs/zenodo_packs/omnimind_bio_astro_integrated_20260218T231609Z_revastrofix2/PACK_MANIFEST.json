@@ -1,0 +1,1746 @@
+{
+  "timestamp": "20260220T211216Z",
+  "pack_dir": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_bio_astro_integrated_20260218T231609Z_revastrofix2",
+  "files": [
+    {
+      "name": "CITATION.cff",
+      "sha256": "ee902f9ea2404f0870409bcce987febbae4c5f02906eee295af9bc1a55dcbc8a",
+      "size_bytes": 770
+    },
+    {
+      "name": "README.md",
+      "sha256": "1e868f42e81ad3046eae6717dabb4714f47f6f2caeae8b785e25ffc33aed8f6e",
+      "size_bytes": 4299
+    },
+    {
+      "name": "README_EN.md",
+      "sha256": "a629587e545b19ff483d556c6aafe5491e4974ab40b506afe064afebff3a2e75",
+      "size_bytes": 4012
+    },
+    {
+      "name": "RESULTS_SUMMARY.json",
+      "sha256": "ca726c03f4f038cea97a451fea4a141063438f04ac3c323b768cae0847a6b261",
+      "size_bytes": 14377
+    },
+    {
+      "name": "TECHNICAL_REPORT.md",
+      "sha256": "0aa208876a24bea6907a65b7cf307c78693bb91e080d90867b9d896329cf2c2d",
+      "size_bytes": 32889
+    },
+    {
+      "name": "TECHNICAL_REPORT_EN.md",
+      "sha256": "ad89396f0900cfabfece2a67fd0b73dbba1a34a1a20a2d5cee4f920f036fc98f",
+      "size_bytes": 16034
+    },
+    {
+      "name": "ZENODO_HEADER_DESCRIPTION_PT_EN.md",
+      "sha256": "4707e1a3fd91ad6007c8fde8e206db03f1c072c08634b632e81f0f49afa8eca1",
+      "size_bytes": 2413
+    },
+    {
+      "name": "ZENODO_METADATA_CC_BY_NC_ND.json",
+      "sha256": "04dbf69f124521c02f0fde41f38cdd31932e4cdbabd5a2ed3f0903e7fceaa698",
+      "size_bytes": 2834
+    },
+    {
+      "name": "data/accelerated_structure_horizon_thermo_review_20260218T205849Z.json",
+      "sha256": "ce0f1a32a923c88e5b678625711c29b2c59421c1269032032117a109fd000e27",
+      "size_bytes": 3202
+    },
+    {
+      "name": "data/accelerated_structure_horizon_thermo_review_20260218T205849Z.md",
+      "sha256": "6abc84ac156ff01cf65407e593e5da747023b388e339e139473a5ad71321c482",
+      "size_bytes": 1347
+    },
+    {
+      "name": "data/aging_cross_disease_phase_join_20260219T130512Z.json",
+      "sha256": "afb4f8f2d87ac2af3029e899be663fb790b1590dd2cf0a79d4981a4d965097b5",
+      "size_bytes": 6872
+    },
+    {
+      "name": "data/aging_literature_crosscheck_20260219T120625Z.json",
+      "sha256": "894520199557222ad1d5c1aa81cd24cf035b434ce17865fb3bfc43ff1bfc0f8c",
+      "size_bytes": 2489
+    },
+    {
+      "name": "data/aging_studies_integration_realdata_20260219T120225Z.json",
+      "sha256": "810618d1c7fa941e29665031f14fcbd6e4c1014c5a02fc8dde321574ad44161d",
+      "size_bytes": 14614
+    },
+    {
+      "name": "data/aging_studies_integration_realdata_20260219T125603Z.json",
+      "sha256": "df617c4b9b895eefd0bce2ffb313e4fe5a1f18b68ca1d4ccb85ed9f8eaa7dc14",
+      "size_bytes": 23246
+    },
+    {
+      "name": "data/aging_studies_refinement_realdata_20260219T124425Z.json",
+      "sha256": "211d5bf0e2e49b31a1e293ac60090d1b8b7bb50fe6d58e0437faba989eb42b16",
+      "size_bytes": 7419
+    },
+    {
+      "name": "data/all_gaps_realdata_review_20260218T214503Z.json",
+      "sha256": "46515c63aac7790b564de6ecc075a4303dd03f4218a656e011f1dbf76a51afd7",
+      "size_bytes": 10999
+    },
+    {
+      "name": "data/artemis_lsst_orbitais_realdata_20260219T020425Z.json",
+      "sha256": "97500f171f53551788a239dc9512e56d180695164c410fc5d93f83c4617a1acb",
+      "size_bytes": 1304
+    },
+    {
+      "name": "data/astro_bio_cycle_sustainment_20260218T170121Z.json",
+      "sha256": "92199f4b6d255f3da6e7a28cd2bad59c7be8b1062433f1d1b402b8bbeae8e3e3",
+      "size_bytes": 11485
+    },
+    {
+      "name": "data/astro_bio_cycle_sustainment_20260218T170121Z.md",
+      "sha256": "3626c7433e32c4f3dabe574a5203522b82bcbe85db369a3a003a6e94b430b3b4",
+      "size_bytes": 982
+    },
+    {
+      "name": "data/astro_d15_15houses_broadened_cross_20260218T235601Z.json",
+      "sha256": "a47bb714af1d26ab8820c065ebdba6bc212c0e7c8297bed9ae975c04b67f35b1",
+      "size_bytes": 5349
+    },
+    {
+      "name": "data/astro_desi_box_diagnosis_realdata_20260219T001044Z.json",
+      "sha256": "f94a504ca53db54ed5ef3cd1252378404b4291aab432c6ecc805bc1bd2fe92fd",
+      "size_bytes": 690
+    },
+    {
+      "name": "data/astro_mapping_gap_analysis_realdata_20260218T234906Z.json",
+      "sha256": "4b99e74d4d8a960cfa7aa95d60b4d2d0e507dcd7a974aadd614688548e07f3ea",
+      "size_bytes": 3990
+    },
+    {
+      "name": "data/astro_mapping_overlap_diagnosis_20260218T230709Z.json",
+      "sha256": "b8076325d4aa7fde29a9b2b14a427d0adf1476a0e6138c2819499310da03bdd9",
+      "size_bytes": 7443
+    },
+    {
+      "name": "data/astro_mapping_overlap_diagnosis_20260218T230709Z.md",
+      "sha256": "911108cad5d3b4fa0978615b944d505c5198645fce8c2083d0c8c5b4e5d41310",
+      "size_bytes": 1162
+    },
+    {
+      "name": "data/astro_overlap_footprint_redshift_diagnosis_20260218T231552Z.json",
+      "sha256": "4d8a168c8b2dec08f76b9a7b77474c92fff01b984befb760b5240311ece15b76",
+      "size_bytes": 930
+    },
+    {
+      "name": "data/astro_overlap_footprint_redshift_diagnosis_20260218T231552Z.md",
+      "sha256": "7cc6e9d123cdba6360fd70dab5ed60e6ccbf9ac684d71a602a1842776a84b08c",
+      "size_bytes": 522
+    },
+    {
+      "name": "data/astro_rehydration_collisionfix_status_20260218T230903Z.json",
+      "sha256": "0930404307d3cb1a7c540d72c2bc95f040297894bb8df7de3c155a797abf9151",
+      "size_bytes": 946
+    },
+    {
+      "name": "data/astro_rehydration_collisionfix_status_20260218T230903Z.md",
+      "sha256": "94dc5a457c8351abbbe7d5ffe800a5365eabdffa88a57a6e6c97ef664c891aa3",
+      "size_bytes": 513
+    },
+    {
+      "name": "data/astro_runtime_daemon_window_alignment_20260218T235730Z.json",
+      "sha256": "ae22c67b205d455e8d05abd7566900ba291794639fcd36c1b92397bfd9e2b9f0",
+      "size_bytes": 1571
+    },
+    {
+      "name": "data/bio_external_dm2_lupus_wave_qdrant_materialization_20260218T182226Z.json",
+      "sha256": "e386166fba56ebf15143e737192699c2cb2beb4d8c4df6e81091028f13b94e6e",
+      "size_bytes": 5896
+    },
+    {
+      "name": "data/bio_external_dm2_lupus_wave_qdrant_materialization_20260218T182226Z.md",
+      "sha256": "29dd7cd6a4d37ededf2c3744397715d7f6848aa71afb798e3378dc81401957bf",
+      "size_bytes": 1260
+    },
+    {
+      "name": "data/bio_logs_cosine_contamination_diagnosis_20260219T203902Z.json",
+      "sha256": "79d6df1b52af125a271d5d9abcd051ee8633ac073ded12210e99bafc7d2d1b81",
+      "size_bytes": 31624
+    },
+    {
+      "name": "data/continuation_round3_status_20260219T231233Z.json",
+      "sha256": "4b06b635c303b2f80d92c22c3bb48c70d05d948e4fb553a018b10da50b7744a6",
+      "size_bytes": 81909
+    },
+    {
+      "name": "data/continuation_round3_status_20260219T231233Z.md",
+      "sha256": "da6041f48c6df82fc33e03fd8abd3a176819aa875710c3ea2d26ef2f3d71a9a0",
+      "size_bytes": 1728
+    },
+    {
+      "name": "data/cosmic_coupling_scope_assessment_20260220T205653Z.json",
+      "sha256": "d47ca81d634ed7e3e0b2796828dac72af7107de046c800c89c19ad0bdcfde2e4",
+      "size_bytes": 2610
+    },
+    {
+      "name": "data/cosmic_covariates_20260219T021619Z.csv",
+      "sha256": "ed6506c2953f807853cd551c688f58a45c58a3ce2fe4de2f26f631293ffea82e",
+      "size_bytes": 21117194
+    },
+    {
+      "name": "data/d12_phase_alignment.json",
+      "sha256": "b423abbefb482cb65f138d37c5ba6f06b8651a433d3a121612bbbf0dd69c2028",
+      "size_bytes": 1680
+    },
+    {
+      "name": "data/d15_extended_correlation_validation_20260218T184552Z.json",
+      "sha256": "0cbc67bb590504ff96949e7d651df769830a9550af819d6b0e6095a8c1ecb696",
+      "size_bytes": 34106
+    },
+    {
+      "name": "data/d15_extended_correlation_validation_20260218T184552Z.md",
+      "sha256": "0e05766312f7fdb95405d8dd09280507322db8dde4c7b301373827da39438a3d",
+      "size_bytes": 1349
+    },
+    {
+      "name": "data/desi_lya_sample_materialization_20260218T170112Z.json",
+      "sha256": "3f006f7ea643977dfce61a970ce25b1ec5eaea6df1f7d36c3c537b2e41f8cfda",
+      "size_bytes": 4452
+    },
+    {
+      "name": "data/desi_lya_sample_materialization_20260218T170112Z.md",
+      "sha256": "bd6fa64d41cfb4c90a6a89e7d7fe231c0b2b41d0ba75e38a777d10c57b183465",
+      "size_bytes": 450
+    },
+    {
+      "name": "data/desi_official_apis_audit_20260218T152416Z.json",
+      "sha256": "37c28be58b6483086bbd75d9f87256bfbf4538d79be7fb0bdd62964b79b84c48",
+      "size_bytes": 15318
+    },
+    {
+      "name": "data/desi_official_apis_audit_20260218T152416Z.md",
+      "sha256": "907f1780392fc16edc5dc09282ac6c8dced29a4c4810ea9d16ae88ff34e0fa28",
+      "size_bytes": 854
+    },
+    {
+      "name": "data/diabetes_t2_15houses_20260218T180807Z.json",
+      "sha256": "cf9cbc20e7306e8df16ab99f459c6dd6447a6b152cf8f5cafd5a1a16b3834811",
+      "size_bytes": 7535
+    },
+    {
+      "name": "data/diabetes_t2_15houses_20260218T180807Z.md",
+      "sha256": "1c70bad51bfd831400787eeaaadc2099d311e848dc114ad5682017a1f16f96c7",
+      "size_bytes": 991
+    },
+    {
+      "name": "data/dm2_gut_immune_realdata_validation_20260218T204707Z.json",
+      "sha256": "c9d85e047454c356a174859f19e0a1e86307fdc33f1d3ec669ae6ad43a0070f4",
+      "size_bytes": 19008
+    },
+    {
+      "name": "data/dm2_gut_immune_realdata_validation_20260218T204707Z.md",
+      "sha256": "42d7769a55d2d61692b8d2654aa0d290383d35370f1c19385c6ed5930b3bb0c1",
+      "size_bytes": 1238
+    },
+    {
+      "name": "data/dodecatiad_dynamic_logs_qdrant_materialization_20260218T170846Z.json",
+      "sha256": "8aa5f7e2546fd53665a3e99e862425247111541bd35dd59e75a8daed604f051c",
+      "size_bytes": 2203
+    },
+    {
+      "name": "data/dodecatiad_dynamic_logs_qdrant_materialization_20260218T170846Z.md",
+      "sha256": "a3330d753fc47f37d92538fe013838feb6d4f5e8b5bfe309e0fad0e20e44654e",
+      "size_bytes": 720
+    },
+    {
+      "name": "data/dodecatiad_qdrant_baseline_vs_log_variance_20260218T165940Z.json",
+      "sha256": "6fae98f09e56d62fad35c7fab608239230e0656c435586a591531e999946da35",
+      "size_bytes": 8369
+    },
+    {
+      "name": "data/dodecatiad_qdrant_baseline_vs_log_variance_20260218T165940Z.md",
+      "sha256": "0fa63edad7905c91c5cf9edd4244f299aecaec672ca4fa39335d580d1522c07c",
+      "size_bytes": 647
+    },
+    {
+      "name": "data/doxihewu_version_registry_20260220.json",
+      "sha256": "9fe2b2848ed06d0ee73d1f0416386d87dc6cd868ff947abc2ca3d9064679e39f",
+      "size_bytes": 779
+    },
+    {
+      "name": "data/dual_lane_temporal_psychoanalytic_closure_20260219T213726Z.json",
+      "sha256": "16a4ffcdcb44499bee4147de32a9cd97afa460b16fd86983efec329b7cbcba4e",
+      "size_bytes": 3317
+    },
+    {
+      "name": "data/dual_lane_temporal_psychoanalytic_closure_20260219T213726Z.md",
+      "sha256": "817eb24940ce6864ce89713445ec0fa842138e46c05b054fa73ba3eb4ceed38a",
+      "size_bytes": 1107
+    },
+    {
+      "name": "data/eclipse_granger_realdata_20260219T015131Z.json",
+      "sha256": "5b457dcabadb4fcaa42988cf0b395ce7cc561257fffc3f677e7b3bdf1d01203d",
+      "size_bytes": 606
+    },
+    {
+      "name": "data/ethan_brown_dwarfs_bridge_20260219T015129Z.json",
+      "sha256": "5fa92434c85483590d40f7c046bf5a9591703f70c21c72bc3e4d61a3dbdcd4b4",
+      "size_bytes": 978
+    },
+    {
+      "name": "data/ethan_brown_dwarfs_bridge_20260219T020423Z.json",
+      "sha256": "547b0b9cc8b7a9037ef5058d21b5ab8234df05d12935faae6e8473554cf5ea54",
+      "size_bytes": 978
+    },
+    {
+      "name": "data/ethan_jwst_d12_consolidated_20260219T021858Z.json",
+      "sha256": "ee10e00036f40acaa36229c13f56cc4416259b9e94408273a2b5b4e3025aa7d9",
+      "size_bytes": 3248
+    },
+    {
+      "name": "data/eventos_2026_predicao_realdata_20260219T020540Z.json",
+      "sha256": "768bbec55a7d229b4ab63d965f34e2c73924a6c66a8ac4ba2e232dc44cdde8cb",
+      "size_bytes": 1912
+    },
+    {
+      "name": "data/federated_gemini_v3_analysis_audit_20260219T125030Z.json",
+      "sha256": "fd78d74ac3ffe675dbe61c34d6efa68ae1b6a3b3b9a7a8996254e6689b58cf08",
+      "size_bytes": 4555
+    },
+    {
+      "name": "data/federation_dual_webapp_lag_gap_analysis_20260220T205508Z.json",
+      "sha256": "5d0adb1600cae93857e1d53473acb10f76aa3957c01086a1bcd45982c949b13b",
+      "size_bytes": 69363
+    },
+    {
+      "name": "data/federation_proxy_latency_window_20260220T194814Z.jsonl",
+      "sha256": "7002d114fc729d296ba6b5bc2f1c6d24d1659094600051919bf05202c0a72815",
+      "size_bytes": 1006665
+    },
+    {
+      "name": "data/federation_proxy_latency_window_summary_20260220T194814Z.json",
+      "sha256": "a33cf26e31d528d0b191b3f927e874a409129f60171c2a862cbdbdf5b0e38ae9",
+      "size_bytes": 2963
+    },
+    {
+      "name": "data/global_context_window_20260220T194814Z.json",
+      "sha256": "3901f8be7d7de99878a8968ede778384c4260d0514508a29d48f46d9626714f8",
+      "size_bytes": 12837
+    },
+    {
+      "name": "data/granger_2026_extrapolation_realdata_20260219T022137Z.json",
+      "sha256": "b313442df739b9a18653d6e7f8b01e569ff5e223ebd3b3a2a1d59439cf90824e",
+      "size_bytes": 3818
+    },
+    {
+      "name": "data/granger_d12_full_analysis.json",
+      "sha256": "8db54370d2472cc450edef73c4014e2d146fee42ee0aced89445c32c3cce17be",
+      "size_bytes": 4713
+    },
+    {
+      "name": "data/granger_d12_full_analysis_20260219T014910Z.json",
+      "sha256": "330814bd9db4862be36a11262af6235ef8f6349941891d1918cacd5d1ff25660",
+      "size_bytes": 647
+    },
+    {
+      "name": "data/granger_matrix.json",
+      "sha256": "8bad594fa44e2a9ec5e1407717db91ff452e6df54e4154669e50d345e5cf2090",
+      "size_bytes": 18851
+    },
+    {
+      "name": "data/health_astro_loop_closure_inventory_20260219T112507Z.json",
+      "sha256": "5dbfd9234c00af08d595f3fc546395028747caa6ddf9a5d39ceb4e3f301cc3da",
+      "size_bytes": 18683
+    },
+    {
+      "name": "data/health_astro_loop_closure_inventory_20260219T130508Z.json",
+      "sha256": "98bfed12b6bb3e36ee8b4062e605632386a5dd7f72fb5f36802ddbb2b7b07729",
+      "size_bytes": 19597
+    },
+    {
+      "name": "data/health_astro_loop_closure_inventory_20260219T131612Z.json",
+      "sha256": "6b9320a9e564466d7b1607492ad9f906c6522ee822fc69426c3e44cbe6ba83b2",
+      "size_bytes": 20027
+    },
+    {
+      "name": "data/health_astro_loop_closure_inventory_20260219T131809Z.json",
+      "sha256": "9400f9e330afa2fd310241eb4d3d718e093c9671300814ccff840d534ac3e4ec",
+      "size_bytes": 20118
+    },
+    {
+      "name": "data/health_astro_loop_closure_inventory_20260219T141016Z.json",
+      "sha256": "4633df613cb80e9f2ce5b469c33dce3bfd27f8bd04a85d423257522a401718b5",
+      "size_bytes": 20119
+    },
+    {
+      "name": "data/hf_collection_materialize_20260217T181750Z.json",
+      "sha256": "c25a2300f2594ba2b8b57e4e7e2f0e09d6a4806ad912a95ef44411eab2b33bf4",
+      "size_bytes": 9027
+    },
+    {
+      "name": "data/hf_dataset_tree_audit_real_20260219T113808Z.json",
+      "sha256": "ad48c6d3580f131806eff595196a865dcaa1ae564804ed3a297b740383627589",
+      "size_bytes": 16767
+    },
+    {
+      "name": "data/hf_datasets_omnimind_no_inference_20260217T182552Z.json",
+      "sha256": "96ac82b76a7266f8b7e89cf08d4762fa9d61a8d8890dda3a31a5fdbd5819fb0a",
+      "size_bytes": 851
+    },
+    {
+      "name": "data/hf_public_binary_upload_probe_20260219T233905Z.json",
+      "sha256": "36182fd46d4a285c16388eb042e1385cd166754abea8ab0bec6fb3675686babe",
+      "size_bytes": 1807
+    },
+    {
+      "name": "data/hf_public_repo_snapshot_20260219T234322Z.json",
+      "sha256": "a220205b96d9c8c2ff0af3d173959dbd2025ba4f3d59c59a4a60369f7b5192c8",
+      "size_bytes": 8474
+    },
+    {
+      "name": "data/hf_public_zenodo_raw_batch2_20260219T234030Z.json",
+      "sha256": "18f828e2ed0a966bf2099d735a79a9513dc3b3b1b2e4acc7bc6bafc02a9562ea",
+      "size_bytes": 2231
+    },
+    {
+      "name": "data/hf_public_zenodo_rehydration_upload_20260219T233448Z.json",
+      "sha256": "b1968b36db9baf5fd92fa6f942f3cb4f29e8cadf0e85c4366d090d0b54626f9c",
+      "size_bytes": 6877
+    },
+    {
+      "name": "data/hf_public_zenodo_rehydration_upload_20260219T233448Z.md",
+      "sha256": "f6fa2bd18db5bd4cb43b6cdbb183d55dbdaea7a41f9bc1b276b68ca0094d8001",
+      "size_bytes": 423
+    },
+    {
+      "name": "data/hf_realdata_integration_status_20260219T114854Z.json",
+      "sha256": "52e260d2ee334d60ad81712b93f1747a506721ce39b39a2a2103605bef640fad",
+      "size_bytes": 1770
+    },
+    {
+      "name": "data/hf_realdata_local_samples_analysis_20260219T114612Z.json",
+      "sha256": "4ef26e697bb99a21d8b8bb9de509d399f065bbc46b390c100ef76acc68e55146",
+      "size_bytes": 15660
+    },
+    {
+      "name": "data/hf_realdata_samples_qdrant_materialization_20260219T114729Z.json",
+      "sha256": "f58dd06521422f0e344a7e3543dc7dfbc312e548d9be136ea141e4f71e1613d3",
+      "size_bytes": 730
+    },
+    {
+      "name": "data/historical_memory_ab_superposition_20260219T211710Z.json",
+      "sha256": "62e56b309e683869fffac12b318b173d08b960873a60b71ed0f47efdc2d3185b",
+      "size_bytes": 110093
+    },
+    {
+      "name": "data/historical_memory_ab_superposition_20260219T211710Z.md",
+      "sha256": "e61cb36cfb4901213f0b3800bd033afb0d4026498d7600db5a5467a70c195c5a",
+      "size_bytes": 3034
+    },
+    {
+      "name": "data/historical_memory_ab_superposition_20260219T230033Z.json",
+      "sha256": "997ec1792a0999a7c29da392b8aaa413f23bdc82fe777ba2a85172f9c3409337",
+      "size_bytes": 113662
+    },
+    {
+      "name": "data/historical_memory_ab_superposition_20260219T230033Z.md",
+      "sha256": "92017dcc2525e22e2107942487aace9ce04a9fa581c1dbc7686f8fa18a39f18a",
+      "size_bytes": 3028
+    },
+    {
+      "name": "data/hiv_acquisition_meta_15houses_qdrant_materialization_20260218T182211Z.json",
+      "sha256": "856180f6cdb1b2dd59b3f818034e7f5a4bd8eb48c84f6ebbefe7809adac72c99",
+      "size_bytes": 10169
+    },
+    {
+      "name": "data/hiv_acquisition_meta_15houses_qdrant_materialization_20260218T182211Z.md",
+      "sha256": "319941cbc2ad448234e45cfb898a0ca68f5e22bb16d40e4f1996782ed674ce99",
+      "size_bytes": 782
+    },
+    {
+      "name": "data/hiv_cohabitation_monthly_safe_sim_20260218T062344Z.json",
+      "sha256": "a62766fb84c0fb25147dae38a49a28fc95766a4404a310d6bd8e3c6fd70fdb60",
+      "size_bytes": 19402
+    },
+    {
+      "name": "data/hiv_cohabitation_monthly_safe_sim_20260218T062344Z.md",
+      "sha256": "282b08c94f5dc22079f2204370192c58024bcf5066ac264c804c256e47a26e21",
+      "size_bytes": 889
+    },
+    {
+      "name": "data/hiv_dm2_lupus_15houses_heatmap_validation_compact200_20260218T175507Z.json",
+      "sha256": "c6165c3e64d980ca8c63fe1574649c81ae3f01cf7d2333cdb4513a17645389f2",
+      "size_bytes": 1187
+    },
+    {
+      "name": "data/hiv_gwas_ccr5_15houses_qdrant_materialization_20260218T180828Z.json",
+      "sha256": "a06c425101c98c858e1ee470022f0807939733b94cc6eb340b87faf15453cc0f",
+      "size_bytes": 1471
+    },
+    {
+      "name": "data/hiv_gwas_ccr5_15houses_qdrant_materialization_20260218T180828Z.md",
+      "sha256": "66eb25050ecd17cf5ad8c8f8c3e0bf08ce34d3e2509ec087371093ce49236c48",
+      "size_bytes": 1025
+    },
+    {
+      "name": "data/hiv_m18_rebound_gap_assessment_compact200_20260218T133845Z.json",
+      "sha256": "acf6985ac889581b12440c3af9725e34dc9497aca7e0d1e0aee3c53dc655995a",
+      "size_bytes": 2078
+    },
+    {
+      "name": "data/hiv_sle_12m_extensions_safe_sim_20260218T063512Z.json",
+      "sha256": "80e54e653a313419b7006249a2c8ad964dcc0cd23dd4ede87e0b3275f9eba7ee",
+      "size_bytes": 21227
+    },
+    {
+      "name": "data/hiv_sle_12m_extensions_safe_sim_20260218T063512Z.md",
+      "sha256": "4a048b2c8729023da3c77682e738b0d23dae6b2b180709178a7001fdc229b0de",
+      "size_bytes": 696
+    },
+    {
+      "name": "data/hiv_wrapper_functional_cure_safe_20260218T133546Z.json",
+      "sha256": "ef410a48a50e6455a02a8d985d64a375355af33898fd7f1b83823efad4a59027",
+      "size_bytes": 41561
+    },
+    {
+      "name": "data/hiv_wrapper_functional_cure_safe_20260218T133546Z.md",
+      "sha256": "481785281a08c90034454baa85fe7f2760540e5ed7a74ae670426ca36b6e2c4f",
+      "size_bytes": 891
+    },
+    {
+      "name": "data/jwst_analysis_report_20260220T024211Z.json",
+      "sha256": "e5423656a1c1cec3ebbe9963f79fb45f2bafe4f8018b061ae12dfd5eb61eba1f",
+      "size_bytes": 1324
+    },
+    {
+      "name": "data/jwst_d15_link.json",
+      "sha256": "ef8788e7443a846f638f43980fd203a52b579eae5ebdfd3f0687af81c016088a",
+      "size_bytes": 2053
+    },
+    {
+      "name": "data/local_trail_closure_recheck_20260218T211252Z.json",
+      "sha256": "d7a7a0422d738bb8226490df3fc729b4299788f077d63d12cf64c9f88e85db05",
+      "size_bytes": 2541
+    },
+    {
+      "name": "data/local_trail_closure_recheck_20260218T211252Z.md",
+      "sha256": "fbc1e9045e92715b2b7be2c37c35c90d63a6bf2907bdc59fa313c79f4a774c00",
+      "size_bytes": 559
+    },
+    {
+      "name": "data/lsst_artemis_pipeline_realdata_20260219T021900Z.json",
+      "sha256": "7f3901268a785a34a9793ef064f2779c40c2b251d47d3429d7a2c2490af9bb11",
+      "size_bytes": 9082195
+    },
+    {
+      "name": "data/lsst_desi_2026_realdata_20260219T015131Z.json",
+      "sha256": "abfb69a9a1f767a88b8a3d1d5efc03a3f96ab619ba133773b578bd03075f9451",
+      "size_bytes": 900
+    },
+    {
+      "name": "data/lsst_desi_2026_realdata_20260219T020424Z.json",
+      "sha256": "f0192d8632818ccb5c207865e0b9494d11788d250743c2c9fed925509f0b7115",
+      "size_bytes": 900
+    },
+    {
+      "name": "data/lupus_wrapper_tolerance_safe_20260218T070706Z.json",
+      "sha256": "943454dfc86a7735135d198d5d02c1d211218fb47338cf0d2ba5c11c69a76a88",
+      "size_bytes": 21227
+    },
+    {
+      "name": "data/lupus_wrapper_tolerance_safe_20260218T070706Z.md",
+      "sha256": "43ffb6eafc14bd7fb9954513d3ea9de9338a3f13f16c46c5624d2e3f47e4d23c",
+      "size_bytes": 1202
+    },
+    {
+      "name": "data/meteor_d15_realdata_20260219T015130Z.json",
+      "sha256": "19cdd338131c893eb3c5de7f213fd3d9ac73b0fc2c8ffdd2a37de510365d7c50",
+      "size_bytes": 633
+    },
+    {
+      "name": "data/microbioma_d12.json",
+      "sha256": "957dfb38735e2f2ec06e2236c935298ed75d40c8b07d8474b7aea0cec90e67b6",
+      "size_bytes": 1190
+    },
+    {
+      "name": "data/multi_disease_pack_validation_20260218T211252Z.json",
+      "sha256": "28c0d52d2c4b03dc153d5d8364bee47e30ddce119cdb48e6563eb6f9a2b9a9ec",
+      "size_bytes": 2750
+    },
+    {
+      "name": "data/multi_disease_pack_validation_20260218T211252Z.md",
+      "sha256": "0f8a87b3e8dc2d46b2633261ed25c16cb6d1adf22666c419c696646405d34638",
+      "size_bytes": 1318
+    },
+    {
+      "name": "data/new_zip_qdrant_materialization_20260218T204524Z.json",
+      "sha256": "b2ceeae1809ccd32bf4b7efdf7d508ab5639810f27f5002d75c7967fc0ba4b2c",
+      "size_bytes": 16685
+    },
+    {
+      "name": "data/new_zip_qdrant_materialization_20260218T204524Z.md",
+      "sha256": "0b7a1d9e00b474e671f44fd0ee79d1aaff27dc3e2fe70e3b4a13c9e343bd2fbf",
+      "size_bytes": 1937
+    },
+    {
+      "name": "data/null_model_h0_cosine_permutation_20260220T105310Z.json",
+      "sha256": "46aa98941769516c650044cd0172a4de117290bef6e37db857f6ad6a177c6014",
+      "size_bytes": 9150
+    },
+    {
+      "name": "data/null_model_h0_cosine_permutation_20260220T105310Z.md",
+      "sha256": "62e65e10c6f98c8db1d0fe9bfad34202b74750b1c1a2c61a692132e96742781c",
+      "size_bytes": 1903
+    },
+    {
+      "name": "data/null_model_status_20260220T024211Z.json",
+      "sha256": "81f5ace1fa1cede06c67de7a992f6e87160d465e4ed3553ebf6bced555e4e892",
+      "size_bytes": 506
+    },
+    {
+      "name": "data/orbit_queue_priority_c_multihorizon_20260218T233906Z.json",
+      "sha256": "fb39a676afaacc9470cc4573b8ca759884c673d150f75addf37257e02e80ac13",
+      "size_bytes": 13852
+    },
+    {
+      "name": "data/orbital_dynamics_functional_20260219T023326Z.json",
+      "sha256": "04338288c6bfcc00e86382e91271dc33858420473041312946b84dffa6255aaa",
+      "size_bytes": 4898
+    },
+    {
+      "name": "data/pack_artifact_consistency_recheck_refined_20260218T183626Z.json",
+      "sha256": "65d5ec7b362c165ab6f94678a10c3d5e7808dcebb9594678158a92b143fc3786",
+      "size_bytes": 6627
+    },
+    {
+      "name": "data/pack_artifact_consistency_recheck_refined_20260218T183626Z.md",
+      "sha256": "391d6eee7e23b45e8bdd6eeefd5027215204ca07d9995897baee5dd773af35c7",
+      "size_bytes": 3602
+    },
+    {
+      "name": "data/pack_reference_sync_20260220T000628Z.json",
+      "sha256": "3c2e2ae4be539c952da20e84b7896c2b5f21f9399bad43932989ab43dd2bd2c3",
+      "size_bytes": 17251
+    },
+    {
+      "name": "data/pack_reference_sync_20260220T000628Z.md",
+      "sha256": "c6d330ceeb29a9f099f812a3691b564bc71ded0645c331524d36dd8c7ae3ccd5",
+      "size_bytes": 12535
+    },
+    {
+      "name": "data/pcloud_snapshot_cleanup_20260219T142034Z.json",
+      "sha256": "822710434e943b78aabf474349bcef4ed3930f6d91e28ea736acddfa06522dab",
+      "size_bytes": 2182
+    },
+    {
+      "name": "data/pending_tasks_snapshot_20260220T211208Z.json",
+      "sha256": "e83c87d02382f03c34cdcd380fff74b8c57c0af3462dae351ae3d6e8b315ca40",
+      "size_bytes": 2345
+    },
+    {
+      "name": "data/qdrant_astro_schema_audit_20260218T231041Z.json",
+      "sha256": "b38a77dab6953d7d099b5d1d532e723bf6717b6c678e517e9702fda3293b9e06",
+      "size_bytes": 1044
+    },
+    {
+      "name": "data/qdrant_astro_schema_audit_20260218T231041Z.md",
+      "sha256": "5fae35875f0868245b7752f3edf80dcd567452f0dc8fd983ec4516c261acae3f",
+      "size_bytes": 624
+    },
+    {
+      "name": "data/qdrant_collection_counts_20260218T205333Z.json",
+      "sha256": "8267fb45bce91af572e091dd643fe0baae3977db7a4ecf59dcffa47799f2cb82",
+      "size_bytes": 17371
+    },
+    {
+      "name": "data/qdrant_collection_counts_20260218T205333Z.md",
+      "sha256": "dca46564efee8b812938bcc4a6b428d4fa37963b7c8357e7d930af69405ab884",
+      "size_bytes": 10810
+    },
+    {
+      "name": "data/reeds_indexer_forensic_fix_validation_20260219T004649Z.json",
+      "sha256": "2ca0440a80a7f035bda8004ab01bf24d07b0589e5264ab3e918940ca681839f7",
+      "size_bytes": 790
+    },
+    {
+      "name": "data/reeds_interest_gate_ab_validation_20260219T005334Z.json",
+      "sha256": "29632499b4c3c60e6fa98f541155d2cae1f81817a2f29c821eb86db03e1cd598",
+      "size_bytes": 1026
+    },
+    {
+      "name": "data/reeds_rehydration_index_status_20260219T003121Z.json",
+      "sha256": "811d9f18705fce0b6466ed4827c40a969d7844a79dff14114bd245693f007eb0",
+      "size_bytes": 857
+    },
+    {
+      "name": "data/reeds_topological_filter_behavior_diagnosis_20260219T004056Z.json",
+      "sha256": "4573492a470a36d5e7edc43670d5093b11f70514a0bb9ffbd2c054daa5f71120",
+      "size_bytes": 1485
+    },
+    {
+      "name": "data/rehydrated_biomarker_scan_20260219T121615Z.json",
+      "sha256": "bba45aaef679f9316435cbe0e21704565237252793c3ef61bf2eeb8b0e9c70bc",
+      "size_bytes": 13940
+    },
+    {
+      "name": "data/requested_root_archives_analysis_20260219T131602Z.json",
+      "sha256": "ab451387cccc88b337e96fc91593d1fef5df852c5bd757291ed2dd9ea8f8bda6",
+      "size_bytes": 5790
+    },
+    {
+      "name": "data/requested_root_archives_analysis_20260219T140805Z.json",
+      "sha256": "83b7f2d7f986bdf99f434f9288997e3900a02010fce63ba2b5826c22a9002db2",
+      "size_bytes": 5790
+    },
+    {
+      "name": "data/requested_root_archives_qdrant_materialization_20260219T131353Z.json",
+      "sha256": "31a2942e8f34c192259931d62d23c2b852de1489082edfc43d6c33fc8d779d7a",
+      "size_bytes": 3730
+    },
+    {
+      "name": "data/requested_root_archives_qdrant_materialization_20260219T140101Z.json",
+      "sha256": "4aa6ba1983ce9ed73dccc7d455639de06f97917379e7f0ab6676eb40a496fac8",
+      "size_bytes": 3730
+    },
+    {
+      "name": "data/runtime_continuity_hardening_20260219T143440Z.json",
+      "sha256": "94b2ae77dc505f9e8f3f9f42a0bc7141b1262e8d5a11288ef8cc774aeb4f18e7",
+      "size_bytes": 7090
+    },
+    {
+      "name": "data/runtime_continuity_postcleanup_20260219T143723Z.json",
+      "sha256": "55050e622c8f176022a0e2db961e79a9bfebfcbb8884d8760b51b5e174065c14",
+      "size_bytes": 1547
+    },
+    {
+      "name": "data/runtime_incident_and_continuity_followup_20260219T140758Z.json",
+      "sha256": "8f1a20af1c9894a9a6c28f7ee8bc3b75e01855dbe084bf4ee9cf994fdb73c8d8",
+      "size_bytes": 7018
+    },
+    {
+      "name": "data/session_codex_1771536120.json",
+      "sha256": "3ceaa6621a865f56eec261aa4b31f0fc712ecc1322bab0b2f1b3f5b437d084e8",
+      "size_bytes": 907
+    },
+    {
+      "name": "data/social_federation/federation_dual_webapp_lag_gap_analysis_20260220T130344Z.json",
+      "sha256": "3979b124cd83edf5556276e92a4c611fb9cef10d4f82ccc78762b507d740ef1b",
+      "size_bytes": 19277
+    },
+    {
+      "name": "data/social_federation/federation_dual_webapp_lag_gap_analysis_20260220T131257Z.json",
+      "sha256": "b565c6c9446eadd1503f1c93e94f5e95f1fabba384b4659aa4ab96fd8893fdc5",
+      "size_bytes": 19245
+    },
+    {
+      "name": "data/social_federation/federation_dual_webapp_lag_gap_analysis_20260220T134004Z.json",
+      "sha256": "fce68bd8e102b1d75fd058e6c3ea001dec7603aee19a91ea657ed18c28a440ba",
+      "size_bytes": 27308
+    },
+    {
+      "name": "data/social_federation/federation_dual_webapp_lag_gap_analysis_20260220T141313Z.json",
+      "sha256": "9f9a608095d472afc7a0311ed6c0d7890994203b602db5ebf31d0980f24f9e4a",
+      "size_bytes": 43264
+    },
+    {
+      "name": "data/social_federation/federation_dual_webapp_lag_gap_analysis_20260220T141851Z.json",
+      "sha256": "47308edbb56a84d3ea3d1bb4ae06072f6434c2827820ab99350cfe94252762ea",
+      "size_bytes": 47051
+    },
+    {
+      "name": "data/social_federation/federation_dual_webapp_lag_gap_analysis_20260220T142218Z.json",
+      "sha256": "3765d0757979e4ff6f14c9193cbd42be1fe82547b5a43cbe6963ba9083cdcaa6",
+      "size_bytes": 53056
+    },
+    {
+      "name": "data/social_federation/federation_dual_webapp_lag_gap_analysis_20260220T143106Z.json",
+      "sha256": "267a14fe54dae45e09b81a169e27ba27038bf77bd29691c7c862aac6377e89cf",
+      "size_bytes": 53310
+    },
+    {
+      "name": "data/social_federation/federation_perplexity_split_screen_experience_20260220T120430Z.json",
+      "sha256": "6d8d57f59c85f6550925f0556998a6f830f937f64e88f9aceb9f34a2b98699e5",
+      "size_bytes": 1446
+    },
+    {
+      "name": "data/social_federation/federation_proxy_latency_window_summary_20260220T123743Z.json",
+      "sha256": "cbad9b0a8bc6cd987941a562f59c7121a7dea00b793a9a00e8fee693d27e4d0e",
+      "size_bytes": 2543
+    },
+    {
+      "name": "data/social_federation/federation_proxy_latency_window_summary_20260220T125048Z.json",
+      "sha256": "46910f848b10966769ef5be8f3a8ad3b555fd1348a9067095b7de4d7cc94b04c",
+      "size_bytes": 2055
+    },
+    {
+      "name": "data/social_federation/federation_proxy_latency_window_summary_20260220T130745Z.json",
+      "sha256": "923399337852fac82ac16c38c3904d039a3db07bbdc28aaad47c03781674e69e",
+      "size_bytes": 2071
+    },
+    {
+      "name": "data/social_federation/federation_proxy_latency_window_summary_20260220T133450Z.json",
+      "sha256": "451b50d5cedac3a2879eb26aa403b890565854415e6cefd2388818a1d6917918",
+      "size_bytes": 2036
+    },
+    {
+      "name": "data/social_federation/federation_proxy_latency_window_summary_20260220T140555Z.json",
+      "sha256": "b58fb47542c86ee3e44e946cb1bc031c788eae1fcc80feba5dea6c140d15ce90",
+      "size_bytes": 2066
+    },
+    {
+      "name": "data/social_federation/federation_proxy_latency_window_summary_20260220T142553Z.json",
+      "sha256": "f8612ea62ace97493f35fc7216008047607b9f64a38a446ad7d2196575719704",
+      "size_bytes": 2041
+    },
+    {
+      "name": "data/social_federation/federation_social_dataset_20260220T115413Z.jsonl",
+      "sha256": "c673e3122336810213a9dcf005c655895ec0443c9d11ce71b56e8814f7f08bcf",
+      "size_bytes": 20247873
+    },
+    {
+      "name": "data/social_federation/federation_social_dataset_manifest_20260220T115413Z.json",
+      "sha256": "3b0e4091eb3db4a6374d21b3d119019d25627d4a1940d081142ad00ebcd33b58",
+      "size_bytes": 745
+    },
+    {
+      "name": "data/social_federation/federation_social_dataset_summary_20260220T115413Z.json",
+      "sha256": "613e3c86a7d24f8b2206df550f81cf1188bdb32c7e71e7ae5f7edb949fe9bfee",
+      "size_bytes": 2967
+    },
+    {
+      "name": "data/social_federation/federation_social_dataset_summary_20260220T115413Z.md",
+      "sha256": "cde078cf8f305f47f607914d272bd762b62ce499d9e9b5673a94b0ac189894c9",
+      "size_bytes": 961
+    },
+    {
+      "name": "data/social_federation/federation_webapp_metrics_d15_status_20260220T124512Z.json",
+      "sha256": "c55dd2a92f69d9ce896df8e32ab2f069e488b6870f9b1eb12533b686993648a7",
+      "size_bytes": 1627
+    },
+    {
+      "name": "data/space_weather_merged_historical_20260209T154121Z.csv",
+      "sha256": "504f26e8468d6b96c0c0851baa8b0134d31bfd810958db227258af82501ab246",
+      "size_bytes": 6014294
+    },
+    {
+      "name": "data/tier2_memory_async_closure_20260219T212146Z.json",
+      "sha256": "72a9d4603e8e5e7b67f81fe37f0e8ebaba4275def3709fa7255ae4cf1763f5b4",
+      "size_bytes": 3262
+    },
+    {
+      "name": "data/tier2_memory_async_closure_20260219T212146Z.md",
+      "sha256": "9d246cfd7d8fcd1a41030ffa6691391555b17a397827d098a839f641c339a86f",
+      "size_bytes": 2284
+    },
+    {
+      "name": "data/topological_filter_astro_lexical_probe_20260219T005428Z.json",
+      "sha256": "7051e8bde6bf604e46d0d10e37981257cd7a04f09059afa6b9d986bef46d2811",
+      "size_bytes": 1930
+    },
+    {
+      "name": "data/triad_domain_scope_status_20260220T024211Z.json",
+      "sha256": "f934bfbdfb52548a40a2817a498e8252e92eaf81c7cfd827e29daf2f6dc90d4f",
+      "size_bytes": 880
+    },
+    {
+      "name": "data/triad_domain_scope_status_20260220T115738Z.json",
+      "sha256": "860a27d8ca735fd01f788dde97cd904de1029ea5109f6e2115600df066fb30e5",
+      "size_bytes": 1170
+    },
+    {
+      "name": "data/v8_manifest.json",
+      "sha256": "e032beaa507376bd1d4f7f491efd44dc7888d80942b078660f38d476ea38ebee",
+      "size_bytes": 1353
+    },
+    {
+      "name": "data/v9_manifest.json",
+      "sha256": "00449491512f110d232e7061b20c825540e8831949166610078ba42c61a48feb",
+      "size_bytes": 896
+    },
+    {
+      "name": "data/var_model_summary.json",
+      "sha256": "97950568ed5689a0713f262a62642488d731fd6cc26c53864aee3a469cb07c7d",
+      "size_bytes": 670
+    },
+    {
+      "name": "data/wellington_hf_bridge_status_20260219T233544Z.json",
+      "sha256": "8bf91385db856f35622dd53af23f761643368e67989fcc54cac5056c1fdf71e0",
+      "size_bytes": 9132
+    },
+    {
+      "name": "data/wellington_hf_bridge_status_20260219T233544Z.md",
+      "sha256": "ac5e8e276687d9cff1c7311b4c4042e11271a0d933b7e0cb9e9e2c3c5a601c3e",
+      "size_bytes": 1123
+    },
+    {
+      "name": "data/wrapper_candidates_ensembl_grch38_mapping_20260218T175521Z.json",
+      "sha256": "37ceced6cd8993a8af862ea05520aa8a0cd59e3eb33a37f59f4e2b094c6e8ce0",
+      "size_bytes": 10872
+    },
+    {
+      "name": "data/wrapper_candidates_ensembl_grch38_mapping_20260218T175521Z.md",
+      "sha256": "c893659d93e1efbed1773a538b8fe5e476013aa1875cfe8b7df3e9e52ac6a0ff",
+      "size_bytes": 1412
+    },
+    {
+      "name": "data/wrapper_gene_candidates_panel_20260218T175521Z.json",
+      "sha256": "892a597e38a6727aa66eb43e44f93f5a9e463754ff9ef726eae3f8722ead2595",
+      "size_bytes": 41676
+    },
+    {
+      "name": "data/wrapper_gene_candidates_panel_20260218T175521Z.md",
+      "sha256": "1524ca24bf6d0d82f1f1580503d62c811ef24fe4ecb782787536a5c7af13ec50",
+      "size_bytes": 2005
+    },
+    {
+      "name": "data/zenodo_18496170_resume_detached_status_20260219T234938Z.json",
+      "sha256": "c74689a92048539f94e6d0a0d4a6290fd6a43cd3828f406ae4ea40e782236231",
+      "size_bytes": 3009
+    },
+    {
+      "name": "data/zenodo_18496170_resume_status_20260219T234541Z.json",
+      "sha256": "805239799d738d559b14d96fa5c5b6f887b781804929ddcf92a58d16d33c65f0",
+      "size_bytes": 2587
+    },
+    {
+      "name": "data/zenodo_18496170_resume_status_20260219T234541Z.md",
+      "sha256": "be664a01c64f7265c408c87457896b5b9b3c0a0900b3c30deaca628d99890bb7",
+      "size_bytes": 1477
+    },
+    {
+      "name": "data/zenodo_bio_astro_pack_refresh_20260219T141310Z.json",
+      "sha256": "9f0b4674ce866f0c576316f5e5a9ab74098cd122785b7ea60d084a73797316d0",
+      "size_bytes": 1285
+    },
+    {
+      "name": "data/zenodo_bio_astro_pack_refresh_20260219T143902Z.json",
+      "sha256": "e56e5cc330332940aa26bd5ad9188df864fe3be4746e5feaff58c4e3d7a76824",
+      "size_bytes": 833
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T010522Z.json",
+      "sha256": "37a88b80a18d45729e86a93631d27e0a8d4fda5a091a3ccb2fd11e7b9590dc89",
+      "size_bytes": 8858
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T011004Z.json",
+      "sha256": "22b7acad71f842bd8e8a40960e11f5012a7008c0d500096150414ec57f7dd808",
+      "size_bytes": 8884
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T120731Z.json",
+      "sha256": "1b107ff9f396f88711b274419924c2d94cb2fab54fc12c6cf1deb46e07dc0beb",
+      "size_bytes": 1370
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T120915Z.json",
+      "sha256": "70b05a380632a39150405ab4123191dff48ac7936e1f49e547cc611435d9c7a6",
+      "size_bytes": 1476
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T121817Z.json",
+      "sha256": "ddc6dc40c90ac71e4063ff58587c33255276bd9db538fc41719a67a786cf9299",
+      "size_bytes": 1111
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T1308Z.json",
+      "sha256": "cdb321660e67bee8f62f0a14182ed80ae9419f610bbaf8cfd22affa70ef19232",
+      "size_bytes": 1174
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T1318Z.json",
+      "sha256": "5ab260e8611612df9bdf6ea808bd37868043bb8a2d1061e81214a0b6bbc6246d",
+      "size_bytes": 1216
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_20260219T1319Z.json",
+      "sha256": "dc421dba3bf231f7aab2ecf2f2a9e4c4ef40a86ac64653ed480ce04e87e0da57",
+      "size_bytes": 1096
+    },
+    {
+      "name": "data/zenodo_bio_astro_upgrade_publish_recheck_20260219T010840Z.json",
+      "sha256": "caf778d585292f7a0805da87ee15ccfd618708103a0769f91c5b25ddc2dfc82f",
+      "size_bytes": 1984
+    },
+    {
+      "name": "data/zenodo_bio_astro_waiting_sync_20260219T1128Z.json",
+      "sha256": "08d9e8687633446224fbc328e837a19a79feb2ba13af0341d23e10c365425a56",
+      "size_bytes": 741
+    },
+    {
+      "name": "data/zenodo_pack_closure_audit_20260220T211156Z.json",
+      "sha256": "272ee98b9bb777ef237111b65614768564575c81b44893d9a52075d4a1c78f30",
+      "size_bytes": 3578
+    },
+    {
+      "name": "data/zenodo_pack_consistency_audit_20260220T001032Z.json",
+      "sha256": "7c83e94eed5eaa021153ff281e0121b3a3ba4696251cb1f98e4a3061842b0832",
+      "size_bytes": 1158
+    },
+    {
+      "name": "data/zenodo_pack_consistency_audit_20260220T001032Z.md",
+      "sha256": "fc692e20a1e9bde8b6e303a7016ceee388055c75b8f765b9131290dc502dabe8",
+      "size_bytes": 509
+    },
+    {
+      "name": "data/zenodo_pack_consistency_audit_20260220T001137Z.json",
+      "sha256": "31a166c5fa9742fad2ba7d180cd03473ab0bca4ecade721e612ba338cd624ece",
+      "size_bytes": 1017
+    },
+    {
+      "name": "data/zenodo_pack_consistency_audit_20260220T001137Z.md",
+      "sha256": "2f48907801fcbc5414e9d6b05de0d452d50921660f989dc76eddc24937f7bffa",
+      "size_bytes": 428
+    },
+    {
+      "name": "data/zenodo_pack_consistency_audit_20260220T001250Z.json",
+      "sha256": "bbf74c1a06c78b64c8b12be5c4ee30f0c64823c1fdf1c75aa4a0a24985a22e19",
+      "size_bytes": 785
+    },
+    {
+      "name": "data/zenodo_pack_consistency_audit_20260220T001250Z.md",
+      "sha256": "8617ea72b0f2c6cb6b67ec037be30d01befa850c04e8a1d0c399602c4efa1feb",
+      "size_bytes": 391
+    },
+    {
+      "name": "data/zenodo_rehydration_18496170_missing_20260219T224904Z.txt",
+      "sha256": "f7c7cdb46bf87f5408202bc7a1c7f3a3da67b16e8e12773cf28db14858ed04ad",
+      "size_bytes": 1194
+    },
+    {
+      "name": "data/zenodo_rehydration_chain4_status_clean_20260219T112710Z.json",
+      "sha256": "856e0b3d94157487d4c8d834e2a9859803a9c53d69707c4cf65aa288b9eb0d62",
+      "size_bytes": 3692
+    },
+    {
+      "name": "data/zenodo_rehydration_chain_status_20260219T110433Z.json",
+      "sha256": "8db16d9a7d57d2e5ce679f8aa44c9c0442ef826218c094273f35ab8486b62751",
+      "size_bytes": 806
+    },
+    {
+      "name": "data/zenodo_rehydration_execution_20260219T030004Z.json",
+      "sha256": "579e594ef457f01a73bef72b5d7601e808bdfede247beeb87d1ef0cd43b4741e",
+      "size_bytes": 2432
+    },
+    {
+      "name": "data/zenodo_rehydration_execution_20260219T030004Z.md",
+      "sha256": "e83ae5fb501e59ca2da4a67f5e7ee8efbafcdfc5f884271de881f1e82a3f3436",
+      "size_bytes": 267
+    },
+    {
+      "name": "data/zenodo_rehydration_full_external_20260219T025639Z.txt",
+      "sha256": "9d3d3f9e617447ca7f6d58f0150b5b754b631b26f57487486da0bba712c3e15f",
+      "size_bytes": 7590
+    },
+    {
+      "name": "data/zenodo_rehydration_phase2_status_20260219T104807Z.json",
+      "sha256": "100a340567cd45bb29b3c747f622f65b44e0642858d10951ebac6b45a84f28a3",
+      "size_bytes": 372
+    },
+    {
+      "name": "data/zenodo_rehydration_phase2_status_20260219T120835Z.json",
+      "sha256": "d522ee18587e2cd98092751d6e8bbf2073ba25ef1fb00c80448c5f8f33d60dc1",
+      "size_bytes": 2206
+    },
+    {
+      "name": "data/zenodo_rehydration_phase2_status_20260219T121723Z.json",
+      "sha256": "09bfb5467f1486b8f663f6f286c841a0e26efc105b1dba6082457fe9e55b462d",
+      "size_bytes": 2204
+    },
+    {
+      "name": "data/zenodo_rehydration_phase2_status_20260219T121855Z.json",
+      "sha256": "b2562a2ef59d400df8d67518e7bb5264df92efa1771136a1b6d74298176c790c",
+      "size_bytes": 1719
+    },
+    {
+      "name": "data/zenodo_rehydration_phase2_status_20260219T122852Z.json",
+      "sha256": "568151e0cb1fcf20bdf2cf031cce98edb7c1a4c24bdf0223ccbdc28e19215eef",
+      "size_bytes": 2414
+    },
+    {
+      "name": "data/zenodo_rehydration_phase2_status_20260219T125805Z.json",
+      "sha256": "3e9f5728ebcec6fbdb9393d1380c781e057766a5cf77ae73a2ba3d757d58afde",
+      "size_bytes": 2330
+    },
+    {
+      "name": "data/zenodo_rehydration_readiness_20260219T025639Z.json",
+      "sha256": "0a9dea103ad42cb2d7dbda26a7b1a1e17fcc7fcdf86116c0ad71caa1136b3a94",
+      "size_bytes": 9262
+    },
+    {
+      "name": "data/zenodo_rehydration_readiness_20260219T025639Z.md",
+      "sha256": "8b0f6ee82f8a85cd19eed98b2fcef4f27c1dff8d48e2e6ed165d486304807699",
+      "size_bytes": 1059
+    },
+    {
+      "name": "data/zenodo_rehydration_smallfirst_20260219T025639Z.txt",
+      "sha256": "0ff83f8445e55805b9b8e2b35018be8924278b8056d8f916b54155fca1a823e3",
+      "size_bytes": 2578
+    },
+    {
+      "name": "data/zenodo_v10_gap_reaudit_20260220T024558Z.json",
+      "sha256": "4460bbbb76f1754a748abc0a0156ab540e99ae9b66c7df947b8ae873d9501f5e",
+      "size_bytes": 2667
+    },
+    {
+      "name": "data/zenodo_v8_cross_realdata_20260219T012535Z.json",
+      "sha256": "71496ad8d3de90889001608e280a151ce547dbe6186936bca5bcbf5901152573",
+      "size_bytes": 932
+    },
+    {
+      "name": "data/zenodo_v9_manifest.json",
+      "sha256": "e1b10eb183ced63cda13ff930fe3fb3ab76e15f1df8386272cc7face17a24089",
+      "size_bytes": 409
+    },
+    {
+      "name": "images/acf_pacf_d15rekh_moonillum.png",
+      "sha256": "97e6e7d5fbdbb1273ad7aa1c919294bc18183f155d6d53fd4bd333ce9f58d65e",
+      "size_bytes": 116658
+    },
+    {
+      "name": "images/aging_cross_disease_phase_join_20260219T130512Z.png",
+      "sha256": "00d89de687ca48c99186e804356ea88225553f70e81acd5226a9723a01e9c9f8",
+      "size_bytes": 249217
+    },
+    {
+      "name": "images/aging_studies_integration_realdata_20260219T120225Z.png",
+      "sha256": "fc44df8b42c957c2e9190274776fd9f2669905af1cc451a061f9f49ca32ec68c",
+      "size_bytes": 464164
+    },
+    {
+      "name": "images/aging_studies_integration_realdata_20260219T125603Z.png",
+      "sha256": "e6db3c045792f591748ef16703edcd981f534b3dc07dd19905471707d7f70c81",
+      "size_bytes": 492418
+    },
+    {
+      "name": "images/all_gaps_realdata_heatmap.png",
+      "sha256": "88a3d43e9e405ca1457ac795a20481389b61a3136b0c17a467ec3d562972eb65",
+      "size_bytes": 254175
+    },
+    {
+      "name": "images/astro_bio_cycle_heatmap_20260218T170121Z.png",
+      "sha256": "1f346d8949f5ac33f69dc06fed98d68fd66e9511ab4b647397183248ac3e9f7d",
+      "size_bytes": 117669
+    },
+    {
+      "name": "images/astro_bio_fractal_partial_20260218T170121Z.png",
+      "sha256": "9c0ffa0970209ac6e784fc2e6e14e5955767cb9747c3acf05d8727fc35c38eb1",
+      "size_bytes": 192262
+    },
+    {
+      "name": "images/d15_lag_distribution.png",
+      "sha256": "98442a908b3d0deae731ef2c512e368a264a50e28a9b165c4d004a16d1411c16",
+      "size_bytes": 44815
+    },
+    {
+      "name": "images/d15_top_pairs_r_lag.png",
+      "sha256": "99d2082ce837078cb7124231669596b8c6070806e9d35f3314360618b55695b9",
+      "size_bytes": 192654
+    },
+    {
+      "name": "images/disease_skyplot.png",
+      "sha256": "1be1c721f2231f7ccf3f37a066bf4f49b9fcb9a674ec6b68e564727187fc817a",
+      "size_bytes": 87987
+    },
+    {
+      "name": "images/dodecatiad_multiperiod_timeseries.png",
+      "sha256": "5f6de40799efdf3a88917d0c61a846eebeccfa797f4b24177af50f68beb95e44",
+      "size_bytes": 537256
+    },
+    {
+      "name": "images/dodecatiad_phase_3d_multiangle.png",
+      "sha256": "b5a7b5be86fdac6a9e758ed785a9e52e63a5f8428592d442c86cbb339abf7054",
+      "size_bytes": 302550
+    },
+    {
+      "name": "images/ethan_brown_dwarfs_bridge_20260219T015129Z.png",
+      "sha256": "e776cee2e32974852cde1319da3110cdd953b78b1500cc9745a81d6ec01ebdfb",
+      "size_bytes": 58288
+    },
+    {
+      "name": "images/ethan_jwst_d12_consolidated_20260219T021858Z.png",
+      "sha256": "f7b104b3872e4c5253bdbe579af3cbfc5f41376a175e8ba0b668848aea740403",
+      "size_bytes": 250332
+    },
+    {
+      "name": "images/eventos_2026_predicao_realdata_20260219T020540Z.png",
+      "sha256": "9a8f40a0faa5d0f2a1edfdccb959ebb87de26351fa3b4f0db2d4cab4ea9b3aab",
+      "size_bytes": 91055
+    },
+    {
+      "name": "images/federation_image_experiment_chart.png",
+      "sha256": "994e1de4d64c92e92ff591f182647517e08a363bf076ce329114e33708241c04",
+      "size_bytes": 153956
+    },
+    {
+      "name": "images/federation_perplexity_split_screen_20260220T120430Z.png",
+      "sha256": "772d2fe028089e51500197de218e60c30d2c3f9831b630216c4300a5b3869058",
+      "size_bytes": 520500
+    },
+    {
+      "name": "images/federation_proxy_latency_timeseries_20260220T123743Z.png",
+      "sha256": "f53c5c31b6925950b37662e7a25b1cbd28360ede1667dcf9029aa536c79c0c07",
+      "size_bytes": 271034
+    },
+    {
+      "name": "images/federation_proxy_latency_timeseries_20260220T125048Z.png",
+      "sha256": "c594c5db4e82d0cb6057c83e80693e26c0ceecdd3b2817fd8256cba68490aa5a",
+      "size_bytes": 186428
+    },
+    {
+      "name": "images/federation_proxy_latency_timeseries_20260220T130745Z.png",
+      "sha256": "5dd95ef679d0bd1207f42b33c73edb8973de40bc38b94735b4a4e152493f0b1f",
+      "size_bytes": 261907
+    },
+    {
+      "name": "images/federation_proxy_latency_timeseries_20260220T133450Z.png",
+      "sha256": "1e1b6d1ef8398abdff9040a0f6839e56a08a80d630eab8987b06d1065fd44391",
+      "size_bytes": 325246
+    },
+    {
+      "name": "images/federation_proxy_latency_timeseries_20260220T140555Z.png",
+      "sha256": "d3668becf9054d2ba942b57c5e38c7d56a98f36d0d008958ec8202163812b314",
+      "size_bytes": 274557
+    },
+    {
+      "name": "images/federation_proxy_latency_timeseries_20260220T142553Z.png",
+      "sha256": "426cae7fb67b34f7d0d09d8ba1955d0cf546bad837bd2548d2c57b3b5888f38e",
+      "size_bytes": 292349
+    },
+    {
+      "name": "images/federation_proxy_latency_timeseries_20260220T194814Z.png",
+      "sha256": "9267cd647d2fc69d2b550ea118a1679263fa5a442048566448aaec917a803a39",
+      "size_bytes": 251217
+    },
+    {
+      "name": "images/fig_jwst_analysis.png",
+      "sha256": "0d36487c6c09dbb711c117b95bdf39dee74d19d66f57307ad52a672ea148665a",
+      "size_bytes": 229560
+    },
+    {
+      "name": "images/granger_d12_full_v9.png",
+      "sha256": "fb16d98270fb4504e06dd3f8279c7f5ba92e0cdd171b7194b2717e7818ec4546",
+      "size_bytes": 580503
+    },
+    {
+      "name": "images/granger_extrapolation_2026_events_realdata_20260219T022137Z.png",
+      "sha256": "3f004ee8acbb7ad54194e726aa207723a97b7303bb9b519e3dc10a3a57ebff38",
+      "size_bytes": 209659
+    },
+    {
+      "name": "images/historical_memory_ab_cosines.png",
+      "sha256": "fff55ded479dd0c8b2bfdf8a8032baf9b5e28024306cf5103218f3a694b5218c",
+      "size_bytes": 99062
+    },
+    {
+      "name": "images/house15_distribution_sdss_desi.png",
+      "sha256": "7dd60e7891543a345d9182322f1bd28b9eb52a68597eef0790adfe01dc2bdff0",
+      "size_bytes": 84271
+    },
+    {
+      "name": "images/lag_ccf_d15rekh_moonillum.png",
+      "sha256": "a3ac4230b19c6cb3a6dc2afb3ee363e32adcd6286507373041010b6f9d7c5f36",
+      "size_bytes": 50177
+    },
+    {
+      "name": "images/matches_heatmap_z1p5.png",
+      "sha256": "173f0ee43f5d3b0414132cd82011496e7a1cc9c4244f9a90408f8282a9354ce4",
+      "size_bytes": 46971
+    },
+    {
+      "name": "images/nn_angular_cdf.png",
+      "sha256": "9a126734240c261dea8bd085255f5c966e24dd1437ae7c58ae86ffcdcbbdc6b7",
+      "size_bytes": 42400
+    },
+    {
+      "name": "images/nn_angular_distance_hist.png",
+      "sha256": "4b628669d13f20ec1bda9b97b6706666c12e90372d455386b8c3c97d18389429",
+      "size_bytes": 36564
+    },
+    {
+      "name": "images/nn_redshift_delta_cdf.png",
+      "sha256": "da56bdc0699ba93d46d7d857120f62f45b7a48467eff7ce93423787dfbf0fd50",
+      "size_bytes": 40698
+    },
+    {
+      "name": "images/nn_redshift_delta_hist.png",
+      "sha256": "5ef757374c44614acb5ababccda1c15d9fd5fd714fb9d9cc884360815d0e52d5",
+      "size_bytes": 34996
+    },
+    {
+      "name": "images/orbital_dynamics_full_analysis_20260219T023326Z.png",
+      "sha256": "b36b7a35a362a3aeebde0019aabce6cbf02baa3c3dabd7f9e9d59ebe8aa4fbe3",
+      "size_bytes": 781737
+    },
+    {
+      "name": "images/phagocytosis_gate_runtime_sequence.png",
+      "sha256": "5fc8514548f43b3e9559573a437cfbadc577340a102d9fc1ea142a5c567349e2",
+      "size_bytes": 60892
+    },
+    {
+      "name": "images/phagocytosis_house_profile_heatmap.png",
+      "sha256": "593a1dc0014364179509c1611face4f52b48adca861c04ace68115d89d6da7a8",
+      "size_bytes": 102793
+    },
+    {
+      "name": "images/requested_root_archives_qdrant_overview_20260219T131353Z.png",
+      "sha256": "f79c5061552abbde08eec31e057c3ad5b0ef8d260a28cdf73cbcdef13a66034b",
+      "size_bytes": 164422
+    },
+    {
+      "name": "images/v9_causalidade.png",
+      "sha256": "f3dbe33822b13d187e5ce415697bef386470ad4c17017294b3810e5335c243c5",
+      "size_bytes": 344571
+    },
+    {
+      "name": "images/zenodo_v7_cross.png",
+      "sha256": "7a08f0eab3bd2b12727d134962cd43377e89588bf00f3da94ba22773bb44622f",
+      "size_bytes": 223740
+    },
+    {
+      "name": "studies/DOXIHEWU_OMNIMIND_manuscrito_canonico_20260219.md",
+      "sha256": "b4b9875db3fc636a49495dfedebf7814723354b29a099d3d2a4b599b50465fa6",
+      "size_bytes": 97503
+    },
+    {
+      "name": "studies/DOXIHEWU_VERSIONAMENTO_CANONICO_20260220.md",
+      "sha256": "efeb58a1ba777b06ec011cb46038a6a029e9d6e6b6b9e8acfd73c8666a7ea64c",
+      "size_bytes": 895
+    },
+    {
+      "name": "studies/Doxihewu_Omnimind_Termodinamica_psicanalise_teoria_informacao_20260218_v2.docx",
+      "sha256": "3ae66eb03ddab138a81aed7ebea17d8134062f14cf037d667a3da56568c84134",
+      "size_bytes": 2508204
+    },
+    {
+      "name": "studies/Doxihewu_Omnimind_Termodinamica_psicanalise_teoria_informacao_20260218_v2.md",
+      "sha256": "b643f3d975ffb74c2faf2c7be093e074d340a51940583ef2bfea44bb590f3c0b",
+      "size_bytes": 228503
+    },
+    {
+      "name": "studies/Doxihewu_Omnimind_Termodinamica_psicanalise_teoria_informacao_20260218_v2.pdf",
+      "sha256": "a221cf92575fda0b3941461908963425083e014163af88aa6b44a35e25454687",
+      "size_bytes": 1962535
+    },
+    {
+      "name": "studies/README_v8.md",
+      "sha256": "befcacbceacade2c349041f68f1d3d0a0aeeb481840b76afaf47dcd1305b890a",
+      "size_bytes": 1258
+    },
+    {
+      "name": "studies/README_v9.md",
+      "sha256": "cf4f141915f155310f64828d4253a3928df995ebc9507fecef0114035f153767",
+      "size_bytes": 257
+    },
+    {
+      "name": "studies/aging_cross_disease_phase_join_20260219T130512Z.md",
+      "sha256": "595b5ea800a7045a8bb1c1584c4afbdf930ce92cc9a29a7390495f05e742fd9b",
+      "size_bytes": 1131
+    },
+    {
+      "name": "studies/aging_literature_crosscheck_20260219T120625Z.md",
+      "sha256": "a552a3911120ef42b7cd6e8c4385a4152674b04ccef9ffc5b25e9fd9ac1be047",
+      "size_bytes": 780
+    },
+    {
+      "name": "studies/aging_studies_integration_realdata_20260219T120225Z.md",
+      "sha256": "5dcd648cece12add0251b75251dc95c1e7834070272f6b04817e2a5d7614ad15",
+      "size_bytes": 1070
+    },
+    {
+      "name": "studies/aging_studies_integration_realdata_20260219T125603Z.md",
+      "sha256": "be0236e9953f4ecb7a2affc6a8d953f0be29366bb288f88ea1d0db74bb9004f6",
+      "size_bytes": 1485
+    },
+    {
+      "name": "studies/aging_studies_refinement_realdata_20260219T124425Z.md",
+      "sha256": "196440f42e6706331f15933166476550df5a9a334ead29e4692ef041a82aaa9b",
+      "size_bytes": 1212
+    },
+    {
+      "name": "studies/all_gaps_realdata_review_20260218T214503Z.md",
+      "sha256": "95dc7c7fb8838f8ba4cbed6cbf9d9ec76061525f20d7c049c197ebed8047e7f7",
+      "size_bytes": 2912
+    },
+    {
+      "name": "studies/astro_d15_15houses_broadened_cross_20260218T235601Z.md",
+      "sha256": "5830d1321b2a347544a7845f970bb1a1f45be9447e93cdddc3f3d8bf7b46f413",
+      "size_bytes": 1168
+    },
+    {
+      "name": "studies/astro_desi_box_diagnosis_realdata_20260219T001044Z.md",
+      "sha256": "53c50afcf30c80c867978f4256405e6c9c33e9ed5deca0eca7e941691556abc0",
+      "size_bytes": 540
+    },
+    {
+      "name": "studies/astro_mapping_gap_analysis_realdata_20260218T234906Z.md",
+      "sha256": "cf92e06c3eff8aa4e8a457a8b0da9939c0699e97174b66a6f9dbe3f88d052c49",
+      "size_bytes": 2427
+    },
+    {
+      "name": "studies/astro_runtime_daemon_window_alignment_20260218T235730Z.md",
+      "sha256": "47c1f6a1f799a3b5ca8e97cbca40944f64b339cd5bf7de03ce09a2e4f39fecda",
+      "size_bytes": 857
+    },
+    {
+      "name": "studies/bio_logs_cosine_contamination_diagnosis_20260219T203902Z.md",
+      "sha256": "f20e6a657ea1e4b38f4cf71b1dcdb3e410a4915b0e06c389c8284ef33a2b3344",
+      "size_bytes": 2612
+    },
+    {
+      "name": "studies/cosmic_coupling_scope_assessment_20260220T205653Z.md",
+      "sha256": "a573081e01960f4fb3772f3b29aa46be87edd9bfafbb5b3bac21caa618eeb6cc",
+      "size_bytes": 3331
+    },
+    {
+      "name": "studies/federated_gemini_v3_analysis_audit_20260219T125030Z.md",
+      "sha256": "fdc192be1fb20a054108b13b0e0600b959ca5e5d2057d326f5cd8ac9e7da9cfc",
+      "size_bytes": 1293
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T130344Z.md",
+      "sha256": "733389380d6be90049b3ebea1cfe9645bc1e714c78b702a996f25dc4d8b6c9d1",
+      "size_bytes": 1579
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T131257Z.md",
+      "sha256": "fc069fa403c19b336930f8712e7a853ad5c24ed8d4005fd27c8c7f222acc9748",
+      "size_bytes": 1567
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T134004Z.md",
+      "sha256": "a432dcd6c4bb4c77f0390bbeee901180b586533fcfd074824dc45a3f887a10c8",
+      "size_bytes": 2657
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T141313Z.md",
+      "sha256": "c48da960d1402adc6fbb59b970987286f212c00ffb01c805db57f59b66d7b4b3",
+      "size_bytes": 7078
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T141851Z.md",
+      "sha256": "9ff6be83b365b0dfe0dc1053d5dc7a61ab7b4076c02f522c4bff34181aab5479",
+      "size_bytes": 8798
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T142218Z.md",
+      "sha256": "bc2542862b233d11b0deebf4c1943f4c6b040f4e88802d40a17af579b6596353",
+      "size_bytes": 10886
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T143106Z.md",
+      "sha256": "9586a20bc6a439a9cb1d27cbd618047b6306de0cd578552bd99327143fc6b134",
+      "size_bytes": 10980
+    },
+    {
+      "name": "studies/federation_dual_webapp_lag_gap_analysis_20260220T205508Z.md",
+      "sha256": "4d33a473385a665ac76bb39b47aa8eeaade882544b0acd819ff6fc41bfeae3b1",
+      "size_bytes": 17373
+    },
+    {
+      "name": "studies/federation_perplexity_split_screen_experience_20260220T120430Z.md",
+      "sha256": "9c5971733818c54c0faaa62d37b6df1289502d14fdd109f1d63cb9e1741e0425",
+      "size_bytes": 15024
+    },
+    {
+      "name": "studies/federation_provenance_note_20260220T194814Z.md",
+      "sha256": "b89b95f6ea0fd80e181fcf92e29b0d9812cb6f3a0a623b99319181936fe4a368",
+      "size_bytes": 1032
+    },
+    {
+      "name": "studies/federation_proxy_latency_window_summary_20260220T123743Z.md",
+      "sha256": "a386c0c9f31f637a4da6dd2237a86eb8a1d7ba3adbb24913bc86d012d762922c",
+      "size_bytes": 1873
+    },
+    {
+      "name": "studies/federation_proxy_latency_window_summary_20260220T125048Z.md",
+      "sha256": "2f4cbfdb99fb9f5ea095f02ff3dec5aaef6c9ee027b4a66f23f93a7f46bcae4a",
+      "size_bytes": 1520
+    },
+    {
+      "name": "studies/federation_proxy_latency_window_summary_20260220T130745Z.md",
+      "sha256": "136c0da5eec7247d1bb079137cfcb83bf9816531d4f2f22d03aafc8619f5d054",
+      "size_bytes": 1536
+    },
+    {
+      "name": "studies/federation_proxy_latency_window_summary_20260220T133450Z.md",
+      "sha256": "82d2f59cce21c43eeb50c5f23eda10c360bcbf854fcd2dde7898c307903ee740",
+      "size_bytes": 1501
+    },
+    {
+      "name": "studies/federation_proxy_latency_window_summary_20260220T140555Z.md",
+      "sha256": "8090d3767fb5e0da00a43b4189ab7e1d29f2dd3f1245caaacb8880241b1bad10",
+      "size_bytes": 1531
+    },
+    {
+      "name": "studies/federation_proxy_latency_window_summary_20260220T142553Z.md",
+      "sha256": "85466f69b51f4df516b019873fcbd75d21e36eb48f6c02f359bc041842236d33",
+      "size_bytes": 1506
+    },
+    {
+      "name": "studies/federation_proxy_latency_window_summary_20260220T194814Z.md",
+      "sha256": "5ba302b353162cb7369c35d71ad1a1b2a275a0be2e8682470771a59bccfc32b4",
+      "size_bytes": 1980
+    },
+    {
+      "name": "studies/federation_webapp_metrics_d15_status_20260220T124512Z.md",
+      "sha256": "cbd41597b774baae82288439c219c2fe7e47f1ea11d15f0243e75c0ebbb44347",
+      "size_bytes": 1146
+    },
+    {
+      "name": "studies/global_context_window_20260220T194814Z.md",
+      "sha256": "7540b48d8c5b14749bc835724121dfc1b4c93491bcec85825d496a8e77dc1178",
+      "size_bytes": 6281
+    },
+    {
+      "name": "studies/health_astro_loop_closure_inventory_20260219T112507Z.md",
+      "sha256": "2046fe7f610b83075441dcd0bb2b4eceee00f1aecb660742f70ce4ba28dcc6c9",
+      "size_bytes": 1241
+    },
+    {
+      "name": "studies/health_astro_loop_closure_inventory_20260219T130508Z.md",
+      "sha256": "948eb6d9d20a4b63ded1656cc8d83d095b84a35e9806ea91bc6f389cc74e95cc",
+      "size_bytes": 1243
+    },
+    {
+      "name": "studies/health_astro_loop_closure_inventory_20260219T131612Z.md",
+      "sha256": "12238f5d8be842edce6b4b4418fe1c921f13419dbca98b90d4ff424de29e465c",
+      "size_bytes": 1243
+    },
+    {
+      "name": "studies/health_astro_loop_closure_inventory_20260219T131809Z.md",
+      "sha256": "4f579955107e08edeb62f3755eb91339007cb4d65b361074bbf63b21b7d9f3e4",
+      "size_bytes": 1243
+    },
+    {
+      "name": "studies/health_astro_loop_closure_inventory_20260219T141016Z.md",
+      "sha256": "319716cd5d3234135b2bafb1d4ebe707511fcc4c242ae225bc340059a22bc35f",
+      "size_bytes": 1243
+    },
+    {
+      "name": "studies/hf_dataset_tree_audit_real_20260219T113808Z.md",
+      "sha256": "9fe3457c2b4a386d576312d882cc5f1b449c3e4bdde5069db8a748fb06d486e9",
+      "size_bytes": 1901
+    },
+    {
+      "name": "studies/hf_realdata_integration_status_20260219T114854Z.md",
+      "sha256": "62731acee458d5bce82867f440f257c388465f9b7c6ebe7d8e60e778cb039067",
+      "size_bytes": 742
+    },
+    {
+      "name": "studies/hf_realdata_local_samples_analysis_20260219T114612Z.md",
+      "sha256": "840e79cb1b6d26c554bc69aa92307539f5d8cc0467aa67542725a4ab72c426b5",
+      "size_bytes": 758
+    },
+    {
+      "name": "studies/hf_realdata_samples_qdrant_materialization_20260219T114729Z.md",
+      "sha256": "9f5a877cf553512cbc9247fe6749ca9b3f1bd875d980319decd29dcf4f47795d",
+      "size_bytes": 675
+    },
+    {
+      "name": "studies/historical_memory_ab_superposition_20260219T211710Z.md",
+      "sha256": "e61cb36cfb4901213f0b3800bd033afb0d4026498d7600db5a5467a70c195c5a",
+      "size_bytes": 3034
+    },
+    {
+      "name": "studies/jwst_analysis_report_20260220T024211Z.md",
+      "sha256": "9b2912963803d0a30251a521bc362923be3b387a359146df362365eaea06d7ca",
+      "size_bytes": 482
+    },
+    {
+      "name": "studies/null_model_honest_assessment_20260208.md",
+      "sha256": "065f7434e52c4bc613dabea86b5a0646c0a7a3e02ec19724afc8e2de1644d720",
+      "size_bytes": 79834
+    },
+    {
+      "name": "studies/orbit_queue_priority_c_multihorizon_20260218T233906Z.md",
+      "sha256": "e2cba885c9ce9ab5641f3fa02b46130a141eeca54a0592cfcb1fe755bdd03125",
+      "size_bytes": 1605
+    },
+    {
+      "name": "studies/orbital_dynamics_functional_20260219T023326Z.md",
+      "sha256": "5a5b2fd3268c1953007766577b9e7d22c85386fb774e62fa1c4f3d182001c60a",
+      "size_bytes": 502
+    },
+    {
+      "name": "studies/pcloud_snapshot_cleanup_20260219T142034Z.md",
+      "sha256": "e4a1a1da67ad0ba4cff4a955594ec30eb35ff2715683e2d702829332e4089a0a",
+      "size_bytes": 517
+    },
+    {
+      "name": "studies/pending_tasks_snapshot_20260220T211208Z.md",
+      "sha256": "a53c36e98e19c284f925924d6eb414c2ddac0e6ec3a4b34a25aef4304eb11728",
+      "size_bytes": 1687
+    },
+    {
+      "name": "studies/reeds_indexer_forensic_fix_validation_20260219T004649Z.md",
+      "sha256": "a3d67522c22f19018d4f43d1c3b1f832a5dc0e7537cd7616c53e99b0425a502f",
+      "size_bytes": 848
+    },
+    {
+      "name": "studies/reeds_interest_gate_ab_validation_20260219T005334Z.md",
+      "sha256": "85e5b6449b89dcd146dc71b368cda59d8e9d5a2529c0581b5ed02194a4636eb3",
+      "size_bytes": 721
+    },
+    {
+      "name": "studies/reeds_rehydration_index_status_20260219T003121Z.md",
+      "sha256": "c29b361512271bc85ad624326e9b33a6fd544a017b0b5eae0c5b190fe1e8bb71",
+      "size_bytes": 569
+    },
+    {
+      "name": "studies/reeds_topological_filter_behavior_diagnosis_20260219T004056Z.md",
+      "sha256": "550cb22251ceec5a7d695b813bb18423790badb2a1ea4fb059c766cf22c60e17",
+      "size_bytes": 813
+    },
+    {
+      "name": "studies/rehydrated_biomarker_scan_20260219T121615Z.md",
+      "sha256": "f0d10ae8be2ef679e011202d70f6bfe493286312d9a79258457f55b2bddebc55",
+      "size_bytes": 667
+    },
+    {
+      "name": "studies/requested_root_archives_analysis_20260219T131602Z.md",
+      "sha256": "c12460640f0474baed2cb2b839ee18204e1cdaf4af53fd875f53515d2991ac28",
+      "size_bytes": 914
+    },
+    {
+      "name": "studies/requested_root_archives_analysis_20260219T140805Z.md",
+      "sha256": "15f3338cefad636a4f73e66ea68e78e60f9028a4581d8d1fbccf8fdff50eefb4",
+      "size_bytes": 914
+    },
+    {
+      "name": "studies/requested_root_archives_qdrant_materialization_20260219T131353Z.md",
+      "sha256": "0a674b0e50e48274849cec8c73d05751d0803d24971696ee883d70eeb572a632",
+      "size_bytes": 743
+    },
+    {
+      "name": "studies/requested_root_archives_qdrant_materialization_20260219T140101Z.md",
+      "sha256": "c92f89d8585e0a4937cc536851dccc9152445a24a45119cbda8a19a2ce9c0e98",
+      "size_bytes": 743
+    },
+    {
+      "name": "studies/runtime_continuity_hardening_20260219T143440Z.md",
+      "sha256": "0ad1b77f68a1d5302379850ca7d2041b5318e11918c60c0d013573407b5b3918",
+      "size_bytes": 887
+    },
+    {
+      "name": "studies/runtime_continuity_postcleanup_20260219T143723Z.md",
+      "sha256": "6cacacbdbbf415c7800dcb89b6dc981e00ac3f8c77d1c534ac5bcf0f94ff1dc9",
+      "size_bytes": 599
+    },
+    {
+      "name": "studies/runtime_incident_and_continuity_followup_20260219T140758Z.md",
+      "sha256": "546219ec9150fcf4890d38cc3f53503ae081d7a1e30796804e832f3aa00691c1",
+      "size_bytes": 1399
+    },
+    {
+      "name": "studies/termo_psicanalise.md",
+      "sha256": "3af61fb8fab192a8f58612fbf458c3f22fb0295d0caa5d7d5d49bdf5ea50b862",
+      "size_bytes": 879
+    },
+    {
+      "name": "studies/termo_psicanalise.pdf",
+      "sha256": "aeb47f588fd3a1584c89d0cb8717965e2b46dfdc4e30c3ae94159e2436deb51b",
+      "size_bytes": 89447
+    },
+    {
+      "name": "studies/tier2_memory_async_closure_20260219T212146Z.md",
+      "sha256": "9d246cfd7d8fcd1a41030ffa6691391555b17a397827d098a839f641c339a86f",
+      "size_bytes": 2284
+    },
+    {
+      "name": "studies/topological_filter_astro_lexical_probe_20260219T005428Z.md",
+      "sha256": "9cb2f863fe9bf4786b4f288ac165ee850996371281ec48dbe97a22a03afe0a76",
+      "size_bytes": 607
+    },
+    {
+      "name": "studies/triad_domain_scope_status_20260220T024211Z.md",
+      "sha256": "a5759830fe8d4cdac36db7c3105fb39db5e5e2a7a9127329e2dc980a34fe9798",
+      "size_bytes": 376
+    },
+    {
+      "name": "studies/triad_domain_scope_status_20260220T115738Z.md",
+      "sha256": "f73685f5a448e56a106063e4d9f9104a6be38b956f2c02cfd89d9e9b812fe5d3",
+      "size_bytes": 721
+    },
+    {
+      "name": "studies/zenodo_bio_astro_pack_refresh_20260219T141310Z.md",
+      "sha256": "1a0dda84b1b84e6f68626e83575a0a029f7e88398be5ea42510a5e129d698d84",
+      "size_bytes": 760
+    },
+    {
+      "name": "studies/zenodo_bio_astro_pack_refresh_20260219T143902Z.md",
+      "sha256": "5150cc0b27d5d372c704ffd650002caa46050ccb2f087296119ac53055363245",
+      "size_bytes": 455
+    },
+    {
+      "name": "studies/zenodo_bio_astro_upgrade_20260219T010522Z.md",
+      "sha256": "446089afc7bd189d7a193e70ff91cfe3d783a5ab95311120eab16eb1b6bd4f1a",
+      "size_bytes": 2293
+    },
+    {
+      "name": "studies/zenodo_bio_astro_upgrade_20260219T011004Z.md",
+      "sha256": "e4ce1044dd7e9687b1c6dba4cbde96cb23971f0fc11918a0486332d6fb4f37ab",
+      "size_bytes": 2341
+    },
+    {
+      "name": "studies/zenodo_bio_astro_upgrade_publish_recheck_20260219T010840Z.md",
+      "sha256": "9404de4d7d37b16417c33dce565d4e847a0d0eeb883a223cf82d92861a59422e",
+      "size_bytes": 281
+    },
+    {
+      "name": "studies/zenodo_pack_closure_audit_20260220T211156Z.md",
+      "sha256": "fcde3b51b0157f9ac13da419b47673ab805291e9ac16f4600a4e3445516bcd71",
+      "size_bytes": 2141
+    },
+    {
+      "name": "studies/zenodo_rehydration_chain4_status_clean_20260219T112710Z.md",
+      "sha256": "a012f4be00943da45da6fd3b6034190c371dcb73fd9e63f14b225a0f3abc616c",
+      "size_bytes": 268
+    },
+    {
+      "name": "studies/zenodo_rehydration_chain_status_20260219T110433Z.md",
+      "sha256": "b28807d85c7f14f3db8e4ea742ff0d0e5af309d9202dc7643e0fb13ca8f4e568",
+      "size_bytes": 270
+    },
+    {
+      "name": "studies/zenodo_rehydration_execution_20260219T030004Z.md",
+      "sha256": "e83ae5fb501e59ca2da4a67f5e7ee8efbafcdfc5f884271de881f1e82a3f3436",
+      "size_bytes": 267
+    },
+    {
+      "name": "studies/zenodo_rehydration_phase2_status_20260219T104807Z.md",
+      "sha256": "b984158d3e3cf0110ebac3aaa22e4ec59d01783300ba6081582d05aaef0cd3cf",
+      "size_bytes": 224
+    },
+    {
+      "name": "studies/zenodo_rehydration_phase2_status_20260219T120835Z.md",
+      "sha256": "9877e541976ea9e419db356a2ccfb7caf8c7da60a874e78eeb3975f0157ac4e5",
+      "size_bytes": 270
+    },
+    {
+      "name": "studies/zenodo_rehydration_phase2_status_20260219T121723Z.md",
+      "sha256": "4b24e6d7267e4c045256b58306be931a86a37e056d4e26bf0421e0c53c278116",
+      "size_bytes": 270
+    },
+    {
+      "name": "studies/zenodo_rehydration_phase2_status_20260219T122852Z.md",
+      "sha256": "b4c886c45f5ff7b1afebb2087adcfcccfddae49f9cd8c5ee0baed07d93dd47c6",
+      "size_bytes": 298
+    },
+    {
+      "name": "studies/zenodo_rehydration_phase2_status_20260219T125805Z.md",
+      "sha256": "2466b698edbec3abca236a2733baece3a8991acfff4cf2039f886f53126c3e86",
+      "size_bytes": 297
+    },
+    {
+      "name": "studies/zenodo_rehydration_readiness_20260219T025639Z.md",
+      "sha256": "8b0f6ee82f8a85cd19eed98b2fcef4f27c1dff8d48e2e6ed165d486304807699",
+      "size_bytes": 1059
+    },
+    {
+      "name": "studies/zenodo_v10_gap_reaudit_20260220T024558Z.md",
+      "sha256": "36bf7674aa73f32e75757a7975fbf607c7a49d69c214f6c78df01aff2f169a16",
+      "size_bytes": 815
+    },
+    {
+      "name": "studies/zenodo_v8_cross_realdata_20260219T012535Z.md",
+      "sha256": "c712027f50b32337bdcede22a294a2e27b283794eda7330b8eb805e605376fd2",
+      "size_bytes": 451
+    }
+  ]
+}

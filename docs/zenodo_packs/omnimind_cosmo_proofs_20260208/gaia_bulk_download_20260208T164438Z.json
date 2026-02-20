@@ -1,0 +1,9 @@
+{
+  "timestamp": "20260208T164438Z",
+  "file": "/home/fahbrain/projects/omnimind/data/gaia_bulk/gaia_source/GaiaSource_000000-003111.csv.gz",
+  "size_bytes": 233642769,
+  "sha256": "bdc54b6adc50e6982897d0074068b862811ef623449d04d1205072b27ac3b623",
+  "source_url": "https://cdn.gea.esac.esa.int/Gaia/gdr3/gaia_source/GaiaSource_000000-003111.csv.gz",
+  "table": "gaia_source",
+  "notes": "Primeiro chunk baixado para camada Gaia; usar como base do cone-search."
+}

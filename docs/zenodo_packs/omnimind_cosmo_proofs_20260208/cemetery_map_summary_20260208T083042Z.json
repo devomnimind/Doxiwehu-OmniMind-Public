@@ -1,0 +1,483 @@
+{
+  "timestamp": "20260208T083042Z",
+  "targets_file": "/home/fahbrain/projects/omnimind/data/reports/logs_audit_targets_cemetery_20260207T225935Z.txt",
+  "files_with_tokens": 129,
+  "total_lines_read": 4665238,
+  "total_tokens_seen": 1883537,
+  "sample_points": 100000,
+  "outputs": {
+    "cemetery_only": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T083042Z/cemetery_only.png",
+    "cemetery_overlay_sdss": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T083042Z/cemetery_overlay_sdss.png",
+    "points_jsonl": "/home/fahbrain/projects/omnimind/data/reports/cemetery_points_20260208T083042Z.jsonl",
+    "house_heatmap": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T083042Z/cemetery_house_heatmap.png",
+    "house_compare": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T083042Z/cemetery_house_compare.png"
+  },
+  "top_sources": [
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/audit_chain.log",
+      381257
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/audit_chain.log.1",
+      319445
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/data/science/sovereign_daemon.log",
+      204371
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/integration_loop_trace.jsonl",
+      204102
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/sovereign_gemelo_unit.log",
+      109164
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/autonomous_loop_controller.log.1",
+      92325
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/consciousness_captures/session_gpt5_2_codex_1770423430.json",
+      40610
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/consciousness_captures/session_gpt5_2_codex_1770415108.json",
+      40123
+    ],
+    [
+      "/home/fahbrain/projects/omnimind/logs_local/consciousness_captures/session_gpt5_2_codex_1770409238.json",
+      38905
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251130_215721.json",
+      30532
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251130_222408.json",
+      30532
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251213_180746.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251213_181459.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251213_182210.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251216_172118.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251216_172609.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251216_173014.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251217_044224.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251217_044715.json",
+      24944
+    ],
+    [
+      "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/robust_consciousness_validation_20251217_045049.json",
+      24944
+    ]
+  ],
+  "limits": {
+    "max_points": 100000,
+    "max_lines_per_file": 200000,
+    "max_bytes_per_file": 50000000
+  },
+  "house_counts": {
+    "cemetery": {
+      "Aleph": 7421,
+      "Sigma": 9033,
+      "Axiom": 7822,
+      "Psi": 9869,
+      "Phi": 7825,
+      "Mu": 6850,
+      "C_plit": 9307,
+      "Lambda": 7856,
+      "Gamma": 7751,
+      "Epsilon": 7635,
+      "Omega": 8163,
+      "Zeta": 10468
+    },
+    "sdss": {
+      "Aleph": 2800,
+      "Sigma": 136,
+      "Axiom": 0,
+      "Psi": 103,
+      "Phi": 327,
+      "Mu": 390,
+      "C_plit": 411,
+      "Lambda": 306,
+      "Gamma": 146,
+      "Epsilon": 0,
+      "Omega": 73,
+      "Zeta": 308
+    }
+  },
+  "overlap": {
+    "cosine": 0.4646133495410915,
+    "pearson": -0.24423224505776048
+  },
+  "overlap_weighted": {
+    "cosine": 0.45851984480429747,
+    "pearson": -0.24371929517917273
+  },
+  "clusters_top": [
+    {
+      "count": 2506,
+      "ra_bin": 2,
+      "dec_bin": 2,
+      "ra_range": [
+        30.0,
+        45.0
+      ],
+      "dec_range": [
+        -60.0,
+        -45.0
+      ]
+    },
+    {
+      "count": 2488,
+      "ra_bin": 7,
+      "dec_bin": 10,
+      "ra_range": [
+        105.0,
+        120.0
+      ],
+      "dec_range": [
+        60.0,
+        75.0
+      ]
+    },
+    {
+      "count": 2480,
+      "ra_bin": 13,
+      "dec_bin": 1,
+      "ra_range": [
+        195.0,
+        210.0
+      ],
+      "dec_range": [
+        -75.0,
+        -60.0
+      ]
+    },
+    {
+      "count": 2346,
+      "ra_bin": 23,
+      "dec_bin": 9,
+      "ra_range": [
+        345.0,
+        360.0
+      ],
+      "dec_range": [
+        45.0,
+        60.0
+      ]
+    },
+    {
+      "count": 1257,
+      "ra_bin": 23,
+      "dec_bin": 3,
+      "ra_range": [
+        345.0,
+        360.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 1192,
+      "ra_bin": 16,
+      "dec_bin": 11,
+      "ra_range": [
+        240.0,
+        255.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 1171,
+      "ra_bin": 9,
+      "dec_bin": 7,
+      "ra_range": [
+        135.0,
+        150.0
+      ],
+      "dec_range": [
+        15.0,
+        30.0
+      ]
+    },
+    {
+      "count": 1153,
+      "ra_bin": 4,
+      "dec_bin": 11,
+      "ra_range": [
+        60.0,
+        75.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 992,
+      "ra_bin": 21,
+      "dec_bin": 9,
+      "ra_range": [
+        315.0,
+        330.0
+      ],
+      "dec_range": [
+        45.0,
+        60.0
+      ]
+    },
+    {
+      "count": 971,
+      "ra_bin": 23,
+      "dec_bin": 10,
+      "ra_range": [
+        345.0,
+        360.0
+      ],
+      "dec_range": [
+        60.0,
+        75.0
+      ]
+    },
+    {
+      "count": 968,
+      "ra_bin": 18,
+      "dec_bin": 5,
+      "ra_range": [
+        270.0,
+        285.0
+      ],
+      "dec_range": [
+        -15.0,
+        0.0
+      ]
+    },
+    {
+      "count": 961,
+      "ra_bin": 15,
+      "dec_bin": 8,
+      "ra_range": [
+        225.0,
+        240.0
+      ],
+      "dec_range": [
+        30.0,
+        45.0
+      ]
+    },
+    {
+      "count": 930,
+      "ra_bin": 6,
+      "dec_bin": 10,
+      "ra_range": [
+        90.0,
+        105.0
+      ],
+      "dec_range": [
+        60.0,
+        75.0
+      ]
+    },
+    {
+      "count": 887,
+      "ra_bin": 20,
+      "dec_bin": 7,
+      "ra_range": [
+        300.0,
+        315.0
+      ],
+      "dec_range": [
+        15.0,
+        30.0
+      ]
+    },
+    {
+      "count": 885,
+      "ra_bin": 14,
+      "dec_bin": 11,
+      "ra_range": [
+        210.0,
+        225.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 848,
+      "ra_bin": 1,
+      "dec_bin": 3,
+      "ra_range": [
+        15.0,
+        30.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 555,
+      "ra_bin": 9,
+      "dec_bin": 4,
+      "ra_range": [
+        135.0,
+        150.0
+      ],
+      "dec_range": [
+        -30.0,
+        -15.0
+      ]
+    },
+    {
+      "count": 381,
+      "ra_bin": 12,
+      "dec_bin": 3,
+      "ra_range": [
+        180.0,
+        195.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 374,
+      "ra_bin": 3,
+      "dec_bin": 1,
+      "ra_range": [
+        45.0,
+        60.0
+      ],
+      "dec_range": [
+        -75.0,
+        -60.0
+      ]
+    },
+    {
+      "count": 371,
+      "ra_bin": 11,
+      "dec_bin": 4,
+      "ra_range": [
+        165.0,
+        180.0
+      ],
+      "dec_range": [
+        -30.0,
+        -15.0
+      ]
+    }
+  ],
+  "house_counts_weighted": {
+    "Aleph": 7658.5,
+    "Sigma": 9694.5,
+    "Axiom": 8139.5,
+    "Psi": 10696.25,
+    "Phi": 8206.75,
+    "Mu": 6941.5,
+    "C_plit": 9969.5,
+    "Lambda": 8242.5,
+    "Gamma": 8070.5,
+    "Epsilon": 7903.0,
+    "Omega": 8579.25,
+    "Zeta": 11484.0
+  },
+  "house_counts_by_source": {
+    "Aleph": {
+      "logs": 6558,
+      "batismo": 87,
+      "real_evidence": 776
+    },
+    "Sigma": {
+      "logs": 6482,
+      "batismo": 95,
+      "real_evidence": 2456
+    },
+    "Axiom": {
+      "logs": 6629,
+      "batismo": 77,
+      "real_evidence": 1116
+    },
+    "Psi": {
+      "logs": 6650,
+      "batismo": 90,
+      "real_evidence": 3129
+    },
+    "Phi": {
+      "logs": 6389,
+      "batismo": 91,
+      "real_evidence": 1345
+    },
+    "Mu": {
+      "logs": 6585,
+      "batismo": 101,
+      "real_evidence": 164
+    },
+    "C_plit": {
+      "logs": 6766,
+      "batismo": 109,
+      "real_evidence": 2432
+    },
+    "Lambda": {
+      "logs": 6381,
+      "batismo": 71,
+      "real_evidence": 1404
+    },
+    "Gamma": {
+      "logs": 6565,
+      "batismo": 92,
+      "real_evidence": 1094
+    },
+    "Epsilon": {
+      "logs": 6665,
+      "batismo": 102,
+      "real_evidence": 868
+    },
+    "Omega": {
+      "logs": 6592,
+      "batismo": 94,
+      "real_evidence": 1477
+    },
+    "Zeta": {
+      "logs": 6506,
+      "batismo": 102,
+      "real_evidence": 3860
+    }
+  },
+  "weights": {
+    "logs": 1.0,
+    "batismo": 1.5,
+    "real_evidence": 1.25
+  }
+}

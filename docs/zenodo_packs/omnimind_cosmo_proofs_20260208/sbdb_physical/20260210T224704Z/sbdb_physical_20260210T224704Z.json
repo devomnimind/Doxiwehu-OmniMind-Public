@@ -1,0 +1,631 @@
+{
+  "timestamp": "20260210T224704Z",
+  "sources": {
+    "orbit_queue": "reports_runtime/orbit_queue_dodecatiad_20260210T024651Z.json",
+    "cometels": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/CometEls.txt",
+    "neocp": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/NEOCP.txt"
+  },
+  "counts": {
+    "codes": 25
+  },
+  "objects": {
+    "A11y70v": {
+      "code": "A11y70v",
+      "attempts": [
+        {
+          "query": "A11y70v",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null,
+      "mpc_neocp": {
+        "vmag": 21.6
+      }
+    },
+    "C19DCG5": {
+      "code": "C19DCG5",
+      "attempts": [
+        {
+          "query": "C19DCG5",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null,
+      "mpc_neocp": {
+        "vmag": 21.6
+      }
+    },
+    "C45RW41": {
+      "code": "C45RW41",
+      "attempts": [
+        {
+          "query": "C45RW41",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null
+    },
+    "CE5LGG2": {
+      "code": "CE5LGG2",
+      "attempts": [
+        {
+          "query": "CE5LGG2",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null
+    },
+    "CE5V9J2": {
+      "code": "CE5V9J2",
+      "attempts": [
+        {
+          "query": "CE5V9J2",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null
+    },
+    "CJ99J020": {
+      "code": "CJ99J020",
+      "attempts": [],
+      "found": true,
+      "query": "C/1999 J2",
+      "phys": {
+        "sbdb_des": "1999 J2",
+        "sbdb_fullname": "C/1999 J2 (Skiff)",
+        "sbdb_spkid": "1000254",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 6.1,
+        "K1": 7.0,
+        "M2": 8.2,
+        "K2": 5.0,
+        "PC": 0.03,
+        "phys_keys": [
+          "K1",
+          "K2",
+          "M1",
+          "M2",
+          "PC"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CJ99J020.json"
+    },
+    "CJ99S020": {
+      "code": "CJ99S020",
+      "attempts": [],
+      "found": true,
+      "query": "C/1999 S2",
+      "phys": {
+        "sbdb_des": "1999 S2",
+        "sbdb_fullname": "C/1999 S2 (McNaught-Watson)",
+        "sbdb_spkid": "1000274",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 8.0,
+        "K1": 4.5,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CJ99S020.json"
+    },
+    "CK09P010": {
+      "code": "CK09P010",
+      "attempts": [],
+      "found": true,
+      "query": "C/2009 P1",
+      "phys": {
+        "sbdb_des": "2009 P1",
+        "sbdb_fullname": "C/2009 P1 (Garradd)",
+        "sbdb_spkid": "1003031",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 8.8,
+        "K1": 4.5,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK09P010.json"
+    },
+    "CK12A010": {
+      "code": "CK12A010",
+      "attempts": [],
+      "found": true,
+      "query": "C/2012 A1",
+      "phys": {
+        "sbdb_des": "2012 A1",
+        "sbdb_fullname": "C/2012 A1 (PANSTARRS)",
+        "sbdb_spkid": "1003166",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 10.1,
+        "K1": 5.25,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK12A010.json"
+    },
+    "CK12K010": {
+      "code": "CK12K010",
+      "attempts": [],
+      "found": true,
+      "query": "C/2012 K1",
+      "phys": {
+        "sbdb_des": "2012 K1",
+        "sbdb_fullname": "C/2012 K1 (PANSTARRS)",
+        "sbdb_spkid": "1003190",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 7.3,
+        "K1": 6.75,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK12K010.json"
+    },
+    "CK13E010": {
+      "code": "CK13E010",
+      "attempts": [],
+      "found": true,
+      "query": "C/2013 E1",
+      "phys": {
+        "sbdb_des": "2013 E1",
+        "sbdb_fullname": "C/2013 E1 (McNaught)",
+        "sbdb_spkid": "1003237",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 6.6,
+        "K1": 8.75,
+        "M2": 10.5,
+        "K2": 5.0,
+        "PC": 0.03,
+        "phys_keys": [
+          "K1",
+          "K2",
+          "M1",
+          "M2",
+          "PC"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK13E010.json"
+    },
+    "CK14Q020": {
+      "code": "CK14Q020",
+      "attempts": [],
+      "found": true,
+      "query": "C/2014 Q2",
+      "phys": {
+        "sbdb_des": "2014 Q2",
+        "sbdb_fullname": "C/2014 Q2 (Lovejoy)",
+        "sbdb_spkid": "1003331",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 9.1,
+        "K1": 6.5,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK14Q020.json"
+    },
+    "CK14UR1N": {
+      "code": "CK14UR1N",
+      "attempts": [],
+      "found": true,
+      "query": "C/2014 UN271",
+      "phys": {
+        "sbdb_des": "2014 UN271",
+        "sbdb_fullname": "C/2014 UN271 (Bernardinelli-Bernstein)",
+        "sbdb_spkid": "1003787",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 5.5,
+        "K1": 4.5,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK14UR1N.json"
+    },
+    "CK16E010": {
+      "code": "CK16E010",
+      "attempts": [],
+      "found": true,
+      "query": "C/2016 E1",
+      "phys": {
+        "sbdb_des": "2016 E1",
+        "sbdb_fullname": "C/2016 E1 (PANSTARRS)",
+        "sbdb_spkid": "1003455",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 6.9,
+        "K1": 9.5,
+        "M2": 11.1,
+        "K2": 5.0,
+        "PC": 0.03,
+        "phys_keys": [
+          "K1",
+          "K2",
+          "M1",
+          "M2",
+          "PC"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK16E010.json"
+    },
+    "CK18A060": {
+      "code": "CK18A060",
+      "attempts": [],
+      "found": true,
+      "query": "C/2018 A6",
+      "phys": {
+        "sbdb_des": "2018 A6",
+        "sbdb_fullname": "C/2018 A6 (Gibbs)",
+        "sbdb_spkid": "1003559",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 9.7,
+        "K1": 7.25,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK18A060.json"
+    },
+    "CK19A050": {
+      "code": "CK19A050",
+      "attempts": [],
+      "found": true,
+      "query": "C/2019 A5",
+      "phys": {
+        "sbdb_des": "2019 A5",
+        "sbdb_fullname": "C/2019 A5 (PANSTARRS)",
+        "sbdb_spkid": "1003606",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 7.3,
+        "K1": 12.75,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK19A050.json"
+    },
+    "CK19B030": {
+      "code": "CK19B030",
+      "attempts": [],
+      "found": true,
+      "query": "C/2019 B3",
+      "phys": {
+        "sbdb_des": "2019 B3",
+        "sbdb_fullname": "C/2019 B3 (PANSTARRS)",
+        "sbdb_spkid": "1003614",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 6.5,
+        "K1": 8.75,
+        "M2": 10.2,
+        "K2": 5.0,
+        "PC": 0.03,
+        "phys_keys": [
+          "K1",
+          "K2",
+          "M1",
+          "M2",
+          "PC"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_CK19B030.json"
+    },
+    "P22liAW": {
+      "code": "P22liAW",
+      "attempts": [
+        {
+          "query": "P22liAW",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null
+    },
+    "P22lnpr": {
+      "code": "P22lnpr",
+      "attempts": [
+        {
+          "query": "P22lnpr",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null
+    },
+    "P22lp4E": {
+      "code": "P22lp4E",
+      "attempts": [
+        {
+          "query": "P22lp4E",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null
+    },
+    "PK09Y020": {
+      "code": "PK09Y020",
+      "attempts": [],
+      "found": true,
+      "query": "P/2009 Y2",
+      "phys": {
+        "sbdb_des": "2009 Y2",
+        "sbdb_fullname": "P/2009 Y2 (Kowalski)",
+        "sbdb_spkid": "1003053",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 6.2,
+        "K1": 28.75,
+        "M2": 15.9,
+        "K2": 5.0,
+        "PC": 0.03,
+        "phys_keys": [
+          "K1",
+          "K2",
+          "M1",
+          "M2",
+          "PC"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_PK09Y020.json"
+    },
+    "PK10H030": {
+      "code": "PK10H030",
+      "attempts": [],
+      "found": true,
+      "query": "P/2010 H3",
+      "phys": {
+        "sbdb_des": "1999 J6",
+        "sbdb_fullname": "P/1999 J6 (SOHO = 2010 H3)",
+        "sbdb_spkid": "1001439",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": null,
+        "K1": null,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": []
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_PK10H030.json"
+    },
+    "PK10U55H": {
+      "code": "PK10U55H",
+      "attempts": [],
+      "found": true,
+      "query": "P/2010 UH55",
+      "phys": {
+        "sbdb_des": "2010 UH55",
+        "sbdb_fullname": "P/2010 UH55 (Spacewatch)",
+        "sbdb_spkid": "1003161",
+        "sbdb_type": "cu",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 7.1,
+        "K1": 18.0,
+        "M2": 15.2,
+        "K2": 5.0,
+        "PC": 0.03,
+        "phys_keys": [
+          "K1",
+          "K2",
+          "M1",
+          "M2",
+          "PC"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_PK10U55H.json"
+    },
+    "PK13CC9U": {
+      "code": "PK13CC9U",
+      "attempts": [],
+      "found": true,
+      "query": "P/2013 CU129",
+      "phys": {
+        "sbdb_des": "364P",
+        "sbdb_fullname": "364P/PANSTARRS (2013 CU129)",
+        "sbdb_spkid": "1003263",
+        "sbdb_type": "cn",
+        "diameter_km": null,
+        "albedo": null,
+        "H": null,
+        "G": null,
+        "rot_per_h": null,
+        "tax_class": null,
+        "spec_B": null,
+        "spec_T": null,
+        "M1": 17.5,
+        "K1": 7.25,
+        "M2": null,
+        "K2": null,
+        "PC": null,
+        "phys_keys": [
+          "K1",
+          "M1"
+        ]
+      },
+      "cache": "reports_runtime/sbdb_cache/sbdb_PK13CC9U.json"
+    },
+    "ST26B07": {
+      "code": "ST26B07",
+      "attempts": [
+        {
+          "query": "ST26B07",
+          "ok": true,
+          "has_object": false
+        }
+      ],
+      "found": false,
+      "query": null,
+      "error": null
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "timestamp": "20260210T205330Z",
+  "input_csv": "reports_runtime/space_weather_merged_20260209T104949Z.csv",
+  "minute_col": "minute",
+  "lat": -20.8113,
+  "lon": -49.3766,
+  "sep_threshold_deg": 2.0,
+  "de421_path": "/home/fahbrain/projects/omnimind/de421.bsp",
+  "n_minutes": 5400,
+  "planets": [
+    "mercury",
+    "venus",
+    "mars"
+  ],
+  "stars": [
+    "regulus",
+    "spica",
+    "antares",
+    "beehive_m44"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "timestamp": "20260211T162441Z",
+  "status": "partial_consolidated",
+  "readme_updated": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/README.md",
+  "pending_report_updated": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/PACK_PENDING_REPORT_20260208T141351Z.md",
+  "manifest": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/PACK_MANIFEST.json",
+  "sync_phase_flip_dir": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/sync_phase_flip/20260209T181146Z"
+}

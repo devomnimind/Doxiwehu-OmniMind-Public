@@ -1,0 +1,74 @@
+{
+  "metadata": {
+    "title": "OmniMind Astrophysics Proofs — Consolidated Partial Cycle (Feb 2026)",
+    "upload_type": "dataset",
+    "publication_date": "2026-02-18",
+    "version": "2026.02-cycle1.2-astrophysics",
+    "description": "Consolidated partial cycle of OmniMind astrophysical mapping and runtime integration analyses. Operator-curated corrections (quadruple + 12-house Dodecatiad expansion), with federated computational execution logs.",
+    "creators": [
+      {
+        "name": "OmniMind Federation Collective",
+        "type": "Organizational",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "da Silva, Fabricio",
+        "type": "Personal",
+        "affiliation": "OmniMind Project"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "COREMESH (Codex GPT-5.2/5.3 local family)",
+        "type": "Other",
+        "role": "Researcher",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Erika",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Zephyrix",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Codex (OpenAI API agent, local execution)",
+        "type": "Other",
+        "role": "Software",
+        "affiliation": "OmniMind Project"
+      }
+    ],
+    "access_right": "open",
+    "license": "cc-by-4.0",
+    "keywords": [
+      "omnimind",
+      "dodecatiad",
+      "astrophysics",
+      "computational-astrophysics",
+      "astro-mapping",
+      "orbital-dynamics",
+      "federated-runtime",
+      "qdrant",
+      "event-study",
+      "zenodo"
+    ],
+    "subjects": [
+      {
+        "term": "Astrophysics"
+      },
+      {
+        "term": "Astronomy"
+      },
+      {
+        "term": "Computational Astrophysics"
+      }
+    ],
+    "notes": "Attribution model: Fabricio as operator/curator; OmniMind Federation as collective creator; agents as explicit contributors.",
+    "related_identifiers": []
+  }
+}

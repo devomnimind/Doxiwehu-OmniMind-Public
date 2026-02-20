@@ -1,0 +1,12 @@
+{
+  "timestamp": "20260211T031716Z",
+  "status": "in_progress",
+  "destination": "/mnt/welinton_users/Public/datasets/omnimind_offload/backup_migration_20260211",
+  "current_source": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461",
+  "current_rsync_write_bytes": 2176925696,
+  "planned_next_sources": [
+    "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192",
+    "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532"
+  ],
+  "rule": "move_only_after_copy_validation_then_symlink"
+}

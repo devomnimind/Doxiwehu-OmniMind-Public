@@ -1,0 +1,20 @@
+{
+  "timestamp": "20260208T160211Z",
+  "out_dir": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/gaia_fermi_sessions/20260208T160211Z",
+  "fermi_fits": "/home/fahbrain/projects/omnimind/data/external/fermi/gll_psc_v35.fit",
+  "fermi_count": 3500,
+  "gaia_targets": {
+    "Fermi Bubble N": 368,
+    "Fermi Bubble S": 467,
+    "Sgr A*": 3078,
+    "Quintuplet": 3137,
+    "Canis Major": 2359
+  },
+  "gaia_radius_deg": 2.0,
+  "gaia_gmax": 12.0,
+  "outputs": {
+    "overlay": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/gaia_fermi_sessions/20260208T160211Z/gaia_fermi_overlay.png",
+    "gaia_points": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/gaia_fermi_sessions/20260208T160211Z/gaia_points.json",
+    "fermi_sources": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/gaia_fermi_sessions/20260208T160211Z/fermi_sources.json"
+  }
+}

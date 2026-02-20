@@ -1,0 +1,388 @@
+{
+  "timestamp": "20260211T134409Z",
+  "roots": [
+    "data",
+    "logs_local",
+    "reports_runtime",
+    "docs/zenodo_packs"
+  ],
+  "counts": {
+    "total_symlinks": 53,
+    "ok_symlinks": 53,
+    "broken_symlinks": 0
+  },
+  "broken_symlinks": [],
+  "sample_ok_symlinks": [
+    {
+      "path": "data/monitor",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/OMNIMIND_SOMA_EXPANSION/monitor",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/monitor",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/omnimind_data",
+      "target": "/home/fahbrain/omnimind_data",
+      "resolved": "/var/omnimind_storage/home_redirect/omnimind_data",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/data",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind/omnimind_backup/data",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind/omnimind_backup/data",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/large_storage",
+      "target": "/var/lib/omnimind_soma/large_storage",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/large_storage",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/qdrant",
+      "target": "/var/lib/omnimind_soma/qdrant",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/qdrant",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/datasets",
+      "target": "/var/lib/omnimind_soma/datasets",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/datasets",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/logs",
+      "target": "/var/lib/omnimind_soma/logs",
+      "resolved": "/omnimind_storage/varlib_omnimind_soma/logs",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/reports/asteroids",
+      "target": "/home/fahbrain/projects/omnimind/reports_runtime/asteroids",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/asteroids",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/reports/anomaly_timestamps_20260208T143755Z.json",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/gaia_bulk/gaia_source",
+      "target": "/home/fahbrain/omnimind_storage_local/gaia_source",
+      "resolved": "/home/fahbrain/omnimind_storage_local/gaia_source",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/metrics/dashboard_metrics.jsonl",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/dashboard_metrics.jsonl",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/dashboard_metrics.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/sdss_active/SDSS_DR17_Redshifts_spAll.fits",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_knowledge/SDSS_DR17_Redshifts_spAll.fits",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR17_Redshifts_spAll.fits",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/sdss_active/SDSS_DR19_Master_allSpec.data",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_knowledge/SDSS_DR19_Master_allSpec.data",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR19_Master_allSpec.data",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/sdss_active/plates-dr18.fits",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN/omnimind_knowledge/plates-dr18.fits",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/plates-dr18.fits",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "data/solar_dodecatiad/dynamic_feeds",
+      "target": "/var/omnimind_storage/home_redirect/dynamic_feeds",
+      "resolved": "/var/omnimind_storage/home_redirect/dynamic_feeds",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_dodecatiad_persistence.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_persistence.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_persistence.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/sovereign_daemon_file_last5000_until_1424.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/autonomous_loop.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/sovereign_unit.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/audit/journal_until_20260201_1424/sovereign_daemon_file_last5000_until_1424.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/network_sovereign.log",
+      "target": "/home/fahbrain/omnimind_relocated/omnimind_logs/network_sovereign.log",
+      "resolved": "/home/fahbrain/omnimind_relocated/omnimind_logs/network_sovereign.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/autonomous_loop_controller.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_controller.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_controller.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_quantum_sentinel.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_sentinel.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_sentinel.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_quantum_server.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_server.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_server.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/autonomous_loop_output.log",
+      "target": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_output.log",
+      "resolved": "/var/omnimind_storage/home_redirect/reports_runtime/mtp_extract_targeted_20260209T142254Z/omnimind_storage/hologram_hot/logs/autonomous_loop_output.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_quantum_resonance.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_resonance.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_quantum_resonance.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "logs_local/mcp_dodecatiad_orchestrator.log",
+      "target": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_orchestrator.log",
+      "resolved": "/var/omnimind_storage/home_redirect/rootfs_offload/hologram_hot_logs/mcp_dodecatiad_orchestrator.log",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T022639Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T015543Z.json",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T022639Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T022639Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T010044Z.json",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/anomaly_timestamps_20260208T143755Z.json",
+      "target": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "resolved": "/mnt/welinton_users/Public/datasets/omnimind_offload/anomaly_timestamps_20260208T143755Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T015543Z.md",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T015543Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_summary_20260209T010044Z.md",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_summary_20260209T010044Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "target": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "target": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "resolved": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "exists": true,
+      "within_workspace": true
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/autoround/20260209T022441Z/autoround_20260209T022441Z",
+      "target": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/autoround_20260209T022441Z",
+      "resolved": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/data/reports/autoround_20260209T022441Z",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/graph1_sync_chart.png",
+      "target": "/home/fahbrain/Downloads/graph1_sync_chart.png",
+      "resolved": "/home/fahbrain/Downloads/graph1_sync_chart.png",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/sync_analysis_20260209.json",
+      "target": "/home/fahbrain/Downloads/sync_analysis_20260209.json",
+      "resolved": "/home/fahbrain/Downloads/sync_analysis_20260209.json",
+      "exists": true,
+      "within_workspace": false
+    },
+    {
+      "path": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/perplexity_sync_assets/graph2_sync_chart..png",
+      "target": "/home/fahbrain/Downloads/graph2_sync_chart..png",
+      "resolved": "/home/fahbrain/Downloads/graph2_sync_chart..png",
+      "exists": true,
+      "within_workspace": false
+    }
+  ]
+}

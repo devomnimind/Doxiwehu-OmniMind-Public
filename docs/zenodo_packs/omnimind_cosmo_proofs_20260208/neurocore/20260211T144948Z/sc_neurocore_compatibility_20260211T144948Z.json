@@ -1,0 +1,120 @@
+{
+  "timestamp": "20260211T144948Z",
+  "zip": "sc-neurocore-main.zip",
+  "zip_size_bytes": 758917,
+  "zip_size_human": "741.13 KB",
+  "extracted_root": "/tmp/sc_neurocore_eval_mby8n9hj/sc-neurocore-main",
+  "extracted_file_count": 206,
+  "extracted_total_bytes": 1827579,
+  "extracted_total_human": "1.74 MB",
+  "top_dirs_bytes": {
+    "tests": {
+      "bytes": 967815,
+      "human": "945.13 KB"
+    },
+    "docs": {
+      "bytes": 257950,
+      "human": "251.90 KB"
+    },
+    "SC_NeuroCore_v3.6_WhitePaper_512x_Benchmarks.pdf": {
+      "bytes": 255902,
+      "human": "249.90 KB"
+    },
+    "engine": {
+      "bytes": 244333,
+      "human": "238.61 KB"
+    },
+    "LICENSE": {
+      "bytes": 34808,
+      "human": "33.99 KB"
+    },
+    "examples": {
+      "bytes": 27010,
+      "human": "26.38 KB"
+    },
+    "bridge": {
+      "bytes": 21918,
+      "human": "21.40 KB"
+    },
+    "cosim": {
+      "bytes": 13762,
+      "human": "13.44 KB"
+    },
+    "README.md": {
+      "bytes": 2517,
+      "human": "2.46 KB"
+    },
+    "NOTICE.md": {
+      "bytes": 964,
+      "human": "964.00 B"
+    },
+    "CITATION.cff": {
+      "bytes": 432,
+      "human": "432.00 B"
+    },
+    ".gitignore": {
+      "bytes": 168,
+      "human": "168.00 B"
+    }
+  },
+  "extensions_count": {
+    ".py": 106,
+    ".pyc": 51,
+    ".rs": 36,
+    ".md": 4,
+    ".toml": 3,
+    "<no_ext>": 2,
+    ".sv": 2,
+    ".pdf": 1,
+    ".cff": 1
+  },
+  "environment_checks": {
+    "python3": {
+      "ok": true,
+      "stdout": "Python 3.10.12",
+      "stderr": ""
+    },
+    "venv_python": {
+      "ok": true,
+      "stdout": "Python 3.12.12",
+      "stderr": ""
+    },
+    "rustc": {
+      "ok": true,
+      "stdout": "rustc 1.93.0 (254b59607 2026-01-19)",
+      "stderr": ""
+    },
+    "cargo": {
+      "ok": true,
+      "stdout": "cargo 1.93.0 (083ac5135 2025-12-15)",
+      "stderr": ""
+    },
+    "maturin_in_venv": {
+      "ok": false,
+      "stdout": "",
+      "stderr": "WARNING: Package(s) not found: maturin"
+    }
+  },
+  "blockers": [
+    "maturin ausente na venv para build do bridge Python↔Rust."
+  ],
+  "recommendations": [
+    "Pré-requisito: instalar toolchain Rust + maturin antes de tentativa de build local.",
+    "Executar integração em modo incremental: bridge Python primeiro, engine Rust depois.",
+    "Mapear saída do NeuroCore para payload vetorial no Qdrant (coleção separada por data+fonte).",
+    "Usar janelas curtas (5–15 min) para acoplamento com métricas Dodecatíade já existentes.",
+    "Não alterar coleções centrais atuais; criar namespace novo: neurocore_*."
+  ],
+  "integration_scope": {
+    "safe_now": [
+      "análise de arquitetura",
+      "adapter Python para embeddings/RNN existentes",
+      "plano de coleção Qdrant dedicado"
+    ],
+    "needs_build": [
+      "co-sim bit-true via engine Rust",
+      "benchmarks de throughput locais",
+      "integração maturin wheel"
+    ]
+  }
+}

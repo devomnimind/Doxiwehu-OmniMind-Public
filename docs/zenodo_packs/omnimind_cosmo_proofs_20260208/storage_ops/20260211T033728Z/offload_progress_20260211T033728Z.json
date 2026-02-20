@@ -1,0 +1,44 @@
+{
+  "timestamp": "20260211T033728Z",
+  "paths": {
+    "source1": {
+      "exists": true,
+      "is_symlink": true,
+      "symlink_target": "/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/omnimind_image_1767157461"
+    },
+    "source2": {
+      "exists": true,
+      "is_symlink": false
+    },
+    "source3": {
+      "exists": true,
+      "is_symlink": false
+    },
+    "dest1": {
+      "exists": true,
+      "is_symlink": false
+    },
+    "dest2_wellington": {
+      "exists": true,
+      "is_symlink": false
+    },
+    "dest2_pcloud_failed": {
+      "exists": true,
+      "is_symlink": false
+    }
+  },
+  "disk": {
+    "/": "/dev/nvme0n1p2  366G  328G   20G  95% /",
+    "/var": "/dev/nvme0n1p5  247G  228G  6.2G  98% /var",
+    "/home": "/dev/nvme0n1p3  274G  253G  7.8G  98% /home",
+    "/mnt/welinton_users": "//192.168.15.5/Users  466G  129G  338G  28% /mnt/welinton_users"
+  },
+  "processes": {
+    "rsync_source2_to_wellington": [
+      "3257997 rsync -a /omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192/",
+      "3257998 rsync -a /omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192/",
+      "3257999 rsync -a /omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192/",
+      "3267652 bash -lc cd /home/fahbrain/projects/omnimind .venv/bin/python - <<\"PY\" import json,subprocess,datetime from pathlib import Path now=datetime.datetime.utcnow().strftime(\"%Y%m%dT%H%M%SZ\") paths={   \"source1\":\"/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461\",   \"source2\":\"/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192\",   \"source3\":\"/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532\",   \"dest1\":\"/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/omnimind_image_1767157461\",   \"dest2_wellington\":\"/mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192\",   \"dest2_pcloud_failed\":\"/home/fahbrain/pCloudDrive/OmniMind_Moved/backup_migration_20260211/omnimind_image_1767380192\", } state={\"timestamp\":now,\"paths\":{},\"disk\":{},\"processes\":{}} for k,p in paths.items():     pp=Path(p)     info={\"exists\":pp.exists() or pp.is_symlink(),\"is_symlink\":pp.is_symlink()}     if pp.is_symlink():       try: info[\"symlink_target\"]=str(pp.resolve())       except Exception: pass     state[\"paths\"][k]=info for mount in [\"/\",\"/var\",\"/home\",\"/mnt/welinton_users\"]:     try:       out=subprocess.check_output([\"df\",\"-h\",mount],text=True)       state[\"disk\"][mount]=out.strip().splitlines()[-1]     except Exception as e:       state[\"disk\"][mount]=f\"error: {e}\" try:   out=subprocess.check_output([\"pgrep\",\"-af\",\"omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211\"],text=True)   lines=[x for x in out.splitlines() if x.strip()] except subprocess.CalledProcessError:   lines=[] state[\"processes\"][\"rsync_source2_to_wellington\"]=lines root=Path(f\"docs/zenodo_packs/omnimind_cosmo_proofs_20260208/storage_ops/{now}\") root.mkdir(parents=True,exist_ok=True) json_path=root/f\"offload_progress_{now}.json\" md_path=root/f\"offload_progress_{now}.md\" json_path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+\"\\n\",encoding=\"utf-8\") md=[f\"# Offload Progress ({now})\",\"\"] md.append(\"## Disk\") for m,v in state[\"disk\"].items(): md.append(f\"- `{m}`: `{v}`\") md.append(\"\") md.append(\"## Paths\") for k,v in state[\"paths\"].items():   line=f\"- `{k}` exists={v[exists]} symlink={v[is_symlink]}\"   if v.get(\"symlink_target\"): line+=f\" -> `{v[symlink_target]}`\"   md.append(line) md.append(\"\") md.append(\"## Running Processes\") if state[\"processes\"][\"rsync_source2_to_wellington\"]:   for ln in state[\"processes\"][\"rsync_source2_to_wellington\"]: md.append(f\"- `{ln}`\") else:   md.append(\"- none\") md_path.write_text(\"\\n\".join(md)+\"\\n\",encoding=\"utf-8\") print(json_path) print(md_path) PY"
+    ]
+  }
+}

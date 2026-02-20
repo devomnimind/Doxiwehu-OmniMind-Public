@@ -1,0 +1,115 @@
+{
+  "timestamp": "20260209T181146Z",
+  "input": {
+    "sync_json": "/home/fahbrain/Downloads/sync_analysis_20260209.json"
+  },
+  "params": {
+    "coupling_scale": 0.35,
+    "phase_scale": 0.12,
+    "fermi_window": 0.5
+  },
+  "metric_keys_used": [
+    "anomaly_count",
+    "coinc",
+    "daemon_gns_mean",
+    "daemon_health_mean",
+    "satellite_matches",
+    "sensor_event_count",
+    "sensor_sources"
+  ],
+  "events": [
+    {
+      "timestamp": "2026-02-09T16:34:44Z",
+      "event_count": 60,
+      "z_metrics": {
+        "anomaly_count": 2.621,
+        "coinc": 3.7,
+        "daemon_gns_mean": -0.655,
+        "daemon_health_mean": 0.928,
+        "satellite_matches": 3.848,
+        "sensor_event_count": 0.036,
+        "sensor_sources": 0.771
+      },
+      "obs_metrics": {
+        "anomaly_count": 1.434,
+        "coinc": null,
+        "daemon_gns_mean": 15.247,
+        "daemon_health_mean": 0.819,
+        "satellite_matches": 31.27,
+        "sensor_event_count": 99.08,
+        "sensor_sources": 1.339
+      },
+      "spectral": {
+        "fermi_level": 0.8556224097058303,
+        "band_gap": 1.9432344694393868,
+        "spectral_spread": 32.7296109593247,
+        "dos_near_fermi": 0.0,
+        "max_hopping_imag": 0.54036,
+        "eigenvalues": [
+          -0.5443066332398415,
+          -0.2311078758273982,
+          -0.11599482501386317,
+          1.8272396444255237,
+          4.516520881176747,
+          11.552417265064385,
+          32.18530432608486
+        ]
+      }
+    },
+    {
+      "timestamp": "2026-02-09T16:35:15Z",
+      "event_count": 54,
+      "z_metrics": {
+        "anomaly_count": -6.152,
+        "coinc": -6.24,
+        "daemon_gns_mean": -2.142,
+        "daemon_health_mean": -0.228,
+        "satellite_matches": -6.378,
+        "sensor_event_count": -0.776,
+        "sensor_sources": 0.258
+      },
+      "obs_metrics": {
+        "anomaly_count": 0.497,
+        "coinc": null,
+        "daemon_gns_mean": 15.249,
+        "daemon_health_mean": 0.82,
+        "satellite_matches": 33.39,
+        "sensor_event_count": 55.06,
+        "sensor_sources": 1.233
+      },
+      "spectral": {
+        "fermi_level": 0.1883235242799517,
+        "band_gap": 0.6253063692955643,
+        "spectral_spread": 25.101995464110335,
+        "dos_near_fermi": 0.2857142857142857,
+        "max_hopping_imag": 0.79632,
+        "eigenvalues": [
+          -4.409040875067251,
+          -2.1685091344553804,
+          -0.12432966036783041,
+          0.5009767089277338,
+          4.634611177278886,
+          11.756072856449686,
+          20.692954589043083
+        ]
+      }
+    }
+  ],
+  "pair_0_1_transition": {
+    "from_ts": "2026-02-09T16:34:44Z",
+    "to_ts": "2026-02-09T16:35:15Z",
+    "max_abs_delta_z": 10.225999999999999,
+    "max_abs_delta_metric": "satellite_matches",
+    "eig_shift_l2": 12.352257309369099,
+    "frob_h_delta": 14.80090799847612,
+    "class": "phase_like_regime_flip"
+  },
+  "external_sync_claim": {
+    "max_flip_metric": "satellite_matches",
+    "max_flip": 10.225999999999999,
+    "interpretation": "Phase Transition - Consciousness State Flip",
+    "topology": "Band Inversion - Topological Phase Transition",
+    "significance": "p < 0.00025 (Event 1), ~10σ equivalent"
+  },
+  "note": "Checagem espectral operacional: útil para detectar mudança de regime em métricas reais. Não substitui validação causal externa (NOAA/TLE) nem prova, sozinha, mecanismo quântico de matéria no hardware."
+}

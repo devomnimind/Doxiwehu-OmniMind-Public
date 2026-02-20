@@ -1,0 +1,150 @@
+{
+  "timestamp": "20260208T163201Z",
+  "base_path": "/home/fahbrain/Downloads",
+  "notes": [],
+  "datasets": {
+    "superdarn_2016": {
+      "path": "/home/fahbrain/Downloads/superdarn_2016_18517667",
+      "daily_zip_count": 30,
+      "total_size_bytes": 9776413985,
+      "sample": {
+        "sample_daily_zip": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161101.nc.zip",
+        "sample_daily_files": [
+          "20161101.ade.a.nc",
+          "20161101.adw.a.nc",
+          "20161101.bks.nc",
+          "20161101.bpk.nc",
+          "20161101.cly.nc",
+          "20161101.cve.nc",
+          "20161101.cvw.nc",
+          "20161101.dce.nc",
+          "20161101.fhe.nc",
+          "20161101.fhw.nc",
+          "20161101.gbr.nc",
+          "20161101.han.nc",
+          "20161101.hkw.nc",
+          "20161101.hok.nc",
+          "20161101.inv.nc",
+          "20161101.kap.nc",
+          "20161101.ker.nc",
+          "20161101.kod.d.nc",
+          "20161101.ksr.a.nc",
+          "20161101.ksr.b.nc"
+        ],
+        "sample_nc": {
+          "file": "20161101.ade.a.nc",
+          "dimensions": [
+            "npts"
+          ],
+          "variables": [
+            "mjd",
+            "beam",
+            "range",
+            "lat",
+            "lon",
+            "p_l",
+            "v",
+            "v_e",
+            "w_l",
+            "w_l_e",
+            "gflg",
+            "tfreq",
+            "noise.sky",
+            "cp",
+            "elv",
+            "elv_low",
+            "elv_high"
+          ],
+          "global_attrs": {
+            "description": "Geolocated line-of-sight velocities and related parameters from SuperDARN fitACF",
+            "fitacf_source": "/project/superdarn/data/fitacf_3/2016/11/20161101.ade.a.fit",
+            "history": "Created on 2025-12-17 03:19:25.138791",
+            "fitacf_version": "3.0",
+            "lat": "51.89",
+            "lon": "-176.63",
+            "alt": "4.0",
+            "rsep_km": "45",
+            "maxrangegate": "110.0",
+            "bmsep": "3.24",
+            "boresight": "46.0",
+            "beams": "[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21]",
+            "brng_at_15deg_el": "[10.60439425 14.00837228 17.40088351 20.78405934 24.15964331 27.52909046\n 30.89364007 34.2543702  37.61223997 40.96812323 44.32283654 47.67716346\n 51.03187677 54.38776003 57.7456298  61.10635993 64.47090954 67.84035669\n 71.21594066 74.59911649 77.99162772 81.39560575]"
+          }
+        }
+      }
+    },
+    "superdarn_2019": {
+      "path": "/home/fahbrain/Downloads/superdarn_2019_548",
+      "daily_zip_count": 31,
+      "total_size_bytes": 6853817516,
+      "sample": {
+        "sample_daily_zip": "/home/fahbrain/Downloads/superdarn_2019_548/20191201.nc.zip",
+        "sample_daily_files": [
+          "20191201.bpk.nc",
+          "20191201.cve.nc",
+          "20191201.cvw.nc",
+          "20191201.dce.nc",
+          "20191201.fhe.nc",
+          "20191201.fhw.nc",
+          "20191201.fir.a.nc",
+          "20191201.fir.b.nc",
+          "20191201.gbr.nc",
+          "20191201.hkw.nc",
+          "20191201.hok.nc",
+          "20191201.inv.nc",
+          "20191201.kap.nc",
+          "20191201.kod.d.nc",
+          "20191201.ksr.a.nc",
+          "20191201.ksr.b.nc",
+          "20191201.mcm.a.nc",
+          "20191201.rkn.nc",
+          "20191201.san.nc",
+          "20191201.sye.nc"
+        ],
+        "sample_nc": {
+          "file": "20191201.bpk.nc",
+          "dimensions": [
+            "npts"
+          ],
+          "variables": [
+            "mjd",
+            "beam",
+            "range",
+            "lat",
+            "lon",
+            "p_l",
+            "v",
+            "v_e",
+            "w_l",
+            "w_l_e",
+            "gflg",
+            "tfreq",
+            "noise.sky",
+            "cp",
+            "elv",
+            "elv_low",
+            "elv_high"
+          ],
+          "global_attrs": {
+            "description": "Geolocated line-of-sight velocities and related parameters from SuperDARN fitACF",
+            "fitacf_source": "/project/superdarn/data/fitacf_3/2019/12/20191201.bpk.fit",
+            "history": "Created on 2025-12-17 16:43:47.702216",
+            "fitacf_version": "3.0",
+            "lat": "-34.62",
+            "lon": "138.46",
+            "alt": "0.0",
+            "rsep_km": "45",
+            "maxrangegate": "214",
+            "bmsep": "-3.24",
+            "boresight": "146.5",
+            "beams": "[ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21]",
+            "brng_at_15deg_el": "[181.89560575 178.49162772 175.09911649 171.71594066 168.34035669\n 164.97090954 161.60635993 158.2456298  154.88776003 151.53187677\n 148.17716346 144.82283654 141.46812323 138.11223997 134.7543702\n 131.39364007 128.02909046 124.65964331 121.28405934 117.90088351\n 114.50837228 111.10439425]"
+          }
+        }
+      }
+    },
+    "superdarn_2018_search": {
+      "matches": []
+    }
+  }
+}

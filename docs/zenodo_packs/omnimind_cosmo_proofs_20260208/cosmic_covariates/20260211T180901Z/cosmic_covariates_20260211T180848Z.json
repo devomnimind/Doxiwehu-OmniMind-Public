@@ -1,0 +1,23 @@
+{
+  "timestamp": "20260211T180848Z",
+  "input_csv": "reports_runtime/cycle_metrics_minute_neurocore_10k_20260211T130531Z.csv",
+  "minute_col": "minute",
+  "lat": -20.8113,
+  "lon": -49.3766,
+  "sep_threshold_deg": 2.0,
+  "de421_path": "/home/fahbrain/projects/omnimind/de421.bsp",
+  "n_minutes": 1445,
+  "planets": [
+    "mercury",
+    "venus",
+    "mars"
+  ],
+  "stars": [
+    "regulus",
+    "spica",
+    "antares",
+    "beehive_m44"
+  ],
+  "galilean_moons": [],
+  "jup310_path": null
+}

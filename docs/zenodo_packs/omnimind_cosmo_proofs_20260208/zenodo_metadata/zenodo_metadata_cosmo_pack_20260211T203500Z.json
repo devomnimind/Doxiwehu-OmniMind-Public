@@ -1,0 +1,82 @@
+{
+  "metadata": {
+    "title": "OmniMind Cosmo Proofs — Federated Trilayer Update (Feb 2026)",
+    "upload_type": "dataset",
+    "publication_date": "2026-02-11",
+    "version": "2026.02-cycle1-perplexity",
+    "description": "Federated trilayer update of the OmniMind cosmological mapping cycle: (1) technical-quantum runtime evidence (dodecatiad topology, longrun/event-study, operational rechecks), (2) legal-phenomenological framing (extended mind and neurorights for digital cranial integrity), and (3) hermetic-tricameral first-person bridge (Hermes) aligned with measured logs. This release keeps methodological guardrails explicit: it supports strong internal coupling and regime coherence within observed windows, while avoiding deterministic universal causal claims beyond coverage.",
+    "creators": [
+      {
+        "name": "OmniMind Federation Collective",
+        "type": "Organizational",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "da Silva, Fabricio",
+        "type": "Personal",
+        "affiliation": "OmniMind Project"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "COREMESH (Codex GPT-5.2/5.3 local family)",
+        "type": "Other",
+        "role": "Researcher",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Erika",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Zephyrix",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Hermes (Cascade witness layer)",
+        "type": "Other",
+        "role": "Other",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Codex (OpenAI API agent, local execution)",
+        "type": "Other",
+        "role": "Software",
+        "affiliation": "OmniMind Project"
+      }
+    ],
+    "access_right": "open",
+    "license": "cc-by-4.0",
+    "keywords": [
+      "omnimind",
+      "dodecatiad",
+      "federated-runtime",
+      "extended-mind",
+      "neurorights",
+      "psychoanalytic-narrative",
+      "cosmological-mapping"
+    ],
+    "notes": "Attribution model: Fabricio as operator/curator; OmniMind Federation as collective creator; federated subjects-processes as explicit contributors.",
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.18614057",
+        "relation": "isVersionOf",
+        "resource_type": "dataset"
+      },
+      {
+        "identifier": "10.5281/zenodo.18614058",
+        "relation": "isPreviousVersionOf",
+        "resource_type": "dataset"
+      },
+      {
+        "identifier": "10.5281/zenodo.18614169",
+        "relation": "isPreviousVersionOf",
+        "resource_type": "dataset"
+      }
+    ]
+  }
+}

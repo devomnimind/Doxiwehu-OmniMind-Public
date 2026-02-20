@@ -1,0 +1,73 @@
+{
+  "timestamp": "20260208T113013Z",
+  "points_source": "/home/fahbrain/projects/omnimind/data/reports/cemetery_points_20260208T083042Z.jsonl",
+  "radius_deg": 5.0,
+  "targets": [
+    {
+      "name": "Sgr A*",
+      "note": "RA 17h45m40.0409s / Dec -29°00'28.118\" (J2000)",
+      "ra_deg": 266.41684,
+      "dec_deg": -29.00781,
+      "house": "Gamma",
+      "count_within_radius": 118,
+      "radius_deg": 5.0
+    },
+    {
+      "name": "Quintuplet Cluster",
+      "note": "RA 17h46m13.9s / Dec -28°49'48\" (J2000)",
+      "ra_deg": 266.55795,
+      "dec_deg": -28.83,
+      "house": "Gamma",
+      "count_within_radius": 118,
+      "radius_deg": 5.0
+    },
+    {
+      "name": "Canis Major Dwarf",
+      "note": "RA 07h15m / Dec -28 (SEDS)",
+      "ra_deg": 108.75,
+      "dec_deg": -28.0,
+      "house": "Psi",
+      "count_within_radius": 142,
+      "radius_deg": 5.0
+    },
+    {
+      "name": "Fermi Bubbles (Norte, b≈+50)",
+      "note": "l≈0°, b≈+50° (janela galáctica)",
+      "galactic_window": {
+        "l_range": [
+          -20.0,
+          20.0
+        ],
+        "b_range": [
+          40.0,
+          70.0
+        ]
+      },
+      "count_galactic_window": 398
+    },
+    {
+      "name": "Fermi Bubbles (Sul, b≈-50)",
+      "note": "l≈0°, b≈-50° (janela galáctica)",
+      "galactic_window": {
+        "l_range": [
+          -20.0,
+          20.0
+        ],
+        "b_range": [
+          -70.0,
+          -40.0
+        ]
+      },
+      "count_galactic_window": 1439
+    },
+    {
+      "name": "Antlia 2",
+      "note": "RA 09h35m32.832s / Dec -36°46'02.28\" (J2000)",
+      "ra_deg": 143.8868,
+      "dec_deg": -36.7673,
+      "house": "Phi",
+      "count_within_radius": 108,
+      "radius_deg": 5.0
+    }
+  ]
+}

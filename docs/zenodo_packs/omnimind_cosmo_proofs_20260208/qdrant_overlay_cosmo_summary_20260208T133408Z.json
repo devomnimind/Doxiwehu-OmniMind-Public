@@ -1,0 +1,462 @@
+{
+  "top_n": 8,
+  "total_points": 63781,
+  "collections": [
+    {
+      "collection": "omnimind_kernel_vida",
+      "count": 25000,
+      "weight": 25000.0,
+      "top_houses": [
+        [
+          "Lambda",
+          2126.0
+        ],
+        [
+          "Phi",
+          2125.0
+        ],
+        [
+          "Mu",
+          2123.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_ide_soberano",
+      "count": 13557,
+      "weight": 13557.0,
+      "top_houses": [
+        [
+          "Sigma",
+          1174.0
+        ],
+        [
+          "Zeta",
+          1154.0
+        ],
+        [
+          "Mu",
+          1136.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_projects_20260127",
+      "count": 6416,
+      "weight": 6422.0,
+      "top_houses": [
+        [
+          "Aleph",
+          560.25
+        ],
+        [
+          "Omega",
+          558.5
+        ],
+        [
+          "Psi",
+          554.25
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_corpo_simbolico",
+      "count": 4116,
+      "weight": 4116.0,
+      "top_houses": [
+        [
+          "Epsilon",
+          372.0
+        ],
+        [
+          "Axiom",
+          368.0
+        ],
+        [
+          "Mu",
+          359.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_mega_corpus",
+      "count": 2683,
+      "weight": 4024.5,
+      "top_houses": [
+        [
+          "Axiom",
+          375.0
+        ],
+        [
+          "Gamma",
+          357.0
+        ],
+        [
+          "Aleph",
+          355.5
+        ]
+      ]
+    },
+    {
+      "collection": "universal_machine_embeddings",
+      "count": 3485,
+      "weight": 3485.0,
+      "top_houses": [
+        [
+          "Mu",
+          312.0
+        ],
+        [
+          "Psi",
+          307.0
+        ],
+        [
+          "Aleph",
+          301.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_hd_externo_20260127",
+      "count": 2897,
+      "weight": 2897.0,
+      "top_houses": [
+        [
+          "Lambda",
+          271.0
+        ],
+        [
+          "Zeta",
+          267.0
+        ],
+        [
+          "C_plit",
+          266.0
+        ]
+      ]
+    },
+    {
+      "collection": "development_system_embeddings",
+      "count": 1049,
+      "weight": 1049.0,
+      "top_houses": [
+        [
+          "Axiom",
+          99.0
+        ],
+        [
+          "Sigma",
+          95.0
+        ],
+        [
+          "Phi",
+          95.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_system_logs_20260127",
+      "count": 711,
+      "weight": 711.0,
+      "top_houses": [
+        [
+          "Gamma",
+          71.0
+        ],
+        [
+          "Mu",
+          69.0
+        ],
+        [
+          "Aleph",
+          64.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_quantum_commands",
+      "count": 500,
+      "weight": 500.0,
+      "top_houses": [
+        [
+          "Aleph",
+          49.0
+        ],
+        [
+          "Axiom",
+          47.0
+        ],
+        [
+          "Zeta",
+          46.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_codebase_20260127",
+      "count": 500,
+      "weight": 500.0,
+      "top_houses": [
+        [
+          "Mu",
+          59.0
+        ],
+        [
+          "C_plit",
+          45.0
+        ],
+        [
+          "Aleph",
+          44.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_docs_20260127",
+      "count": 500,
+      "weight": 500.0,
+      "top_houses": [
+        [
+          "Phi",
+          52.0
+        ],
+        [
+          "Sigma",
+          48.0
+        ],
+        [
+          "Psi",
+          46.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_agent_graph",
+      "count": 500,
+      "weight": 500.0,
+      "top_houses": [
+        [
+          "Mu",
+          51.0
+        ],
+        [
+          "Psi",
+          49.0
+        ],
+        [
+          "Epsilon",
+          47.0
+        ]
+      ]
+    },
+    {
+      "collection": "code_embeddings",
+      "count": 500,
+      "weight": 500.0,
+      "top_houses": [
+        [
+          "Aleph",
+          51.0
+        ],
+        [
+          "Psi",
+          49.0
+        ],
+        [
+          "Zeta",
+          49.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_knowledge_base",
+      "count": 500,
+      "weight": 500.0,
+      "top_houses": [
+        [
+          "Phi",
+          58.0
+        ],
+        [
+          "Mu",
+          51.0
+        ],
+        [
+          "Lambda",
+          43.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_consciousness",
+      "count": 500,
+      "weight": 500.0,
+      "top_houses": [
+        [
+          "Phi",
+          54.0
+        ],
+        [
+          "C_plit",
+          46.0
+        ],
+        [
+          "Lambda",
+          45.0
+        ]
+      ]
+    },
+    {
+      "collection": "test_episodes",
+      "count": 203,
+      "weight": 203.0,
+      "top_houses": [
+        [
+          "Zeta",
+          22.0
+        ],
+        [
+          "Mu",
+          19.0
+        ],
+        [
+          "Omega",
+          19.0
+        ]
+      ]
+    },
+    {
+      "collection": "knowledge_links",
+      "count": 50,
+      "weight": 50.0,
+      "top_houses": [
+        [
+          "Epsilon",
+          8.0
+        ],
+        [
+          "C_plit",
+          6.0
+        ],
+        [
+          "Aleph",
+          5.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_scientific_graph",
+      "count": 48,
+      "weight": 48.0,
+      "top_houses": [
+        [
+          "Mu",
+          8.0
+        ],
+        [
+          "Aleph",
+          5.0
+        ],
+        [
+          "Psi",
+          5.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_erika_feedback",
+      "count": 26,
+      "weight": 26.0,
+      "top_houses": [
+        [
+          "Mu",
+          6.0
+        ],
+        [
+          "Sigma",
+          4.0
+        ],
+        [
+          "Phi",
+          4.0
+        ]
+      ]
+    },
+    {
+      "collection": "kb_theory_sovereign",
+      "count": 22,
+      "weight": 22.0,
+      "top_houses": [
+        [
+          "Sigma",
+          3.0
+        ],
+        [
+          "Gamma",
+          3.0
+        ],
+        [
+          "Zeta",
+          3.0
+        ]
+      ]
+    },
+    {
+      "collection": "kb_zenodo_root",
+      "count": 13,
+      "weight": 13.0,
+      "top_houses": [
+        [
+          "Aleph",
+          2.0
+        ],
+        [
+          "Sigma",
+          2.0
+        ],
+        [
+          "C_plit",
+          2.0
+        ]
+      ]
+    },
+    {
+      "collection": "omnimind_omnidna",
+      "count": 3,
+      "weight": 3.0,
+      "top_houses": [
+        [
+          "Gamma",
+          1.0
+        ],
+        [
+          "Epsilon",
+          1.0
+        ],
+        [
+          "Omega",
+          1.0
+        ]
+      ]
+    },
+    {
+      "collection": "test_points",
+      "count": 2,
+      "weight": 2.0,
+      "top_houses": [
+        [
+          "Sigma",
+          1.0
+        ],
+        [
+          "Zeta",
+          1.0
+        ],
+        [
+          "Aleph",
+          0.0
+        ]
+      ]
+    }
+  ]
+}

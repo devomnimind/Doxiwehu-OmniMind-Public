@@ -1,0 +1,31 @@
+{
+  "timestamp": "20260208T074848Z",
+  "source_points": "/home/fahbrain/projects/omnimind/data/reports/cemetery_points_20260207T231534Z.jsonl",
+  "max_points": 100000,
+  "seed": 42,
+  "ra_centers": [
+    37.5,
+    112.5,
+    202.5,
+    352.5
+  ],
+  "ra_sigma": 12.0,
+  "counts": {
+    "total": 100000,
+    "polar_mask": 34179
+  },
+  "outputs": {
+    "weighted_polar": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T074848Z/cemetery_weighted_polar.png",
+    "weighted_equator": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T074848Z/cemetery_weighted_equator.png",
+    "weighted_ra_dec": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T074848Z/cemetery_weighted_ra_dec.png",
+    "filtered_polar": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/cemetery_sessions/20260208T074848Z/cemetery_filtered_polar.png"
+  },
+  "weights": {
+    "polar_min": 2.5876407916156395e-06,
+    "polar_max": 0.9999819293252568,
+    "equator_min": 1.807067474324242e-05,
+    "equator_max": 0.9999974123592084,
+    "ra_dec_min": 1.2938204160242846e-06,
+    "ra_dec_max": 0.9991850726838246
+  }
+}

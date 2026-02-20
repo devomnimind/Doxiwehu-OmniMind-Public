@@ -1,0 +1,80 @@
+{
+  "timestamp": "20260209T004310Z",
+  "inputs": {
+    "gaia_summary_json": "data/reports/gaia_sim_twin/gaia_sim_twin_summary.json",
+    "sensor_csv": "data/reports/cycle_metrics_minute_fused_20260209T004233Z.csv",
+    "seed": 7537
+  },
+  "noise_profile": {
+    "sensor_csv": "data/reports/cycle_metrics_minute_fused_20260209T004233Z.csv",
+    "rows": 3765,
+    "used_columns": [
+      "daemon_temp_mean",
+      "daemon_health_mean",
+      "daemon_ci_mean",
+      "sensor_ci_mean",
+      "daemon_csi_mean",
+      "sensor_csi_mean",
+      "anomaly_count",
+      "satellite_matches",
+      "sensor_event_count"
+    ],
+    "noise_scale": 0.07202707509344725,
+    "diffusion": 0.06476933886300396,
+    "phase_shift_rad": 0.0,
+    "vibration_index": 0.6340352541857219
+  },
+  "measurements": {
+    "fidelity_sim_vs_real_raw": 0.02267596000000001,
+    "fidelity_sim_noisy_vs_real": 0.04337749537084821,
+    "delta_fidelity": 0.0207015353708482
+  },
+  "house_counts": {
+    "sim_raw": {
+      "Aleph": 2800,
+      "Sigma": 136,
+      "Axiom": 0,
+      "Psi": 103,
+      "Phi": 327,
+      "Mu": 390,
+      "C_plit": 411,
+      "Lambda": 306,
+      "Gamma": 146,
+      "Epsilon": 0,
+      "Omega": 73,
+      "Zeta": 308
+    },
+    "sim_noisy": {
+      "Aleph": 2707,
+      "Sigma": 221,
+      "Axiom": 8,
+      "Psi": 107,
+      "Phi": 287,
+      "Mu": 377,
+      "C_plit": 394,
+      "Lambda": 313,
+      "Gamma": 138,
+      "Epsilon": 7,
+      "Omega": 73,
+      "Zeta": 368
+    },
+    "real": {
+      "Aleph": 0,
+      "Sigma": 33347,
+      "Axiom": 6653,
+      "Psi": 0,
+      "Phi": 0,
+      "Mu": 0,
+      "C_plit": 0,
+      "Lambda": 0,
+      "Gamma": 0,
+      "Epsilon": 0,
+      "Omega": 0,
+      "Zeta": 0
+    }
+  },
+  "interpretation": {
+    "status": "GAIN",
+    "note": "Ruído de sensores aproxima o sim do real quando a fidelidade aumenta."
+  }
+}

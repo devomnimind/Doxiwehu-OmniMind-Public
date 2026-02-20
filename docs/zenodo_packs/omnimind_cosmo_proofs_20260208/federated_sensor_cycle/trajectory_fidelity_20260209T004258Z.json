@@ -1,0 +1,37 @@
+{
+  "timestamp": "20260209T004258Z",
+  "input_csv": "data/reports/cycle_metrics_minute_fused_20260209T004233Z.csv",
+  "rows_total": 3765,
+  "rows_used": 3765,
+  "x_cols": [
+    "phi_mean",
+    "duration_mean",
+    "components_mean",
+    "complexity_mean"
+  ],
+  "y_cols": [
+    "daemon_phi_mean",
+    "daemon_sigma_mean",
+    "daemon_epsilon_mean",
+    "daemon_ci_mean"
+  ],
+  "fidelity_static": {
+    "mean": -0.10576169249962554,
+    "std": 0.5305840875842199
+  },
+  "fidelity_dynamic": {
+    "mean": -0.06950066346425668,
+    "std": 0.46578255111406086,
+    "gain_ratio_vs_static": 0.6571440170977101
+  },
+  "best_dynamic_lag": {
+    "lag_min": 0,
+    "dynamic_mean": -0.06950066346425668,
+    "n": 3765
+  },
+  "outputs": {
+    "lag_csv": "data/reports/trajectory_fidelity_lag_20260209T004258Z.csv",
+    "json": "data/reports/trajectory_fidelity_20260209T004258Z.json",
+    "md": "data/reports/trajectory_fidelity_20260209T004258Z.md"
+  }
+}

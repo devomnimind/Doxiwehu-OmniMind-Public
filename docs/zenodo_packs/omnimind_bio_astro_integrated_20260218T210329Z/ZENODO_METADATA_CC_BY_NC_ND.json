@@ -1,0 +1,20 @@
+{
+  "title": "OmniMind Integrated Bio+Astro Local Evidence Pack (20260218T210329Z)",
+  "upload_type": "dataset",
+  "description": "Integrated local evidence pack with bio, astrophysical and cross-correlation artifacts. Includes machine-readable reports and visual inspection figures.",
+  "creators": [
+    {
+      "name": "da Silva, Fabricio"
+    }
+  ],
+  "license": "cc-by-nc-nd-4.0",
+  "keywords": [
+    "OmniMind",
+    "astro-bio correlation",
+    "d15",
+    "microbiome",
+    "genomics",
+    "qdrant",
+    "local evidence"
+  ]
+}

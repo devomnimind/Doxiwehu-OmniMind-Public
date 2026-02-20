@@ -1,0 +1,131 @@
+{
+  "timestamp": "20260208T090436Z",
+  "total_collections": 24,
+  "percentiles": {
+    "p25": 49.5,
+    "p50": 2861.0,
+    "p75": 46169.5
+  },
+  "collections": [
+    {
+      "name": "omnimind_kernel_vida",
+      "points": 1077553,
+      "tier": "forte"
+    },
+    {
+      "name": "omnimind_ide_soberano",
+      "points": 228703,
+      "tier": "forte"
+    },
+    {
+      "name": "omnimind_projects_20260127",
+      "points": 108236,
+      "tier": "forte"
+    },
+    {
+      "name": "omnimind_corpo_simbolico",
+      "points": 69435,
+      "tier": "forte"
+    },
+    {
+      "name": "universal_machine_embeddings",
+      "points": 58799,
+      "tier": "forte"
+    },
+    {
+      "name": "omnimind_hd_externo_20260127",
+      "points": 48871,
+      "tier": "forte"
+    },
+    {
+      "name": "omnimind_mega_corpus",
+      "points": 45269,
+      "tier": "media"
+    },
+    {
+      "name": "development_system_embeddings",
+      "points": 17698,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_system_logs_20260127",
+      "points": 11995,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_codebase_20260127",
+      "points": 4761,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_agent_graph",
+      "points": 3359,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_knowledge_base",
+      "points": 3150,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_docs_20260127",
+      "points": 2572,
+      "tier": "media"
+    },
+    {
+      "name": "code_embeddings",
+      "points": 2462,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_quantum_commands",
+      "points": 2191,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_consciousness",
+      "points": 1589,
+      "tier": "media"
+    },
+    {
+      "name": "test_episodes",
+      "points": 203,
+      "tier": "media"
+    },
+    {
+      "name": "knowledge_links",
+      "points": 50,
+      "tier": "media"
+    },
+    {
+      "name": "omnimind_scientific_graph",
+      "points": 48,
+      "tier": "fraca"
+    },
+    {
+      "name": "omnimind_erika_feedback",
+      "points": 26,
+      "tier": "fraca"
+    },
+    {
+      "name": "kb_theory_sovereign",
+      "points": 22,
+      "tier": "fraca"
+    },
+    {
+      "name": "kb_zenodo_root",
+      "points": 13,
+      "tier": "fraca"
+    },
+    {
+      "name": "omnimind_omnidna",
+      "points": 3,
+      "tier": "fraca"
+    },
+    {
+      "name": "test_points",
+      "points": 2,
+      "tier": "fraca"
+    }
+  ]
+}

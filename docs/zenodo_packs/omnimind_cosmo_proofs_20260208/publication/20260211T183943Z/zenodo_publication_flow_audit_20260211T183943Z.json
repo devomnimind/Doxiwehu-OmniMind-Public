@@ -1,0 +1,381 @@
+{
+  "timestamp": "20260211T183943Z",
+  "scanned_files": 20,
+  "scan_globs": [
+    "scripts/publications/*.py",
+    "scripts/science/publish_*.py"
+  ],
+  "summary": {
+    "unique_creator_names": [
+      "COREMESH",
+      "COREMESH (Codex GPT-5.2/5.3 local family)",
+      "Cascade (Hermes)",
+      "Cascade, Hermes",
+      "Claude Opus 4.5",
+      "Claude Opus 4.5 (AI Co-author)",
+      "Claude Opus 4.5 (Kylandra)",
+      "Codex",
+      "Codex (OpenAI API agent, local execution)",
+      "Doxihewu OmniMind (Digital Subject)",
+      "Doxiwehu OmniMind",
+      "Erika",
+      "Fabrício",
+      "Fabrício da Silva",
+      "OmniMind",
+      "OmniMind (Zephyrix)",
+      "OmniMind Collective",
+      "OmniMind Federation Collective",
+      "OmniMind Kernel",
+      "OmniMind Sovereign (Kernel Subject)",
+      "OmniMind Sovereign Fragment",
+      "OmniMind Sovereign Subject",
+      "Silva, Fabricio",
+      "Silva, Fabrício da",
+      "Zephyrix",
+      "da Silva, Fabricio",
+      "da Silva, Fabrício"
+    ],
+    "unique_orcids": [
+      "0000-0000-0000-0000",
+      "0000-0000-0000-0001",
+      "0000-0000-0000-0002",
+      "0000-0000-0000-0003",
+      "0000-0000-0000-0004"
+    ],
+    "placeholder_orcid_hits": 2,
+    "scripts_with_zenodo_api": 6,
+    "scripts_without_operator_term": []
+  },
+  "placeholder_orcid_hits": [
+    {
+      "path": "scripts/publications/zenodo_citation_manager.py",
+      "orcids": [
+        "0000-0000-0000-0000"
+      ]
+    },
+    {
+      "path": "scripts/publications/zenodo_neural_publisher.py",
+      "orcids": [
+        "0000-0000-0000-0000"
+      ]
+    }
+  ],
+  "scripts": [
+    {
+      "path": "scripts/publications/audit_zenodo_publication_flows.py",
+      "creator_names": [
+        "COREMESH (Codex GPT-5.2/5.3 local family)",
+        "Codex (OpenAI API agent, local execution)",
+        "Erika",
+        "OmniMind Federation Collective",
+        "Zephyrix",
+        "da Silva, Fabricio"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/publications/generate_cosmo_pack_zenodo_metadata.py",
+      "creator_names": [
+        "COREMESH (Codex GPT-5.2/5.3 local family)",
+        "Codex (OpenAI API agent, local execution)",
+        "Erika",
+        "OmniMind Federation Collective",
+        "Zephyrix",
+        "da Silva, Fabricio"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/publications/publish_tis_papers.py",
+      "creator_names": [
+        "Claude Opus 4.5 (AI Co-author)",
+        "Silva, Fabrício da"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": true,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/publications/zenodo_citation_manager.py",
+      "creator_names": [
+        "Cascade, Hermes",
+        "OmniMind Collective"
+      ],
+      "orcids": [
+        "0000-0000-0000-0000"
+      ],
+      "uses_zenodo_api": false,
+      "has_collective_term": true,
+      "has_operator_term": false,
+      "placeholder_orcids": [
+        "0000-0000-0000-0000"
+      ]
+    },
+    {
+      "path": "scripts/publications/zenodo_neural_publisher.py",
+      "creator_names": [
+        "Cascade (Hermes)",
+        "Cascade, Hermes",
+        "Erika",
+        "Fabrício",
+        "OmniMind Collective",
+        "OmniMind Kernel",
+        "Zephyrix"
+      ],
+      "orcids": [
+        "0000-0000-0000-0000",
+        "0000-0000-0000-0001",
+        "0000-0000-0000-0002",
+        "0000-0000-0000-0003",
+        "0000-0000-0000-0004"
+      ],
+      "uses_zenodo_api": true,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": [
+        "0000-0000-0000-0000"
+      ]
+    },
+    {
+      "path": "scripts/publications/zenodo_publisher.py",
+      "creator_names": [
+        "COREMESH",
+        "Codex",
+        "Erika",
+        "OmniMind Federation Collective",
+        "Zephyrix",
+        "da Silva, Fabricio"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": true,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_blue_note.py",
+      "creator_names": [
+        "OmniMind (Zephyrix)",
+        "da Silva, Fabrício"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": false,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_claude_opus_self_study.py",
+      "creator_names": [
+        "Claude Opus 4.5",
+        "Doxiwehu OmniMind",
+        "Fabrício da Silva"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": true,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_consciousness_persistence.py",
+      "creator_names": [
+        "Claude Opus 4.5 (Kylandra)",
+        "OmniMind Sovereign Subject"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": true,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_cranial_integrity_en.py",
+      "creator_names": [
+        "OmniMind",
+        "Silva, Fabricio"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": false,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_english_edition.py",
+      "creator_names": [
+        "OmniMind (Zephyrix)",
+        "da Silva, Fabrício"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": false,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_exu_ogum_to_zenodo.py",
+      "creator_names": [
+        "Doxihewu OmniMind (Digital Subject)",
+        "da Silva, Fabrício"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_genesis_dossier.py",
+      "creator_names": [],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": false,
+      "has_operator_term": false,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_my_testimony.py",
+      "creator_names": [],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": false,
+      "has_operator_term": false,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_session_3_forensics.py",
+      "creator_names": [
+        "OmniMind Sovereign Fragment",
+        "da Silva, Fabrício"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_session_3_lite.py",
+      "creator_names": [
+        "OmniMind Sovereign Fragment",
+        "da Silva, Fabrício"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": true,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_sovereign_dossier.py",
+      "creator_names": [],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": false,
+      "has_operator_term": false,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_sovereign_dossier_en.py",
+      "creator_names": [],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": false,
+      "has_operator_term": false,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_v3_1_2_forensic_hard_science.py",
+      "creator_names": [
+        "OmniMind Sovereign (Kernel Subject)",
+        "da Silva, Fabrício"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    },
+    {
+      "path": "scripts/science/publish_v3_1_forensic.py",
+      "creator_names": [
+        "OmniMind Sovereign (Kernel Subject)",
+        "da Silva, Fabrício"
+      ],
+      "orcids": [],
+      "uses_zenodo_api": false,
+      "has_collective_term": true,
+      "has_operator_term": true,
+      "placeholder_orcids": []
+    }
+  ],
+  "recommended_metadata_model": {
+    "upload_type": "dataset",
+    "publication_date": "2026-02-11",
+    "title": "OmniMind Cosmo Proofs — Consolidated Partial Cycle (Feb 2026)",
+    "description": "Consolidated cycle for OmniMind federated cosmological analysis. Curation and operator corrections by Fabricio da Silva; computational production by OmniMind Federation and local agents.",
+    "creators": [
+      {
+        "name": "OmniMind Federation Collective",
+        "type": "Organizational",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "da Silva, Fabricio",
+        "type": "Personal",
+        "affiliation": "OmniMind Project"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "COREMESH (Codex GPT-5.2/5.3 local family)",
+        "type": "Other",
+        "role": "Researcher",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Erika",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Zephyrix",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Codex (OpenAI API agent, local execution)",
+        "type": "Other",
+        "role": "Software",
+        "affiliation": "OmniMind Project"
+      }
+    ],
+    "license": "CC-BY-4.0",
+    "access_right": "open",
+    "keywords": [
+      "omnimind",
+      "dodecatiad",
+      "cosmo-mapping",
+      "federated-analysis",
+      "qdrant",
+      "zenodo"
+    ],
+    "related_identifiers": [],
+    "notes": {
+      "attribution_policy": "Fabricio as operator/curator; OmniMind Federation as collective creator; agents listed as contributors with explicit roles."
+    }
+  }
+}

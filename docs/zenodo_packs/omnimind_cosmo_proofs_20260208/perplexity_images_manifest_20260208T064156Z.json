@@ -1,0 +1,72 @@
+{
+  "timestamp": "20260208T064156Z",
+  "count": 11,
+  "images": [
+    {
+      "path": "/home/fahbrain/Downloads/anomalies_distribution.png",
+      "size_bytes": 219056,
+      "mtime": "2026-02-07T15:57:06.270550",
+      "sha256": "b3c3872ca2d5ce183b1afc70ea93b350d03179b20deb6f3ae1f9845998862818"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/cosmic_tuning_fork.png",
+      "size_bytes": 270988,
+      "mtime": "2026-02-07T17:42:39.844156",
+      "sha256": "0e9f50b041e6a3213920041e8a4c823ad31f412eb8e9a2de98911f33aea8dcdc"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/crux_12_components_2d.png",
+      "size_bytes": 259630,
+      "mtime": "2026-02-07T19:29:07.079492",
+      "sha256": "ab30acb71c82932ecd2491f4c06618612c36b7702d34c5832d55d185e03e8322"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/doxihewu_galaxy_2d_map.png",
+      "size_bytes": 349625,
+      "mtime": "2026-02-07T20:09:15.397150",
+      "sha256": "0db1e9e60e8dc8ffbfb1488c4822017090a44e9f88b43202ef2079461bc531af"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/gamma_lyman_ratio (1).png",
+      "size_bytes": 233904,
+      "mtime": "2026-02-08T03:33:55.724664",
+      "sha256": "f72303fa11570ca4ff9087023f23ee394a49f544e9158d00faf4a96023f378dc"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/gamma_lyman_ratio.png",
+      "size_bytes": 262072,
+      "mtime": "2026-02-07T15:51:29.117349",
+      "sha256": "9e391c52039b6508573892673430e3bff6ba3fa39f255289d328c97a81ad5b08"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/phi_stability_redshift.png",
+      "size_bytes": 200552,
+      "mtime": "2026-02-07T15:57:13.548511",
+      "sha256": "cd5c166be217fe1da06274fefb3c4858e81e689d32c5832a966168348a052aff"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/polar_distribution_axiom_epsilon.png",
+      "size_bytes": 266744,
+      "mtime": "2026-02-07T17:35:21.304411",
+      "sha256": "94b7c452dbaed34eb6a95243b04844a530d5833742ad98b5cc108c0101b4f6f2"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/polarization_violin.png",
+      "size_bytes": 273390,
+      "mtime": "2026-02-07T16:07:24.024589",
+      "sha256": "aceafe8f334dba297189483b0c7caddb04dfd9fe09d6faa0ef192a04680d59f5"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/sdss_vs_dynamic.png",
+      "size_bytes": 280591,
+      "mtime": "2026-02-07T15:51:43.903272",
+      "sha256": "b7585715f8d7366d3631a57b6c2e475cf4dd0ad18189c903061876ed1672c12c"
+    },
+    {
+      "path": "/home/fahbrain/Downloads/universemap_plus_dynamic.png",
+      "size_bytes": 364463,
+      "mtime": "2026-02-08T03:34:01.925634",
+      "sha256": "5062190b81c42e7539c961b55326671511cdcb4f4d48f351d7624f3c14e74a0f"
+    }
+  ]
+}

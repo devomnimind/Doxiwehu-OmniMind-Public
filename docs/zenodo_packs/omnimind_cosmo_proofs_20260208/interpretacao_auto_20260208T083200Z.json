@@ -1,0 +1,97 @@
+{
+  "timestamp": "20260208T083200Z",
+  "top_gamma_lyman_ratio": [
+    [
+      "Phi",
+      0.2307322958405117
+    ],
+    [
+      "Aleph",
+      0.21591623732429174
+    ],
+    [
+      "Mu",
+      0.1986444496127122
+    ]
+  ],
+  "axiom_dec_stats": {
+    "count": 28,
+    "min": -53.59132279043023,
+    "max": 88.7615743533772,
+    "mean": 34.80322501234185,
+    "median": 40.45015238665444
+  },
+  "epsilon_dec_stats": {
+    "count": 26,
+    "min": -89.8605109335162,
+    "max": 52.82234144705237,
+    "mean": -45.55326035636414,
+    "median": -65.76039358698483
+  },
+  "cemetery_overlap": {
+    "cosine": 0.4671321308415544,
+    "pearson": -0.35607197590759077
+  },
+  "cemetery_top_clusters": [
+    {
+      "count": 1714,
+      "ra_bin": 2,
+      "dec_bin": 2,
+      "ra_range": [
+        30.0,
+        45.0
+      ],
+      "dec_range": [
+        -60.0,
+        -45.0
+      ]
+    },
+    {
+      "count": 1681,
+      "ra_bin": 13,
+      "dec_bin": 1,
+      "ra_range": [
+        195.0,
+        210.0
+      ],
+      "dec_range": [
+        -75.0,
+        -60.0
+      ]
+    },
+    {
+      "count": 1675,
+      "ra_bin": 7,
+      "dec_bin": 10,
+      "ra_range": [
+        105.0,
+        120.0
+      ],
+      "dec_range": [
+        60.0,
+        75.0
+      ]
+    }
+  ],
+  "crux_cemetery_stats": {
+    "count": 12,
+    "min": 0.13348768781456896,
+    "max": 0.6009597264865766,
+    "mean": 0.3972198424823583,
+    "median": 0.40282062362163296
+  },
+  "phi_redshift_stats": {
+    "count": 50,
+    "min": -0.003330348525196314,
+    "max": 6.662031650543213,
+    "mean": 1.2659443805736372,
+    "median": 0.788599044084549
+  },
+  "phi_tng50_weighted_dm_mean": 185.45168738254011,
+  "phi_tng50_weighted_rm_mean": -21.26425593455971,
+  "notes": [
+    "Atualizacao: nova sessao Dodecatiade 20260208T081651Z gerada com UniverseMap+ atualizado (efemerides reais).",
+    "Nova amostra do cemiterio n=100000 registrada em cemetery_map_summary_20260208T083042Z.",
+    "Comparacoes lado a lado geradas entre sessoes 20260208T081651Z vs session_old 20260208T000255Z."
+  ]
+}

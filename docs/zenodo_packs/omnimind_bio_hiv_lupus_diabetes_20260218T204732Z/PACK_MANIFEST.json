@@ -1,0 +1,242 @@
+{
+  "timestamp": "20260218T204732Z",
+  "pack_dir": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_bio_hiv_lupus_diabetes_20260218T204732Z",
+  "file_count": 47,
+  "files": [
+    {
+      "name": "README.md",
+      "sha256": "2156f77cf6d245391eef8c76a4a4f6c05f4b7c6645237de19c2d2ededcc041d9",
+      "size_bytes": 612
+    },
+    {
+      "name": "RESULTS_SUMMARY.json",
+      "sha256": "f51b6c1844d6fb11c90bfc285a9126de470d98e62905ff56116e5815c349d524",
+      "size_bytes": 7867
+    },
+    {
+      "name": "TECHNICAL_REPORT.md",
+      "sha256": "de1e1a0fa223b8e763ef7be224edece9b60c7aecf37f6ab31923b9fad6d7b732",
+      "size_bytes": 1862
+    },
+    {
+      "name": "TECHNICAL_STUDY_COMPILATION.md",
+      "sha256": "182d6df29f927a9186bc6731834c08054ad5e2923dc74a8619b8c2a6c640a23b",
+      "size_bytes": 11186
+    },
+    {
+      "name": "ZENODO_METADATA_CC_BY_NC_ND.json",
+      "sha256": "05681a49e435eb5adb510b9a7b55e1efb303b2f02a2026ef9adabfc7bf175ac4",
+      "size_bytes": 1855
+    },
+    {
+      "name": "data/astro_bio_cycle_sustainment_20260218T170121Z.json",
+      "sha256": "92199f4b6d255f3da6e7a28cd2bad59c7be8b1062433f1d1b402b8bbeae8e3e3",
+      "size_bytes": 11485
+    },
+    {
+      "name": "data/bio_15houses_qdrant_materialization_20260218T180807Z.json",
+      "sha256": "2f2914cdc1a08838f7a1e06df6475c806563c78967678c324cd8e7ae5181b57e",
+      "size_bytes": 319
+    },
+    {
+      "name": "data/bio_external_dm2_lupus_wave_qdrant_materialization_20260218T182226Z.json",
+      "sha256": "e386166fba56ebf15143e737192699c2cb2beb4d8c4df6e81091028f13b94e6e",
+      "size_bytes": 5896
+    },
+    {
+      "name": "data/bio_quantitative_field_probe_20260218T180411Z.json",
+      "sha256": "3efcf2d24dbba38122a0b39dd6c726c0480ddbcef570729edfcc0c5dfe4db937",
+      "size_bytes": 86911
+    },
+    {
+      "name": "data/d15_extended_correlation_validation_compact200_20260218T184552Z.json",
+      "sha256": "d2a94ecf4286e751df3c87b9c67f01116a005dfc0e70c4541bae8c93d57b9bf3",
+      "size_bytes": 5500
+    },
+    {
+      "name": "data/dataset_content_vectorization_20260218T072130Z.json",
+      "sha256": "55cbe1b5f1bb3b9b6a7831e9ed0415796f88bcfa6eaf6bf9de64276a1326fa2b",
+      "size_bytes": 2867
+    },
+    {
+      "name": "data/desi_lya_sample_materialization_20260218T170112Z.json",
+      "sha256": "3f006f7ea643977dfce61a970ce25b1ec5eaea6df1f7d36c3c537b2e41f8cfda",
+      "size_bytes": 4452
+    },
+    {
+      "name": "data/desi_official_apis_audit_20260218T152416Z.json",
+      "sha256": "37c28be58b6483086bbd75d9f87256bfbf4538d79be7fb0bdd62964b79b84c48",
+      "size_bytes": 15318
+    },
+    {
+      "name": "data/diabetes_t2_15houses_20260218T180807Z.json",
+      "sha256": "cf9cbc20e7306e8df16ab99f459c6dd6447a6b152cf8f5cafd5a1a16b3834811",
+      "size_bytes": 7535
+    },
+    {
+      "name": "data/diabetes_t2_wave_ingestion_20260218T072322Z.json",
+      "sha256": "fbd4eb47d8f7c294e8d008bac0f4e070c9a23397aaddf508594f02ff81003395",
+      "size_bytes": 1842
+    },
+    {
+      "name": "data/dm2_gut_immune_realdata_validation_20260218T204707Z.json",
+      "sha256": "c9d85e047454c356a174859f19e0a1e86307fdc33f1d3ec669ae6ad43a0070f4",
+      "size_bytes": 19008
+    },
+    {
+      "name": "data/hiv_acquisition_meta_15houses_qdrant_materialization_20260218T182211Z.json",
+      "sha256": "856180f6cdb1b2dd59b3f818034e7f5a4bd8eb48c84f6ebbefe7809adac72c99",
+      "size_bytes": 10169
+    },
+    {
+      "name": "data/hiv_cohabitation_monthly_safe_qdrant_materialization_20260218T062439Z.json",
+      "sha256": "4353831ff48fdc5de2bfc9864f8031d2c25ea2dc912bf95a1399ad0a4c65dc50",
+      "size_bytes": 288
+    },
+    {
+      "name": "data/hiv_cohabitation_monthly_safe_sim_20260218T062344Z.json",
+      "sha256": "a62766fb84c0fb25147dae38a49a28fc95766a4404a310d6bd8e3c6fd70fdb60",
+      "size_bytes": 19402
+    },
+    {
+      "name": "data/hiv_dm2_lupus_15houses_heatmap_validation_compact200_20260218T175507Z.json",
+      "sha256": "c6165c3e64d980ca8c63fe1574649c81ae3f01cf7d2333cdb4513a17645389f2",
+      "size_bytes": 1187
+    },
+    {
+      "name": "data/hiv_gwas_ccr5_15houses_qdrant_materialization_20260218T180828Z.json",
+      "sha256": "a06c425101c98c858e1ee470022f0807939733b94cc6eb340b87faf15453cc0f",
+      "size_bytes": 1471
+    },
+    {
+      "name": "data/hiv_m18_rebound_gap_assessment_compact200_20260218T133845Z.json",
+      "sha256": "acf6985ac889581b12440c3af9725e34dc9497aca7e0d1e0aee3c53dc655995a",
+      "size_bytes": 2078
+    },
+    {
+      "name": "data/hiv_sle_12m_extensions_safe_sim_20260218T063512Z.json",
+      "sha256": "80e54e653a313419b7006249a2c8ad964dcc0cd23dd4ede87e0b3275f9eba7ee",
+      "size_bytes": 21227
+    },
+    {
+      "name": "data/hiv_sle_12m_qdrant_materialization_20260218T064213Z.json",
+      "sha256": "1d31d7b48e5ad650ce01ddd101a2465d47101e1f0e4303e517faa43d4c765e26",
+      "size_bytes": 279
+    },
+    {
+      "name": "data/hiv_wrapper_functional_cure_qdrant_materialization_20260218T064743Z.json",
+      "sha256": "6834557fb7da8fdccb0020234ecafd3db941e04517afad442c2eb86052c09ed6",
+      "size_bytes": 285
+    },
+    {
+      "name": "data/hiv_wrapper_functional_cure_safe_20260218T133546Z.json",
+      "sha256": "ef410a48a50e6455a02a8d985d64a375355af33898fd7f1b83823efad4a59027",
+      "size_bytes": 41561
+    },
+    {
+      "name": "data/local_pendencies_delivery_board_20260218T140726Z.json",
+      "sha256": "83492e8f8f427847f4a94614d0c3b9caad0b4551a96892320c7f38b0dbb1be12",
+      "size_bytes": 3864
+    },
+    {
+      "name": "data/lupus_wrapper_tolerance_qdrant_materialization_20260218T070720Z.json",
+      "sha256": "7212bd1cbb33d2ad1819102b33b92dec0540480edf6f3b36caa842b69923c99b",
+      "size_bytes": 277
+    },
+    {
+      "name": "data/lupus_wrapper_tolerance_safe_20260218T070706Z.json",
+      "sha256": "943454dfc86a7735135d198d5d02c1d211218fb47338cf0d2ba5c11c69a76a88",
+      "size_bytes": 21227
+    },
+    {
+      "name": "data/lya_forest_pdf_probe_20260218T152655Z.json",
+      "sha256": "ae38e73ced79aed69bc05aba5f737b1ca15e0026ba4da174b48aca5f4cf9878d",
+      "size_bytes": 3063
+    },
+    {
+      "name": "data/multi_disease_pack_validation_compact200_20260218T203408Z.json",
+      "sha256": "4d1e0a8416d899e570a943a88fda53f0d2803a6249f022d3a4df4ac1da124986",
+      "size_bytes": 1810
+    },
+    {
+      "name": "data/phagocytosis_genomics_15houses_20260218T180411Z.json",
+      "sha256": "f83dd0394df871bbb9f165e1535cfa9c42a9c410edca313992515a8673f25253",
+      "size_bytes": 47691
+    },
+    {
+      "name": "data/phagocytosis_house_gate_runtime_audit_20260218T071016Z.json",
+      "sha256": "92387a53c02527f21b5e77883bf89c7563764a629bb6f9d2903a64493d45d928",
+      "size_bytes": 80125
+    },
+    {
+      "name": "data/phagocytosis_house_threshold_profile_20260218T065616Z.json",
+      "sha256": "af05f69d704a07bb7e726e2bd92f1730e1efb3f0844b524b3b68cfd73e2be13e",
+      "size_bytes": 4915
+    },
+    {
+      "name": "data/phagocytosis_threshold_house_sweep_20260218T065251Z.json",
+      "sha256": "adc83088ad80b090adb902992723d9b448da1dd0a71b383bdecf2713fc259898",
+      "size_bytes": 52263
+    },
+    {
+      "name": "data/phagocytosis_threshold_house_sweep_qdrant_materialization_20260218T065451Z.json",
+      "sha256": "2e7a58aea6b8153a92ca5db8c28dd3fa9fe0dc9d5456b1ab1e417e16a2a206f2",
+      "size_bytes": 294
+    },
+    {
+      "name": "data/qdrant_candidate_cross_hits_20260218T153415Z.json",
+      "sha256": "d62ecdee3f05fd84cbd7325ac94f0cf19202e67150aba96fe9814ce76261ce85",
+      "size_bytes": 5306
+    },
+    {
+      "name": "data/qdrant_collection_followup_plan_20260218T154105Z.json",
+      "sha256": "b285fdc453e1d5ae2e58ceaf4c337bacd529022a73573bfaaceb78171cd6d76a",
+      "size_bytes": 5849
+    },
+    {
+      "name": "data/qdrant_collection_reuse_structure_compact200_20260218T153225Z.json",
+      "sha256": "9f3f357c39471dffa9f166a2bd00c4af1230654d4763ed8dc86621c064a57e8b",
+      "size_bytes": 16610
+    },
+    {
+      "name": "data/qdrant_schema_overlap_20260218T153718Z.json",
+      "sha256": "635d1e95e2d7e8480ec9e9962c18507c97e801dc6729633788f214199a9d9a92",
+      "size_bytes": 14688
+    },
+    {
+      "name": "data/runtime_service_process_snapshot_20260218T145108Z.json",
+      "sha256": "4ebc4db9488fa06177661624780f342fc6c58abbb5d7b7bc1745ceb5df4d0e14",
+      "size_bytes": 19200
+    },
+    {
+      "name": "data/wrapper_candidates_ensembl_grch38_mapping_compact200_20260218T175521Z.json",
+      "sha256": "e434e79722fd74bd40dd9859d0ef32c7196675fec6654787629929e0581a50a2",
+      "size_bytes": 10756
+    },
+    {
+      "name": "data/wrapper_gene_candidates_panel_compact200_20260218T175521Z.json",
+      "sha256": "aa477e3bfa951c0a4369edbce3c4f3155378563b716d6becbd5ace5d3f2a95b8",
+      "size_bytes": 4096
+    },
+    {
+      "name": "data/zenodo_specific_assets_probe_v2_20260218T084138Z.json",
+      "sha256": "de9ca4cb782b3d1db0de2db4d10a50c78257830e5c5ab40126b29fb6d1ae930b",
+      "size_bytes": 8498
+    },
+    {
+      "name": "data/zip_dataset_analysis_20260218T115222Z.json",
+      "sha256": "8a679dbc00f5751c29a92663403ff842c7b38e4d144bba3142c0c4779d37e3f6",
+      "size_bytes": 1281
+    },
+    {
+      "name": "zenodo_metadata/zenodo_citation_note_20260218T204732Z.md",
+      "sha256": "09f305f30b90cce6de00204bbb26acfdb12c18b109d4b0ec8fe2b47accfd0efa",
+      "size_bytes": 679
+    },
+    {
+      "name": "zenodo_metadata/zenodo_metadata_bio_pack_20260218T204732Z.json",
+      "sha256": "1e1ef21329095c70fa2c6b1043293b8c33cb2d90dc4f65ccc14ad02a3e645f10",
+      "size_bytes": 2236
+    }
+  ]
+}

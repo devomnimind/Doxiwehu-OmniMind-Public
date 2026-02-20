@@ -1,0 +1,33 @@
+{
+  "counts_by_dataset": {
+    "SDSS": 15000,
+    "MPC": 7
+  },
+  "counts_by_class": {
+    "quasar": 2327,
+    "unknown": 6915,
+    "galaxy": 4685,
+    "star": 1073,
+    "small_body": 7
+  },
+  "houses": {
+    "Aleph": 8324,
+    "Sigma": 428,
+    "Axiom": 2,
+    "Psi": 348,
+    "Phi": 1006,
+    "Mu": 1141,
+    "C_plit": 1247,
+    "Lambda": 896,
+    "Gamma": 442,
+    "Epsilon": 0,
+    "Omega": 239,
+    "Zeta": 934
+  },
+  "timestamp": "20260208T081332Z",
+  "records": 15007,
+  "sources": {
+    "sdss": "/home/fahbrain/projects/omnimind/data/sdss_anomalies/sdss_structures_dr17.json",
+    "asteroids": "/home/fahbrain/projects/omnimind/data/reports/asteroids/omnimind_live_asteroids.json"
+  }
+}

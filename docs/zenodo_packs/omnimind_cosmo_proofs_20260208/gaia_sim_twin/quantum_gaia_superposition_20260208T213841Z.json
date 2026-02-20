@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-02-08T21:38:41.387468+00:00",
+  "measurements": {
+    "fidelity": 0.14223987076357597,
+    "entropy_sim": -4.440892098500627e-16,
+    "entropy_real": -0.0,
+    "concurrence": 0.7542940295762017
+  },
+  "interpretation": {
+    "verdict": "INCOERÊNCIA (ortogonais, totalmente descorrelacionados)",
+    "severity": "alto",
+    "confidence": 0.14223987076357597,
+    "total_entropy": -4.440892098500627e-16
+  },
+  "explanation": {
+    "aleph_sim_pct": 0.56,
+    "sigma_real_pct": 0.77925,
+    "dodecatiad_phase_shift": "Aleph (bootstrap) → Sigma (ingestão)"
+  }
+}

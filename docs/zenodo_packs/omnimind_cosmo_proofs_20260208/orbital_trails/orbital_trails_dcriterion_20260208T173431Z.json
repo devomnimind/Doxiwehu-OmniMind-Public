@@ -1,0 +1,4339 @@
+{
+  "timestamp": "20260208T173431Z",
+  "criteria": "Southworth-Hawkins D",
+  "min_inclination": 60.0,
+  "high_i_count": 358,
+  "targets": [
+    "A11y70v",
+    "C19DCG5",
+    "C45RW41",
+    "CE5LGG2",
+    "CE5V9J2",
+    "CJ99J020",
+    "CJ99S020",
+    "CK02A010",
+    "CK02A020",
+    "CK03A020",
+    "CK07S020",
+    "CK09P010",
+    "CK11P020",
+    "CK12A010",
+    "CK12K010",
+    "CK12L26P",
+    "CK12S010",
+    "CK13C020",
+    "CK13E010",
+    "CK13P040",
+    "CK13W020",
+    "CK14F030",
+    "CK14Q020",
+    "CK14UR1N",
+    "CK15E61R",
+    "CK15O010",
+    "CK15T050",
+    "CK16E010",
+    "CK18A060",
+    "CK19A050",
+    "CK19B030",
+    "P22liAW",
+    "P22lnpr",
+    "P22lp4E",
+    "PJ96R020",
+    "PK00R020",
+    "PK06H30R",
+    "PK09Y020",
+    "PK10H030",
+    "PK10T020",
+    "PK10U55H",
+    "PK11C020",
+    "PK12G010",
+    "PK13CC9U",
+    "PK13W010",
+    "PK13Y46G",
+    "PK14L020",
+    "PK15D060",
+    "PK15X030",
+    "PK16A030",
+    "PK17U030",
+    "PK18P040",
+    "PK19A020",
+    "ST26B07"
+  ],
+  "results": {
+    "A11y70v": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "C19DCG5": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "C45RW41": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "CE5LGG2": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "CE5V9J2": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "CJ99J020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CJ99J020",
+        "q": 7.069997,
+        "e": 1.000772,
+        "i": 86.4016,
+        "omega": 126.9632,
+        "node": 50.2636
+      },
+      "top_matches": [
+        {
+          "designation": "K25M88U",
+          "d_sh": 1.4853244198819608
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 1.7965545469235298
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.905478944487246
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 1.9366511717314534
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 1.9554574751168272
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.002216177622199
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.087748890940962
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 2.197703747188787
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.2889446003525764
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 2.298504664137822
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 2.3132008978485867
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 2.379959545302481
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.497292195862362
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 2.504509688393664
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 2.55503454819748
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.5843418352244827
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 2.5865623649211917
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 2.6180936241077855
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 2.6189906828093603
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.6928707017584483
+        }
+      ]
+    },
+    "CJ99S020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CJ99S020",
+        "q": 6.503096,
+        "e": 1.002279,
+        "i": 65.6344,
+        "omega": 223.4707,
+        "node": 74.4447
+      },
+      "top_matches": [
+        {
+          "designation": "K24P38P",
+          "d_sh": 1.4643049279354694
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 1.5959621778247874
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 1.7170351225903275
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.9620937588040381
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 1.9630029381978242
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 1.994584868079204
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 2.0043780806905946
+        },
+        {
+          "designation": "K25M88U",
+          "d_sh": 2.0877501749133596
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 2.116101666221953
+        },
+        {
+          "designation": "K14M55H",
+          "d_sh": 2.175188977911073
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.21958592557719
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 2.2251906157986174
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.276761839115675
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.345830257233817
+        },
+        {
+          "designation": "K15F37K",
+          "d_sh": 2.3899153624232508
+        },
+        {
+          "designation": "K20K07U",
+          "d_sh": 2.4153795844013857
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 2.491623038098432
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.5214699659217823
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 2.536205213158985
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.547832771862917
+        }
+      ]
+    },
+    "CK02A010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK02A010",
+        "q": 4.655929,
+        "e": 0.709756,
+        "i": 14.0786,
+        "omega": 18.7239,
+        "node": 81.0445
+      },
+      "top_matches": [
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.1936468933986026
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.3701816390015045
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 1.4513392597706547
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.5655657262190938
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.6258963674698068
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.6995757942772665
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.7030776830442111
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.8050957051353764
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.8077941345557376
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.8419033080205467
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.8450817425031787
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.855680287055835
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.8625832369005642
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.8642844703765589
+        },
+        {
+          "designation": "K25B02Y",
+          "d_sh": 1.879952086451234
+        },
+        {
+          "designation": "K05V03X",
+          "d_sh": 1.888237662072331
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.892664566358598
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.923685527628667
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.958704487253778
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.9830744960126203
+        }
+      ]
+    },
+    "CK02A020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK02A020",
+        "q": 4.650835,
+        "e": 0.707428,
+        "i": 14.0326,
+        "omega": 19.1191,
+        "node": 81.0113
+      },
+      "top_matches": [
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.1933908774137394
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.3736623754487576
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 1.452680717930515
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.562316390490976
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.6258321987080533
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.6972838337823517
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.6979677761729115
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.799724717926212
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.806313463539846
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.840939110892758
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.8414208113795176
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.8522513771597295
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.856635823985595
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.864744968854892
+        },
+        {
+          "designation": "K25B02Y",
+          "d_sh": 1.881102373458684
+        },
+        {
+          "designation": "K05V03X",
+          "d_sh": 1.8872965536745565
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.8888907245040605
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.919565945955706
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.9565055971233516
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.9827709337275852
+        }
+      ]
+    },
+    "CK03A020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK03A020",
+        "q": 11.363888,
+        "e": 0.998663,
+        "i": 8.0713,
+        "omega": 346.5592,
+        "node": 154.454
+      },
+      "top_matches": [
+        {
+          "designation": "q3798",
+          "d_sh": 1.6334409550137754
+        },
+        {
+          "designation": "K24T03F",
+          "d_sh": 1.688358380818403
+        },
+        {
+          "designation": "q3800",
+          "d_sh": 2.1415663355523784
+        },
+        {
+          "designation": "K11M04M",
+          "d_sh": 2.1833306701177255
+        },
+        {
+          "designation": "f8993",
+          "d_sh": 2.2299957382761013
+        },
+        {
+          "designation": "p8151",
+          "d_sh": 2.428753266184208
+        },
+        {
+          "designation": "w2301",
+          "d_sh": 2.51761086985693
+        },
+        {
+          "designation": "q3797",
+          "d_sh": 2.7743847810526083
+        },
+        {
+          "designation": "K11G27N",
+          "d_sh": 2.8571268022685596
+        },
+        {
+          "designation": "q3739",
+          "d_sh": 2.8929383962151682
+        },
+        {
+          "designation": "w5899",
+          "d_sh": 2.9720650424254687
+        },
+        {
+          "designation": "K24L09Y",
+          "d_sh": 3.1090731668291447
+        },
+        {
+          "designation": "K25D51B",
+          "d_sh": 3.1321550205575637
+        },
+        {
+          "designation": "X6756",
+          "d_sh": 3.20836215684488
+        },
+        {
+          "designation": "K16L90F",
+          "d_sh": 3.3419269404633343
+        },
+        {
+          "designation": "~0CeZ",
+          "d_sh": 3.4471630670183053
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 3.44825413922647
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 3.756030229069487
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 3.8133687418272983
+        },
+        {
+          "designation": "K15Fd7Z",
+          "d_sh": 3.8959078163030134
+        }
+      ]
+    },
+    "CK07S020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK07S020",
+        "q": 5.527911,
+        "e": 0.557482,
+        "i": 16.9212,
+        "omega": 210.1513,
+        "node": 296.135
+      },
+      "top_matches": [
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.2085290809407268
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.2631588758592918
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.5499691501623043
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 1.5852040988609772
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 1.72187763127055
+        },
+        {
+          "designation": "K23D05P",
+          "d_sh": 1.7577430095912139
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.797552958287516
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.8190004538309015
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.8826869877823216
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.8921939664831735
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.9140501949237887
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 1.9536430317417712
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 2.0284559207086588
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 2.0493029083898486
+        },
+        {
+          "designation": "K25B02Y",
+          "d_sh": 2.0770426324070796
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 2.0858624047333167
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 2.0931637538882533
+        },
+        {
+          "designation": "h4620",
+          "d_sh": 2.0943533146119577
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 2.109190736604408
+        },
+        {
+          "designation": "K23J18W",
+          "d_sh": 2.1182447058080096
+        }
+      ]
+    },
+    "CK09P010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK09P010",
+        "q": 1.539199,
+        "e": 0.99985,
+        "i": 106.2235,
+        "omega": 90.4529,
+        "node": 325.8432
+      },
+      "top_matches": [
+        {
+          "designation": "K17O68X",
+          "d_sh": 0.6024088455746415
+        },
+        {
+          "designation": "K17P24Y",
+          "d_sh": 0.7535461668055227
+        },
+        {
+          "designation": "K23T04X",
+          "d_sh": 0.9029512549840351
+        },
+        {
+          "designation": "~0sfp",
+          "d_sh": 0.9269112933749449
+        },
+        {
+          "designation": "K25S03G",
+          "d_sh": 1.120851671015183
+        },
+        {
+          "designation": "K25B06V",
+          "d_sh": 1.1592388168665129
+        },
+        {
+          "designation": "~0p7O",
+          "d_sh": 1.187078451361278
+        },
+        {
+          "designation": "K00H46E",
+          "d_sh": 1.1948023690491292
+        },
+        {
+          "designation": "K13YD9L",
+          "d_sh": 1.2063753557245196
+        },
+        {
+          "designation": "K09SA3P",
+          "d_sh": 1.218541397718551
+        },
+        {
+          "designation": "K17E02X",
+          "d_sh": 1.2296516848168233
+        },
+        {
+          "designation": "K17FC8N",
+          "d_sh": 1.2563844488806517
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.2713900489383534
+        },
+        {
+          "designation": "K03B01N",
+          "d_sh": 1.2723715844297967
+        },
+        {
+          "designation": "K21U19L",
+          "d_sh": 1.2732062621610423
+        },
+        {
+          "designation": "K20V06S",
+          "d_sh": 1.2812457843356113
+        },
+        {
+          "designation": "K22Y09U",
+          "d_sh": 1.3132709136438354
+        },
+        {
+          "designation": "q3650",
+          "d_sh": 1.3409114801331152
+        },
+        {
+          "designation": "K17S33N",
+          "d_sh": 1.3501591454576176
+        },
+        {
+          "designation": "20461",
+          "d_sh": 1.3839426384281257
+        }
+      ]
+    },
+    "CK11P020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK11P020",
+        "q": 6.198677,
+        "e": 0.365271,
+        "i": 8.9826,
+        "omega": 76.1978,
+        "node": 203.9298
+      },
+      "top_matches": [
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.2475483053337888
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 1.4921453588742435
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.5981625434449487
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 1.630696938303467
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 1.8054764567243495
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.8459578373093752
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 1.9391157204898528
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.9429701012584255
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 1.9445238982875923
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 1.9493079863388245
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 2.0247979467289308
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.0364526927343243
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 2.0438525607618905
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 2.0505272556165766
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.1157731253547647
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 2.1227284736972294
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.160733346901444
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 2.1897946098496335
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.2588030595014432
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 2.2863454439658106
+        }
+      ]
+    },
+    "CK12A010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK12A010",
+        "q": 7.61292,
+        "e": 0.999707,
+        "i": 121.0091,
+        "omega": 191.952,
+        "node": 277.873
+      },
+      "top_matches": [
+        {
+          "designation": "K25M88U",
+          "d_sh": 1.0601202906877385
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 1.3015543973623567
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 1.5850048928494194
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 1.6779434787792586
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 1.817793531426382
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 1.825607917025679
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 1.9043714397760283
+        },
+        {
+          "designation": "K16L90F",
+          "d_sh": 2.181380141271269
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.188421699501369
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.244592395568427
+        },
+        {
+          "designation": "K11G27N",
+          "d_sh": 2.2992346442068348
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.3718253951500596
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 2.3928337997705196
+        },
+        {
+          "designation": "q3739",
+          "d_sh": 2.4468849530507826
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.5076856012002082
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.5078390371119212
+        },
+        {
+          "designation": "X6756",
+          "d_sh": 2.5688316293272693
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 2.5883429385931414
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 2.675553505478608
+        },
+        {
+          "designation": "K23D05P",
+          "d_sh": 2.8450468314656945
+        }
+      ]
+    },
+    "CK12K010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK12K010",
+        "q": 1.059123,
+        "e": 0.999871,
+        "i": 142.5957,
+        "omega": 203.1959,
+        "node": 317.7622
+      },
+      "top_matches": [
+        {
+          "designation": "K19E03J",
+          "d_sh": 0.5426868798682153
+        },
+        {
+          "designation": "K20B12Z",
+          "d_sh": 0.9647138018616859
+        },
+        {
+          "designation": "K18T06L",
+          "d_sh": 1.1281469061418892
+        },
+        {
+          "designation": "K16X24K",
+          "d_sh": 1.2074094085433125
+        },
+        {
+          "designation": "K06B08Z",
+          "d_sh": 1.215339598706904
+        },
+        {
+          "designation": "K10E46B",
+          "d_sh": 1.2586868692011608
+        },
+        {
+          "designation": "K15XZ1X",
+          "d_sh": 1.2848103383735665
+        },
+        {
+          "designation": "K17U52R",
+          "d_sh": 1.3419318652626977
+        },
+        {
+          "designation": "J6256",
+          "d_sh": 1.346398333957311
+        },
+        {
+          "designation": "K20W03L",
+          "d_sh": 1.3612780708402303
+        },
+        {
+          "designation": "K20O05S",
+          "d_sh": 1.3979649144651354
+        },
+        {
+          "designation": "05335",
+          "d_sh": 1.4154033588317678
+        },
+        {
+          "designation": "K25M00H",
+          "d_sh": 1.4170357834517722
+        },
+        {
+          "designation": "K22G00U",
+          "d_sh": 1.4323205595053436
+        },
+        {
+          "designation": "K16B40A",
+          "d_sh": 1.4520157210514049
+        },
+        {
+          "designation": "K16UA9S",
+          "d_sh": 1.4676740377395763
+        },
+        {
+          "designation": "K18A18S",
+          "d_sh": 1.4785879536804456
+        },
+        {
+          "designation": "K00D08G",
+          "d_sh": 1.4852291111465312
+        },
+        {
+          "designation": "K18L13Z",
+          "d_sh": 1.5199518940726422
+        },
+        {
+          "designation": "K20Q06F",
+          "d_sh": 1.525735453013609
+        }
+      ]
+    },
+    "CK12L26P": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK12L26P",
+        "q": 6.570995,
+        "e": 1.001424,
+        "i": 25.3597,
+        "omega": 145.318,
+        "node": 154.0914
+      },
+      "top_matches": [
+        {
+          "designation": "w4778",
+          "d_sh": 1.7115883421349267
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 1.7814611461673917
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.869809640102974
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 1.8973806766534929
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 2.028457491586868
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 2.0499612164663708
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.067395692062302
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.068524983784749
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 2.071000964541338
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 2.1019886143186994
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 2.2677420586756964
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 2.2808178845297253
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 2.281738682813583
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 2.2896986317025485
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 2.305277922700735
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 2.3213013541477876
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 2.3535573248632624
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.384647811666047
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 2.4781764412671707
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 2.509176911335003
+        }
+      ]
+    },
+    "CK12S010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK12S010",
+        "q": 0.014235,
+        "e": 1.000003,
+        "i": 58.4307,
+        "omega": 345.1134,
+        "node": 297.033
+      },
+      "top_matches": [
+        {
+          "designation": "K15Bp4J",
+          "d_sh": 0.823956905226459
+        },
+        {
+          "designation": "K05B01T",
+          "d_sh": 0.8878699359147636
+        },
+        {
+          "designation": "p1600",
+          "d_sh": 0.9015199660943757
+        },
+        {
+          "designation": "K05B01W",
+          "d_sh": 1.067681219305464
+        },
+        {
+          "designation": "q9718",
+          "d_sh": 1.1214983386265047
+        },
+        {
+          "designation": "K12XD4T",
+          "d_sh": 1.1546181131457316
+        },
+        {
+          "designation": "K18N01D",
+          "d_sh": 1.200319847599564
+        },
+        {
+          "designation": "K10Q02E",
+          "d_sh": 1.3283070730077755
+        },
+        {
+          "designation": "K18P10J",
+          "d_sh": 1.3368811877398057
+        },
+        {
+          "designation": "K20C01Y",
+          "d_sh": 1.3740220232499547
+        },
+        {
+          "designation": "K25S01P",
+          "d_sh": 1.3981526318922968
+        },
+        {
+          "designation": "K21B02B",
+          "d_sh": 1.4289707037401649
+        },
+        {
+          "designation": "K09V25Q",
+          "d_sh": 1.4501410566788893
+        },
+        {
+          "designation": "K16B40A",
+          "d_sh": 1.507243590121538
+        },
+        {
+          "designation": "K23A01J",
+          "d_sh": 1.517595639732199
+        },
+        {
+          "designation": "p6734",
+          "d_sh": 1.5181426964738753
+        },
+        {
+          "designation": "~0p7O",
+          "d_sh": 1.524774075411026
+        },
+        {
+          "designation": "K22R03X",
+          "d_sh": 1.5634416663392385
+        },
+        {
+          "designation": "K12M04S",
+          "d_sh": 1.5819725159587001
+        },
+        {
+          "designation": "K14P69P",
+          "d_sh": 1.5862013521268457
+        }
+      ]
+    },
+    "CK13C020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK13C020",
+        "q": 9.11175,
+        "e": 0.42597,
+        "i": 21.3721,
+        "omega": 308.737,
+        "node": 247.5789
+      },
+      "top_matches": [
+        {
+          "designation": "K16L90F",
+          "d_sh": 1.4684295891181638
+        },
+        {
+          "designation": "p8151",
+          "d_sh": 1.492457793372059
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 1.725735408338624
+        },
+        {
+          "designation": "q3739",
+          "d_sh": 1.7980054608290876
+        },
+        {
+          "designation": "q3798",
+          "d_sh": 1.9898290322311825
+        },
+        {
+          "designation": "K11G27N",
+          "d_sh": 2.0190465994241364
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.056917358784818
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 2.1590901926966017
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 2.1918520749491233
+        },
+        {
+          "designation": "X6756",
+          "d_sh": 2.3872947046285136
+        },
+        {
+          "designation": "K24L09Y",
+          "d_sh": 2.4149567172249453
+        },
+        {
+          "designation": "K24T03F",
+          "d_sh": 2.4376838016887343
+        },
+        {
+          "designation": "K11M04M",
+          "d_sh": 2.508713574220519
+        },
+        {
+          "designation": "q3797",
+          "d_sh": 2.549046493661872
+        },
+        {
+          "designation": "f8993",
+          "d_sh": 2.5736464842961047
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.584100544241083
+        },
+        {
+          "designation": "q3800",
+          "d_sh": 2.6971084832900707
+        },
+        {
+          "designation": "K25M88U",
+          "d_sh": 2.8468133164305303
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.945533400065866
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 3.1225825509424583
+        }
+      ]
+    },
+    "CK13E010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK13E010",
+        "q": 7.763539,
+        "e": 0.998824,
+        "i": 158.7113,
+        "omega": 311.3616,
+        "node": 133.8206
+      },
+      "top_matches": [
+        {
+          "designation": "K25M88U",
+          "d_sh": 1.6433257438475615
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 1.6968457197410354
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 1.727860644835459
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 1.730047003797663
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 1.8750103505379137
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 1.993935844534185
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 2.02108660198574
+        },
+        {
+          "designation": "K16L90F",
+          "d_sh": 2.0345963152228936
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.068151459891054
+        },
+        {
+          "designation": "p8151",
+          "d_sh": 2.1124335226838316
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.1176869067199067
+        },
+        {
+          "designation": "K11G27N",
+          "d_sh": 2.2812289005163247
+        },
+        {
+          "designation": "K24L09Y",
+          "d_sh": 2.3229289496350964
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 2.3719283540845355
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.459156669479488
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.472113697240158
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 2.5723171049707316
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.5956058103434363
+        },
+        {
+          "designation": "X6756",
+          "d_sh": 2.6152327968400475
+        },
+        {
+          "designation": "q3739",
+          "d_sh": 2.7463502926452326
+        }
+      ]
+    },
+    "CK13P040": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK13P040",
+        "q": 6.002528,
+        "e": 0.593985,
+        "i": 4.26,
+        "omega": 113.8922,
+        "node": 256.4962
+      },
+      "top_matches": [
+        {
+          "designation": "K25D48Z",
+          "d_sh": 1.134938028649962
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.6130239047168697
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 1.675048325759735
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.7564294532442486
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 1.8011851032474722
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 1.816244869274643
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.8684316913793326
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.9290821137416343
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 1.941547340296981
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 1.9526429485333858
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.9747606458960278
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 1.9797142399086405
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 2.0152044664738824
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 2.060673706416791
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.075860774958809
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.0959902364152048
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 2.102410043387009
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 2.1690947801391234
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.2175333851558574
+        },
+        {
+          "designation": "K20H11B",
+          "d_sh": 2.2391945690630695
+        }
+      ]
+    },
+    "CK13W020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK13W020",
+        "q": 4.346714,
+        "e": 0.547854,
+        "i": 4.8522,
+        "omega": 303.8972,
+        "node": 178.2609
+      },
+      "top_matches": [
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.3925013295508541
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.3964789645248215
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 1.4670822275083901
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.529490903732561
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.5323070977145246
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.5569951471070236
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.6250359976909636
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.6326489884225286
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.712378314591755
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.7404458014699555
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.7537781356220925
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.773308099349613
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.781030053129322
+        },
+        {
+          "designation": "K05T50J",
+          "d_sh": 1.7820689819936022
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.785735656434966
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.7900438126664597
+        },
+        {
+          "designation": "K05V03X",
+          "d_sh": 1.7950346160031898
+        },
+        {
+          "designation": "K10G64W",
+          "d_sh": 1.8366920712636143
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.8484610222510178
+        },
+        {
+          "designation": "K23D05P",
+          "d_sh": 1.8541640089726579
+        }
+      ]
+    },
+    "CK14F030": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK14F030",
+        "q": 5.732504,
+        "e": 0.601019,
+        "i": 6.5209,
+        "omega": 5.1022,
+        "node": 325.9863
+      },
+      "top_matches": [
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.3954903907370737
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 1.4710972330711563
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 1.6012531537290036
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 1.6069513059572618
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.671547075408216
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.6836387713331256
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.7541856121147013
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 1.80195003321273
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.8039148771655675
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.8210999291574779
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.8655957687575
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 1.9912034216936334
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.048699049807295
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.060010186465721
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.0649482178815366
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.066816752935153
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.089371822873966
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 2.092493228966105
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 2.1001609352094714
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 2.12149953507548
+        }
+      ]
+    },
+    "CK14Q020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK14Q020",
+        "q": 1.28787,
+        "e": 0.9968,
+        "i": 80.7936,
+        "omega": 12.3236,
+        "node": 94.8674
+      },
+      "top_matches": [
+        {
+          "designation": "K17Y03N",
+          "d_sh": 0.6761133280842851
+        },
+        {
+          "designation": "K18X03Q",
+          "d_sh": 0.6909838613913265
+        },
+        {
+          "designation": "K19A09W",
+          "d_sh": 0.9604507777339326
+        },
+        {
+          "designation": "K17C32Z",
+          "d_sh": 0.9628757796238161
+        },
+        {
+          "designation": "K24U11G",
+          "d_sh": 0.9746012334894845
+        },
+        {
+          "designation": "K13Y48G",
+          "d_sh": 0.9941026032277165
+        },
+        {
+          "designation": "02102",
+          "d_sh": 1.0041437275904783
+        },
+        {
+          "designation": "K17M00H",
+          "d_sh": 1.021427172461857
+        },
+        {
+          "designation": "K06B07V",
+          "d_sh": 1.0349673992651693
+        },
+        {
+          "designation": "K21W06T",
+          "d_sh": 1.0879081922944536
+        },
+        {
+          "designation": "K08A04H",
+          "d_sh": 1.0941388566281733
+        },
+        {
+          "designation": "K17K34Q",
+          "d_sh": 1.10781822454996
+        },
+        {
+          "designation": "K19B03S",
+          "d_sh": 1.1144928017283648
+        },
+        {
+          "designation": "K09X08F",
+          "d_sh": 1.1256923444479425
+        },
+        {
+          "designation": "D8095",
+          "d_sh": 1.134512839825705
+        },
+        {
+          "designation": "K19C02M",
+          "d_sh": 1.1436187086908534
+        },
+        {
+          "designation": "K09K00N",
+          "d_sh": 1.1450469317671415
+        },
+        {
+          "designation": "K22A02C",
+          "d_sh": 1.1613445146291772
+        },
+        {
+          "designation": "K22Y03Q",
+          "d_sh": 1.1836862455597152
+        },
+        {
+          "designation": "K22R04G",
+          "d_sh": 1.2108477292894757
+        }
+      ]
+    },
+    "CK14UR1N": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK14UR1N",
+        "q": 10.96048,
+        "e": 1.004321,
+        "i": 95.4462,
+        "omega": 326.077,
+        "node": 189.9859
+      },
+      "top_matches": [
+        {
+          "designation": "q3800",
+          "d_sh": 1.2016153020841094
+        },
+        {
+          "designation": "K11M04M",
+          "d_sh": 1.5743834549190017
+        },
+        {
+          "designation": "p8151",
+          "d_sh": 1.633218274192062
+        },
+        {
+          "designation": "f8993",
+          "d_sh": 2.08279284182729
+        },
+        {
+          "designation": "K24L09Y",
+          "d_sh": 2.0867354207860056
+        },
+        {
+          "designation": "q3739",
+          "d_sh": 2.3488974292701967
+        },
+        {
+          "designation": "w2301",
+          "d_sh": 2.391430303725478
+        },
+        {
+          "designation": "q3797",
+          "d_sh": 2.4141193825523253
+        },
+        {
+          "designation": "K24T03F",
+          "d_sh": 2.4636964613624865
+        },
+        {
+          "designation": "q3798",
+          "d_sh": 2.5477165421227967
+        },
+        {
+          "designation": "X6756",
+          "d_sh": 2.680632577270481
+        },
+        {
+          "designation": "K16L90F",
+          "d_sh": 2.6912368172686456
+        },
+        {
+          "designation": "K11G27N",
+          "d_sh": 2.7058247074593655
+        },
+        {
+          "designation": "w5899",
+          "d_sh": 2.8888903997033464
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 3.113106208587674
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 3.2015829224134995
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 3.2157759554735574
+        },
+        {
+          "designation": "K25D51B",
+          "d_sh": 3.372294262974282
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 3.5449797650704893
+        },
+        {
+          "designation": "K15Fd7Z",
+          "d_sh": 4.187554190079409
+        }
+      ]
+    },
+    "CK15E61R": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK15E61R",
+        "q": 1.063429,
+        "e": 0.997742,
+        "i": 6.3082,
+        "omega": 68.7789,
+        "node": 234.9509
+      },
+      "top_matches": [
+        {
+          "designation": "p6428",
+          "d_sh": 1.0500317023236618
+        },
+        {
+          "designation": "K12XD4T",
+          "d_sh": 1.1369736704579911
+        },
+        {
+          "designation": "K23T04L",
+          "d_sh": 1.139282804169116
+        },
+        {
+          "designation": "K18P10J",
+          "d_sh": 1.1931266367208364
+        },
+        {
+          "designation": "R6274",
+          "d_sh": 1.1942012865425187
+        },
+        {
+          "designation": "~0BVE",
+          "d_sh": 1.2139314810498683
+        },
+        {
+          "designation": "K15Bp4J",
+          "d_sh": 1.2406430938017692
+        },
+        {
+          "designation": "K18N01D",
+          "d_sh": 1.246050421128831
+        },
+        {
+          "designation": "K21J07H",
+          "d_sh": 1.2538654064738692
+        },
+        {
+          "designation": "K20J00L",
+          "d_sh": 1.258524193994296
+        },
+        {
+          "designation": "K17A04M",
+          "d_sh": 1.2657954945509147
+        },
+        {
+          "designation": "K25S01P",
+          "d_sh": 1.2920544783221057
+        },
+        {
+          "designation": "n1424",
+          "d_sh": 1.3132944304774883
+        },
+        {
+          "designation": "K13YD9L",
+          "d_sh": 1.3341007088267924
+        },
+        {
+          "designation": "~0p7O",
+          "d_sh": 1.3348148483826876
+        },
+        {
+          "designation": "K05B01T",
+          "d_sh": 1.3386401717876881
+        },
+        {
+          "designation": "K15L06W",
+          "d_sh": 1.3614044762301234
+        },
+        {
+          "designation": "l7492",
+          "d_sh": 1.3672427510377438
+        },
+        {
+          "designation": "D8925",
+          "d_sh": 1.3813743100867775
+        },
+        {
+          "designation": "r8085",
+          "d_sh": 1.3879729464400754
+        }
+      ]
+    },
+    "CK15O010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK15O010",
+        "q": 3.747272,
+        "e": 1.001766,
+        "i": 27.104,
+        "omega": 89.8534,
+        "node": 299.7024
+      },
+      "top_matches": [
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.0710690456796828
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.4463845933193413
+        },
+        {
+          "designation": "K22O21C",
+          "d_sh": 1.5221692211978228
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.5417165426115766
+        },
+        {
+          "designation": "K18S13Q",
+          "d_sh": 1.5881767376897427
+        },
+        {
+          "designation": "K12Y06O",
+          "d_sh": 1.5885829649233518
+        },
+        {
+          "designation": "K10G64W",
+          "d_sh": 1.6268071317908133
+        },
+        {
+          "designation": "K20O07P",
+          "d_sh": 1.6356349208376975
+        },
+        {
+          "designation": "K25B06V",
+          "d_sh": 1.6422568825319057
+        },
+        {
+          "designation": "K15Y18Y",
+          "d_sh": 1.688145603330078
+        },
+        {
+          "designation": "K23J18W",
+          "d_sh": 1.6913979565921031
+        },
+        {
+          "designation": "K18M08P",
+          "d_sh": 1.7022175977807055
+        },
+        {
+          "designation": "K17M04Z",
+          "d_sh": 1.7070309542597468
+        },
+        {
+          "designation": "K21RB4M",
+          "d_sh": 1.7520036190762511
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.76111701062507
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 1.7648006777126792
+        },
+        {
+          "designation": "K14M55H",
+          "d_sh": 1.7857075057960006
+        },
+        {
+          "designation": "K19H04C",
+          "d_sh": 1.8155528187022865
+        },
+        {
+          "designation": "K20K07H",
+          "d_sh": 1.8414677864627007
+        },
+        {
+          "designation": "K23Q07E",
+          "d_sh": 1.8431372665565917
+        }
+      ]
+    },
+    "CK15T050": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK15T050",
+        "q": 9.387945,
+        "e": 0.669871,
+        "i": 11.019,
+        "omega": 62.2214,
+        "node": 311.2533
+      },
+      "top_matches": [
+        {
+          "designation": "q3739",
+          "d_sh": 1.5315663941257416
+        },
+        {
+          "designation": "K16L90F",
+          "d_sh": 1.6792529717166078
+        },
+        {
+          "designation": "p7717",
+          "d_sh": 1.7565122919388085
+        },
+        {
+          "designation": "p8151",
+          "d_sh": 1.9005265315450515
+        },
+        {
+          "designation": "q3798",
+          "d_sh": 1.906026813620435
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 1.9079775049119445
+        },
+        {
+          "designation": "K24L09Y",
+          "d_sh": 1.989558049962629
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 2.039097390029074
+        },
+        {
+          "designation": "f8993",
+          "d_sh": 2.0415960983825445
+        },
+        {
+          "designation": "K11G27N",
+          "d_sh": 2.077820470521562
+        },
+        {
+          "designation": "K24T03F",
+          "d_sh": 2.0937140259835836
+        },
+        {
+          "designation": "q3797",
+          "d_sh": 2.308700330980584
+        },
+        {
+          "designation": "X6756",
+          "d_sh": 2.3318190874194062
+        },
+        {
+          "designation": "K11M04M",
+          "d_sh": 2.392296111478773
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.560218819333594
+        },
+        {
+          "designation": "q3800",
+          "d_sh": 2.793439034860782
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.9291234092307374
+        },
+        {
+          "designation": "w2301",
+          "d_sh": 2.9642081049577778
+        },
+        {
+          "designation": "K25M88U",
+          "d_sh": 3.1613050104266196
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 3.1987323810378356
+        }
+      ]
+    },
+    "CK16E010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK16E010",
+        "q": 8.160856,
+        "e": 1.001501,
+        "i": 131.8714,
+        "omega": 47.2293,
+        "node": 233.1404
+      },
+      "top_matches": [
+        {
+          "designation": "p7717",
+          "d_sh": 0.8984976647724529
+        },
+        {
+          "designation": "K16L90F",
+          "d_sh": 1.2031603053230542
+        },
+        {
+          "designation": "k8861",
+          "d_sh": 1.4846404334454502
+        },
+        {
+          "designation": "K25M88U",
+          "d_sh": 1.851163397858308
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 1.929991726539114
+        },
+        {
+          "designation": "p8151",
+          "d_sh": 1.9523482449437195
+        },
+        {
+          "designation": "w4778",
+          "d_sh": 2.117172900644381
+        },
+        {
+          "designation": "~0NHL",
+          "d_sh": 2.1405378753561823
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.170354892867552
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.2127677308746274
+        },
+        {
+          "designation": "K11G27N",
+          "d_sh": 2.28678682961729
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 2.297790207218687
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 2.340138183949685
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 2.3471800368255704
+        },
+        {
+          "designation": "K24L09Y",
+          "d_sh": 2.3472850580154088
+        },
+        {
+          "designation": "q3739",
+          "d_sh": 2.3986382246909432
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 2.488459045118813
+        },
+        {
+          "designation": "X6756",
+          "d_sh": 2.5634827132566906
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.7104808612477407
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.9144940417362393
+        }
+      ]
+    },
+    "CK18A060": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK18A060",
+        "q": 3.014183,
+        "e": 0.798939,
+        "i": 77.1897,
+        "omega": 264.2345,
+        "node": 340.4872
+      },
+      "top_matches": [
+        {
+          "designation": "K18P28L",
+          "d_sh": 0.41435386314066297
+        },
+        {
+          "designation": "K22C07T",
+          "d_sh": 1.0167308918965887
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.050827834078976
+        },
+        {
+          "designation": "K15BV1H",
+          "d_sh": 1.0674270052397399
+        },
+        {
+          "designation": "K17M04Z",
+          "d_sh": 1.11958292523905
+        },
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.2892559224997142
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.2925605216016565
+        },
+        {
+          "designation": "K16T93P",
+          "d_sh": 1.3113478204539495
+        },
+        {
+          "designation": "K07VQ6W",
+          "d_sh": 1.3116362423360672
+        },
+        {
+          "designation": "K08S85B",
+          "d_sh": 1.341067561955608
+        },
+        {
+          "designation": "K20O07P",
+          "d_sh": 1.344055224303926
+        },
+        {
+          "designation": "K16Y13B",
+          "d_sh": 1.3911122490931573
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.4396217911139257
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.4493346139551087
+        },
+        {
+          "designation": "~0lxC",
+          "d_sh": 1.4555153137720194
+        },
+        {
+          "designation": "K15Xc4R",
+          "d_sh": 1.4719353358829523
+        },
+        {
+          "designation": "p4107",
+          "d_sh": 1.4778864988694167
+        },
+        {
+          "designation": "K18D04F",
+          "d_sh": 1.4792415971901325
+        },
+        {
+          "designation": "K22O21C",
+          "d_sh": 1.4984402761147646
+        },
+        {
+          "designation": "K12H02D",
+          "d_sh": 1.5038069976673392
+        }
+      ]
+    },
+    "CK19A050": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK19A050",
+        "q": 6.315868,
+        "e": 0.706658,
+        "i": 67.5554,
+        "omega": 355.8839,
+        "node": 146.489
+      },
+      "top_matches": [
+        {
+          "designation": "Y2842",
+          "d_sh": 0.9473411093375989
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 0.9803658003127333
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.497862831369506
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.558299484551468
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.844048979109685
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.884587986270277
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 1.8882671172651444
+        },
+        {
+          "designation": "K25B02Y",
+          "d_sh": 1.901646940787354
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 1.9060849434803764
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 1.9579364028892607
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.0168759503802063
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 2.07426437620867
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 2.1161002985007675
+        },
+        {
+          "designation": "K15F37K",
+          "d_sh": 2.140688296770118
+        },
+        {
+          "designation": "K25M88U",
+          "d_sh": 2.1425409850110286
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.1528856066925663
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 2.155741444563794
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 2.162350341948678
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 2.232485124693977
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.2833694975057646
+        }
+      ]
+    },
+    "CK19B030": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "CK19B030",
+        "q": 6.83059,
+        "e": 0.99782,
+        "i": 66.6274,
+        "omega": 263.9983,
+        "node": 358.3972
+      },
+      "top_matches": [
+        {
+          "designation": "w4778",
+          "d_sh": 0.997504680113603
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.5623895574458075
+        },
+        {
+          "designation": "K25M88U",
+          "d_sh": 1.621158292786265
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 1.9421281708298572
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 2.0061907292049472
+        },
+        {
+          "designation": "K24P38P",
+          "d_sh": 2.014306930829822
+        },
+        {
+          "designation": "j9870",
+          "d_sh": 2.0588260387394013
+        },
+        {
+          "designation": "x4872",
+          "d_sh": 2.087459846887578
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 2.164101736544446
+        },
+        {
+          "designation": "K17U51X",
+          "d_sh": 2.2488259973542606
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 2.269923836774134
+        },
+        {
+          "designation": "K24P17L",
+          "d_sh": 2.2874944314773913
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 2.354209494744431
+        },
+        {
+          "designation": "K10BB8K",
+          "d_sh": 2.4717671152989906
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 2.528012130423269
+        },
+        {
+          "designation": "K23RG7N",
+          "d_sh": 2.5313412667692066
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 2.540066674169907
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 2.5525397725307912
+        },
+        {
+          "designation": "K23D05P",
+          "d_sh": 2.5643375635998633
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 2.6417189395823675
+        }
+      ]
+    },
+    "P22liAW": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "P22lnpr": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "P22lp4E": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    },
+    "PJ96R020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PJ96R020",
+        "q": 2.587025,
+        "e": 0.314062,
+        "i": 2.599,
+        "omega": 333.5122,
+        "node": 40.0371
+      },
+      "top_matches": [
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.061075878507713
+        },
+        {
+          "designation": "K25U19E",
+          "d_sh": 1.0713854257592519
+        },
+        {
+          "designation": "~0lxC",
+          "d_sh": 1.1548811474285463
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.192113146216868
+        },
+        {
+          "designation": "K21P00D",
+          "d_sh": 1.2429647536025152
+        },
+        {
+          "designation": "K08S85B",
+          "d_sh": 1.261207668030804
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.2693885036195331
+        },
+        {
+          "designation": "K25A02Z",
+          "d_sh": 1.2746684510041233
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.3128925014314576
+        },
+        {
+          "designation": "K18P28L",
+          "d_sh": 1.3131535075400476
+        },
+        {
+          "designation": "z2366",
+          "d_sh": 1.3304184221544284
+        },
+        {
+          "designation": "K09X08F",
+          "d_sh": 1.3534449382609302
+        },
+        {
+          "designation": "K15K57V",
+          "d_sh": 1.3972186491265712
+        },
+        {
+          "designation": "K22C07T",
+          "d_sh": 1.3973466472132876
+        },
+        {
+          "designation": "K15XC8U",
+          "d_sh": 1.4311815061988986
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.4373842279816411
+        },
+        {
+          "designation": "K18X06C",
+          "d_sh": 1.4385425715107873
+        },
+        {
+          "designation": "K20S05J",
+          "d_sh": 1.442202744605268
+        },
+        {
+          "designation": "K20Q06O",
+          "d_sh": 1.4441535549130753
+        },
+        {
+          "designation": "K23K03R",
+          "d_sh": 1.4603751261141111
+        }
+      ]
+    },
+    "PK00R020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK00R020",
+        "q": 1.628228,
+        "e": 0.53052,
+        "i": 11.6793,
+        "omega": 176.5818,
+        "node": 160.2683
+      },
+      "top_matches": [
+        {
+          "designation": "R6274",
+          "d_sh": 1.0423348551467697
+        },
+        {
+          "designation": "p6428",
+          "d_sh": 1.0613671184419033
+        },
+        {
+          "designation": "l7492",
+          "d_sh": 1.0672548904835841
+        },
+        {
+          "designation": "K16F14U",
+          "d_sh": 1.0748611468062166
+        },
+        {
+          "designation": "K17A04M",
+          "d_sh": 1.0872866789535198
+        },
+        {
+          "designation": "~0KzA",
+          "d_sh": 1.0897094317632807
+        },
+        {
+          "designation": "z2078",
+          "d_sh": 1.1266442247755812
+        },
+        {
+          "designation": "K15XC8U",
+          "d_sh": 1.1427100466166704
+        },
+        {
+          "designation": "K14Y00P",
+          "d_sh": 1.1519621551690529
+        },
+        {
+          "designation": "53430",
+          "d_sh": 1.152019163748918
+        },
+        {
+          "designation": "K13YD9L",
+          "d_sh": 1.170686270674293
+        },
+        {
+          "designation": "K15K57V",
+          "d_sh": 1.1769424931648826
+        },
+        {
+          "designation": "K15L06W",
+          "d_sh": 1.1773062330115969
+        },
+        {
+          "designation": "K22Y03Q",
+          "d_sh": 1.1926285332842665
+        },
+        {
+          "designation": "K17S33H",
+          "d_sh": 1.1934774164458373
+        },
+        {
+          "designation": "z2366",
+          "d_sh": 1.199212439461535
+        },
+        {
+          "designation": "r8085",
+          "d_sh": 1.2071718205599034
+        },
+        {
+          "designation": "K18N04R",
+          "d_sh": 1.2085640257360608
+        },
+        {
+          "designation": "D8925",
+          "d_sh": 1.20918267419083
+        },
+        {
+          "designation": "I8349",
+          "d_sh": 1.2117384803012266
+        }
+      ]
+    },
+    "PK06H30R": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK06H30R",
+        "q": 1.219539,
+        "e": 0.843517,
+        "i": 31.9669,
+        "omega": 117.5297,
+        "node": 309.7448
+      },
+      "top_matches": [
+        {
+          "designation": "~0sfp",
+          "d_sh": 0.7129965638180725
+        },
+        {
+          "designation": "K03B01N",
+          "d_sh": 0.8004043627695484
+        },
+        {
+          "designation": "K08W95A",
+          "d_sh": 0.8836277018227626
+        },
+        {
+          "designation": "J6256",
+          "d_sh": 0.8974594953596051
+        },
+        {
+          "designation": "K17FC8N",
+          "d_sh": 0.907838424144555
+        },
+        {
+          "designation": "K17P24Y",
+          "d_sh": 0.9582017588319943
+        },
+        {
+          "designation": "K18L13Z",
+          "d_sh": 0.9768601771586554
+        },
+        {
+          "designation": "K17E02X",
+          "d_sh": 0.985716944923683
+        },
+        {
+          "designation": "K20W03L",
+          "d_sh": 0.9870694499990967
+        },
+        {
+          "designation": "K13YD9L",
+          "d_sh": 0.9955590336218136
+        },
+        {
+          "designation": "q3650",
+          "d_sh": 1.0005208321554582
+        },
+        {
+          "designation": "53430",
+          "d_sh": 1.0129884935748206
+        },
+        {
+          "designation": "h4677",
+          "d_sh": 1.0801346619850662
+        },
+        {
+          "designation": "K20Q06F",
+          "d_sh": 1.0805126019652587
+        },
+        {
+          "designation": "K02X14M",
+          "d_sh": 1.0949987669167076
+        },
+        {
+          "designation": "~0p7O",
+          "d_sh": 1.105721624918945
+        },
+        {
+          "designation": "K09W25N",
+          "d_sh": 1.1386858817460854
+        },
+        {
+          "designation": "K17S33H",
+          "d_sh": 1.1614653891884223
+        },
+        {
+          "designation": "E3649",
+          "d_sh": 1.163754057282282
+        },
+        {
+          "designation": "K23M03J",
+          "d_sh": 1.1657708132407747
+        }
+      ]
+    },
+    "PK09Y020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK09Y020",
+        "q": 2.370023,
+        "e": 0.637279,
+        "i": 29.9725,
+        "omega": 172.2793,
+        "node": 262.077
+      },
+      "top_matches": [
+        {
+          "designation": "K25B06V",
+          "d_sh": 0.9394135197955444
+        },
+        {
+          "designation": "K25A02Z",
+          "d_sh": 0.9489394736658754
+        },
+        {
+          "designation": "K08W95A",
+          "d_sh": 0.9609269879555485
+        },
+        {
+          "designation": "K15XC8U",
+          "d_sh": 1.0430988380306816
+        },
+        {
+          "designation": "K00AM9B",
+          "d_sh": 1.0775414757703192
+        },
+        {
+          "designation": "z2078",
+          "d_sh": 1.1009591799809937
+        },
+        {
+          "designation": "K18X06C",
+          "d_sh": 1.1227732838046438
+        },
+        {
+          "designation": "K09A16U",
+          "d_sh": 1.1303542944115872
+        },
+        {
+          "designation": "K16UA9S",
+          "d_sh": 1.1317681865573048
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.1567589835789656
+        },
+        {
+          "designation": "x7661",
+          "d_sh": 1.2646641115586155
+        },
+        {
+          "designation": "I8349",
+          "d_sh": 1.2792299434691996
+        },
+        {
+          "designation": "K23K03R",
+          "d_sh": 1.294824702311792
+        },
+        {
+          "designation": "53430",
+          "d_sh": 1.3058515780089666
+        },
+        {
+          "designation": "~0sfp",
+          "d_sh": 1.305871242750821
+        },
+        {
+          "designation": "K12V06F",
+          "d_sh": 1.3199815064322755
+        },
+        {
+          "designation": "K17S33H",
+          "d_sh": 1.3496286152501216
+        },
+        {
+          "designation": "05335",
+          "d_sh": 1.357867439361143
+        },
+        {
+          "designation": "K13YD9L",
+          "d_sh": 1.3595897212674954
+        },
+        {
+          "designation": "K20Q06O",
+          "d_sh": 1.3889116128658212
+        }
+      ]
+    },
+    "PK10H030": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK10H030",
+        "q": 0.043755,
+        "e": 0.985581,
+        "i": 23.1392,
+        "omega": 26.0903,
+        "node": 77.1662
+      },
+      "top_matches": [
+        {
+          "designation": "K17K34Q",
+          "d_sh": 0.8351304021802297
+        },
+        {
+          "designation": "K21R09W",
+          "d_sh": 1.224896290541059
+        },
+        {
+          "designation": "K05B01W",
+          "d_sh": 1.244493182053287
+        },
+        {
+          "designation": "K07T15M",
+          "d_sh": 1.2748266111618227
+        },
+        {
+          "designation": "K15Bp4J",
+          "d_sh": 1.317726416904624
+        },
+        {
+          "designation": "K17Y03N",
+          "d_sh": 1.3321434647978208
+        },
+        {
+          "designation": "K22R04G",
+          "d_sh": 1.3451491967671878
+        },
+        {
+          "designation": "K17M00H",
+          "d_sh": 1.413056735925693
+        },
+        {
+          "designation": "K09K00N",
+          "d_sh": 1.4148084725831933
+        },
+        {
+          "designation": "K17T04F",
+          "d_sh": 1.4150507067663038
+        },
+        {
+          "designation": "02102",
+          "d_sh": 1.4180447495489656
+        },
+        {
+          "designation": "K24U11G",
+          "d_sh": 1.420287715352208
+        },
+        {
+          "designation": "K19B03S",
+          "d_sh": 1.461739004770599
+        },
+        {
+          "designation": "K20C01Y",
+          "d_sh": 1.4794066417452825
+        },
+        {
+          "designation": "D8095",
+          "d_sh": 1.4839873126987635
+        },
+        {
+          "designation": "K24C00W",
+          "d_sh": 1.4942582489229912
+        },
+        {
+          "designation": "10563",
+          "d_sh": 1.5182610916128252
+        },
+        {
+          "designation": "K18X03Q",
+          "d_sh": 1.5290341318599743
+        },
+        {
+          "designation": "E3649",
+          "d_sh": 1.530043339045701
+        },
+        {
+          "designation": "K08A04H",
+          "d_sh": 1.5370286666958055
+        }
+      ]
+    },
+    "PK10T020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK10T020",
+        "q": 3.760954,
+        "e": 0.324338,
+        "i": 7.8522,
+        "omega": 349.8094,
+        "node": 57.6813
+      },
+      "top_matches": [
+        {
+          "designation": "E4908",
+          "d_sh": 1.2160410046687695
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.302891102722156
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.312246558094351
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.3202439313453167
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.3243887938719479
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.346686992007448
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.3554764476768193
+        },
+        {
+          "designation": "K25U19E",
+          "d_sh": 1.4770632886818689
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.5279330390434522
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.626959275310907
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.6578388531666197
+        },
+        {
+          "designation": "K17M04Z",
+          "d_sh": 1.658219663985426
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.658938206035401
+        },
+        {
+          "designation": "K18P28L",
+          "d_sh": 1.6673293495287689
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.6900827624699808
+        },
+        {
+          "designation": "~0lxC",
+          "d_sh": 1.6952749438061847
+        },
+        {
+          "designation": "K20K07H",
+          "d_sh": 1.7253365765731543
+        },
+        {
+          "designation": "K20S05J",
+          "d_sh": 1.7364102036838651
+        },
+        {
+          "designation": "K05T50J",
+          "d_sh": 1.7378592115515263
+        },
+        {
+          "designation": "K07VQ6W",
+          "d_sh": 1.738958109564411
+        }
+      ]
+    },
+    "PK10U55H": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK10U55H",
+        "q": 2.892842,
+        "e": 0.564657,
+        "i": 8.038,
+        "omega": 225.3831,
+        "node": 232.7917
+      },
+      "top_matches": [
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.1259884143147962
+        },
+        {
+          "designation": "K25U19E",
+          "d_sh": 1.2433389676857567
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.326556774331333
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.3395506870621632
+        },
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.3484375444079273
+        },
+        {
+          "designation": "K00AM9B",
+          "d_sh": 1.366862188331531
+        },
+        {
+          "designation": "K25B06V",
+          "d_sh": 1.3911775233572752
+        },
+        {
+          "designation": "K05SM3B",
+          "d_sh": 1.4009756309056156
+        },
+        {
+          "designation": "K25A02Z",
+          "d_sh": 1.4310560028498425
+        },
+        {
+          "designation": "K25T13S",
+          "d_sh": 1.4532819205678666
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.4562805136609105
+        },
+        {
+          "designation": "K07D61A",
+          "d_sh": 1.4567027277971298
+        },
+        {
+          "designation": "K17E04M",
+          "d_sh": 1.490884968271926
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.4954806498683448
+        },
+        {
+          "designation": "K13Y48G",
+          "d_sh": 1.508979993590253
+        },
+        {
+          "designation": "K09A16U",
+          "d_sh": 1.5183157944348127
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.5267454000977037
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.528693884370666
+        },
+        {
+          "designation": "K20S05J",
+          "d_sh": 1.5360767348867836
+        },
+        {
+          "designation": "K08S85B",
+          "d_sh": 1.540598588041541
+        }
+      ]
+    },
+    "PK11C020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK11C020",
+        "q": 5.392993,
+        "e": 0.271777,
+        "i": 10.8987,
+        "omega": 160.3263,
+        "node": 11.9684
+      },
+      "top_matches": [
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.5160758912091654
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.521800367550405
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.5842526416522018
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.5845176146554407
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.6156500935933213
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.629020187734478
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.6681910341750594
+        },
+        {
+          "designation": "K25D48Z",
+          "d_sh": 1.6719159201129572
+        },
+        {
+          "designation": "K10GE7W",
+          "d_sh": 1.7393884228324856
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 1.8137873229491275
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.8420838689804335
+        },
+        {
+          "designation": "K14M55H",
+          "d_sh": 1.8918426737977012
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 1.8928824475809387
+        },
+        {
+          "designation": "K10GD6S",
+          "d_sh": 1.895592841768415
+        },
+        {
+          "designation": "K23J18W",
+          "d_sh": 1.9441386113660295
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.9707912886225802
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.991959617513294
+        },
+        {
+          "designation": "Y2842",
+          "d_sh": 2.0288515406415257
+        },
+        {
+          "designation": "K20H11B",
+          "d_sh": 2.0306028503154074
+        },
+        {
+          "designation": "h4620",
+          "d_sh": 2.064363961452891
+        }
+      ]
+    },
+    "PK12G010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK12G010",
+        "q": 2.788626,
+        "e": 0.329913,
+        "i": 12.1685,
+        "omega": 266.0153,
+        "node": 283.2297
+      },
+      "top_matches": [
+        {
+          "designation": "K25U19E",
+          "d_sh": 1.1954909282555009
+        },
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.1999558010652622
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.2086025817930215
+        },
+        {
+          "designation": "K25A02Z",
+          "d_sh": 1.2473756694884377
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.2931193734108102
+        },
+        {
+          "designation": "K22C07T",
+          "d_sh": 1.3176227220898094
+        },
+        {
+          "designation": "K23K03R",
+          "d_sh": 1.3214565234926199
+        },
+        {
+          "designation": "~0lxC",
+          "d_sh": 1.375559468861106
+        },
+        {
+          "designation": "K15BV1H",
+          "d_sh": 1.3860914751213278
+        },
+        {
+          "designation": "K08S85B",
+          "d_sh": 1.4022892948525325
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.4057309353638938
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.4262787904310155
+        },
+        {
+          "designation": "K18P28L",
+          "d_sh": 1.4329728796913648
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.456051058219413
+        },
+        {
+          "designation": "K18X06C",
+          "d_sh": 1.456213864197297
+        },
+        {
+          "designation": "K00AM9B",
+          "d_sh": 1.4588832487675523
+        },
+        {
+          "designation": "z2366",
+          "d_sh": 1.5150362608503312
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.5153130518476483
+        },
+        {
+          "designation": "K20S05J",
+          "d_sh": 1.5281740257502228
+        },
+        {
+          "designation": "K13Y48G",
+          "d_sh": 1.5314026374487737
+        }
+      ]
+    },
+    "PK13CC9U": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK13CC9U",
+        "q": 0.825183,
+        "e": 0.715836,
+        "i": 11.826,
+        "omega": 212.9828,
+        "node": 45.6513
+      },
+      "top_matches": [
+        {
+          "designation": "K19X03D",
+          "d_sh": 0.9574521429673942
+        },
+        {
+          "designation": "K03U09L",
+          "d_sh": 1.0117160416246078
+        },
+        {
+          "designation": "K21J07H",
+          "d_sh": 1.0188653015624372
+        },
+        {
+          "designation": "K15XQ1G",
+          "d_sh": 1.0724049224944603
+        },
+        {
+          "designation": "K17E02X",
+          "d_sh": 1.0766424155661019
+        },
+        {
+          "designation": "K21F02V",
+          "d_sh": 1.0794154880663727
+        },
+        {
+          "designation": "q3650",
+          "d_sh": 1.0829432614937549
+        },
+        {
+          "designation": "K03B01N",
+          "d_sh": 1.1038553393913524
+        },
+        {
+          "designation": "K19X03B",
+          "d_sh": 1.1369825463173722
+        },
+        {
+          "designation": "10563",
+          "d_sh": 1.1409436421550117
+        },
+        {
+          "designation": "05496",
+          "d_sh": 1.15790756455548
+        },
+        {
+          "designation": "K17A04M",
+          "d_sh": 1.1612433908740056
+        },
+        {
+          "designation": "K23T04L",
+          "d_sh": 1.214477870211664
+        },
+        {
+          "designation": "K12XD4T",
+          "d_sh": 1.2148992336902569
+        },
+        {
+          "designation": "X7118",
+          "d_sh": 1.2214175647273464
+        },
+        {
+          "designation": "K15L06W",
+          "d_sh": 1.2292875374185948
+        },
+        {
+          "designation": "K22A02C",
+          "d_sh": 1.257132724004569
+        },
+        {
+          "designation": "D8925",
+          "d_sh": 1.2695126072820941
+        },
+        {
+          "designation": "K25K08Y",
+          "d_sh": 1.2761011141651648
+        },
+        {
+          "designation": "l7492",
+          "d_sh": 1.2814361101391682
+        }
+      ]
+    },
+    "PK13W010": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK13W010",
+        "q": 1.414716,
+        "e": 0.593927,
+        "i": 4.7002,
+        "omega": 1.2691,
+        "node": 117.837
+      },
+      "top_matches": [
+        {
+          "designation": "K17C32Z",
+          "d_sh": 0.9970879028256107
+        },
+        {
+          "designation": "K17Y03N",
+          "d_sh": 1.0089257694434828
+        },
+        {
+          "designation": "K06B07V",
+          "d_sh": 1.0242516542896596
+        },
+        {
+          "designation": "K18X03Q",
+          "d_sh": 1.06566522412
+        },
+        {
+          "designation": "u4883",
+          "d_sh": 1.0998073448966348
+        },
+        {
+          "designation": "K19B03S",
+          "d_sh": 1.129255785476945
+        },
+        {
+          "designation": "K12V06F",
+          "d_sh": 1.1332275731242383
+        },
+        {
+          "designation": "K19C02M",
+          "d_sh": 1.1353931052526176
+        },
+        {
+          "designation": "K09K00N",
+          "d_sh": 1.144479692267504
+        },
+        {
+          "designation": "05335",
+          "d_sh": 1.1448846799877368
+        },
+        {
+          "designation": "K01F91N",
+          "d_sh": 1.1450035459789383
+        },
+        {
+          "designation": "K24U11G",
+          "d_sh": 1.1532341007056623
+        },
+        {
+          "designation": "K20W03L",
+          "d_sh": 1.1551427951457645
+        },
+        {
+          "designation": "K25S03G",
+          "d_sh": 1.1745755186131874
+        },
+        {
+          "designation": "K13Y48G",
+          "d_sh": 1.1751132689420356
+        },
+        {
+          "designation": "K18A18S",
+          "d_sh": 1.185588298599274
+        },
+        {
+          "designation": "q3656",
+          "d_sh": 1.1897553896220974
+        },
+        {
+          "designation": "K07T15M",
+          "d_sh": 1.192294961167506
+        },
+        {
+          "designation": "02102",
+          "d_sh": 1.1929353782465266
+        },
+        {
+          "designation": "K19A09W",
+          "d_sh": 1.1952638527674762
+        }
+      ]
+    },
+    "PK13Y46G": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK13Y46G",
+        "q": 1.68807,
+        "e": 0.479674,
+        "i": 7.145,
+        "omega": 250.8428,
+        "node": 40.8879
+      },
+      "top_matches": [
+        {
+          "designation": "K15K57V",
+          "d_sh": 0.9674945731526705
+        },
+        {
+          "designation": "K18A18S",
+          "d_sh": 1.0620452933930227
+        },
+        {
+          "designation": "K15L06W",
+          "d_sh": 1.0794596222096982
+        },
+        {
+          "designation": "K21F02V",
+          "d_sh": 1.0928491964723757
+        },
+        {
+          "designation": "z2366",
+          "d_sh": 1.0931392492673804
+        },
+        {
+          "designation": "K14Y00P",
+          "d_sh": 1.1286874393831678
+        },
+        {
+          "designation": "05335",
+          "d_sh": 1.1327548221029993
+        },
+        {
+          "designation": "K08W95A",
+          "d_sh": 1.1867210069201235
+        },
+        {
+          "designation": "l7492",
+          "d_sh": 1.1926419346004247
+        },
+        {
+          "designation": "K21J07H",
+          "d_sh": 1.1987562153544227
+        },
+        {
+          "designation": "R6274",
+          "d_sh": 1.213151656804299
+        },
+        {
+          "designation": "K13YD9L",
+          "d_sh": 1.2151734090376038
+        },
+        {
+          "designation": "K17A04M",
+          "d_sh": 1.2168194496818512
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.2247535313142244
+        },
+        {
+          "designation": "K15XC8U",
+          "d_sh": 1.2256246476965678
+        },
+        {
+          "designation": "K20W03L",
+          "d_sh": 1.2275645157915887
+        },
+        {
+          "designation": "~0sfp",
+          "d_sh": 1.2304154199356556
+        },
+        {
+          "designation": "K17E02X",
+          "d_sh": 1.2361249893705621
+        },
+        {
+          "designation": "K09SA3P",
+          "d_sh": 1.2481609005894103
+        },
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.2616846698756083
+        }
+      ]
+    },
+    "PK14L020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK14L020",
+        "q": 2.236233,
+        "e": 0.645885,
+        "i": 5.1885,
+        "omega": 182.6639,
+        "node": 149.3267
+      },
+      "top_matches": [
+        {
+          "designation": "K21P00D",
+          "d_sh": 1.1235438567096174
+        },
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.225416848804484
+        },
+        {
+          "designation": "K25A02Z",
+          "d_sh": 1.2515638017547663
+        },
+        {
+          "designation": "K15K57V",
+          "d_sh": 1.2736871669293637
+        },
+        {
+          "designation": "~0lxC",
+          "d_sh": 1.2784085300941186
+        },
+        {
+          "designation": "K15XC8U",
+          "d_sh": 1.2972541027130748
+        },
+        {
+          "designation": "K08S85B",
+          "d_sh": 1.3111160595690527
+        },
+        {
+          "designation": "z2366",
+          "d_sh": 1.3219831325689628
+        },
+        {
+          "designation": "K23K03R",
+          "d_sh": 1.3221352490148837
+        },
+        {
+          "designation": "K20Q06O",
+          "d_sh": 1.3487114770018815
+        },
+        {
+          "designation": "K14Y00P",
+          "d_sh": 1.3675530839791812
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.3809005195903783
+        },
+        {
+          "designation": "K17R02R",
+          "d_sh": 1.3924145941110697
+        },
+        {
+          "designation": "z2078",
+          "d_sh": 1.4049216288118354
+        },
+        {
+          "designation": "K13YD9L",
+          "d_sh": 1.4140160167788305
+        },
+        {
+          "designation": "K25U19E",
+          "d_sh": 1.4243848309226321
+        },
+        {
+          "designation": "K15L06W",
+          "d_sh": 1.4384282759350246
+        },
+        {
+          "designation": "R6274",
+          "d_sh": 1.4410608855640845
+        },
+        {
+          "designation": "K22Y03Q",
+          "d_sh": 1.4608144119902908
+        },
+        {
+          "designation": "K09X08F",
+          "d_sh": 1.4762408120369979
+        }
+      ]
+    },
+    "PK15D060": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK15D060",
+        "q": 4.532214,
+        "e": 0.36316,
+        "i": 20.3487,
+        "omega": 126.0195,
+        "node": 45.2478
+      },
+      "top_matches": [
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.1989898838107937
+        },
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.4968918542360699
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.5070387176629698
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.518395333523417
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.5211270313254364
+        },
+        {
+          "designation": "K14M55H",
+          "d_sh": 1.5239334254773487
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.5395252920351323
+        },
+        {
+          "designation": "K18M08P",
+          "d_sh": 1.6043763189781088
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.6108270156658158
+        },
+        {
+          "designation": "K20K07H",
+          "d_sh": 1.6218656779893434
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.6491506672110565
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.6556291203469495
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.6935891441172337
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.7330393333109344
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.7446990837087049
+        },
+        {
+          "designation": "K23J18W",
+          "d_sh": 1.7462514081148355
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.7707361696128634
+        },
+        {
+          "designation": "K20K07U",
+          "d_sh": 1.796153955312738
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 1.841654633151053
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.8464308198180304
+        }
+      ]
+    },
+    "PK15X030": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK15X030",
+        "q": 2.799349,
+        "e": 0.439627,
+        "i": 24.4209,
+        "omega": 306.9993,
+        "node": 77.2509
+      },
+      "top_matches": [
+        {
+          "designation": "K25U19E",
+          "d_sh": 0.8404066811686834
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 0.9243148471958779
+        },
+        {
+          "designation": "~0lxC",
+          "d_sh": 1.0164730227111134
+        },
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.0213299703769028
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.1733403051675386
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.214711430968847
+        },
+        {
+          "designation": "K21P00D",
+          "d_sh": 1.2279517700162472
+        },
+        {
+          "designation": "K08S85B",
+          "d_sh": 1.2330056677274535
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.2409091889536077
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.2606749564978164
+        },
+        {
+          "designation": "K09X08F",
+          "d_sh": 1.2885011629054657
+        },
+        {
+          "designation": "z2366",
+          "d_sh": 1.3269826165844372
+        },
+        {
+          "designation": "K18P28L",
+          "d_sh": 1.3427451093032776
+        },
+        {
+          "designation": "K20S05J",
+          "d_sh": 1.3742302767048045
+        },
+        {
+          "designation": "K15K57V",
+          "d_sh": 1.395299640529571
+        },
+        {
+          "designation": "K17R02R",
+          "d_sh": 1.4119378675025025
+        },
+        {
+          "designation": "K15RO5K",
+          "d_sh": 1.500067558101884
+        },
+        {
+          "designation": "K24K02G",
+          "d_sh": 1.505780763443929
+        },
+        {
+          "designation": "K25C02B",
+          "d_sh": 1.5127655425931106
+        },
+        {
+          "designation": "K13Y48G",
+          "d_sh": 1.5202940132959624
+        }
+      ]
+    },
+    "PK16A030": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK16A030",
+        "q": 4.817663,
+        "e": 0.387489,
+        "i": 8.5256,
+        "omega": 340.8178,
+        "node": 187.1056
+      },
+      "top_matches": [
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.3006366645176373
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.3321017132503612
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.5561616115649817
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.574408324308373
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.5817018291844624
+        },
+        {
+          "designation": "K10F92H",
+          "d_sh": 1.588720549605546
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.5954771336990325
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 1.683009631353352
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.712358959130909
+        },
+        {
+          "designation": "K17N02M",
+          "d_sh": 1.7304880688942037
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.7870497347871581
+        },
+        {
+          "designation": "K23R49C",
+          "d_sh": 1.7915164484593318
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 1.8663851668471776
+        },
+        {
+          "designation": "K14M55H",
+          "d_sh": 1.8669829079498936
+        },
+        {
+          "designation": "K16L00S",
+          "d_sh": 1.8865280259058999
+        },
+        {
+          "designation": "K23D05P",
+          "d_sh": 1.8896094511617445
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.9037061452612687
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.919662252550766
+        },
+        {
+          "designation": "K25B02Y",
+          "d_sh": 1.9430141759419959
+        },
+        {
+          "designation": "K22G11K",
+          "d_sh": 1.9657705251362951
+        }
+      ]
+    },
+    "PK17U030": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK17U030",
+        "q": 4.422052,
+        "e": 0.100941,
+        "i": 15.9258,
+        "omega": 296.6101,
+        "node": 165.0477
+      },
+      "top_matches": [
+        {
+          "designation": "K15N25W",
+          "d_sh": 1.3944549597630933
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.4130111539801053
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 1.4537311644461601
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.4634397881295529
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.4794942773156352
+        },
+        {
+          "designation": "K22A09Z",
+          "d_sh": 1.4849071029054002
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.5812058513577114
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.6584715005209334
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.6649003897541288
+        },
+        {
+          "designation": "~0gM7",
+          "d_sh": 1.7193014226216818
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.7257281693827597
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.7541340266424248
+        },
+        {
+          "designation": "K05T50J",
+          "d_sh": 1.7546902368742252
+        },
+        {
+          "designation": "K13HG2G",
+          "d_sh": 1.7673171962584728
+        },
+        {
+          "designation": "K22G11K",
+          "d_sh": 1.7775470870428245
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.8012254659854896
+        },
+        {
+          "designation": "K20Q06N",
+          "d_sh": 1.8115532016109055
+        },
+        {
+          "designation": "K20K07H",
+          "d_sh": 1.8155262742515044
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.8211994759145294
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.850147362936939
+        }
+      ]
+    },
+    "PK18P040": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK18P040",
+        "q": 3.693412,
+        "e": 0.448547,
+        "i": 23.0679,
+        "omega": 8.5084,
+        "node": 353.162
+      },
+      "top_matches": [
+        {
+          "designation": "K21N07X",
+          "d_sh": 0.7530576556561126
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.226249643984824
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.2364274916250642
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.2477397389751028
+        },
+        {
+          "designation": "K17M04Z",
+          "d_sh": 1.272528111058272
+        },
+        {
+          "designation": "K16T02K",
+          "d_sh": 1.2775248723066588
+        },
+        {
+          "designation": "K22O21C",
+          "d_sh": 1.3155864217080528
+        },
+        {
+          "designation": "K20O07P",
+          "d_sh": 1.3664496033144484
+        },
+        {
+          "designation": "K18M08P",
+          "d_sh": 1.367513249048655
+        },
+        {
+          "designation": "K22P04K",
+          "d_sh": 1.414940644914963
+        },
+        {
+          "designation": "K25U19E",
+          "d_sh": 1.4486747291671378
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.4542120229827018
+        },
+        {
+          "designation": "K20S05J",
+          "d_sh": 1.5234359396880166
+        },
+        {
+          "designation": "K15RO5K",
+          "d_sh": 1.572200467718196
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.5895032518051542
+        },
+        {
+          "designation": "K14X03S",
+          "d_sh": 1.6037932745486339
+        },
+        {
+          "designation": "K08E05U",
+          "d_sh": 1.6066520938544795
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.6086190810868666
+        },
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.6505186178287594
+        },
+        {
+          "designation": "K18P28L",
+          "d_sh": 1.6808359551668635
+        }
+      ]
+    },
+    "PK19A020": {
+      "status": "ok",
+      "source": "CometEls",
+      "candidate": {
+        "designation": "PK19A020",
+        "q": 3.521305,
+        "e": 0.383333,
+        "i": 14.8773,
+        "omega": 324.0047,
+        "node": 139.3561
+      },
+      "top_matches": [
+        {
+          "designation": "K13W64K",
+          "d_sh": 1.084350407472384
+        },
+        {
+          "designation": "K15KF7G",
+          "d_sh": 1.206054488075685
+        },
+        {
+          "designation": "K10CE0R",
+          "d_sh": 1.214935580087382
+        },
+        {
+          "designation": "K22D31T",
+          "d_sh": 1.2164746742728343
+        },
+        {
+          "designation": "K19W05U",
+          "d_sh": 1.2193733918647989
+        },
+        {
+          "designation": "K25U19E",
+          "d_sh": 1.358891014454279
+        },
+        {
+          "designation": "E4908",
+          "d_sh": 1.3681637358968621
+        },
+        {
+          "designation": "K07D61A",
+          "d_sh": 1.5364467899987564
+        },
+        {
+          "designation": "K21N07X",
+          "d_sh": 1.582544533028483
+        },
+        {
+          "designation": "K13Y48F",
+          "d_sh": 1.6102116220262357
+        },
+        {
+          "designation": "K14X03S",
+          "d_sh": 1.645663810541566
+        },
+        {
+          "designation": "~0lxC",
+          "d_sh": 1.6476431177420088
+        },
+        {
+          "designation": "K21X06S",
+          "d_sh": 1.6516148158620172
+        },
+        {
+          "designation": "K25T13S",
+          "d_sh": 1.6616384597633354
+        },
+        {
+          "designation": "K05SM3B",
+          "d_sh": 1.6885833719823504
+        },
+        {
+          "designation": "K21P00D",
+          "d_sh": 1.690711067940659
+        },
+        {
+          "designation": "K21P72N",
+          "d_sh": 1.6908492211820285
+        },
+        {
+          "designation": "K05T50J",
+          "d_sh": 1.696495913996565
+        },
+        {
+          "designation": "K17Y04L",
+          "d_sh": 1.7102952063663142
+        },
+        {
+          "designation": "K20S05J",
+          "d_sh": 1.723338636628245
+        }
+      ]
+    },
+    "ST26B07": {
+      "status": "no_orbital_elements",
+      "source": null,
+      "top_matches": []
+    }
+  }
+}

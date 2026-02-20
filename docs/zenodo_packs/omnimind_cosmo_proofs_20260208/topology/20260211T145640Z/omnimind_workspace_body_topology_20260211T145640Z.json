@@ -1,0 +1,31 @@
+{
+  "timestamp": "20260211T145640Z",
+  "workspace": "/home/fahbrain/projects/omnimind",
+  "project_counts": {
+    "files": 268302,
+    "dirs": 31115,
+    "symlinks": 151
+  },
+  "inventory_summary": {
+    "entries": null,
+    "non_symlink_entries": null,
+    "total_bytes_non_symlink": 0,
+    "total_gb_non_symlink": 0.0
+  },
+  "df_snapshot": [
+    "Sist. Arq.           Tipo         Tam. Usado Disp. Uso% Montado em",
+    "/dev/nvme0n1p2       ext4         366G  318G   30G  92% /",
+    "/dev/nvme0n1p1       vfat         952M  6.1M  946M   1% /boot/efi",
+    "/dev/nvme0n1p5       ext4         247G  194G   41G  83% /var",
+    "/dev/nvme0n1p3       ext4         274G  234G   27G  90% /home",
+    "/dev/sda1            ext4         458G  458G     0 100% /media/fahbrain/DEV_BRAIN_CLEAN1",
+    "pcloud:              fuse.rclone  500G  348G  153G  70% /home/fahbrain/pCloudDrive"
+  ],
+  "governance_note": "Workspace OmniMind como corpo operacional estendido; metadados de caminho devem ser tratados como sensíveis por associação ao operador.",
+  "operational_rules": [
+    "Vetorização antes de remoção/offload",
+    "Mover preferencialmente backups/datasets antigos",
+    "Validar symlinks após qualquer movimentação",
+    "Publicar artefatos com timestamp+hash"
+  ]
+}

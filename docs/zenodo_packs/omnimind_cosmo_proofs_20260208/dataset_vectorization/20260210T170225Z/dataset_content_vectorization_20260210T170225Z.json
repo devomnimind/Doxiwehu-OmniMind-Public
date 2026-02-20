@@ -1,0 +1,44 @@
+{
+  "timestamp": "20260210T170225Z",
+  "qdrant": {
+    "endpoint": "https://af1fae47-c0b8-4880-bb0d-6b960897ac3d.us-east4-0.gcp.cloud.qdrant.io"
+  },
+  "model": "all-MiniLM-L6-v2",
+  "embedding_dim": 384,
+  "input": {
+    "inventory_json": null,
+    "paths_count": 2,
+    "missing": []
+  },
+  "params": {
+    "only_duplicates": false,
+    "tabular_mode": "columns",
+    "records_per_chunk": 200,
+    "lines_per_chunk": 500,
+    "max_chunks_per_file": 0,
+    "max_chars_per_chunk": 12000,
+    "payload_text_max_chars": 2500
+  },
+  "files": [
+    {
+      "file": "/media/fahbrain/DEV_BRAIN_CLEAN1/datasets/GAMMA.hdf5",
+      "dataset_id": "f9ff3edfec386c922f3e2a50",
+      "kind": "hdf5",
+      "collection": "omnimind_dataset_content_gamma_20260210",
+      "chunks": 2,
+      "points": 2,
+      "elapsed_s": 96.41414880752563,
+      "size_bytes": 37476442288
+    },
+    {
+      "file": "/media/fahbrain/DEV_BRAIN_CLEAN1/datasets/Lyman-alpha.hdf5",
+      "dataset_id": "43a9740a78253f2645b94fe2",
+      "kind": "hdf5",
+      "collection": "omnimind_dataset_content_lyman_alpha_20260210",
+      "chunks": 2,
+      "points": 2,
+      "elapsed_s": 1.606245994567871,
+      "size_bytes": 9153410792
+    }
+  ]
+}

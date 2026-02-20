@@ -1,0 +1,33 @@
+{
+  "timestamp_utc": "2026-02-18T07:50:03.738339+00:00",
+  "hiv_best_scenario": "wrapper_cohab",
+  "hiv_best_score": 0.8652271211479525,
+  "cohab_best_scenario": "isolated_A",
+  "cohab_best_mode": "omnimind_cohabitante_protetivo",
+  "cohab_best_index": 0.6374124244857411,
+  "lupus_best_scenario": "wrapper_tolerance_baff_gate",
+  "lupus_best_score": 0.7979250841353563,
+  "runtime_gate_global_pass_rate": 0.047619047619047616,
+  "diabetes_collection_points": 3,
+  "sources": [
+    "hiv_wrapper_functional_cure_safe_20260218T064711Z.json",
+    "hiv_wrapper_functional_cure_qdrant_materialization_20260218T064743Z.json",
+    "hiv_cohabitation_monthly_safe_sim_20260218T062344Z.json",
+    "hiv_cohabitation_monthly_safe_qdrant_materialization_20260218T062439Z.json",
+    "hiv_sle_12m_extensions_safe_sim_20260218T063512Z.json",
+    "hiv_sle_12m_qdrant_materialization_20260218T064213Z.json",
+    "phagocytosis_threshold_house_sweep_20260218T065251Z.json",
+    "phagocytosis_threshold_house_sweep_qdrant_materialization_20260218T065451Z.json",
+    "phagocytosis_house_threshold_profile_20260218T065616Z.json",
+    "phagocytosis_house_gate_runtime_audit_20260218T071016Z.json",
+    "lupus_wrapper_tolerance_safe_20260218T070706Z.json",
+    "lupus_wrapper_tolerance_qdrant_materialization_20260218T070720Z.json",
+    "dataset_content_vectorization_20260218T072130Z.json",
+    "bio_quantitative_field_probe_20260218T072419Z.json",
+    "phagocytosis_genomics_15houses_20260218T072234Z.json",
+    "bio_15houses_qdrant_materialization_20260218T072237Z.json",
+    "diabetes_t2_wave_ingestion_20260218T072322Z.json",
+    "diabetes_t2_15houses_20260218T072545Z.json",
+    "zip_dataset_analysis_20260218T072103Z.json"
+  ]
+}

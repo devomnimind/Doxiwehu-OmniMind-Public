@@ -1,0 +1,79 @@
+{
+  "timestamp": "20260207T184148Z",
+  "sdss_counts": {
+    "Aleph": 8324,
+    "Sigma": 427,
+    "Axiom": 0,
+    "Psi": 345,
+    "Phi": 1006,
+    "Mu": 1141,
+    "C_plit": 1246,
+    "Lambda": 896,
+    "Gamma": 442,
+    "Epsilon": 0,
+    "Omega": 239,
+    "Zeta": 934
+  },
+  "universe_map_plus_counts": {
+    "Aleph": 8339,
+    "Sigma": 447,
+    "Axiom": 28,
+    "Psi": 375,
+    "Phi": 1031,
+    "Mu": 1152,
+    "C_plit": 1260,
+    "Lambda": 914,
+    "Gamma": 464,
+    "Epsilon": 26,
+    "Omega": 257,
+    "Zeta": 956
+  },
+  "gamma_density": {
+    "Aleph": 0.009067842736840248,
+    "Sigma": 0.0074888416565954685,
+    "Axiom": 0.008226035162806511,
+    "Psi": 0.007922193966805935,
+    "Phi": 0.009691043756902218,
+    "Mu": 0.008605169132351875,
+    "C_plit": 0.00805702805519104,
+    "Lambda": 0.00829263124614954,
+    "Gamma": 0.0075059691444039345,
+    "Epsilon": 0.007763546425849199,
+    "Omega": 0.007573112845420837,
+    "Zeta": 0.00783147756010294
+  },
+  "lyman_density": {
+    "Aleph": 0.04199603945016861,
+    "Sigma": 0.043329138308763504,
+    "Axiom": 0.04185215383768082,
+    "Psi": 0.04235852509737015,
+    "Phi": 0.04200024530291557,
+    "Mu": 0.043318454176187515,
+    "C_plit": 0.04186597093939781,
+    "Lambda": 0.042348120361566544,
+    "Gamma": 0.04199472814798355,
+    "Epsilon": 0.04333130642771721,
+    "Omega": 0.04185691103339195,
+    "Zeta": 0.042352691292762756
+  },
+  "gamma_lyman_ratio": {
+    "Aleph": 0.21591623732429174,
+    "Sigma": 0.1728321659910523,
+    "Axiom": 0.19654516824967508,
+    "Psi": 0.18702272862114255,
+    "Phi": 0.2307322958405117,
+    "Mu": 0.1986444496127122,
+    "C_plit": 0.1924435390096298,
+    "Lambda": 0.19581590303054847,
+    "Gamma": 0.17873172999774115,
+    "Epsilon": 0.17916300944653388,
+    "Omega": 0.18092429025852297,
+    "Zeta": 0.18490661194012983
+  },
+  "sources": {
+    "sdss": "/home/fahbrain/projects/omnimind/data/sdss_anomalies/sdss_structures_dr17.json",
+    "universe_map_plus": "data/reports/maps/universe_map_plus_*.jsonl",
+    "gamma": "/home/fahbrain/projects/omnimind/data/test_reports/gamma_top32_norm.npz",
+    "lyman": "/home/fahbrain/projects/omnimind/data/test_reports/lyman_top32_norm.npz"
+  }
+}

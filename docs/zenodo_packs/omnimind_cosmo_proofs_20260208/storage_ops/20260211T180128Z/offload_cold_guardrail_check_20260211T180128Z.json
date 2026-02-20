@@ -1,0 +1,29 @@
+{
+  "timestamp": "20260211T180128Z",
+  "scripts_updated": [
+    "scripts/maintenance/offload_to_smb_symlink.sh",
+    "scripts/maintenance/offload_file_to_smb_symlink.sh"
+  ],
+  "new_flags": [
+    "--check-only",
+    "--cold-window-min",
+    "--allow-hot"
+  ],
+  "checks": [
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION",
+      "script": "offload_to_smb_symlink.sh",
+      "mode": "check-only",
+      "result": "blocked_hot",
+      "reason": "recent_write_detected",
+      "evidence": "monitor/gadget_cache.json"
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/Sovereign_Backup_1768407190.omni",
+      "script": "offload_file_to_smb_symlink.sh",
+      "mode": "check-only",
+      "result": "passed_cold"
+    }
+  ],
+  "policy": "Offload swap now requires cold preflight and pre-swap checks unless --allow-hot is explicitly set."
+}

@@ -1,0 +1,4638 @@
+{
+  "timestamp": "20260210T012326Z",
+  "window_utc": {
+    "start": "2026-02-10T01:23:26Z",
+    "end": "2026-02-13T01:23:26Z",
+    "step_hours": 6.0
+  },
+  "sources": {
+    "orbit_mapping": "reports_runtime/orbit_mapping_next_actions_20260209T230703Z.json",
+    "ephemerides": "reports_runtime/asteroids_queue_20260210T012326Z/omnimind_live_asteroids_ephemerides_20260210T012422Z.json",
+    "generator_meta": {
+      "live": "reports_runtime/asteroids_queue_20260210T012326Z/omnimind_live_asteroids.json",
+      "ephem": "reports_runtime/asteroids_queue_20260210T012326Z/omnimind_live_asteroids_ephemerides_20260210T012422Z.json",
+      "records": 210
+    }
+  },
+  "coverage": {
+    "queue_codes": 25,
+    "objects_with_records": 18,
+    "record_count": 210,
+    "missing_queue_codes": [
+      "C45RW41",
+      "CE5LGG2",
+      "CE5V9J2",
+      "P22liAW",
+      "P22lnpr",
+      "P22lp4E",
+      "ST26B07"
+    ]
+  },
+  "queue": {
+    "A11y70v": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "C19DCG5": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "C45RW41": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "CE5LGG2": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "CE5V9J2": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "CJ99J020": {
+      "priority": "A",
+      "orbit": {
+        "code": "CJ99J020",
+        "i_deg": 86.4016,
+        "best_d_sh": 1.4853244198819608,
+        "best_ref": "K25M88U",
+        "q": 7.069997,
+        "e": 1.000772
+      },
+      "resonance": null
+    },
+    "CJ99S020": {
+      "priority": "A",
+      "orbit": {
+        "code": "CJ99S020",
+        "i_deg": 65.6344,
+        "best_d_sh": 1.4643049279354694,
+        "best_ref": "K24P38P",
+        "q": 6.503096,
+        "e": 1.002279
+      },
+      "resonance": null
+    },
+    "CK09P010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK09P010",
+        "i_deg": 106.2235,
+        "best_d_sh": 0.6024088455746415,
+        "best_ref": "K17O68X",
+        "q": 1.539199,
+        "e": 0.99985
+      },
+      "resonance": null
+    },
+    "CK12A010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK12A010",
+        "i_deg": 121.0091,
+        "best_d_sh": 1.0601202906877385,
+        "best_ref": "K25M88U",
+        "q": 7.61292,
+        "e": 0.999707
+      },
+      "resonance": null
+    },
+    "CK12K010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK12K010",
+        "i_deg": 142.5957,
+        "best_d_sh": 0.5426868798682153,
+        "best_ref": "K19E03J",
+        "q": 1.059123,
+        "e": 0.999871
+      },
+      "resonance": null
+    },
+    "CK13E010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK13E010",
+        "i_deg": 158.7113,
+        "best_d_sh": 1.6433257438475615,
+        "best_ref": "K25M88U",
+        "q": 7.763539,
+        "e": 0.998824
+      },
+      "resonance": null
+    },
+    "CK14Q020": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK14Q020",
+        "i_deg": 80.7936,
+        "best_d_sh": 0.6761133280842851,
+        "best_ref": "K17Y03N",
+        "q": 1.28787,
+        "e": 0.9968
+      },
+      "resonance": null
+    },
+    "CK14UR1N": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK14UR1N",
+        "i_deg": 95.4462,
+        "best_d_sh": 1.2016153020841094,
+        "best_ref": "q3800",
+        "q": 10.96048,
+        "e": 1.004321
+      },
+      "resonance": null
+    },
+    "CK16E010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK16E010",
+        "i_deg": 131.8714,
+        "best_d_sh": 0.8984976647724529,
+        "best_ref": "p7717",
+        "q": 8.160856,
+        "e": 1.001501
+      },
+      "resonance": null
+    },
+    "CK18A060": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK18A060",
+        "i_deg": 77.1897,
+        "best_d_sh": 0.41435386314066297,
+        "best_ref": "K18P28L",
+        "q": 3.014183,
+        "e": 0.798939
+      },
+      "resonance": null
+    },
+    "CK19A050": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK19A050",
+        "i_deg": 67.5554,
+        "best_d_sh": 0.9473411093375989,
+        "best_ref": "Y2842",
+        "q": 6.315868,
+        "e": 0.706658
+      },
+      "resonance": null
+    },
+    "CK19B030": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK19B030",
+        "i_deg": 66.6274,
+        "best_d_sh": 0.997504680113603,
+        "best_ref": "w4778",
+        "q": 6.83059,
+        "e": 0.99782
+      },
+      "resonance": null
+    },
+    "P22liAW": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "P22lnpr": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "P22lp4E": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "PK09Y020": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK09Y020",
+        "planet": "Jupiter",
+        "ratio": 1.4082673218188224,
+        "target": "7:5"
+      }
+    },
+    "PK10H030": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK10H030",
+        "planet": "Jupiter",
+        "ratio": 0.4457117984836448,
+        "target": "3:7"
+      }
+    },
+    "PK10U55H": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK10U55H",
+        "planet": "Jupiter",
+        "ratio": 1.4442920931426295,
+        "target": "7:5"
+      }
+    },
+    "PK13CC9U": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK13CC9U",
+        "planet": "Jupiter",
+        "ratio": 0.417241149523048,
+        "target": "3:7"
+      }
+    },
+    "ST26B07": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    }
+  },
+  "records_by_object": {
+    "CJ99J020": [
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.75499525487638,
+        "dec": -77.5890916019658,
+        "house": 9,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.731770873012,
+        "dec": -77.58547601963609,
+        "house": 9,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.70863010238993,
+        "dec": -77.58183845652151,
+        "house": 9,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.68557340749145,
+        "dec": -77.57817899433974,
+        "house": 9,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.66260125021672,
+        "dec": -77.57449771546983,
+        "house": 9,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.63971408984149,
+        "dec": -77.57079470295133,
+        "house": 9,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.61691238300756,
+        "dec": -77.56707004048906,
+        "house": 9,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.59419658366885,
+        "dec": -77.5633238124507,
+        "house": 9,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.57156714308059,
+        "dec": -77.55955610387262,
+        "house": 9,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.54902450974605,
+        "dec": -77.55576700045872,
+        "house": 9,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.52656912940834,
+        "dec": -77.5519565885881,
+        "house": 9,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.50420144500833,
+        "dec": -77.54812495531782,
+        "house": 9,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.48192189664343,
+        "dec": -77.54427218838678,
+        "house": 9,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null
+      }
+    ],
+    "CJ99S020": [
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.74350237776397,
+        "dec": 21.871980797868467,
+        "house": 3,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.74140382406819,
+        "dec": 21.872158325716143,
+        "house": 3,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73932894841505,
+        "dec": 21.87233858860301,
+        "house": 3,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73727779009616,
+        "dec": 21.872521591061407,
+        "house": 3,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73525038793402,
+        "dec": 21.87270733753475,
+        "house": 3,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73324678027718,
+        "dec": 21.872895832379584,
+        "house": 3,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73126700499314,
+        "dec": 21.873087079861747,
+        "house": 3,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.72931109946323,
+        "dec": 21.873281084158307,
+        "house": 3,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.72737910057528,
+        "dec": 21.873477849353716,
+        "house": 3,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.72547104471751,
+        "dec": 21.873677379440714,
+        "house": 3,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.72358696777157,
+        "dec": 21.873879678319433,
+        "house": 3,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.72172690510378,
+        "dec": 21.874084749794115,
+        "house": 3,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.71989089155674,
+        "dec": 21.874292597572015,
+        "house": 3,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null
+      }
+    ],
+    "CK09P010": [
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.05840561349646,
+        "dec": -39.50417252374488,
+        "house": 4,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.04975788239211,
+        "dec": -39.49980970124359,
+        "house": 4,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.04114016415829,
+        "dec": -39.49542316367858,
+        "house": 4,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.03255262613798,
+        "dec": -39.49101301318216,
+        "house": 4,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.02399543512517,
+        "dec": -39.48657935264953,
+        "house": 4,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.01546875735978,
+        "dec": -39.48212228573533,
+        "house": 4,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.00697275851063,
+        "dec": -39.477641916858964,
+        "house": 4,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 103.99850760366597,
+        "dec": -39.47313835120621,
+        "house": 4,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 103.99007345732363,
+        "dec": -39.46861169473202,
+        "house": 4,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 103.98167048337757,
+        "dec": -39.46406205416646,
+        "house": 4,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 103.97329884510727,
+        "dec": -39.459489537019444,
+        "house": 4,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 103.96495870516476,
+        "dec": -39.45489425158755,
+        "house": 4,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 103.95665022556285,
+        "dec": -39.45027630696021,
+        "house": 4,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "CK12A010": [
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.6621136533524,
+        "dec": -56.6180787802087,
+        "house": 11,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.67534024247385,
+        "dec": -56.61321339303008,
+        "house": 11,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.68858428558156,
+        "dec": -56.60837446118089,
+        "house": 11,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.7018455156366,
+        "dec": -56.60356206042437,
+        "house": 11,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.7151236649006,
+        "dec": -56.59877626631987,
+        "house": 11,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.72841846492724,
+        "dec": -56.59401715421444,
+        "house": 11,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.74172964658146,
+        "dec": -56.58928479923765,
+        "house": 11,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.75505694000583,
+        "dec": -56.58457927629164,
+        "house": 11,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.7684000746423,
+        "dec": -56.579900660046114,
+        "house": 11,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.78175877919966,
+        "dec": -56.57524902492826,
+        "house": 11,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.79513278168815,
+        "dec": -56.57062444511846,
+        "house": 11,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.8085218093537,
+        "dec": -56.56602699453591,
+        "house": 11,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.82192558872526,
+        "dec": -56.56145674683401,
+        "house": 11,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "CK12K010": [
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.7390718229061,
+        "dec": -15.281242099420856,
+        "house": 11,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.7472532538411,
+        "dec": -15.278434542866114,
+        "house": 11,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.75543138797144,
+        "dec": -15.275627310404031,
+        "house": 11,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.7636061235275,
+        "dec": -15.272820450753576,
+        "house": 11,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.771777347808,
+        "dec": -15.270014011473371,
+        "house": 11,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.77994493989064,
+        "dec": -15.267208039491395,
+        "house": 11,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.78810877255324,
+        "dec": -15.26440258142375,
+        "house": 11,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.7962687136721,
+        "dec": -15.26159768377289,
+        "house": 11,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.8044246272491,
+        "dec": -15.258793393049503,
+        "house": 11,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.8125763741791,
+        "dec": -15.255989755848573,
+        "house": 11,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.820723812832,
+        "dec": -15.253186818896628,
+        "house": 11,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.8288667994945,
+        "dec": -15.250384629079806,
+        "house": 11,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.83700518871916,
+        "dec": -15.247583233462194,
+        "house": 11,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "CK13E010": [
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 64.00013517347648,
+        "dec": 40.8583730106255,
+        "house": 3,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.994657559807656,
+        "dec": 40.85463420364709,
+        "house": 3,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.989238021348015,
+        "dec": 40.85089978297541,
+        "house": 3,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.98387659002684,
+        "dec": 40.84716982886639,
+        "house": 3,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.978573296513716,
+        "dec": 40.84344442142567,
+        "house": 3,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.97332817020394,
+        "dec": 40.8397236406049,
+        "house": 3,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.96814123921117,
+        "dec": 40.83600756619842,
+        "house": 3,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.96301253034112,
+        "dec": 40.832296277839596,
+        "house": 3,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.957942069108135,
+        "dec": 40.82858985499851,
+        "house": 3,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.95292987968174,
+        "dec": 40.82488837697806,
+        "house": 3,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.94797598490774,
+        "dec": 40.82119192291173,
+        "house": 3,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.943080406277,
+        "dec": 40.8175005717603,
+        "house": 3,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.93824316389954,
+        "dec": 40.81381440230848,
+        "house": 3,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "CK14Q020": [
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.3588390811149,
+        "dec": -11.078583368487301,
+        "house": 10,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.3653648129971,
+        "dec": -11.07750641145354,
+        "house": 10,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.3718615988082,
+        "dec": -11.07642414225031,
+        "house": 10,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.37832931258646,
+        "dec": -11.075336590776493,
+        "house": 10,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.38476782860425,
+        "dec": -11.074243787155572,
+        "house": 10,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.39117702137867,
+        "dec": -11.073145761734478,
+        "house": 10,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.3975567656812,
+        "dec": -11.072042545083312,
+        "house": 10,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.40390693654786,
+        "dec": -11.070934167997452,
+        "house": 10,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.41022740928935,
+        "dec": -11.069820661499152,
+        "house": 10,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.41651805950136,
+        "dec": -11.068702056840484,
+        "house": 10,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.42277876307577,
+        "dec": -11.067578385503188,
+        "house": 10,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.4290093962121,
+        "dec": -11.066449679202323,
+        "house": 10,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.4352098354311,
+        "dec": -11.065315969888768,
+        "house": 10,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "CK14UR1N": [
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.86396902367969,
+        "dec": -73.2779842595852,
+        "house": 11,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.85813339229605,
+        "dec": -73.26461914602257,
+        "house": 11,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.85254810525645,
+        "dec": -73.25122527676078,
+        "house": 11,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.84721311009027,
+        "dec": -73.23780296899389,
+        "house": 11,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.84212834764332,
+        "dec": -73.22435254039141,
+        "house": 11,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.83729375208003,
+        "dec": -73.21087430909331,
+        "house": 11,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.83270925085382,
+        "dec": -73.19736859370215,
+        "house": 11,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.82837476482872,
+        "dec": -73.18383571330254,
+        "house": 11,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.82429020806069,
+        "dec": -73.17027598742666,
+        "house": 11,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.82045548797203,
+        "dec": -73.15668973608759,
+        "house": 11,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.81687050530527,
+        "dec": -73.14307727977862,
+        "house": 11,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.81353515403949,
+        "dec": -73.12943893946884,
+        "house": 11,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.81044932132869,
+        "dec": -73.11577503660467,
+        "house": 11,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null
+      }
+    ],
+    "CK16E010": [
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.5559548623442,
+        "dec": 48.05580261875967,
+        "house": 3,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.54658949776392,
+        "dec": 48.04746963539453,
+        "house": 3,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.53731309506462,
+        "dec": 48.039138069191786,
+        "house": 3,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.52812570020055,
+        "dec": 48.03080806770275,
+        "house": 3,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.51902735707493,
+        "dec": 48.02247977827331,
+        "house": 3,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.51001810753061,
+        "dec": 48.014153348042626,
+        "house": 3,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.50109799133614,
+        "dec": 48.00582892393795,
+        "house": 3,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.49226704616702,
+        "dec": 47.99750665266596,
+        "house": 3,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.48352530760711,
+        "dec": 47.98918668072532,
+        "house": 3,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.47487280910127,
+        "dec": 47.98086915437358,
+        "house": 3,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.46630958197042,
+        "dec": 47.97255421965717,
+        "house": 3,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.45783565535523,
+        "dec": 47.964242022374506,
+        "house": 3,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.44945105622615,
+        "dec": 47.95593270810609,
+        "house": 3,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null
+      }
+    ],
+    "CK18A060": [
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.8585342132711,
+        "dec": 33.89148685715422,
+        "house": 12,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.8764694802339,
+        "dec": 33.89627557711372,
+        "house": 12,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.89441497687096,
+        "dec": 33.90111420344409,
+        "house": 12,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.9123704159738,
+        "dec": 33.906002683592185,
+        "house": 12,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.9303355096049,
+        "dec": 33.91094096418033,
+        "house": 12,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.9483099691112,
+        "dec": 33.91592899094997,
+        "house": 12,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.96629350511773,
+        "dec": 33.92096670877701,
+        "house": 12,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.9842858275253,
+        "dec": 33.92605406165999,
+        "house": 12,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 333.0022866455092,
+        "dec": 33.93119099269624,
+        "house": 12,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 333.0202956675128,
+        "dec": 33.93637744407212,
+        "house": 12,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 333.03831260123945,
+        "dec": 33.9416133570512,
+        "house": 12,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 333.05633715364786,
+        "dec": 33.94689867194521,
+        "house": 12,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 333.0743690309426,
+        "dec": 33.9522333280983,
+        "house": 12,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "CK19A050": [
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.76801086515474,
+        "dec": 38.45727472833198,
+        "house": 10,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.7877497613063,
+        "dec": 38.46699185888116,
+        "house": 10,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.80742083045857,
+        "dec": 38.47675186422344,
+        "house": 10,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.8270237902927,
+        "dec": 38.48655456951393,
+        "house": 10,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.8465583585528,
+        "dec": 38.49639979845136,
+        "house": 10,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.8660242530928,
+        "dec": 38.50628737325813,
+        "house": 10,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.88542119191544,
+        "dec": 38.51621711466211,
+        "house": 10,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.9047488931624,
+        "dec": 38.526188841900634,
+        "house": 10,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.9240070751615,
+        "dec": 38.53620237269422,
+        "house": 10,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.94319545643543,
+        "dec": 38.546257523238516,
+        "house": 10,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.96231375575167,
+        "dec": 38.556354108174006,
+        "house": 10,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.98136169211057,
+        "dec": 38.566491940586154,
+        "house": 10,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 273.0003389848248,
+        "dec": 38.576670831959575,
+        "house": 10,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "CK19B030": [
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.2426473897748,
+        "dec": -9.348354354259934,
+        "house": 12,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.25639995970647,
+        "dec": -9.336235999006663,
+        "house": 12,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.270186400654,
+        "dec": -9.324114032179061,
+        "house": 12,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.28400646995914,
+        "dec": -9.311988550450168,
+        "house": 12,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.2978599241878,
+        "dec": -9.299859650871161,
+        "house": 12,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.31174651913017,
+        "dec": -9.28772743078785,
+        "house": 12,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.32566600979214,
+        "dec": -9.27559198793496,
+        "house": 12,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.3396181503914,
+        "dec": -9.263453420345384,
+        "house": 12,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.35360269434545,
+        "dec": -9.251311826446333,
+        "house": 12,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.36761939426384,
+        "dec": -9.239167304970376,
+        "house": 12,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.38166800193204,
+        "dec": -9.227019955053095,
+        "house": 12,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.39574826830074,
+        "dec": -9.214869876154689,
+        "house": 12,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.4098599434676,
+        "dec": -9.202717168112256,
+        "house": 12,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "PK09Y020": [
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.61355263619396,
+        "dec": 17.536990119004017,
+        "house": 12,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.69947261915627,
+        "dec": 17.559679042054103,
+        "house": 12,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.78547968355946,
+        "dec": 17.58246120495675,
+        "house": 12,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.8715736116186,
+        "dec": 17.60533641008637,
+        "house": 12,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.9577541848068,
+        "dec": 17.62830445841642,
+        "house": 12,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.04402118367574,
+        "dec": 17.651365149433012,
+        "house": 12,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.130374387725,
+        "dec": 17.674518281066437,
+        "house": 12,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.2168135756067,
+        "dec": 17.697763649747117,
+        "house": 12,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.3033385248674,
+        "dec": 17.721101050285558,
+        "house": 12,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.3899490121422,
+        "dec": 17.744530275918784,
+        "house": 12,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.4766448129422,
+        "dec": 17.76805111820195,
+        "house": 12,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.56342570161036,
+        "dec": 17.791663366958872,
+        "house": 12,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 340.6502914514458,
+        "dec": 17.815366810291543,
+        "house": 12,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "PK10H030": [
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.3098844140218,
+        "dec": -29.476509750506935,
+        "house": 11,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.4176213652062,
+        "dec": -29.4558729415734,
+        "house": 11,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.52552907052814,
+        "dec": -29.435166158935722,
+        "house": 11,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.6336082220645,
+        "dec": -29.414389014638974,
+        "house": 11,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.7418595181223,
+        "dec": -29.393541117897296,
+        "house": 11,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.85028366329414,
+        "dec": -29.372622075054117,
+        "house": 11,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.9588813685836,
+        "dec": -29.351631489519793,
+        "house": 11,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 308.0676533516076,
+        "dec": -29.33056896168476,
+        "house": 11,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 308.1766003363556,
+        "dec": -29.30943408896152,
+        "house": 11,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 308.2857230536649,
+        "dec": -29.288226465613107,
+        "house": 11,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 308.395022240937,
+        "dec": -29.266945682804337,
+        "house": 11,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 308.5044986424958,
+        "dec": -29.24559132845955,
+        "house": 11,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 308.6141530094686,
+        "dec": -29.2241629872609,
+        "house": 11,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      }
+    ],
+    "PK10U55H": [
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.3924490039571,
+        "dec": -1.9941781048568832,
+        "house": 12,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.43601310094976,
+        "dec": -1.9788610571470933,
+        "house": 12,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.4796122759217,
+        "dec": -1.963509961410668,
+        "house": 12,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.52324619622595,
+        "dec": -1.9481249445170592,
+        "house": 12,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.56691452815033,
+        "dec": -1.9327061341947576,
+        "house": 12,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.6106169369344,
+        "dec": -1.9172536590299487,
+        "house": 12,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.6543530867614,
+        "dec": -1.9017676484745873,
+        "house": 12,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.6981226407677,
+        "dec": -1.8862482328492467,
+        "house": 12,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.74192526096306,
+        "dec": -1.8706955433769894,
+        "house": 12,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.78576060831955,
+        "dec": -1.8551097121611506,
+        "house": 12,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.8296283426005,
+        "dec": -1.8394908722521184,
+        "house": 12,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.8735281225089,
+        "dec": -1.8238391576067008,
+        "house": 12,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.91745960551276,
+        "dec": -1.8081547031581013,
+        "house": 12,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        }
+      }
+    ],
+    "PK13CC9U": [
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.36873156022985,
+        "dec": 30.097944747189377,
+        "house": 3,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.36006076599882,
+        "dec": 30.092222286873614,
+        "house": 3,
+        "timestamp": "2026-02-10T07:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.35166255285897,
+        "dec": 30.086528369020172,
+        "house": 3,
+        "timestamp": "2026-02-10T13:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.34353669901846,
+        "dec": 30.08086319331437,
+        "house": 3,
+        "timestamp": "2026-02-10T19:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.33568297612855,
+        "dec": 30.07522695631327,
+        "house": 3,
+        "timestamp": "2026-02-11T01:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.32810114922113,
+        "dec": 30.069619851421493,
+        "house": 3,
+        "timestamp": "2026-02-11T07:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.32079097671988,
+        "dec": 30.064042068890753,
+        "house": 3,
+        "timestamp": "2026-02-11T13:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.31375221052555,
+        "dec": 30.0584937958437,
+        "house": 3,
+        "timestamp": "2026-02-11T19:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.30698459594488,
+        "dec": 30.052975216250505,
+        "house": 3,
+        "timestamp": "2026-02-12T01:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.30048787171442,
+        "dec": 30.047486510936526,
+        "house": 3,
+        "timestamp": "2026-02-12T07:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.2942617699925,
+        "dec": 30.042027857582084,
+        "house": 3,
+        "timestamp": "2026-02-12T13:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.28830601631813,
+        "dec": 30.036599430713878,
+        "house": 3,
+        "timestamp": "2026-02-12T19:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.28262032968406,
+        "dec": 30.03120140173434,
+        "house": 3,
+        "timestamp": "2026-02-13T01:23:26Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        }
+      }
+    ],
+    "A11y70v": [
+      {
+        "name": "A11y70v",
+        "source": "NEOCP",
+        "ra": 242.721,
+        "dec": -23.4862,
+        "house": 9,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": null,
+        "resonance": null
+      }
+    ],
+    "C19DCG5": [
+      {
+        "name": "C19DCG5",
+        "source": "NEOCP",
+        "ra": 242.76000000000002,
+        "dec": 14.4199,
+        "house": 8,
+        "timestamp": "2026-02-10T01:23:26Z",
+        "period_years": null,
+        "inclination_deg": null,
+        "resonance": null
+      }
+    ]
+  }
+}

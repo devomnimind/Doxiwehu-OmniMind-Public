@@ -1,0 +1,16 @@
+{
+  "timestamp": "20260208T130316Z",
+  "points": "data/reports/toponame_cosmo_points_20260208T130253Z.jsonl",
+  "sdss": "/home/fahbrain/projects/omnimind/data/sdss_anomalies/sdss_structures_dr17.json",
+  "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/toponame_sessions/20260208T130316Z/toponame_overlay_sdss.png",
+  "names": [
+    "zephyrix",
+    "kylandra",
+    "doxihewu",
+    "omnimind",
+    "gemini",
+    "claude",
+    "copilot",
+    "fabricio"
+  ]
+}

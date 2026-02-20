@@ -1,0 +1,2112 @@
+{
+  "Axiom": [
+    {
+      "object_id": "mpc:PK17U030",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 89.00130503676925,
+        "dec_deg": -26.76908677383794,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK19A050",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 44.606964302668054,
+        "dec_deg": 62.794271777901,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK02A010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 314.43970240096246,
+        "dec_deg": 86.94659927447117,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK13Y46G",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 60.38847472858801,
+        "dec_deg": 32.052900301515166,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK09Y020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 84.54126570592955,
+        "dec_deg": -23.81428270629911,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK18A060",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 87.96812236808006,
+        "dec_deg": -2.682851707118715,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:P22lp4E",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 78.09366909837296,
+        "dec_deg": -18.720891379129867,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:P22lnpr",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 61.46539052557986,
+        "dec_deg": 17.121107622117776,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK10T020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 54.39850633786258,
+        "dec_deg": 86.02535277627803,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK00R020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 87.72041238445311,
+        "dec_deg": 31.021126851724418,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:ST26B07",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 29.59890230444174,
+        "dec_deg": 77.50116762994864,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK14L020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 80.31363855093225,
+        "dec_deg": -53.59132279043023,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:C45RW41",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 82.07697481638674,
+        "dec_deg": -10.315081603023941,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK14F030",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 66.10737741947094,
+        "dec_deg": 64.95198693562861,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CJ99J020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 81.74379786823687,
+        "dec_deg": 5.616455122307556,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK16E010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 303.02620039632217,
+        "dec_deg": 81.46837590494866,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK18P040",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 54.42623253593279,
+        "dec_deg": 75.33600952398092,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK07S020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 87.48543586362906,
+        "dec_deg": 26.951941840802434,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CE5V9J2",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 60.210989659662744,
+        "dec_deg": 56.349134591180245,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK15O010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 11.148267630607567,
+        "dec_deg": 76.86288597809408,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK09P010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 74.03484195688758,
+        "dec_deg": 54.624442750917154,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PJ96R020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 83.34537616089236,
+        "dec_deg": 48.84740447179371,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK15T050",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 84.64161174990923,
+        "dec_deg": 88.7615743533772,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK16A030",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 80.94125792568573,
+        "dec_deg": 6.110773142478976,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK10H030",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 75.70486317433395,
+        "dec_deg": 66.20771370747696,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK12S010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 85.43933566335828,
+        "dec_deg": -46.394453894487015,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:PK15D060",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 84.92298714774705,
+        "dec_deg": 28.183033336346398,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    },
+    {
+      "object_id": "mpc:CK11P020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 310.9170054420212,
+        "dec_deg": 83.04401330660943,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 3
+      }
+    }
+  ],
+  "Epsilon": [
+    {
+      "object_id": "mpc:PK06H30R",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 333.8757893284669,
+        "dec_deg": -85.85053333584544,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK14Q020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 277.68442293328235,
+        "dec_deg": 52.82234144705237,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK13E010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 318.9005740497194,
+        "dec_deg": -88.2820382915442,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:C19DCG5",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 305.4513292610596,
+        "dec_deg": -35.57114539612332,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK19B030",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 278.6495897754886,
+        "dec_deg": 52.41121898609197,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:PK11C020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 285.5353243934737,
+        "dec_deg": -83.23012886590084,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CE5LGG2",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 286.0174495102276,
+        "dec_deg": -75.78369511663391,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:PK10U55H",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 347.21234924353894,
+        "dec_deg": -75.13703687609821,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK13P040",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 275.5276602103497,
+        "dec_deg": 31.836738223305574,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK15E61R",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 275.13288073519163,
+        "dec_deg": 19.140971214337966,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:PK19A020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 66.18035890766265,
+        "dec_deg": -83.96297607629904,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:PK15X030",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 272.18751468444225,
+        "dec_deg": -49.18188426998743,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK12K010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 297.81023715309067,
+        "dec_deg": -47.020231285592544,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:P22liAW",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 85.27130920750359,
+        "dec_deg": -85.46632238005091,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK02A020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 280.4943048152159,
+        "dec_deg": 43.455891201285795,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK12A010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 302.98788677837996,
+        "dec_deg": -68.31756831143778,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK12L26P",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 86.46485285245032,
+        "dec_deg": -81.57106899566594,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:A11y70v",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 293.82158830056807,
+        "dec_deg": -20.51704015506631,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CJ99S020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 329.88622546010527,
+        "dec_deg": -89.8605109335162,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:PK12G010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 297.88638095168403,
+        "dec_deg": -18.943471835125195,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK13C020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 273.13634466357684,
+        "dec_deg": -88.74803076735537,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK03A020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 304.55864824342046,
+        "dec_deg": -56.25070521003607,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK13W020",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 335.3299765695385,
+        "dec_deg": -72.48148980952038,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:PK13CC9U",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 276.2093948302275,
+        "dec_deg": -63.203218862531884,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:PK13W010",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 285.7508677823632,
+        "dec_deg": -75.08495743337512,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    },
+    {
+      "object_id": "mpc:CK14UR1N",
+      "object_class": "small_body",
+      "dataset": "MPC",
+      "coords": {
+        "ra_deg": 282.09354735014136,
+        "dec_deg": -39.587876129835294,
+        "frame": "icrs"
+      },
+      "epoch": "2026-02-07T18:18:11.408748+00:00",
+      "observables": {
+        "photometry": {},
+        "spectrum": {}
+      },
+      "provenance": {
+        "catalog": "MPC",
+        "version": "2026-02-07T15:10:26.600980",
+        "source": []
+      },
+      "house_profile": {
+        "vector": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "method": "house_field",
+        "quality": {},
+        "dominant_house": 10
+      }
+    }
+  ]
+}

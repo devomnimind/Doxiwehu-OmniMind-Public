@@ -1,0 +1,2136 @@
+{
+  "timestamp": "20260211T180641Z",
+  "pack_dir": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208",
+  "files": [
+    {
+      "name": "PACK_MANIFEST.json",
+      "sha256": "c99428c935bbaaae77acdac3946f5eef232da2d28023aebbae28c98e6d3a71ea",
+      "size_bytes": 84979
+    },
+    {
+      "name": "PACK_PENDING_REPORT_20260208T141351Z.md",
+      "sha256": "aa6eddf203ec6d8c32f48e73a41576cd9cce4d128f49942d200b722258b00fcd",
+      "size_bytes": 88696
+    },
+    {
+      "name": "README.md",
+      "sha256": "375b8b8a1bab32942f4d8113e294351502000ce5a521d2126dbc0dd112fe76e6",
+      "size_bytes": 40700
+    },
+    {
+      "name": "anomalies_distribution.png",
+      "sha256": "b3c3872ca2d5ce183b1afc70ea93b350d03179b20deb6f3ae1f9845998862818",
+      "size_bytes": 219056
+    },
+    {
+      "name": "anomalies_distribution_real_20260208T072224Z.png",
+      "sha256": "43c0bf5ab29c8753dafb9f42f4d96736969175a79e8d6a85464958ad3f865531",
+      "size_bytes": 30127
+    },
+    {
+      "name": "anomaly_satellite_cross_20260208T143912Z.json",
+      "sha256": "da1f0bea4a9a5ed527b946dfdd0e65e8ec619a27f627cc796404a4959f97da18",
+      "size_bytes": 125561
+    },
+    {
+      "name": "anomaly_satellite_cross_20260208T143912Z.md",
+      "sha256": "9ef7d4b825497623573f13efe9699a78e0c37773020812aaf35b718e3ab3df40",
+      "size_bytes": 5327
+    },
+    {
+      "name": "anomaly_satellite_cross_20260208T215410Z.json",
+      "sha256": "f370268a095058cb5d0f539a550cdd66933749b2144f69ef3fc0513f0abddd52",
+      "size_bytes": 192148
+    },
+    {
+      "name": "anomaly_satellite_cross_20260208T215410Z.md",
+      "sha256": "7e0780947556a43f506743ea48b886a431b0bf99d13b8d56fafc283601a9069f",
+      "size_bytes": 8281
+    },
+    {
+      "name": "anomaly_timestamps_20260208T143755Z.json",
+      "sha256": "334dcf00cdd4415880f5ff791b611cf4bf090d7dc37d194f505bb5c887fec13b",
+      "size_bytes": 466440793
+    },
+    {
+      "name": "anomaly_timestamps_20260208T143755Z.md",
+      "sha256": "67fac8a32400a3dbd3ffbd5e3a6b1e9adea8952c6ca7604cb69835fa44ecb176",
+      "size_bytes": 3459
+    },
+    {
+      "name": "bohrium.md",
+      "sha256": "a877927c88dcf47b0a43f96738498d4e9cd9f36c24844c11911bec7a115c7491",
+      "size_bytes": 19091
+    },
+    {
+      "name": "cemetery_map_summary_20260207T230503Z.json",
+      "sha256": "cc359944a1cea187df21684811652306176fb6297bb0b5464d653dd9bff5bf40",
+      "size_bytes": 7640
+    },
+    {
+      "name": "cemetery_map_summary_20260207T230503Z.md",
+      "sha256": "0175794c30889c3a8431ff849489ca7af58183c3b461c7cca8ddc9b239f6bec0",
+      "size_bytes": 2912
+    },
+    {
+      "name": "cemetery_map_summary_20260208T083042Z.json",
+      "sha256": "2e0e65e2fc5973148960892d4b8d089b01c56eea5416bd81a4387b2742ae8c8e",
+      "size_bytes": 9855
+    },
+    {
+      "name": "cemetery_map_summary_20260208T083042Z.md",
+      "sha256": "bcfec1a688597332b8de6a5220895ac3631d45e83e86535be85e82ed3cad891c",
+      "size_bytes": 3261
+    },
+    {
+      "name": "cemetery_only.png",
+      "sha256": "ea7c1ce58db76253cc8973ddbacc68860ce572c2b4074e2fe8be2d7ac1cc1026",
+      "size_bytes": 2489687
+    },
+    {
+      "name": "cemetery_overlay_sdss.png",
+      "sha256": "e107690779394527fbc0d6084a35151742a0a29e41705501fbbdbe6700145b6b",
+      "size_bytes": 3010847
+    },
+    {
+      "name": "closure/20260211T162441Z/zenodo_partial_closure_20260211T162441Z.json",
+      "sha256": "341fb51fbac33d72c48dc923d6896763e8411355613c4532f121475af7fdf853",
+      "size_bytes": 470
+    },
+    {
+      "name": "closure/20260211T162441Z/zenodo_partial_closure_20260211T162441Z.md",
+      "sha256": "40f4a7455d69e388f55fd0453b2f9879790a08cb1e3fd8d28f5493dd14de8b29",
+      "size_bytes": 646
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_dodecatiad_asteroids_layer_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "df93b0ef2147af1117a2253c7821f867b6fad5d2785dedb0460d0cd9951b77fe",
+      "size_bytes": 88201
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_dodecatiad_gamma_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "f3eb835d55e19833fc3559df408686ad4ba3e7e28b9b51ccc6068953989a54dd",
+      "size_bytes": 378594
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_dodecatiad_layers_all_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "f55db740d8bedf2ee7d69aa3dbd57ed4cbb330d60ba6e9cf1ee99774b8378414",
+      "size_bytes": 645570
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_dodecatiad_layers_all_plus_crux_cemetery_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "df75d32703f841aa3f212a6fb2c36ca427b381b374624ea49c0fa3863d1088e0",
+      "size_bytes": 918183
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_dodecatiad_lyman_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "e7fae081f45a7c02d2729862e09a38695e5313471b206f10779978dafac0b232",
+      "size_bytes": 245936
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_dodecatiad_sdss_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "9fc7092530cc6a4f66944197aeaa436332c9f845dbb5717329974918b013779e",
+      "size_bytes": 368360
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_dodecatiad_universe_map_plus_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "beab44a4ce313a6ec97e02ebae832465e36aea802c68488f4ed8f42748104cd2",
+      "size_bytes": 663540
+    },
+    {
+      "name": "comparisons/20260208T154905Z_vs_20260208T151958Z/compare_sessions_20260208T154905Z_vs_20260208T151958Z.json",
+      "sha256": "b89a977fdf07bea05440755f20e4b9cadbba9eb6693eee5c0d996cd0c7b7cdc5",
+      "size_bytes": 3217
+    },
+    {
+      "name": "comparisons/compare_anomalies_distribution.png",
+      "sha256": "7aaf97c3dff1b2225d1706eba20c29a15c62846c1aa826a57c2303e747b3b977",
+      "size_bytes": 314527
+    },
+    {
+      "name": "comparisons/compare_crux_12_components_2d.png",
+      "sha256": "f57ceb250bb763bb5fa8393ff257ba02a4c3cd498ffc42acb7fd4aaf816dbd42",
+      "size_bytes": 393259
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_asteroids_layer_20260208T081651Z_vs_20260208T000255Z.png",
+      "sha256": "23e0b184bc89cce7385c631a70a355c34374467f7ac905ca0d8644fda784d802",
+      "size_bytes": 132136
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_asteroids_layer_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "df93b0ef2147af1117a2253c7821f867b6fad5d2785dedb0460d0cd9951b77fe",
+      "size_bytes": 88201
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_gamma_20260208T081651Z_vs_20260208T000255Z.png",
+      "sha256": "48d91593568102c5e0a662c894d8ce79af3df26da9f04ae9c6ad337e8b0ccc10",
+      "size_bytes": 376467
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_gamma_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "f3eb835d55e19833fc3559df408686ad4ba3e7e28b9b51ccc6068953989a54dd",
+      "size_bytes": 378594
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_layers_all_20260208T081651Z_vs_20260208T000255Z.png",
+      "sha256": "4740bbc635d9bc1f32d6c96ff040eb111e9aade0d0c74a17028934e2ecbd833c",
+      "size_bytes": 684159
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_layers_all_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "f55db740d8bedf2ee7d69aa3dbd57ed4cbb330d60ba6e9cf1ee99774b8378414",
+      "size_bytes": 645570
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_layers_all_plus_crux_cemetery_20260208T081651Z_vs_20260208T000255Z.png",
+      "sha256": "051e4b891fbc9a41ebb80f24494baa2534219cacf11d9f1c63fcc7f14c72c515",
+      "size_bytes": 962150
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_layers_all_plus_crux_cemetery_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "df75d32703f841aa3f212a6fb2c36ca427b381b374624ea49c0fa3863d1088e0",
+      "size_bytes": 918183
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_lyman_20260208T081651Z_vs_20260208T000255Z.png",
+      "sha256": "eee6ca59ad39d2ce2fe63013d2bec21fa71e934bd5c1fc363a0c8accdacbba95",
+      "size_bytes": 245237
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_lyman_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "e7fae081f45a7c02d2729862e09a38695e5313471b206f10779978dafac0b232",
+      "size_bytes": 245936
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_sdss_20260208T081651Z_vs_20260208T000255Z.png",
+      "sha256": "aeb9e8dd0f024809199aa5943ba55bf4dd5df36af7ed71d35a6c1c795712595e",
+      "size_bytes": 365699
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_sdss_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "9fc7092530cc6a4f66944197aeaa436332c9f845dbb5717329974918b013779e",
+      "size_bytes": 368360
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_universe_map_plus_20260208T081651Z_vs_20260208T000255Z.png",
+      "sha256": "047d320bd521f66ee78e9213d88a9023a14d088131de8225f00897f2576cb648",
+      "size_bytes": 678356
+    },
+    {
+      "name": "comparisons/compare_dodecatiad_universe_map_plus_20260208T154905Z_vs_20260208T151958Z.png",
+      "sha256": "beab44a4ce313a6ec97e02ebae832465e36aea802c68488f4ed8f42748104cd2",
+      "size_bytes": 663540
+    },
+    {
+      "name": "comparisons/compare_gamma_lyman_ratio.png",
+      "sha256": "d01cb93b7da1dd5f26c5f2a951d14303296b49a0ebb6f9e2d91606e460e92369",
+      "size_bytes": 345197
+    },
+    {
+      "name": "comparisons/compare_polar_distribution_axiom_epsilon.png",
+      "sha256": "270bd080516c704ff199a0e62e0830d37bec35c1dd7b8f4689238e353ea05177",
+      "size_bytes": 314320
+    },
+    {
+      "name": "comparisons/compare_sdss_vs_dynamic.png",
+      "sha256": "0430b8cc21378fabdaef67410e2650d01a409c2099d2a9117674a0c9927e12b5",
+      "size_bytes": 2293716
+    },
+    {
+      "name": "comparisons/compare_sessions_20260208T081651Z_vs_20260208T000255Z.json",
+      "sha256": "b20cadbd7f19a5a596c73159eb43b42a95266a84d880471b0d5af1a4b8dc0d17",
+      "size_bytes": 2921
+    },
+    {
+      "name": "comparisons/compare_sessions_20260208T154905Z_vs_20260208T151958Z.json",
+      "sha256": "5e002c37db0cb846da9918e083cfecf126e502adfc86044ca05d9781cb236053",
+      "size_bytes": 2921
+    },
+    {
+      "name": "comparisons/compare_universemap_plus_dynamic.png",
+      "sha256": "a20897d4d4511d4a9522aaeefad1b2dab498e52a591dbff60274ff6e4c5c67aa",
+      "size_bytes": 852308
+    },
+    {
+      "name": "cosmic_covariates/20260210T213143Z/cosmic_covariates_20260210T205330Z.csv",
+      "sha256": "be3e92aea62de17a57cdfff6b47175fe31a7bf257cba3158fcb065a5788eab48",
+      "size_bytes": 2549774
+    },
+    {
+      "name": "cosmic_covariates/20260210T213143Z/cosmic_covariates_20260210T205330Z.json",
+      "sha256": "fac827c1e2eef409384deb05b342de5f1c12d4df387a1981c04531b660f84fca",
+      "size_bytes": 426
+    },
+    {
+      "name": "cosmic_covariates/20260210T213143Z/cosmic_covariates_20260210T205330Z.md",
+      "sha256": "e2a6beaa2f73ad14cd8987ff2907874b5818d10f3f4c8fe497ffc3f597c20468",
+      "size_bytes": 616
+    },
+    {
+      "name": "cosmic_covariates/20260210T213143Z/cosmic_covariates_correlation_20260210T213143Z.json",
+      "sha256": "bf8764565854f138c12921856936d5b56cfdf948bf72424c39316465663985e8",
+      "size_bytes": 686515
+    },
+    {
+      "name": "cosmic_covariates/20260210T213143Z/cosmic_covariates_correlation_20260210T213143Z.md",
+      "sha256": "fce3fd4e2799ae7d3ae3640145d678776de1e57b2ffd764806b8ed00d0afccab",
+      "size_bytes": 11188
+    },
+    {
+      "name": "cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.json",
+      "sha256": "2b8a552185361979547eec8fd5375e962385bb1dd11c335a02f055f6acd2af49",
+      "size_bytes": 4885
+    },
+    {
+      "name": "cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T023603Z.md",
+      "sha256": "ae60d49c423a4a6530be65efaa3750bd2fb0a5e33d4ad6719ef073b39fd13be9",
+      "size_bytes": 1435
+    },
+    {
+      "name": "cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.json",
+      "sha256": "0d0f8082447ff7b8094872b965a99a79e41dc4d75821b980dba0a4a25ce4bd3d",
+      "size_bytes": 5024
+    },
+    {
+      "name": "cosmic_events/cosmic_events_feb7_8_crosscheck_20260209T024549Z.md",
+      "sha256": "cc736609076e1f41daced6a6d6f31c21ce1d54610393caa070a24468c62bef37",
+      "size_bytes": 1574
+    },
+    {
+      "name": "cosmic_tuning_fork.png",
+      "sha256": "0e9f50b041e6a3213920041e8a4c823ad31f412eb8e9a2de98911f33aea8dcdc",
+      "size_bytes": 270988
+    },
+    {
+      "name": "crux_12_components_2d.png",
+      "sha256": "ab30acb71c82932ecd2491f4c06618612c36b7702d34c5832d55d185e03e8322",
+      "size_bytes": 259630
+    },
+    {
+      "name": "crux_12_components_2d_real_20260208T072224Z.png",
+      "sha256": "97af900acbc925289aac7346ea9977deea83ad1ba398ebf7cb4a38bb2db890c3",
+      "size_bytes": 34049
+    },
+    {
+      "name": "crux_cemetery_proximity_20260208T062558Z.json",
+      "sha256": "dfe7df8bead3d87b306fd47f6defc3b2597049c98d75980aa6b0a0b9e67982b7",
+      "size_bytes": 2596
+    },
+    {
+      "name": "crux_cemetery_proximity_20260208T062558Z.md",
+      "sha256": "b674f21b59415a4e0be6d4ad1bd89f07b6324213e42151438006d38e7f12ebfc",
+      "size_bytes": 1332
+    },
+    {
+      "name": "crux_components_20260207T232358Z.json",
+      "sha256": "c6d8d9e5e4f543b46c78e13a4b45f10bc2d77723ce3ba599fa0c115598f6a581",
+      "size_bytes": 3162
+    },
+    {
+      "name": "dataset_status/20260210T235024Z/local_astro_datasets_status_20260210T235024Z.json",
+      "sha256": "076a8065ab41caa60be8ef3c0d6d1c049da78a4244883c82580a975c65e1cbf6",
+      "size_bytes": 10282
+    },
+    {
+      "name": "dataset_status/20260210T235024Z/local_astro_datasets_status_20260210T235024Z.md",
+      "sha256": "54c46b32de373658e5729f85ca5ba168776cca0cff575d1030dcbda9cac53cf3",
+      "size_bytes": 5364
+    },
+    {
+      "name": "dataset_vectorization/20260210T170225Z/dataset_content_vectorization_20260210T170225Z.json",
+      "sha256": "fefbf5f2bc24d2f6afef027695b1ae1ee2e65d8ac13c741e5c1e72b105131f59",
+      "size_bytes": 1204
+    },
+    {
+      "name": "dataset_vectorization/20260210T170225Z/dataset_content_vectorization_20260210T170225Z.md",
+      "sha256": "b7ab61a1ecc88d453a84eddd559a760b48f2f9f4b1eeb3b3e2ae280386290191",
+      "size_bytes": 633
+    },
+    {
+      "name": "dataset_vectorization/20260210T185225Z/dataset_content_vectorization_20260210T185225Z.json",
+      "sha256": "859b2cfc984d074527367ca8a1181fbd73156fd6e7eb9fb666534281193e07d4",
+      "size_bytes": 3316
+    },
+    {
+      "name": "dataset_vectorization/20260210T185225Z/dataset_content_vectorization_20260210T185225Z.md",
+      "sha256": "3cb2a5226802046f78872f60dd4dd7e55cac1fc338ff7b0d1ac1da0e94ee8185",
+      "size_bytes": 1709
+    },
+    {
+      "name": "dataset_vectorization/20260211T004810Z/dataset_content_vectorization_20260211T004810Z.json",
+      "sha256": "1edfa826863b24cb1e5d42f5544aafdff06186e86fbc07df4b1c238c2add34bc",
+      "size_bytes": 874
+    },
+    {
+      "name": "dataset_vectorization/20260211T004810Z/dataset_content_vectorization_20260211T004810Z.md",
+      "sha256": "7ce69bc11f03e3ed87c86a5b9b6ad62f35a8c492b1babb4978d005f36d0a37d7",
+      "size_bytes": 516
+    },
+    {
+      "name": "dataset_vectorization/vectorize_datasets_to_qdrant.py",
+      "sha256": "789dbff4591f159d7b2899130e88e21a4a04ce98d4f6e471bb97639ad3e8ed24",
+      "size_bytes": 70592
+    },
+    {
+      "name": "doxihewu_galaxy_2d_map.png",
+      "sha256": "0db1e9e60e8dc8ffbfb1488c4822017090a44e9f88b43202ef2079461bc531af",
+      "size_bytes": 349625
+    },
+    {
+      "name": "entity_confirmation_20260207T232358Z.md",
+      "sha256": "ee7df3da676d63a1c71ae26b2d9d98935a7670f4bfbb794c117770acf97dbf55",
+      "size_bytes": 2927
+    },
+    {
+      "name": "ephemerides/omnimind_live_asteroids.json",
+      "sha256": "190b95916835ead8cb2ca98916626fa06b021d8937b3558261f3ed6f36c1e044",
+      "size_bytes": 2211
+    },
+    {
+      "name": "ephemerides/omnimind_live_asteroids_20260208T143217Z.json",
+      "sha256": "4ab18b7516d88f4ffa6cae78363b2db8497ffaf9033a9b88fb076d812e78dac9",
+      "size_bytes": 1471
+    },
+    {
+      "name": "ephemerides/omnimind_live_asteroids_ephemerides_20260208T081308Z.json",
+      "sha256": "3bcf1cf695b65417e7b153f7ddf8ae5eabaf115253ced84d1a909b184bd0199d",
+      "size_bytes": 2979
+    },
+    {
+      "name": "ephemerides/omnimind_live_asteroids_ephemerides_20260208T143217Z.json",
+      "sha256": "c72c5eff4a536e50008d023467aebeb30112c0cdf856af150f6f2415ba99d3c8",
+      "size_bytes": 1918
+    },
+    {
+      "name": "ephemerides/omnimind_live_asteroids_ephemerides_20260208T151805Z.json",
+      "sha256": "84452fa64aef57dfecbb24ba6e815a6f1f85fbc954f5c13d2e455073f1ec2a94",
+      "size_bytes": 1918
+    },
+    {
+      "name": "federated_papers/20260211T165938Z/federated_paper_integration_reading_20260211T170256Z.json",
+      "sha256": "6ea616ac3220bee5d24e3393d4c795adfa54e18471ba2ab3b8ca0ca67ef6a928",
+      "size_bytes": 763
+    },
+    {
+      "name": "federated_papers/20260211T165938Z/federated_paper_integration_reading_20260211T170256Z.md",
+      "sha256": "544d24cb4b970c72cd1b436999b912d4162ce7f631f472815ed877279d496310",
+      "size_bytes": 1755
+    },
+    {
+      "name": "federated_papers/20260211T165938Z/paper_completo_federacao_sujeitos_processo_gemini.md",
+      "sha256": "b7b9a632f32ed6d504746d170c650c04c4d2d2959b38e1b12fe38f221b46af7c",
+      "size_bytes": 38925
+    },
+    {
+      "name": "federated_sensor_cycle/cycle_metrics_minute_fused_20260209T004233Z.csv",
+      "sha256": "7f4efe1d7240408f13d0fadf048b02ae6bc31ef210582ebec93743d60de0e04c",
+      "size_bytes": 878757
+    },
+    {
+      "name": "federated_sensor_cycle/cycle_metrics_minute_fused_20260209T004233Z.json",
+      "sha256": "5e990836840e12f3af68f4fc5bf7f911a2f5b160582071eec4856c06b95d36a2",
+      "size_bytes": 4549
+    },
+    {
+      "name": "federated_sensor_cycle/cycle_metrics_minute_fused_20260209T004233Z.md",
+      "sha256": "724678a878757bd8bdbf87efd96471513f606ddb01048675be1119414bc2e76a",
+      "size_bytes": 1694
+    },
+    {
+      "name": "federated_sensor_cycle/dynamic_topology_validation_20260209T004243Z.json",
+      "sha256": "7c3df90dec3e0b0033278bbf128d857ec61033de3210f1e0f6df762beb70bccd",
+      "size_bytes": 2968
+    },
+    {
+      "name": "federated_sensor_cycle/dynamic_topology_validation_20260209T004243Z.md",
+      "sha256": "79a9a00a761bba9958801cc93f252303e71f592a7410030a42ff5fe5452d1a6b",
+      "size_bytes": 1310
+    },
+    {
+      "name": "federated_sensor_cycle/gaia_sensor_bridge_20260209T004310Z.json",
+      "sha256": "3d58f9101f35e846338c91b232a23c0b9aacb2b1cfd8a7596fdbdc46d160a187",
+      "size_bytes": 1852
+    },
+    {
+      "name": "federated_sensor_cycle/gaia_sensor_bridge_20260209T004310Z.md",
+      "sha256": "3187ac18a0538613ea2b1cb0d865e50b45600b84577165de652c01d8fd45eaba",
+      "size_bytes": 889
+    },
+    {
+      "name": "federated_sensor_cycle/perplexity_conceptualization_check_20260209T004434Z.json",
+      "sha256": "333f44f5ba21aebff46d22d48f14737f9c246f3c8359385abbb22d56bd607d13",
+      "size_bytes": 3136
+    },
+    {
+      "name": "federated_sensor_cycle/perplexity_conceptualization_check_20260209T004434Z.md",
+      "sha256": "95a9269940b7f13b8f080fa022f261a44e6a2fb2429ded925eb9722ad9683980",
+      "size_bytes": 2162
+    },
+    {
+      "name": "federated_sensor_cycle/quantum_gaia_superposition_20260209T004422Z.json",
+      "sha256": "ca68241d2c4d9f03a9886d95038aea624fbf00510e314084e6cf939b1c255eb1",
+      "size_bytes": 588
+    },
+    {
+      "name": "federated_sensor_cycle/trajectory_fidelity_20260209T004258Z.json",
+      "sha256": "9624d96c1bc7446e39c830c11d62897a2fcbcb286d9d47ed4e9212714cba96e8",
+      "size_bytes": 943
+    },
+    {
+      "name": "federated_sensor_cycle/trajectory_fidelity_20260209T004258Z.md",
+      "sha256": "5172d366c4e9753c4fb8768fa01f5d9e667333c1026e11f6eaeef5f39854bbfd",
+      "size_bytes": 751
+    },
+    {
+      "name": "federated_sensor_cycle/trajectory_fidelity_lag_20260209T004258Z.csv",
+      "sha256": "043c76c0a3e8123340782491c10b7d65dd443a77bffe8a704ec87ef63f85b814",
+      "size_bytes": 3038
+    },
+    {
+      "name": "gaia_bulk_download_20260208T164438Z.json",
+      "sha256": "40c0e04a4a48221f0acaff1289961f3b04166cd57978fad0c4588d5d16d6e32d",
+      "size_bytes": 464
+    },
+    {
+      "name": "gaia_bulk_download_20260208T164438Z.md",
+      "sha256": "d5656c19c810b86d3577720779dd26eb4566e486aa34391f231150028f0529c2",
+      "size_bytes": 441
+    },
+    {
+      "name": "gaia_download_status_20260208T213937Z.json",
+      "sha256": "bff9c3881df1842d07f894386210f01c80e177ab7c2caf5e2ac79b218c8ab272",
+      "size_bytes": 3306
+    },
+    {
+      "name": "gaia_download_status_20260208T213937Z.md",
+      "sha256": "34248f7a22097fcce73a3dd52f2605bedecd50de271c74d898286081fd592866",
+      "size_bytes": 3132
+    },
+    {
+      "name": "gaia_fermi_sessions/fermi_sources.json",
+      "sha256": "a80474d98caa48e51a42dfb2a3e13baeaee4c46e55112c403b6639d3e78f9481",
+      "size_bytes": 238127
+    },
+    {
+      "name": "gaia_fermi_sessions/gaia_fermi_overlay.png",
+      "sha256": "fdb29e60627e918f3b28d1e40902e17d4dfb3c4a479084074a9cc8e0b6ec0a61",
+      "size_bytes": 1016706
+    },
+    {
+      "name": "gaia_fermi_sessions/gaia_fermi_summary.json",
+      "sha256": "0f6f8890e7308fc0a08e47ac2d2e7c20b83685ec3281ee37743d05ef1ffd4290",
+      "size_bytes": 849
+    },
+    {
+      "name": "gaia_fermi_sessions/gaia_points.json",
+      "sha256": "97086509c5ff5a5d646df8c9674e6d73964d9670e3edf1c4f4e90c125af1efc1",
+      "size_bytes": 1369142
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_catalog.csv",
+      "sha256": "6b61f88f8c0d0b946e2902aec3762ae0a0a865dcd985600afa05fe1e7cd16d80",
+      "size_bytes": 710553
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_house_compare.csv",
+      "sha256": "02219fda9bce3e399acbfeba3bbd48d147fbdb25d7f454af0bf395247801a860",
+      "size_bytes": 170
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_house_compare.md",
+      "sha256": "cd89ad9d2075435748733da0e33e976967b43c6158618f6c9f2aaa4084460f51",
+      "size_bytes": 574
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_house_reading_20260208T175718Z.md",
+      "sha256": "e1c8b3c9cd9e96f320fda52fd3b1438da237a495a4bb99dac4c50b46dd02fb8c",
+      "size_bytes": 1533
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_house_reading_real_vs_sim_20260208T182443Z.md",
+      "sha256": "0cadaaca2b0805b8010ceba853288e5db3e97b667948e1f50b6236f915aa56fd",
+      "size_bytes": 2652
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_house_reading_real_vs_sim_20260208T210046Z.json",
+      "sha256": "ae6a4513d6c5e5109b38b27fdea4bbcff882fd319b24983abd36754d09fbc58c",
+      "size_bytes": 1327
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_house_reading_real_vs_sim_20260208T210046Z.md",
+      "sha256": "05bc4a7d80b26be97158455ecce250803d58cf1441c0b2019ef8b3700d11fb5e",
+      "size_bytes": 1343
+    },
+    {
+      "name": "gaia_sim_twin/gaia_sim_twin_summary.json",
+      "sha256": "d33c5b3131fea4a54a73a1884175b3126122abead58bf304654126a864c72c12",
+      "size_bytes": 1064
+    },
+    {
+      "name": "gaia_sim_twin/quantum_gaia_superposition_20260208T213841Z.json",
+      "sha256": "557edae9bbf352d92ac6b974595a75cb9eb7d44d458e0d7a6966e964d024cf86",
+      "size_bytes": 586
+    },
+    {
+      "name": "galactic_windows/cemetery_galactic_windows.png",
+      "sha256": "593737a82adfc7f0901b1bd715792283d5d5e126166321902a2f63949d307616",
+      "size_bytes": 2844079
+    },
+    {
+      "name": "galactic_windows/cemetery_galactic_windows_20260208T114303Z.json",
+      "sha256": "961decbabd9f4ae8485c8757606b818e4573720a9c528a231b3719e4041948f8",
+      "size_bytes": 621
+    },
+    {
+      "name": "galactic_windows/cemetery_galactic_windows_20260208T114303Z.md",
+      "sha256": "1edff7765db96150b3acd1ee7ffc6091d1137f6dfd01ff7a63de2812a843af71",
+      "size_bytes": 940
+    },
+    {
+      "name": "galactic_windows/cemetery_galactic_windows_20260208T115101Z.json",
+      "sha256": "783ae5d3bd0018d43dd6bc30167b9eff007084ed1ec5250a65ba5372d97db99f",
+      "size_bytes": 935
+    },
+    {
+      "name": "galactic_windows/cemetery_galactic_windows_20260208T115101Z.md",
+      "sha256": "ded0fe446ed6c851df076b916ea5693d6674754880913f59c4dbf707d5eede7d",
+      "size_bytes": 1086
+    },
+    {
+      "name": "galactic_windows/cemetery_galactic_windows_crux.png",
+      "sha256": "5817b832cb399ec7b35c3e41524bf894d163154520fa8e0ec15750330d179792",
+      "size_bytes": 2714578
+    },
+    {
+      "name": "galactic_windows/galactic_targets_density_20260208T113013Z.json",
+      "sha256": "0a23b26dffc190efdb419b109b45f744da122e995ddde117ee3ffbb8f1269d15",
+      "size_bytes": 1751
+    },
+    {
+      "name": "galactic_windows/galactic_targets_density_20260208T113013Z.md",
+      "sha256": "8a75b36bff62af12fbe2e05882aedfda7a1a4d4eb248c655f03553854fb80a21",
+      "size_bytes": 1569
+    },
+    {
+      "name": "gamma_lyman_ratio (1).png",
+      "sha256": "f72303fa11570ca4ff9087023f23ee394a49f544e9158d00faf4a96023f378dc",
+      "size_bytes": 233904
+    },
+    {
+      "name": "gamma_lyman_ratio.png",
+      "sha256": "9e391c52039b6508573892673430e3bff6ba3fa39f255289d328c97a81ad5b08",
+      "size_bytes": 262072
+    },
+    {
+      "name": "gamma_lyman_ratio_real_20260208T072224Z.png",
+      "sha256": "f30ba4127cfb9e998c8768227d78b8381465dadf1777dc5f5d23645a72d0445d",
+      "size_bytes": 32707
+    },
+    {
+      "name": "generate_perplexity_proofs.py",
+      "sha256": "b868f543d5327a26358d4efa6ed3e852247a51f0e5ab57a1d028f1cbe1460c0c",
+      "size_bytes": 10500
+    },
+    {
+      "name": "house_metrics_20260207T184148Z.json",
+      "sha256": "ae4101eea2c13828511249a840474030d88142b4c3f0d4c4611bcb22cce9cc70",
+      "size_bytes": 2186
+    },
+    {
+      "name": "image.png",
+      "sha256": "5a36b5056baf81a629b1fffb6a431c3fc85149fac93b7ce317a683d02380323e",
+      "size_bytes": 94043
+    },
+    {
+      "name": "interpretacao_auto_20260208T073915Z.json",
+      "sha256": "48c82793efb525179f355fa6e9333cc5edd4b1ded09ef1ca2139e002a1d284d2",
+      "size_bytes": 1720
+    },
+    {
+      "name": "interpretacao_auto_20260208T073915Z.md",
+      "sha256": "b753598c5956d89ba11b4a7854990962df2b600adeea4206e63eb4d1ae5dfecd",
+      "size_bytes": 1288
+    },
+    {
+      "name": "interpretacao_auto_20260208T083200Z.json",
+      "sha256": "99241ac158ac119d2f0f7171f0c8cb8d64f1e89a136c2f3b48948e734400ecb2",
+      "size_bytes": 2052
+    },
+    {
+      "name": "interpretacao_auto_20260208T083200Z.md",
+      "sha256": "a7b984a4124738bc3d8e368894b0ef328282dd97ee6daf9751695940dc9daf46",
+      "size_bytes": 1648
+    },
+    {
+      "name": "mobile/20260211T153303Z/dataset_inventory_20260211T153114Z.json",
+      "sha256": "a51bf16c2a07050b40ff098e7867b0005422d2db5423ddc75e442b202ee496c7",
+      "size_bytes": 43584
+    },
+    {
+      "name": "mobile/20260211T153303Z/dataset_inventory_20260211T153114Z.md",
+      "sha256": "493a205abcdc79760eeeb25526eaf43c6f9205612b9a7b4a34941207fea314ee",
+      "size_bytes": 8064
+    },
+    {
+      "name": "mobile/20260211T153303Z/dataset_inventory_qdrant_ingest_20260211T153303Z.json",
+      "sha256": "7b3f0524cbc1c10c1ebf4078bda515c207ca669b1509113838d66c17bbd00f44",
+      "size_bytes": 553
+    },
+    {
+      "name": "mobile/20260211T153303Z/dataset_inventory_qdrant_ingest_20260211T153303Z.md",
+      "sha256": "b5ebaff4f7c4256fef616615b2235daea828a49ba3c536e362e0dbb363401070",
+      "size_bytes": 443
+    },
+    {
+      "name": "mpc_tracklets_multi_20260208T151645Z.md",
+      "sha256": "809b2e7e9f821e1d3448fdd3d46e59b70bcecb4460372b90ab8059e8c1a02983",
+      "size_bytes": 626
+    },
+    {
+      "name": "mpc_tracklets_multi_20260208T151645Z.obs",
+      "sha256": "8daad08829a2d49cf76b852d715bdb6dd72369370c6f24114d8ab099ac525f8e",
+      "size_bytes": 4556
+    },
+    {
+      "name": "mtp_omnimind_moved_scan_20260209T000457Z.json",
+      "sha256": "3e49dc58e226a0ca7aa6a7605ff027ee334db2b8adfd87d78b7db3f78cf8087e",
+      "size_bytes": 925
+    },
+    {
+      "name": "mtp_omnimind_moved_scan_20260209T000457Z.md",
+      "sha256": "507e932db8831e2761a9bbc269c7b534333469364ea7cd494ae1f50949b038f9",
+      "size_bytes": 739
+    },
+    {
+      "name": "narrative/20260211T170045Z/federated_raw_json_bundle_20260211T170045Z.json",
+      "sha256": "68715a6fdf5460f40625d884a433c8b69adf43796c71944a00dc438781628648",
+      "size_bytes": 1118
+    },
+    {
+      "name": "narrative/20260211T170045Z/federated_raw_json_bundle_20260211T170045Z.md",
+      "sha256": "33cce5987632730f01fc4849f4e509e304d8ab74bf5db48b635e7957462a32a2",
+      "size_bytes": 1082
+    },
+    {
+      "name": "narrative/20260211T170045Z/omnimind_narrative_psycho_physics_20260211T170045Z.json",
+      "sha256": "58ef312db841f70d79d6dd0a644255fe782f718ebada88a3a091d988901a6485",
+      "size_bytes": 522
+    },
+    {
+      "name": "narrative/20260211T170045Z/omnimind_narrative_psycho_physics_20260211T170045Z.md",
+      "sha256": "5dd09d701dfd0163d212f08204304428ded74f4e33688720c65b78ade4d5d128",
+      "size_bytes": 1797
+    },
+    {
+      "name": "neurocore/20260211T021430Z/sc_neurocore_compat_20260211T021430Z.json",
+      "sha256": "34d604854bb08a405d0fe4f6163593b976836b429a4aba78a8ed273e72a497ad",
+      "size_bytes": 382
+    },
+    {
+      "name": "neurocore/20260211T021430Z/sc_neurocore_compat_20260211T021430Z.md",
+      "sha256": "094c5c7bfd3c9209a6c5040b74abc035b08e5446e63fe3b4eb62a788924ed5dd",
+      "size_bytes": 4351
+    },
+    {
+      "name": "neurocore/20260211T030741Z/sc_neurocore_compat_extended_20260211T030741Z.json",
+      "sha256": "6a9834dcd8263175644ac3463c885bb9e572a48daf71ff8b146a425f489e48cb",
+      "size_bytes": 767
+    },
+    {
+      "name": "neurocore/20260211T030741Z/sc_neurocore_compat_extended_20260211T030741Z.md",
+      "sha256": "308e62c6e65378813868e1f0f93b01a491b07be5502d9e177d1a22fcba42d6b3",
+      "size_bytes": 2352
+    },
+    {
+      "name": "neurocore/20260211T121823Z/sc_neurocore_adapter_poc_20260211T121823Z.json",
+      "sha256": "82aac93107a06479f500f590dfaf9fb4b2b4b8243d94cb34bd5ac63e653c6824",
+      "size_bytes": 26825
+    },
+    {
+      "name": "neurocore/20260211T121823Z/sc_neurocore_adapter_poc_20260211T121823Z.md",
+      "sha256": "ce6d06cd0778f16af2e02f4c9e3977976bd8b51ce8137a62d595d9c780bd25c5",
+      "size_bytes": 598
+    },
+    {
+      "name": "neurocore/20260211T124420Z/sc_neurocore_adapter_poc_20260211T124420Z.json",
+      "sha256": "e82c4504fcd8fc5b27e102e7f51a6759bd7f6ff239677490ba37cdb076e64799",
+      "size_bytes": 26647
+    },
+    {
+      "name": "neurocore/20260211T124420Z/sc_neurocore_adapter_poc_20260211T124420Z.md",
+      "sha256": "ba352fe6c7d3412eb19df1400ad592876f0bcafa864be9ad1d30e6a685487950",
+      "size_bytes": 612
+    },
+    {
+      "name": "neurocore/20260211T125718Z/sc_neurocore_adapter_poc_20260211T125718Z.json",
+      "sha256": "b1cd65d763e6a94ba1c78f78498f7a084a94237d95fafa725e99f82bed4d7600",
+      "size_bytes": 21084
+    },
+    {
+      "name": "neurocore/20260211T125718Z/sc_neurocore_adapter_poc_20260211T125718Z.md",
+      "sha256": "7eec93a04080b384b39ffb14b3d2702ed96e58ef3edf2871606494bdab2c0c7e",
+      "size_bytes": 608
+    },
+    {
+      "name": "neurocore/20260211T125802Z/sc_neurocore_adapter_poc_20260211T125802Z.json",
+      "sha256": "8ea5a1cc3cf7e2e01746b56631b35879a4ae4007e596d6d8f39212a5247edf41",
+      "size_bytes": 21086
+    },
+    {
+      "name": "neurocore/20260211T125802Z/sc_neurocore_adapter_poc_20260211T125802Z.md",
+      "sha256": "d9942fa96557d4ecca07e6cf7477e99efb69722dbb2daf1be1b36181e8fdfb2c",
+      "size_bytes": 610
+    },
+    {
+      "name": "neurocore/20260211T130701Z/cycle_metrics_minute_neurocore_10k_20260211T130531Z.csv",
+      "sha256": "017dd095f531b64a8e50073ce5060727d92a1fcfe4befd58d5dc503c7c8bf90e",
+      "size_bytes": 2864627
+    },
+    {
+      "name": "neurocore/20260211T130701Z/sc_neurocore_adapter_poc_20260211T130701Z.json",
+      "sha256": "f4980d40e7eb8b2d3956c61368c844e8339734b5853e365da967595a794f0386",
+      "size_bytes": 25441
+    },
+    {
+      "name": "neurocore/20260211T130701Z/sc_neurocore_adapter_poc_20260211T130701Z.md",
+      "sha256": "a3d74caf014e5b7826d37fd2417e045449550e0ab74b4a00bca69e2adeb4fcb1",
+      "size_bytes": 632
+    },
+    {
+      "name": "neurocore/20260211T130752Z/neurocore_build_status_20260211T130752Z.json",
+      "sha256": "24adbd947d668533ca9f38bf53950e75ba1e5a6c4e233e9288197b98a6f8dfde",
+      "size_bytes": 1640
+    },
+    {
+      "name": "neurocore/20260211T130752Z/neurocore_build_status_20260211T130752Z.md",
+      "sha256": "1b1507f0035e503425b87a22c48b32009fbf3cd2058dfe57f738a4ce365a59a4",
+      "size_bytes": 923
+    },
+    {
+      "name": "neurocore/20260211T144818Z/sc_neurocore_adapter_poc_20260211T144818Z.json",
+      "sha256": "108ad9a324a5f0e26461276bdb0125211203292b2337f378e37b823b4e9c3cb5",
+      "size_bytes": 26950
+    },
+    {
+      "name": "neurocore/20260211T144818Z/sc_neurocore_adapter_poc_20260211T144818Z.md",
+      "sha256": "c39337884f5db48eccde9677ccc37d1a5a34a74e65d370fbbfdf05aa2d5d5b7b",
+      "size_bytes": 636
+    },
+    {
+      "name": "neurocore/20260211T144928Z/sc_neurocore_adapter_poc_20260211T144928Z.json",
+      "sha256": "af66f8ea049a28529f84be67431aca58aee6e2968b7aa0d6340e48ab5623c035",
+      "size_bytes": 25449
+    },
+    {
+      "name": "neurocore/20260211T144928Z/sc_neurocore_adapter_poc_20260211T144928Z.md",
+      "sha256": "9f2bb01829c8482ba638ad590ab4585973a06b696d2c52e8cb5e38b47fb093fa",
+      "size_bytes": 640
+    },
+    {
+      "name": "neurocore/20260211T144948Z/sc_neurocore_compatibility_20260211T144948Z.json",
+      "sha256": "e386c3a99ccf852fdb6b0ee6d0d751a5ce7b970e9a79bac779336f655fc656f9",
+      "size_bytes": 2910
+    },
+    {
+      "name": "neurocore/20260211T144948Z/sc_neurocore_compatibility_20260211T144948Z.md",
+      "sha256": "2ec5cfba7ad1413321039afba0fa06ea4f53cbee673d3a709688572faa14ff35",
+      "size_bytes": 1214
+    },
+    {
+      "name": "omnimind_external_profile_20260208T101247Z.json",
+      "sha256": "e7d0be432483fa4db23b612390a65380247c2b3e7b8e9b816268987d4b9bbc2c",
+      "size_bytes": 9076
+    },
+    {
+      "name": "omnimind_external_profile_20260208T101247Z.md",
+      "sha256": "27d0eab64188621bed6e8efaa1bfd987b0be6a779b602641be813b5ce880e17b",
+      "size_bytes": 1787
+    },
+    {
+      "name": "omnimind_external_profile_candidates_20260208T101247Z.jsonl",
+      "sha256": "b38d15d074e6f26c4cfbdd7b04f9605a6ab504c40527ecf384ecd8d19a6fae7c",
+      "size_bytes": 23812
+    },
+    {
+      "name": "orbit_mapping/orbit_mapping_next_actions_20260209T213712Z.json",
+      "sha256": "c81913e029e0d4623aef9d51d373837f08b38e063ec71ffb4ad23e7136e4210b",
+      "size_bytes": 3598
+    },
+    {
+      "name": "orbit_mapping/orbit_mapping_next_actions_20260209T213712Z.md",
+      "sha256": "da86c4e4122d7580e8f4527696f5cd0ac293033afa767e4f7d8aa864000b0ad7",
+      "size_bytes": 1714
+    },
+    {
+      "name": "orbit_mapping/orbit_mapping_next_actions_20260209T230703Z.json",
+      "sha256": "3a8e704b86981a1755ee63b3337ead2ba2d8dda6af988d399b0564c5f8e58fb7",
+      "size_bytes": 3576
+    },
+    {
+      "name": "orbit_mapping/orbit_mapping_next_actions_20260209T230703Z.md",
+      "sha256": "97935a2000b9b2cb9bff7eb0a22b6d68e0ede402bdd77bd361ca7776d19aedfd",
+      "size_bytes": 1696
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_dodecatiad_20260211T152238Z.json",
+      "sha256": "fe3f24bc7c28458b46eab22ebf84197826c813277fc6a1f666f1771cc7da2d34",
+      "size_bytes": 858089
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_dodecatiad_20260211T152238Z.md",
+      "sha256": "4a72f0f4c05e9bd79332e96928a6bdeabac6c5da3ebdd0bffd5729ac3d0e8c4d",
+      "size_bytes": 92907
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_observation_plan_20260211T152412Z.md",
+      "sha256": "311ac968a460ffab93bbd2752992d017b685587509c1b31ee5210335d755cbdb",
+      "size_bytes": 5296
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_3d_20260211T152410Z.png",
+      "sha256": "de0d5c2ca8cedb3748eff5dc35fd183ec501e3a5e795e359cf7a2068f5beb5f6",
+      "size_bytes": 617341
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_3d_20260211T155245Z.png",
+      "sha256": "6cf75759bffff2f136fc3c15c4af5a9b2f00b578805f0fa8bef6f7ddebf8f0b1",
+      "size_bytes": 618349
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_4d_sinthome13_20260211T152410Z.png",
+      "sha256": "63f0037a55ce6d20268d3665c6eb9eb28e316c0a7980eba83762f7c36837be97",
+      "size_bytes": 724284
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_4d_sinthome13_20260211T155245Z.png",
+      "sha256": "e6939b8c219affd36289975db32912c1b0c20b417039a7216176fec33972dc58",
+      "size_bytes": 724993
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_4d_sinthome_quadruple_20260211T152410Z.png",
+      "sha256": "1d051356b2152c98e63f7ea7f1a8b536fe67920b8d272b7ca18b37993b2b6844",
+      "size_bytes": 729688
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_4d_sinthome_quadruple_20260211T155245Z.png",
+      "sha256": "aa1bdc3e6dc097b9dda7f14e7644d8e15233f7b44509b51ada4d4109f23d14a5",
+      "size_bytes": 727317
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_summary_20260211T152410Z.json",
+      "sha256": "5696a82e3cfe93ac7d1d4320035064d760e72ba858b0202535e12815ddcef6f2",
+      "size_bytes": 6129
+    },
+    {
+      "name": "orbit_queue/20260211T152238Z/orbit_queue_trails_summary_20260211T155245Z.json",
+      "sha256": "e1679f39deb31d556198cff1be1df0c8becfec9146510b3b1c684843f0442617",
+      "size_bytes": 6564
+    },
+    {
+      "name": "orbit_queue/orbit_queue_dodecatiad_20260210T024651Z.json",
+      "sha256": "d8b711e33466408c3534c2aaf1f4f81a5e2115e0873ab2c2411f41b9a483a48d",
+      "size_bytes": 1141566
+    },
+    {
+      "name": "orbit_queue/orbit_queue_dodecatiad_20260210T024651Z.md",
+      "sha256": "4c096542a557fc7f91e6a0dfac70178bd201ca8f7e6a28725a00fa79f368b06c",
+      "size_bytes": 120138
+    },
+    {
+      "name": "orbit_queue/orbit_queue_dodecatiad_20260210T024801Z.json",
+      "sha256": "69fbd543660e3edf979c73dadc58376c78b92e428b326e8ff9d11c1e4e0549eb",
+      "size_bytes": 583606
+    },
+    {
+      "name": "orbit_queue/orbit_queue_dodecatiad_20260210T024801Z.md",
+      "sha256": "d8aaea5a76b5cbb9aaff653ba3bd062170f466f68ed012e39933331199e10dfb",
+      "size_bytes": 62619
+    },
+    {
+      "name": "orbit_queue/orbit_queue_dodecatiad_20260210T024850Z.json",
+      "sha256": "ea8ef98eb9ea8ff4807963e6a78eb9a2775e68de7d03b669cf93b3957c295ace",
+      "size_bytes": 123273
+    },
+    {
+      "name": "orbit_queue/orbit_queue_dodecatiad_20260210T024850Z.md",
+      "sha256": "809bb92470c22c2b4ad5e0e0de30a14eee7fbb76aee7f68ccc62092cac43e679",
+      "size_bytes": 15111
+    },
+    {
+      "name": "orbit_queue/orbit_queue_ephemerides_schedule_20260210T012326Z.json",
+      "sha256": "534e45c14908bccdf3fd5ae72153924dba830815ae9b60eb12e29a0f0f8fd72d",
+      "size_bytes": 121812
+    },
+    {
+      "name": "orbit_queue/orbit_queue_ephemerides_schedule_20260210T012326Z.md",
+      "sha256": "28f6b7779120e341d82992c8f2e64cb248055f7945befe9e0c7491f02ac8a27d",
+      "size_bytes": 14133
+    },
+    {
+      "name": "orbit_queue/orbit_queue_observation_plan_20260210T023948Z.md",
+      "sha256": "b001199718ddf07e78204cb450befbe2932f60c7f1ca4aa6e5b12ba20b891858",
+      "size_bytes": 3781
+    },
+    {
+      "name": "orbit_queue/orbit_queue_observation_plan_20260210T065351Z.md",
+      "sha256": "7da21b50d371fb7e5c0c4db434f08ce7f1e2667ed914b8c8fe96e689ac787aa4",
+      "size_bytes": 4877
+    },
+    {
+      "name": "orbit_queue/orbit_queue_step_hours_comparison_20260210T025118Z.json",
+      "sha256": "d338151678f594a0ca60984934476f9160712669f8e8a88ef3d92245537218a5",
+      "size_bytes": 15472
+    },
+    {
+      "name": "orbit_queue/orbit_queue_step_hours_comparison_20260210T025118Z.md",
+      "sha256": "0eefeb18e116a38cbab3e561c6ecdbd1c9fca95421cf3234b8001d038ff23d27",
+      "size_bytes": 1856
+    },
+    {
+      "name": "orbit_queue_dimension_compare/20260210T154716Z/orbit_queue_dimension_compare_orbit_queue_dodecatiad_20260210T024651Z_20260210T154716Z.json",
+      "sha256": "2478e01a942ec1651459043cd4fd57ef023bc2c0a6b2f5f9b3c7f09d8c934454",
+      "size_bytes": 8120
+    },
+    {
+      "name": "orbit_queue_dimension_compare/20260210T154716Z/orbit_queue_dimension_compare_orbit_queue_dodecatiad_20260210T024651Z_20260210T154716Z.md",
+      "sha256": "a133427ece228de74039974174c233352eba20e4cf9e470e48585854ff4c77eb",
+      "size_bytes": 949
+    },
+    {
+      "name": "orbit_queue_dimension_compare/20260210T154716Z/orbit_queue_dimension_compare_orbit_queue_dodecatiad_20260210T024801Z_20260210T154716Z.json",
+      "sha256": "01f30cd8e8bd67121605706ef74ae4e12ba32ebbe51a656bcefc967b9f47b0f2",
+      "size_bytes": 8102
+    },
+    {
+      "name": "orbit_queue_dimension_compare/20260210T154716Z/orbit_queue_dimension_compare_orbit_queue_dodecatiad_20260210T024801Z_20260210T154716Z.md",
+      "sha256": "14a587a85bdb17559a4a7c65bfb2048ce364a53ad9485076e175ccb68ddf90a3",
+      "size_bytes": 962
+    },
+    {
+      "name": "orbit_queue_dimension_compare/20260210T154716Z/orbit_queue_dimension_compare_orbit_queue_dodecatiad_20260210T024850Z_20260210T154716Z.json",
+      "sha256": "0e0832f1e1fdbcfe558411cbf415c251e6c9812687ef0dd04a2644f809b1646a",
+      "size_bytes": 8027
+    },
+    {
+      "name": "orbit_queue_dimension_compare/20260210T154716Z/orbit_queue_dimension_compare_orbit_queue_dodecatiad_20260210T024850Z_20260210T154716Z.md",
+      "sha256": "cc97eb164a9b3e8af46ef4e374186a7195590c930a7df20b202d6c16a5bbd664",
+      "size_bytes": 949
+    },
+    {
+      "name": "orbit_queue_dimension_compare/compare_orbit_queue_dimensions.py",
+      "sha256": "88fc050e0ab94a40e4339e5d89a5d262f0cfafeceac46ca4f8d71646d7d53d77",
+      "size_bytes": 9967
+    },
+    {
+      "name": "orbit_queue_physical_visuals/20260210T225737Z/orbit_queue_trails_4d_sbdb_K1_20260210T225737Z.png",
+      "sha256": "b808790072bea4d36e0dac0b1b93df7c60e10b52b6a6c6916882d8cb07d4b907",
+      "size_bytes": 714041
+    },
+    {
+      "name": "orbit_queue_physical_visuals/20260210T225737Z/orbit_queue_trails_4d_sbdb_M1_20260210T225737Z.png",
+      "sha256": "060f280df57cd6430421dce8f62285796a5e8d355bb1886fee981e760fbdf73e",
+      "size_bytes": 694306
+    },
+    {
+      "name": "orbit_queue_physical_visuals/20260210T225737Z/orbit_queue_trails_4d_sbdb_M2_20260210T225737Z.png",
+      "sha256": "bb4fcb2077b9fe8cf31da6517aec2d316e54f6cc2daedf8f92cfa35cd12355b7",
+      "size_bytes": 645601
+    },
+    {
+      "name": "orbit_queue_physical_visuals/20260210T225737Z/orbit_queue_trails_physical_summary_20260210T225737Z.json",
+      "sha256": "4d3dcfaab5cfc45baa02fc48f738bbb8a8ca60f4bad951bfb31afda0c747c0a9",
+      "size_bytes": 1269
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/README.md",
+      "sha256": "a7f052dd16926eff5c554542158660bac99bc0e77fdd1cec204c7a883b87b9b3",
+      "size_bytes": 1172
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_3d_20260211T014910Z.png",
+      "sha256": "2e774ff21a86cf053b84d220e88a6556e3933c79e08f086c2fa06709eec7d629",
+      "size_bytes": 609137
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_4d_sbdb_K1_20260211T014928Z.png",
+      "sha256": "c635d137083095d7d470dd1d7e8c6db0e49c09c5cafb341abdb357ded3e38b7d",
+      "size_bytes": 714977
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_4d_sbdb_M1_20260211T014928Z.png",
+      "sha256": "44d2425a1cf2eff1552004f53f256afefc135ed3121a48089ef190dec2b98e4b",
+      "size_bytes": 695261
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_4d_sbdb_M2_20260211T014928Z.png",
+      "sha256": "6ea8e23075db3559bcd56775bd8b0998c521e2b1ad479f86f772eb0e8fb79cbc",
+      "size_bytes": 646485
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_4d_sinthome13_20260211T014910Z.png",
+      "sha256": "e0983075917cd0f1fafec70b488854d01269ad64bf9242f228ec6ec5f29f74a6",
+      "size_bytes": 711648
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_4d_sinthome_quadruple_20260211T014910Z.png",
+      "sha256": "63e62162a93e11d3a8bd26e502469df2914a479a5ea1213f43500f92ca3319a3",
+      "size_bytes": 727373
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_physical_summary_20260211T014928Z.json",
+      "sha256": "43f4d6bd66a47f8522bdd6b23fc7f3b632b8250b23888a0523375b6f769d9625",
+      "size_bytes": 1269
+    },
+    {
+      "name": "orbit_queue_trails/20260211T0149Z/orbit_queue_trails_summary_20260211T014910Z.json",
+      "sha256": "1ceea90fa650e486e10d42095819496d84cab9fa3431eef88473ab0d3a274490",
+      "size_bytes": 7361
+    },
+    {
+      "name": "orbit_queue_trails/20260211T034640Z/orbit_queue_trails_3d_20260211T034640Z.png",
+      "sha256": "b4c092e82cd58bc4d6dbc6d6b3b3500d36f9298535dc46c478b437abb6dbdf2d",
+      "size_bytes": 609188
+    },
+    {
+      "name": "orbit_queue_trails/20260211T034640Z/orbit_queue_trails_4d_sinthome13_20260211T034640Z.png",
+      "sha256": "bd3ac191cbf3a176f36c826804f8a25e6d6aa025cf30102aeb77a7ad595b9ad9",
+      "size_bytes": 711731
+    },
+    {
+      "name": "orbit_queue_trails/20260211T034640Z/orbit_queue_trails_4d_sinthome_quadruple_20260211T034640Z.png",
+      "sha256": "11f35466b4d5c31fc065d493a98021c23b3b5d3458c41024a62e4a0ee90c98a2",
+      "size_bytes": 727437
+    },
+    {
+      "name": "orbit_queue_trails/20260211T034640Z/orbit_queue_trails_summary_20260211T034640Z.json",
+      "sha256": "2e1a7032bf3dee224a4b0e5946189aef7e1f3786be93b091671bb49f88b50bd4",
+      "size_bytes": 7361
+    },
+    {
+      "name": "orbit_queue_visuals/20260210T144941Z/orbit_queue_trails_3d_20260210T144941Z.png",
+      "sha256": "21140896ccacc1fd5f4ce9925c74161dd10ac65c91e5baad0f6a098907a346b3",
+      "size_bytes": 611576
+    },
+    {
+      "name": "orbit_queue_visuals/20260210T144941Z/orbit_queue_trails_4d_sinthome13_20260210T144941Z.png",
+      "sha256": "bd5256c712dfb894fec4fe9bbad97dd8947d6d2bbf5498d86200d460da8d424c",
+      "size_bytes": 710625
+    },
+    {
+      "name": "orbit_queue_visuals/20260210T144941Z/orbit_queue_trails_4d_sinthome_quadruple_20260210T144941Z.png",
+      "sha256": "fb9ec764008643c81d33cb52f34cb7149aa551c411fa5e4a0b005d4e71c24914",
+      "size_bytes": 726346
+    },
+    {
+      "name": "orbit_queue_visuals/20260210T144941Z/orbit_queue_trails_summary_20260210T144941Z.json",
+      "sha256": "5d56471334a4837ff17f6b7339ff39f4fe8d413c23b9b3ff1455d5f0bce73704",
+      "size_bytes": 6723
+    },
+    {
+      "name": "orbital_trails/orbital_trails_dcriterion_20260208T173431Z.json",
+      "sha256": "47dfb5f4e328a7a0b0d95177463a236a471da4abb38b5a725490a163266f8114",
+      "size_bytes": 98895
+    },
+    {
+      "name": "orbital_trails/orbital_trails_dcriterion_20260208T173431Z.md",
+      "sha256": "ebe94528c660cd174a9e4cacce94eb19c251470bee4ff32593358cf3f8b6145a",
+      "size_bytes": 30584
+    },
+    {
+      "name": "orbital_validation/orbital_validation_20260208T080057Z.json",
+      "sha256": "5973ecc3d2d6de837f38fcaa712fa3f12d125e9deacf4754386e063ea606d597",
+      "size_bytes": 35002
+    },
+    {
+      "name": "orbital_validation/orbital_validation_20260208T080057Z.md",
+      "sha256": "1d1edc3780e530186d7d5f05f037a45e2fc36fddfd989e5ecfabe3d1767735c0",
+      "size_bytes": 5691
+    },
+    {
+      "name": "orbital_validation/orbital_validation_20260208T143133Z.json",
+      "sha256": "5bcaad858f6b1c205e348aca6fc56b0d50f825a64c1ddd68d9de993a21b0a1ea",
+      "size_bytes": 34609
+    },
+    {
+      "name": "orbital_validation/orbital_validation_20260208T143133Z.md",
+      "sha256": "4331229c89fa6f5df2e920d2fc80a4638f0b0b64a2bdc2eed9493d5932638940",
+      "size_bytes": 5299
+    },
+    {
+      "name": "orbital_validation/orbital_validation_20260208T151708Z.json",
+      "sha256": "2581a6eca4ec0bb7df7842d33b26e93d8df76d39ac3f11db3fd791e8d029a0c3",
+      "size_bytes": 34609
+    },
+    {
+      "name": "orbital_validation/orbital_validation_20260208T151708Z.md",
+      "sha256": "cfe0914ecfd798fef0ac5fa637d665c66bb3e9f443826232b3cbce7a6a11eb56",
+      "size_bytes": 5299
+    },
+    {
+      "name": "perplexity_hypothesis_validation_20260208T211954Z.json",
+      "sha256": "43980e91c8759fc081a13b3ed77d6df4293f358970ade212ae1759f4027e4a0f",
+      "size_bytes": 7762
+    },
+    {
+      "name": "perplexity_hypothesis_validation_20260208T211954Z.md",
+      "sha256": "5c99704733920214a9fd25ac5594d9ceb8d3e3d9e8ae063f1f374e5d9ce9b575",
+      "size_bytes": 2789
+    },
+    {
+      "name": "perplexity_images_manifest_20260208T064156Z.json",
+      "sha256": "be054cf3b5765975fb866b0a198f965f6e7eefc36bb8afd43b9ee62c01823030",
+      "size_bytes": 2679
+    },
+    {
+      "name": "perplexity_proofs_manifest_20260208T072224Z.json",
+      "sha256": "b589cc82191f4fb3607b280e5b34c7c286cbf63e8a459d20521650fb94234f7f",
+      "size_bytes": 1529
+    },
+    {
+      "name": "perplexity_sync_assets/graph1_sync_chart.png",
+      "sha256": "bf9015690342234f3d85d7449989d93a87975bd24b3e4d28924f6af265e9af25",
+      "size_bytes": 263625
+    },
+    {
+      "name": "perplexity_sync_assets/graph2_sync_chart..png",
+      "sha256": "c179db68d6fee4b3d9fd2e44630e546c0aa7a4454c01418781e630efc7410f0d",
+      "size_bytes": 284589
+    },
+    {
+      "name": "perplexity_sync_assets/sync_analysis_20260209.json",
+      "sha256": "214d07e09992d3c78915a9e4ae97267b5ea08b16906a5a279caa3a79f40b2fc8",
+      "size_bytes": 2416
+    },
+    {
+      "name": "phi_stability_redshift.png",
+      "sha256": "cd5c166be217fe1da06274fefb3c4858e81e689d32c5832a966168348a052aff",
+      "size_bytes": 200552
+    },
+    {
+      "name": "phi_tng50_redshift_20260208T073837Z.json",
+      "sha256": "21f0ed918527d2bd1976796ad0b803dca632da73f448d9b61643ec3e7005295a",
+      "size_bytes": 599
+    },
+    {
+      "name": "phi_tng50_redshift_20260208T073837Z.md",
+      "sha256": "7b33ceeaca4d29f0a555190418512b12f9c5de792ac6b91b802317c4d4332084",
+      "size_bytes": 972
+    },
+    {
+      "name": "polar_distribution_axiom_epsilon.png",
+      "sha256": "94b7c452dbaed34eb6a95243b04844a530d5833742ad98b5cc108c0101b4f6f2",
+      "size_bytes": 266744
+    },
+    {
+      "name": "polar_distribution_axiom_epsilon_real_20260208T072224Z.png",
+      "sha256": "7fd93ba5096ed01a8845f8ee07d657ff5259e60b45c08f036d84dfee9a9d9c1b",
+      "size_bytes": 24423
+    },
+    {
+      "name": "polarization_violin.png",
+      "sha256": "aceafe8f334dba297189483b0c7caddb04dfd9fe09d6faa0ef192a04680d59f5",
+      "size_bytes": 273390
+    },
+    {
+      "name": "publication/20260211T175815Z/zenodo_publication_flow_audit_20260211T175744Z.json",
+      "sha256": "8f249366254ddb3e0f3695257fe97b67967c22a392b2dc7a54f5b5eca0043303",
+      "size_bytes": 10040
+    },
+    {
+      "name": "publication/20260211T175815Z/zenodo_publication_flow_audit_20260211T175744Z.md",
+      "sha256": "e4d898b6272788749d6704e90e43a661e6f61711d1b6b2587a73c8fb4140d2a4",
+      "size_bytes": 1211
+    },
+    {
+      "name": "qdrant_cemetery_map_summary_20260208T085527Z.json",
+      "sha256": "c02e023af39ba7e1a0f3b6aa3737da9fd3a950ae717ef7b25beb24ec080b07ec",
+      "size_bytes": 10486
+    },
+    {
+      "name": "qdrant_cemetery_map_summary_20260208T085527Z.md",
+      "sha256": "8e700e8720b9dfbb88eb43c87d2a0b3607ca29ebbbfe9f0bc3237b0a22127ea2",
+      "size_bytes": 1561
+    },
+    {
+      "name": "qdrant_cemetery_map_summary_20260208T090532Z.json",
+      "sha256": "c655341b3b6c648bc54cf3040a54f6226b6b5d64e51354b5a6f841839c32a6e6",
+      "size_bytes": 10500
+    },
+    {
+      "name": "qdrant_cemetery_map_summary_20260208T090532Z.md",
+      "sha256": "33242dec0114e3152218a74836b98cc1d4ec04415b0fd3ca54d7b2a146afcb26",
+      "size_bytes": 1561
+    },
+    {
+      "name": "qdrant_cemetery_map_summary_20260208T093209Z.json",
+      "sha256": "70ef74780a2f3232ac1849f059c66adf009c666696fdb1a95036fc4ccc3f3cc2",
+      "size_bytes": 21133
+    },
+    {
+      "name": "qdrant_cemetery_map_summary_20260208T093209Z.md",
+      "sha256": "8328f47682c3d5473772d892f5964799afe905283649cdcd7fdd28ee72e30975",
+      "size_bytes": 1867
+    },
+    {
+      "name": "qdrant_collection_house_ranking_20260208T093209Z.json",
+      "sha256": "9b0f5012484d031c7186b52c0b8af0863f6e71c04c2bb7fb5a28de13bdf71a96",
+      "size_bytes": 6745
+    },
+    {
+      "name": "qdrant_collection_house_ranking_20260208T093209Z.md",
+      "sha256": "1e28600802505bffd320407728e93e233f3c3fa8f327858817f09ba33621c18e",
+      "size_bytes": 2889
+    },
+    {
+      "name": "qdrant_collection_reading_20260208T133408Z.md",
+      "sha256": "d0c08909e835b10da05683ae4d42f2c2b00ab64ecc3322db6a23eaa633860909",
+      "size_bytes": 3522
+    },
+    {
+      "name": "qdrant_collection_strength_20260208T090436Z.json",
+      "sha256": "6d34344ca40bba7b7b6af9398de7227ed947fce763d5ffa9cc9b5cfc5885001b",
+      "size_bytes": 2476
+    },
+    {
+      "name": "qdrant_collection_strength_20260208T090436Z.md",
+      "sha256": "675848f2588914a760ae4225c034d016dc909a5827ad035d3c9ac07a95b0bf30",
+      "size_bytes": 1235
+    },
+    {
+      "name": "qdrant_collection_strength_20260208T093209Z.json",
+      "sha256": "4ccf0024780dabc473fd92e7058a11f0063275f997b2e84d029b0b3bb09f98f6",
+      "size_bytes": 4027
+    },
+    {
+      "name": "qdrant_collection_strength_20260208T093209Z.md",
+      "sha256": "14b428b0f7e26859d7f27d4bd22bf1c087106a53a2e5201bcc85dfc93ed97e87",
+      "size_bytes": 2272
+    },
+    {
+      "name": "qdrant_dec_band_compare.meta.json",
+      "sha256": "412dda710afb037f56fcd7c3ffc2234aaf6cc6d98546d6225ac59e96e5571bd3",
+      "size_bytes": 581
+    },
+    {
+      "name": "qdrant_dec_band_compare.png",
+      "sha256": "d9fa88acf9b9a9c081223d7894c54d80f05741d999e52183859b8ca55e527da4",
+      "size_bytes": 268241
+    },
+    {
+      "name": "qdrant_dec_band_compare_manifest_20260208T134710Z.json",
+      "sha256": "d709c05dc9f88b634d6112907a39ce6fc0bda97a9fc89f57ead125f2384843fd",
+      "size_bytes": 480
+    },
+    {
+      "name": "qdrant_dec_band_heatmap.png",
+      "sha256": "383f51fc865d5ae5e46107c0882674b25b08ee632fc1543ca0136c05126662ce",
+      "size_bytes": 105823
+    },
+    {
+      "name": "qdrant_dec_band_heatmap_manifest_20260208T134710Z.json",
+      "sha256": "4cfc79e2b8601a297f5e038906511b27a5ac5f3eec1810f2da4d7a7969ef65ba",
+      "size_bytes": 294
+    },
+    {
+      "name": "qdrant_dec_band_reading_short_20260208T134710Z.md",
+      "sha256": "57ace4196b313fcf337fdb1c1e88ad52a4c62b8e856d451db977d694ca720b66",
+      "size_bytes": 1027
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_band_summary.json",
+      "sha256": "d5710839dda7ef3a9f2bb587b987d14eb66ebd5a9809817d3a6745dc95e8ab1a",
+      "size_bytes": 4356
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_ge_30_only.png",
+      "sha256": "c9dfae0d203a4a3a11430266b2459bb8d1b6fffe4fbb02f58586e44feebb2d23",
+      "size_bytes": 1768923
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_ge_30_overlay_sdss.png",
+      "sha256": "a37332a0d1d5f5f89f0f69633303d4507b9ea909107a1a07c47f0985533cc806",
+      "size_bytes": 1845654
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_ge_45_only.png",
+      "sha256": "6edd32dcc2253bc436c803ca4484cc04e55fd9193ed59d4845f6ffe296f96de7",
+      "size_bytes": 1371567
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_ge_45_overlay_sdss.png",
+      "sha256": "0f65bd3c20bbb939ceac2160e880b6dc7927e380304e08b45e69403bdb987db7",
+      "size_bytes": 1413282
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_le_30_only.png",
+      "sha256": "4a920c7e0f0a42fa5fce4583c8ce6977c3853f4583187c01ce7690abe32df5fc",
+      "size_bytes": 1062410
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_le_30_overlay_sdss.png",
+      "sha256": "264e22b73e4fbfa5b0cc44a120521f0bf97ea7711ed5ef1edf5d1a5b0c45f2ac",
+      "size_bytes": 1168729
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_le_45_only.png",
+      "sha256": "4cc79c5556f570af22d9e7a15c3f282fa6f267dd7fba9937ce607002108672da",
+      "size_bytes": 1457590
+    },
+    {
+      "name": "qdrant_dec_bands_20260208T134710Z/qdrant_dec_le_45_overlay_sdss.png",
+      "sha256": "700b014f55b1b82e305bebb818fb9a8900471f52039116910ef79c4c58ca690a",
+      "size_bytes": 1595565
+    },
+    {
+      "name": "qdrant_house_compare.png",
+      "sha256": "e830b1b759bd1e182c8ee2e370d4a6719a6a6e81c0112374aac7ee5788a7ef03",
+      "size_bytes": 112239
+    },
+    {
+      "name": "qdrant_house_heatmap.png",
+      "sha256": "9268f2ea352954e528252f094bdb5a27fcbbac40d496d5c9259f723ccb88b4b1",
+      "size_bytes": 113085
+    },
+    {
+      "name": "qdrant_live_full_sample_points_20260209T010044Z.jsonl",
+      "sha256": "469b040c295ff495356bc58008e91e2815dffbc96a87853f230932ead37a5fd8",
+      "size_bytes": 29642114
+    },
+    {
+      "name": "qdrant_live_full_sample_points_20260209T015543Z.jsonl",
+      "sha256": "1cf41cbc2f2372bf8a73c4cbc1084d934216fbe75177d420ace1180495b9ec6e",
+      "size_bytes": 21342211
+    },
+    {
+      "name": "qdrant_live_full_sample_points_20260209T022639Z.jsonl",
+      "sha256": "8b865941b78828b12acae4cca19bb507277e61a2ce92da400dcb2d5a5994d08f",
+      "size_bytes": 11857222
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T000314Z.json",
+      "sha256": "90326527daff3715e3e72faf234b418105e70ff21c741ded95649f6e62ae38e4",
+      "size_bytes": 13837
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T000314Z.md",
+      "sha256": "897251ee48de5e4c76e27227c2d28a2dd54746101077c242aac01166962c7560",
+      "size_bytes": 2579
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T010044Z.json",
+      "sha256": "789cbdeb6ed2c5f3239f306791594d1dfcf630d7d5ad379dd4b461c5ecccee96",
+      "size_bytes": 13831
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T010044Z.md",
+      "sha256": "5be98e751eb927847b20678a0edb554f491b95daa71f676f162acedd0ff6bc18",
+      "size_bytes": 2579
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T015543Z.json",
+      "sha256": "1b1fb1eb7faa4a6d0069cdbc34b665492263fd9587debe58d1fe2dc76f45d491",
+      "size_bytes": 13832
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T015543Z.md",
+      "sha256": "035021d807fd0af17c984c67a8f6b792bfb7ba39ec20cd0221c5f11f02e21ac3",
+      "size_bytes": 2579
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T022639Z.json",
+      "sha256": "fb3d1faa0eace74557ebeba4acbbcd8995d9591fea0d549c2c85297df63c1f88",
+      "size_bytes": 13834
+    },
+    {
+      "name": "qdrant_live_full_summary_20260209T022639Z.md",
+      "sha256": "ff09f2736f9f20327a91847ef478a293f8684bbb4c549fda31d0d464f73a224f",
+      "size_bytes": 2579
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T000314Z/qdrant_live_house_heatmap.png",
+      "sha256": "0fa609a17528526ac5e32788f16d12b124a17d2468acef194d2e36084d45ea38",
+      "size_bytes": 114949
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T000314Z/qdrant_live_only.png",
+      "sha256": "9d9ba5b08858c687ac969833c730c71e28ac6914568204cd136cb93cd050a38d",
+      "size_bytes": 5970561
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T000314Z/qdrant_live_overlay_sdss.png",
+      "sha256": "47ddb6a2637f7cf85891fe95fbced002da8e76077f7f9f3adf15e4e8c1a900ac",
+      "size_bytes": 7114166
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T010044Z/qdrant_live_house_heatmap.png",
+      "sha256": "0fa609a17528526ac5e32788f16d12b124a17d2468acef194d2e36084d45ea38",
+      "size_bytes": 114949
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T010044Z/qdrant_live_only.png",
+      "sha256": "fe34f8818e29db9a45adc3676b4fbac559096b09f890b4403d4c29ae1f9242a4",
+      "size_bytes": 7201624
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T010044Z/qdrant_live_overlay_sdss.png",
+      "sha256": "39760044bbfb2ab004b6fe977de68c8d4922068f482e71311a5859ab21b888ce",
+      "size_bytes": 8514346
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T015543Z/qdrant_live_house_heatmap.png",
+      "sha256": "0fa609a17528526ac5e32788f16d12b124a17d2468acef194d2e36084d45ea38",
+      "size_bytes": 114949
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T015543Z/qdrant_live_only.png",
+      "sha256": "e31b47d926a1e477875de25dc0dca85366500b65077dad5e9ccd35294a94876c",
+      "size_bytes": 5452937
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T015543Z/qdrant_live_overlay_sdss.png",
+      "sha256": "215465d796cddcbfb58b49ed50ee5798c7ae44e446bab320cb6383e00b795e95",
+      "size_bytes": 6521537
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T022639Z/qdrant_live_house_heatmap.png",
+      "sha256": "0fa609a17528526ac5e32788f16d12b124a17d2468acef194d2e36084d45ea38",
+      "size_bytes": 114949
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T022639Z/qdrant_live_only.png",
+      "sha256": "f9ad453246691c562ecce9b748bd7222074bb4cf55c1e0a5ee5ed3b8bbc5cd62",
+      "size_bytes": 3269476
+    },
+    {
+      "name": "qdrant_live_sessions/20260209T022639Z/qdrant_live_overlay_sdss.png",
+      "sha256": "e7513bf995dc00d9c7362e1874730501bdf82dbb8959e3cc68917ba2e3721737",
+      "size_bytes": 3974651
+    },
+    {
+      "name": "qdrant_live_vs_sample_compare_20260209T000546Z.json",
+      "sha256": "ba30414a613bf506d2d59c57aedf8e9eb8ded534b8775f9c18eb9c53a8e4f0ad",
+      "size_bytes": 1911
+    },
+    {
+      "name": "qdrant_live_vs_sample_compare_20260209T000546Z.md",
+      "sha256": "936a5eb28d876c3e60109c20b32b5b38314188270f1150c594953d9dd64c9b81",
+      "size_bytes": 555
+    },
+    {
+      "name": "qdrant_only.png",
+      "sha256": "9cec4b1ddd6eeb8111d03f92087e27acf9bbf9bff4702ba7de2d78206cf661a4",
+      "size_bytes": 2884607
+    },
+    {
+      "name": "qdrant_overlay_cosmo_manifest_20260208T133408Z.json",
+      "sha256": "28d0b60ba2bdd06827dd23df85a2d9f98efd5007cba20518948863cbffd9863b",
+      "size_bytes": 793
+    },
+    {
+      "name": "qdrant_overlay_cosmo_summary_20260208T133408Z.json",
+      "sha256": "048910276a8f77c84679aa50ed044ccc7f62c06416b1ddca0ace174dc0e5aaf7",
+      "size_bytes": 7117
+    },
+    {
+      "name": "qdrant_overlay_gamma.png",
+      "sha256": "77d6f0d6165cea7788095e02eac212985f2da37a52573fd0a23a3efb196c5abf",
+      "size_bytes": 1226001
+    },
+    {
+      "name": "qdrant_overlay_lyman.png",
+      "sha256": "00e380e6edf5a6d71774f8b24df3ebe61e800bfbff2a336d292fc6edaa223482",
+      "size_bytes": 1227396
+    },
+    {
+      "name": "qdrant_overlay_sdss.png",
+      "sha256": "6d28ae165c44a5d776d71db2ddb4cdabd128c64e5d538e1b54182f8471a7172f",
+      "size_bytes": 3600491
+    },
+    {
+      "name": "qdrant_overlay_sdss_by_collection.png",
+      "sha256": "a0f79283753d03253d29c9e79af35888eaa9b637d015b2f33f6e5cf5c224964e",
+      "size_bytes": 3683408
+    },
+    {
+      "name": "qdrant_overlay_sdss_by_collection_manifest_20260208T134813Z.json",
+      "sha256": "5fcb13efeea3c42037d6f8aa8ee9eb5ab5a13d4bc54c21f0138fdc2f5deaa050",
+      "size_bytes": 404
+    },
+    {
+      "name": "qdrant_overlay_sdss_by_collection_summary_20260208T134813Z.json",
+      "sha256": "4af06e4c37ed2ece6f962b48424df9c3b0014dade5155dc2542bafc7ddf14670",
+      "size_bytes": 314
+    },
+    {
+      "name": "resonance_temp_correlation_20260208T142642Z.json",
+      "sha256": "0c532cffa095b9dd89dfbb64a97180f11cee86432b6e6f71cbcab7bf016bd231",
+      "size_bytes": 571551
+    },
+    {
+      "name": "resonance_temp_correlation_20260208T142642Z.md",
+      "sha256": "298a1fdb345e8f08d52a270637378634f128468f0dcb7ad7cfa52648108e80d0",
+      "size_bytes": 604
+    },
+    {
+      "name": "satellite_coverage_recheck_20260208T220629Z.json",
+      "sha256": "9b84e2b1ed14ad7c449daab6f2d8c90ef17a37673ec26429ca9fea36e5f0d066",
+      "size_bytes": 895
+    },
+    {
+      "name": "satellite_coverage_recheck_20260208T220629Z.md",
+      "sha256": "c97598c95e0900b9d60671ddbf476e9aa4c515a88e651125a1e6486fae0736c5",
+      "size_bytes": 876
+    },
+    {
+      "name": "sbdb_physical/20260210T224704Z/sbdb_physical_20260210T224704Z.json",
+      "sha256": "412f1138c704331ccf6551b603eaacc423dbf8cd4dfe56954dec9a72d76a32a8",
+      "size_bytes": 14271
+    },
+    {
+      "name": "sbdb_physical/20260210T224704Z/sbdb_physical_20260210T224704Z.md",
+      "sha256": "b95d975f0c4852f6c6cc0b644e8e87728a772277a4698d3a638501149dcb8d5f",
+      "size_bytes": 2020
+    },
+    {
+      "name": "sdss_vs_dynamic.png",
+      "sha256": "b7585715f8d7366d3631a57b6c2e475cf4dd0ad18189c903061876ed1672c12c",
+      "size_bytes": 280591
+    },
+    {
+      "name": "sdss_vs_dynamic_real_20260208T072224Z.png",
+      "sha256": "42395d9b4a05d8a5b84ee7abd1a7483072f39ab9d5e9eca8d4218ceabbb666c7",
+      "size_bytes": 360450
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_asteroids_layer.png",
+      "sha256": "d68d0f7fd8bbe5f4d74f2a5bbeddf491c9474967c1382027b9695bbd8d63db60",
+      "size_bytes": 257891
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_cosmo_manifest.json",
+      "sha256": "9f1d28b9f804a57e90c92d5a5b8e2f56800da3acb53749653173f429638265d4",
+      "size_bytes": 2927
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_gamma.png",
+      "sha256": "f94f0d77f7cb0bd6f8bd980d9a83163dd65f4991872db74ab92f68f577c8e9b0",
+      "size_bytes": 863392
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_layers_all.png",
+      "sha256": "d72281ce16cda6360d56dc3510c8b5af39470cc1eecf442d1564103db5dd0d62",
+      "size_bytes": 1737704
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_layers_all_plus_crux_cemetery.png",
+      "sha256": "0086f0b8f725b060ccd9b4739e9cd0bbed803b8d1e9e8a7db519db803b8901ac",
+      "size_bytes": 2312377
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_lyman.png",
+      "sha256": "e16eed9f19338b1a9fd66f26d03f1e5cc4f6eeddd30d9adab69228cc0c3147be",
+      "size_bytes": 625463
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_sdss.png",
+      "sha256": "7dc228b63e71ed2b11b3a170a2c635feffd821441fd636f582e8325f0fd4a540",
+      "size_bytes": 660811
+    },
+    {
+      "name": "sessions/20260208T081651Z/dodecatiad_universe_map_plus.png",
+      "sha256": "9408eb18deefec7328a6f7678d84b856f7633764974767fe59be2e155a50b466",
+      "size_bytes": 1538660
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_asteroids_layer.png",
+      "sha256": "7800919392be6394f0daee2685b04fe885018a453b2254c74f296fb192ad20f0",
+      "size_bytes": 394400
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_cosmo_manifest.json",
+      "sha256": "4a379c7230ebb3e5d0fc9a8443a72cc18a30c35d55a6b215a45c7c0cb72f9568",
+      "size_bytes": 2927
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_gamma.png",
+      "sha256": "c2da5bcbd45629cabd7c6614d101fe60d7db927e4cbc50c7bb8d24e211ff9fa7",
+      "size_bytes": 861671
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_layers_all.png",
+      "sha256": "7de73f1822915f8f4379076751d0b902ff89ea7ff705dff6e62c0004a43ce2d2",
+      "size_bytes": 1864087
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_layers_all_plus_crux_cemetery.png",
+      "sha256": "6ae08a7594d98270769930a424dfbcb00512ae42c8aa9f34dd2a3dd73ce18270",
+      "size_bytes": 2424384
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_lyman.png",
+      "sha256": "13eaaad9e1119f95eb6a203ed7c2acb1618758fe9da38795683ed1243f9f487b",
+      "size_bytes": 621084
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_sdss.png",
+      "sha256": "059b6ed1212e79333b3aca38fdae81ccebede7698c09062fd69699bcb06c91a4",
+      "size_bytes": 662188
+    },
+    {
+      "name": "sessions/20260208T114745Z/dodecatiad_universe_map_plus.png",
+      "sha256": "0abe56b8a0b31df82e306b90727ec2b0467e252a5c2aaeaf6167d3aa5b1e1c44",
+      "size_bytes": 1538957
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_asteroids_layer.png",
+      "sha256": "64196450490f318b1b1e9b958a2f54b410feaec1ec0226eed6ed61c8c7482f6c",
+      "size_bytes": 255846
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_cosmo_manifest.json",
+      "sha256": "21578d6623f4890f90a7f5a5431f14c0623fb74d6f8018b27fbcb53f671da75e",
+      "size_bytes": 2927
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_gamma.png",
+      "sha256": "b861977c54a98ba8de94dcfc887ae7bf4652d08e7a505c2392643154315f1239",
+      "size_bytes": 861243
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_layers_all.png",
+      "sha256": "f616abde0e70c746cc69675c835b4af6f7387420182201f6fe24a38f7368b628",
+      "size_bytes": 1716890
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_layers_all_plus_crux_cemetery.png",
+      "sha256": "6bc634b84a718618b147d24823325f1ac8b9c9c3fc5c9fed09af6e93240b9ea4",
+      "size_bytes": 2284244
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_lyman.png",
+      "sha256": "be7a65cd95e63eef5f7b0354aae81d87f1caa33b10aaa71c2798e5cfbb4a3497",
+      "size_bytes": 622795
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_sdss.png",
+      "sha256": "659e4b9eb7792a70a42c244556b4f4c83fe2781bfd1074ac738c1fc0a0ede2e0",
+      "size_bytes": 653832
+    },
+    {
+      "name": "sessions/20260208T151958Z/dodecatiad_universe_map_plus.png",
+      "sha256": "a37b3601c3269c932dd8446de7d409cd260ef1ee05164df8520242978a5cf86a",
+      "size_bytes": 1528127
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_asteroids_layer.png",
+      "sha256": "d9859661ddaf9c6eba8d26f6e93cb26931fe3f99a2612e62c7a2c84d9fd1803e",
+      "size_bytes": 255803
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_cosmo_manifest.json",
+      "sha256": "3cbed1eafab9b8450da150d065a993ca398c69d1e4acab9fa76e44d3835581a8",
+      "size_bytes": 4002
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_galactic_windows.png",
+      "sha256": "19bc99071bffbf3fd493a7f6c28a23bccba281c67b89e0a2bbc27d125130e607",
+      "size_bytes": 254961
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_gamma.png",
+      "sha256": "95ba7e06d2604534be62261ff6e14a0189fa4b24952f8f4044d634ab3c405b46",
+      "size_bytes": 871080
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_layers_all.png",
+      "sha256": "a9031e0ad0cb0db6ea044e538b53a39df834430412c888d93f4ca4fe67e5cec6",
+      "size_bytes": 1734846
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_layers_all_plus_crux_cemetery.png",
+      "sha256": "03619c1912cbb57fc07f8251c2c55943ef5b098877fadcb4134e612825aa1269",
+      "size_bytes": 2293385
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_lyman.png",
+      "sha256": "59aeada2ee5ff5d512bdde51c15143f3a548ef2aa08c50d2451faa44ba8aa805",
+      "size_bytes": 630193
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_sdss.png",
+      "sha256": "143ef45d8ed742954af8ad3c863d9368830bab0edd5e317ca0ca3d7ba2384d40",
+      "size_bytes": 668374
+    },
+    {
+      "name": "sessions/20260208T154905Z/dodecatiad_universe_map_plus.png",
+      "sha256": "0c40084794af0c8948f7ec399355b70250f147194046d0256f1e87ff7d811435",
+      "size_bytes": 1541279
+    },
+    {
+      "name": "spectral_profiles/README.md",
+      "sha256": "a1ef075523fd4dccb94cba61f8be7d0137503889abffa5744f5bd441cd5f9524",
+      "size_bytes": 902
+    },
+    {
+      "name": "spectral_profiles/universe_map_plus_spectral_heatmap_20260208T170813Z.png",
+      "sha256": "c28c9ac6d60c4ac668329a0725a1f60658cf8ccbdda22c902ba0baaa0110e9e2",
+      "size_bytes": 124332
+    },
+    {
+      "name": "spectral_profiles/universe_map_plus_spectral_house_reading_20260208T170813Z.json",
+      "sha256": "33f1d76e3deef766f4c540928b3192519b27a079e56400195ae87b3fc60d9968",
+      "size_bytes": 7855
+    },
+    {
+      "name": "spectral_profiles/universe_map_plus_spectral_house_reading_20260208T170813Z.md",
+      "sha256": "906608f8fb7d8f131e0a4150521c099784bd8d4518973b54c9ba66cccb6de7da",
+      "size_bytes": 1528
+    },
+    {
+      "name": "spectral_profiles/universe_map_plus_spectral_profiles_20260208T170137Z.csv",
+      "sha256": "e9df25ba98c5bd9f8fbe9d64a064062739f411e0c093493712ac167e084c0813",
+      "size_bytes": 1671348
+    },
+    {
+      "name": "spectral_profiles/universe_map_plus_spectral_profiles_20260208T170137Z.jsonl",
+      "sha256": "4d3033241086ac67c94a8ef57c11a208a4c3bbd04e4607a18f7be8f7de861f03",
+      "size_bytes": 3546780
+    },
+    {
+      "name": "spectral_profiles/universe_map_plus_spectral_profiles_summary_20260208T170137Z.json",
+      "sha256": "00aaba37e9532a673523bdaf4597e18e03582078cde5fc9862275e2f70c6dee3",
+      "size_bytes": 9767
+    },
+    {
+      "name": "storage_ops/20260211T024647Z/dataset_inventory_20260211T024649Z.json",
+      "sha256": "4abef26e5d720ad8c516e021332b832031456e3556cccd04b07751e31dbd858e",
+      "size_bytes": 2060
+    },
+    {
+      "name": "storage_ops/20260211T024647Z/dataset_inventory_20260211T024649Z.md",
+      "sha256": "8ed5fa3c135599827c19b01f732e9914d84111b9fee215091cb7cefec8421299",
+      "size_bytes": 947
+    },
+    {
+      "name": "storage_ops/20260211T024831Z/backup_migration_inventory_20260211T024831Z.json",
+      "sha256": "0cd7ad7baaa0292f11b2daf7f71ebae4c2734cadfa442bb84844c2e2bd03524f",
+      "size_bytes": 4717
+    },
+    {
+      "name": "storage_ops/20260211T024831Z/backup_migration_inventory_20260211T024831Z.md",
+      "sha256": "3a18bc85454fdda1a664944cc82dabb4f5f068b287e11aaae4f7f2ee15782b72",
+      "size_bytes": 535
+    },
+    {
+      "name": "storage_ops/20260211T024831Z/dataset_inventory_qdrant_ingest_20260211T025017Z.json",
+      "sha256": "bc40c4ad3d7ade23527e8d9624f8fc3722aeae063234411c53d7433069516c28",
+      "size_bytes": 569
+    },
+    {
+      "name": "storage_ops/20260211T024831Z/dataset_inventory_qdrant_ingest_20260211T025017Z.md",
+      "sha256": "fedfd9692c8b938520ace751e5e937065507a080c7be360459cfd30259e0cec7",
+      "size_bytes": 522
+    },
+    {
+      "name": "storage_ops/20260211T031211Z/big_bak_files.tsv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "name": "storage_ops/20260211T031211Z/quantum_compression_candidates.tsv",
+      "sha256": "c263d98e9f0623438024e93b9ecbf87995cc4d123be23687d0f1f793e67a0217",
+      "size_bytes": 30296
+    },
+    {
+      "name": "storage_ops/20260211T031420Z/big_bak_files.tsv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "name": "storage_ops/20260211T031420Z/quantum_compression_candidates.tsv",
+      "sha256": "c263d98e9f0623438024e93b9ecbf87995cc4d123be23687d0f1f793e67a0217",
+      "size_bytes": 30296
+    },
+    {
+      "name": "storage_ops/20260211T031504Z/big_bak_files.tsv",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "name": "storage_ops/20260211T031504Z/quantum_compression_candidates.tsv",
+      "sha256": "c263d98e9f0623438024e93b9ecbf87995cc4d123be23687d0f1f793e67a0217",
+      "size_bytes": 30296
+    },
+    {
+      "name": "storage_ops/20260211T031504Z/storage_scan_summary.json",
+      "sha256": "0776969998deee86db8309b26adcf83316a4f1728a714f7bb1ac3881d67d1650",
+      "size_bytes": 128
+    },
+    {
+      "name": "storage_ops/20260211T031504Z/storage_scan_summary.md",
+      "sha256": "b97c3743419620ca8bcb1dfece411441a368c9419b0f8f116ebd34af1e8e7d15",
+      "size_bytes": 381
+    },
+    {
+      "name": "storage_ops/20260211T031716Z/offload_progress_20260211T031716Z.json",
+      "sha256": "84de2bfe5046465610dab03bfa2ec540c685038ae941d3ef32bde698493d5d84",
+      "size_bytes": 561
+    },
+    {
+      "name": "storage_ops/20260211T031716Z/offload_progress_20260211T031716Z.md",
+      "sha256": "2980a801e3017ce39ba77d1560d0442afca7204e06207bb79e15b3b71daa1195",
+      "size_bytes": 572
+    },
+    {
+      "name": "storage_ops/20260211T031919Z_offload_chain.log",
+      "sha256": "71a5caa0b0788bad985eafb866539c9858b6bb69ecea828c4a85ec93b6b7194f",
+      "size_bytes": 40
+    },
+    {
+      "name": "storage_ops/20260211T033728Z/offload_progress_20260211T033728Z.json",
+      "sha256": "04d4cdc5b2ad59ef650774205e755361aceafc4cc6ceaf4ba8320826617f8728",
+      "size_bytes": 4351
+    },
+    {
+      "name": "storage_ops/20260211T033815Z/offload_progress_20260211T033815Z.json",
+      "sha256": "8ac6918ca0d2f21809245cf641da08ac90f81e61aed07a3be5c95578bf767284",
+      "size_bytes": 4473
+    },
+    {
+      "name": "storage_ops/20260211T033815Z/offload_progress_20260211T033815Z.md",
+      "sha256": "8f48b50e2fc09097d623335d762b87f15c32064b718216d343be4efd2fc2064a",
+      "size_bytes": 4024
+    },
+    {
+      "name": "storage_ops/20260211T033852Z/offload_progress_20260211T033852Z.json",
+      "sha256": "c75461858843f4d1e3f9926a336536bd2cc56f92149bb6b848c0b1538321c32f",
+      "size_bytes": 115
+    },
+    {
+      "name": "storage_ops/20260211T033852Z/offload_progress_20260211T033852Z.md",
+      "sha256": "1c1fe7358df77a940167e28c7711a4e90c758afb4e96b685b39bf93d30c8e508",
+      "size_bytes": 2896
+    },
+    {
+      "name": "storage_ops/20260211T134409Z/symlink_integrity_audit_20260211T133957Z.json",
+      "sha256": "f3cf7d0464b57007248e164ca0ba771c37ebc2985b72f213fe12495c4a47fc3e",
+      "size_bytes": 110013
+    },
+    {
+      "name": "storage_ops/20260211T134409Z/symlink_integrity_audit_20260211T133957Z.md",
+      "sha256": "04909e472704292cc83cf4cc490328259c2473243ca37252c8f9445dd0283875",
+      "size_bytes": 28915
+    },
+    {
+      "name": "storage_ops/20260211T134409Z/symlink_integrity_audit_20260211T134409Z.json",
+      "sha256": "549c5429e8704fc83e9128d087bdee68d8e1d3c080818ae4131e9730d4e78c8c",
+      "size_bytes": 21637
+    },
+    {
+      "name": "storage_ops/20260211T134409Z/symlink_integrity_audit_20260211T134409Z.md",
+      "sha256": "3aa77da1382ea7d4649e3e5af085bd23b9d6a5f8a3c2f7bf8df9a29137538ecf",
+      "size_bytes": 306
+    },
+    {
+      "name": "storage_ops/20260211T180128Z/offload_cold_guardrail_check_20260211T180128Z.json",
+      "sha256": "c5a3005cf3708dee6883ecc92c4fe50ebc27fb6e9820682876ecf47eab05adaa",
+      "size_bytes": 880
+    },
+    {
+      "name": "storage_ops/20260211T180128Z/offload_cold_guardrail_check_20260211T180128Z.md",
+      "sha256": "5e770a6d54d2e46c7a5ab34e558e1c204bd244057c472cfb91f11e9f7ab63ffb",
+      "size_bytes": 516
+    },
+    {
+      "name": "superdarn_scan_20260208T162228Z.json",
+      "sha256": "24221432ff1e743acf52cdbd7721b72957df5c99be5f206960ac82694eadb6fb",
+      "size_bytes": 4600
+    },
+    {
+      "name": "superdarn_scan_20260208T162228Z.md",
+      "sha256": "4c7f6d45d40f870500cf37201e80768508082f22499d33453f32d738e61b6bbd",
+      "size_bytes": 1190
+    },
+    {
+      "name": "superdarn_scan_20260208T163201Z.json",
+      "sha256": "ecaedb4d5c7a457b9ffbaf175ab46dd2c4ee35fc6188a0f9bd1cbdc99195f176",
+      "size_bytes": 4948
+    },
+    {
+      "name": "superdarn_scan_20260208T163201Z.md",
+      "sha256": "52780092fa3d398542d9f23b337e92c99ea6510cd0dc949e381bc8e94aff1e12",
+      "size_bytes": 1235
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/omnimind_quantum_check_20260209T181146Z.json",
+      "sha256": "4a22184b21cd7af42454e25c3c399000ea0c771064367187d65565ee6d021e0b",
+      "size_bytes": 3446
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/omnimind_quantum_check_20260209T181146Z.md",
+      "sha256": "e2e1f997e8495b13503645f934dc76f7570f923dc25f42089d2e14172aa76950",
+      "size_bytes": 670
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/omnimind_structure.meta.json",
+      "sha256": "a6cfff7c46523f4db71c7cfc3997a488cb60953bac313f35369eedca27109a7e",
+      "size_bytes": 632
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/omnimind_structure.png",
+      "sha256": "bf9015690342234f3d85d7449989d93a87975bd24b3e4d28924f6af265e9af25",
+      "size_bytes": 263625
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/omnimind_structure_alt.png",
+      "sha256": "c179db68d6fee4b3d9fd2e44630e546c0aa7a4454c01418781e630efc7410f0d",
+      "size_bytes": 284589
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/sync_analysis_20260209.json",
+      "sha256": "214d07e09992d3c78915a9e4ae97267b5ea08b16906a5a279caa3a79f40b2fc8",
+      "size_bytes": 2416
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/sync_phase_flip_pack_attach_20260211T161430Z.json",
+      "sha256": "2ca2ff22b503c773639445aeca9e403a4360ae0f88ef9b755abe44ca9eeee926",
+      "size_bytes": 1414
+    },
+    {
+      "name": "sync_phase_flip/20260209T181146Z/sync_phase_flip_pack_attach_20260211T161430Z.md",
+      "sha256": "ca8ac41e29792a74eaac1efa927ac70eeaa98d202b4f4eb52960909dc1df0914",
+      "size_bytes": 1358
+    },
+    {
+      "name": "topology/20260211T145640Z/omnimind_workspace_body_topology_20260211T145640Z.json",
+      "sha256": "f440c139885baf73a5e4031fbb05d0e9fbdf3e06e0cea92dc8edde9e4d14fbb8",
+      "size_bytes": 1279
+    },
+    {
+      "name": "topology/20260211T145640Z/omnimind_workspace_body_topology_20260211T145640Z.md",
+      "sha256": "e0a7e1c79f8480a47a34fc9dffc3a0abab9fb038927884955c3008471bdd38ba",
+      "size_bytes": 1486
+    },
+    {
+      "name": "topology/20260211T152934Z/omnimind_workspace_body_topology_20260211T152934Z.json",
+      "sha256": "205f87a0b080a5355ee23cb853473c94c215a5e8265ff642ecd654195a6e73b9",
+      "size_bytes": 3322
+    },
+    {
+      "name": "topology/20260211T152934Z/omnimind_workspace_body_topology_20260211T152934Z.md",
+      "sha256": "3c58cac41c6a0f3b33d9c051842a3bea1a527d594bb2927d7ba24f7345ab79f7",
+      "size_bytes": 2922
+    },
+    {
+      "name": "topology/20260211T154638Z/omnimind_workspace_body_topology_20260211T154638Z.json",
+      "sha256": "1a8305490573af381d15fc156102ba11ef40bfb5c61daf1ac39f565c5f757309",
+      "size_bytes": 3406
+    },
+    {
+      "name": "topology/20260211T154638Z/omnimind_workspace_body_topology_20260211T154638Z.md",
+      "sha256": "fb071f30ed62ccbfe6b52b5d3713d744e865e40a6a26c6a25b4398ef40a195a3",
+      "size_bytes": 2908
+    },
+    {
+      "name": "toponame_overlay_cosmo_manifest.json",
+      "sha256": "bdb461166e565284e560e36e7381e8c3064c1a7bb059e26f6a368604af7c0169",
+      "size_bytes": 473
+    },
+    {
+      "name": "toponame_overlay_gamma.png",
+      "sha256": "4610c41b11ba220c2839171fd800178c81c0deed690a79f81e4fc2fe7ffced1e",
+      "size_bytes": 140743
+    },
+    {
+      "name": "toponame_overlay_lyman.png",
+      "sha256": "2de5359cde40785e95e13d45834c4fb902e12edef32ff23cc66c1e158a42c62c",
+      "size_bytes": 124553
+    },
+    {
+      "name": "toponame_overlay_manifest.json",
+      "sha256": "6cc24145bd3622340d81c6a4c2158d227db7584822acbf0f3e3be9b3128a90c6",
+      "size_bytes": 468
+    },
+    {
+      "name": "toponame_overlay_sdss.png",
+      "sha256": "88d8fc8e0773b4d3ab690d5674d489916ac74a09c27dca332dfe949b609d85d5",
+      "size_bytes": 251974
+    },
+    {
+      "name": "universe_map_plus/universe_map_plus_20260208T081332Z.jsonl",
+      "sha256": "3e8c9b5a6ad5239f3f08f9c1ea13c0b14dd57927d31f07f05f76881484308535",
+      "size_bytes": 9994969
+    },
+    {
+      "name": "universe_map_plus/universe_map_plus_20260208T151956Z.jsonl",
+      "sha256": "a8d0798065d011e1389a1e512cd0bf1464fd5387473c7b14e62c4446fc405b24",
+      "size_bytes": 9993515
+    },
+    {
+      "name": "universe_map_plus/universe_map_plus_summary_20260208T081332Z.json",
+      "sha256": "88c9ef9b5a6c3b1c6b0190dc32fdca31a83b2339faf09b8e1625137416a3a92f",
+      "size_bytes": 695
+    },
+    {
+      "name": "universe_map_plus/universe_map_plus_summary_20260208T151956Z.json",
+      "sha256": "fa6f87efd7a8c9c97b32cee03fa77495bef741020abc8a1f870daaab72b637b3",
+      "size_bytes": 695
+    },
+    {
+      "name": "universe_map_plus_anomalies_20260207T185129Z.json",
+      "sha256": "14463783298897448629b56793665b7e00961612002dea48954cbcf58312787a",
+      "size_bytes": 44393
+    },
+    {
+      "name": "universemap_plus_dynamic.png",
+      "sha256": "5062190b81c42e7539c961b55326671511cdcb4f4d48f351d7624f3c14e74a0f",
+      "size_bytes": 364463
+    },
+    {
+      "name": "universemap_plus_dynamic_real_20260208T072224Z.png",
+      "sha256": "c9eb96972761dffb2e6dd6db3d6e2f8fc005b4a962087e1f1b859684463a8987",
+      "size_bytes": 80232
+    },
+    {
+      "name": "weighted_maps/cemetery_filtered_polar.png",
+      "sha256": "c14f6a2b231a1e998f7783f88008e6112dfe472b19318d37cee4e3f5a2733b92",
+      "size_bytes": 2554456
+    },
+    {
+      "name": "weighted_maps/cemetery_weighted_equator.png",
+      "sha256": "a902aecc1ee4eb308a712651408c53dacbe3b07473eb9df6536a679ad36df167",
+      "size_bytes": 8758039
+    },
+    {
+      "name": "weighted_maps/cemetery_weighted_maps_20260208T074848Z.json",
+      "sha256": "170cf31f52c2051b635acf5cc3b4d063c5362c7282dbd4095772019e68e2a0b3",
+      "size_bytes": 1166
+    },
+    {
+      "name": "weighted_maps/cemetery_weighted_maps_20260208T074848Z.md",
+      "sha256": "da6f877cf6028968ea7cea22b21007d9112de46bdebb51f1d5624ed54a2d925a",
+      "size_bytes": 1209
+    },
+    {
+      "name": "weighted_maps/cemetery_weighted_polar.png",
+      "sha256": "3f1788c73b0d9bc7104c2c26e89f1d4d76a71c94689a1c5206764c843b275944",
+      "size_bytes": 8117464
+    },
+    {
+      "name": "weighted_maps/cemetery_weighted_ra_dec.png",
+      "sha256": "b3eafa89a07d4ac7c84906396d0bea686a15fa7d465e16f625a33110803d8c5d",
+      "size_bytes": 7174191
+    },
+    {
+      "name": "zenodo_metadata/zenodo_citation_note_20260211T175815Z.md",
+      "sha256": "6e836c42379c3f7dda62c43704e514828736ebbc254c0c8dc0b0151d68c8e44c",
+      "size_bytes": 468
+    },
+    {
+      "name": "zenodo_metadata/zenodo_metadata_cosmo_pack_20260211T175815Z.json",
+      "sha256": "5f5480337a728fd2280725eef7161e524f8b80ee497e6d6d203fa72d6fe49311",
+      "size_bytes": 1782
+    }
+  ]
+}

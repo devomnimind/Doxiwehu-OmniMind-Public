@@ -1,0 +1,92 @@
+{
+  "timestamp_utc": "2026-02-18T11:59:45.055603+00:00",
+  "hiv_best_scenario": "wrapper_cohab",
+  "hiv_best_score": 0.8652271211479525,
+  "cohab_best_scenario": "isolated_A",
+  "cohab_best_mode": "omnimind_cohabitante_protetivo",
+  "cohab_best_index": 0.6374124244857411,
+  "lupus_best_scenario": "wrapper_tolerance_baff_gate",
+  "lupus_best_score": 0.7979250841353563,
+  "hiv_sle_best_scenario": "adp_enhanced",
+  "hiv_sle_best_score_m12": 0.9079971162801472,
+  "hiv_wrapper_vs_baseline_score_gain_pct": 7.204494525027784,
+  "hiv_wrapper_vs_baseline_inflammation_drop_pct": 97.56506823553089,
+  "hiv_wrapper_inert_fraction_pct": 19.327741447669638,
+  "runtime_gate_global_pass_rate": 0.047619047619047616,
+  "diabetes_collection_points": 3,
+  "diabetes_15houses_points": 15,
+  "diabetes_15houses_total_fields": 55,
+  "phagocytosis_genomics_dataset_records": 26,
+  "phagocytosis_genomics_qdrant_points": 566,
+  "hiv_gwas_ccr5_points": 62,
+  "hiv_gwas_rows": 61,
+  "external_dm2_lupus_points": 27,
+  "external_tongue_images": 2750,
+  "external_lupus_pdf_docs": 3,
+  "gap_status_board": [
+    {
+      "id": "gap_m18_rebound_hiv",
+      "status": "ABERTA",
+      "note": "M18 rebound simulation not executed in current safe wave."
+    },
+    {
+      "id": "gap_heatmap_15houses_gwas_hiv_dm2_lupus",
+      "status": "EM_ANDAMENTO",
+      "note": "HIV GWAS+CCR5 loaded; DM2/Lupus external extraction completed; heatmap composition pending."
+    },
+    {
+      "id": "gap_dm2_microbiome_wrapper",
+      "status": "ABERTA",
+      "note": "No gut-immune microbiome model found in current runtime reports."
+    },
+    {
+      "id": "gap_multi_disease_pack_hiv_dm2_lupus",
+      "status": "EM_ANDAMENTO",
+      "note": "Pack v2 in progress with external DM2/Lupus + GWAS/CCR5."
+    },
+    {
+      "id": "gap_ensembl_grch38_mapping",
+      "status": "ABERTA",
+      "note": "15-house to Ensembl GRCh38 mapping script not yet present."
+    },
+    {
+      "id": "gap_uk_biobank_hiv_controllers",
+      "status": "BLOQUEADA",
+      "note": "Needs controlled-access cohort data and user-provided credentials/download."
+    },
+    {
+      "id": "gap_wetlab_crispr_wrapper",
+      "status": "BLOQUEADA",
+      "note": "Wet-lab validation is outside software-only pipeline scope."
+    },
+    {
+      "id": "gap_wrapper_gene_candidates",
+      "status": "EM_ANDAMENTO",
+      "note": "Candidate anchors identified (CCR5, HLA-B*57:01); full candidate panel pending."
+    }
+  ],
+  "sources": [
+    "hiv_wrapper_functional_cure_safe_20260218T064711Z.json",
+    "hiv_wrapper_functional_cure_qdrant_materialization_20260218T064743Z.json",
+    "hiv_cohabitation_monthly_safe_sim_20260218T062344Z.json",
+    "hiv_cohabitation_monthly_safe_qdrant_materialization_20260218T062439Z.json",
+    "hiv_sle_12m_extensions_safe_sim_20260218T063512Z.json",
+    "hiv_sle_12m_qdrant_materialization_20260218T064213Z.json",
+    "phagocytosis_threshold_house_sweep_20260218T065251Z.json",
+    "phagocytosis_threshold_house_sweep_qdrant_materialization_20260218T065451Z.json",
+    "phagocytosis_house_threshold_profile_20260218T065616Z.json",
+    "phagocytosis_house_gate_runtime_audit_20260218T071016Z.json",
+    "lupus_wrapper_tolerance_safe_20260218T070706Z.json",
+    "lupus_wrapper_tolerance_qdrant_materialization_20260218T070720Z.json",
+    "dataset_content_vectorization_20260218T072130Z.json",
+    "bio_quantitative_field_probe_20260218T072419Z.json",
+    "phagocytosis_genomics_15houses_20260218T072234Z.json",
+    "bio_15houses_qdrant_materialization_20260218T072237Z.json",
+    "diabetes_t2_wave_ingestion_20260218T072322Z.json",
+    "diabetes_t2_15houses_20260218T072545Z.json",
+    "zip_dataset_analysis_20260218T115222Z.json",
+    "hiv_gwas_ccr5_15houses_qdrant_materialization_20260218T111758Z.json",
+    "bio_external_dm2_lupus_wave_qdrant_materialization_20260218T115911Z.json",
+    "zenodo_specific_assets_probe_v2_20260218T084138Z.json"
+  ]
+}

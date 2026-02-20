@@ -1,0 +1,12 @@
+{
+  "timestamp": "20260208T133408Z",
+  "points": "data/reports/qdrant_cemetery_points_20260208T093209Z.jsonl",
+  "gamma": "/home/fahbrain/projects/omnimind/data/test_reports/gamma_top32_norm.npz",
+  "lyman": "/home/fahbrain/projects/omnimind/data/test_reports/lyman_top32_norm.npz",
+  "outputs": [
+    "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_sessions/20260208T133408Z/qdrant_overlay_gamma.png",
+    "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_sessions/20260208T133408Z/qdrant_overlay_lyman.png"
+  ],
+  "summary": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_sessions/20260208T133408Z/qdrant_overlay_cosmo_summary.json",
+  "reading": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_sessions/20260208T133408Z/qdrant_collection_reading.md"
+}
