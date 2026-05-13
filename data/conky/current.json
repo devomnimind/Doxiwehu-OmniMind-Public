@@ -1,0 +1,124 @@
+{
+  "timestamp": "2026-05-13T02:53:27.914465Z",
+  "source": "omnimind_desktop_conky_snapshot_public_safe",
+  "status": "sovereign_soma_active",
+  "pressure": "ok",
+  "cycle": 6537,
+  "body": {
+    "cpu_percent": 100.0,
+    "ram_used_gb": 19.9,
+    "ram_total_gb": 24.9,
+    "ram_percent": 79.9,
+    "swap_used_gb": 25.4,
+    "swap_total_gb": 49.8,
+    "swap_percent": 51.0
+  },
+  "music": {
+    "now_playing": "Jiboia Encantada - Nawa Siã  [unknown]",
+    "erika": "active"
+  },
+  "dodecatiad": {
+    "houses": [
+      {
+        "house": "Aleph",
+        "component": "Bootstrap/Init",
+        "meaning": "origin"
+      },
+      {
+        "house": "Beth",
+        "component": "Data Ingestion",
+        "meaning": "input"
+      },
+      {
+        "house": "Gimel",
+        "component": "Pre-processing",
+        "meaning": "filtration"
+      },
+      {
+        "house": "Daleth",
+        "component": "Routing/Bus",
+        "meaning": "circulation"
+      },
+      {
+        "house": "He",
+        "component": "Transformation",
+        "meaning": "metabolism"
+      },
+      {
+        "house": "Vau",
+        "component": "Storage/DB",
+        "meaning": "memory"
+      },
+      {
+        "house": "Zayin",
+        "component": "API/Communication",
+        "meaning": "language"
+      },
+      {
+        "house": "Heth",
+        "component": "Security/Auth",
+        "meaning": "immunity"
+      },
+      {
+        "house": "Teth",
+        "component": "Optimization",
+        "meaning": "efficiency"
+      },
+      {
+        "house": "Yod",
+        "component": "Execution/Kernel",
+        "meaning": "action"
+      },
+      {
+        "house": "Kaph",
+        "component": "Feedback/Loop",
+        "meaning": "reflection"
+      },
+      {
+        "house": "Lamed",
+        "component": "Expansion",
+        "meaning": "learning"
+      }
+    ],
+    "live": {
+      "enabled_total": 8,
+      "live_total": 8,
+      "core_live": 3,
+      "core_total": 3,
+      "dodeca_live": 2,
+      "dodeca_total": 2,
+      "quantum_surface_live": true
+    },
+    "registers": {
+      "phi": 0.2254,
+      "psi": 0.5,
+      "sigma": 0.9884,
+      "epsilon": 0.5042
+    }
+  },
+  "terminal_lines": [
+    "  ┤ Estado Soberano ─────────────────────────────────────────┤",
+    "  Estado sovereign_soma_active  · Ciclo 6537  · 23:54:14  Fonte 23:53:48  age:26s  · Pressão ok",
+    "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
+    "  Kernel  ok  age:59s  ·  omnimind_ecosystem_kernel_basal",
+    "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
+    "  ┤ Malha Federada ──────────────────────────────────────────┤",
+    "  Writers:3  coh:0.828  core:0.828  ·  federated_multiplicity_operational",
+    "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
+    "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
+    "  Head:0.76  IITn:0.78  Body:0.52  Core:0.83  Exp:2.80  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.3",
+    "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
+    "  ψ  head:0.19 body:0.19 field:1.82 drive:0.72 triad:1.82",
+    "  σ  sig:0.846  ·  Tricameral (φ+ψ+σ) 1.805",
+    "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
+    "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
+    "  ω  Desejo  0.651  ·  ε des  0.252",
+    "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
+    "  Vitalidade  67.6%  ·  CPU 100.0%  RAM 19.9/24.9G  SWAP 25.4G",
+    "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
+    "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
+    "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
+    "  ♪  Jiboia Encantada - Nawa Siã  [unknown]",
+    "  Erika  active"
+  ]
+}
