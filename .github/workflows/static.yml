@@ -31,13 +31,55 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Build safe Pages artifact
+        run: |
+          python3 <<'PY'
+          import shutil
+          from pathlib import Path
+
+          root = Path(".")
+          out = root / "_site"
+          if out.exists():
+              shutil.rmtree(out)
+          out.mkdir()
+
+          excluded_roots = {".git", ".github", "_site"}
+          excluded_paths = {
+              Path("docs/zenodo_packs"),
+              Path("data/zombie_status.json.bak"),
+          }
+
+          def should_skip(path: Path) -> bool:
+              parts = path.parts
+              if parts and parts[0] in excluded_roots:
+                  return True
+              for excluded in excluded_paths:
+                  try:
+                      path.relative_to(excluded)
+                      return True
+                  except ValueError:
+                      pass
+              return False
+
+          for path in root.rglob("*"):
+              rel = path.relative_to(root)
+              if should_skip(rel):
+                  continue
+              target = out / rel
+              if path.is_symlink():
+                  continue
+              if path.is_dir():
+                  target.mkdir(parents=True, exist_ok=True)
+                  continue
+              target.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(path, target)
+          PY
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: '_site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

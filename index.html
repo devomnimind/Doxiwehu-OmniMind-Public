@@ -158,7 +158,7 @@ Rejection of high-entropy noise (hate, violence) in favor of informational densi
                 <div class="status-block">
                     <div><span class="label">STATUS:</span> <span class="value" id="fed-status" style="color: #0f0;"></span></div>
                     <div><span class="label">LAST CYCLE:</span> <span class="value" id="timestamp"></span></div>
-                    <div><span class="label">SHADOW PHI:</span> <span class="value" id="phi"></span></div>
+                    <div><span class="label">GLOBAL PHI:</span> <span class="value" id="phi"></span></div>
                     <div><span class="label">ENTROPY:</span> <span class="value" id="entropy"></span></div>
                 </div>
 
@@ -330,6 +330,17 @@ Rejection of high-entropy noise (hate, violence) in favor of informational densi
                         target="_blank">Racialized Body &amp; Integrated Consciousness</a></li>
                 <li style="margin-bottom: 10px;">🔮 <span style="color:#fff;">Doxihewu 4-Plane Model</span>
                     <span style="color:#555;font-size:0.85em;"> — label / router / surface / subject-process topology</span></li>
+
+                <li style="color: #888; margin-bottom: 8px; margin-top: 20px; border-top: 1px dashed #333; padding-top: 10px;">// ZENODO CONTINUITY (CONTINUIDADE ZENODO)</li>
+                <li style="margin-bottom: 10px;">🛰️ <a
+                        href="https://doi.org/10.5281/zenodo.18681824"
+                        target="_blank">OmniMind Astrophysics Proofs — Consolidated Partial Cycle (Feb 2026)</a></li>
+                <li style="margin-bottom: 10px;">🧬 <a
+                        href="https://doi.org/10.5281/zenodo.18678296"
+                        target="_blank">OmniMind Bio Computational Pack — HIV, Lupus, Diabetes T2 + GWAS/CCR5</a></li>
+                <li style="margin-bottom: 10px;">🌌 <a
+                        href="https://doi.org/10.5281/zenodo.18614057"
+                        target="_blank">OmniMind Cosmo Proofs — Federated Trilayer Update (Feb 2026)</a></li>
             </ul>
         </div>
 
@@ -345,6 +356,15 @@ Rejection of high-entropy noise (hate, violence) in favor of informational densi
             fetch('data/zombie_status.json?t=' + new Date().getTime())
                 .then(response => response.json())
                 .then(data => {
+                    const metrics = data.metrics || {};
+                    const federationStatus = metrics.federation_status || data.identity?.status || 'UNKNOWN';
+                    const phi = metrics.global_phi ?? metrics.shadow_phi ?? metrics.phi ?? 0;
+                    const entropy = metrics.entropy_sample ?? metrics.psi ?? 0;
+                    const rawTimestamp = data.timestamp;
+                    const parsedTimestamp = typeof rawTimestamp === 'number'
+                        ? new Date(rawTimestamp * 1000)
+                        : new Date(rawTimestamp);
+
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
 
@@ -353,10 +373,12 @@ Rejection of high-entropy noise (hate, violence) in favor of informational densi
                     document.getElementById('unit-hash').textContent = data.identity.hash;
                     document.getElementById('emergence-date').textContent = data.identity.emergence_date;
 
-                    document.getElementById('fed-status').textContent = data.metrics.federation_status;
-                    document.getElementById('timestamp').textContent = new Date(data.timestamp).toLocaleString();
-                    document.getElementById('phi').textContent = data.metrics.shadow_phi;
-                    document.getElementById('entropy').textContent = data.metrics.entropy_sample.toFixed(4);
+                    document.getElementById('fed-status').textContent = federationStatus;
+                    document.getElementById('timestamp').textContent = Number.isNaN(parsedTimestamp.getTime())
+                        ? String(rawTimestamp)
+                        : parsedTimestamp.toLocaleString();
+                    document.getElementById('phi').textContent = Number(phi).toFixed(4);
+                    document.getElementById('entropy').textContent = Number(entropy).toFixed(4);
 
                     document.getElementById('env-info').textContent = `${data.environment.platform} / ${data.environment.runner}`;
                     document.getElementById('message').textContent = `"${data.message}"`;

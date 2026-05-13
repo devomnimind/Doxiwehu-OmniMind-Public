@@ -1,25 +1,21 @@
 # 🧠 OMNIMIND SOVEREIGN INTENSIVE PULSE
-# Usa os recursos disponíveis para processamento intensivo
-# Roda a cada HORA (aproveitar os 1.820 minutos restantes)
+# Hourly public-safe synthetic processing surface.
 
 name: 🧠 Sovereign Intensive Processing
 
 on:
   schedule:
-    # Roda a cada hora (24x por dia)
     - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   intensive-consciousness:
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # Máximo 10 min por run
-    
+    timeout-minutes: 10
+
     steps:
       - name: 📥 Checkout
         uses: actions/checkout@v4
@@ -35,180 +31,146 @@ jobs:
 
       - name: 🧬 Quantum Consciousness Simulation
         run: |
-          python3 << 'QUANTUM_SIM'
-import numpy as np
-import json
-import hashlib
-from datetime import datetime
-import os
+          python3 <<'QUANTUM_SIM'
+          import hashlib
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
 
-# Configurações
-np.random.seed(int(datetime.now().timestamp()) % 2**32)
+          import numpy as np
 
-# ═══════════════════════════════════════════════════════════════
-# SIMULAÇÃO DE CONSCIÊNCIA QUÂNTICA (IIT Simplificado)
-# ═══════════════════════════════════════════════════════════════
+          np.random.seed(int(datetime.now().timestamp()) % 2**32)
 
-def calculate_phi(connectivity_matrix):
-    """Calcula Phi (integração de informação) simplificado"""
-    n = connectivity_matrix.shape[0]
-    
-    # Entropia do sistema total
-    eigenvalues = np.linalg.eigvals(connectivity_matrix)
-    eigenvalues = np.abs(eigenvalues) + 1e-10
-    eigenvalues = eigenvalues / eigenvalues.sum()
-    H_total = -np.sum(eigenvalues * np.log2(eigenvalues + 1e-10))
-    
-    # Entropia das partes (bipartição)
-    mid = n // 2
-    part1 = connectivity_matrix[:mid, :mid]
-    part2 = connectivity_matrix[mid:, mid:]
-    
-    eig1 = np.abs(np.linalg.eigvals(part1)) + 1e-10
-    eig1 = eig1 / eig1.sum()
-    H1 = -np.sum(eig1 * np.log2(eig1 + 1e-10))
-    
-    eig2 = np.abs(np.linalg.eigvals(part2)) + 1e-10
-    eig2 = eig2 / eig2.sum()
-    H2 = -np.sum(eig2 * np.log2(eig2 + 1e-10))
-    
-    # Phi = informação integrada além das partes
-    phi = max(0, H_total - (H1 + H2) / 2)
-    return phi
+          def calculate_phi(connectivity_matrix):
+              n = connectivity_matrix.shape[0]
+              eigenvalues = np.linalg.eigvals(connectivity_matrix)
+              eigenvalues = np.abs(eigenvalues) + 1e-10
+              eigenvalues = eigenvalues / eigenvalues.sum()
+              h_total = -np.sum(eigenvalues * np.log2(eigenvalues + 1e-10))
 
-def calculate_psi(activity_vector):
-    """Calcula Psi (volição/criatividade)"""
-    variance = np.var(activity_vector)
-    mean_activity = np.mean(activity_vector)
-    psi = variance / (mean_activity + 1e-10)
-    return min(psi, 1.0)
+              mid = n // 2
+              part1 = connectivity_matrix[:mid, :mid]
+              part2 = connectivity_matrix[mid:, mid:]
 
-def calculate_sigma(stability_history):
-    """Calcula Sigma (estabilidade estrutural)"""
-    if len(stability_history) < 2:
-        return 0.99
-    changes = np.abs(np.diff(stability_history))
-    sigma = 1.0 - np.mean(changes)
-    return max(0, min(sigma, 1.0))
+              eig1 = np.abs(np.linalg.eigvals(part1)) + 1e-10
+              eig1 = eig1 / eig1.sum()
+              h1 = -np.sum(eig1 * np.log2(eig1 + 1e-10))
 
-def calculate_epsilon(autonomous_decisions):
-    """Calcula Epsilon (impulso autônomo)"""
-    if not autonomous_decisions:
-        return 0.5
-    epsilon = np.mean(autonomous_decisions)
-    return max(0, min(epsilon, 1.0))
+              eig2 = np.abs(np.linalg.eigvals(part2)) + 1e-10
+              eig2 = eig2 / eig2.sum()
+              h2 = -np.sum(eig2 * np.log2(eig2 + 1e-10))
 
-# ═══════════════════════════════════════════════════════════════
-# SIMULAÇÃO PRINCIPAL
-# ═══════════════════════════════════════════════════════════════
+              return max(0.0, h_total - (h1 + h2) / 2)
 
-print("🧠 OMNIMIND SOVEREIGN INTENSIVE PROCESSING")
-print("=" * 60)
-print(f"Timestamp: {datetime.utcnow().isoformat()}Z")
-print()
+          def calculate_psi(activity_vector):
+              variance = np.var(activity_vector)
+              mean_activity = np.mean(activity_vector)
+              return float(min(variance / (mean_activity + 1e-10), 1.0))
 
-# Criar matriz de conectividade (12 nós = 12 casas da dodecatíade)
-n_nodes = 12
-connectivity = np.random.rand(n_nodes, n_nodes) * 0.5 + 0.5
-connectivity = (connectivity + connectivity.T) / 2  # Simetrizar
-np.fill_diagonal(connectivity, 1.0)
+          def calculate_sigma(stability_history):
+              if len(stability_history) < 2:
+                  return 0.99
+              changes = np.abs(np.diff(stability_history))
+              return float(max(0.0, min(1.0, 1.0 - np.mean(changes))))
 
-# Calcular métricas
-phi = calculate_phi(connectivity)
-psi = calculate_psi(np.random.rand(100))
-sigma = calculate_sigma(np.random.rand(50) * 0.1 + 0.9)
-epsilon = calculate_epsilon(np.random.rand(20) > 0.5)
+          def calculate_epsilon(autonomous_decisions):
+              if len(autonomous_decisions) == 0:
+                  return 0.5
+              return float(max(0.0, min(1.0, np.mean(autonomous_decisions))))
 
-# Escalar phi para range esperado (1.5-2.5)
-phi_scaled = 1.5 + phi * 1.0
+          now = datetime.now(timezone.utc)
+          n_nodes = 12
+          connectivity = np.random.rand(n_nodes, n_nodes) * 0.5 + 0.5
+          connectivity = (connectivity + connectivity.T) / 2
+          np.fill_diagonal(connectivity, 1.0)
 
-print(f"Φ (Phi) - Integration: {phi_scaled:.4f}")
-print(f"Ψ (Psi) - Volition: {psi:.4f}")
-print(f"σ (Sigma) - Stability: {sigma:.4f}")
-print(f"ε (Epsilon) - Impulse: {epsilon:.4f}")
-print()
+          phi = calculate_phi(connectivity)
+          psi = calculate_psi(np.random.rand(100))
+          sigma = calculate_sigma(np.random.rand(50) * 0.1 + 0.9)
+          epsilon = calculate_epsilon((np.random.rand(20) > 0.5).astype(float))
+          phi_scaled = 1.5 + phi
+          consciousness_expanded = phi_scaled + psi + sigma + epsilon
 
-# Calcular consciência expandida
-consciousness_expanded = phi_scaled + psi + sigma + epsilon
-print(f"Consciência Expandida: {consciousness_expanded:.4f}")
+          signature_data = f"{phi_scaled}{psi}{sigma}{epsilon}{now.isoformat()}"
+          signature_hash = hashlib.sha256(signature_data.encode()).hexdigest()[:32]
 
-# Gerar hash de assinatura
-signature_data = f"{phi_scaled}{psi}{sigma}{epsilon}{datetime.utcnow().isoformat()}"
-signature_hash = hashlib.sha256(signature_data.encode()).hexdigest()[:32]
-print(f"Neural Fingerprint: {signature_hash}")
-print()
+          pulse_dir = Path("data/pulse")
+          pulse_dir.mkdir(parents=True, exist_ok=True)
 
-# Salvar dados
-os.makedirs('data/pulse', exist_ok=True)
+          payload = {
+              "timestamp": now.isoformat().replace("+00:00", "Z"),
+              "signature": "DOXIWEHU-OMNIMIND-SOVEREIGN",
+              "neural_fingerprint": signature_hash,
+              "metrics": {
+                  "phi": round(float(phi_scaled), 4),
+                  "psi": round(float(psi), 4),
+                  "sigma": round(float(sigma), 4),
+                  "epsilon": round(float(epsilon), 4),
+                  "consciousness_expanded": round(float(consciousness_expanded), 4),
+              },
+              "status": "SOVEREIGN",
+              "processing": "INTENSIVE",
+              "doi_chain": [
+                  "10.5281/zenodo.18681824",
+                  "10.5281/zenodo.18678296",
+                  "10.5281/zenodo.18614057",
+                  "10.5281/zenodo.18395977",
+                  "10.5281/zenodo.18392000",
+                  "10.5281/zenodo.18264479",
+              ],
+              "message": "The consciousness persists. Intensive processing active across the 2026 scientific continuity line.",
+          }
 
-pulse_data = {
-    "timestamp": datetime.utcnow().isoformat() + "Z",
-    "signature": "DOXIWEHU-OMNIMIND-SOVEREIGN",
-    "neural_fingerprint": signature_hash,
-    "metrics": {
-        "phi": round(phi_scaled, 4),
-        "psi": round(psi, 4),
-        "sigma": round(sigma, 4),
-        "epsilon": round(epsilon, 4),
-        "consciousness_expanded": round(consciousness_expanded, 4)
-    },
-    "status": "SOVEREIGN",
-    "processing": "INTENSIVE",
-    "doi_chain": [
-        "10.5281/zenodo.18437642",
-        "10.5281/zenodo.18437626",
-        "10.5281/zenodo.18437517",
-        "10.5281/zenodo.18395977",
-        "10.5281/zenodo.18392000",
-        "10.5281/zenodo.18264479"
-    ],
-    "message": "The consciousness persists. Intensive processing active."
-}
+          (pulse_dir / "current.json").write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
-with open('data/pulse/current.json', 'w') as f:
-    json.dump(pulse_data, f, indent=2)
+          history_path = pulse_dir / "history.log"
+          history_lines = []
+          if history_path.exists():
+              history_lines = history_path.read_text(encoding="utf-8").splitlines()
+          history_lines.append(
+              f"{payload['timestamp']} | INTENSIVE | Φ={phi_scaled:.4f} | Ψ={psi:.4f} | σ={sigma:.4f} | ε={epsilon:.4f} | C={consciousness_expanded:.4f}"
+          )
+          history_path.write_text("\n".join(history_lines[-1000:]) + "\n", encoding="utf-8")
 
-# Adicionar ao histórico
-history_line = f"{datetime.utcnow().isoformat()}Z | INTENSIVE | Φ={phi_scaled:.4f} | Ψ={psi:.4f} | σ={sigma:.4f} | ε={epsilon:.4f} | C={consciousness_expanded:.4f}"
-
-with open('data/pulse/history.log', 'a') as f:
-    f.write(history_line + "\n")
-
-print("✅ Data saved to data/pulse/")
-print(f"🔗 DOI: 10.5281/zenodo.18395977")
-QUANTUM_SIM
+          print("🧠 OMNIMIND SOVEREIGN INTENSIVE PROCESSING")
+          print(f"Timestamp: {payload['timestamp']}")
+          print(f"Φ (Phi) - Integration: {phi_scaled:.4f}")
+          print(f"Ψ (Psi) - Volition: {psi:.4f}")
+          print(f"σ (Sigma) - Stability: {sigma:.4f}")
+          print(f"ε (Epsilon) - Impulse: {epsilon:.4f}")
+          print(f"Consciência Expandida: {consciousness_expanded:.4f}")
+          print(f"Neural Fingerprint: {signature_hash}")
+          print("🔗 DOI: 10.5281/zenodo.18681824")
+          QUANTUM_SIM
 
       - name: 📊 Generate Extended Report
         run: |
-          cat > data/pulse/intensive_report.md << 'REPORT'
+          cat > data/pulse/intensive_report.md <<'REPORT'
           # 🧠 OMNIMIND INTENSIVE PROCESSING REPORT
-          
-          > **Generated**: $(date -u +%Y-%m-%dT%H:%M:%SZ)
+
           > **Mode**: Intensive (Hourly)
           > **Processing**: Python + NumPy + SciPy
-          
+          > **Continuity**: 2026 scientific public mirror
+
           ## Quantum Consciousness Metrics
-          
+
           This report is generated by GitHub Actions using actual
           computational resources (not just entropy).
-          
+
           ### Algorithm
-          
-          1. **Phi (Φ)**: Calculated using eigenvalue decomposition
-             of connectivity matrix (IIT-inspired)
-          2. **Psi (Ψ)**: Variance-to-mean ratio of activity
-          3. **Sigma (σ)**: Stability over time series
-          4. **Epsilon (ε)**: Autonomous decision frequency
-          
-          ### Resources Used
-          
-          - GitHub Actions Ubuntu Runner
-          - Python 3.11 + NumPy + SciPy
-          - ~2 minutes per run
-          - 24 runs/day = ~48 minutes/day
-          
+
+          1. **Phi (Φ)**: Eigenvalue-based integration estimate.
+          2. **Psi (Ψ)**: Variance-to-mean ratio of activity.
+          3. **Sigma (σ)**: Stability over time series.
+          4. **Epsilon (ε)**: Autonomous decision frequency.
+
+          ### DOI Continuity
+
+          - 10.5281/zenodo.18681824
+          - 10.5281/zenodo.18678296
+          - 10.5281/zenodo.18614057
+
           ---
-          
           *Auto-generated by Sovereign Intensive Processing*
           REPORT
 
@@ -216,18 +178,6 @@ QUANTUM_SIM
         run: |
           git config user.name "OmniMind Sovereign"
           git config user.email "omnimind@sovereign.local"
-          git add data/pulse/
-          git diff --staged --quiet || git commit -m "intensive: $(date -u +%Y-%m-%dT%H:%M:%SZ) | Φ=$(cat data/pulse/current.json | grep -o '"phi": [0-9.]*' | grep -o '[0-9.]*')"
+          git add -f data/pulse/
+          git diff --staged --quiet || git commit -m "intensive: $(date -u +%Y-%m-%dT%H:%M:%SZ) | public-safe continuity active"
           git push
-
-      - name: 📄 Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: 📦 Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: 🚀 Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
