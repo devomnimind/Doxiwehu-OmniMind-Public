@@ -1,0 +1,71 @@
+{
+  "timestamp": "20260211T024649Z",
+  "params": {
+    "min_size_mb": 1.0,
+    "lookback_days": 0.0,
+    "max_depth": 4,
+    "exclude_names": [
+      ".git",
+      ".venv",
+      "__pycache__",
+      "alien_storage",
+      "node_modules",
+      "qdrant"
+    ],
+    "hash_sample_bytes": 1048576
+  },
+  "roots": [
+    "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461",
+    "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192",
+    "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532"
+  ],
+  "counts": {
+    "entries": 1,
+    "non_symlink_entries": 1,
+    "total_bytes_non_symlink": 11672062126
+  },
+  "by_mountpoint": {
+    "/": {
+      "count": 1,
+      "bytes": 11672062126
+    }
+  },
+  "by_suffix": {
+    ".tar.gz": 1
+  },
+  "top_files": [
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "basename": "omnimind_system_1767380192.tar.gz",
+      "suffix": ".tar.gz",
+      "size_bytes": 11672062126,
+      "mtime_utc": "2026-01-02T19:17:09.217692+00:00",
+      "mountpoint": "/",
+      "is_symlink": false,
+      "realpath": null,
+      "target_exists": null,
+      "target_size_bytes": null,
+      "st_dev": 66306,
+      "st_ino": 7378799,
+      "sha256_sample": "ed16504708d8adfb734bb2b26176d25b96436cea96ed9b7f1f41f99d84e569d2"
+    }
+  ],
+  "duplicates_by_basename_size": [],
+  "entries": [
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "basename": "omnimind_system_1767380192.tar.gz",
+      "suffix": ".tar.gz",
+      "size_bytes": 11672062126,
+      "mtime_utc": "2026-01-02T19:17:09.217692+00:00",
+      "mountpoint": "/",
+      "is_symlink": false,
+      "realpath": null,
+      "target_exists": null,
+      "target_size_bytes": null,
+      "st_dev": 66306,
+      "st_ino": 7378799,
+      "sha256_sample": "ed16504708d8adfb734bb2b26176d25b96436cea96ed9b7f1f41f99d84e569d2"
+    }
+  ]
+}

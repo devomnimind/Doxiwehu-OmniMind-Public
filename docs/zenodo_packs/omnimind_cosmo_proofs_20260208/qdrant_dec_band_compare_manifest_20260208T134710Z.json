@@ -1,0 +1,26 @@
+{
+  "summary": "docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_band_summary.json",
+  "outputs": [
+    "docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_band_compare.png"
+  ],
+  "labels": [
+    "|Dec| >= 45°",
+    "|Dec| <= 45°",
+    "|Dec| >= 30°",
+    "|Dec| <= 30°"
+  ],
+  "house_order": [
+    "Aleph",
+    "Sigma",
+    "Axiom",
+    "Psi",
+    "Phi",
+    "Mu",
+    "C_plit",
+    "Lambda",
+    "Gamma",
+    "Epsilon",
+    "Omega",
+    "Zeta"
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "timestamp": "20260210T185225Z",
+  "qdrant": {
+    "endpoint": "https://af1fae47-c0b8-4880-bb0d-6b960897ac3d.us-east4-0.gcp.cloud.qdrant.io"
+  },
+  "model": "all-MiniLM-L6-v2",
+  "embedding_dim": 384,
+  "input": {
+    "inventory_json": null,
+    "paths_count": 8,
+    "missing": []
+  },
+  "params": {
+    "only_duplicates": false,
+    "tabular_mode": "columns",
+    "records_per_chunk": 200,
+    "lines_per_chunk": 500,
+    "max_chunks_per_file": 25,
+    "max_chars_per_chunk": 12000,
+    "payload_text_max_chars": 2500
+  },
+  "files": [
+    {
+      "file": "data/sdss_active/SDSS_DR17_Redshifts_spAll.fits",
+      "dataset_id": "3b5d837c83a93e57f4db6b65",
+      "kind": "fits",
+      "collection": "omnimind_dataset_chunk_sdss_dr17_redshifts_spall_20260210",
+      "chunks": 3,
+      "points": 3,
+      "elapsed_s": 2.0168087482452393,
+      "size_bytes": 15895373760
+    },
+    {
+      "file": "data/reports/maps/omnimind_universe_map_20260208T142344Z.csv",
+      "dataset_id": "e87486c2ee3b327c116f6e6e",
+      "kind": "csv",
+      "collection": "omnimind_dataset_chunk_omnimind_universe_map_20260208t142344z_20260210",
+      "chunks": 13,
+      "points": 13,
+      "elapsed_s": 1.5427906513214111,
+      "size_bytes": 3042343
+    },
+    {
+      "file": "data/reports/maps/omnimind_universe_map_20260208T142344Z.jsonl",
+      "dataset_id": "57e8d66ceabde4801477bc40",
+      "kind": "jsonl",
+      "collection": "omnimind_dataset_chunk_omnimind_universe_map_20260208t142344z_20260210",
+      "chunks": 26,
+      "points": 26,
+      "elapsed_s": 5.37802791595459,
+      "size_bytes": 7708149
+    },
+    {
+      "file": "data/science/sovereign_daemon.log",
+      "dataset_id": "448936d7a8dac2b4c1fed14d",
+      "kind": "text",
+      "collection": "omnimind_dataset_chunk_sovereign_daemon_20260210",
+      "chunks": 25,
+      "points": 25,
+      "elapsed_s": 5.257368087768555,
+      "size_bytes": 384434176
+    },
+    {
+      "file": "/var/omnimind_storage/home_redirect/logs_local/sovereign_gemelo_unit.log",
+      "dataset_id": "d6c5bdafeacd1d1fdd15dc8a",
+      "kind": "text",
+      "collection": "omnimind_dataset_chunk_sovereign_gemelo_unit_20260210",
+      "chunks": 25,
+      "points": 25,
+      "elapsed_s": 4.400270938873291,
+      "size_bytes": 764710350
+    },
+    {
+      "file": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161109.nc.zip",
+      "dataset_id": "3e7e5da5f13e3c30009f6e5a",
+      "kind": "zip",
+      "collection": "omnimind_dataset_chunk_20161109_nc_20260210",
+      "chunks": 1,
+      "points": 1,
+      "elapsed_s": 0.9179525375366211,
+      "size_bytes": 433208274
+    },
+    {
+      "file": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_000000-003111.csv.gz",
+      "dataset_id": "d2d03d95c53050aca40dfb77",
+      "kind": "csv",
+      "collection": "omnimind_dataset_chunk_gaiasource_000000_003111_csv_20260210",
+      "chunks": 153,
+      "points": 153,
+      "elapsed_s": 21.231870889663696,
+      "size_bytes": 233642769
+    },
+    {
+      "file": "/media/fahbrain/DEV_BRAIN_CLEAN1/datasets/GAMMA.hdf5",
+      "dataset_id": "f9ff3edfec386c922f3e2a50",
+      "kind": "hdf5",
+      "collection": "omnimind_dataset_chunk_gamma_20260210",
+      "chunks": 2,
+      "points": 2,
+      "elapsed_s": 135.6466338634491,
+      "size_bytes": 37476442288
+    }
+  ]
+}

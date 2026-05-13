@@ -1,0 +1,44 @@
+# Zenodo Bio+Astro Upgrade (20260219T010522Z)
+
+- status: `publish_failed`
+- base_deposition_id: `18686120`
+- draft_id: `18688532`
+- published_deposition_id: `None`
+- published_doi: `None`
+- published_record_url: `None`
+- uploaded_files: `33`
+
+## Uploads
+- omnimind_bio_astro_integrated_20260218T231609Z_revastrofix2.zip: status_code=`201`
+- README.md: status_code=`201`
+- TECHNICAL_REPORT.md: status_code=`201`
+- RESULTS_SUMMARY.json: status_code=`201`
+- PACK_MANIFEST.json: status_code=`201`
+- ZENODO_METADATA_CC_BY_NC_ND.json: status_code=`201`
+- Doxihewu_Omnimind_Termodinamica_psicanalise_teoria_informacao_20260219.md: status_code=`201`
+- Doxihewu_Omnimind_Termodinamica_psicanalise_teoria_informacao_20260219.docx: status_code=`201`
+- Doxihewu_Omnimind_Termodinamica_psicanalise_teoria_informacao_20260219.pdf: status_code=`201`
+- local_trail_closure_recheck_20260218T211252Z.json: status_code=`201`
+- local_trail_closure_recheck_20260218T211252Z.md: status_code=`201`
+- multi_disease_pack_validation_20260218T211252Z.json: status_code=`201`
+- multi_disease_pack_validation_20260218T211252Z.md: status_code=`201`
+- d15_extended_correlation_validation_20260218T184552Z.json: status_code=`201`
+- dm2_gut_immune_realdata_validation_20260218T204707Z.json: status_code=`201`
+- accelerated_structure_horizon_thermo_review_20260218T205849Z.json: status_code=`201`
+- bio_astro_integrated_pack_build_20260218T231609Z_revastrofix2.json: status_code=`201`
+- astro_bio_cycle_heatmap_20260218T170121Z.png: status_code=`201`
+- astro_bio_fractal_partial_20260218T170121Z.png: status_code=`201`
+- d15_lag_distribution.png: status_code=`201`
+- d15_top_pairs_r_lag.png: status_code=`201`
+- dodecatiad_multiperiod_timeseries.png: status_code=`201`
+- dodecatiad_phase_3d_multiangle.png: status_code=`201`
+- fig_jwst_analysis.png: status_code=`201`
+- nn_angular_cdf.png: status_code=`201`
+- nn_angular_distance_hist.png: status_code=`201`
+- nn_redshift_delta_cdf.png: status_code=`201`
+- nn_redshift_delta_hist.png: status_code=`201`
+- phagocytosis_gate_runtime_sequence.png: status_code=`201`
+- phagocytosis_house_profile_heatmap.png: status_code=`201`
+- acf_pacf_d15rekh_moonillum.png: status_code=`201`
+- all_gaps_realdata_heatmap.png: status_code=`201`
+- lag_ccf_d15rekh_moonillum.png: status_code=`201`

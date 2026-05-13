@@ -1,0 +1,77 @@
+{
+  "summary": {
+    "C45RW41": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "A11y70v": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "P22liAW": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "C19DCG5": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    }
+  },
+  "generated_at": "2026-02-08T15:18:05.006205+00:00",
+  "sources": {
+    "cometels": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/CometEls.txt",
+    "mpcorb": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/MPCORB.DAT.gz",
+    "neocp": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/NEOCP.txt",
+    "anomalies": "data/reports/universe_map_plus_anomalies_20260207T185129Z.json"
+  },
+  "records": [
+    {
+      "name": "C45RW41",
+      "source": "NEOCP",
+      "ra": 94.5,
+      "dec": 9.8356,
+      "house": 4,
+      "timestamp": "2026-02-08T15:17:31Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "A11y70v",
+      "source": "NEOCP",
+      "ra": 69.0,
+      "dec": 16.167,
+      "house": 3,
+      "timestamp": "2026-02-08T15:17:31Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "P22liAW",
+      "source": "NEOCP",
+      "ra": 34.5,
+      "dec": 6.4368,
+      "house": 2,
+      "timestamp": "2026-02-08T15:17:31Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "C19DCG5",
+      "source": "NEOCP",
+      "ra": 202.5,
+      "dec": 16.1606,
+      "house": 7,
+      "timestamp": "2026-02-08T15:17:31Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    }
+  ]
+}

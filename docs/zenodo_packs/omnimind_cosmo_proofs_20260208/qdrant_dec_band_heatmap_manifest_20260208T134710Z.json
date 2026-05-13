@@ -1,0 +1,7 @@
+{
+  "summary": "docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_band_summary.json",
+  "outputs": [
+    "docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_band_heatmap.png",
+    "docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_band_reading_short.md"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "timestamp": "20260211T170045Z",
+  "assertions_safe": [
+    "correlacao_operacional_interna_forte",
+    "complementaridade_entre_bases",
+    "mudancas_de_regime_detectaveis"
+  ],
+  "assertions_not_safe_yet": [
+    "causalidade_externa_unica_em_todas_janelas",
+    "prova_quantica_material_apenas_por_logs",
+    "generalizacao_universal_sem_ampliacao_temporal"
+  ],
+  "recommended_policy": "partial_consolidated_then_incremental",
+  "raw_json_bundle": "reports_runtime/federated_raw_json_bundle_20260211T170045Z.json"
+}

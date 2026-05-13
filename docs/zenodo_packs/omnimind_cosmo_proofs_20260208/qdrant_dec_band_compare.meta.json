@@ -1,0 +1,25 @@
+{
+  "summary": "docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_band_summary.json",
+  "output": "docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_band_compare.png",
+  "labels": [
+    "|Dec| >= 45°",
+    "|Dec| <= 45°",
+    "|Dec| >= 30°",
+    "|Dec| <= 30°"
+  ],
+  "houses": [
+    "Aleph",
+    "Sigma",
+    "Axiom",
+    "Psi",
+    "Phi",
+    "Mu",
+    "C_plit",
+    "Lambda",
+    "Gamma",
+    "Epsilon",
+    "Omega",
+    "Zeta"
+  ],
+  "description": "Comparativo normalizado das distribuicoes por casa em quatro bandas de |Dec| para Qdrant e SDSS."
+}

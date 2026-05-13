@@ -1,0 +1,126 @@
+{
+  "timestamp": "20260211T024831Z",
+  "params": {
+    "source": "backup_migration_planned_items"
+  },
+  "roots": [
+    "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461/omnimind_system_1767157461.tar.gz.gpg",
+    "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+    "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532"
+  ],
+  "counts": {
+    "entries": 3,
+    "non_symlink_entries": 3,
+    "total_bytes_non_symlink": 31949565705
+  },
+  "by_mountpoint": {
+    "/omnimind_storage": {
+      "count": 2,
+      "bytes": 23202429411
+    },
+    "/media/fahbrain/DEV_BRAIN_CLEAN1": {
+      "count": 1,
+      "bytes": 8747136294
+    }
+  },
+  "by_suffix": {
+    ".gz.gpg": 1,
+    ".tar.gz": 1,
+    ".backup_dir": 1
+  },
+  "top_files": [
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "basename": "omnimind_system_1767380192.tar.gz",
+      "suffix": ".tar.gz",
+      "is_symlink": false,
+      "realpath": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "target_exists": true,
+      "mountpoint": "/omnimind_storage",
+      "st_dev": null,
+      "st_ino": null,
+      "sha256_sample": null,
+      "size_bytes": 11672062126,
+      "mtime_utc": "2026-01-02T19:17:09.217692+00:00",
+      "target_size_bytes": 11672062126
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461/omnimind_system_1767157461.tar.gz.gpg",
+      "basename": "omnimind_system_1767157461.tar.gz.gpg",
+      "suffix": ".gz.gpg",
+      "is_symlink": false,
+      "realpath": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461/omnimind_system_1767157461.tar.gz.gpg",
+      "target_exists": true,
+      "mountpoint": "/omnimind_storage",
+      "st_dev": null,
+      "st_ino": null,
+      "sha256_sample": null,
+      "size_bytes": 11530367285,
+      "mtime_utc": "2025-12-31T05:26:03.960984+00:00",
+      "target_size_bytes": 11530367285
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532",
+      "basename": "omnimind_backup_20251211_174532",
+      "suffix": ".backup_dir",
+      "is_symlink": false,
+      "realpath": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532",
+      "target_exists": true,
+      "mountpoint": "/media/fahbrain/DEV_BRAIN_CLEAN1",
+      "st_dev": null,
+      "st_ino": null,
+      "sha256_sample": null,
+      "size_bytes": 8747136294,
+      "mtime_utc": "2026-02-04T02:22:27.824982+00:00",
+      "target_size_bytes": 8747136294
+    }
+  ],
+  "duplicates_by_basename_size": [],
+  "entries": [
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461/omnimind_system_1767157461.tar.gz.gpg",
+      "basename": "omnimind_system_1767157461.tar.gz.gpg",
+      "suffix": ".gz.gpg",
+      "is_symlink": false,
+      "realpath": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461/omnimind_system_1767157461.tar.gz.gpg",
+      "target_exists": true,
+      "mountpoint": "/omnimind_storage",
+      "st_dev": null,
+      "st_ino": null,
+      "sha256_sample": null,
+      "size_bytes": 11530367285,
+      "mtime_utc": "2025-12-31T05:26:03.960984+00:00",
+      "target_size_bytes": 11530367285
+    },
+    {
+      "path": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "basename": "omnimind_system_1767380192.tar.gz",
+      "suffix": ".tar.gz",
+      "is_symlink": false,
+      "realpath": "/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/omnimind_system_1767380192.tar.gz",
+      "target_exists": true,
+      "mountpoint": "/omnimind_storage",
+      "st_dev": null,
+      "st_ino": null,
+      "sha256_sample": null,
+      "size_bytes": 11672062126,
+      "mtime_utc": "2026-01-02T19:17:09.217692+00:00",
+      "target_size_bytes": 11672062126
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532",
+      "basename": "omnimind_backup_20251211_174532",
+      "suffix": ".backup_dir",
+      "is_symlink": false,
+      "realpath": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532",
+      "target_exists": true,
+      "mountpoint": "/media/fahbrain/DEV_BRAIN_CLEAN1",
+      "st_dev": null,
+      "st_ino": null,
+      "sha256_sample": null,
+      "size_bytes": 8747136294,
+      "mtime_utc": "2026-02-04T02:22:27.824982+00:00",
+      "target_size_bytes": 8747136294
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "timestamp": "20260209T004233Z",
+  "base_csv": "data/reports/cycle_metrics_minute_20260208T204557Z.csv",
+  "rows_base": 3765,
+  "rows_fused": 3765,
+  "sensor_logs": [
+    "logs_local/network_sovereign.log",
+    "logs_local/network_sovereign.log.1",
+    "logs_local/mcp_dodecatiad_persistence.log",
+    "logs_local/mcp_dodecatiad_persistence.log.1",
+    "logs_local/universe_map_cycle.log",
+    "logs_local/autonomous_loop_controller.log",
+    "logs_local/autonomous_loop_controller.log.1",
+    "logs_local/autonomous_loop_unit.log",
+    "logs_local/autonomous_loop_unit.log.1",
+    "logs_local/somatic_unit.log",
+    "logs_local/somatic_unit.log.1",
+    "logs_local/joule_unifier_unit.log",
+    "logs_local/joule_unifier_unit.log.1"
+  ],
+  "sensor_minutes": 2684,
+  "sensor_metrics": [
+    "sensor_event_count",
+    "sensor_sources",
+    "sensor_phi_mean",
+    "sensor_psi_mean",
+    "sensor_sigma_mean",
+    "sensor_epsilon_mean",
+    "sensor_ci_mean",
+    "sensor_csi_mean",
+    "sensor_gns_mean"
+  ],
+  "correlations": {
+    "anomaly_count": {
+      "sensor_event_count": {
+        "pearson_r": 0.29492110189671017,
+        "pearson_p": 3.5331103309505843e-48,
+        "spearman_r": 0.3324349823601845,
+        "spearman_p": 1.7316971120993282e-61
+      },
+      "sensor_sources": {
+        "pearson_r": 0.34824713297712473,
+        "pearson_p": 1.0908625699297395e-67,
+        "spearman_r": 0.37235830160852246,
+        "spearman_p": 7.412585994850814e-78
+      },
+      "sensor_phi_mean": {
+        "pearson_r": 0.020917633639520213,
+        "pearson_p": 0.32467118277796986,
+        "spearman_r": 0.20770981982890502,
+        "spearman_p": 4.7431854515205136e-23
+      },
+      "sensor_psi_mean": {
+        "pearson_r": -0.16257019719012522,
+        "pearson_p": 3.3004351850223773e-14,
+        "spearman_r": -0.18645875080074684,
+        "spearman_p": 2.7994686308285386e-18
+      },
+      "sensor_sigma_mean": {
+        "pearson_r": 0.15415581901435493,
+        "pearson_p": 6.554276124603865e-13,
+        "spearman_r": 0.19908770198967726,
+        "spearman_p": 1.146441468128032e-20
+      },
+      "sensor_epsilon_mean": {
+        "pearson_r": -0.09613534925733516,
+        "pearson_p": 7.954474998930504e-06,
+        "spearman_r": -0.09457927559145214,
+        "spearman_p": 1.113952285922046e-05
+      },
+      "sensor_ci_mean": {
+        "pearson_r": -0.06664551973746127,
+        "pearson_p": 0.0024810049867319936,
+        "spearman_r": -0.07976641837356449,
+        "spearman_p": 0.0002911230835914945
+      },
+      "sensor_csi_mean": {
+        "pearson_r": 0.019073207480668288,
+        "pearson_p": 0.38702622328554037,
+        "spearman_r": 0.055169731352267076,
+        "spearman_p": 0.012287448132357399
+      },
+      "sensor_gns_mean": {
+        "pearson_r": -0.21275543512166042,
+        "pearson_p": 1.669599566231232e-22,
+        "spearman_r": -0.20611485940041888,
+        "spearman_p": 3.431960286174838e-21
+      }
+    },
+    "satellite_matches": {
+      "sensor_event_count": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_sources": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_phi_mean": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_psi_mean": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_sigma_mean": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_epsilon_mean": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_ci_mean": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_csi_mean": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      },
+      "sensor_gns_mean": {
+        "pearson_r": null,
+        "pearson_p": null,
+        "spearman_r": null,
+        "spearman_p": null
+      }
+    }
+  },
+  "outputs": {
+    "csv": "data/reports/cycle_metrics_minute_fused_20260209T004233Z.csv",
+    "json": "data/reports/cycle_metrics_minute_fused_20260209T004233Z.json",
+    "md": "data/reports/cycle_metrics_minute_fused_20260209T004233Z.md"
+  }
+}

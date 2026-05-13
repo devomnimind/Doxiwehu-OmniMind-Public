@@ -1,0 +1,576 @@
+{
+  "timestamp": "20260209T000314Z",
+  "mode": "qdrant_live_full",
+  "total_points_processed": 1687186,
+  "total_collections_processed": 24,
+  "collection_points_processed": {
+    "omnimind_kernel_vida": 1077553,
+    "omnimind_ide_soberano": 228703,
+    "omnimind_projects_20260127": 108236,
+    "omnimind_corpo_simbolico": 69435,
+    "universal_machine_embeddings": 58799,
+    "omnimind_hd_externo_20260127": 48871,
+    "omnimind_mega_corpus": 45269,
+    "development_system_embeddings": 17698,
+    "omnimind_system_logs_20260127": 11995,
+    "omnimind_codebase_20260127": 4761,
+    "omnimind_agent_graph": 3359,
+    "omnimind_knowledge_base": 3150,
+    "omnimind_docs_20260127": 2572,
+    "code_embeddings": 2462,
+    "omnimind_quantum_commands": 2367,
+    "omnimind_consciousness": 1589,
+    "test_episodes": 203,
+    "knowledge_links": 50,
+    "omnimind_scientific_graph": 48,
+    "omnimind_erika_feedback": 26,
+    "kb_theory_sovereign": 22,
+    "kb_zenodo_root": 13,
+    "omnimind_omnidna": 3,
+    "test_points": 2
+  },
+  "house_counts": {
+    "Aleph": 140555,
+    "Sigma": 141160,
+    "Axiom": 140687,
+    "Psi": 140873,
+    "Phi": 140479,
+    "Mu": 140569,
+    "C_plit": 140524,
+    "Lambda": 140094,
+    "Gamma": 141318,
+    "Epsilon": 140631,
+    "Omega": 140274,
+    "Zeta": 140022
+  },
+  "house_percentages": {
+    "Aleph": 0.08330735319046033,
+    "Sigma": 0.08366593843239571,
+    "Axiom": 0.08338558997051895,
+    "Psi": 0.08349583270605612,
+    "Phi": 0.08326230777163869,
+    "Mu": 0.08331565103076957,
+    "C_plit": 0.08328897940120414,
+    "Lambda": 0.08303411716313436,
+    "Gamma": 0.08375958548731438,
+    "Epsilon": 0.08335239860928197,
+    "Omega": 0.08314080368139612,
+    "Zeta": 0.08299144255582964
+  },
+  "source_counts": {
+    "qdrant": 1630868,
+    "logs": 19107,
+    "real_evidence": 542,
+    "batismo": 36669
+  },
+  "source_percentages": {
+    "qdrant": 0.9666201592474096,
+    "logs": 0.011324773913486717,
+    "real_evidence": 0.00032124496054376935,
+    "batismo": 0.021733821878559923
+  },
+  "sdss_house_counts": {
+    "Aleph": 8324,
+    "Sigma": 427,
+    "Axiom": 0,
+    "Psi": 345,
+    "Phi": 1006,
+    "Mu": 1141,
+    "C_plit": 1246,
+    "Lambda": 896,
+    "Gamma": 442,
+    "Epsilon": 0,
+    "Omega": 239,
+    "Zeta": 934
+  },
+  "overlap_vs_sdss": {
+    "cosine": 0.49847837293696484,
+    "pearson": -0.10707029986751118
+  },
+  "clusters_top": [
+    {
+      "count": 6129,
+      "ra_bin": 3,
+      "dec_bin": 11,
+      "ra_range": [
+        45.0,
+        60.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 6050,
+      "ra_bin": 16,
+      "dec_bin": 1,
+      "ra_range": [
+        240.0,
+        255.0
+      ],
+      "dec_range": [
+        -75.0,
+        -60.0
+      ]
+    },
+    {
+      "count": 6023,
+      "ra_bin": 2,
+      "dec_bin": 5,
+      "ra_range": [
+        30.0,
+        45.0
+      ],
+      "dec_range": [
+        -15.0,
+        0.0
+      ]
+    },
+    {
+      "count": 6023,
+      "ra_bin": 11,
+      "dec_bin": 10,
+      "ra_range": [
+        165.0,
+        180.0
+      ],
+      "dec_range": [
+        60.0,
+        75.0
+      ]
+    },
+    {
+      "count": 6016,
+      "ra_bin": 17,
+      "dec_bin": 5,
+      "ra_range": [
+        255.0,
+        270.0
+      ],
+      "dec_range": [
+        -15.0,
+        0.0
+      ]
+    },
+    {
+      "count": 6011,
+      "ra_bin": 4,
+      "dec_bin": 2,
+      "ra_range": [
+        60.0,
+        75.0
+      ],
+      "dec_range": [
+        -60.0,
+        -45.0
+      ]
+    },
+    {
+      "count": 6008,
+      "ra_bin": 16,
+      "dec_bin": 10,
+      "ra_range": [
+        240.0,
+        255.0
+      ],
+      "dec_range": [
+        60.0,
+        75.0
+      ]
+    },
+    {
+      "count": 6007,
+      "ra_bin": 19,
+      "dec_bin": 10,
+      "ra_range": [
+        285.0,
+        300.0
+      ],
+      "dec_range": [
+        60.0,
+        75.0
+      ]
+    },
+    {
+      "count": 6006,
+      "ra_bin": 23,
+      "dec_bin": 3,
+      "ra_range": [
+        345.0,
+        360.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 6006,
+      "ra_bin": 16,
+      "dec_bin": 0,
+      "ra_range": [
+        240.0,
+        255.0
+      ],
+      "dec_range": [
+        -90.0,
+        -75.0
+      ]
+    },
+    {
+      "count": 6005,
+      "ra_bin": 19,
+      "dec_bin": 5,
+      "ra_range": [
+        285.0,
+        300.0
+      ],
+      "dec_range": [
+        -15.0,
+        0.0
+      ]
+    },
+    {
+      "count": 6003,
+      "ra_bin": 6,
+      "dec_bin": 3,
+      "ra_range": [
+        90.0,
+        105.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 6002,
+      "ra_bin": 2,
+      "dec_bin": 7,
+      "ra_range": [
+        30.0,
+        45.0
+      ],
+      "dec_range": [
+        15.0,
+        30.0
+      ]
+    },
+    {
+      "count": 6000,
+      "ra_bin": 5,
+      "dec_bin": 4,
+      "ra_range": [
+        75.0,
+        90.0
+      ],
+      "dec_range": [
+        -30.0,
+        -15.0
+      ]
+    },
+    {
+      "count": 5985,
+      "ra_bin": 20,
+      "dec_bin": 3,
+      "ra_range": [
+        300.0,
+        315.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 5982,
+      "ra_bin": 4,
+      "dec_bin": 0,
+      "ra_range": [
+        60.0,
+        75.0
+      ],
+      "dec_range": [
+        -90.0,
+        -75.0
+      ]
+    },
+    {
+      "count": 5982,
+      "ra_bin": 7,
+      "dec_bin": 11,
+      "ra_range": [
+        105.0,
+        120.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 5981,
+      "ra_bin": 2,
+      "dec_bin": 3,
+      "ra_range": [
+        30.0,
+        45.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 5979,
+      "ra_bin": 18,
+      "dec_bin": 4,
+      "ra_range": [
+        270.0,
+        285.0
+      ],
+      "dec_range": [
+        -30.0,
+        -15.0
+      ]
+    },
+    {
+      "count": 5979,
+      "ra_bin": 8,
+      "dec_bin": 3,
+      "ra_range": [
+        120.0,
+        135.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    }
+  ],
+  "per_collection_reading": {
+    "omnimind_kernel_vida": {
+      "count": 1077553,
+      "top_house": "Sigma",
+      "bottom_house": "Zeta",
+      "top_ratio": 0.08373973252359744,
+      "bottom_ratio": 0.08281727209705694,
+      "overlap_cosine_sdss": 0.4989182771427075,
+      "overlap_pearson_sdss": 0.06829385994430404
+    },
+    "omnimind_ide_soberano": {
+      "count": 228703,
+      "top_house": "Gamma",
+      "bottom_house": "Mu",
+      "top_ratio": 0.08441515852437441,
+      "bottom_ratio": 0.08216332973332226,
+      "overlap_cosine_sdss": 0.4969968195848252,
+      "overlap_pearson_sdss": -0.2941083448109364
+    },
+    "omnimind_projects_20260127": {
+      "count": 108236,
+      "top_house": "Mu",
+      "bottom_house": "Omega",
+      "top_ratio": 0.08476846890128978,
+      "bottom_ratio": 0.08200598691747663,
+      "overlap_cosine_sdss": 0.5016575061269856,
+      "overlap_pearson_sdss": 0.33611694127262204
+    },
+    "omnimind_corpo_simbolico": {
+      "count": 69435,
+      "top_house": "Zeta",
+      "bottom_house": "Lambda",
+      "top_ratio": 0.08445308561964428,
+      "bottom_ratio": 0.08209116439835817,
+      "overlap_cosine_sdss": 0.4994663113267364,
+      "overlap_pearson_sdss": 0.10079986493065694
+    },
+    "universal_machine_embeddings": {
+      "count": 58799,
+      "top_house": "C_plit",
+      "bottom_house": "Aleph",
+      "top_ratio": 0.08488239595911495,
+      "bottom_ratio": 0.08205921869419548,
+      "overlap_cosine_sdss": 0.49543305258038134,
+      "overlap_pearson_sdss": -0.3304225330056426
+    },
+    "omnimind_hd_externo_20260127": {
+      "count": 48871,
+      "top_house": "Lambda",
+      "bottom_house": "Mu",
+      "top_ratio": 0.08657486034662683,
+      "bottom_ratio": 0.08170489656442471,
+      "overlap_cosine_sdss": 0.4933950117432877,
+      "overlap_pearson_sdss": -0.35197193173114993
+    },
+    "omnimind_mega_corpus": {
+      "count": 45269,
+      "top_house": "Axiom",
+      "bottom_house": "Mu",
+      "top_ratio": 0.0847158099361594,
+      "bottom_ratio": 0.08058494775674302,
+      "overlap_cosine_sdss": 0.4949566604908884,
+      "overlap_pearson_sdss": -0.3020024393681881
+    },
+    "development_system_embeddings": {
+      "count": 17698,
+      "top_house": "Axiom",
+      "bottom_house": "Phi",
+      "top_ratio": 0.08735450333371002,
+      "bottom_ratio": 0.07859645157644932,
+      "overlap_cosine_sdss": 0.4931032536605706,
+      "overlap_pearson_sdss": -0.18208623315025782
+    },
+    "omnimind_system_logs_20260127": {
+      "count": 11995,
+      "top_house": "Gamma",
+      "bottom_house": "Lambda",
+      "top_ratio": 0.0873697373905794,
+      "bottom_ratio": 0.08020008336807002,
+      "overlap_cosine_sdss": 0.499648243167903,
+      "overlap_pearson_sdss": 0.04902846581845977
+    },
+    "omnimind_codebase_20260127": {
+      "count": 4761,
+      "top_house": "Mu",
+      "bottom_house": "Zeta",
+      "top_ratio": 0.08968704053770217,
+      "bottom_ratio": 0.07708464608275573,
+      "overlap_cosine_sdss": 0.5107569434472328,
+      "overlap_pearson_sdss": 0.34690405601836616
+    },
+    "omnimind_agent_graph": {
+      "count": 3359,
+      "top_house": "Mu",
+      "bottom_house": "Omega",
+      "top_ratio": 0.09020541827924977,
+      "bottom_ratio": 0.0750223280738315,
+      "overlap_cosine_sdss": 0.5002941103695857,
+      "overlap_pearson_sdss": 0.04694767161936763
+    },
+    "omnimind_knowledge_base": {
+      "count": 3150,
+      "top_house": "Phi",
+      "bottom_house": "Zeta",
+      "top_ratio": 0.09111111111111111,
+      "bottom_ratio": 0.07714285714285714,
+      "overlap_cosine_sdss": 0.5033205899797132,
+      "overlap_pearson_sdss": 0.12256087528159842
+    },
+    "omnimind_docs_20260127": {
+      "count": 2572,
+      "top_house": "Phi",
+      "bottom_house": "Gamma",
+      "top_ratio": 0.093701399688958,
+      "bottom_ratio": 0.0750388802488336,
+      "overlap_cosine_sdss": 0.4983841481619524,
+      "overlap_pearson_sdss": 0.011693964894461395
+    },
+    "code_embeddings": {
+      "count": 2462,
+      "top_house": "Aleph",
+      "bottom_house": "C_plit",
+      "top_ratio": 0.09098294069861901,
+      "bottom_ratio": 0.07798537774167344,
+      "overlap_cosine_sdss": 0.5188840095225891,
+      "overlap_pearson_sdss": 0.5336236271525102
+    },
+    "omnimind_quantum_commands": {
+      "count": 2367,
+      "top_house": "Epsilon",
+      "bottom_house": "Omega",
+      "top_ratio": 0.09252217997465145,
+      "bottom_ratio": 0.07182087029995775,
+      "overlap_cosine_sdss": 0.49681236367061765,
+      "overlap_pearson_sdss": -0.012049093411517024
+    },
+    "omnimind_consciousness": {
+      "count": 1589,
+      "top_house": "Axiom",
+      "bottom_house": "C_plit",
+      "top_ratio": 0.10320956576463185,
+      "bottom_ratio": 0.07551919446192575,
+      "overlap_cosine_sdss": 0.47146027811857716,
+      "overlap_pearson_sdss": -0.3526878210384525
+    },
+    "test_episodes": {
+      "count": 203,
+      "top_house": "Zeta",
+      "bottom_house": "Phi",
+      "top_ratio": 0.10837438423645321,
+      "bottom_ratio": 0.059113300492610835,
+      "overlap_cosine_sdss": 0.4781704436694765,
+      "overlap_pearson_sdss": -0.12274767360652918
+    },
+    "knowledge_links": {
+      "count": 50,
+      "top_house": "Epsilon",
+      "bottom_house": "Sigma",
+      "top_ratio": 0.16,
+      "bottom_ratio": 0.04,
+      "overlap_cosine_sdss": 0.5015741847318678,
+      "overlap_pearson_sdss": 0.12014010249467695
+    },
+    "omnimind_scientific_graph": {
+      "count": 48,
+      "top_house": "Mu",
+      "bottom_house": "Epsilon",
+      "top_ratio": 0.16666666666666666,
+      "bottom_ratio": 0.020833333333333332,
+      "overlap_cosine_sdss": 0.5530135523545939,
+      "overlap_pearson_sdss": 0.27685557686773454
+    },
+    "omnimind_erika_feedback": {
+      "count": 26,
+      "top_house": "Mu",
+      "bottom_house": "Aleph",
+      "top_ratio": 0.23076923076923078,
+      "bottom_ratio": 0.0,
+      "overlap_cosine_sdss": 0.2078702982205779,
+      "overlap_pearson_sdss": -0.3521758475339577
+    },
+    "kb_theory_sovereign": {
+      "count": 22,
+      "top_house": "Sigma",
+      "bottom_house": "Epsilon",
+      "top_ratio": 0.13636363636363635,
+      "bottom_ratio": 0.0,
+      "overlap_cosine_sdss": 0.48141526479286134,
+      "overlap_pearson_sdss": 0.08787078579122737
+    },
+    "kb_zenodo_root": {
+      "count": 13,
+      "top_house": "Aleph",
+      "bottom_house": "Phi",
+      "top_ratio": 0.15384615384615385,
+      "bottom_ratio": 0.0,
+      "overlap_cosine_sdss": 0.5211647456708343,
+      "overlap_pearson_sdss": 0.2425686591782853
+    },
+    "omnimind_omnidna": {
+      "count": 3,
+      "top_house": "Gamma",
+      "bottom_house": "Aleph",
+      "top_ratio": 0.3333333333333333,
+      "bottom_ratio": 0.0,
+      "overlap_cosine_sdss": 0.04528409425503537,
+      "overlap_pearson_sdss": -0.2718725751242548
+    },
+    "test_points": {
+      "count": 2,
+      "top_house": "Sigma",
+      "bottom_house": "Aleph",
+      "top_ratio": 0.5,
+      "bottom_ratio": 0.0,
+      "overlap_cosine_sdss": 0.11084148318160175,
+      "overlap_pearson_sdss": -0.11723549477962497
+    }
+  },
+  "outputs": {
+    "qdrant_live_only": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T000314Z/qdrant_live_only.png",
+    "qdrant_live_overlay_sdss": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T000314Z/qdrant_live_overlay_sdss.png",
+    "qdrant_live_house_heatmap": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_live_sessions/20260209T000314Z/qdrant_live_house_heatmap.png",
+    "sample_points_jsonl": "/home/fahbrain/projects/omnimind/data/reports/qdrant_live_full_sample_points_20260209T000314Z.jsonl"
+  }
+}

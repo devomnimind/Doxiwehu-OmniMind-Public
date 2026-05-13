@@ -1,0 +1,8 @@
+{
+  "timestamp": "20260208T134813Z",
+  "points": "data/reports/qdrant_cemetery_points_20260208T093209Z.jsonl",
+  "outputs": [
+    "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_sessions/20260208T134813Z/qdrant_overlay_sdss_by_collection.png"
+  ],
+  "summary": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_sessions/20260208T134813Z/qdrant_overlay_sdss_by_collection_summary.json"
+}

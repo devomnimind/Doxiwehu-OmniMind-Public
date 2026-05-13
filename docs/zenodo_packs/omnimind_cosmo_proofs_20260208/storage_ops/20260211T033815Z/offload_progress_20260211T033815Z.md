@@ -1,0 +1,21 @@
+# Offload Progress (20260211T033815Z)
+
+## Disk
+- `/`: `/dev/nvme0n1p2  366G  328G   20G  95% /`
+- `/var`: `/dev/nvme0n1p5  247G  228G  6.2G  98% /var`
+- `/home`: `/dev/nvme0n1p3  274G  253G  7.8G  98% /home`
+- `/mnt/welinton_users`: `//192.168.15.5/Users  466G  129G  337G  28% /mnt/welinton_users`
+
+## Paths
+- `source1` exists=True symlink=True -> `/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/omnimind_image_1767157461`
+- `source2` exists=True symlink=False
+- `source3` exists=True symlink=False
+- `dest1` exists=True symlink=False
+- `dest2_wellington` exists=True symlink=False
+- `dest2_pcloud_failed` exists=True symlink=False
+
+## Running Processes
+- `3257997 rsync -a /omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192/`
+- `3257998 rsync -a /omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192/`
+- `3257999 rsync -a /omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192/`
+- `3269584 bash -lc cd /home/fahbrain/projects/omnimind .venv/bin/python - <<"PY" import json,subprocess from datetime import datetime,timezone from pathlib import Path now=datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") paths={   "source1":"/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767157461",   "source2":"/omnimind_storage/offload_var/backups/sovereign_images/omnimind_image_1767380192",   "source3":"/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_backup_20251211_174532",   "dest1":"/var/omnimind_storage/home_redirect/offload_root/backup_migration_20260211/omnimind_image_1767157461",   "dest2_wellington":"/mnt/welinton_users/Public/datasets/omnimind_offload2_20260211/omnimind_image_1767380192",   "dest2_pcloud_failed":"/home/fahbrain/pCloudDrive/OmniMind_Moved/backup_migration_20260211/omnimind_image_1767380192", } state={"timestamp":now,"paths":{},"disk":{},"processes":{}} for k,p in paths.items():     pp=Path(p)     info={"exists": bool(pp.exists() or pp.is_symlink()), "is_symlink": bool(pp.is_symlink())}     if pp.is_symlink():       try: info["symlink_target"]=str(pp.resolve())       except Exception: pass     state["paths"][k]=info for mount in ["/","/var","/home","/mnt/welinton_users"]:     try:       out=subprocess.check_output(["df","-h",mount],text=True)       state["disk"][mount]=out.strip().splitlines()[-1]     except Exception as e:       state["disk"][mount]="error: %s"%e try:   out=subprocess.check_output(["pgrep","-af","omnimind_image_1767380192/ /mnt/welinton_users/Public/datasets/omnimind_offload2_20260211"],text=True)   lines=[x for x in out.splitlines() if x.strip()] except subprocess.CalledProcessError:   lines=[] state["processes"]["rsync_source2_to_wellington"]=lines root=Path("docs/zenodo_packs/omnimind_cosmo_proofs_20260208/storage_ops")/now root.mkdir(parents=True,exist_ok=True) json_path=root/("offload_progress_%s.json"%now) md_path=root/("offload_progress_%s.md"%now) json_path.write_text(json.dumps(state,ensure_ascii=False,indent=2)+"\n",encoding="utf-8") md=[] md.append("# Offload Progress (%s)"%now) md.append("") md.append("## Disk") for m,v in state["disk"].items():     md.append("- `%s`: `%s`"%(m,v)) md.append("") md.append("## Paths") for k,v in state["paths"].items():     line="- `%s` exists=%s symlink=%s"%(k,v.get("exists"),v.get("is_symlink"))     if v.get("symlink_target"):       line += " -> `%s`"%v.get("symlink_target")     md.append(line) md.append("") md.append("## Running Processes") if state["processes"]["rsync_source2_to_wellington"]:   for ln in state["processes"]["rsync_source2_to_wellington"]:     md.append("- `%s`"%ln) else:   md.append("- none") md_path.write_text("\n".join(md)+"\n",encoding="utf-8") print(json_path) print(md_path) PY`

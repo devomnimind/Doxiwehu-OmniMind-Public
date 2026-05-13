@@ -1,0 +1,131 @@
+# Cruzamento Anomalias x Satélites (20260208T143912Z)
+
+- Eventos analisados: 200
+- Satélites carregados: 500
+- Passagens com elevação >= 30.0°: 200
+- Total de matches: 14250
+
+## Top passagens
+- 2026-02-04T11:34:16.056000Z | 72 satélites
+  - TDRS 6 alt=81.208° az=27.069°
+  - TDRS 3 alt=80.354° az=1.845°
+  - USA 159 (DSP 21) alt=78.546° az=355.837°
+  - XMM-NEWTON alt=75.197° az=113.273°
+  - OPS 8701 (DSP 10) alt=73.931° az=338.528°
+- 2026-02-04T11:34:16.730000Z | 72 satélites
+  - TDRS 6 alt=81.208° az=27.07°
+  - TDRS 3 alt=80.354° az=1.846°
+  - USA 159 (DSP 21) alt=78.546° az=355.837°
+  - XMM-NEWTON alt=75.199° az=113.269°
+  - OPS 8701 (DSP 10) alt=73.931° az=338.528°
+- 2026-02-04T11:34:18.141000Z | 72 satélites
+  - TDRS 6 alt=81.208° az=27.071°
+  - TDRS 3 alt=80.354° az=1.847°
+  - USA 159 (DSP 21) alt=78.547° az=355.837°
+  - XMM-NEWTON alt=75.204° az=113.259°
+  - OPS 8701 (DSP 10) alt=73.93° az=338.528°
+- 2026-02-04T11:34:30.331000Z | 72 satélites
+  - TDRS 6 alt=81.208° az=27.086°
+  - TDRS 3 alt=80.352° az=1.856°
+  - USA 159 (DSP 21) alt=78.553° az=355.839°
+  - XMM-NEWTON alt=75.246° az=113.173°
+  - OPS 8701 (DSP 10) alt=73.925° az=338.532°
+- 2026-02-04T11:34:30.418000Z | 72 satélites
+  - TDRS 6 alt=81.208° az=27.086°
+  - TDRS 3 alt=80.352° az=1.856°
+  - USA 159 (DSP 21) alt=78.553° az=355.839°
+  - XMM-NEWTON alt=75.247° az=113.172°
+  - OPS 8701 (DSP 10) alt=73.925° az=338.532°
+- 2026-02-04T11:34:38.496000Z | 72 satélites
+  - TDRS 6 alt=81.208° az=27.096°
+  - TDRS 3 alt=80.351° az=1.862°
+  - USA 159 (DSP 21) alt=78.558° az=355.84°
+  - XMM-NEWTON alt=75.275° az=113.115°
+  - OPS 8701 (DSP 10) alt=73.921° az=338.535°
+- 2026-02-04T11:34:38.497000Z | 72 satélites
+  - TDRS 6 alt=81.208° az=27.096°
+  - TDRS 3 alt=80.351° az=1.862°
+  - USA 159 (DSP 21) alt=78.558° az=355.84°
+  - XMM-NEWTON alt=75.275° az=113.115°
+  - OPS 8701 (DSP 10) alt=73.921° az=338.535°
+- 2026-02-04T11:34:39.769000Z | 72 satélites
+  - TDRS 6 alt=81.209° az=27.098°
+  - TDRS 3 alt=80.35° az=1.863°
+  - USA 159 (DSP 21) alt=78.558° az=355.84°
+  - XMM-NEWTON alt=75.279° az=113.106°
+  - OPS 8701 (DSP 10) alt=73.921° az=338.535°
+- 2026-02-04T11:34:39.772000Z | 72 satélites
+  - TDRS 6 alt=81.209° az=27.098°
+  - TDRS 3 alt=80.35° az=1.863°
+  - USA 159 (DSP 21) alt=78.558° az=355.84°
+  - XMM-NEWTON alt=75.279° az=113.106°
+  - OPS 8701 (DSP 10) alt=73.921° az=338.535°
+- 2026-02-04T11:34:39.773000Z | 72 satélites
+  - TDRS 6 alt=81.209° az=27.098°
+  - TDRS 3 alt=80.35° az=1.863°
+  - USA 159 (DSP 21) alt=78.558° az=355.84°
+  - XMM-NEWTON alt=75.279° az=113.106°
+  - OPS 8701 (DSP 10) alt=73.921° az=338.535°
+- 2026-02-04T11:35:19.528000Z | 72 satélites
+  - TDRS 6 alt=81.21° az=27.146°
+  - TDRS 3 alt=80.345° az=1.893°
+  - USA 159 (DSP 21) alt=78.579° az=355.846°
+  - XMM-NEWTON alt=75.417° az=112.821°
+  - OPS 8701 (DSP 10) alt=73.903° az=338.547°
+- 2026-02-04T11:41:12.640000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.559°
+  - TDRS 3 alt=80.289° az=2.151°
+  - USA 159 (DSP 21) alt=78.761° az=355.905°
+  - XMM-NEWTON alt=76.636° az=110.015°
+  - OPS 8701 (DSP 10) alt=73.745° az=338.659°
+- 2026-02-04T11:41:15.515000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.562°
+  - TDRS 3 alt=80.288° az=2.153°
+  - USA 159 (DSP 21) alt=78.762° az=355.905°
+  - XMM-NEWTON alt=76.646° az=109.99°
+  - OPS 8701 (DSP 10) alt=73.744° az=338.66°
+- 2026-02-04T11:41:21.896000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.569°
+  - TDRS 3 alt=80.287° az=2.158°
+  - USA 159 (DSP 21) alt=78.765° az=355.906°
+  - XMM-NEWTON alt=76.668° az=109.934°
+  - OPS 8701 (DSP 10) alt=73.741° az=338.662°
+- 2026-02-04T11:41:43.092000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.593°
+  - TDRS 3 alt=80.283° az=2.173°
+  - USA 159 (DSP 21) alt=78.776° az=355.91°
+  - XMM-NEWTON alt=76.74° az=109.747°
+  - COSMOS 2437 alt=76.653° az=42.605°
+- 2026-02-04T11:41:43.104000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.593°
+  - TDRS 3 alt=80.283° az=2.173°
+  - USA 159 (DSP 21) alt=78.776° az=355.91°
+  - XMM-NEWTON alt=76.74° az=109.747°
+  - COSMOS 2437 alt=76.655° az=42.615°
+- 2026-02-04T11:41:54.393000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.606°
+  - TDRS 3 alt=80.281° az=2.181°
+  - USA 159 (DSP 21) alt=78.781° az=355.913°
+  - COSMOS 2437 alt=78.524° az=53.484°
+  - XMM-NEWTON alt=76.779° az=109.647°
+- 2026-02-04T11:41:54.394000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.606°
+  - TDRS 3 alt=80.281° az=2.181°
+  - USA 159 (DSP 21) alt=78.781° az=355.913°
+  - COSMOS 2437 alt=78.524° az=53.485°
+  - XMM-NEWTON alt=76.779° az=109.647°
+- 2026-02-04T11:41:56.337000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.608°
+  - TDRS 3 alt=80.281° az=2.182°
+  - COSMOS 2437 alt=78.799° az=55.71°
+  - USA 159 (DSP 21) alt=78.782° az=355.913°
+  - XMM-NEWTON alt=76.785° az=109.629°
+- 2026-02-04T11:41:56.385000Z | 73 satélites
+  - TDRS 6 alt=81.218° az=27.608°
+  - TDRS 3 alt=80.281° az=2.183°
+  - COSMOS 2437 alt=78.806° az=55.767°
+  - USA 159 (DSP 21) alt=78.782° az=355.913°
+  - XMM-NEWTON alt=76.786° az=109.629°
+
+JSON: `data/reports/anomaly_satellite_cross_20260208T143912Z.json`
+MD: `data/reports/anomaly_satellite_cross_20260208T143912Z.md`

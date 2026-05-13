@@ -1,0 +1,94 @@
+{
+  "session": "20260208T151958Z",
+  "out_dir": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z",
+  "quadruple_by_house": "/home/fahbrain/projects/omnimind/data/reports/maps/quadruple_by_house.json",
+  "house_order": [
+    "Aleph",
+    "Sigma",
+    "Axiom",
+    "Psi",
+    "Phi",
+    "Mu",
+    "C_plit",
+    "Lambda",
+    "Gamma",
+    "Epsilon",
+    "Omega",
+    "Zeta"
+  ],
+  "results": [
+    {
+      "name": "SDSS",
+      "source": "/home/fahbrain/projects/omnimind/data/sdss_anomalies/sdss_structures_dr17.json",
+      "n": 5000,
+      "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z/dodecatiad_sdss.png"
+    },
+    {
+      "name": "GAMMA",
+      "source": "/home/fahbrain/projects/omnimind/data/test_reports/gamma_top32_norm.npz",
+      "tensors": [
+        "mass",
+        "metallicity_dim2",
+        "metallicity_dim3"
+      ],
+      "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z/dodecatiad_gamma.png"
+    },
+    {
+      "name": "LYMAN",
+      "source": "/home/fahbrain/projects/omnimind/data/test_reports/lyman_top32_norm.npz",
+      "tensors": [
+        "tau_log_norm",
+        "tau_raw",
+        "dlambda",
+        "los_vectors"
+      ],
+      "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z/dodecatiad_lyman.png"
+    },
+    {
+      "name": "UNIVERSE_MAP_PLUS",
+      "layers": [
+        "UniverseMap+"
+      ],
+      "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z/dodecatiad_universe_map_plus.png"
+    },
+    {
+      "name": "ASTEROIDS_LAYER",
+      "layers": [
+        "Asteroids"
+      ],
+      "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z/dodecatiad_asteroids_layer.png"
+    },
+    {
+      "name": "COMBINED",
+      "layers": [
+        "SDSS",
+        "GAMMA",
+        "LYMAN",
+        "Solar",
+        "Voyager",
+        "Asteroids",
+        "UniverseMap+"
+      ],
+      "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z/dodecatiad_layers_all.png"
+    },
+    {
+      "name": "COMBINED",
+      "layers": [
+        "SDSS",
+        "GAMMA",
+        "LYMAN",
+        "Solar",
+        "Voyager",
+        "Asteroids",
+        "UniverseMap+",
+        "Cemetery",
+        "Crux"
+      ],
+      "output": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T151958Z/dodecatiad_layers_all_plus_crux_cemetery.png"
+    }
+  ],
+  "notes": [
+    "Este gerador é Dodecatíade-first: projeta datasets cosmológicos em 12 casas (com Sinthome (13) como amarração central).",
+    "Não busca ‘Phi-only’: usa o snapshot de quádrupla por casa para modular tamanho/alpha/edge."
+  ]
+}

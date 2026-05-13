@@ -1,0 +1,153 @@
+{
+  "timestamp": "20260209T230703Z",
+  "sources": {
+    "orbital_validation": "reports_runtime/orbital_validation_20260209T230557Z.json",
+    "orbital_trails": "reports_runtime/orbital_trails_dcriterion_20260209T230616Z.json"
+  },
+  "summary": {
+    "high_i_candidates": 12,
+    "resonance_candidates": 4,
+    "no_orbit_candidates": 9
+  },
+  "priority_high_i_low_d": [
+    {
+      "code": "CK18A060",
+      "i_deg": 77.1897,
+      "best_d_sh": 0.41435386314066297,
+      "best_ref": "K18P28L",
+      "q": 3.014183,
+      "e": 0.798939
+    },
+    {
+      "code": "CK12K010",
+      "i_deg": 142.5957,
+      "best_d_sh": 0.5426868798682153,
+      "best_ref": "K19E03J",
+      "q": 1.059123,
+      "e": 0.999871
+    },
+    {
+      "code": "CK09P010",
+      "i_deg": 106.2235,
+      "best_d_sh": 0.6024088455746415,
+      "best_ref": "K17O68X",
+      "q": 1.539199,
+      "e": 0.99985
+    },
+    {
+      "code": "CK14Q020",
+      "i_deg": 80.7936,
+      "best_d_sh": 0.6761133280842851,
+      "best_ref": "K17Y03N",
+      "q": 1.28787,
+      "e": 0.9968
+    },
+    {
+      "code": "CK16E010",
+      "i_deg": 131.8714,
+      "best_d_sh": 0.8984976647724529,
+      "best_ref": "p7717",
+      "q": 8.160856,
+      "e": 1.001501
+    },
+    {
+      "code": "CK19A050",
+      "i_deg": 67.5554,
+      "best_d_sh": 0.9473411093375989,
+      "best_ref": "Y2842",
+      "q": 6.315868,
+      "e": 0.706658
+    },
+    {
+      "code": "CK19B030",
+      "i_deg": 66.6274,
+      "best_d_sh": 0.997504680113603,
+      "best_ref": "w4778",
+      "q": 6.83059,
+      "e": 0.99782
+    },
+    {
+      "code": "CK12A010",
+      "i_deg": 121.0091,
+      "best_d_sh": 1.0601202906877385,
+      "best_ref": "K25M88U",
+      "q": 7.61292,
+      "e": 0.999707
+    },
+    {
+      "code": "CK14UR1N",
+      "i_deg": 95.4462,
+      "best_d_sh": 1.2016153020841094,
+      "best_ref": "q3800",
+      "q": 10.96048,
+      "e": 1.004321
+    },
+    {
+      "code": "CJ99S020",
+      "i_deg": 65.6344,
+      "best_d_sh": 1.4643049279354694,
+      "best_ref": "K24P38P",
+      "q": 6.503096,
+      "e": 1.002279
+    },
+    {
+      "code": "CJ99J020",
+      "i_deg": 86.4016,
+      "best_d_sh": 1.4853244198819608,
+      "best_ref": "K25M88U",
+      "q": 7.069997,
+      "e": 1.000772
+    },
+    {
+      "code": "CK13E010",
+      "i_deg": 158.7113,
+      "best_d_sh": 1.6433257438475615,
+      "best_ref": "K25M88U",
+      "q": 7.763539,
+      "e": 0.998824
+    }
+  ],
+  "resonances": [
+    {
+      "code": "PK09Y020",
+      "planet": "Jupiter",
+      "ratio": 1.4082673218188224,
+      "target": "7:5"
+    },
+    {
+      "code": "PK10H030",
+      "planet": "Jupiter",
+      "ratio": 0.4457117984836448,
+      "target": "3:7"
+    },
+    {
+      "code": "PK10U55H",
+      "planet": "Jupiter",
+      "ratio": 1.4442920931426295,
+      "target": "7:5"
+    },
+    {
+      "code": "PK13CC9U",
+      "planet": "Jupiter",
+      "ratio": 0.417241149523048,
+      "target": "3:7"
+    }
+  ],
+  "no_orbit_candidates": [
+    "A11y70v",
+    "C19DCG5",
+    "C45RW41",
+    "CE5LGG2",
+    "CE5V9J2",
+    "P22liAW",
+    "P22lnpr",
+    "P22lp4E",
+    "ST26B07"
+  ],
+  "recommended_execution_queue": [
+    "queue_A_followup_ephemerides: track high_i_low_d objects in next 24h windows with real RA/Dec, delta-arc >= 2 nights",
+    "queue_B_resonance_watch: monitor Jupiter 7:5 and 3:7 regimes in candidates list",
+    "queue_C_no_orbit_resolution: prioritize NEOCP-only IDs for orbit closure using multi-epoch tracklets",
+    "queue_D_house_overlay: overlay queue A/B objects on Dodecatiade houses and compare with satellite masks"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "timestamp": "20260208T210046Z",
+  "sources": {
+    "summary": "data/reports/gaia_sim_twin/gaia_sim_twin_summary.json",
+    "compare": "data/reports/gaia_sim_twin/gaia_sim_twin_house_compare.csv"
+  },
+  "sim_total": 5000,
+  "real_total": 40000,
+  "sim_rank": [
+    {
+      "house": "Aleph",
+      "count": 2800,
+      "pct": 56.0
+    },
+    {
+      "house": "C_plit",
+      "count": 411,
+      "pct": 8.22
+    },
+    {
+      "house": "Mu",
+      "count": 390,
+      "pct": 7.8
+    },
+    {
+      "house": "Phi",
+      "count": 327,
+      "pct": 6.54
+    },
+    {
+      "house": "Zeta",
+      "count": 308,
+      "pct": 6.16
+    }
+  ],
+  "real_rank": [
+    {
+      "house": "Sigma",
+      "count": 33347,
+      "pct": 83.3675
+    },
+    {
+      "house": "Axiom",
+      "count": 6653,
+      "pct": 16.6325
+    },
+    {
+      "house": "Aleph",
+      "count": 0,
+      "pct": 0.0
+    },
+    {
+      "house": "Psi",
+      "count": 0,
+      "pct": 0.0
+    },
+    {
+      "house": "Phi",
+      "count": 0,
+      "pct": 0.0
+    }
+  ],
+  "note": "Gaia REAL nesta rodada (4 blocos) continua sequencial por faixa de RA, com concentração principal em Sigma e secundária em Axiom. O SIM permanece distribuído com dominância Aleph. Isso sustenta complementaridade estrutural (sequência observacional vs topologia distribuída)."
+}

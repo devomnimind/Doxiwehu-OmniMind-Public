@@ -1,0 +1,29 @@
+{
+  "timestamp_utc": "2026-02-18T21:11:05.225379+00:00",
+  "d15_top_pair": {
+    "pair": "d15_rekh_proxy x moon_illum_frac",
+    "r": -0.8323412104628806,
+    "lag_min": 300,
+    "n": 5100
+  },
+  "d15_validated_pairs_count": 63,
+  "dm2_gap_status_candidate": "FECHADA_LOCAL",
+  "dm2_microbiome_external_collection_points_total": 1143,
+  "zip_materialized_total": 13,
+  "zip_specs_total": 13,
+  "pack_validation_status_candidate": "EM_ANDAMENTO",
+  "pack_gap_status_board": {
+    "gap_m18_rebound_hiv": "FECHADA_LOCAL",
+    "gap_heatmap_15houses_gwas_hiv_dm2_lupus": "FECHADA_LOCAL",
+    "gap_astro_cycle_sustainment_validation": "FECHADA_LOCAL",
+    "gap_dm2_microbiome_wrapper": "FECHADA_LOCAL",
+    "gap_multi_disease_pack_hiv_dm2_lupus": "FECHADA_LOCAL",
+    "gap_ensembl_grch38_mapping": "FECHADA_LOCAL",
+    "gap_uk_biobank_hiv_controllers": "BLOQUEADA",
+    "gap_wetlab_crispr_wrapper": "BLOQUEADA",
+    "gap_wrapper_gene_candidates": "EM_REVISAO_LOCAL"
+  },
+  "closure_status": "EM_REVISAO_LOCAL",
+  "files_in_data": 33,
+  "images_in_pack": 9
+}

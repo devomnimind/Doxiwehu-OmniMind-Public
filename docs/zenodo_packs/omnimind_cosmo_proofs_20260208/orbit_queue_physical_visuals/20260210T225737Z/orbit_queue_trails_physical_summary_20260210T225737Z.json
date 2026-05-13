@@ -1,0 +1,48 @@
+{
+  "timestamp": "20260210T225737Z",
+  "input": "reports_runtime/orbit_queue_dodecatiad_20260210T024651Z.json",
+  "sbdb": "reports_runtime/sbdb_physical_20260210T224704Z.json",
+  "window_utc": {
+    "start": "2026-02-10T00:00:00Z",
+    "end": "2026-02-11T00:00:00Z",
+    "step_hours": 0.5
+  },
+  "objects_plotted": 16,
+  "fields_rendered": [
+    "K1",
+    "M1",
+    "M2"
+  ],
+  "files": {
+    "M1": "/home/fahbrain/projects/omnimind/reports_runtime/orbit_queue_trails_4d_sbdb_M1_20260210T225737Z.png",
+    "K1": "/home/fahbrain/projects/omnimind/reports_runtime/orbit_queue_trails_4d_sbdb_K1_20260210T225737Z.png",
+    "M2": "/home/fahbrain/projects/omnimind/reports_runtime/orbit_queue_trails_4d_sbdb_M2_20260210T225737Z.png"
+  },
+  "field_stats": {
+    "M1": {
+      "n_total": 784,
+      "n_known": 735,
+      "n_missing": 49,
+      "min": 5.5,
+      "max": 17.5,
+      "mean": 8.18
+    },
+    "K1": {
+      "n_total": 784,
+      "n_known": 735,
+      "n_missing": 49,
+      "min": 4.5,
+      "max": 28.75,
+      "mean": 9.333333333333334
+    },
+    "M2": {
+      "n_total": 784,
+      "n_known": 294,
+      "n_missing": 490,
+      "min": 8.2,
+      "max": 15.9,
+      "mean": 11.85
+    }
+  },
+  "note": "Campos SBDB ausentes aparecem em cinza (sem simulação)."
+}

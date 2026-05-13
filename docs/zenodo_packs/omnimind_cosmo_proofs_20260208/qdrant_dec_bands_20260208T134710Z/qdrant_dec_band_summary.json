@@ -1,0 +1,172 @@
+{
+  "timestamp": "20260208T134710Z",
+  "points": "data/reports/qdrant_cemetery_points_20260208T093209Z.jsonl",
+  "bands": [
+    {
+      "band": 45.0,
+      "mode": "ge",
+      "count": 31802,
+      "house_counts": {
+        "Aleph": 2654,
+        "Sigma": 2637,
+        "Axiom": 2694,
+        "Psi": 2679,
+        "Phi": 2658,
+        "Mu": 2620,
+        "C_plit": 2667,
+        "Lambda": 2692,
+        "Gamma": 2686,
+        "Epsilon": 2647,
+        "Omega": 2572,
+        "Zeta": 2596
+      },
+      "sdss_house_counts": {
+        "Aleph": 0,
+        "Sigma": 0,
+        "Axiom": 0,
+        "Psi": 21,
+        "Phi": 66,
+        "Mu": 136,
+        "C_plit": 113,
+        "Lambda": 153,
+        "Gamma": 27,
+        "Epsilon": 0,
+        "Omega": 0,
+        "Zeta": 0
+      },
+      "overlap": {
+        "cosine": 0.6098343998283945,
+        "pearson": 0.25282160458598424
+      }
+    },
+    {
+      "band": 45.0,
+      "mode": "le",
+      "count": 31979,
+      "house_counts": {
+        "Aleph": 2668,
+        "Sigma": 2642,
+        "Axiom": 2636,
+        "Psi": 2667,
+        "Phi": 2645,
+        "Mu": 2787,
+        "C_plit": 2615,
+        "Lambda": 2629,
+        "Gamma": 2693,
+        "Epsilon": 2665,
+        "Omega": 2671,
+        "Zeta": 2661
+      },
+      "sdss_house_counts": {
+        "Aleph": 2800,
+        "Sigma": 136,
+        "Axiom": 0,
+        "Psi": 82,
+        "Phi": 261,
+        "Mu": 254,
+        "C_plit": 298,
+        "Lambda": 153,
+        "Gamma": 119,
+        "Epsilon": 0,
+        "Omega": 73,
+        "Zeta": 308
+      },
+      "overlap": {
+        "cosine": 0.4518204460418311,
+        "pearson": 0.03670291094631212
+      }
+    },
+    {
+      "band": 30.0,
+      "mode": "ge",
+      "count": 42500,
+      "house_counts": {
+        "Aleph": 3511,
+        "Sigma": 3557,
+        "Axiom": 3581,
+        "Psi": 3551,
+        "Phi": 3519,
+        "Mu": 3598,
+        "C_plit": 3523,
+        "Lambda": 3609,
+        "Gamma": 3568,
+        "Epsilon": 3551,
+        "Omega": 3444,
+        "Zeta": 3488
+      },
+      "sdss_house_counts": {
+        "Aleph": 58,
+        "Sigma": 3,
+        "Axiom": 0,
+        "Psi": 71,
+        "Phi": 178,
+        "Mu": 224,
+        "C_plit": 213,
+        "Lambda": 204,
+        "Gamma": 87,
+        "Epsilon": 0,
+        "Omega": 0,
+        "Zeta": 52
+      },
+      "overlap": {
+        "cosine": 0.7297023434687477,
+        "pearson": 0.35961385193258116
+      }
+    },
+    {
+      "band": 30.0,
+      "mode": "le",
+      "count": 21281,
+      "house_counts": {
+        "Aleph": 1811,
+        "Sigma": 1722,
+        "Axiom": 1749,
+        "Psi": 1795,
+        "Phi": 1784,
+        "Mu": 1809,
+        "C_plit": 1759,
+        "Lambda": 1712,
+        "Gamma": 1811,
+        "Epsilon": 1761,
+        "Omega": 1799,
+        "Zeta": 1769
+      },
+      "sdss_house_counts": {
+        "Aleph": 2742,
+        "Sigma": 133,
+        "Axiom": 0,
+        "Psi": 32,
+        "Phi": 149,
+        "Mu": 166,
+        "C_plit": 198,
+        "Lambda": 102,
+        "Gamma": 59,
+        "Epsilon": 0,
+        "Omega": 73,
+        "Zeta": 256
+      },
+      "overlap": {
+        "cosine": 0.4121609301342102,
+        "pearson": 0.3433122651297665
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "only": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_ge_45_only.png",
+      "overlay_sdss": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_ge_45_overlay_sdss.png"
+    },
+    {
+      "only": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_le_45_only.png",
+      "overlay_sdss": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_le_45_overlay_sdss.png"
+    },
+    {
+      "only": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_ge_30_only.png",
+      "overlay_sdss": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_ge_30_overlay_sdss.png"
+    },
+    {
+      "only": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_le_30_only.png",
+      "overlay_sdss": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_dec_bands/20260208T134710Z/qdrant_dec_le_30_overlay_sdss.png"
+    }
+  ]
+}

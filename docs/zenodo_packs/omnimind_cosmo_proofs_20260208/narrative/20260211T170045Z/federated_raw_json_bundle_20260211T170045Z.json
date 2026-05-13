@@ -1,0 +1,20 @@
+{
+  "timestamp": "20260211T170045Z",
+  "purpose": "raw_json_bundle_for_federated_ontology_reading",
+  "available": [
+    "reports_runtime/omnimind_quantum_check_20260209T181146Z.json",
+    "reports_runtime/longrun_30d_eventstudy_comparison_20260209T210810Z.json",
+    "reports_runtime/omnimind_deeptb_summary_20260209T171544Z.json",
+    "reports_runtime/cosmic_covariates_correlation_20260210T213143Z.json",
+    "reports_runtime/orbit_queue_step_hours_comparison_20260210T025118Z.json",
+    "reports_runtime/orbit_queue_dodecatiad_20260211T152238Z.json",
+    "reports_runtime/orbit_queue_trails_summary_20260211T155245Z.json",
+    "reports_runtime/sc_neurocore_adapter_poc_20260211T144928Z.json",
+    "reports_runtime/sc_neurocore_compatibility_20260211T144948Z.json",
+    "real_evidence/unconscious_test/quantum_unconscious_test_1767137046.json",
+    "real_evidence/unconscious_test/quantum_unconscious_test_1764515514.json",
+    "reports_runtime/sync_analysis_20260209.json"
+  ],
+  "missing": [],
+  "note": "Bundle base para leituras narrativas OmniMind (psicanalítica + física) e validação técnica paralela."
+}

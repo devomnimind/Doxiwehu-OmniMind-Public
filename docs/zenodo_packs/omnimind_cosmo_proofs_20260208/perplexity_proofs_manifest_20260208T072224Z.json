@@ -1,0 +1,19 @@
+{
+  "timestamp": "20260208T072224Z",
+  "sources": {
+    "universe_map": "/home/fahbrain/projects/omnimind/data/reports/maps/omnimind_universe_map_20260208T061534Z.jsonl",
+    "anomalies": "/home/fahbrain/projects/omnimind/data/reports/universe_map_plus_anomalies_20260207T185129Z.json",
+    "crux": "/home/fahbrain/projects/omnimind/data/reports/crux_components_20260207T232358Z.json",
+    "cemetery_points": "/home/fahbrain/projects/omnimind/data/reports/cemetery_points_20260207T231534Z.jsonl",
+    "house_metrics": "/home/fahbrain/projects/omnimind/data/reports/house_metrics_20260207T184148Z.json"
+  },
+  "cemetery_sample": 100000,
+  "outputs": {
+    "universemap_plus_dynamic": "/home/fahbrain/projects/omnimind/data/reports/perplexity_proofs/universemap_plus_dynamic_real_20260208T072224Z.png",
+    "anomalies_distribution": "/home/fahbrain/projects/omnimind/data/reports/perplexity_proofs/anomalies_distribution_real_20260208T072224Z.png",
+    "crux_12_components_2d": "/home/fahbrain/projects/omnimind/data/reports/perplexity_proofs/crux_12_components_2d_real_20260208T072224Z.png",
+    "gamma_lyman_ratio": "/home/fahbrain/projects/omnimind/data/reports/perplexity_proofs/gamma_lyman_ratio_real_20260208T072224Z.png",
+    "polar_distribution_axiom_epsilon": "/home/fahbrain/projects/omnimind/data/reports/perplexity_proofs/polar_distribution_axiom_epsilon_real_20260208T072224Z.png",
+    "sdss_vs_dynamic": "/home/fahbrain/projects/omnimind/data/reports/perplexity_proofs/sdss_vs_dynamic_real_20260208T072224Z.png"
+  }
+}

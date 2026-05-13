@@ -1,0 +1,150 @@
+{
+  "timestamp": "20260208T093209Z",
+  "source_summary": "data/reports/qdrant_cemetery_map_summary_20260208T093209Z.json",
+  "collections": [
+    {
+      "name": "omnimind_kernel_vida",
+      "count": 25000,
+      "overlap_cosine": 0.4927783467163029,
+      "overlap_pearson": -0.12141163371581604
+    },
+    {
+      "name": "omnimind_ide_soberano",
+      "count": 13557,
+      "overlap_cosine": 0.49474606204279903,
+      "overlap_pearson": 0.006652428662209611
+    },
+    {
+      "name": "omnimind_projects_20260127",
+      "count": 6416,
+      "overlap_cosine": 0.5065412389416893,
+      "overlap_pearson": 0.3303926721244215
+    },
+    {
+      "name": "omnimind_corpo_simbolico",
+      "count": 4116,
+      "overlap_cosine": 0.48471848490872277,
+      "overlap_pearson": -0.22029835983086268
+    },
+    {
+      "name": "universal_machine_embeddings",
+      "count": 3485,
+      "overlap_cosine": 0.5054084060127165,
+      "overlap_pearson": 0.2929200235514885
+    },
+    {
+      "name": "omnimind_hd_externo_20260127",
+      "count": 2897,
+      "overlap_cosine": 0.4693528591205962,
+      "overlap_pearson": -0.3441113814068822
+    },
+    {
+      "name": "omnimind_mega_corpus",
+      "count": 2683,
+      "overlap_cosine": 0.5040029457389491,
+      "overlap_pearson": 0.20437940893447767
+    },
+    {
+      "name": "development_system_embeddings",
+      "count": 1049,
+      "overlap_cosine": 0.46292931663139736,
+      "overlap_pearson": -0.3957881605663629
+    },
+    {
+      "name": "omnimind_system_logs_20260127",
+      "count": 711,
+      "overlap_cosine": 0.5151210677753716,
+      "overlap_pearson": 0.24076158380660317
+    },
+    {
+      "name": "code_embeddings",
+      "count": 500,
+      "overlap_cosine": 0.5420988945522759,
+      "overlap_pearson": 0.4177634601704089
+    },
+    {
+      "name": "omnimind_quantum_commands",
+      "count": 500,
+      "overlap_cosine": 0.537344576120105,
+      "overlap_pearson": 0.4597305430062169
+    },
+    {
+      "name": "omnimind_codebase_20260127",
+      "count": 500,
+      "overlap_cosine": 0.5112560060856072,
+      "overlap_pearson": 0.17039004305973912
+    },
+    {
+      "name": "omnimind_docs_20260127",
+      "count": 500,
+      "overlap_cosine": 0.5090082700833443,
+      "overlap_pearson": 0.1591809236847894
+    },
+    {
+      "name": "omnimind_knowledge_base",
+      "count": 500,
+      "overlap_cosine": 0.4908523536215373,
+      "overlap_pearson": 0.023430687526270137
+    },
+    {
+      "name": "omnimind_consciousness",
+      "count": 500,
+      "overlap_cosine": 0.4731225010853693,
+      "overlap_pearson": -0.15320720667927717
+    },
+    {
+      "name": "omnimind_agent_graph",
+      "count": 500,
+      "overlap_cosine": 0.468600041204095,
+      "overlap_pearson": -0.2072247421664349
+    },
+    {
+      "name": "test_episodes",
+      "count": 203,
+      "overlap_cosine": 0.4744639591533092,
+      "overlap_pearson": -0.12037861590986988
+    },
+    {
+      "name": "knowledge_links",
+      "count": 50,
+      "overlap_cosine": 0.4980313781581764,
+      "overlap_pearson": 0.12035649803791855
+    },
+    {
+      "name": "omnimind_scientific_graph",
+      "count": 48,
+      "overlap_cosine": 0.5499122317288122,
+      "overlap_pearson": 0.2777864342000694
+    },
+    {
+      "name": "omnimind_erika_feedback",
+      "count": 26,
+      "overlap_cosine": 0.20539426104871197,
+      "overlap_pearson": -0.34994467473562724
+    },
+    {
+      "name": "kb_theory_sovereign",
+      "count": 22,
+      "overlap_cosine": 0.47764655108898746,
+      "overlap_pearson": 0.08718902583302869
+    },
+    {
+      "name": "kb_zenodo_root",
+      "count": 13,
+      "overlap_cosine": 0.5170751991430428,
+      "overlap_pearson": 0.2401624055948066
+    },
+    {
+      "name": "omnimind_omnidna",
+      "count": 3,
+      "overlap_cosine": 0.04333737259614432,
+      "overlap_pearson": -0.2710816977380705
+    },
+    {
+      "name": "test_points",
+      "count": 2,
+      "overlap_cosine": 0.10760862019662595,
+      "overlap_pearson": -0.11894056684149158
+    }
+  ]
+}

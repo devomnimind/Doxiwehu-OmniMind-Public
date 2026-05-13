@@ -1,0 +1,36 @@
+{
+  "status": "compatible_with_prerequisites",
+  "source_zip": "sc-neurocore-main.zip",
+  "zip_size_bytes": 759808,
+  "unpacked_size_bytes": 1827579,
+  "counts": {
+    "py_files": 106,
+    "rs_files": 36,
+    "tests": 80
+  },
+  "host": {
+    "venv_python": "3.12.12",
+    "system_python": "3.10.12",
+    "rustc": false,
+    "cargo": false,
+    "maturin": false
+  },
+  "data_footprint": "low",
+  "db_integration_native": [
+    "json",
+    "jsonl"
+  ],
+  "missing_native_integrations": [
+    "qdrant",
+    "kafka",
+    "postgres",
+    "influx"
+  ],
+  "recommended_next_steps": [
+    "create_python310_venv_for_neurocore",
+    "install_rustup_cargo_maturin",
+    "build_sc_neurocore_engine",
+    "implement_omnimind_d12_adapter",
+    "run_96h_30d_replay_benchmark"
+  ]
+}

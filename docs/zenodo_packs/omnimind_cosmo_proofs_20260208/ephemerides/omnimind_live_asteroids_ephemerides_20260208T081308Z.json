@@ -1,0 +1,125 @@
+{
+  "summary": {
+    "ST26B07": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "CE5LGG2": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "C45RW41": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "P22lnpr": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "A11y70v": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "P22liAW": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    },
+    "C19DCG5": {
+      "source": "NEOCP",
+      "inclination_deg": null,
+      "period_years": null
+    }
+  },
+  "generated_at": "2026-02-08T08:13:08.511124+00:00",
+  "sources": {
+    "cometels": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/CometEls.txt",
+    "mpcorb": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/MPCORB.DAT.gz",
+    "neocp": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/NEOCP.txt",
+    "anomalies": "data/reports/universe_map_plus_anomalies_20260207T185129Z.json"
+  },
+  "records": [
+    {
+      "name": "ST26B07",
+      "source": "NEOCP",
+      "ra": 109.5,
+      "dec": 9.3157,
+      "house": 4,
+      "timestamp": "2026-02-08T08:12:27Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "CE5LGG2",
+      "source": "NEOCP",
+      "ra": 96.0,
+      "dec": 9.6239,
+      "house": 4,
+      "timestamp": "2026-02-08T08:12:27Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "C45RW41",
+      "source": "NEOCP",
+      "ra": 94.5,
+      "dec": 9.7946,
+      "house": 4,
+      "timestamp": "2026-02-08T08:12:27Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "P22lnpr",
+      "source": "NEOCP",
+      "ra": 81.0,
+      "dec": 8.4912,
+      "house": 3,
+      "timestamp": "2026-02-08T08:12:27Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "A11y70v",
+      "source": "NEOCP",
+      "ra": 69.0,
+      "dec": 16.1583,
+      "house": 3,
+      "timestamp": "2026-02-08T08:12:27Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "P22liAW",
+      "source": "NEOCP",
+      "ra": 34.5,
+      "dec": 6.3809,
+      "house": 2,
+      "timestamp": "2026-02-08T08:12:27Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    },
+    {
+      "name": "C19DCG5",
+      "source": "NEOCP",
+      "ra": 202.5,
+      "dec": 16.1524,
+      "house": 7,
+      "timestamp": "2026-02-08T08:12:27Z",
+      "period_years": null,
+      "inclination_deg": null,
+      "resonance": null
+    }
+  ]
+}

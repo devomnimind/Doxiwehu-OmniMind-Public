@@ -1,0 +1,40 @@
+# Orbit Queue Observation Plan (12D+Sinthome) — 20260210T023948Z
+
+Input: `reports_runtime/orbit_queue_dodecatiad_20260210T023602Z.json`
+
+## Best Timestamp Per Object
+- `CJ99J020` (PA) 2026-02-10T03:36:02Z house=9 | Phi=0.30 Psi=0.98 sigma=0.30 eps=1.00 Lambda=0.04 Ax=0.00 | S=0.4523 Sq=0.2732
+- `CJ99S020` (PA) 2026-02-10T03:36:02Z house=3 | Phi=0.30 Psi=0.87 sigma=0.30 eps=1.00 Lambda=0.00 Ax=0.00 | S=0.4555 Sq=0.2637
+- `CK12A010` (PA) 2026-02-10T10:36:02Z house=11 | Phi=0.30 Psi=1.00 sigma=0.30 eps=1.00 Lambda=0.02 Ax=0.00 | S=0.5063 Sq=0.275
+- `CK13E010` (PA) 2026-02-10T03:36:02Z house=3 | Phi=0.30 Psi=1.00 sigma=0.30 eps=1.00 Lambda=0.01 Ax=0.00 | S=0.5079 Sq=0.275
+- `CK14UR1N` (PA) 2026-02-10T03:36:02Z house=11 | Phi=0.30 Psi=1.00 sigma=0.30 eps=1.00 Lambda=0.02 Ax=0.00 | S=0.4566 Sq=0.275
+- `CK16E010` (PA) 2026-02-10T03:36:02Z house=3 | Phi=0.30 Psi=1.00 sigma=0.35 eps=0.90 Lambda=0.02 Ax=0.00 | S=0.4428 Sq=0.2468
+- `CK19A050` (PA) 2026-02-10T03:36:02Z house=10 | Phi=0.42 Psi=0.73 sigma=0.33 eps=0.95 Lambda=0.04 Ax=0.00 | S=0.4746 Sq=0.2089
+- `CK19B030` (PA) 2026-02-10T03:36:02Z house=12 | Phi=0.41 Psi=0.87 sigma=0.30 eps=1.00 Lambda=0.03 Ax=0.00 | S=0.4914 Sq=0.2396
+- `CK18A060` (PA) 2026-02-10T03:36:02Z house=12 | Phi=0.58 Psi=0.83 sigma=0.59 eps=0.41 Lambda=0.03 Ax=0.40 | S=0.3455 Sq=0.0762
+- `CK09P010` (PA) 2026-02-10T03:36:02Z house=4 | Phi=0.49 Psi=1.00 sigma=0.50 eps=0.60 Lambda=0.02 Ax=0.69 | S=0.3407 Sq=0.1435
+- `CK14Q020` (PA) 2026-02-10T03:36:02Z house=10 | Phi=0.47 Psi=0.95 sigma=0.46 eps=0.68 Lambda=0.01 Ax=0.74 | S=0.3292 Sq=0.1505
+- `CK12K010` (PA) 2026-02-10T03:36:02Z house=11 | Phi=0.30 Psi=1.00 sigma=0.53 eps=0.54 Lambda=0.01 Ax=0.79 | S=0.3221 Sq=0.1701
+- `PK09Y020` (PB) 2026-02-10T03:36:02Z house=12 | Phi=0.47 Psi=0.17 sigma=0.25 eps=0.90 Lambda=0.15 Ax=0.00 | S=0.4479 Sq=0.2554
+- `PK10U55H` (PB) 2026-02-10T03:36:02Z house=12 | Phi=0.48 Psi=0.04 sigma=0.25 eps=0.90 Lambda=0.08 Ax=0.00 | S=0.4826 Sq=0.286
+- `PK10H030` (PB) 2026-02-10T03:36:02Z house=11 | Phi=0.15 Psi=0.13 sigma=0.25 eps=0.90 Lambda=0.18 Ax=0.56 | S=0.2988 Sq=0.3549
+- `PK13CC9U` (PB) 2026-02-10T03:36:02Z house=3 | Phi=0.14 Psi=0.07 sigma=0.25 eps=0.90 Lambda=0.02 Ax=0.59 | S=0.3464 Sq=0.3783
+- `A11y70v` (PC) 2026-02-10T02:36:02Z house=9 | Phi=0.30 Psi=0.00 sigma=0.25 eps=0.90 Lambda=0.00 Ax=0.50 | S=0.3512 Sq=0.3425
+- `C19DCG5` (PC) 2026-02-10T02:36:02Z house=8 | Phi=0.30 Psi=0.00 sigma=0.25 eps=0.90 Lambda=0.00 Ax=0.50 | S=0.3512 Sq=0.3425
+
+## Top Synchronicity Clusters (>=3 objects same house/time)
+- 2026-02-10T02:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T03:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T04:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T05:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T06:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T07:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T08:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T09:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T10:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T11:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T12:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T13:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T14:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T15:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U
+- 2026-02-10T16:36:02Z house 3 objects=4 :: CJ99S020, CK13E010, CK16E010, PK13CC9U

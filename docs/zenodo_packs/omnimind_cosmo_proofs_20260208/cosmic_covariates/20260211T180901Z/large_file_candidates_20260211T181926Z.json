@@ -1,0 +1,161 @@
+{
+  "timestamp": "20260211T181926Z",
+  "min_size_bytes": 2000000000,
+  "count": 22,
+  "candidates": [
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/datasets/GAMMA.hdf5",
+      "size_gb": 34.903,
+      "age_hours": 331.2,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/temp_deglutition/reeds_neurais_16gb.zip",
+      "size_gb": 15.047,
+      "age_hours": 333.6,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR17_Redshifts_spAll.fits",
+      "size_gb": 14.804,
+      "age_hours": 701.0,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/Coswara_Audio_Signals.1.zip",
+      "size_gb": 12.093,
+      "age_hours": 855.0,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/datasets/clic_edm_qq_pf.zip",
+      "size_gb": 9.362,
+      "age_hours": 1204.4,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/datasets/Lyman-alpha.hdf5",
+      "size_gb": 8.525,
+      "age_hours": 331.9,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR19_Master_allSpec.data",
+      "size_gb": 7.443,
+      "age_hours": 846.8,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/pcloud_cache/Cache/eff00b00d",
+      "size_gb": 6.681,
+      "age_hours": 174.6,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR17_specObj_Master.fits",
+      "size_gb": 6.278,
+      "age_hours": 843.3,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/pcloud_cache/Cache/cached",
+      "size_gb": 4.937,
+      "age_hours": 174.7,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_offload/var/omnimind_cache/home_cache/huggingface/hub/models--microsoft--phi-2/blobs/7fbcdefa72edf7527bf5da40535b57d9f5bd3d16829b94a9d25d2b457df62e84",
+      "size_gb": 4.653,
+      "age_hours": 698.7,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/quarantine/git_shredder_dec2025/tmp_pack_StW8sd",
+      "size_gb": 4.395,
+      "age_hours": 1348.5,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/pcloud_cache/Cache/95f30b00d",
+      "size_gb": 3.83,
+      "age_hours": 656.5,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR17_APOGEE_allStar.fits",
+      "size_gb": 3.698,
+      "age_hours": 845.5,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/pcloud_cache/Cache/fa620800d",
+      "size_gb": 3.619,
+      "age_hours": 183.5,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/redirected/home/fahbrain/projects/omnimind/Downloads/Dados SuperDARN em formato netCDF_01_2001.zip",
+      "size_gb": 3.392,
+      "age_hours": 571.0,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_storage/pcloud_cache/Cache/7c810400d",
+      "size_gb": 2.879,
+      "age_hours": 186.1,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/quarantine/git_shredder_dec2025/tmp_pack_TSOunm",
+      "size_gb": 2.31,
+      "age_hours": 1169.7,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/temp_deglutition/reeds_neurais_extracted/satellite_obsdata_dark.h5",
+      "size_gb": 2.306,
+      "age_hours": 331.9,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/temp_deglutition/reeds_neurais_extracted/satellite_obsdata_darkmod.h5",
+      "size_gb": 2.305,
+      "age_hours": 330.2,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/quarantine/git_shredder_dec2025/tmp_pack_2a50Rf",
+      "size_gb": 1.974,
+      "age_hours": 1348.7,
+      "in_use": false,
+      "cold_candidate": true
+    },
+    {
+      "path": "/media/fahbrain/DEV_BRAIN_CLEAN1/OMNIMIND_SOMA_EXPANSION/real_evidence/quarantine/git_shredder_dec2025/tmp_pack_IerWhr",
+      "size_gb": 1.914,
+      "age_hours": 1169.7,
+      "in_use": false,
+      "cold_candidate": true
+    }
+  ]
+}

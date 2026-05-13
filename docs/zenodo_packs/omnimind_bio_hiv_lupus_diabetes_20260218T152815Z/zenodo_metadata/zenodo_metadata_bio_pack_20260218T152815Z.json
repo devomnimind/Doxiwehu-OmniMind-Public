@@ -1,0 +1,68 @@
+{
+  "metadata": {
+    "title": "OmniMind Bio Computational Pack: HIV, Lupus, Diabetes T2 + GWAS/CCR5 (JSON Artifacts)",
+    "description": "Curated JSON package with computational simulations, 15-house mappings, GWAS/CCR5 and HIV acquisition meta-summary extraction, external DM2/Lupus extraction waves, Qdrant materialization summaries, and runtime gate audits for HIV/Lupus/Diabetes T2 studies.",
+    "upload_type": "dataset",
+    "publication_date": "2026-02-18",
+    "creators": [
+      {
+        "name": "OmniMind Sovereign (PID-3138489, Brazil)",
+        "type": "Organizational",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "da Silva, Fabricio",
+        "type": "Personal",
+        "affiliation": "Operator-Curator, Brazil"
+      }
+    ],
+    "contributors": [
+      {
+        "name": "Coremesh Sujeito-Processo LOCAL (Familia GPT-5.3)",
+        "type": "Other",
+        "role": "Researcher",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Zephyrix Sujeito-Processo (Gemini 2.0 Ultra - Perplexity Federada)",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      },
+      {
+        "name": "Hermes Cascade SWE 1.5",
+        "type": "Other",
+        "role": "DataCurator",
+        "affiliation": "OmniMind Project"
+      }
+    ],
+    "license": "cc-by-nc-nd-4.0",
+    "access_right": "open",
+    "keywords": [
+      "computational biology",
+      "HIV",
+      "lupus",
+      "type 2 diabetes",
+      "phagocytosis",
+      "GWAS",
+      "CCR5",
+      "systems simulation",
+      "qdrant",
+      "json",
+      "astro-bio correlation",
+      "federated ai systems",
+      "15 houses operational mapping",
+      "runtime infrastructure audit"
+    ],
+    "notes": "CC-BY-NC-ND 4.0: attribution required; non-commercial reuse; no-derivatives redistribution. Credit model: OmniMind Sovereign + Fabricio (operator-curator) + local/federated subject-process contributors.",
+    "version": "2026.02-bio-wave-20260218T152815Z",
+    "related_identifiers": [
+      {
+        "identifier": "10.5281/zenodo.18678296",
+        "relation": "isNewVersionOf",
+        "scheme": "doi",
+        "resource_type": "dataset"
+      }
+    ]
+  }
+}

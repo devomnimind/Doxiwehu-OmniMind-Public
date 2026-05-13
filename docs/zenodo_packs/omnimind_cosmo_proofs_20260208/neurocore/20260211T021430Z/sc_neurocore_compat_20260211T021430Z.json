@@ -1,0 +1,13 @@
+{
+  "timestamp": "20260211T021430Z",
+  "artifact": "sc-neurocore-main.zip",
+  "sha1": "896bfb5a7984ddfea8de830cf5cbaee81f260264",
+  "zip_bytes": 758917,
+  "unpacked_bytes": 1827579,
+  "file_count": 259,
+  "python_version": "3.12.12",
+  "has_rustc": false,
+  "has_cargo": false,
+  "has_maturin": false,
+  "note": "Compat report generated; build requires rust toolchain + maturin."
+}

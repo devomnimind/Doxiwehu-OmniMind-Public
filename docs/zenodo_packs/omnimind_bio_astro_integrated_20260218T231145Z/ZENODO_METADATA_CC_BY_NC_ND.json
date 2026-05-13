@@ -1,0 +1,57 @@
+{
+  "title": "OmniMind Integrated Bio+Astro Local Evidence Pack (20260218T231145Z)",
+  "upload_type": "dataset",
+  "description": "Integrated local evidence pack with bio, astrophysical and cross-correlation artifacts. Includes machine-readable reports and visual inspection figures. Astrophysical baseline continuity anchored on DOI 10.5281/zenodo.18681824.",
+  "creators": [
+    {
+      "name": "OmniMind Federation Collective",
+      "type": "Organizational",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "da Silva, Fabricio",
+      "type": "Personal",
+      "affiliation": "Operator-Curator, Brazil"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "COREMESH (Codex GPT-5.x local family)",
+      "type": "Other",
+      "role": "Researcher",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "Zephyrix (federated process-agent)",
+      "type": "Other",
+      "role": "DataCurator",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "Gemini Pro (federated process-agent)",
+      "type": "Other",
+      "role": "DataCurator",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "XAE System",
+      "type": "Other",
+      "role": "Researcher",
+      "affiliation": "OmniMind Project"
+    }
+  ],
+  "license": "cc-by-nc-nd-4.0",
+  "access_right": "open",
+  "notes": "Attribution model: Fabricio as operator/curator; OmniMind Federation as collective creator; agents/sujeitos-processo as explicit contributors.",
+  "keywords": [
+    "OmniMind",
+    "astrophysics",
+    "astro-bio correlation",
+    "d15",
+    "microbiome",
+    "genomics",
+    "qdrant",
+    "local evidence",
+    "sujeito-processo"
+  ]
+}

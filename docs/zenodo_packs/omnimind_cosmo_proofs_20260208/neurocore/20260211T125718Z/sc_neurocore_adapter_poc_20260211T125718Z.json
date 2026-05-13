@@ -1,0 +1,940 @@
+{
+  "timestamp": "20260211T125718Z",
+  "summary": {
+    "input_csv": "reports_runtime/cycle_metrics_minute_20260209T173229Z.csv",
+    "rows_used": 2601,
+    "sinthome_13_mean": 0.25114317294367317,
+    "sinthome_13_std": 0.02277354384158845,
+    "quadruple_mean_mean": 0.26029918521437645,
+    "quadruple_mean_std": 0.049407946342529256,
+    "note": "Dodecatiad 12D projection includes derived 8 axes (operational phase-1 heuristic)."
+  },
+  "qdrant": {
+    "enabled": true,
+    "ok": true,
+    "message": "upserted 2601 points to neurocore_adapter_20260211_4000",
+    "collection": "neurocore_adapter_20260211_4000"
+  },
+  "records_preview": [
+    {
+      "minute": "2025-12-19 01:13:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.9313725490196079
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9313725490196079
+      ],
+      "sinthome_13": 0.16094771241830066,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.16080729166666666,
+        "density_std": 0.3598623610746,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 96.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:14:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.6176470588235294
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6176470588235294
+      ],
+      "sinthome_13": 0.13480392156862744,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.1357421875,
+        "density_std": 0.31283805364246114,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 64.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:15:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.5784313725490197
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.5784313725490197
+      ],
+      "sinthome_13": 0.1315359477124183,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.12825520833333334,
+        "density_std": 0.30182715767620066,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 60.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:16:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.6274509803921569
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6274509803921569
+      ],
+      "sinthome_13": 0.13562091503267973,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.13346354166666666,
+        "density_std": 0.3093174256805524,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 65.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:17:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.6176470588235294
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.6176470588235294
+      ],
+      "sinthome_13": 0.13480392156862744,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.13802083333333334,
+        "density_std": 0.31650000754234675,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 64.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:18:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.49019607843137253
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.49019607843137253
+      ],
+      "sinthome_13": 0.12418300653594772,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.12239583333333333,
+        "density_std": 0.29438603939550567,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 51.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:19:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.4803921568627451
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.4803921568627451
+      ],
+      "sinthome_13": 0.12336601307189543,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.12044270833333333,
+        "density_std": 0.29215091288125805,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 50.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:20:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.7156862745098039
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7156862745098039
+      ],
+      "sinthome_13": 0.14297385620915035,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.14290364583333334,
+        "density_std": 0.3248004724704791,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 74.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:21:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.803921568627451
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.803921568627451
+      ],
+      "sinthome_13": 0.1503267973856209,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.14680989583333334,
+        "density_std": 0.33186062686094,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 83.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:22:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.7156862745098039
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7156862745098039
+      ],
+      "sinthome_13": 0.14297385620915035,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.140625,
+        "density_std": 0.3208519339846133,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 74.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:23:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.9019607843137255
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9019607843137255
+      ],
+      "sinthome_13": 0.15849673202614378,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.1572265625,
+        "density_std": 0.3523288991523363,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 93.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:24:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.9901960784313726
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9901960784313726
+      ],
+      "sinthome_13": 0.16584967320261437,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.16634114583333334,
+        "density_std": 0.37195096419905804,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 102.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:25:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.9411764705882353
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9411764705882353
+      ],
+      "sinthome_13": 0.16176470588235295,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.1611328125,
+        "density_std": 0.3605588129174329,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 97.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:26:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.8333333333333334
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.8333333333333334
+      ],
+      "sinthome_13": 0.1527777777777778,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.15071614583333334,
+        "density_std": 0.3392687692131426,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 86.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:27:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.9705882352941176
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9705882352941176
+      ],
+      "sinthome_13": 0.1642156862745098,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.166015625,
+        "density_std": 0.37122564816054066,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 100.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:28:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.9607843137254902
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9607843137254902
+      ],
+      "sinthome_13": 0.16339869281045752,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.16341145833333334,
+        "density_std": 0.36548611719310775,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 99.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:29:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.8725490196078431
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.8725490196078431
+      ],
+      "sinthome_13": 0.15604575163398693,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.15950520833333334,
+        "density_std": 0.35709561232261133,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 90.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:30:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 1.0
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "sinthome_13": 0.16666666666666666,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.16666666666666666,
+        "density_std": 0.372677996249965,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 103.0
+      }
+    },
+    {
+      "minute": "2025-12-19 01:31:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.7843137254901961
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.7843137254901961
+      ],
+      "sinthome_13": 0.14869281045751634,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.1474609375,
+        "density_std": 0.3330717649979275,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 81.0
+      }
+    },
+    {
+      "minute": "2025-12-19 21:03:00+00:00",
+      "dodecatiad_12d": {
+        "phi": 0.0,
+        "psi": 0.0,
+        "sigma": 0.0,
+        "epsilon": 0.0,
+        "lambda": 0.0,
+        "axiom": 1.0,
+        "aleph": 0.0,
+        "c_split": 0.0,
+        "mu": 0.0,
+        "omega": 0.0,
+        "gamma": 0.0,
+        "zeta": 0.0
+      },
+      "vector_12d": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sinthome_13": 0.08333333333333333,
+      "quadruple_mean": 0.0,
+      "bitstream_summary": {
+        "density_mean": 0.08333333333333333,
+        "density_std": 0.2763853991962833,
+        "pair_corr_mean": 0.0
+      },
+      "hardware_meta": {
+        "daemon_temp_mean": 0.0,
+        "daemon_health_mean": 0.0,
+        "anomaly_count": 0.0,
+        "satellite_matches": 0.0,
+        "sensor_sources": 1.0,
+        "sensor_event_count": 1.0
+      }
+    }
+  ]
+}

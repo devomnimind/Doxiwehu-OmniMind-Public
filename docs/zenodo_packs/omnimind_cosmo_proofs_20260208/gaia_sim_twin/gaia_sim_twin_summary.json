@@ -1,0 +1,43 @@
+{
+  "input": "data/reports/maps/omnimind_universe_map_20260208T142344Z.jsonl",
+  "sim_rows": 5000,
+  "real_rows": 40000,
+  "real_files": [
+    "data/gaia_bulk/gaia_source/GaiaSource_000000-003111.csv.gz",
+    "data/gaia_bulk/gaia_source/GaiaSource_003112-005263.csv.gz",
+    "data/gaia_bulk/gaia_source/GaiaSource_005264-006601.csv.gz",
+    "data/gaia_bulk/gaia_source/GaiaSource_006602-007952.csv.gz"
+  ],
+  "house_counts_sim": {
+    "Aleph": 2800,
+    "Sigma": 136,
+    "Axiom": 0,
+    "Psi": 103,
+    "Phi": 327,
+    "Mu": 390,
+    "C_plit": 411,
+    "Lambda": 306,
+    "Gamma": 146,
+    "Epsilon": 0,
+    "Omega": 73,
+    "Zeta": 308
+  },
+  "house_counts_real": {
+    "Aleph": 0,
+    "Sigma": 33347,
+    "Axiom": 6653,
+    "Psi": 0,
+    "Phi": 0,
+    "Mu": 0,
+    "C_plit": 0,
+    "Lambda": 0,
+    "Gamma": 0,
+    "Epsilon": 0,
+    "Omega": 0,
+    "Zeta": 0
+  },
+  "notes": "Simulacao PyGaia com magnitudes sinteticas quando ausentes. Parallax_true e heuristica.",
+  "outputs": {
+    "sim_catalog": "data/reports/gaia_sim_twin/gaia_sim_twin_catalog.csv"
+  }
+}

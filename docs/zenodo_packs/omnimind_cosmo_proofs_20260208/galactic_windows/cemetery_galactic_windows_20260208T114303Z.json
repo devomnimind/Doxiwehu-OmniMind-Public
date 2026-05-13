@@ -1,0 +1,32 @@
+{
+  "timestamp": "20260208T114303Z",
+  "points_source": "/home/fahbrain/projects/omnimind/data/reports/cemetery_points_20260208T083042Z.jsonl",
+  "max_points": 100000,
+  "north_window": {
+    "l_range": [
+      -20.0,
+      20.0
+    ],
+    "b_range": [
+      40.0,
+      70.0
+    ]
+  },
+  "south_window": {
+    "l_range": [
+      -20.0,
+      20.0
+    ],
+    "b_range": [
+      -70.0,
+      -40.0
+    ]
+  },
+  "counts": {
+    "north": 800,
+    "south": 2116
+  },
+  "outputs": {
+    "image": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/galactic_windows_sessions/20260208T114303Z/cemetery_galactic_windows.png"
+  }
+}

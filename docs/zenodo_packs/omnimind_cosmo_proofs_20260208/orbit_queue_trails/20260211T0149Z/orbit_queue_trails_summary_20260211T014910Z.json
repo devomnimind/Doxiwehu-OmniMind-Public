@@ -1,0 +1,215 @@
+{
+  "timestamp": "20260211T014910Z",
+  "input": "reports_runtime/orbit_queue_dodecatiad_20260210T024651Z.json",
+  "window_utc": {
+    "start": "2026-02-10T00:00:00Z",
+    "end": "2026-02-11T00:00:00Z",
+    "step_hours": 0.5
+  },
+  "objects_plotted": 18,
+  "files": {
+    "trails_3d_png": "/home/fahbrain/projects/omnimind/reports_runtime/orbit_queue_trails_3d_20260211T014910Z.png",
+    "trails_4d_sinthome13_png": "/home/fahbrain/projects/omnimind/reports_runtime/orbit_queue_trails_4d_sinthome13_20260211T014910Z.png",
+    "trails_4d_sinthome_quadruple_png": "/home/fahbrain/projects/omnimind/reports_runtime/orbit_queue_trails_4d_sinthome_quadruple_20260211T014910Z.png"
+  },
+  "object_stats": {
+    "CJ99J020": {
+      "records": 49,
+      "ra_deg_min": 104.66791771039682,
+      "ra_deg_max": 104.7603896051933,
+      "dec_deg_min": -77.58992640058301,
+      "dec_deg_max": -77.57535282378407,
+      "sinthome13_mean": 0.27456734693877555,
+      "sinthome13_max": 0.4533,
+      "sinthome_quadruple_mean": 0.1653448979591837,
+      "sinthome_quadruple_max": 0.277
+    },
+    "CJ99S020": {
+      "records": 49,
+      "ra_deg_min": 71.73571814028227,
+      "ra_deg_max": 71.74399211250676,
+      "dec_deg_min": 21.87194004404546,
+      "dec_deg_max": 21.872664044557876,
+      "sinthome13_mean": 0.2764755102040816,
+      "sinthome13_max": 0.4565,
+      "sinthome_quadruple_mean": 0.1594469387755102,
+      "sinthome_quadruple_max": 0.2673
+    },
+    "CK09P010": {
+      "records": 49,
+      "ra_deg_min": 104.02597593304814,
+      "ra_deg_max": 104.06041407134744,
+      "dec_deg_min": -39.505180252487904,
+      "dec_deg_max": -39.487608982048464,
+      "sinthome13_mean": 0.20631836734693879,
+      "sinthome13_max": 0.3419,
+      "sinthome_quadruple_mean": 0.08726122448979591,
+      "sinthome_quadruple_max": 0.1451
+    },
+    "CK12A010": {
+      "records": 49,
+      "ra_deg_min": 339.65905078845526,
+      "ra_deg_max": 339.7120448387292,
+      "dec_deg_min": -56.619210146797876,
+      "dec_deg_max": -56.59988304584325,
+      "sinthome13_mean": 0.3079183673469388,
+      "sinthome13_max": 0.507,
+      "sinthome_quadruple_mean": 0.16648979591836738,
+      "sinthome_quadruple_max": 0.2788
+    },
+    "CK12K010": {
+      "records": 49,
+      "ra_deg_min": 319.737175239564,
+      "ra_deg_max": 319.76988390973906,
+      "dec_deg_min": -15.281892817576452,
+      "dec_deg_max": -15.270664389870143,
+      "sinthome13_mean": 0.19468367346938775,
+      "sinthome13_max": 0.3244,
+      "sinthome_quadruple_mean": 0.10317755102040815,
+      "sinthome_quadruple_max": 0.1745
+    },
+    "CK13E010": {
+      "records": 49,
+      "ra_deg_min": 63.97979720669863,
+      "ra_deg_max": 64.00141294707569,
+      "dec_deg_min": 40.84430741013676,
+      "dec_deg_max": 40.859240131309875,
+      "sinthome13_mean": 0.3087367346938775,
+      "sinthome13_max": 0.5085,
+      "sinthome_quadruple_mean": 0.16648979591836738,
+      "sinthome_quadruple_max": 0.2788
+    },
+    "CK14Q020": {
+      "records": 49,
+      "ra_deg_min": 274.3573225640815,
+      "ra_deg_max": 274.38327824877507,
+      "dec_deg_min": -11.078832201859639,
+      "dec_deg_max": -11.07449752048899,
+      "sinthome13_mean": 0.1991510204081633,
+      "sinthome13_max": 0.3305,
+      "sinthome_quadruple_mean": 0.09132244897959184,
+      "sinthome_quadruple_max": 0.1523
+    },
+    "CK14UR1N": {
+      "records": 49,
+      "ra_deg_min": 70.8432845151699,
+      "ra_deg_max": 70.86535722337013,
+      "dec_deg_min": -73.28107761029412,
+      "dec_deg_max": -73.22747228848625,
+      "sinthome13_mean": 0.27718979591836734,
+      "sinthome13_max": 0.4577,
+      "sinthome_quadruple_mean": 0.16648979591836738,
+      "sinthome_quadruple_max": 0.2788
+    },
+    "CK16E010": {
+      "records": 49,
+      "ra_deg_min": 69.5211280524179,
+      "ra_deg_max": 69.55813806529628,
+      "dec_deg_min": 48.02440977632671,
+      "dec_deg_max": 48.05773405140972,
+      "sinthome13_mean": 0.26879591836734695,
+      "sinthome13_max": 0.4439,
+      "sinthome_quadruple_mean": 0.14935102040816325,
+      "sinthome_quadruple_max": 0.2507
+    },
+    "CK18A060": {
+      "records": 49,
+      "ra_deg_min": 332.8543790396614,
+      "ra_deg_max": 332.9261710884673,
+      "dec_deg_min": 33.89038415589501,
+      "dec_deg_max": 33.909792041355985,
+      "sinthome13_mean": 0.2097571428571429,
+      "sinthome13_max": 0.3452,
+      "sinthome_quadruple_mean": 0.046751020408163264,
+      "sinthome_quadruple_max": 0.0786
+    },
+    "CK19A050": {
+      "records": 49,
+      "ra_deg_min": 272.7634265418534,
+      "ra_deg_max": 272.8420371447446,
+      "dec_deg_min": 38.45502883155853,
+      "dec_deg_max": 38.4941142991875,
+      "sinthome13_mean": 0.2885591836734694,
+      "sinthome13_max": 0.4737,
+      "sinthome_quadruple_mean": 0.12624489795918367,
+      "sinthome_quadruple_max": 0.2107
+    },
+    "CK19B030": {
+      "records": 49,
+      "ra_deg_min": 356.2394649646614,
+      "ra_deg_max": 356.294646298658,
+      "dec_deg_min": -9.351162369558319,
+      "dec_deg_max": -9.302670934816708,
+      "sinthome13_mean": 0.29882448979591836,
+      "sinthome13_max": 0.4914,
+      "sinthome_quadruple_mean": 0.14495918367346938,
+      "sinthome_quadruple_max": 0.2418
+    },
+    "PK09Y020": {
+      "records": 49,
+      "ra_deg_min": 339.5936523372607,
+      "ra_deg_max": 339.9377733370631,
+      "dec_deg_min": 17.53174508052544,
+      "dec_deg_max": 17.622973145827242,
+      "sinthome13_mean": 0.2730265306122449,
+      "sinthome13_max": 0.4842,
+      "sinthome_quadruple_mean": 0.15471632653061226,
+      "sinthome_quadruple_max": 0.2623
+    },
+    "PK10H030": {
+      "records": 49,
+      "ra_deg_min": 307.284939677761,
+      "ra_deg_max": 307.71675591614724,
+      "dec_deg_min": -29.48128257526969,
+      "dec_deg_max": -29.398379130244546,
+      "sinthome13_mean": 0.1805918367346939,
+      "sinthome13_max": 0.3139,
+      "sinthome_quadruple_mean": 0.21428571428571427,
+      "sinthome_quadruple_max": 0.3588
+    },
+    "PK10U55H": {
+      "records": 49,
+      "ra_deg_min": 338.3823576632289,
+      "ra_deg_max": 338.55679094200076,
+      "dec_deg_min": -1.997723099215068,
+      "dec_deg_max": -1.936282587927171,
+      "sinthome13_mean": 0.2939918367346939,
+      "sinthome13_max": 0.5021,
+      "sinthome_quadruple_mean": 0.17350204081632653,
+      "sinthome_quadruple_max": 0.295
+    },
+    "PK13CC9U": {
+      "records": 49,
+      "ra_deg_min": 69.3374789353226,
+      "ra_deg_max": 69.37078002714536,
+      "dec_deg_min": 30.076530620005894,
+      "dec_deg_max": 30.099275032912445,
+      "sinthome13_mean": 0.20901428571428574,
+      "sinthome13_max": 0.3498,
+      "sinthome_quadruple_mean": 0.22857551020408165,
+      "sinthome_quadruple_max": 0.3822
+    },
+    "A11y70v": {
+      "records": 1,
+      "ra_deg_min": 242.721,
+      "ra_deg_max": 242.721,
+      "dec_deg_min": -23.4862,
+      "dec_deg_max": -23.4862,
+      "sinthome13_mean": 0.3275,
+      "sinthome13_max": 0.3275,
+      "sinthome_quadruple_mean": 0.3423,
+      "sinthome_quadruple_max": 0.3423
+    },
+    "C19DCG5": {
+      "records": 1,
+      "ra_deg_min": 242.76000000000002,
+      "ra_deg_max": 242.76000000000002,
+      "dec_deg_min": 14.4199,
+      "dec_deg_max": 14.4199,
+      "sinthome13_mean": 0.3275,
+      "sinthome13_max": 0.3275,
+      "sinthome_quadruple_mean": 0.3423,
+      "sinthome_quadruple_max": 0.3423
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "timestamp": "20260208T220629Z",
+  "cycle_metrics_source": "data/reports/cycle_metrics_minute_20260208T204557Z.csv",
+  "old_satellite_source": "data/reports/anomaly_satellite_cross_20260208T143912Z.json",
+  "new_satellite_source": "data/reports/anomaly_satellite_cross_20260208T215410Z.json",
+  "old": {
+    "minutes_overlap": 10,
+    "minutes_anomaly_overlap": 9,
+    "max_matches": 73,
+    "mean_matches_nonzero": 71.5,
+    "results": 200
+  },
+  "new": {
+    "minutes_overlap": 10,
+    "minutes_anomaly_overlap": 9,
+    "max_matches": 202,
+    "mean_matches_nonzero": 199.5,
+    "results": 200
+  },
+  "conclusion": {
+    "overlap_minutes_changed": 0,
+    "coverage_bottleneck": "janela temporal de interseção (não quantidade de satélites).",
+    "recommendation": "aumentar janela temporal de anomalias/ciclos ou gerar cross por período contínuo para elevar satellite_minutes."
+  }
+}

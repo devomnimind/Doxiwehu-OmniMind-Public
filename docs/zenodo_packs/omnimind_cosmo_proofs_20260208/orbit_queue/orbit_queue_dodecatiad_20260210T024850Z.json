@@ -1,0 +1,4910 @@
+{
+  "timestamp": "20260210T024850Z",
+  "framework": "OmniMind Dodecatíade (12D + 7 Layers)",
+  "window_utc": {
+    "start": "2026-02-10T00:00:00Z",
+    "end": "2026-02-11T00:00:00Z",
+    "step_hours": 6.0
+  },
+  "sources": {
+    "orbit_mapping": "reports_runtime/orbit_mapping_next_actions_20260209T230703Z.json",
+    "ephemerides": "reports_runtime/asteroids_queue_dodecatiad_20260210T024850Z/omnimind_live_asteroids_ephemerides_20260210T024926Z.json",
+    "omnimind_trace": "logs_local/integration_loop_trace.jsonl",
+    "omnimind_logs": null
+  },
+  "coverage": {
+    "queue_codes": 25,
+    "objects_with_records": 18,
+    "record_count": 82,
+    "missing_queue_codes": [
+      "C45RW41",
+      "CE5LGG2",
+      "CE5V9J2",
+      "P22liAW",
+      "P22lnpr",
+      "P22lp4E",
+      "ST26B07"
+    ]
+  },
+  "topology": {
+    "clusters": 15,
+    "betti_numbers": {
+      "b0": 15,
+      "b1": 12,
+      "b2": 9
+    }
+  },
+  "priority_houses": [],
+  "clusters": [
+    {
+      "timestamp": "2026-02-10T00:00:00Z",
+      "house": 3,
+      "object_count": 4,
+      "objects": [
+        "CJ99S020",
+        "CK13E010",
+        "CK16E010",
+        "PK13CC9U"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T06:00:00Z",
+      "house": 3,
+      "object_count": 4,
+      "objects": [
+        "CJ99S020",
+        "CK13E010",
+        "CK16E010",
+        "PK13CC9U"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T12:00:00Z",
+      "house": 3,
+      "object_count": 4,
+      "objects": [
+        "CJ99S020",
+        "CK13E010",
+        "CK16E010",
+        "PK13CC9U"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T18:00:00Z",
+      "house": 3,
+      "object_count": 4,
+      "objects": [
+        "CJ99S020",
+        "CK13E010",
+        "CK16E010",
+        "PK13CC9U"
+      ]
+    },
+    {
+      "timestamp": "2026-02-11T00:00:00Z",
+      "house": 3,
+      "object_count": 4,
+      "objects": [
+        "CJ99S020",
+        "CK13E010",
+        "CK16E010",
+        "PK13CC9U"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T00:00:00Z",
+      "house": 11,
+      "object_count": 4,
+      "objects": [
+        "CK12A010",
+        "CK12K010",
+        "CK14UR1N",
+        "PK10H030"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T06:00:00Z",
+      "house": 11,
+      "object_count": 4,
+      "objects": [
+        "CK12A010",
+        "CK12K010",
+        "CK14UR1N",
+        "PK10H030"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T12:00:00Z",
+      "house": 11,
+      "object_count": 4,
+      "objects": [
+        "CK12A010",
+        "CK12K010",
+        "CK14UR1N",
+        "PK10H030"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T18:00:00Z",
+      "house": 11,
+      "object_count": 4,
+      "objects": [
+        "CK12A010",
+        "CK12K010",
+        "CK14UR1N",
+        "PK10H030"
+      ]
+    },
+    {
+      "timestamp": "2026-02-11T00:00:00Z",
+      "house": 11,
+      "object_count": 4,
+      "objects": [
+        "CK12A010",
+        "CK12K010",
+        "CK14UR1N",
+        "PK10H030"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T00:00:00Z",
+      "house": 12,
+      "object_count": 4,
+      "objects": [
+        "CK18A060",
+        "CK19B030",
+        "PK09Y020",
+        "PK10U55H"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T06:00:00Z",
+      "house": 12,
+      "object_count": 4,
+      "objects": [
+        "CK18A060",
+        "CK19B030",
+        "PK09Y020",
+        "PK10U55H"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T12:00:00Z",
+      "house": 12,
+      "object_count": 4,
+      "objects": [
+        "CK18A060",
+        "CK19B030",
+        "PK09Y020",
+        "PK10U55H"
+      ]
+    },
+    {
+      "timestamp": "2026-02-10T18:00:00Z",
+      "house": 12,
+      "object_count": 4,
+      "objects": [
+        "CK18A060",
+        "CK19B030",
+        "PK09Y020",
+        "PK10U55H"
+      ]
+    },
+    {
+      "timestamp": "2026-02-11T00:00:00Z",
+      "house": 12,
+      "object_count": 4,
+      "objects": [
+        "CK18A060",
+        "CK19B030",
+        "PK09Y020",
+        "PK10U55H"
+      ]
+    }
+  ],
+  "queue": {
+    "A11y70v": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "C19DCG5": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "C45RW41": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "CE5LGG2": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "CE5V9J2": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "CJ99J020": {
+      "priority": "A",
+      "orbit": {
+        "code": "CJ99J020",
+        "i_deg": 86.4016,
+        "best_d_sh": 1.4853244198819608,
+        "best_ref": "K25M88U",
+        "q": 7.069997,
+        "e": 1.000772
+      },
+      "resonance": null
+    },
+    "CJ99S020": {
+      "priority": "A",
+      "orbit": {
+        "code": "CJ99S020",
+        "i_deg": 65.6344,
+        "best_d_sh": 1.4643049279354694,
+        "best_ref": "K24P38P",
+        "q": 6.503096,
+        "e": 1.002279
+      },
+      "resonance": null
+    },
+    "CK09P010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK09P010",
+        "i_deg": 106.2235,
+        "best_d_sh": 0.6024088455746415,
+        "best_ref": "K17O68X",
+        "q": 1.539199,
+        "e": 0.99985
+      },
+      "resonance": null
+    },
+    "CK12A010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK12A010",
+        "i_deg": 121.0091,
+        "best_d_sh": 1.0601202906877385,
+        "best_ref": "K25M88U",
+        "q": 7.61292,
+        "e": 0.999707
+      },
+      "resonance": null
+    },
+    "CK12K010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK12K010",
+        "i_deg": 142.5957,
+        "best_d_sh": 0.5426868798682153,
+        "best_ref": "K19E03J",
+        "q": 1.059123,
+        "e": 0.999871
+      },
+      "resonance": null
+    },
+    "CK13E010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK13E010",
+        "i_deg": 158.7113,
+        "best_d_sh": 1.6433257438475615,
+        "best_ref": "K25M88U",
+        "q": 7.763539,
+        "e": 0.998824
+      },
+      "resonance": null
+    },
+    "CK14Q020": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK14Q020",
+        "i_deg": 80.7936,
+        "best_d_sh": 0.6761133280842851,
+        "best_ref": "K17Y03N",
+        "q": 1.28787,
+        "e": 0.9968
+      },
+      "resonance": null
+    },
+    "CK14UR1N": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK14UR1N",
+        "i_deg": 95.4462,
+        "best_d_sh": 1.2016153020841094,
+        "best_ref": "q3800",
+        "q": 10.96048,
+        "e": 1.004321
+      },
+      "resonance": null
+    },
+    "CK16E010": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK16E010",
+        "i_deg": 131.8714,
+        "best_d_sh": 0.8984976647724529,
+        "best_ref": "p7717",
+        "q": 8.160856,
+        "e": 1.001501
+      },
+      "resonance": null
+    },
+    "CK18A060": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK18A060",
+        "i_deg": 77.1897,
+        "best_d_sh": 0.41435386314066297,
+        "best_ref": "K18P28L",
+        "q": 3.014183,
+        "e": 0.798939
+      },
+      "resonance": null
+    },
+    "CK19A050": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK19A050",
+        "i_deg": 67.5554,
+        "best_d_sh": 0.9473411093375989,
+        "best_ref": "Y2842",
+        "q": 6.315868,
+        "e": 0.706658
+      },
+      "resonance": null
+    },
+    "CK19B030": {
+      "priority": "A",
+      "orbit": {
+        "code": "CK19B030",
+        "i_deg": 66.6274,
+        "best_d_sh": 0.997504680113603,
+        "best_ref": "w4778",
+        "q": 6.83059,
+        "e": 0.99782
+      },
+      "resonance": null
+    },
+    "P22liAW": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "P22lnpr": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "P22lp4E": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    },
+    "PK09Y020": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK09Y020",
+        "planet": "Jupiter",
+        "ratio": 1.4082673218188224,
+        "target": "7:5"
+      }
+    },
+    "PK10H030": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK10H030",
+        "planet": "Jupiter",
+        "ratio": 0.4457117984836448,
+        "target": "3:7"
+      }
+    },
+    "PK10U55H": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK10U55H",
+        "planet": "Jupiter",
+        "ratio": 1.4442920931426295,
+        "target": "7:5"
+      }
+    },
+    "PK13CC9U": {
+      "priority": "B",
+      "orbit": null,
+      "resonance": {
+        "code": "PK13CC9U",
+        "planet": "Jupiter",
+        "ratio": 0.417241149523048,
+        "target": "3:7"
+      }
+    },
+    "ST26B07": {
+      "priority": "C",
+      "orbit": null,
+      "resonance": null
+    }
+  },
+  "records_by_object": {
+    "CJ99J020": [
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.7603896051933,
+        "dec": -77.58992640058301,
+        "house": 9,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.98,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.545,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5593,
+        "sinthome_13": 0.4407,
+        "cosine_similarity_quadruple": 0.7367,
+        "sinthome_quadruple": 0.2633
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.7371459122169,
+        "dec": -77.58631592409724,
+        "house": 9,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0039,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.98,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.039,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.545,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5497,
+        "sinthome_13": 0.4503,
+        "cosine_similarity_quadruple": 0.7298,
+        "sinthome_quadruple": 0.2702
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.71398572247129,
+        "dec": -77.58268344798235,
+        "house": 9,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0039,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.98,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.039,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.545,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5497,
+        "sinthome_13": 0.4503,
+        "cosine_similarity_quadruple": 0.7298,
+        "sinthome_quadruple": 0.2702
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.69090950103426,
+        "dec": -77.57902905380331,
+        "house": 9,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0039,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.98,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.039,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.545
+      },
+      {
+        "name": "CJ99J020",
+        "source": "CometEls",
+        "ra": 104.66791771039682,
+        "dec": -77.57535282378407,
+        "house": 9,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 86.4015,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0039,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.98,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.039,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.545
+      }
+    ],
+    "CJ99S020": [
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.74399211250676,
+        "dec": 21.87194004404546,
+        "house": 3,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.866,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5283,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5635,
+        "sinthome_13": 0.4365,
+        "cosine_similarity_quadruple": 0.7458,
+        "sinthome_quadruple": 0.2542
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.74188807686284,
+        "dec": 21.872116938678623,
+        "house": 3,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0004,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.866,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.004,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5283,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5465,
+        "sinthome_13": 0.4535,
+        "cosine_similarity_quadruple": 0.7395,
+        "sinthome_quadruple": 0.2605
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73980771008928,
+        "dec": 21.872296567288384,
+        "house": 3,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0003,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.866,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.003,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5283,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5463,
+        "sinthome_13": 0.4537,
+        "cosine_similarity_quadruple": 0.7395,
+        "sinthome_quadruple": 0.2605
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73775105158512,
+        "dec": 21.872478934426642,
+        "house": 3,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0003,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.866,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.003,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5283
+      },
+      {
+        "name": "CJ99S020",
+        "source": "CometEls",
+        "ra": 71.73571814028227,
+        "dec": 21.872664044557876,
+        "house": 3,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 65.6346,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0003,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.866,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.003,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5283
+      }
+    ],
+    "CK09P010": [
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.06041407134744,
+        "dec": -39.505180252487904,
+        "house": 4,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.494,
+          "Psi": 1.0,
+          "sigma": 0.499,
+          "epsilon": 0.602,
+          "Lambda": 0.0,
+          "Axe": 0.692,
+          "Aleph": 0.083,
+          "C_split": 0.494,
+          "mu": 0.6,
+          "Omega": 0.992,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.695,
+          "I": 0.548,
+          "F": 0.751
+        },
+        "CI": 0.6206,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6827,
+        "sinthome_13": 0.3173,
+        "cosine_similarity_quadruple": 0.8593,
+        "sinthome_quadruple": 0.1407
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.05175940842507,
+        "dec": -39.50082294066947,
+        "house": 4,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0016,
+        "dodecatiad": {
+          "Phi": 0.494,
+          "Psi": 1.0,
+          "sigma": 0.499,
+          "epsilon": 0.602,
+          "Lambda": 0.016,
+          "Axe": 0.692,
+          "Aleph": 0.083,
+          "C_split": 0.494,
+          "mu": 0.6,
+          "Omega": 0.992,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.695,
+          "I": 0.548,
+          "F": 0.751
+        },
+        "CI": 0.6206,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.66,
+        "sinthome_13": 0.34,
+        "cosine_similarity_quadruple": 0.8575,
+        "sinthome_quadruple": 0.1425
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.04313471951394,
+        "dec": -39.496441890225384,
+        "house": 4,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0016,
+        "dodecatiad": {
+          "Phi": 0.494,
+          "Psi": 1.0,
+          "sigma": 0.499,
+          "epsilon": 0.602,
+          "Lambda": 0.016,
+          "Axe": 0.692,
+          "Aleph": 0.083,
+          "C_split": 0.494,
+          "mu": 0.6,
+          "Omega": 0.992,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.695,
+          "I": 0.548,
+          "F": 0.751
+        },
+        "CI": 0.6206,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.66,
+        "sinthome_13": 0.34,
+        "cosine_similarity_quadruple": 0.8575,
+        "sinthome_quadruple": 0.1425
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.03454017208063,
+        "dec": -39.49203720311241,
+        "house": 4,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0016,
+        "dodecatiad": {
+          "Phi": 0.494,
+          "Psi": 1.0,
+          "sigma": 0.499,
+          "epsilon": 0.602,
+          "Lambda": 0.016,
+          "Axe": 0.692,
+          "Aleph": 0.083,
+          "C_split": 0.494,
+          "mu": 0.6,
+          "Omega": 0.992,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.695,
+          "I": 0.548,
+          "F": 0.751
+        },
+        "CI": 0.6206
+      },
+      {
+        "name": "CK09P010",
+        "source": "CometEls",
+        "ra": 104.02597593304814,
+        "dec": -39.487608982048464,
+        "house": 4,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 1029163.4544613069,
+        "inclination_deg": 106.2233,
+        "resonance": {
+          "Earth": {
+            "ratio": 1029163.4544613069,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 86776.00796469704,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0016,
+        "dodecatiad": {
+          "Phi": 0.494,
+          "Psi": 1.0,
+          "sigma": 0.499,
+          "epsilon": 0.602,
+          "Lambda": 0.016,
+          "Axe": 0.692,
+          "Aleph": 0.083,
+          "C_split": 0.494,
+          "mu": 0.6,
+          "Omega": 0.992,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.695,
+          "I": 0.548,
+          "F": 0.751
+        },
+        "CI": 0.6206
+      }
+    ],
+    "CK12A010": [
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.65905078845526,
+        "dec": -56.619210146797876,
+        "house": 11,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.641,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.514,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5047,
+        "sinthome_13": 0.4953,
+        "cosine_similarity_quadruple": 0.735,
+        "sinthome_quadruple": 0.265
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.67227329441573,
+        "dec": -56.614338639187174,
+        "house": 11,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0023,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.023,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.641,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.514,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.4955,
+        "sinthome_13": 0.5045,
+        "cosine_similarity_quadruple": 0.7279,
+        "sinthome_quadruple": 0.2721
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.68551331614947,
+        "dec": -56.609493569318595,
+        "house": 11,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0023,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.023,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.641,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.514,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.4955,
+        "sinthome_13": 0.5045,
+        "cosine_similarity_quadruple": 0.7279,
+        "sinthome_quadruple": 0.2721
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.6987705867756,
+        "dec": -56.604675013001156,
+        "house": 11,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0024,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.024,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.641,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.514,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477
+      },
+      {
+        "name": "CK12A010",
+        "source": "CometEls",
+        "ra": 339.7120448387292,
+        "dec": -56.59988304584325,
+        "house": 11,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 4231462.497128133,
+        "inclination_deg": 121.0091,
+        "resonance": {
+          "Earth": {
+            "ratio": 4231462.497128133,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 356784.3589484092,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0024,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.024,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.641,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.514,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477
+      }
+    ],
+    "CK12K010": [
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.737175239564,
+        "dec": -15.281892817576452,
+        "house": 11,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.529,
+          "epsilon": 0.543,
+          "Lambda": 0.0,
+          "Axe": 0.788,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.625,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.508,
+          "I": 0.421,
+          "F": 0.736
+        },
+        "CI": 0.5416,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.7053,
+        "sinthome_13": 0.2947,
+        "cosine_similarity_quadruple": 0.8414,
+        "sinthome_quadruple": 0.1586
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.745357421509,
+        "dec": -15.279085193055826,
+        "house": 11,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0014,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.529,
+          "epsilon": 0.543,
+          "Lambda": 0.014,
+          "Axe": 0.788,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.625,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.508,
+          "I": 0.421,
+          "F": 0.736
+        },
+        "CI": 0.5416,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6786,
+        "sinthome_13": 0.3214,
+        "cosine_similarity_quadruple": 0.8308,
+        "sinthome_quadruple": 0.1692
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.7535363282962,
+        "dec": -15.27627788108816,
+        "house": 11,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0014,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.529,
+          "epsilon": 0.543,
+          "Lambda": 0.014,
+          "Axe": 0.788,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.625,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.508,
+          "I": 0.421,
+          "F": 0.736
+        },
+        "CI": 0.5416,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6786,
+        "sinthome_13": 0.3214,
+        "cosine_similarity_quadruple": 0.8308,
+        "sinthome_quadruple": 0.1692
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.7617118611877,
+        "dec": -15.27347093076947,
+        "house": 11,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0014,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.529,
+          "epsilon": 0.543,
+          "Lambda": 0.014,
+          "Axe": 0.788,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.625,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.508,
+          "I": 0.421,
+          "F": 0.736
+        },
+        "CI": 0.5416
+      },
+      {
+        "name": "CK12K010",
+        "source": "CometEls",
+        "ra": 319.76988390973906,
+        "dec": -15.270664389870143,
+        "house": 11,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 743946.6617319374,
+        "inclination_deg": 142.5959,
+        "resonance": {
+          "Earth": {
+            "ratio": 743946.6617319374,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 62727.37451365409,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0014,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.529,
+          "epsilon": 0.543,
+          "Lambda": 0.014,
+          "Axe": 0.788,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.625,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.508,
+          "I": 0.421,
+          "F": 0.736
+        },
+        "CI": 0.5416
+      }
+    ],
+    "CK13E010": [
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 64.00141294707569,
+        "dec": 40.859240131309875,
+        "house": 3,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.721,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.54,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5065,
+        "sinthome_13": 0.4935,
+        "cosine_similarity_quadruple": 0.735,
+        "sinthome_quadruple": 0.265
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.995921878631705,
+        "dec": 40.855500319235254,
+        "house": 3,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.011,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.721,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.54,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.4941,
+        "sinthome_13": 0.5059,
+        "cosine_similarity_quadruple": 0.7279,
+        "sinthome_quadruple": 0.2721
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.990488877816055,
+        "dec": 40.85176487484632,
+        "house": 3,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.011,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.721,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.54,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.4941,
+        "sinthome_13": 0.5059,
+        "cosine_similarity_quadruple": 0.7279,
+        "sinthome_quadruple": 0.2721
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.98511397684936,
+        "dec": 40.848033878433185,
+        "house": 3,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.011,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.721,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.54,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477
+      },
+      {
+        "name": "CK13E010",
+        "source": "CometEls",
+        "ra": 63.97979720669862,
+        "dec": 40.84430741013676,
+        "house": 3,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 535707.653575113,
+        "inclination_deg": 158.7112,
+        "resonance": {
+          "Earth": {
+            "ratio": 535707.653575113,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 45169.27939081898,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.011,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.721,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.54,
+          "I": 0.65,
+          "F": 0.85
+        },
+        "CI": 0.5477
+      }
+    ],
+    "CK14Q020": [
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.3573225640815,
+        "dec": -11.078832201859639,
+        "house": 10,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.47,
+          "Psi": 0.947,
+          "sigma": 0.462,
+          "epsilon": 0.676,
+          "Lambda": 0.0,
+          "Axe": 0.742,
+          "Aleph": 0.083,
+          "C_split": 0.468,
+          "mu": 0.6,
+          "Omega": 0.771,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.614,
+          "I": 0.572,
+          "F": 0.769
+        },
+        "CI": 0.6106,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6953,
+        "sinthome_13": 0.3047,
+        "cosine_similarity_quadruple": 0.8529,
+        "sinthome_quadruple": 0.1471
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.36385498648036,
+        "dec": -11.0777564802145,
+        "house": 10,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.47,
+          "Psi": 0.947,
+          "sigma": 0.462,
+          "epsilon": 0.676,
+          "Lambda": 0.011,
+          "Axe": 0.742,
+          "Aleph": 0.083,
+          "C_split": 0.468,
+          "mu": 0.6,
+          "Omega": 0.771,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.614,
+          "I": 0.572,
+          "F": 0.769
+        },
+        "CI": 0.6106,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6717,
+        "sinthome_13": 0.3283,
+        "cosine_similarity_quadruple": 0.8509,
+        "sinthome_quadruple": 0.1491
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.3703584920334,
+        "dec": -11.076675439501912,
+        "house": 10,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.47,
+          "Psi": 0.947,
+          "sigma": 0.462,
+          "epsilon": 0.676,
+          "Lambda": 0.011,
+          "Axe": 0.742,
+          "Aleph": 0.083,
+          "C_split": 0.468,
+          "mu": 0.6,
+          "Omega": 0.771,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.614,
+          "I": 0.572,
+          "F": 0.769
+        },
+        "CI": 0.6106,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6717,
+        "sinthome_13": 0.3283,
+        "cosine_similarity_quadruple": 0.8509,
+        "sinthome_quadruple": 0.1491
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.3768329547258,
+        "dec": -11.07558910956902,
+        "house": 10,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.47,
+          "Psi": 0.947,
+          "sigma": 0.462,
+          "epsilon": 0.676,
+          "Lambda": 0.011,
+          "Axe": 0.742,
+          "Aleph": 0.083,
+          "C_split": 0.468,
+          "mu": 0.6,
+          "Omega": 0.771,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.614,
+          "I": 0.572,
+          "F": 0.769
+        },
+        "CI": 0.6106
+      },
+      {
+        "name": "CK14Q020",
+        "source": "CometEls",
+        "ra": 274.38327824877507,
+        "dec": -11.07449752048899,
+        "house": 10,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 8073.941562831533,
+        "inclination_deg": 80.7936,
+        "resonance": {
+          "Earth": {
+            "ratio": 8073.941562831533,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 680.7707894461664,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0011,
+        "dodecatiad": {
+          "Phi": 0.47,
+          "Psi": 0.947,
+          "sigma": 0.462,
+          "epsilon": 0.676,
+          "Lambda": 0.011,
+          "Axe": 0.742,
+          "Aleph": 0.083,
+          "C_split": 0.468,
+          "mu": 0.6,
+          "Omega": 0.771,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.614,
+          "I": 0.572,
+          "F": 0.769
+        },
+        "CI": 0.6106
+      }
+    ],
+    "CK14UR1N": [
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.86535722337013,
+        "dec": -73.28107761029412,
+        "house": 11,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.651,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5584,
+        "sinthome_13": 0.4416,
+        "cosine_similarity_quadruple": 0.735,
+        "sinthome_quadruple": 0.265
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.85946356560217,
+        "dec": -73.2677192063574,
+        "house": 11,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0024,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.024,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.651,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5453,
+        "sinthome_13": 0.4547,
+        "cosine_similarity_quadruple": 0.7279,
+        "sinthome_quadruple": 0.2721
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.85382026335395,
+        "dec": -73.25433197327234,
+        "house": 11,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0024,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.024,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.651,
+          "F": 0.85
+        },
+        "CI": 0.5477,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5453,
+        "sinthome_13": 0.4547,
+        "cosine_similarity_quadruple": 0.7279,
+        "sinthome_quadruple": 0.2721
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.84842726576544,
+        "dec": -73.24091622813208,
+        "house": 11,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0024,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.024,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.651,
+          "F": 0.85
+        },
+        "CI": 0.5477
+      },
+      {
+        "name": "CK14UR1N",
+        "source": "CometEls",
+        "ra": 70.8432845151699,
+        "dec": -73.22747228848625,
+        "house": 11,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 95.4462,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0024,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.3,
+          "epsilon": 1.0,
+          "Lambda": 0.024,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.301,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.651,
+          "F": 0.85
+        },
+        "CI": 0.5477
+      }
+    ],
+    "CK16E010": [
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.55813806529628,
+        "dec": 48.05773405140972,
+        "house": 3,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.351,
+          "epsilon": 0.898,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.599,
+          "F": 0.825
+        },
+        "CI": 0.5545,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5733,
+        "sinthome_13": 0.4267,
+        "cosine_similarity_quadruple": 0.7636,
+        "sinthome_quadruple": 0.2364
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.54875208974987,
+        "dec": 48.04940076068388,
+        "house": 3,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0021,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.351,
+          "epsilon": 0.898,
+          "Lambda": 0.021,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.599,
+          "F": 0.825
+        },
+        "CI": 0.5545,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5589,
+        "sinthome_13": 0.4411,
+        "cosine_similarity_quadruple": 0.7558,
+        "sinthome_quadruple": 0.2442
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.53945506514346,
+        "dec": 48.04106885289601,
+        "house": 3,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0021,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.351,
+          "epsilon": 0.898,
+          "Lambda": 0.021,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.599,
+          "F": 0.825
+        },
+        "CI": 0.5545,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5589,
+        "sinthome_13": 0.4411,
+        "cosine_similarity_quadruple": 0.7558,
+        "sinthome_quadruple": 0.2442
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.53024703790798,
+        "dec": 48.03273847564733,
+        "house": 3,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0021,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.351,
+          "epsilon": 0.898,
+          "Lambda": 0.021,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.599,
+          "F": 0.825
+        },
+        "CI": 0.5545
+      },
+      {
+        "name": "CK16E010",
+        "source": "CometEls",
+        "ra": 69.5211280524179,
+        "dec": 48.02440977632671,
+        "house": 3,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": 131.8714,
+        "resonance": null,
+        "angular_speed_deg_per_h": 0.0021,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 1.0,
+          "sigma": 0.351,
+          "epsilon": 0.898,
+          "Lambda": 0.021,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.5,
+          "Gamma": 0.5,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.467,
+          "I": 0.599,
+          "F": 0.825
+        },
+        "CI": 0.5545
+      }
+    ],
+    "CK18A060": [
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.8543790396614,
+        "dec": 33.89038415589501,
+        "house": 12,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.579,
+          "Psi": 0.828,
+          "sigma": 0.593,
+          "epsilon": 0.414,
+          "Lambda": 0.0,
+          "Axe": 0.397,
+          "Aleph": 0.083,
+          "C_split": 0.463,
+          "mu": 0.6,
+          "Omega": 0.894,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.691,
+          "I": 0.439,
+          "F": 0.704
+        },
+        "CI": 0.586,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6684,
+        "sinthome_13": 0.3316,
+        "cosine_similarity_quadruple": 0.9214,
+        "sinthome_quadruple": 0.0786
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.872311894883,
+        "dec": 33.895161302185585,
+        "house": 12,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.579,
+          "Psi": 0.828,
+          "sigma": 0.593,
+          "epsilon": 0.414,
+          "Lambda": 0.031,
+          "Axe": 0.397,
+          "Aleph": 0.083,
+          "C_split": 0.463,
+          "mu": 0.6,
+          "Omega": 0.894,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.691,
+          "I": 0.439,
+          "F": 0.704
+        },
+        "CI": 0.586,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6549,
+        "sinthome_13": 0.3451,
+        "cosine_similarity_quadruple": 0.9239,
+        "sinthome_quadruple": 0.0761
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.8902550462417,
+        "dec": 33.89998836689335,
+        "house": 12,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.579,
+          "Psi": 0.828,
+          "sigma": 0.593,
+          "epsilon": 0.414,
+          "Lambda": 0.031,
+          "Axe": 0.397,
+          "Aleph": 0.083,
+          "C_split": 0.463,
+          "mu": 0.6,
+          "Omega": 0.894,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.691,
+          "I": 0.439,
+          "F": 0.704
+        },
+        "CI": 0.586,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6549,
+        "sinthome_13": 0.3451,
+        "cosine_similarity_quadruple": 0.9239,
+        "sinthome_quadruple": 0.0761
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.908208206692,
+        "dec": 33.90486529768192,
+        "house": 12,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.579,
+          "Psi": 0.828,
+          "sigma": 0.593,
+          "epsilon": 0.414,
+          "Lambda": 0.031,
+          "Axe": 0.397,
+          "Aleph": 0.083,
+          "C_split": 0.463,
+          "mu": 0.6,
+          "Omega": 0.894,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.691,
+          "I": 0.439,
+          "F": 0.704
+        },
+        "CI": 0.586
+      },
+      {
+        "name": "CK18A060",
+        "source": "CometEls",
+        "ra": 332.9261710884673,
+        "dec": 33.909792041355985,
+        "house": 12,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 58.04479922054622,
+        "inclination_deg": 77.1898,
+        "resonance": {
+          "Earth": {
+            "ratio": 58.04479922054622,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 4.89416519566157,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.579,
+          "Psi": 0.828,
+          "sigma": 0.593,
+          "epsilon": 0.414,
+          "Lambda": 0.031,
+          "Axe": 0.397,
+          "Aleph": 0.083,
+          "C_split": 0.463,
+          "mu": 0.6,
+          "Omega": 0.894,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.691,
+          "I": 0.439,
+          "F": 0.704
+        },
+        "CI": 0.586
+      }
+    ],
+    "CK19A050": [
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.7634265418534,
+        "dec": 38.45502883155853,
+        "house": 10,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.425,
+          "Psi": 0.729,
+          "sigma": 0.326,
+          "epsilon": 0.947,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.576,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.534,
+          "I": 0.624,
+          "F": 0.837
+        },
+        "CI": 0.5562,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.529,
+        "sinthome_13": 0.471,
+        "cosine_similarity_quadruple": 0.7945,
+        "sinthome_quadruple": 0.2055
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.7831811172231,
+        "dec": 38.46473600068252,
+        "house": 10,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0037,
+        "dodecatiad": {
+          "Phi": 0.425,
+          "Psi": 0.729,
+          "sigma": 0.326,
+          "epsilon": 0.947,
+          "Lambda": 0.037,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.576,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.534,
+          "I": 0.624,
+          "F": 0.837
+        },
+        "CI": 0.5562,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5275,
+        "sinthome_13": 0.4725,
+        "cosine_similarity_quadruple": 0.7942,
+        "sinthome_quadruple": 0.2058
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.8028679310529,
+        "dec": 38.47448608490291,
+        "house": 10,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0037,
+        "dodecatiad": {
+          "Phi": 0.425,
+          "Psi": 0.729,
+          "sigma": 0.326,
+          "epsilon": 0.947,
+          "Lambda": 0.037,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.576,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.534,
+          "I": 0.624,
+          "F": 0.837
+        },
+        "CI": 0.5562,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5275,
+        "sinthome_13": 0.4725,
+        "cosine_similarity_quadruple": 0.7942,
+        "sinthome_quadruple": 0.2058
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.8224867009835,
+        "dec": 38.48427890972601,
+        "house": 10,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0037,
+        "dodecatiad": {
+          "Phi": 0.425,
+          "Psi": 0.729,
+          "sigma": 0.326,
+          "epsilon": 0.947,
+          "Lambda": 0.037,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.576,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.534,
+          "I": 0.624,
+          "F": 0.837
+        },
+        "CI": 0.5562
+      },
+      {
+        "name": "CK19A050",
+        "source": "CometEls",
+        "ra": 272.8420371447446,
+        "dec": 38.4941142991875,
+        "house": 10,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 99.90608992360988,
+        "inclination_deg": 67.5554,
+        "resonance": {
+          "Earth": {
+            "ratio": 99.90608992360988,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 8.423784985127309,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0036,
+        "dodecatiad": {
+          "Phi": 0.425,
+          "Psi": 0.729,
+          "sigma": 0.326,
+          "epsilon": 0.947,
+          "Lambda": 0.036,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.3,
+          "mu": 0.6,
+          "Omega": 0.576,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.534,
+          "I": 0.624,
+          "F": 0.837
+        },
+        "CI": 0.5562
+      }
+    ],
+    "CK19B030": [
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.2394649646614,
+        "dec": -9.351162369558319,
+        "house": 12,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.408,
+          "Psi": 0.869,
+          "sigma": 0.301,
+          "epsilon": 0.998,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.407,
+          "mu": 0.6,
+          "Omega": 0.885,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.631,
+          "I": 0.702,
+          "F": 0.849
+        },
+        "CI": 0.5713,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5173,
+        "sinthome_13": 0.4827,
+        "cosine_similarity_quadruple": 0.7654,
+        "sinthome_quadruple": 0.2346
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.25320965011764,
+        "dec": -9.33904486508423,
+        "house": 12,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.408,
+          "Psi": 0.869,
+          "sigma": 0.301,
+          "epsilon": 0.998,
+          "Lambda": 0.031,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.407,
+          "mu": 0.6,
+          "Omega": 0.885,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.631,
+          "I": 0.702,
+          "F": 0.849
+        },
+        "CI": 0.5713,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5105,
+        "sinthome_13": 0.4895,
+        "cosine_similarity_quadruple": 0.7635,
+        "sinthome_quadruple": 0.2365
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.2669882627178,
+        "dec": -9.326923726675389,
+        "house": 12,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.408,
+          "Psi": 0.869,
+          "sigma": 0.301,
+          "epsilon": 0.998,
+          "Lambda": 0.031,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.407,
+          "mu": 0.6,
+          "Omega": 0.885,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.631,
+          "I": 0.702,
+          "F": 0.849
+        },
+        "CI": 0.5713,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5105,
+        "sinthome_13": 0.4895,
+        "cosine_similarity_quadruple": 0.7635,
+        "sinthome_quadruple": 0.2365
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.28080055998237,
+        "dec": -9.314799050935035,
+        "house": 12,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.408,
+          "Psi": 0.869,
+          "sigma": 0.301,
+          "epsilon": 0.998,
+          "Lambda": 0.031,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.407,
+          "mu": 0.6,
+          "Omega": 0.885,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.631,
+          "I": 0.702,
+          "F": 0.849
+        },
+        "CI": 0.5713
+      },
+      {
+        "name": "CK19B030",
+        "source": "CometEls",
+        "ra": 356.294646298658,
+        "dec": -9.302670934816708,
+        "house": 12,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 175268.44486367016,
+        "inclination_deg": 66.6274,
+        "resonance": {
+          "Earth": {
+            "ratio": 175268.44486367016,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 14778.115081253809,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0031,
+        "dodecatiad": {
+          "Phi": 0.408,
+          "Psi": 0.869,
+          "sigma": 0.301,
+          "epsilon": 0.998,
+          "Lambda": 0.031,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.407,
+          "mu": 0.6,
+          "Omega": 0.885,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.631,
+          "I": 0.702,
+          "F": 0.849
+        },
+        "CI": 0.5713
+      }
+    ],
+    "PK09Y020": [
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.5936523372607,
+        "dec": 17.53174508052544,
+        "house": 12,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.469,
+          "Psi": 0.167,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.592,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.487,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.3642,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5158,
+        "sinthome_13": 0.4842,
+        "cosine_similarity_quadruple": 0.7377,
+        "sinthome_quadruple": 0.2623
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.67955210734704,
+        "dec": 17.55441236633853,
+        "house": 12,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0148,
+        "dodecatiad": {
+          "Phi": 0.469,
+          "Psi": 0.167,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.148,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.592,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.487,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.3642,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5546,
+        "sinthome_13": 0.4454,
+        "cosine_similarity_quadruple": 0.7487,
+        "sinthome_quadruple": 0.2513
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.76553900913524,
+        "dec": 17.577172937567184,
+        "house": 12,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0148,
+        "dodecatiad": {
+          "Phi": 0.469,
+          "Psi": 0.167,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.148,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.592,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.487,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.3642,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.5546,
+        "sinthome_13": 0.4454,
+        "cosine_similarity_quadruple": 0.7487,
+        "sinthome_quadruple": 0.2513
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.85161282516447,
+        "dec": 17.600026596965616,
+        "house": 12,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0148,
+        "dodecatiad": {
+          "Phi": 0.469,
+          "Psi": 0.167,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.148,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.592,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.487,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.3642
+      },
+      {
+        "name": "PK09Y020",
+        "source": "CometEls",
+        "ra": 339.9377733370631,
+        "dec": 17.622973145827242,
+        "house": 12,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 16.701960225646253,
+        "inclination_deg": 29.9725,
+        "resonance": {
+          "Earth": {
+            "ratio": 16.701960225646253,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4082597154845071,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0149,
+        "dodecatiad": {
+          "Phi": 0.469,
+          "Psi": 0.167,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.149,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.592,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.487,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.3642
+      }
+    ],
+    "PK10H030": [
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.284939677761,
+        "dec": -29.48128257526969,
+        "house": 11,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.149,
+          "Psi": 0.129,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.0,
+          "Axe": 0.559,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.554,
+          "Gamma": 0.559,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.368,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.256,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6861,
+        "sinthome_13": 0.3139,
+        "cosine_similarity_quadruple": 0.6559,
+        "sinthome_quadruple": 0.3441
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.3926371532268,
+        "dec": -29.46066192831019,
+        "house": 11,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0183,
+        "dodecatiad": {
+          "Phi": 0.149,
+          "Psi": 0.129,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.183,
+          "Axe": 0.559,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.554,
+          "Gamma": 0.559,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.368,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.256,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.7033,
+        "sinthome_13": 0.2967,
+        "cosine_similarity_quadruple": 0.6502,
+        "sinthome_quadruple": 0.3498
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.50050522335306,
+        "dec": -29.4399713971489,
+        "house": 11,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0183,
+        "dodecatiad": {
+          "Phi": 0.149,
+          "Psi": 0.129,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.183,
+          "Axe": 0.559,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.554,
+          "Gamma": 0.559,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.368,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.256,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.7033,
+        "sinthome_13": 0.2967,
+        "cosine_similarity_quadruple": 0.6502,
+        "sinthome_quadruple": 0.3498
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.60854457870846,
+        "dec": -29.41921059450194,
+        "house": 11,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0183,
+        "dodecatiad": {
+          "Phi": 0.149,
+          "Psi": 0.129,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.183,
+          "Axe": 0.559,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.554,
+          "Gamma": 0.559,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.368,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.256
+      },
+      {
+        "name": "PK10H030",
+        "source": "CometEls",
+        "ra": 307.71675591614724,
+        "dec": -29.398379130244546,
+        "house": 11,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 5.286141930016027,
+        "inclination_deg": 23.1392,
+        "resonance": {
+          "Earth": {
+            "ratio": 5.286141930016027,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4457117984836448,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0184,
+        "dodecatiad": {
+          "Phi": 0.149,
+          "Psi": 0.129,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.184,
+          "Axe": 0.559,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.554,
+          "Gamma": 0.559,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.368,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.256
+      }
+    ],
+    "PK10U55H": [
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.3823576632289,
+        "dec": -1.997723099215068,
+        "house": 12,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.481,
+          "Psi": 0.045,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.0,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.556,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.479,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2637,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.4979,
+        "sinthome_13": 0.5021,
+        "cosine_similarity_quadruple": 0.705,
+        "sinthome_quadruple": 0.295
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.4259135831993,
+        "dec": -1.9824139604714888,
+        "house": 12,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0077,
+        "dodecatiad": {
+          "Phi": 0.481,
+          "Psi": 0.045,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.077,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.556,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.479,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2637,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.52,
+        "sinthome_13": 0.48,
+        "cosine_similarity_quadruple": 0.7182,
+        "sinthome_quadruple": 0.2818
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.469504658099,
+        "dec": -1.9670707444175133,
+        "house": 12,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0077,
+        "dodecatiad": {
+          "Phi": 0.481,
+          "Psi": 0.045,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.077,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.556,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.479,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2637,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.52,
+        "sinthome_13": 0.48,
+        "cosine_similarity_quadruple": 0.7182,
+        "sinthome_quadruple": 0.2818
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.5131305555228,
+        "dec": -1.951693577725877,
+        "house": 12,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0077,
+        "dodecatiad": {
+          "Phi": 0.481,
+          "Psi": 0.045,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.077,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.556,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.479,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2637
+      },
+      {
+        "name": "PK10U55H",
+        "source": "CometEls",
+        "ra": 338.55679094200076,
+        "dec": -1.936282587927171,
+        "house": 12,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 17.129209677315313,
+        "inclination_deg": 8.038,
+        "resonance": {
+          "Earth": {
+            "ratio": 17.129209677315313,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 1.4442841211901614,
+            "coorbital": false,
+            "7:5": true,
+            "3:7": false
+          }
+        },
+        "angular_speed_deg_per_h": 0.0077,
+        "dodecatiad": {
+          "Phi": 0.481,
+          "Psi": 0.045,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.077,
+          "Axe": 0.0,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.556,
+          "Gamma": 0.0,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.479,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2637
+      }
+    ],
+    "PK13CC9U": [
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.37078002714536,
+        "dec": 30.099275032912445,
+        "house": 3,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "dodecatiad": {
+          "Phi": 0.139,
+          "Psi": 0.066,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.0,
+          "Axe": 0.588,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.583,
+          "Gamma": 0.588,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.374,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2129,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6798,
+        "sinthome_13": 0.3202,
+        "cosine_similarity_quadruple": 0.6323,
+        "sinthome_quadruple": 0.3677
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.36204602877763,
+        "dec": 30.093545986455823,
+        "house": 3,
+        "timestamp": "2026-02-10T06:00:00Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0017,
+        "dodecatiad": {
+          "Phi": 0.139,
+          "Psi": 0.066,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.017,
+          "Axe": 0.588,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.583,
+          "Gamma": 0.588,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.374,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2129,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 191,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6557,
+        "sinthome_13": 0.3443,
+        "cosine_similarity_quadruple": 0.6269,
+        "sinthome_quadruple": 0.3731
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.35358466193314,
+        "dec": 30.087845435725992,
+        "house": 3,
+        "timestamp": "2026-02-10T12:00:00Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0017,
+        "dodecatiad": {
+          "Phi": 0.139,
+          "Psi": 0.066,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.017,
+          "Axe": 0.588,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.583,
+          "Gamma": 0.588,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.374,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2129,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T02:48:13Z",
+          "lag_minutes": 551,
+          "Phi": 2.1,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.51,
+          "Lambda": 0.91,
+          "Axe": 100.0,
+          "Aleph": 0.87,
+          "C_split": 0.1,
+          "mu": 0.02,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6557,
+        "sinthome_13": 0.3443,
+        "cosine_similarity_quadruple": 0.6269,
+        "sinthome_quadruple": 0.3731
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.34539570640453,
+        "dec": 30.08217358115266,
+        "house": 3,
+        "timestamp": "2026-02-10T18:00:00Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0017,
+        "dodecatiad": {
+          "Phi": 0.139,
+          "Psi": 0.066,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.017,
+          "Axe": 0.588,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.583,
+          "Gamma": 0.588,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.374,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2129
+      },
+      {
+        "name": "PK13CC9U",
+        "source": "CometEls",
+        "ra": 69.3374789353226,
+        "dec": 30.076530620005894,
+        "house": 3,
+        "timestamp": "2026-02-11T00:00:00Z",
+        "period_years": 4.948510476546378,
+        "inclination_deg": 11.8259,
+        "resonance": {
+          "Earth": {
+            "ratio": 4.948510476546378,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": false
+          },
+          "Jupiter": {
+            "ratio": 0.4172437164035732,
+            "coorbital": false,
+            "7:5": false,
+            "3:7": true
+          }
+        },
+        "angular_speed_deg_per_h": 0.0016,
+        "dodecatiad": {
+          "Phi": 0.139,
+          "Psi": 0.066,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.016,
+          "Axe": 0.588,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.583,
+          "Gamma": 0.588,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.374,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.2129
+      }
+    ],
+    "A11y70v": [
+      {
+        "name": "A11y70v",
+        "source": "NEOCP",
+        "ra": 242.721,
+        "dec": -23.4862,
+        "house": 9,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": null,
+        "resonance": null,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.0,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.0,
+          "Axe": 0.5,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.5,
+          "Gamma": 0.4,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.4,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.0,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6725,
+        "sinthome_13": 0.3275,
+        "cosine_similarity_quadruple": 0.6577,
+        "sinthome_quadruple": 0.3423
+      }
+    ],
+    "C19DCG5": [
+      {
+        "name": "C19DCG5",
+        "source": "NEOCP",
+        "ra": 242.76000000000002,
+        "dec": 14.4199,
+        "house": 8,
+        "timestamp": "2026-02-10T00:00:00Z",
+        "period_years": null,
+        "inclination_deg": null,
+        "resonance": null,
+        "dodecatiad": {
+          "Phi": 0.3,
+          "Psi": 0.0,
+          "sigma": 0.25,
+          "epsilon": 0.9,
+          "Lambda": 0.0,
+          "Axe": 0.5,
+          "Aleph": 0.083,
+          "C_split": 0.0,
+          "mu": 0.4,
+          "Omega": 0.5,
+          "Gamma": 0.4,
+          "zeta": 0.0
+        },
+        "neutrosophic": {
+          "T": 0.4,
+          "I": 0.45,
+          "F": 0.875
+        },
+        "CI": 0.0,
+        "omnimind_context_12d": {
+          "timestamp": "2026-02-10T00:48:23Z",
+          "lag_minutes": -48,
+          "Phi": 1.8,
+          "Psi": 0.5,
+          "sigma": 1.0,
+          "epsilon": 0.5,
+          "Lambda": 0.88,
+          "Axe": 100.0,
+          "Aleph": 0.5,
+          "C_split": 0.1,
+          "mu": 0.0,
+          "Omega": 0.5,
+          "Gamma": 0.6,
+          "zeta": 0.1,
+          "CI": null
+        },
+        "cosine_similarity_12d": 0.6725,
+        "sinthome_13": 0.3275,
+        "cosine_similarity_quadruple": 0.6577,
+        "sinthome_quadruple": 0.3423
+      }
+    ]
+  }
+}

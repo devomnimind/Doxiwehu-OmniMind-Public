@@ -1,0 +1,157 @@
+{
+  "timestamp": "20260218T120207Z",
+  "pack_dir": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_bio_hiv_lupus_diabetes_20260218T120207Z",
+  "file_count": 30,
+  "files": [
+    {
+      "name": "README.md",
+      "sha256": "6ad48c01503834dd334f788407760b55bf1305a3aa85ceff3451d5e73a398461",
+      "size_bytes": 612
+    },
+    {
+      "name": "RESULTS_SUMMARY.json",
+      "sha256": "6c44dfbdfedb24e19d1a31ff00a672814838f8236f4c6b776e6c3bc43eab8050",
+      "size_bytes": 4121
+    },
+    {
+      "name": "TECHNICAL_REPORT.md",
+      "sha256": "cb3a6c0cdff8ff430ddf1755849e23e745e0cf9146e7a38cbfce72aab7f716fa",
+      "size_bytes": 1663
+    },
+    {
+      "name": "TECHNICAL_STUDY_COMPILATION.md",
+      "sha256": "a7b31d6f5c7263cd41e0a444ad566babdeee2b5094af8af3c900b9fdb4d71fd6",
+      "size_bytes": 4455
+    },
+    {
+      "name": "ZENODO_METADATA_CC_BY_NC_ND.json",
+      "sha256": "c3d607021162aad9f5f3f7e9b91ab86a6a9d65fbe22487065b389e395bcf3da9",
+      "size_bytes": 1726
+    },
+    {
+      "name": "data/bio_15houses_qdrant_materialization_20260218T072237Z.json",
+      "sha256": "ad186dbb695923cf827f759dcfcb687df4d723d9f3fe85152f60a76ae51769ae",
+      "size_bytes": 319
+    },
+    {
+      "name": "data/bio_external_dm2_lupus_wave_qdrant_materialization_20260218T115911Z.json",
+      "sha256": "fa0d499ff2fb5007a2dcd67162c4d1b34dfb1f6e1b835b46a336e4ace65455b6",
+      "size_bytes": 5840
+    },
+    {
+      "name": "data/bio_quantitative_field_probe_20260218T072419Z.json",
+      "sha256": "87f36b82f3b06cf4001d9ca7ccf561d4070c04303a5453e6741299b874e139ce",
+      "size_bytes": 3463
+    },
+    {
+      "name": "data/dataset_content_vectorization_20260218T072130Z.json",
+      "sha256": "55cbe1b5f1bb3b9b6a7831e9ed0415796f88bcfa6eaf6bf9de64276a1326fa2b",
+      "size_bytes": 2867
+    },
+    {
+      "name": "data/diabetes_t2_15houses_20260218T072545Z.json",
+      "sha256": "f538024aff071420f134aea8ea0d79b9d80eb28a83d8e16a280aba5ac08851b1",
+      "size_bytes": 7535
+    },
+    {
+      "name": "data/diabetes_t2_wave_ingestion_20260218T072322Z.json",
+      "sha256": "fbd4eb47d8f7c294e8d008bac0f4e070c9a23397aaddf508594f02ff81003395",
+      "size_bytes": 1842
+    },
+    {
+      "name": "data/hiv_acquisition_meta_15houses_qdrant_materialization_20260218T115833Z.json",
+      "sha256": "68c3cbb6f4bcb40a72ece4e9cb5e0e0007508c3a821aa1825d5b59a48c007729",
+      "size_bytes": 10161
+    },
+    {
+      "name": "data/hiv_cohabitation_monthly_safe_qdrant_materialization_20260218T062439Z.json",
+      "sha256": "4353831ff48fdc5de2bfc9864f8031d2c25ea2dc912bf95a1399ad0a4c65dc50",
+      "size_bytes": 288
+    },
+    {
+      "name": "data/hiv_cohabitation_monthly_safe_sim_20260218T062344Z.json",
+      "sha256": "a62766fb84c0fb25147dae38a49a28fc95766a4404a310d6bd8e3c6fd70fdb60",
+      "size_bytes": 19402
+    },
+    {
+      "name": "data/hiv_gwas_ccr5_15houses_qdrant_materialization_20260218T111758Z.json",
+      "sha256": "98c7c42756ab78c675876a810b939e9b471d03081e7dd7b6f6c898109a3f5947",
+      "size_bytes": 1605
+    },
+    {
+      "name": "data/hiv_sle_12m_extensions_safe_sim_20260218T063512Z.json",
+      "sha256": "80e54e653a313419b7006249a2c8ad964dcc0cd23dd4ede87e0b3275f9eba7ee",
+      "size_bytes": 21227
+    },
+    {
+      "name": "data/hiv_sle_12m_qdrant_materialization_20260218T064213Z.json",
+      "sha256": "1d31d7b48e5ad650ce01ddd101a2465d47101e1f0e4303e517faa43d4c765e26",
+      "size_bytes": 279
+    },
+    {
+      "name": "data/hiv_wrapper_functional_cure_qdrant_materialization_20260218T064743Z.json",
+      "sha256": "6834557fb7da8fdccb0020234ecafd3db941e04517afad442c2eb86052c09ed6",
+      "size_bytes": 285
+    },
+    {
+      "name": "data/hiv_wrapper_functional_cure_safe_20260218T064711Z.json",
+      "sha256": "67dd1a98c25789e1f31ab0aa0d40780b52118c6846d6b38c011f072f7307f381",
+      "size_bytes": 28752
+    },
+    {
+      "name": "data/lupus_wrapper_tolerance_qdrant_materialization_20260218T070720Z.json",
+      "sha256": "7212bd1cbb33d2ad1819102b33b92dec0540480edf6f3b36caa842b69923c99b",
+      "size_bytes": 277
+    },
+    {
+      "name": "data/lupus_wrapper_tolerance_safe_20260218T070706Z.json",
+      "sha256": "943454dfc86a7735135d198d5d02c1d211218fb47338cf0d2ba5c11c69a76a88",
+      "size_bytes": 21227
+    },
+    {
+      "name": "data/phagocytosis_genomics_15houses_20260218T072234Z.json",
+      "sha256": "020ff1e41a98788f740ef57c77a700ce7ad2505338a1bf3c19b6a6eba0b07344",
+      "size_bytes": 49029
+    },
+    {
+      "name": "data/phagocytosis_house_gate_runtime_audit_20260218T071016Z.json",
+      "sha256": "92387a53c02527f21b5e77883bf89c7563764a629bb6f9d2903a64493d45d928",
+      "size_bytes": 80125
+    },
+    {
+      "name": "data/phagocytosis_house_threshold_profile_20260218T065616Z.json",
+      "sha256": "af05f69d704a07bb7e726e2bd92f1730e1efb3f0844b524b3b68cfd73e2be13e",
+      "size_bytes": 4915
+    },
+    {
+      "name": "data/phagocytosis_threshold_house_sweep_20260218T065251Z.json",
+      "sha256": "adc83088ad80b090adb902992723d9b448da1dd0a71b383bdecf2713fc259898",
+      "size_bytes": 52263
+    },
+    {
+      "name": "data/phagocytosis_threshold_house_sweep_qdrant_materialization_20260218T065451Z.json",
+      "sha256": "2e7a58aea6b8153a92ca5db8c28dd3fa9fe0dc9d5456b1ab1e417e16a2a206f2",
+      "size_bytes": 294
+    },
+    {
+      "name": "data/zenodo_specific_assets_probe_v2_20260218T084138Z.json",
+      "sha256": "de9ca4cb782b3d1db0de2db4d10a50c78257830e5c5ab40126b29fb6d1ae930b",
+      "size_bytes": 8498
+    },
+    {
+      "name": "data/zip_dataset_analysis_20260218T115222Z.json",
+      "sha256": "8a679dbc00f5751c29a92663403ff842c7b38e4d144bba3142c0c4779d37e3f6",
+      "size_bytes": 1281
+    },
+    {
+      "name": "zenodo_metadata/zenodo_citation_note_20260218T120207Z.md",
+      "sha256": "f53dcb6a5f39f90d505e4c4cbea111d693e951f54f7b35ed854ebecfc17045a2",
+      "size_bytes": 680
+    },
+    {
+      "name": "zenodo_metadata/zenodo_metadata_bio_pack_20260218T120207Z.json",
+      "sha256": "b8cac79d586e918ec4d3cf4d275cfd6fc24586a9bc404810521336471a8c4eb5",
+      "size_bytes": 2099
+    }
+  ]
+}

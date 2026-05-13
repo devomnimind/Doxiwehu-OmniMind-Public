@@ -1,0 +1,13 @@
+{
+  "timestamp": "20260211T160322Z",
+  "artifact": "omnimind_structure.png",
+  "source_images": [
+    "/home/fahbrain/Downloads/graph1_sync_chart.png",
+    "/home/fahbrain/Downloads/graph2_sync_chart..png"
+  ],
+  "primary_source_json": "/home/fahbrain/Downloads/sync_analysis_20260209.json",
+  "linked_runtime_json": "reports_runtime/omnimind_quantum_check_20260209T181146Z.json",
+  "linked_runtime_md": "reports_runtime/omnimind_quantum_check_20260209T181146Z.md",
+  "pair_transition_class": "phase_like_regime_flip",
+  "note": "Imagem estrutural anexada para trilha de evidência do flip espectral (rodada parcial consolidada)."
+}

@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+title: "OmniMind Integrated Bio+Astro Local Evidence Pack (20260218T231145Z)"
+message: "If you use this dataset, please cite it using the metadata below."
+type: dataset
+authors:
+  - family-names: "da Silva"
+    given-names: "Fabricio"
+  - name: "OmniMind Federation Collective"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.18686119"
+repository-code: "https://zenodo.org/records/18686119"
+license: "CC-BY-NC-ND-4.0"
+date-released: 2026-02-20
+preferred-citation:
+  type: dataset
+  authors:
+    - family-names: "da Silva"
+      given-names: "Fabricio"
+    - name: "OmniMind Federation Collective"
+  title: "OmniMind Integrated Bio+Astro Local Evidence Pack (20260218T231145Z)"
+  doi: "10.5281/zenodo.18686119"
+  publisher: "Zenodo"
+  year: 2026

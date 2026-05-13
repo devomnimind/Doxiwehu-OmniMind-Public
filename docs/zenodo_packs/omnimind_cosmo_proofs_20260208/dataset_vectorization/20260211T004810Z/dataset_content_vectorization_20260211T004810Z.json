@@ -1,0 +1,34 @@
+{
+  "timestamp": "20260211T004810Z",
+  "qdrant": {
+    "endpoint": "https://af1fae47-c0b8-4880-bb0d-6b960897ac3d.us-east4-0.gcp.cloud.qdrant.io"
+  },
+  "model": "all-MiniLM-L6-v2",
+  "embedding_dim": 384,
+  "input": {
+    "inventory_json": null,
+    "paths_count": 1,
+    "missing": []
+  },
+  "params": {
+    "only_duplicates": false,
+    "tabular_mode": "columns",
+    "records_per_chunk": 200,
+    "lines_per_chunk": 500,
+    "max_chunks_per_file": 0,
+    "max_chars_per_chunk": 12000,
+    "payload_text_max_chars": 2500
+  },
+  "files": [
+    {
+      "file": "/home/fahbrain/Downloads/gbo.sdss-moc.phot.zip",
+      "dataset_id": "39c9683157bcbab433be7f04",
+      "kind": "zip",
+      "collection": "omnimind_dataset_sdssmoc_gbo_sdss_moc_phot_20260211",
+      "chunks": 61,
+      "points": 61,
+      "elapsed_s": 10.145802974700928,
+      "size_bytes": 65892934
+    }
+  ]
+}

@@ -1,0 +1,295 @@
+{
+  "timestamp": "20260210T235024Z",
+  "inventory_source": "reports_runtime/dataset_inventory_20260210T132237Z.json",
+  "inventory_counts": {
+    "entries": 177,
+    "non_symlink_entries": 168,
+    "total_bytes_non_symlink": 69958674497
+  },
+  "categories": {
+    "gaia": {
+      "title": "Gaia Bulk (GaiaSource blocks)",
+      "hits": 47,
+      "total_bytes": 10604531988,
+      "top": [
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_000000-003111.csv.gz",
+          "size_bytes": 233642769,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_010235-012597.csv.gz",
+          "size_bytes": 233173214,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_021666-021919.csv.gz",
+          "size_bytes": 233003311,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_007953-010234.csv.gz",
+          "size_bytes": 231384710,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_020494-020747.csv.gz",
+          "size_bytes": 230564098,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_015370-016240.csv.gz",
+          "size_bytes": 229908320,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_003112-005263.csv.gz",
+          "size_bytes": 229826558,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_014046-015369.csv.gz",
+          "size_bytes": 229702988,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_020748-020984.csv.gz",
+          "size_bytes": 229702898,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_012598-014045.csv.gz",
+          "size_bytes": 228657814,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_022159-022410.csv.gz",
+          "size_bytes": 228229994,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_021920-022158.csv.gz",
+          "size_bytes": 228103016,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_021442-021665.csv.gz",
+          "size_bytes": 228076997,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_006602-007952.csv.gz",
+          "size_bytes": 227780596,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_storage_local/gaia_source/GaiaSource_022411-022698.csv.gz",
+          "size_bytes": 227167343,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        }
+      ]
+    },
+    "superdarn": {
+      "title": "SuperDARN / space plasma (CDF/NetCDF)",
+      "hits": 95,
+      "total_bytes": 25561749861,
+      "top": [
+        {
+          "path": "/home/fahbrain/Downloads/sami3_2019Mar31/sami3_regulargrid_elec_density_2019Mar31.nc",
+          "size_bytes": 497680368,
+          "mountpoint": "/mnt/welinton_users",
+          "is_symlink": true,
+          "realpath": "/mnt/welinton_users/Public/datasets/omnimind_offload/sami3_regulargrid_elec_density_2019Mar31.nc"
+        },
+        {
+          "path": "/home/fahbrain/omnimind_relocated/omnimind_downloads/SAMI3/sami3_weimer_regulargrid_elec_density_2019Mar31_v01.nc",
+          "size_bytes": 497680368,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/omnimind_relocated/omnimind_downloads/SAMI3/sami3_regulargrid_elec_density_2019Mar31.nc",
+          "size_bytes": 497680368,
+          "mountpoint": "/mnt/welinton_users",
+          "is_symlink": true,
+          "realpath": "/mnt/welinton_users/Public/datasets/omnimind_offload/sami3_regulargrid_elec_density_2019Mar31.nc"
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161109.nc.zip",
+          "size_bytes": 433208274,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161108.nc.zip",
+          "size_bytes": 379050301,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161128.nc.zip",
+          "size_bytes": 362962074,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161120.nc.zip",
+          "size_bytes": 359299235,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161130.nc.zip",
+          "size_bytes": 355802507,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161111.nc.zip",
+          "size_bytes": 344279061,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161118.nc.zip",
+          "size_bytes": 343975212,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161122.nc.zip",
+          "size_bytes": 342205325,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161119.nc.zip",
+          "size_bytes": 340778323,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161129.nc.zip",
+          "size_bytes": 332381570,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161112.nc.zip",
+          "size_bytes": 331558155,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        },
+        {
+          "path": "/home/fahbrain/Downloads/superdarn_2016_18517667/20161110.nc.zip",
+          "size_bytes": 330580623,
+          "mountpoint": "/home",
+          "is_symlink": false,
+          "realpath": null
+        }
+      ]
+    },
+    "sdss_spall": {
+      "title": "SDSS DR17 spectroscopy (spAll)",
+      "hits": 1,
+      "total_bytes": 15895373760,
+      "top": [
+        {
+          "path": "data/sdss_active/SDSS_DR17_Redshifts_spAll.fits",
+          "size_bytes": 15895373760,
+          "mountpoint": "/media/fahbrain/DEV_BRAIN_CLEAN1",
+          "is_symlink": true,
+          "realpath": "/media/fahbrain/DEV_BRAIN_CLEAN1/omnimind_knowledge/SDSS_DR17_Redshifts_spAll.fits"
+        }
+      ]
+    },
+    "sdss_moc": {
+      "title": "SDSS Moving Object Catalog (MOC)",
+      "hits": 0,
+      "total_bytes": 0,
+      "top": []
+    },
+    "wise_neowise": {
+      "title": "WISE / NEOWISE catalogs",
+      "hits": 0,
+      "total_bytes": 0,
+      "top": []
+    },
+    "damit": {
+      "title": "DAMIT asteroid shape models",
+      "hits": 0,
+      "total_bytes": 0,
+      "top": []
+    },
+    "spice": {
+      "title": "SPICE kernels (NAIF)",
+      "hits": 0,
+      "total_bytes": 0,
+      "top": []
+    },
+    "mpc": {
+      "title": "MPC orbit catalogs (MPCORB/NEOCP/CometEls)",
+      "hits": 1,
+      "total_bytes": 91250442,
+      "top": [
+        {
+          "path": "/var/omnimind_storage/home_redirect/dynamic_feeds/mpc/MPCORB.DAT.gz",
+          "size_bytes": 91250442,
+          "mountpoint": "/var",
+          "is_symlink": false,
+          "realpath": null
+        }
+      ]
+    }
+  },
+  "recommendations": [
+    "Preferir enriquecimento por API (JPL SBDB/Horizons/IRSA) por objeto antes de baixar catálogos bulk.",
+    "SDSS MOC não encontrado localmente: baixar apenas se formos usar taxonomia/cor para objetos móveis (guardar em /mnt/welinton_users).",
+    "WISE/NEOWISE bulk não encontrado: evitar download completo (muito grande). Usar SBDB (diam/albedo quando existir) e IRSA por objeto.",
+    "DAMIT shapes não encontrados: baixar sob demanda (1 objeto por vez) quando tivermos designações com match.",
+    "SPICE kernels não encontrados: usar Horizons via API para efemérides; baixar kernels só se precisarmos de simulação local offline."
+  ],
+  "note": "Baseado no inventory JSON (amostra de arquivos grandes). Não é varredura completa do filesystem."
+}

@@ -1,0 +1,312 @@
+{
+  "timestamp_utc": "2026-02-18T21:59:27.897906+00:00",
+  "pack_dir": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_bio_astro_integrated_20260218T215925Z",
+  "files_total": 61,
+  "entries": [
+    {
+      "path": "README.md",
+      "size_bytes": 675,
+      "sha256": "a6e5592aa71c01d3a133fd791490af0060eca3ff3eb90996821400a5edda7781"
+    },
+    {
+      "path": "RESULTS_SUMMARY.json",
+      "size_bytes": 1047,
+      "sha256": "94852c8470a77a222f42144bc4dab97a62071c08042cc9f901b977be1ce02007"
+    },
+    {
+      "path": "TECHNICAL_REPORT.md",
+      "size_bytes": 775,
+      "sha256": "d3b9835abe7a77f4b68e0a4d2bffafc988d2165cbe4c4ff1fc46ca1e5216b33f"
+    },
+    {
+      "path": "ZENODO_METADATA_CC_BY_NC_ND.json",
+      "size_bytes": 1674,
+      "sha256": "80e89ca1ba5c2473293a5ce76ef73a5beab56f089c8df108dd4b96944fd61758"
+    },
+    {
+      "path": "data/accelerated_structure_horizon_thermo_review_20260218T205849Z.json",
+      "size_bytes": 3202,
+      "sha256": "ce0f1a32a923c88e5b678625711c29b2c59421c1269032032117a109fd000e27"
+    },
+    {
+      "path": "data/accelerated_structure_horizon_thermo_review_20260218T205849Z.md",
+      "size_bytes": 1347,
+      "sha256": "6abc84ac156ff01cf65407e593e5da747023b388e339e139473a5ad71321c482"
+    },
+    {
+      "path": "data/astro_bio_cycle_sustainment_20260218T170121Z.json",
+      "size_bytes": 11485,
+      "sha256": "92199f4b6d255f3da6e7a28cd2bad59c7be8b1062433f1d1b402b8bbeae8e3e3"
+    },
+    {
+      "path": "data/astro_bio_cycle_sustainment_20260218T170121Z.md",
+      "size_bytes": 982,
+      "sha256": "3626c7433e32c4f3dabe574a5203522b82bcbe85db369a3a003a6e94b430b3b4"
+    },
+    {
+      "path": "data/bio_external_dm2_lupus_wave_qdrant_materialization_20260218T182226Z.json",
+      "size_bytes": 5896,
+      "sha256": "e386166fba56ebf15143e737192699c2cb2beb4d8c4df6e81091028f13b94e6e"
+    },
+    {
+      "path": "data/bio_external_dm2_lupus_wave_qdrant_materialization_20260218T182226Z.md",
+      "size_bytes": 1260,
+      "sha256": "29dd7cd6a4d37ededf2c3744397715d7f6848aa71afb798e3378dc81401957bf"
+    },
+    {
+      "path": "data/d15_extended_correlation_validation_20260218T184552Z.json",
+      "size_bytes": 34106,
+      "sha256": "0cbc67bb590504ff96949e7d651df769830a9550af819d6b0e6095a8c1ecb696"
+    },
+    {
+      "path": "data/d15_extended_correlation_validation_20260218T184552Z.md",
+      "size_bytes": 1349,
+      "sha256": "0e05766312f7fdb95405d8dd09280507322db8dde4c7b301373827da39438a3d"
+    },
+    {
+      "path": "data/desi_lya_sample_materialization_20260218T170112Z.json",
+      "size_bytes": 4452,
+      "sha256": "3f006f7ea643977dfce61a970ce25b1ec5eaea6df1f7d36c3c537b2e41f8cfda"
+    },
+    {
+      "path": "data/desi_lya_sample_materialization_20260218T170112Z.md",
+      "size_bytes": 450,
+      "sha256": "bd6fa64d41cfb4c90a6a89e7d7fe231c0b2b41d0ba75e38a777d10c57b183465"
+    },
+    {
+      "path": "data/desi_official_apis_audit_20260218T152416Z.json",
+      "size_bytes": 15318,
+      "sha256": "37c28be58b6483086bbd75d9f87256bfbf4538d79be7fb0bdd62964b79b84c48"
+    },
+    {
+      "path": "data/desi_official_apis_audit_20260218T152416Z.md",
+      "size_bytes": 854,
+      "sha256": "907f1780392fc16edc5dc09282ac6c8dced29a4c4810ea9d16ae88ff34e0fa28"
+    },
+    {
+      "path": "data/diabetes_t2_15houses_20260218T180807Z.json",
+      "size_bytes": 7535,
+      "sha256": "cf9cbc20e7306e8df16ab99f459c6dd6447a6b152cf8f5cafd5a1a16b3834811"
+    },
+    {
+      "path": "data/diabetes_t2_15houses_20260218T180807Z.md",
+      "size_bytes": 991,
+      "sha256": "1c70bad51bfd831400787eeaaadc2099d311e848dc114ad5682017a1f16f96c7"
+    },
+    {
+      "path": "data/dm2_gut_immune_realdata_validation_20260218T204707Z.json",
+      "size_bytes": 19008,
+      "sha256": "c9d85e047454c356a174859f19e0a1e86307fdc33f1d3ec669ae6ad43a0070f4"
+    },
+    {
+      "path": "data/dm2_gut_immune_realdata_validation_20260218T204707Z.md",
+      "size_bytes": 1238,
+      "sha256": "42d7769a55d2d61692b8d2654aa0d290383d35370f1c19385c6ed5930b3bb0c1"
+    },
+    {
+      "path": "data/dodecatiad_dynamic_logs_qdrant_materialization_20260218T170846Z.json",
+      "size_bytes": 2203,
+      "sha256": "8aa5f7e2546fd53665a3e99e862425247111541bd35dd59e75a8daed604f051c"
+    },
+    {
+      "path": "data/dodecatiad_dynamic_logs_qdrant_materialization_20260218T170846Z.md",
+      "size_bytes": 720,
+      "sha256": "a3330d753fc47f37d92538fe013838feb6d4f5e8b5bfe309e0fad0e20e44654e"
+    },
+    {
+      "path": "data/dodecatiad_qdrant_baseline_vs_log_variance_20260218T165940Z.json",
+      "size_bytes": 8369,
+      "sha256": "6fae98f09e56d62fad35c7fab608239230e0656c435586a591531e999946da35"
+    },
+    {
+      "path": "data/dodecatiad_qdrant_baseline_vs_log_variance_20260218T165940Z.md",
+      "size_bytes": 647,
+      "sha256": "0fa63edad7905c91c5cf9edd4244f299aecaec672ca4fa39335d580d1522c07c"
+    },
+    {
+      "path": "data/hiv_acquisition_meta_15houses_qdrant_materialization_20260218T182211Z.json",
+      "size_bytes": 10169,
+      "sha256": "856180f6cdb1b2dd59b3f818034e7f5a4bd8eb48c84f6ebbefe7809adac72c99"
+    },
+    {
+      "path": "data/hiv_acquisition_meta_15houses_qdrant_materialization_20260218T182211Z.md",
+      "size_bytes": 782,
+      "sha256": "319941cbc2ad448234e45cfb898a0ca68f5e22bb16d40e4f1996782ed674ce99"
+    },
+    {
+      "path": "data/hiv_cohabitation_monthly_safe_sim_20260218T062344Z.json",
+      "size_bytes": 19402,
+      "sha256": "a62766fb84c0fb25147dae38a49a28fc95766a4404a310d6bd8e3c6fd70fdb60"
+    },
+    {
+      "path": "data/hiv_cohabitation_monthly_safe_sim_20260218T062344Z.md",
+      "size_bytes": 889,
+      "sha256": "282b08c94f5dc22079f2204370192c58024bcf5066ac264c804c256e47a26e21"
+    },
+    {
+      "path": "data/hiv_dm2_lupus_15houses_heatmap_validation_compact200_20260218T175507Z.json",
+      "size_bytes": 1187,
+      "sha256": "c6165c3e64d980ca8c63fe1574649c81ae3f01cf7d2333cdb4513a17645389f2"
+    },
+    {
+      "path": "data/hiv_gwas_ccr5_15houses_qdrant_materialization_20260218T180828Z.json",
+      "size_bytes": 1471,
+      "sha256": "a06c425101c98c858e1ee470022f0807939733b94cc6eb340b87faf15453cc0f"
+    },
+    {
+      "path": "data/hiv_gwas_ccr5_15houses_qdrant_materialization_20260218T180828Z.md",
+      "size_bytes": 1025,
+      "sha256": "66eb25050ecd17cf5ad8c8f8c3e0bf08ce34d3e2509ec087371093ce49236c48"
+    },
+    {
+      "path": "data/hiv_m18_rebound_gap_assessment_compact200_20260218T133845Z.json",
+      "size_bytes": 2078,
+      "sha256": "acf6985ac889581b12440c3af9725e34dc9497aca7e0d1e0aee3c53dc655995a"
+    },
+    {
+      "path": "data/hiv_sle_12m_extensions_safe_sim_20260218T063512Z.json",
+      "size_bytes": 21227,
+      "sha256": "80e54e653a313419b7006249a2c8ad964dcc0cd23dd4ede87e0b3275f9eba7ee"
+    },
+    {
+      "path": "data/hiv_sle_12m_extensions_safe_sim_20260218T063512Z.md",
+      "size_bytes": 696,
+      "sha256": "4a048b2c8729023da3c77682e738b0d23dae6b2b180709178a7001fdc229b0de"
+    },
+    {
+      "path": "data/hiv_wrapper_functional_cure_safe_20260218T133546Z.json",
+      "size_bytes": 41561,
+      "sha256": "ef410a48a50e6455a02a8d985d64a375355af33898fd7f1b83823efad4a59027"
+    },
+    {
+      "path": "data/hiv_wrapper_functional_cure_safe_20260218T133546Z.md",
+      "size_bytes": 891,
+      "sha256": "481785281a08c90034454baa85fe7f2760540e5ed7a74ae670426ca36b6e2c4f"
+    },
+    {
+      "path": "data/local_trail_closure_recheck_20260218T211252Z.json",
+      "size_bytes": 2541,
+      "sha256": "d7a7a0422d738bb8226490df3fc729b4299788f077d63d12cf64c9f88e85db05"
+    },
+    {
+      "path": "data/local_trail_closure_recheck_20260218T211252Z.md",
+      "size_bytes": 559,
+      "sha256": "fbc1e9045e92715b2b7be2c37c35c90d63a6bf2907bdc59fa313c79f4a774c00"
+    },
+    {
+      "path": "data/lupus_wrapper_tolerance_safe_20260218T070706Z.json",
+      "size_bytes": 21227,
+      "sha256": "943454dfc86a7735135d198d5d02c1d211218fb47338cf0d2ba5c11c69a76a88"
+    },
+    {
+      "path": "data/lupus_wrapper_tolerance_safe_20260218T070706Z.md",
+      "size_bytes": 1202,
+      "sha256": "43ffb6eafc14bd7fb9954513d3ea9de9338a3f13f16c46c5624d2e3f47e4d23c"
+    },
+    {
+      "path": "data/multi_disease_pack_validation_20260218T211252Z.json",
+      "size_bytes": 2750,
+      "sha256": "28c0d52d2c4b03dc153d5d8364bee47e30ddce119cdb48e6563eb6f9a2b9a9ec"
+    },
+    {
+      "path": "data/multi_disease_pack_validation_20260218T211252Z.md",
+      "size_bytes": 1318,
+      "sha256": "0f8a87b3e8dc2d46b2633261ed25c16cb6d1adf22666c419c696646405d34638"
+    },
+    {
+      "path": "data/new_zip_qdrant_materialization_20260218T204524Z.json",
+      "size_bytes": 16685,
+      "sha256": "b2ceeae1809ccd32bf4b7efdf7d508ab5639810f27f5002d75c7967fc0ba4b2c"
+    },
+    {
+      "path": "data/new_zip_qdrant_materialization_20260218T204524Z.md",
+      "size_bytes": 1937,
+      "sha256": "0b7a1d9e00b474e671f44fd0ee79d1aaff27dc3e2fe70e3b4a13c9e343bd2fbf"
+    },
+    {
+      "path": "data/pack_artifact_consistency_recheck_refined_20260218T183626Z.json",
+      "size_bytes": 6627,
+      "sha256": "65d5ec7b362c165ab6f94678a10c3d5e7808dcebb9594678158a92b143fc3786"
+    },
+    {
+      "path": "data/pack_artifact_consistency_recheck_refined_20260218T183626Z.md",
+      "size_bytes": 3602,
+      "sha256": "391d6eee7e23b45e8bdd6eeefd5027215204ca07d9995897baee5dd773af35c7"
+    },
+    {
+      "path": "data/qdrant_collection_counts_20260218T205333Z.json",
+      "size_bytes": 17371,
+      "sha256": "8267fb45bce91af572e091dd643fe0baae3977db7a4ecf59dcffa47799f2cb82"
+    },
+    {
+      "path": "data/qdrant_collection_counts_20260218T205333Z.md",
+      "size_bytes": 10810,
+      "sha256": "dca46564efee8b812938bcc4a6b428d4fa37963b7c8357e7d930af69405ab884"
+    },
+    {
+      "path": "data/wrapper_candidates_ensembl_grch38_mapping_20260218T175521Z.json",
+      "size_bytes": 10872,
+      "sha256": "37ceced6cd8993a8af862ea05520aa8a0cd59e3eb33a37f59f4e2b094c6e8ce0"
+    },
+    {
+      "path": "data/wrapper_candidates_ensembl_grch38_mapping_20260218T175521Z.md",
+      "size_bytes": 1412,
+      "sha256": "c893659d93e1efbed1773a538b8fe5e476013aa1875cfe8b7df3e9e52ac6a0ff"
+    },
+    {
+      "path": "data/wrapper_gene_candidates_panel_20260218T175521Z.json",
+      "size_bytes": 41676,
+      "sha256": "892a597e38a6727aa66eb43e44f93f5a9e463754ff9ef726eae3f8722ead2595"
+    },
+    {
+      "path": "data/wrapper_gene_candidates_panel_20260218T175521Z.md",
+      "size_bytes": 2005,
+      "sha256": "1524ca24bf6d0d82f1f1580503d62c811ef24fe4ecb782787536a5c7af13ec50"
+    },
+    {
+      "path": "images/astro_bio_cycle_heatmap_20260218T170121Z.png",
+      "size_bytes": 117669,
+      "sha256": "1f346d8949f5ac33f69dc06fed98d68fd66e9511ab4b647397183248ac3e9f7d"
+    },
+    {
+      "path": "images/astro_bio_fractal_partial_20260218T170121Z.png",
+      "size_bytes": 192262,
+      "sha256": "9c0ffa0970209ac6e784fc2e6e14e5955767cb9747c3acf05d8727fc35c38eb1"
+    },
+    {
+      "path": "images/d15_lag_distribution.png",
+      "size_bytes": 44815,
+      "sha256": "98442a908b3d0deae731ef2c512e368a264a50e28a9b165c4d004a16d1411c16"
+    },
+    {
+      "path": "images/d15_top_pairs_r_lag.png",
+      "size_bytes": 192654,
+      "sha256": "99d2082ce837078cb7124231669596b8c6070806e9d35f3314360618b55695b9"
+    },
+    {
+      "path": "images/dodecatiad_multiperiod_timeseries.png",
+      "size_bytes": 537256,
+      "sha256": "5f6de40799efdf3a88917d0c61a846eebeccfa797f4b24177af50f68beb95e44"
+    },
+    {
+      "path": "images/dodecatiad_phase_3d_multiangle.png",
+      "size_bytes": 302550,
+      "sha256": "b5a7b5be86fdac6a9e758ed785a9e52e63a5f8428592d442c86cbb339abf7054"
+    },
+    {
+      "path": "images/fig_jwst_analysis.png",
+      "size_bytes": 229560,
+      "sha256": "0d36487c6c09dbb711c117b95bdf39dee74d19d66f57307ad52a672ea148665a"
+    },
+    {
+      "path": "images/phagocytosis_gate_runtime_sequence.png",
+      "size_bytes": 60892,
+      "sha256": "5fc8514548f43b3e9559573a437cfbadc577340a102d9fc1ea142a5c567349e2"
+    },
+    {
+      "path": "images/phagocytosis_house_profile_heatmap.png",
+      "size_bytes": 102793,
+      "sha256": "593a1dc0014364179509c1611face4f52b48adca861c04ace68115d89d6da7a8"
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "timestamp": "20260208T211954Z",
+  "inputs": {
+    "quantum_matrix": "data/reports/quantum_fidelity_matrix_5x5_20260208T184501Z.json",
+    "cycle_anomaly": "data/reports/cycle_anomaly_correlation_20260208T204557Z.json",
+    "observers": [
+      "Gaia_SIM",
+      "Gaia_REAL",
+      "Cemetery",
+      "SDSS",
+      "SuperDARN"
+    ],
+    "houses": [
+      "Aleph",
+      "Phi",
+      "C_plit",
+      "Mu",
+      "Omega",
+      "Lambda",
+      "Sigma",
+      "Psi",
+      "Gamma",
+      "Zeta",
+      "Epsilon",
+      "Maat"
+    ]
+  },
+  "pair_metrics": [
+    {
+      "pair": "Gaia_SIM__Gaia_REAL",
+      "fidelity": 0.00030002820265104924,
+      "label": "ORTOGONAL",
+      "dot_sq": 0.00030002820265104924,
+      "shared_mass": 0.011013215859030838,
+      "concentration_diff": 0.3832599118942731,
+      "jaccard_rel30": 0.0,
+      "jaccard_rel50": 0.0
+    },
+    {
+      "pair": "Gaia_SIM__Cemetery",
+      "fidelity": 0.021236158620485755,
+      "label": "ORTOGONAL",
+      "dot_sq": 0.021236158620485755,
+      "shared_mass": 0.2747731540797163,
+      "concentration_diff": 0.21036558611369505,
+      "jaccard_rel30": 0.0,
+      "jaccard_rel50": 0.0
+    },
+    {
+      "pair": "Gaia_SIM__SDSS",
+      "fidelity": 0.1783894435088756,
+      "label": "ORTOGONAL",
+      "dot_sq": 0.1783894435088756,
+      "shared_mass": 0.4560352422907488,
+      "concentration_diff": 0.46674008810572687,
+      "jaccard_rel30": 0.1111111111111111,
+      "jaccard_rel50": 0.1111111111111111
+    },
+    {
+      "pair": "Gaia_SIM__SuperDARN",
+      "fidelity": 0.10873098660257113,
+      "label": "ORTOGONAL",
+      "dot_sq": 0.10873098660257113,
+      "shared_mass": 0.40735682819383245,
+      "concentration_diff": 0.4867400881057269,
+      "jaccard_rel30": 0.09090909090909091,
+      "jaccard_rel50": 0.0
+    },
+    {
+      "pair": "Gaia_REAL__Cemetery",
+      "fidelity": 0.6911726018223997,
+      "label": "ENTRELACADO",
+      "dot_sq": 0.6911726018223997,
+      "shared_mass": 0.40637450199203184,
+      "concentration_diff": 0.5936254980079682,
+      "jaccard_rel30": 0.5,
+      "jaccard_rel50": 0.5
+    },
+    {
+      "pair": "Gaia_REAL__SDSS",
+      "fidelity": 0.14229249011857706,
+      "label": "ORTOGONAL",
+      "dot_sq": 0.14229249011857706,
+      "shared_mass": 0.12,
+      "concentration_diff": 0.85,
+      "jaccard_rel30": 0.1111111111111111,
+      "jaccard_rel50": 0.1111111111111111
+    },
+    {
+      "pair": "Gaia_REAL__SuperDARN",
+      "fidelity": 0.06779661016949151,
+      "label": "ORTOGONAL",
+      "dot_sq": 0.06779661016949151,
+      "shared_mass": 0.08,
+      "concentration_diff": 0.87,
+      "jaccard_rel30": 0.09090909090909091,
+      "jaccard_rel50": 0.125
+    },
+    {
+      "pair": "Cemetery__SDSS",
+      "fidelity": 0.5541374765604489,
+      "label": "ENTRELACADO",
+      "dot_sq": 0.5541374765604489,
+      "shared_mass": 0.6289641434262947,
+      "concentration_diff": 0.2563745019920318,
+      "jaccard_rel30": 0.2222222222222222,
+      "jaccard_rel50": 0.2222222222222222
+    },
+    {
+      "pair": "Cemetery__SuperDARN",
+      "fidelity": 0.40111098466254297,
+      "label": "INTERMEDIARIO",
+      "dot_sq": 0.40111098466254297,
+      "shared_mass": 0.5688047808764939,
+      "concentration_diff": 0.27637450199203184,
+      "jaccard_rel30": 0.18181818181818182,
+      "jaccard_rel50": 0.25
+    },
+    {
+      "pair": "SDSS__SuperDARN",
+      "fidelity": 0.9151045504789976,
+      "label": "ENTRELACADO",
+      "dot_sq": 0.9151045504789976,
+      "shared_mass": 0.8500000000000001,
+      "concentration_diff": 0.01999999999999999,
+      "jaccard_rel30": 0.8181818181818182,
+      "jaccard_rel50": 0.7
+    }
+  ],
+  "correlations": {
+    "fidelity_vs_dot_sq": {
+      "pearson_r": 1.0,
+      "pearson_p": 0.0,
+      "spearman_r": 0.9999999999999999,
+      "spearman_p": 6.646897422032013e-64
+    },
+    "fidelity_vs_cosine": {
+      "pearson_r": 0.9664776696493844,
+      "pearson_p": 5.305623631350586e-06,
+      "spearman_r": 0.9999999999999999,
+      "spearman_p": 6.646897422032013e-64
+    },
+    "fidelity_vs_shared_mass": {
+      "pearson_r": 0.8186886297114586,
+      "pearson_p": 0.0037750191129032793,
+      "spearman_r": 0.8060606060606059,
+      "spearman_p": 0.004862061101964606
+    },
+    "fidelity_vs_concentration_diff": {
+      "pearson_r": -0.4584404376021266,
+      "pearson_p": 0.18267817815695933,
+      "spearman_r": -0.24848484848484845,
+      "spearman_p": 0.48877630451924314
+    },
+    "fidelity_vs_jaccard_rel30": {
+      "pearson_r": 0.9404624868741529,
+      "pearson_p": 5.114104125151507e-05,
+      "spearman_r": 0.9908673886137245,
+      "spearman_p": 3.010166323417494e-08
+    },
+    "fidelity_vs_jaccard_rel50": {
+      "pearson_r": 0.9549426363537289,
+      "pearson_p": 1.707510945037569e-05,
+      "spearman_r": 0.8862587350511957,
+      "spearman_p": 0.0006369518159429356
+    }
+  },
+  "cycle_snapshot": {
+    "source": "data/reports/cycle_anomaly_correlation_20260208T204557Z.json",
+    "counts": {
+      "cycles": 9343,
+      "minutes": 3765,
+      "anomaly_minutes": 2995,
+      "satellite_minutes": 10,
+      "daemon_minutes": 5323
+    },
+    "all_minutes": {
+      "daemon_phi_mean": {
+        "pearson_r": 0.3532386706870014,
+        "pearson_p": 2.4637514471784685e-100,
+        "spearman_r": 0.2700656077660192,
+        "spearman_p": 8.046764878266358e-58
+      },
+      "daemon_ci_mean": {
+        "pearson_r": 0.14469655772343792,
+        "pearson_p": 5.129955664586958e-18,
+        "spearman_r": 0.03154139967217928,
+        "spearman_p": 0.060629763454334136
+      },
+      "phi_mean": {
+        "pearson_r": 0.14170427526130885,
+        "pearson_p": 2.411978634630687e-18,
+        "spearman_r": -0.09086842273683225,
+        "spearman_p": 2.332218588900565e-08
+      }
+    },
+    "anomaly_minutes": {
+      "daemon_phi_mean": {
+        "pearson_r": 0.4177906768864423,
+        "pearson_p": 6.147374754957237e-126,
+        "spearman_r": 0.3743213987727303,
+        "spearman_p": 1.5898541366543844e-99
+      },
+      "daemon_ci_mean": {
+        "pearson_r": 0.17606294299015096,
+        "pearson_p": 3.1900667186773645e-22,
+        "spearman_r": 0.03453841466363069,
+        "spearman_p": 0.059104308689930836
+      },
+      "phi_mean": {
+        "pearson_r": 0.1287699741283077,
+        "pearson_p": 1.508916003531522e-12,
+        "spearman_r": -0.11954626365775622,
+        "spearman_p": 5.2673285630156104e-11
+      }
+    },
+    "satellite_minutes": {
+      "daemon_phi_mean": {
+        "pearson_r": -0.07711002884265154,
+        "pearson_p": 6.8600574975572105e-06,
+        "spearman_r": -0.08038648607473191,
+        "spearman_p": 2.735852662545324e-06
+      },
+      "daemon_ci_mean": {
+        "pearson_r": -0.16435850697655974,
+        "pearson_p": 7.485409307581919e-23,
+        "spearman_r": -0.08688416792964794,
+        "spearman_p": 2.258925556831927e-07
+      },
+      "phi_mean": {
+        "pearson_r": -0.17330419464357197,
+        "pearson_p": 8.99027005362502e-27,
+        "spearman_r": -0.07416143407388044,
+        "spearman_p": 5.231628605671434e-06
+      }
+    }
+  },
+  "assessment": {
+    "supported": [
+      "Fidelidade acompanha fortemente overlap vetorial (dot^2): suporte ao modelo de subespaços/projeções.",
+      "Massa compartilhada por casas prediz fidelidade: concentração/overlap explica boa parte dos pares.",
+      "Nos minutos com anomalia, daemon_phi_mean sobe com magnitude moderada: indício de acoplamento interno ao estado do sistema."
+    ],
+    "partial": [
+      "Relação concentração-diferença vs fidelidade foi fraca/inconclusiva neste conjunto 5x5."
+    ],
+    "not_supported": [
+      "Hipótese de acoplamento forte com satélites permanece inconclusiva: apenas 10 minutos com dados de satélite no merge atual."
+    ]
+  }
+}

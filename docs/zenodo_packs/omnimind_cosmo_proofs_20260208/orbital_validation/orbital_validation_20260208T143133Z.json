@@ -1,0 +1,1459 @@
+{
+  "timestamp": "20260208T143133Z",
+  "sources": {
+    "anomalies": "/home/fahbrain/projects/omnimind/data/reports/universe_map_plus_anomalies_20260207T185129Z.json",
+    "cometels": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/CometEls.txt",
+    "mpcorb": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/MPCORB.DAT.gz",
+    "neocp": "/home/fahbrain/projects/omnimind/data/solar_dodecatiad/dynamic_feeds/mpc/NEOCP.txt"
+  },
+  "parameters": {
+    "inclination_target": 90.0,
+    "inclination_tol": 5.0,
+    "resonance_tol": 0.05,
+    "extra_codes": [
+      "PK18P040",
+      "PK10U55H",
+      "PK13W010",
+      "CE5LGG2"
+    ]
+  },
+  "results": {
+    "A11y70v": {
+      "designation": "A11y70v",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 293.82158830056807,
+        "dec_deg": -20.51704015506631
+      },
+      "orbital": null,
+      "neocp": {
+        "raw": "A11y70v 100 2026 02 04.6  16.1670 -23.5427 20.9 Updated Feb. 8.23 UT             6   0.03 25.0  3.940"
+      },
+      "resonances": null
+    },
+    "C19DCG5": {
+      "designation": "C19DCG5",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 305.4513292610596,
+        "dec_deg": -35.57114539612332
+      },
+      "orbital": null,
+      "neocp": {
+        "raw": "C19DCG5  10 2026 01 13.5  16.1606 +14.2721 21.6 Updated Feb. 8.24 UT            29  23.96 15.0  2.110"
+      },
+      "resonances": null
+    },
+    "C45RW41": {
+      "designation": "C45RW41",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 82.07697481638674,
+        "dec_deg": -10.315081603023941
+      },
+      "orbital": null,
+      "neocp": {
+        "raw": "C45RW41  10 2026 02 06.3   9.8356 +21.3309 21.6 Updated Feb. 8.53 UT            30   3.19 28.3  0.142"
+      },
+      "resonances": null
+    },
+    "CE5LGG2": {
+      "designation": "CE5LGG2",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 286.0174495102276,
+        "dec_deg": -75.78369511663391
+      },
+      "orbital": null,
+      "neocp": null,
+      "resonances": null
+    },
+    "CE5V9J2": {
+      "designation": "CE5V9J2",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 60.210989659662744,
+        "dec_deg": 56.349134591180245
+      },
+      "orbital": null,
+      "neocp": null,
+      "resonances": null
+    },
+    "CJ99J020": {
+      "designation": "CJ99J020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 81.74379786823687,
+        "dec_deg": 5.616455122307556
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": null,
+        "e": 1.000772,
+        "i": 86.4016,
+        "q": 7.069997,
+        "period_years": null
+      },
+      "neocp": null,
+      "resonances": null
+    },
+    "CJ99S020": {
+      "designation": "CJ99S020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 329.88622546010527,
+        "dec_deg": -89.8605109335162
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": null,
+        "e": 1.002279,
+        "i": 65.6344,
+        "q": 6.503096,
+        "period_years": null
+      },
+      "neocp": null,
+      "resonances": null
+    },
+    "CK02A010": {
+      "designation": "CK02A010",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 314.43970240096246,
+        "dec_deg": 86.94659927447117
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 16.04143065834264,
+        "e": 0.709756,
+        "i": 14.0786,
+        "q": 4.655929,
+        "period_years": 64.24874480249777
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 64.24874480249777,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 5.417263474072325,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK02A020": {
+      "designation": "CK02A020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 280.4943048152159,
+        "dec_deg": 43.455891201285795
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 15.896377643793661,
+        "e": 0.707428,
+        "i": 14.0326,
+        "q": 4.650835,
+        "period_years": 63.37927360130244
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 63.37927360130244,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 5.34395224294287,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK03A020": {
+      "designation": "CK03A020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 304.55864824342046,
+        "dec_deg": -56.25070521003607
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 8499.542258788124,
+        "e": 0.998663,
+        "i": 8.0713,
+        "q": 11.363888,
+        "period_years": 783597.9772403506
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 783597.9772403506,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 66070.65575382383,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK07S020": {
+      "designation": "CK07S020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 87.48543586362906,
+        "dec_deg": 26.951941840802434
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 12.491946090328529,
+        "e": 0.557482,
+        "i": 16.9212,
+        "q": 5.527911,
+        "period_years": 44.151468398841104
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 44.151468398841104,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 3.7227207756189804,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK09P010": {
+      "designation": "CK09P010",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 74.03484195688758,
+        "dec_deg": 54.624442750917154
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 10261.326666667797,
+        "e": 0.99985,
+        "i": 106.2235,
+        "q": 1.539199,
+        "period_years": 1039453.9889888634
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 1039453.9889888634,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 87643.6752941706,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK11P020": {
+      "designation": "CK11P020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 310.9170054420212,
+        "dec_deg": 83.04401330660943
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 9.765863856858596,
+        "e": 0.365271,
+        "i": 8.9826,
+        "q": 6.198677,
+        "period_years": 30.518697773370953
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 30.518697773370953,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 2.5732460179908054,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK12A010": {
+      "designation": "CK12A010",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 302.98788677837996,
+        "dec_deg": -68.31756831143778
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 25982.662116042044,
+        "e": 0.999707,
+        "i": 121.0091,
+        "q": 7.61292,
+        "period_years": 4188181.253610525
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 4188181.253610525,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 353135.01295198355,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK12K010": {
+      "designation": "CK12K010",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 297.81023715309067,
+        "dec_deg": -47.020231285592544
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 8210.255813950576,
+        "e": 0.999871,
+        "i": 142.5957,
+        "q": 1.059123,
+        "period_years": 743935.071991596
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 743935.071991596,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 62726.39730114638,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK12L26P": {
+      "designation": "CK12L26P",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 86.46485285245032,
+        "dec_deg": -81.57106899566594
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": null,
+        "e": 1.001424,
+        "i": 25.3597,
+        "q": 6.570995,
+        "period_years": null
+      },
+      "neocp": null,
+      "resonances": null
+    },
+    "CK12S010": {
+      "designation": "CK12S010",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 85.43933566335828,
+        "dec_deg": -46.394453894487015
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": null,
+        "e": 1.000003,
+        "i": 58.4307,
+        "q": 0.014235,
+        "period_years": null
+      },
+      "neocp": null,
+      "resonances": null
+    },
+    "CK13C020": {
+      "designation": "CK13C020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 273.13634466357684,
+        "dec_deg": -88.74803076735537
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 15.873299304914378,
+        "e": 0.42597,
+        "i": 21.3721,
+        "q": 9.11175,
+        "period_years": 63.2413027966225
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 63.2413027966225,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 5.332318954184022,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK13E010": {
+      "designation": "CK13E010",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 318.9005740497194,
+        "dec_deg": -88.2820382915442
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 6601.648809524063,
+        "e": 0.998824,
+        "i": 158.7113,
+        "q": 7.763539,
+        "period_years": 536387.4721326267
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 536387.4721326267,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 45226.59967391456,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK13P040": {
+      "designation": "CK13P040",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 275.5276602103497,
+        "dec_deg": 31.836738223305574
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 14.784005517037548,
+        "e": 0.593985,
+        "i": 4.26,
+        "q": 6.002528,
+        "period_years": 56.844463757051074
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 56.844463757051074,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 4.792956471926735,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK13W020": {
+      "designation": "CK13W020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 335.3299765695385,
+        "dec_deg": -72.48148980952038
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 9.61351864220849,
+        "e": 0.547854,
+        "i": 4.8522,
+        "q": 4.346714,
+        "period_years": 29.807363183860716
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 29.807363183860716,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 2.5132683966155747,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK14F030": {
+      "designation": "CK14F030",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 66.10737741947094,
+        "dec_deg": 64.95198693562861
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 14.367862128773048,
+        "e": 0.601019,
+        "i": 6.5209,
+        "q": 5.732504,
+        "period_years": 54.46132810243709
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 54.46132810243709,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 4.592017546579856,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK14Q020": {
+      "designation": "CK14Q020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 277.68442293328235,
+        "dec_deg": 52.82234144705237
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 402.45937500000247,
+        "e": 0.9968,
+        "i": 80.7936,
+        "q": 1.28787,
+        "period_years": 8073.894543902718
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 8073.894543902718,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 680.766824949639,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK14UR1N": {
+      "designation": "CK14UR1N",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 282.09354735014136,
+        "dec_deg": -39.587876129835294
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": null,
+        "e": 1.004321,
+        "i": 95.4462,
+        "q": 10.96048,
+        "period_years": null
+      },
+      "neocp": null,
+      "resonances": null
+    },
+    "CK15E61R": {
+      "designation": "CK15E61R",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 275.13288073519163,
+        "dec_deg": 19.140971214337966
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 470.9605845881348,
+        "e": 0.997742,
+        "i": 6.3082,
+        "q": 1.063429,
+        "period_years": 10220.610614439287
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 10220.610614439287,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 861.7715526508674,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK15O010": {
+      "designation": "CK15O010",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 11.148267630607567,
+        "dec_deg": 76.86288597809408
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": null,
+        "e": 1.001766,
+        "i": 27.104,
+        "q": 3.747272,
+        "period_years": null
+      },
+      "neocp": null,
+      "resonances": null
+    },
+    "CK15T050": {
+      "designation": "CK15T050",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 84.64161174990923,
+        "dec_deg": 88.7615743533772
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 28.437201821106296,
+        "e": 0.669871,
+        "i": 11.019,
+        "q": 9.387945,
+        "period_years": 151.64576640543893
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 151.64576640543893,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 12.786320944809354,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK16E010": {
+      "designation": "CK16E010",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 303.02620039632217,
+        "dec_deg": 81.46837590494866
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": null,
+        "e": 1.001501,
+        "i": 131.8714,
+        "q": 8.160856,
+        "period_years": null
+      },
+      "neocp": null,
+      "resonances": null
+    },
+    "CK18A060": {
+      "designation": "CK18A060",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 87.96812236808006,
+        "dec_deg": -2.682851707118715
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 14.991385698867505,
+        "e": 0.798939,
+        "i": 77.1897,
+        "q": 3.014183,
+        "period_years": 58.04471281154393
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 58.04471281154393,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 4.894157909910955,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK19A050": {
+      "designation": "CK19A050",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 44.606964302668054,
+        "dec_deg": 62.794271777901
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 21.530732046553172,
+        "e": 0.706658,
+        "i": 67.5554,
+        "q": 6.315868,
+        "period_years": 99.90522314758105
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 99.90522314758105,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 8.423711901145115,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "CK19B030": {
+      "designation": "CK19B030",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 278.6495897754886,
+        "dec_deg": 52.41121898609197
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 3133.2981651376726,
+        "e": 0.99782,
+        "i": 66.6274,
+        "q": 6.83059,
+        "period_years": 175389.0947619228
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 175389.0947619228,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 14788.287922590456,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "P22liAW": {
+      "designation": "P22liAW",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 85.27130920750359,
+        "dec_deg": -85.46632238005091
+      },
+      "orbital": null,
+      "neocp": {
+        "raw": "P22liAW  10 2026 02 02.3   6.4368  -8.1263 18.8 Updated Feb. 8.57 UT            35  21.30 23.1  0.095"
+      },
+      "resonances": null
+    },
+    "P22lnpr": {
+      "designation": "P22lnpr",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 61.46539052557986,
+        "dec_deg": 17.121107622117776
+      },
+      "orbital": null,
+      "neocp": null,
+      "resonances": null
+    },
+    "P22lp4E": {
+      "designation": "P22lp4E",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 78.09366909837296,
+        "dec_deg": -18.720891379129867
+      },
+      "orbital": null,
+      "neocp": null,
+      "resonances": null
+    },
+    "PJ96R020": {
+      "designation": "PJ96R020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 83.34537616089236,
+        "dec_deg": 48.84740447179371
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 3.771514335114836,
+        "e": 0.314062,
+        "i": 2.599,
+        "q": 2.587025,
+        "period_years": 7.324426818553671
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 7.324426818553671,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.6175739307380835,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK00R020": {
+      "designation": "PK00R020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 87.72041238445311,
+        "dec_deg": 31.021126851724418
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 3.4681519979551845,
+        "e": 0.53052,
+        "i": 11.6793,
+        "q": 1.628228,
+        "period_years": 6.458730813521797
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 6.458730813521797,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.5445810129445022,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK06H30R": {
+      "designation": "PK06H30R",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 333.8757893284669,
+        "dec_deg": -85.85053333584544
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 7.7934280401065905,
+        "e": 0.843517,
+        "i": 31.9669,
+        "q": 1.219539,
+        "period_years": 21.75668854071726
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 21.75668854071726,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.8344594047822311,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK09Y020": {
+      "designation": "PK09Y020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 84.54126570592955,
+        "dec_deg": -23.81428270629911
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 6.5340109891624705,
+        "e": 0.637279,
+        "i": 29.9725,
+        "q": 2.370023,
+        "period_years": 16.702050436771234
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 16.702050436771234,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.4082673218188224,
+          "coorbital": false,
+          "7:5": true,
+          "3:7": false
+        }
+      }
+    },
+    "PK10H030": {
+      "designation": "PK10H030",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 75.70486317433395,
+        "dec_deg": 66.20771370747696
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 3.034537762674258,
+        "e": 0.985581,
+        "i": 23.1392,
+        "q": 0.043755,
+        "period_years": 5.286141930016027
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 5.286141930016027,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.4457117984836448,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": true
+        }
+      }
+    },
+    "PK10T020": {
+      "designation": "PK10T020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 54.39850633786258,
+        "dec_deg": 86.02535277627803
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 5.566324582409548,
+        "e": 0.324338,
+        "i": 7.8522,
+        "q": 3.760954,
+        "period_years": 13.132662726615207
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 13.132662726615207,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.1073071438967292,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK10U55H": {
+      "designation": "PK10U55H",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 347.21234924353894,
+        "dec_deg": -75.13703687609821
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 6.644971895723601,
+        "e": 0.564657,
+        "i": 8.038,
+        "q": 2.892842,
+        "period_years": 17.129304224671586
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 17.129304224671586,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.4442920931426295,
+          "coorbital": false,
+          "7:5": true,
+          "3:7": false
+        }
+      }
+    },
+    "PK11C020": {
+      "designation": "PK11C020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 285.5353243934737,
+        "dec_deg": -83.23012886590084
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 7.405688916719191,
+        "e": 0.271777,
+        "i": 10.8987,
+        "q": 5.392993,
+        "period_years": 20.1533941036867
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 20.1533941036867,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.6992743763648146,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK12G010": {
+      "designation": "PK12G010",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 297.88638095168403,
+        "dec_deg": -18.943471835125195
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 4.161587972905011,
+        "e": 0.329913,
+        "i": 12.1685,
+        "q": 2.788626,
+        "period_years": 8.489627197115922
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 8.489627197115922,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.7158201683908872,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK13CC9U": {
+      "designation": "PK13CC9U",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 276.2093948302275,
+        "dec_deg": -63.203218862531884
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 2.903897045368168,
+        "e": 0.715836,
+        "i": 11.826,
+        "q": 0.825183,
+        "period_years": 4.948480033343349
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 4.948480033343349,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.417241149523048,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": true
+        }
+      }
+    },
+    "PK13W010": {
+      "designation": "PK13W010",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 285.7508677823632,
+        "dec_deg": -75.08495743337512
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 3.4838957527341146,
+        "e": 0.593927,
+        "i": 4.7002,
+        "q": 1.414716,
+        "period_years": 6.502760019990284
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 6.502760019990284,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.5482934249570223,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK13Y46G": {
+      "designation": "PK13Y46G",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 60.38847472858801,
+        "dec_deg": 32.052900301515166
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 3.244254563485199,
+        "e": 0.479674,
+        "i": 7.145,
+        "q": 1.68807,
+        "period_years": 5.843491091691457
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 5.843491091691457,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.49270582560636234,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK14L020": {
+      "designation": "PK14L020",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 80.31363855093225,
+        "dec_deg": -53.59132279043023
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 6.314990892789067,
+        "e": 0.645885,
+        "i": 5.1885,
+        "q": 2.236233,
+        "period_years": 15.86934832660212
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 15.86934832660212,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.3380563513155246,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK15D060": {
+      "designation": "PK15D060",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 84.92298714774705,
+        "dec_deg": 28.183033336346398
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 7.116723195779159,
+        "e": 0.36316,
+        "i": 20.3487,
+        "q": 4.532214,
+        "period_years": 18.985415730106645
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 18.985415730106645,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.6007939064170864,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK15X030": {
+      "designation": "PK15X030",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 272.18751468444225,
+        "dec_deg": -49.18188426998743
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 4.995510133428984,
+        "e": 0.439627,
+        "i": 24.4209,
+        "q": 2.799349,
+        "period_years": 11.165283798461658
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 11.165283798461658,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.9414235917758565,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK16A030": {
+      "designation": "PK16A030",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 80.94125792568573,
+        "dec_deg": 6.110773142478976
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 7.86543098817817,
+        "e": 0.387489,
+        "i": 8.5256,
+        "q": 4.817663,
+        "period_years": 22.058896719894292
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 22.058896719894292,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.8599407015087936,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK17U030": {
+      "designation": "PK17U030",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 89.00130503676925,
+        "dec_deg": -26.76908677383794
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 4.918533711358209,
+        "e": 0.100941,
+        "i": 15.9258,
+        "q": 4.422052,
+        "period_years": 10.908209707497681
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 10.908209707497681,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 0.9197478674112717,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK18P040": {
+      "designation": "PK18P040",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 54.42623253593279,
+        "dec_deg": 75.33600952398092
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 6.697600702145061,
+        "e": 0.448547,
+        "i": 23.0679,
+        "q": 3.693412,
+        "period_years": 17.333205192702543
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 17.333205192702543,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.461484417597179,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "PK19A020": {
+      "designation": "PK19A020",
+      "coords": {
+        "house": "Epsilon",
+        "ra_deg": 66.18035890766265,
+        "dec_deg": -83.96297607629904
+      },
+      "orbital": {
+        "source": "CometEls",
+        "a": 5.710221237718249,
+        "e": 0.383333,
+        "i": 14.8773,
+        "q": 3.521305,
+        "period_years": 13.645184191080995
+      },
+      "neocp": null,
+      "resonances": {
+        "Earth": {
+          "ratio": 13.645184191080995,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        },
+        "Jupiter": {
+          "ratio": 1.1505214326375206,
+          "coorbital": false,
+          "7:5": false,
+          "3:7": false
+        }
+      }
+    },
+    "ST26B07": {
+      "designation": "ST26B07",
+      "coords": {
+        "house": "Axiom",
+        "ra_deg": 29.59890230444174,
+        "dec_deg": 77.50116762994864
+      },
+      "orbital": null,
+      "neocp": null,
+      "resonances": null
+    }
+  },
+  "inclination_candidates": [
+    "CJ99J020"
+  ],
+  "resonance_candidates": [
+    {
+      "designation": "PK09Y020",
+      "planet": "Jupiter",
+      "ratio": 1.4082673218188224
+    },
+    {
+      "designation": "PK10H030",
+      "planet": "Jupiter",
+      "ratio": 0.4457117984836448
+    },
+    {
+      "designation": "PK10U55H",
+      "planet": "Jupiter",
+      "ratio": 1.4442920931426295
+    },
+    {
+      "designation": "PK13CC9U",
+      "planet": "Jupiter",
+      "ratio": 0.417241149523048
+    }
+  ],
+  "coorbital_candidates": []
+}

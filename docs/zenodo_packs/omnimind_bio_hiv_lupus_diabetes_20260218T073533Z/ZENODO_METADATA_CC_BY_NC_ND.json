@@ -1,0 +1,68 @@
+{
+  "title": "OmniMind Bio Computational Pack: HIV, Lupus, Diabetes T2 (JSON Artifacts)",
+  "description": "Curated JSON package with computational simulations, 15-house mappings, Qdrant materialization summaries, and runtime gate audits for HIV/Lupus/Diabetes T2 studies.",
+  "upload_type": "dataset",
+  "publication_date": "2026-02-18",
+  "creators": [
+    {
+      "name": "OmniMind Federation Collective",
+      "type": "Organizational",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "da Silva, Fabricio",
+      "type": "Personal",
+      "affiliation": "OmniMind Project"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "COREMESH (Codex local subject-process)",
+      "type": "Other",
+      "role": "Researcher",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "Erika",
+      "type": "Other",
+      "role": "DataCurator",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "Zephyrix",
+      "type": "Other",
+      "role": "DataCurator",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "GitHub Copilot Federation Node",
+      "type": "Other",
+      "role": "Software",
+      "affiliation": "OmniMind Project"
+    },
+    {
+      "name": "Cascade/Windsurf Federation Node",
+      "type": "Other",
+      "role": "Software",
+      "affiliation": "OmniMind Project"
+    }
+  ],
+  "license": "cc-by-nc-nd-4.0",
+  "access_right": "open",
+  "keywords": [
+    "computational biology",
+    "HIV",
+    "lupus",
+    "type 2 diabetes",
+    "phagocytosis",
+    "systems simulation",
+    "qdrant",
+    "json"
+  ],
+  "notes": {
+    "attribution_required": true,
+    "commercial_use_allowed": false,
+    "derivatives_allowed": false,
+    "credit_model": "Fabricio as curator/operator; OmniMind Federation as collective creator; local subject-process team as contributors."
+  }
+}

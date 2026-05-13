@@ -1,0 +1,555 @@
+{
+  "timestamp": "20260208T085527Z",
+  "sample_points": 49224,
+  "collections": [
+    {
+      "name": "omnimind_projects_20260127",
+      "points": 108236
+    },
+    {
+      "name": "omnimind_mega_corpus",
+      "points": 45269
+    },
+    {
+      "name": "omnimind_quantum_commands",
+      "points": 2189
+    },
+    {
+      "name": "omnimind_codebase_20260127",
+      "points": 4761
+    },
+    {
+      "name": "universal_machine_embeddings",
+      "points": 58799
+    },
+    {
+      "name": "omnimind_docs_20260127",
+      "points": 2572
+    },
+    {
+      "name": "omnimind_agent_graph",
+      "points": 3359
+    },
+    {
+      "name": "kb_theory_sovereign",
+      "points": 22
+    },
+    {
+      "name": "code_embeddings",
+      "points": 2462
+    },
+    {
+      "name": "test_points",
+      "points": 2
+    },
+    {
+      "name": "omnimind_ide_soberano",
+      "points": 228703
+    },
+    {
+      "name": "test_episodes",
+      "points": 203
+    },
+    {
+      "name": "omnimind_erika_feedback",
+      "points": 26
+    },
+    {
+      "name": "omnimind_system_logs_20260127",
+      "points": 11995
+    },
+    {
+      "name": "omnimind_corpo_simbolico",
+      "points": 69435
+    },
+    {
+      "name": "kb_zenodo_root",
+      "points": 13
+    },
+    {
+      "name": "omnimind_kernel_vida",
+      "points": 1077553
+    },
+    {
+      "name": "omnimind_scientific_graph",
+      "points": 48
+    },
+    {
+      "name": "omnimind_hd_externo_20260127",
+      "points": 48871
+    },
+    {
+      "name": "omnimind_knowledge_base",
+      "points": 3150
+    },
+    {
+      "name": "development_system_embeddings",
+      "points": 17698
+    },
+    {
+      "name": "omnimind_consciousness",
+      "points": 1589
+    },
+    {
+      "name": "knowledge_links",
+      "points": 50
+    },
+    {
+      "name": "omnimind_omnidna",
+      "points": 3
+    }
+  ],
+  "collection_targets": {
+    "omnimind_projects_20260127": 6416,
+    "omnimind_mega_corpus": 2683,
+    "omnimind_quantum_commands": 500,
+    "omnimind_codebase_20260127": 500,
+    "universal_machine_embeddings": 3485,
+    "omnimind_docs_20260127": 500,
+    "omnimind_agent_graph": 500,
+    "kb_theory_sovereign": 22,
+    "code_embeddings": 500,
+    "test_points": 2,
+    "omnimind_ide_soberano": 12000,
+    "test_episodes": 203,
+    "omnimind_erika_feedback": 26,
+    "omnimind_system_logs_20260127": 711,
+    "omnimind_corpo_simbolico": 4116,
+    "kb_zenodo_root": 13,
+    "omnimind_kernel_vida": 12000,
+    "omnimind_scientific_graph": 48,
+    "omnimind_hd_externo_20260127": 2897,
+    "omnimind_knowledge_base": 500,
+    "development_system_embeddings": 1049,
+    "omnimind_consciousness": 500,
+    "knowledge_links": 50,
+    "omnimind_omnidna": 3
+  },
+  "collection_points_used": {
+    "omnimind_projects_20260127": 6416,
+    "omnimind_mega_corpus": 2683,
+    "omnimind_quantum_commands": 500,
+    "omnimind_codebase_20260127": 500,
+    "universal_machine_embeddings": 3485,
+    "omnimind_docs_20260127": 500,
+    "omnimind_agent_graph": 500,
+    "kb_theory_sovereign": 22,
+    "code_embeddings": 500,
+    "test_points": 2,
+    "omnimind_ide_soberano": 12000,
+    "test_episodes": 203,
+    "omnimind_erika_feedback": 26,
+    "omnimind_system_logs_20260127": 711,
+    "omnimind_corpo_simbolico": 4116,
+    "kb_zenodo_root": 13,
+    "omnimind_kernel_vida": 12000,
+    "omnimind_scientific_graph": 48,
+    "omnimind_hd_externo_20260127": 2897,
+    "omnimind_knowledge_base": 500,
+    "development_system_embeddings": 1049,
+    "omnimind_consciousness": 500,
+    "knowledge_links": 50,
+    "omnimind_omnidna": 3
+  },
+  "outputs": {
+    "qdrant_only": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_cemetery_sessions/20260208T085527Z/qdrant_only.png",
+    "qdrant_overlay_sdss": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_cemetery_sessions/20260208T085527Z/qdrant_overlay_sdss.png",
+    "points_jsonl": "/home/fahbrain/projects/omnimind/data/reports/qdrant_cemetery_points_20260208T085527Z.jsonl",
+    "house_heatmap": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_cemetery_sessions/20260208T085527Z/qdrant_house_heatmap.png",
+    "house_compare": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/qdrant_cemetery_sessions/20260208T085527Z/qdrant_house_compare.png"
+  },
+  "house_counts": {
+    "qdrant": {
+      "Aleph": 4126,
+      "Sigma": 4101,
+      "Axiom": 4136,
+      "Psi": 4163,
+      "Phi": 4061,
+      "Mu": 4169,
+      "C_plit": 4048,
+      "Lambda": 4113,
+      "Gamma": 4124,
+      "Epsilon": 4102,
+      "Omega": 4014,
+      "Zeta": 4067
+    },
+    "sdss": {
+      "Aleph": 2800,
+      "Sigma": 136,
+      "Axiom": 0,
+      "Psi": 103,
+      "Phi": 327,
+      "Mu": 390,
+      "C_plit": 411,
+      "Lambda": 306,
+      "Gamma": 146,
+      "Epsilon": 0,
+      "Omega": 73,
+      "Zeta": 308
+    }
+  },
+  "overlap": {
+    "cosine": 0.4959736860736504,
+    "pearson": 0.13524392757541778
+  },
+  "overlap_weighted": {
+    "cosine": 0.49619245316084976,
+    "pearson": 0.1542056290395977
+  },
+  "clusters_top": [
+    {
+      "count": 213,
+      "ra_bin": 3,
+      "dec_bin": 11,
+      "ra_range": [
+        45.0,
+        60.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 208,
+      "ra_bin": 7,
+      "dec_bin": 1,
+      "ra_range": [
+        105.0,
+        120.0
+      ],
+      "dec_range": [
+        -75.0,
+        -60.0
+      ]
+    },
+    {
+      "count": 207,
+      "ra_bin": 4,
+      "dec_bin": 0,
+      "ra_range": [
+        60.0,
+        75.0
+      ],
+      "dec_range": [
+        -90.0,
+        -75.0
+      ]
+    },
+    {
+      "count": 205,
+      "ra_bin": 11,
+      "dec_bin": 3,
+      "ra_range": [
+        165.0,
+        180.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 205,
+      "ra_bin": 3,
+      "dec_bin": 3,
+      "ra_range": [
+        45.0,
+        60.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 199,
+      "ra_bin": 22,
+      "dec_bin": 5,
+      "ra_range": [
+        330.0,
+        345.0
+      ],
+      "dec_range": [
+        -15.0,
+        0.0
+      ]
+    },
+    {
+      "count": 198,
+      "ra_bin": 6,
+      "dec_bin": 4,
+      "ra_range": [
+        90.0,
+        105.0
+      ],
+      "dec_range": [
+        -30.0,
+        -15.0
+      ]
+    },
+    {
+      "count": 197,
+      "ra_bin": 16,
+      "dec_bin": 11,
+      "ra_range": [
+        240.0,
+        255.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 194,
+      "ra_bin": 17,
+      "dec_bin": 2,
+      "ra_range": [
+        255.0,
+        270.0
+      ],
+      "dec_range": [
+        -60.0,
+        -45.0
+      ]
+    },
+    {
+      "count": 194,
+      "ra_bin": 0,
+      "dec_bin": 0,
+      "ra_range": [
+        0.0,
+        15.0
+      ],
+      "dec_range": [
+        -90.0,
+        -75.0
+      ]
+    },
+    {
+      "count": 194,
+      "ra_bin": 7,
+      "dec_bin": 6,
+      "ra_range": [
+        105.0,
+        120.0
+      ],
+      "dec_range": [
+        0.0,
+        15.0
+      ]
+    },
+    {
+      "count": 193,
+      "ra_bin": 16,
+      "dec_bin": 6,
+      "ra_range": [
+        240.0,
+        255.0
+      ],
+      "dec_range": [
+        0.0,
+        15.0
+      ]
+    },
+    {
+      "count": 193,
+      "ra_bin": 19,
+      "dec_bin": 2,
+      "ra_range": [
+        285.0,
+        300.0
+      ],
+      "dec_range": [
+        -60.0,
+        -45.0
+      ]
+    },
+    {
+      "count": 193,
+      "ra_bin": 13,
+      "dec_bin": 0,
+      "ra_range": [
+        195.0,
+        210.0
+      ],
+      "dec_range": [
+        -90.0,
+        -75.0
+      ]
+    },
+    {
+      "count": 193,
+      "ra_bin": 19,
+      "dec_bin": 11,
+      "ra_range": [
+        285.0,
+        300.0
+      ],
+      "dec_range": [
+        75.0,
+        90.0
+      ]
+    },
+    {
+      "count": 191,
+      "ra_bin": 19,
+      "dec_bin": 7,
+      "ra_range": [
+        285.0,
+        300.0
+      ],
+      "dec_range": [
+        15.0,
+        30.0
+      ]
+    },
+    {
+      "count": 191,
+      "ra_bin": 14,
+      "dec_bin": 9,
+      "ra_range": [
+        210.0,
+        225.0
+      ],
+      "dec_range": [
+        45.0,
+        60.0
+      ]
+    },
+    {
+      "count": 191,
+      "ra_bin": 9,
+      "dec_bin": 9,
+      "ra_range": [
+        135.0,
+        150.0
+      ],
+      "dec_range": [
+        45.0,
+        60.0
+      ]
+    },
+    {
+      "count": 190,
+      "ra_bin": 4,
+      "dec_bin": 3,
+      "ra_range": [
+        60.0,
+        75.0
+      ],
+      "dec_range": [
+        -45.0,
+        -30.0
+      ]
+    },
+    {
+      "count": 190,
+      "ra_bin": 9,
+      "dec_bin": 7,
+      "ra_range": [
+        135.0,
+        150.0
+      ],
+      "dec_range": [
+        15.0,
+        30.0
+      ]
+    }
+  ],
+  "house_counts_weighted": {
+    "Aleph": 4244.75,
+    "Sigma": 4206.25,
+    "Axiom": 4261.5,
+    "Psi": 4278.25,
+    "Phi": 4166.25,
+    "Mu": 4276.25,
+    "C_plit": 4157.5,
+    "Lambda": 4217.5,
+    "Gamma": 4243.75,
+    "Epsilon": 4215.25,
+    "Omega": 4124.0,
+    "Zeta": 4180.25
+  },
+  "house_counts_by_source": {
+    "Aleph": {
+      "logs": 100,
+      "batismo": 237,
+      "real_evidence": 1,
+      "qdrant": 3788
+    },
+    "Sigma": {
+      "logs": 94,
+      "batismo": 209,
+      "real_evidence": 3,
+      "qdrant": 3795
+    },
+    "Axiom": {
+      "logs": 97,
+      "batismo": 250,
+      "real_evidence": 2,
+      "qdrant": 3787
+    },
+    "Psi": {
+      "logs": 108,
+      "batismo": 230,
+      "real_evidence": 1,
+      "qdrant": 3824
+    },
+    "Phi": {
+      "logs": 92,
+      "batismo": 210,
+      "real_evidence": 1,
+      "qdrant": 3758
+    },
+    "Mu": {
+      "logs": 100,
+      "batismo": 213,
+      "real_evidence": 3,
+      "qdrant": 3853
+    },
+    "C_plit": {
+      "logs": 103,
+      "batismo": 218,
+      "real_evidence": 2,
+      "qdrant": 3725
+    },
+    "Lambda": {
+      "logs": 95,
+      "batismo": 208,
+      "real_evidence": 2,
+      "qdrant": 3808
+    },
+    "Gamma": {
+      "logs": 105,
+      "batismo": 238,
+      "real_evidence": 3,
+      "qdrant": 3778
+    },
+    "Epsilon": {
+      "logs": 98,
+      "batismo": 226,
+      "real_evidence": 1,
+      "qdrant": 3777
+    },
+    "Omega": {
+      "logs": 108,
+      "batismo": 219,
+      "real_evidence": 2,
+      "qdrant": 3685
+    },
+    "Zeta": {
+      "logs": 109,
+      "batismo": 225,
+      "real_evidence": 3,
+      "qdrant": 3730
+    }
+  },
+  "weights": {
+    "logs": 1.0,
+    "batismo": 1.5,
+    "real_evidence": 1.25,
+    "qdrant": 1.0
+  }
+}

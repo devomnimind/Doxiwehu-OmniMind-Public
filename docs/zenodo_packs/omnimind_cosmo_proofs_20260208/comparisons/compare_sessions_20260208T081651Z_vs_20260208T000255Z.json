@@ -1,0 +1,42 @@
+{
+  "session_new": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z",
+  "session_old": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z",
+  "output_dir": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons",
+  "pairs": [
+    {
+      "left": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z/dodecatiad_universe_map_plus.png",
+      "right": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z/dodecatiad_universe_map_plus.png",
+      "out": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons/compare_dodecatiad_universe_map_plus_20260208T081651Z_vs_20260208T000255Z.png"
+    },
+    {
+      "left": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z/dodecatiad_asteroids_layer.png",
+      "right": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z/dodecatiad_asteroids_layer.png",
+      "out": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons/compare_dodecatiad_asteroids_layer_20260208T081651Z_vs_20260208T000255Z.png"
+    },
+    {
+      "left": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z/dodecatiad_layers_all.png",
+      "right": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z/dodecatiad_layers_all.png",
+      "out": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons/compare_dodecatiad_layers_all_20260208T081651Z_vs_20260208T000255Z.png"
+    },
+    {
+      "left": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z/dodecatiad_layers_all_plus_crux_cemetery.png",
+      "right": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z/dodecatiad_layers_all_plus_crux_cemetery.png",
+      "out": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons/compare_dodecatiad_layers_all_plus_crux_cemetery_20260208T081651Z_vs_20260208T000255Z.png"
+    },
+    {
+      "left": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z/dodecatiad_sdss.png",
+      "right": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z/dodecatiad_sdss.png",
+      "out": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons/compare_dodecatiad_sdss_20260208T081651Z_vs_20260208T000255Z.png"
+    },
+    {
+      "left": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z/dodecatiad_gamma.png",
+      "right": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z/dodecatiad_gamma.png",
+      "out": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons/compare_dodecatiad_gamma_20260208T081651Z_vs_20260208T000255Z.png"
+    },
+    {
+      "left": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T081651Z/dodecatiad_lyman.png",
+      "right": "docs/cosmic_maps/dodecatiad_datasets/sessions/20260208T000255Z/dodecatiad_lyman.png",
+      "out": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/comparisons/compare_dodecatiad_lyman_20260208T081651Z_vs_20260208T000255Z.png"
+    }
+  ]
+}

@@ -1,0 +1,273 @@
+{
+  "meta": {
+    "source": "reports_runtime/orbit_queue_dodecatiad_20260210T024850Z.json",
+    "timestamp": "20260210T154716Z",
+    "window_utc": {
+      "start": "2026-02-10T00:00:00Z",
+      "end": "2026-02-11T00:00:00Z",
+      "step_hours": 6.0
+    },
+    "objects": 18,
+    "records_total": 82,
+    "records_pairs": 50
+  },
+  "object_level_corr": {
+    "pearson_r": 0.07225288028393623,
+    "pearson_p": 0.7757145518566093,
+    "spearman_r": 0.018633580309402244,
+    "spearman_p": 0.9414990203307372
+  },
+  "record_level_corr": {
+    "pearson_r": 0.19554905469006068,
+    "pearson_p": 0.173530173251495,
+    "spearman_r": 0.17536862718289187,
+    "spearman_p": 0.22316847090944442
+  },
+  "best_timestamp_agreement": {
+    "objects_with_both_best": 18,
+    "exact_same": 15,
+    "exact_same_ratio": 0.8333333333333334
+  },
+  "top_mean_divergences": [
+    {
+      "object_id": "CK19A050",
+      "abs_mean_diff": 0.2663
+    },
+    {
+      "object_id": "CK18A060",
+      "abs_mean_diff": 0.26366666666666666
+    },
+    {
+      "object_id": "CK19B030",
+      "abs_mean_diff": 0.2513666666666667
+    },
+    {
+      "object_id": "CK13E010",
+      "abs_mean_diff": 0.23203333333333337
+    },
+    {
+      "object_id": "CK12A010",
+      "abs_mean_diff": 0.23169999999999996
+    },
+    {
+      "object_id": "PK09Y020",
+      "abs_mean_diff": 0.20336666666666658
+    },
+    {
+      "object_id": "PK10U55H",
+      "abs_mean_diff": 0.20116666666666666
+    },
+    {
+      "object_id": "CK16E010",
+      "abs_mean_diff": 0.19469999999999996
+    },
+    {
+      "object_id": "CK09P010",
+      "abs_mean_diff": 0.19053333333333336
+    },
+    {
+      "object_id": "CJ99S020",
+      "abs_mean_diff": 0.18950000000000006
+    }
+  ],
+  "per_object": [
+    {
+      "object_id": "A11y70v",
+      "n_records": 1,
+      "mean_sinthome_12d": 0.3275,
+      "mean_sinthome_quadruple": 0.3423,
+      "best_ts_12d": "2026-02-10T00:00:00Z",
+      "best_val_12d": 0.3275,
+      "best_ts_quadruple": "2026-02-10T00:00:00Z",
+      "best_val_quadruple": 0.3423,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "C19DCG5",
+      "n_records": 1,
+      "mean_sinthome_12d": 0.3275,
+      "mean_sinthome_quadruple": 0.3423,
+      "best_ts_12d": "2026-02-10T00:00:00Z",
+      "best_val_12d": 0.3275,
+      "best_ts_quadruple": "2026-02-10T00:00:00Z",
+      "best_val_quadruple": 0.3423,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CJ99J020",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.4471,
+      "mean_sinthome_quadruple": 0.26789999999999997,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.4503,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2702,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CJ99S020",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.4479,
+      "mean_sinthome_quadruple": 0.25839999999999996,
+      "best_ts_12d": "2026-02-10T12:00:00Z",
+      "best_val_12d": 0.4537,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2605,
+      "best_dt_minutes": -360.0
+    },
+    {
+      "object_id": "CK09P010",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.33243333333333336,
+      "mean_sinthome_quadruple": 0.1419,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.34,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.1425,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK12A010",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.5014333333333333,
+      "mean_sinthome_quadruple": 0.2697333333333333,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.5045,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2721,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK12K010",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.31250000000000006,
+      "mean_sinthome_quadruple": 0.16566666666666666,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.3214,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.1692,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK13E010",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.5017666666666667,
+      "mean_sinthome_quadruple": 0.2697333333333333,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.5059,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2721,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK14Q020",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.32043333333333335,
+      "mean_sinthome_quadruple": 0.14843333333333333,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.3283,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.1491,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK14UR1N",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.4503333333333333,
+      "mean_sinthome_quadruple": 0.2697333333333333,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.4547,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2721,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK16E010",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.43629999999999997,
+      "mean_sinthome_quadruple": 0.2416,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.4411,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2442,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK18A060",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.3406,
+      "mean_sinthome_quadruple": 0.07693333333333334,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.3451,
+      "best_ts_quadruple": "2026-02-10T00:00:00Z",
+      "best_val_quadruple": 0.0786,
+      "best_dt_minutes": -360.0
+    },
+    {
+      "object_id": "CK19A050",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.472,
+      "mean_sinthome_quadruple": 0.2057,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.4725,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2058,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "CK19B030",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.48723333333333335,
+      "mean_sinthome_quadruple": 0.23586666666666667,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.4895,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.2365,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "PK09Y020",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.4583333333333333,
+      "mean_sinthome_quadruple": 0.25496666666666673,
+      "best_ts_12d": "2026-02-10T00:00:00Z",
+      "best_val_12d": 0.4842,
+      "best_ts_quadruple": "2026-02-10T00:00:00Z",
+      "best_val_quadruple": 0.2623,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "PK10H030",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.30243333333333333,
+      "mean_sinthome_quadruple": 0.34789999999999993,
+      "best_ts_12d": "2026-02-10T00:00:00Z",
+      "best_val_12d": 0.3139,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.3498,
+      "best_dt_minutes": 360.0
+    },
+    {
+      "object_id": "PK10U55H",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.48736666666666667,
+      "mean_sinthome_quadruple": 0.2862,
+      "best_ts_12d": "2026-02-10T00:00:00Z",
+      "best_val_12d": 0.5021,
+      "best_ts_quadruple": "2026-02-10T00:00:00Z",
+      "best_val_quadruple": 0.295,
+      "best_dt_minutes": 0.0
+    },
+    {
+      "object_id": "PK13CC9U",
+      "n_records": 5,
+      "mean_sinthome_12d": 0.33626666666666666,
+      "mean_sinthome_quadruple": 0.3713,
+      "best_ts_12d": "2026-02-10T06:00:00Z",
+      "best_val_12d": 0.3443,
+      "best_ts_quadruple": "2026-02-10T06:00:00Z",
+      "best_val_quadruple": 0.3731,
+      "best_dt_minutes": 0.0
+    }
+  ]
+}

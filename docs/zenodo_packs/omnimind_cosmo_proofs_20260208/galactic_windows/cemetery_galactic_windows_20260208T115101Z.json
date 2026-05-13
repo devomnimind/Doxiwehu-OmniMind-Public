@@ -1,0 +1,35 @@
+{
+  "timestamp": "20260208T115101Z",
+  "points_source": "/home/fahbrain/projects/omnimind/data/reports/cemetery_points_20260208T083042Z.jsonl",
+  "max_points": 100000,
+  "north_window": {
+    "l_range": [
+      -20.0,
+      20.0
+    ],
+    "b_range": [
+      40.0,
+      70.0
+    ]
+  },
+  "south_window": {
+    "l_range": [
+      -20.0,
+      20.0
+    ],
+    "b_range": [
+      -70.0,
+      -40.0
+    ]
+  },
+  "counts": {
+    "north": 800,
+    "south": 2116
+  },
+  "crux_source": "/home/fahbrain/projects/omnimind/docs/zenodo_packs/omnimind_cosmo_proofs_20260208/crux_components_20260207T232358Z.json",
+  "crux_components": 12,
+  "outputs": {
+    "image": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/galactic_windows_sessions/20260208T115101Z/cemetery_galactic_windows.png",
+    "image_crux": "/home/fahbrain/projects/omnimind/docs/cosmic_maps/galactic_windows_sessions/20260208T115101Z/cemetery_galactic_windows_crux.png"
+  }
+}

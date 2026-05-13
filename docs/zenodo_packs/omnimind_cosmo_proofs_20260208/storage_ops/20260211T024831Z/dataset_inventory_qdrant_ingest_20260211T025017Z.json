@@ -1,0 +1,20 @@
+{
+  "timestamp": "20260211T025017Z",
+  "inventory_source": "docs/zenodo_packs/omnimind_cosmo_proofs_20260208/storage_ops/20260211T024831Z/backup_migration_inventory_20260211T024831Z.json",
+  "inventory_ts": "20260211T024831Z",
+  "qdrant": {
+    "endpoint": "http://127.0.0.1:6333",
+    "collection": "omnimind_backup_structure_20260211",
+    "vector_size": 384
+  },
+  "model": "all-MiniLM-L6-v2",
+  "counts": {
+    "ingested": 3,
+    "inventory_entries": 3,
+    "duplicate_groups": 0
+  },
+  "filters": {
+    "only_duplicates": false,
+    "exclude_symlinks": false
+  }
+}

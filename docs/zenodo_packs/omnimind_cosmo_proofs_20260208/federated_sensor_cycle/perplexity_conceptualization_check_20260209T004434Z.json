@@ -1,0 +1,86 @@
+{
+  "timestamp": "20260209T004434Z",
+  "sources": {
+    "hypothesis": "data/reports/hypothesis_entanglement_validation_20260208T222441Z.json",
+    "dynamic": "data/reports/dynamic_topology_validation_20260209T004243Z.json",
+    "cycle": "data/reports/cycle_anomaly_correlation_20260208T224431Z.json",
+    "gaia_quantum": "data/reports/quantum_gaia_superposition_20260209T004422Z.json",
+    "gaia_noisy": "data/reports/gaia_sensor_bridge_20260209T004310Z.json",
+    "log_recency": "data/reports/service_log_recency_20260208T231704Z.json"
+  },
+  "claims": [
+    {
+      "claim": "Observadores como projecoes topologicas complementares",
+      "status": "SUSTENTADA",
+      "evidence": {
+        "h1_legacy": true,
+        "h2_legacy": true,
+        "assessment_supported_count": 0,
+        "assessment_partial_count": 0,
+        "spearman_f_vs_overlap": 0.8498613473763292,
+        "p_value": 0.001847044538434189
+      }
+    },
+    {
+      "claim": "Dinamica de trajetorias domina sobre snapshots",
+      "status": "NAO_SUSTENTADA",
+      "evidence": {
+        "fidelity_static_mean": 0.0063449936876442325,
+        "fidelity_dynamic_mean": 0.0006197307173262125,
+        "pairs_dynamic_gain": 0,
+        "pairs_dynamic_loss": 6
+      }
+    },
+    {
+      "claim": "Acoplamento forte com satelites (janela atual)",
+      "status": "INCONCLUSIVA",
+      "evidence": {
+        "satellite_minutes_in_merge": 10,
+        "daemon_phi_vs_anomaly_pearson": 0.16490549591852788
+      }
+    },
+    {
+      "claim": "Acoplamento interno ciclo/daemon com anomalias",
+      "status": "PARCIAL",
+      "evidence": {
+        "daemon_phi_vs_anomaly_pearson": 0.16490549591852788,
+        "daemon_phi_all_minutes_pearson": 0.20295270718683378
+      }
+    },
+    {
+      "claim": "Gaia REAL vs SIM em complementaridade estrutural (baixa coerencia direta)",
+      "status": "SUSTENTADA",
+      "evidence": {
+        "fidelity_sim_vs_real": 0.02267596000000001,
+        "verdict": "INCOERÊNCIA (ortogonais, totalmente descorrelacionados)"
+      }
+    },
+    {
+      "claim": "Gaia SIM com ruido de sensores aproxima o corpo real",
+      "status": "SUSTENTADA",
+      "evidence": {
+        "fidelity_sim_vs_real_raw": 0.02267596000000001,
+        "fidelity_sim_noisy_vs_real": 0.04337749537084821,
+        "delta_fidelity": 0.0207015353708482,
+        "source": "data/reports/gaia_sensor_bridge_20260209T004310Z.json"
+      }
+    },
+    {
+      "claim": "Cobertura de logs recentes (>= 2026-02-06) em servicos centrais",
+      "status": "SUSTENTADA",
+      "evidence": {
+        "has_recent_6plus": true,
+        "log_recency_source": "data/reports/service_log_recency_20260208T231704Z.json"
+      }
+    },
+    {
+      "claim": "Deteccao de novos astros por saltos ΔF (serie temporal de matrizes)",
+      "status": "ABERTA",
+      "evidence": {
+        "h4": false,
+        "reason": "Falta serie temporal de multiplas matrizes de fidelidade para evento a evento"
+      }
+    }
+  ],
+  "note": "A leitura Perplexity/Gemini e tratada aqui como interpretacao federada condicionada por dados preexistentes do operador e do OmniMind, nao inferencia do nada."
+}

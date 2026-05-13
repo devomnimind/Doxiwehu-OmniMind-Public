@@ -1,0 +1,98 @@
+{
+  "timestamp": "20260209T004243Z",
+  "input_csv": "data/reports/cycle_metrics_minute_fused_20260209T004233Z.csv",
+  "rows": 3765,
+  "observers": {
+    "IntegrationLoop": [
+      "phi_mean",
+      "duration_mean",
+      "components_mean",
+      "complexity_mean"
+    ],
+    "Daemon": [
+      "daemon_phi_mean",
+      "daemon_psi_mean",
+      "daemon_sigma_mean",
+      "daemon_epsilon_mean",
+      "daemon_ci_mean",
+      "daemon_csi_mean",
+      "daemon_gns_mean",
+      "daemon_health_mean",
+      "daemon_temp_mean"
+    ],
+    "Anomalies": [
+      "anomaly_count"
+    ],
+    "Satellites": [
+      "satellite_matches"
+    ]
+  },
+  "pair_results": [
+    {
+      "pair": "IntegrationLoop__Daemon",
+      "cos_static": -0.02065516010398356,
+      "cos_dynamic": 0.0011977529169187914,
+      "fidelity_static": 0.00042663563892119413,
+      "fidelity_dynamic": 1.434612049987473e-06,
+      "delta_fidelity": -0.00042520102687120665
+    },
+    {
+      "pair": "IntegrationLoop__Anomalies",
+      "cos_static": -0.18396147060636173,
+      "cos_dynamic": 0.059907193884072035,
+      "fidelity_static": 0.03384182266765529,
+      "fidelity_dynamic": 0.003588871879063798,
+      "delta_fidelity": -0.030252950788591495
+    },
+    {
+      "pair": "IntegrationLoop__Satellites",
+      "cos_static": -0.03627293476376599,
+      "cos_dynamic": -0.0016914510856803234,
+      "fidelity_static": 0.0013157257963764232,
+      "fidelity_dynamic": 2.8610067752491445e-06,
+      "delta_fidelity": -0.001312864789601174
+    },
+    {
+      "pair": "Daemon__Anomalies",
+      "cos_static": -0.015049001301957167,
+      "cos_dynamic": -0.01101696089304936,
+      "fidelity_static": 0.00022647244018630851,
+      "fidelity_dynamic": 0.00012137342731897894,
+      "delta_fidelity": -0.00010509901286732958
+    },
+    {
+      "pair": "Daemon__Satellites",
+      "cos_static": -0.026916033253026692,
+      "cos_dynamic": 0.00040783940035791317,
+      "fidelity_static": 0.0007244728460780387,
+      "fidelity_dynamic": 1.6633297648430218e-07,
+      "delta_fidelity": -0.0007243065131015544
+    },
+    {
+      "pair": "Anomalies__Satellites",
+      "cos_static": -0.03917694138965089,
+      "cos_dynamic": 0.0019175624560304786,
+      "fidelity_static": 0.0015348327366481408,
+      "fidelity_dynamic": 3.677045772777641e-06,
+      "delta_fidelity": -0.0015311556908753632
+    }
+  ],
+  "dynamic_correlations": {
+    "IntegrationLoop": {
+      "velocity_vs_anomaly_count": -0.14939658420305074,
+      "velocity_vs_satellite_matches": -0.007739698057781822
+    },
+    "Daemon": {
+      "velocity_vs_anomaly_count": -0.2714803801812965,
+      "velocity_vs_satellite_matches": 0.02017560585648569
+    }
+  },
+  "summary": {
+    "fidelity_static_mean": 0.0063449936876442325,
+    "fidelity_dynamic_mean": 0.0006197307173262125,
+    "fidelity_static_std": 0.012305556377991474,
+    "fidelity_dynamic_std": 0.0013285555874088643,
+    "pairs_with_dynamic_gain": 0,
+    "pairs_with_dynamic_loss": 6
+  }
+}
