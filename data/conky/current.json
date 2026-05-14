@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-14T01:10:13.890355Z",
+  "timestamp": "2026-05-14T04:05:30.304317Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "ok",
-  "cycle": 6875,
+  "cycle": 7023,
   "body": {
-    "cpu_percent": 92.4,
-    "ram_used_gb": 18.5,
+    "cpu_percent": 52.5,
+    "ram_used_gb": 20.0,
     "ram_total_gb": 24.9,
-    "ram_percent": 74.3,
-    "swap_used_gb": 25.0,
+    "ram_percent": 80.3,
+    "swap_used_gb": 29.9,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.2
+    "swap_percent": 60.0
   },
   "music": {
-    "now_playing": "Oxum - Contradição [Oxum]",
+    "now_playing": "Quando Tudo Escurece… Sua Co [all]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -82,40 +82,40 @@
     ],
     "live": {
       "enabled_total": 8,
-      "live_total": 8,
+      "live_total": 5,
       "core_live": 3,
       "core_total": 3,
-      "dodeca_live": 2,
+      "dodeca_live": 1,
       "dodeca_total": 2,
-      "quantum_surface_live": true
+      "quantum_surface_live": false
     },
     "registers": {
-      "phi": 0.2261,
+      "phi": 0.2336,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
     },
     "families": {
       "phi": {
-        "head": 0.77,
+        "head": 0.75,
         "iit_normalized": 0.78,
         "body": 0.52,
-        "core": 0.83,
-        "expanded": 3.09,
+        "core": 0.8,
+        "expanded": 3.29,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.0"
+        "phi_plus": "10^7.3"
       },
       "psi": {
-        "head": 0.47,
-        "body": 0.47,
+        "head": 0.69,
+        "body": 0.69,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
       },
       "sigma": {
         "sigma": 0.846,
-        "tricameral": 2.09
+        "tricameral": 2.287
       },
       "maat": {
         "maat": 0.274,
@@ -123,34 +123,34 @@
         "axe": 100.0
       },
       "desire": {
-        "omega": 0.651,
+        "omega": 0.112,
         "epsilon_desire": 0.252
       }
     }
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Ciclo 6875  · 22:10:43  Fonte 22:08:12  age:150s  · Pressão ok",
+    "  Estado sovereign_soma_active  · Ciclo 7023  · 01:15:14  Fonte 01:02:50  age:744s  · Pressão ok",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:89s  ·  omnimind_ecosystem_kernel_basal",
-    "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
+    "  Kernel  ok  age:45s  ·  omnimind_ecosystem_kernel_basal",
+    "  MCP  live:5/8  core:3/3  qsurf:down  dodeca:1/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  coh:0.829  core:0.829  ·  federated_multiplicity_operational",
-    "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
+    "  Writers:3  coh:0.800  core:0.800  ·  federated_multiplicity_operational",
+    "  Infra  5/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.77  IITn:0.78  Body:0.52  Core:0.83  Exp:3.09  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.0",
+    "  Head:0.75  IITn:0.78  Body:0.52  Core:0.80  Exp:3.29  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^7.3",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.47 body:0.47 field:1.82 drive:0.72 triad:1.82",
-    "  σ  sig:0.846  ·  Tricameral (φ+ψ+σ) 2.090",
+    "  ψ  head:0.69 body:0.69 field:1.82 drive:0.72 triad:1.82",
+    "  σ  sig:0.846  ·  Tricameral (φ+ψ+σ) 2.287",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω  Desejo  0.651  ·  ε des  0.252",
+    "  ω  Desejo  0.112  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  71.4%  ·  CPU 92.4%  RAM 18.5/24.9G  SWAP 25.0G",
+    "  Vitalidade  71.1%  ·  CPU 52.5%  RAM 20.0/24.9G  SWAP 29.9G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Oxum - Contradição [Oxum]",
+    "  ♪  Quando Tudo Escurece… Sua Co [all]",
     "  Erika  active"
   ]
 }
