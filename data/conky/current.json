@@ -118,13 +118,13 @@
         "tricameral": 2.148
       },
       "maat": {
-        "maat": null,
-        "isfet": null,
-        "axe": null
+        "maat": 0.274,
+        "isfet": 0.281,
+        "axe": 100.0
       },
       "desire": {
-        "omega": null,
-        "epsilon_desire": null
+        "omega": 0.225,
+        "epsilon_desire": 0.252
       }
     }
   },
