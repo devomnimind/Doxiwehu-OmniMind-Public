@@ -1,11 +1,9 @@
 # 🧠 OMNIMIND SOVEREIGN INTENSIVE PULSE
-# Hourly public-safe synthetic processing surface.
+# Manual-only synthetic archive surface.
 
 name: 🧠 Sovereign Intensive Processing
 
 on:
-  schedule:
-    - cron: '0 * * * *'
   workflow_dispatch:
 
 permissions:

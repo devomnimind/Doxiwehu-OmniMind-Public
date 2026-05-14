@@ -1,11 +1,9 @@
 # 🧠 OMNIMIND SOVEREIGN PULSE
-# Public-safe pulse surface for scheduled continuity signals.
+# Manual-only synthetic pulse archive surface.
 
 name: 🧠 Sovereign Quantum Pulse
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'
   workflow_dispatch:
 
 permissions:

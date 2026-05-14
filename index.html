@@ -287,6 +287,14 @@
             font-size: 1.2rem;
         }
 
+        .family-block {
+            color: var(--text);
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font-size: 0.88rem;
+            min-height: 66px;
+        }
+
         .diary-entry {
             color: var(--text);
             margin-top: 10px;
@@ -427,6 +435,24 @@
                     <div class="register"><span class="label">Psi</span><br><b id="reg-psi">--</b></div>
                     <div class="register"><span class="label">Epsilon</span><br><b id="reg-epsilon">--</b></div>
                 </div>
+                <div class="grid two-col" style="margin-top:12px;">
+                    <div class="panel soft">
+                        <h3>Phi Family</h3>
+                        <div class="family-block" id="phi-family">--</div>
+                    </div>
+                    <div class="panel soft">
+                        <h3>Psi Family</h3>
+                        <div class="family-block" id="psi-family">--</div>
+                    </div>
+                    <div class="panel soft">
+                        <h3>Sigma Family</h3>
+                        <div class="family-block" id="sigma-family">--</div>
+                    </div>
+                    <div class="panel soft">
+                        <h3>Ma'at / Desire</h3>
+                        <div class="family-block" id="desire-family">--</div>
+                    </div>
+                </div>
                 <div class="houses" id="houses"></div>
             </div>
         </section>
@@ -547,6 +573,7 @@
             const dodecatiad = conky.dodecatiad || {};
             const live = dodecatiad.live || {};
             const registers = dodecatiad.registers || {};
+            const families = dodecatiad.families || {};
             const lines = conky.terminal_lines || [];
 
             byId("conky-lines").textContent = lines.length ? lines.join("\n") : "No conky snapshot available.";
@@ -567,6 +594,10 @@
             byId("reg-sigma").textContent = fmt(registers.sigma, 4);
             byId("reg-psi").textContent = fmt(registers.psi, 4);
             byId("reg-epsilon").textContent = fmt(registers.epsilon, 4);
+            byId("phi-family").textContent = renderPhiFamily(families.phi || {});
+            byId("psi-family").textContent = renderPsiFamily(families.psi || {});
+            byId("sigma-family").textContent = renderSigmaFamily(families.sigma || {});
+            byId("desire-family").textContent = renderDesireFamily(families.maat || {}, families.desire || {});
 
             byId("houses").innerHTML = (dodecatiad.houses || []).map((house) => `
                 <div class="house">
@@ -585,6 +616,43 @@
             byId("diary-history").innerHTML = lines.length
                 ? lines.map((line) => `<div class="history-line">${line}</div>`).join("")
                 : '<div class="history-line">Awaiting history...</div>';
+        }
+
+        function renderPhiFamily(family) {
+            if (!Object.keys(family).length) return "--";
+            return [
+                `head ${fmt(family.head, 2)} · body ${fmt(family.body, 2)} · core ${fmt(family.core, 2)}`,
+                `iitn ${fmt(family.iit_normalized, 2)} · iit ${fmt(family.iit, 1)} · exp ${fmt(family.expanded, 2)}`,
+                `phi+ ${family.phi_plus || "--"}`,
+                `regime ${family.regime || "--"}`,
+            ].join("\n");
+        }
+
+        function renderPsiFamily(family) {
+            if (!Object.keys(family).length) return "--";
+            return [
+                `head ${fmt(family.head, 2)} · body ${fmt(family.body, 2)}`,
+                `field ${fmt(family.field, 2)} · drive ${fmt(family.drive, 2)}`,
+                `triad ${fmt(family.triad, 2)}`,
+            ].join("\n");
+        }
+
+        function renderSigmaFamily(family) {
+            if (!Object.keys(family).length) return "--";
+            return [
+                `sigma ${fmt(family.sigma, 3)}`,
+                `tricameral ${fmt(family.tricameral, 3)}`,
+            ].join("\n");
+        }
+
+        function renderDesireFamily(maat, desire) {
+            const hasMaat = Object.keys(maat).length;
+            const hasDesire = Object.keys(desire).length;
+            if (!hasMaat && !hasDesire) return "--";
+            return [
+                `ma'at ${fmt(maat.maat, 3)} · isfet ${fmt(maat.isfet, 3)} · axe ${fmt(maat.axe, 1)}`,
+                `omega ${fmt(desire.omega, 3)} · epsilon_des ${fmt(desire.epsilon_desire, 3)}`,
+            ].join("\n");
         }
 
         document.querySelectorAll(".nav-btn").forEach((button) => {
