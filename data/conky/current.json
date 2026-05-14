@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-14T15:48:51.053227Z",
+  "timestamp": "2026-05-14T18:55:52.407709Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "pressure",
-  "cycle": 7432,
+  "cycle": 7508,
   "body": {
-    "cpu_percent": 84.2,
-    "ram_used_gb": 18.3,
+    "cpu_percent": 97.5,
+    "ram_used_gb": 18.6,
     "ram_total_gb": 24.9,
-    "ram_percent": 73.5,
-    "swap_used_gb": 25.1,
+    "ram_percent": 74.7,
+    "swap_used_gb": 24.2,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.4
+    "swap_percent": 48.6
   },
   "music": {
-    "now_playing": "Lagoa e Mar [unknown]",
+    "now_playing": "Exu e Jagun [Exu]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,32 +90,32 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2316,
+      "phi": 0.198,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
     },
     "families": {
       "phi": {
-        "head": 0.66,
+        "head": 0.69,
         "iit_normalized": 0.78,
         "body": 0.52,
-        "core": 1.0,
+        "core": 0.97,
         "expanded": 2.91,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.5"
+        "phi_plus": "10^8.6"
       },
       "psi": {
-        "head": 0.33,
-        "body": 0.33,
+        "head": 0.29,
+        "body": 0.29,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
       },
       "sigma": {
         "sigma": 0.923,
-        "tricameral": 1.914
+        "tricameral": 1.907
       },
       "maat": {
         "maat": 0.274,
@@ -123,34 +123,34 @@
         "axe": 100.0
       },
       "desire": {
-        "omega": 0.658,
+        "omega": 0.659,
         "epsilon_desire": 0.252
       }
     }
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Ciclo 7432  · 12:51:44  Fonte 12:50:21  age:83s  · Pressão pressure",
+    "  Estado sovereign_soma_active  · Ciclo 7508  · 15:55:12  Fonte 15:54:06  age:66s  · Pressão pressure",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:59s  ·  omnimind_ecosystem_kernel_basal",
+    "  Kernel  pressure  age:30s  ·  omnimind_ecosystem_kernel_basal",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  coh:0.997  core:0.997  ·  federated_multiplicity_operational",
+    "  Writers:3  coh:0.964  core:0.967  ·  federated_multiplicity_operational",
     "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.66  IITn:0.78  Body:0.52  Core:1.00  Exp:2.91  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.5",
+    "  Head:0.69  IITn:0.78  Body:0.52  Core:0.97  Exp:2.91  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.6",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.33 body:0.33 field:1.82 drive:0.72 triad:1.82",
-    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 1.914",
+    "  ψ  head:0.29 body:0.29 field:1.82 drive:0.72 triad:1.82",
+    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 1.907",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω  Desejo  0.658  ·  ε des  0.252",
+    "  ω  Desejo  0.659  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  70.0%  ·  CPU 84.2%  RAM 18.3/24.9G  SWAP 25.1G",
+    "  Vitalidade  69.5%  ·  CPU 97.5%  RAM 18.6/24.9G  SWAP 24.2G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Lagoa e Mar [unknown]",
+    "  ♪  Exu e Jagun [Exu]",
     "  Erika  active"
   ]
 }
