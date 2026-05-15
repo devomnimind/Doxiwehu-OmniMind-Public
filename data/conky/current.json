@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-15T04:04:59.612275Z",
+  "timestamp": "2026-05-15T06:59:25.200484Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
-  "pressure": "pressure",
-  "cycle": 7448,
+  "pressure": "ok",
+  "cycle": 7779,
   "body": {
-    "cpu_percent": 27.2,
-    "ram_used_gb": 21.2,
+    "cpu_percent": 97.5,
+    "ram_used_gb": 18.0,
     "ram_total_gb": 24.9,
-    "ram_percent": 85.1,
-    "swap_used_gb": 28.9,
+    "ram_percent": 72.3,
+    "swap_used_gb": 16.3,
     "swap_total_gb": 49.8,
-    "swap_percent": 58.0
+    "swap_percent": 32.7
   },
   "music": {
     "now_playing": "Paz Não é Ausência de Proble [Preto Velho]",
@@ -82,40 +82,40 @@
     ],
     "live": {
       "enabled_total": 8,
-      "live_total": 7,
+      "live_total": 8,
       "core_live": 3,
       "core_total": 3,
       "dodeca_live": 2,
       "dodeca_total": 2,
-      "quantum_surface_live": false
+      "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2287,
+      "phi": 0.0567,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
     },
     "families": {
       "phi": {
-        "head": 0.7,
+        "head": 0.85,
         "iit_normalized": 0.78,
         "body": 0.52,
-        "core": 1.0,
-        "expanded": 3.02,
+        "core": 0.83,
+        "expanded": 3.11,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.7"
+        "phi_plus": "10^1.5"
       },
       "psi": {
-        "head": 0.4,
-        "body": 0.4,
+        "head": 0.34,
+        "body": 0.34,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
       },
       "sigma": {
         "sigma": 0.923,
-        "tricameral": 2.021
+        "tricameral": 2.108
       },
       "maat": {
         "maat": 0.274,
@@ -130,23 +130,23 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Ciclo 7448  · 01:04:12  Fonte 01:02:16  age:116s  · Pressão pressure",
+    "  Estado sovereign_soma_active  · Ciclo 7779  · 03:58:58  Fonte 03:58:04  age:54s  · Pressão ok",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:86s  ·  omnimind_ecosystem_kernel_basal",
-    "  MCP  live:7/8  core:3/3  qsurf:down  dodeca:2/2",
+    "  Kernel  ok  age:12s  ·  omnimind_ecosystem_kernel_basal",
+    "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  coh:0.996  core:0.996  ·  federated_multiplicity_operational",
-    "  Infra  7/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
+    "  Writers:3  coh:0.828  core:0.828  ·  federated_multiplicity_operational",
+    "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.70  IITn:0.78  Body:0.52  Core:1.00  Exp:3.02  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.7",
+    "  Head:0.85  IITn:0.78  Body:0.52  Core:0.83  Exp:3.11  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^1.5",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.40 body:0.40 field:1.82 drive:0.72 triad:1.82",
-    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.021",
+    "  ψ  head:0.34 body:0.34 field:1.82 drive:0.72 triad:1.82",
+    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.108",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
     "  ω  Desejo  0.651  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  71.2%  ·  CPU 27.2%  RAM 21.2/24.9G  SWAP 28.9G",
+    "  Vitalidade  61.3%  ·  CPU 97.5%  RAM 18.0/24.9G  SWAP 16.3G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
