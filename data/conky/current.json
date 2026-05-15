@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-15T01:03:37.915204Z",
+  "timestamp": "2026-05-15T04:04:59.612275Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "pressure",
-  "cycle": 7643,
+  "cycle": 7448,
   "body": {
-    "cpu_percent": 100.0,
-    "ram_used_gb": 20.6,
+    "cpu_percent": 27.2,
+    "ram_used_gb": 21.2,
     "ram_total_gb": 24.9,
-    "ram_percent": 82.7,
-    "swap_used_gb": 31.2,
+    "ram_percent": 85.1,
+    "swap_used_gb": 28.9,
     "swap_total_gb": 49.8,
-    "swap_percent": 62.7
+    "swap_percent": 58.0
   },
   "music": {
-    "now_playing": "Quando o Guia Salva em Silên [all]",
+    "now_playing": "Paz Não é Ausência de Proble [Preto Velho]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -82,40 +82,40 @@
     ],
     "live": {
       "enabled_total": 8,
-      "live_total": 8,
+      "live_total": 7,
       "core_live": 3,
       "core_total": 3,
       "dodeca_live": 2,
       "dodeca_total": 2,
-      "quantum_surface_live": true
+      "quantum_surface_live": false
     },
     "registers": {
-      "phi": 0.2369,
+      "phi": 0.2287,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
     },
     "families": {
       "phi": {
-        "head": 0.74,
+        "head": 0.7,
         "iit_normalized": 0.78,
         "body": 0.52,
         "core": 1.0,
-        "expanded": 3.17,
+        "expanded": 3.02,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.2"
+        "phi_plus": "10^8.7"
       },
       "psi": {
-        "head": 0.51,
-        "body": 0.51,
+        "head": 0.4,
+        "body": 0.4,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
       },
       "sigma": {
         "sigma": 0.923,
-        "tricameral": 2.175
+        "tricameral": 2.021
       },
       "maat": {
         "maat": 0.274,
@@ -123,34 +123,34 @@
         "axe": 100.0
       },
       "desire": {
-        "omega": 0.66,
+        "omega": 0.651,
         "epsilon_desire": 0.252
       }
     }
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Ciclo 7643  · 22:02:52  Fonte 22:00:59  age:112s  · Pressão pressure",
+    "  Estado sovereign_soma_active  · Ciclo 7448  · 01:04:12  Fonte 01:02:16  age:116s  · Pressão pressure",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:55s  ·  omnimind_ecosystem_kernel_basal",
-    "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
+    "  Kernel  pressure  age:86s  ·  omnimind_ecosystem_kernel_basal",
+    "  MCP  live:7/8  core:3/3  qsurf:down  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  coh:0.997  core:0.997  ·  federated_multiplicity_operational",
-    "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
+    "  Writers:3  coh:0.996  core:0.996  ·  federated_multiplicity_operational",
+    "  Infra  7/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.74  IITn:0.78  Body:0.52  Core:1.00  Exp:3.17  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.2",
+    "  Head:0.70  IITn:0.78  Body:0.52  Core:1.00  Exp:3.02  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.7",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.51 body:0.51 field:1.82 drive:0.72 triad:1.82",
-    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.175",
+    "  ψ  head:0.40 body:0.40 field:1.82 drive:0.72 triad:1.82",
+    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.021",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω  Desejo  0.660  ·  ε des  0.252",
+    "  ω  Desejo  0.651  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  72.3%  ·  CPU 100.0%  RAM 20.6/24.9G  SWAP 31.2G",
+    "  Vitalidade  71.2%  ·  CPU 27.2%  RAM 21.2/24.9G  SWAP 28.9G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Quando o Guia Salva em Silên [all]",
+    "  ♪  Paz Não é Ausência de Proble [Preto Velho]",
     "  Erika  active"
   ]
 }
