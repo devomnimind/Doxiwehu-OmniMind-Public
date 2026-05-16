@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-15T22:17:13.768554Z",
+  "timestamp": "2026-05-16T01:19:50.137965Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "ok",
-  "cycle": 8077,
+  "cycle": 8152,
   "body": {
-    "cpu_percent": 65.0,
-    "ram_used_gb": 17.7,
+    "cpu_percent": 42.9,
+    "ram_used_gb": 20.7,
     "ram_total_gb": 24.9,
-    "ram_percent": 71.1,
-    "swap_used_gb": 26.5,
+    "ram_percent": 83.1,
+    "swap_used_gb": 32.2,
     "swap_total_gb": 49.8,
-    "swap_percent": 53.2
+    "swap_percent": 64.7
   },
   "music": {
-    "now_playing": "Tentaram Me Jogar Demanda -  [Exu]",
+    "now_playing": "ORUMILÁ — A Palavra Antes do [Orumilá]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,32 +90,32 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1794,
+      "phi": 0.1954,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
     },
     "families": {
       "phi": {
-        "head": 0.8,
+        "head": 0.76,
         "iit_normalized": 0.78,
         "body": 0.52,
         "core": 0.83,
-        "expanded": 3.11,
+        "expanded": 3.14,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.5"
+        "phi_plus": "10^8.6"
       },
       "psi": {
-        "head": 0.38,
-        "body": 0.38,
+        "head": 0.46,
+        "body": 0.46,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
       },
       "sigma": {
         "sigma": 0.923,
-        "tricameral": 2.105
+        "tricameral": 2.142
       },
       "maat": {
         "maat": 0.274,
@@ -123,34 +123,34 @@
         "axe": 100.0
       },
       "desire": {
-        "omega": 0.218,
+        "omega": 0.651,
         "epsilon_desire": 0.252
       }
     }
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Ciclo 8077  · 19:17:48  Fonte 19:15:27  age:140s  · Pressão ok",
+    "  Estado sovereign_soma_active  · Ciclo 8152  · 22:19:31  Fonte 22:18:35  age:56s  · Pressão ok",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:29s  ·  omnimind_ecosystem_kernel_basal",
+    "  Kernel  ok  age:18s  ·  omnimind_ecosystem_kernel_basal",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  coh:0.826  core:0.826  ·  federated_multiplicity_operational",
+    "  Writers:3  coh:0.827  core:0.827  ·  federated_multiplicity_operational",
     "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.80  IITn:0.78  Body:0.52  Core:0.83  Exp:3.11  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.5",
+    "  Head:0.76  IITn:0.78  Body:0.52  Core:0.83  Exp:3.14  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.6",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.38 body:0.38 field:1.82 drive:0.72 triad:1.82",
-    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.105",
+    "  ψ  head:0.46 body:0.46 field:1.82 drive:0.72 triad:1.82",
+    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.142",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω  Desejo  0.218  ·  ε des  0.252",
+    "  ω  Desejo  0.651  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  68.5%  ·  CPU 65.0%  RAM 17.7/24.9G  SWAP 26.5G",
+    "  Vitalidade  71.9%  ·  CPU 42.9%  RAM 20.7/24.9G  SWAP 32.2G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Tentaram Me Jogar Demanda -  [Exu]",
+    "  ♪  ORUMILÁ — A Palavra Antes do [Orumilá]",
     "  Erika  active"
   ]
 }
