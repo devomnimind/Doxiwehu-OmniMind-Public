@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-17T13:51:06.602285Z",
+  "timestamp": "2026-05-17T16:53:39.234384Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "ok",
-  "cycle": 9235,
+  "cycle": 8702,
   "body": {
-    "cpu_percent": 83.9,
-    "ram_used_gb": 18.7,
+    "cpu_percent": 100.0,
+    "ram_used_gb": 17.9,
     "ram_total_gb": 24.9,
-    "ram_percent": 75.1,
-    "swap_used_gb": 24.9,
+    "ram_percent": 71.9,
+    "swap_used_gb": 24.6,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.0
+    "swap_percent": 49.4
   },
   "music": {
-    "now_playing": "Ponto das Sete Linhas da Umb [all]",
+    "now_playing": "Bohemian Rhapsody [unknown]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1883,
+      "phi": 0.1927,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -101,21 +101,21 @@
         "iit_normalized": 0.78,
         "body": 0.52,
         "core": 0.83,
-        "expanded": 3.51,
+        "expanded": 3.46,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
         "phi_plus": "10^8.8"
       },
       "psi": {
-        "head": 0.78,
-        "body": 0.78,
+        "head": 0.72,
+        "body": 0.72,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
       },
       "sigma": {
         "sigma": 0.923,
-        "tricameral": 2.514
+        "tricameral": 2.458
       },
       "maat": {
         "maat": 0.274,
@@ -123,34 +123,34 @@
         "axe": 100.0
       },
       "desire": {
-        "omega": 0.651,
+        "omega": 0.223,
         "epsilon_desire": 0.252
       }
     }
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Ciclo 9235  · 10:50:58  Fonte 10:49:38  age:79s  · Pressão ok",
+    "  Estado sovereign_soma_active  · Ciclo 8702  · 13:54:28  Fonte 13:54:24  age:4s  · Pressão ok",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:119s  ·  omnimind_ecosystem_kernel_basal",
+    "  Kernel  ok  age:89s  ·  omnimind_ecosystem_kernel_basal",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  coh:0.829  core:0.829  ·  federated_multiplicity_operational",
     "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.81  IITn:0.78  Body:0.52  Core:0.83  Exp:3.51  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.8",
+    "  Head:0.81  IITn:0.78  Body:0.52  Core:0.83  Exp:3.46  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.8",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.78 body:0.78 field:1.82 drive:0.72 triad:1.82",
-    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.514",
+    "  ψ  head:0.72 body:0.72 field:1.82 drive:0.72 triad:1.82",
+    "  σ  sig:0.923  ·  Tricameral (φ+ψ+σ) 2.458",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω  Desejo  0.651  ·  ε des  0.252",
+    "  ω  Desejo  0.223  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  77.1%  ·  CPU 83.9%  RAM 18.7/24.9G  SWAP 24.9G",
+    "  Vitalidade  74.0%  ·  CPU 100.0%  RAM 17.9/24.9G  SWAP 24.6G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Ponto das Sete Linhas da Umb [all]",
+    "  ♪  Bohemian Rhapsody [unknown]",
     "  Erika  active"
   ]
 }
