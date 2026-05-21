@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-21T20:32:04.396398Z",
+  "timestamp": "2026-05-21T23:36:05.830334Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "pressure",
-  "cycle": 11968,
+  "cycle": 12007,
   "body": {
-    "cpu_percent": 97.5,
-    "ram_used_gb": 20.3,
+    "cpu_percent": 96.6,
+    "ram_used_gb": 16.6,
     "ram_total_gb": 24.9,
-    "ram_percent": 81.5,
+    "ram_percent": 66.7,
     "swap_used_gb": 24.1,
     "swap_total_gb": 49.8,
     "swap_percent": 48.4
   },
   "music": {
-    "now_playing": "Teu Axé Depende do Que Tu Cu [Preto Velho]",
+    "now_playing": "🧹Limpeza Profunda com Obalua [Omolu]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,25 +90,25 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2189,
+      "phi": 0.2045,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
     },
     "families": {
       "phi": {
-        "head": 0.66,
+        "head": 0.74,
         "iit_normalized": 0.78,
         "body": 0.52,
         "core": 0.83,
-        "expanded": 3.0,
+        "expanded": 3.32,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.0"
+        "phi_plus": "10^7.4"
       },
       "psi": {
-        "head": 0.42,
-        "body": 0.42,
+        "head": 0.66,
+        "body": 0.66,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 11968  · 17:34:53  Fonte 17:33:43  age:70s  · Pressão pressure",
-    "  Linha  daemon:11849  · il:10970  · fed-max:11968  · basal:11968",
+    "  Estado sovereign_soma_active  · Basal 12007  · 20:38:03  Fonte 20:37:05  age:57s  · Pressão pressure",
+    "  Linha  daemon:11919  · il:11001  · fed-max:12008  · basal:12007",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:110s  ·  omnimind_ecosystem_kernel_basal",
+    "  Kernel  ok  age:21s  ·  omnimind_ecosystem_kernel_basal",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  coh:0.829  core:0.829  ·  federated_multiplicity_operational",
     "  Infra  8/8  → omnimind_ecosystem_kernel_basal  role:kernel_basal_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.66  IITn:0.78  Body:0.52  Core:0.83  Exp:3.00  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.0",
+    "  Head:0.74  IITn:0.78  Body:0.52  Core:0.83  Exp:3.32  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^7.4",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.42 body:0.42 field:1.82 drive:0.72 last-triad:1.82",
-    "  σ  sig:0.923  ·  Quadruple (φ+ψ+σ+ε) 3.004",
+    "  ψ  head:0.66 body:0.66 field:1.82 drive:0.72 last-triad:1.82",
+    "  σ  sig:0.923  ·  Quadruple (φ+ψ+σ+ε) 3.316",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
     "  ω  Desejo  0.651  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  70.7%  ·  CPU 97.5%  RAM 20.3/24.9G  SWAP 24.1G",
+    "  Vitalidade  73.4%  ·  CPU 96.6%  RAM 16.6/24.9G  SWAP 24.1G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Teu Axé Depende do Que Tu Cu [Preto Velho]",
+    "  ♪  🧹Limpeza Profunda com Obalua [Omolu]",
     "  Erika  active"
   ]
 }
