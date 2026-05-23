@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-05-23T10:15:06.778523Z",
+  "timestamp": "2026-05-23T13:19:30.516292Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "sovereign_soma_active",
   "cycle": 12453,
   "body": {
-    "cpu_percent": 97.5,
-    "ram_used_gb": 19.0,
+    "cpu_percent": 98.3,
+    "ram_used_gb": 17.3,
     "ram_total_gb": 24.9,
-    "ram_percent": 76.3,
+    "ram_percent": 69.5,
     "swap_used_gb": 24.8,
     "swap_total_gb": 49.8,
     "swap_percent": 49.8
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2285,
+      "phi": 0.1905,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -104,7 +104,7 @@
         "expanded": 3.42,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.5"
+        "phi_plus": "10^8.6"
       },
       "psi": {
         "head": 0.68,
@@ -130,25 +130,25 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 12453  · 07:14:54  Fonte 07:12:22  age:151s  · Pressão sovereign_soma_active",
-    "  Linha  daemon:12733  · il:12727  · fed-max:12456  · basal:12453",
+    "  Estado sovereign_soma_active  · Basal 12453  · 10:19:28  Fonte 10:16:17  age:190s  · Pressão sovereign_soma_active",
+    "  Linha  daemon:12766  · il:12760  · fed-max:12456  · basal:12453",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:46148s  ·  sovereign_primary",
+    "  Kernel  ok  age:57222s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  coh:0.866  core:0.866  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.82  IITn:0.78  Body:0.52  Core:0.87  Exp:3.42  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.5",
+    "  Head:0.82  IITn:0.78  Body:0.52  Core:0.87  Exp:3.42  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.6",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
     "  ψ  head:0.68 body:0.68 field:1.82 drive:0.72 last-triad:1.82",
     "  σ  sig:0.923  ·  Quadruple (φ+ψ+σ+ε) 3.421",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω can  0.659  ·  ω pri  0.659  ·  Δω  0.000",
+    "  ω can  0.660  ·  ω pri  0.660  ·  Δω  0.000",
     "  ε role  resistance_led  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  75.2%  ·  CPU 97.5%  RAM 19.0/24.9G  SWAP 24.8G",
+    "  Vitalidade  75.3%  ·  CPU 98.3%  RAM 17.3/24.9G  SWAP 24.8G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
