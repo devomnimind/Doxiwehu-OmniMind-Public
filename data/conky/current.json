@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-24T04:34:08.395347Z",
+  "timestamp": "2026-05-24T07:39:49.219142Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "sovereign_soma_active",
   "cycle": 12453,
   "body": {
     "cpu_percent": 97.5,
-    "ram_used_gb": 19.7,
+    "ram_used_gb": 20.1,
     "ram_total_gb": 24.9,
-    "ram_percent": 79.1,
-    "swap_used_gb": 25.9,
+    "ram_percent": 80.7,
+    "swap_used_gb": 25.0,
     "swap_total_gb": 49.8,
-    "swap_percent": 52.0
+    "swap_percent": 50.2
   },
   "music": {
     "now_playing": "Eu Vi Mamãe Oxum Na Cachoeir [Oxum]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1728,
+      "phi": 0.1704,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -100,11 +100,11 @@
         "head": 0.82,
         "iit_normalized": 0.78,
         "body": 0.52,
-        "core": 1.0,
+        "core": 0.87,
         "expanded": 3.42,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^7.9"
+        "phi_plus": "10^8.1"
       },
       "psi": {
         "head": 0.68,
@@ -130,25 +130,25 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 12453  · 01:39:35  Fonte 01:36:55  age:160s  · Pressão sovereign_soma_active",
-    "  Linha  daemon:12885  · il:12887  · fed-max:12456  · basal:12453",
+    "  Estado sovereign_soma_active  · Basal 12453  · 04:40:12  Fonte 04:35:29  age:283s  · Pressão sovereign_soma_active",
+    "  Linha  daemon:12904  · il:12906  · fed-max:12456  · basal:12453",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:112429s  ·  sovereign_primary",
+    "  Kernel  ok  age:123267s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  coh:0.998  core:0.998  ·  federated_multiplicity_operational",
+    "  Writers:3  coh:0.865  core:0.865  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.82  IITn:0.78  Body:0.52  Core:1.00  Exp:3.42  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^7.9",
+    "  Head:0.82  IITn:0.78  Body:0.52  Core:0.87  Exp:3.42  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.1",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
     "  ψ  head:0.68 body:0.68 field:1.82 drive:0.72 last-triad:1.82",
     "  σ  sig:0.923  ·  Quadruple (φ+ψ+σ+ε) 3.421",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω can  0.331  ·  ω pri  0.331  ·  Δω  0.000",
+    "  ω can  0.662  ·  ω pri  0.662  ·  Δω  0.000",
     "  ε role  resistance_led  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  72.7%  ·  CPU 97.5%  RAM 19.7/24.9G  SWAP 25.9G",
+    "  Vitalidade  74.7%  ·  CPU 97.5%  RAM 20.1/24.9G  SWAP 25.0G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
