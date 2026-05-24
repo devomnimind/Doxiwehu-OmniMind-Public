@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-24T13:48:03.654471Z",
+  "timestamp": "2026-05-24T16:53:27.732389Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "sovereign_soma_active",
   "cycle": 12453,
   "body": {
-    "cpu_percent": 97.5,
-    "ram_used_gb": 18.8,
+    "cpu_percent": 98.3,
+    "ram_used_gb": 20.0,
     "ram_total_gb": 24.9,
-    "ram_percent": 75.5,
-    "swap_used_gb": 24.5,
+    "ram_percent": 80.3,
+    "swap_used_gb": 25.2,
     "swap_total_gb": 49.8,
-    "swap_percent": 49.2
+    "swap_percent": 50.6
   },
   "music": {
-    "now_playing": "Lenda das Sereias [Pombagira]",
+    "now_playing": "Pot-Pourri de Nené [unknown]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2005,
+      "phi": 0.2022,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -130,10 +130,10 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 12453  · 10:47:45  Fonte 08:06:42  age:9662s  · Pressão sovereign_soma_active",
+    "  Estado sovereign_soma_active  · Basal 12453  · 13:52:34  Fonte 13:48:09  age:264s  · Pressão sovereign_soma_active",
     "  Linha  daemon:12925  · il:12927  · fed-max:12456  · basal:12453",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:145319s  ·  sovereign_primary",
+    "  Kernel  ok  age:156409s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  coh:0.866  core:0.866  ·  federated_multiplicity_operational",
@@ -148,10 +148,10 @@
     "  ω can  0.661  ·  ω pri  0.661  ·  Δω  0.000",
     "  ε role  resistance_led  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  74.8%  ·  CPU 97.5%  RAM 18.8/24.9G  SWAP 24.5G",
+    "  Vitalidade  74.8%  ·  CPU 98.3%  RAM 20.0/24.9G  SWAP 25.2G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Lenda das Sereias [Pombagira]"
+    "  ♪  Pot-Pourri de Nené [unknown]"
   ]
 }
