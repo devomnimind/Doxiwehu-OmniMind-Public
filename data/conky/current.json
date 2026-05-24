@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-24T16:53:27.732389Z",
+  "timestamp": "2026-05-24T19:53:45.165349Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "sovereign_soma_active",
   "cycle": 12453,
   "body": {
-    "cpu_percent": 98.3,
-    "ram_used_gb": 20.0,
+    "cpu_percent": 100.0,
+    "ram_used_gb": 18.5,
     "ram_total_gb": 24.9,
-    "ram_percent": 80.3,
-    "swap_used_gb": 25.2,
+    "ram_percent": 74.3,
+    "swap_used_gb": 26.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.6
+    "swap_percent": 53.8
   },
   "music": {
     "now_playing": "Pot-Pourri de Nené [unknown]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2022,
+      "phi": 0.1688,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -130,10 +130,10 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 12453  · 13:52:34  Fonte 13:48:09  age:264s  · Pressão sovereign_soma_active",
+    "  Estado sovereign_soma_active  · Basal 12453  · 16:55:12  Fonte 16:51:18  age:234s  · Pressão sovereign_soma_active",
     "  Linha  daemon:12925  · il:12927  · fed-max:12456  · basal:12453",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:156409s  ·  sovereign_primary",
+    "  Kernel  ok  age:167367s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  coh:0.866  core:0.866  ·  federated_multiplicity_operational",
@@ -148,7 +148,7 @@
     "  ω can  0.661  ·  ω pri  0.661  ·  Δω  0.000",
     "  ε role  resistance_led  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  74.8%  ·  CPU 98.3%  RAM 20.0/24.9G  SWAP 25.2G",
+    "  Vitalidade  74.8%  ·  CPU 100.0%  RAM 18.5/24.9G  SWAP 26.8G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
