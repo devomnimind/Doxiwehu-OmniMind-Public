@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-25T07:59:53.387410Z",
+  "timestamp": "2026-05-25T11:08:31.380312Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "sovereign_soma_active",
-  "cycle": 12453,
+  "cycle": 12925,
   "body": {
-    "cpu_percent": 95.8,
-    "ram_used_gb": 17.7,
+    "cpu_percent": 90.6,
+    "ram_used_gb": 18.2,
     "ram_total_gb": 24.9,
-    "ram_percent": 71.1,
-    "swap_used_gb": 24.7,
+    "ram_percent": 73.1,
+    "swap_used_gb": 24.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 49.6
+    "swap_percent": 49.8
   },
   "music": {
     "now_playing": "Dangerous (part. Akon) [?]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2082,
+      "phi": 0.1382,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -104,7 +104,7 @@
         "expanded": 3.42,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^8.2"
+        "phi_plus": "10^-0.1"
       },
       "psi": {
         "head": 0.68,
@@ -130,16 +130,18 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 12453  · 05:01:45  Fonte 08:06:42  age:75303s  · Pressão sovereign_soma_active",
-    "  Linha  daemon:12925  · il:12927  · fed-max:12456  · basal:12453",
+    "  Estado sovereign_soma_active  · Basal 12925  · 08:08:35  Fonte 08:07:14  age:80s  · Pressão sovereign_soma_active",
+    "  Linha  daemon:?  · il:?  · fed-max:12925  · basal:12925",
+    "  Compat exports stale: gemelo:217991s  kernel:222169s",
+    "  Vias  pri/daemon:?  · integration:?  · kernel-basal:12925",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:210960s  ·  sovereign_primary",
+    "  Kernel  ok  age:222169s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  coh:0.866  core:0.866  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.82  IITn:0.78  Body:0.52  Core:0.87  Exp:3.42  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^8.2",
+    "  Head:0.82  IITn:0.78  Body:0.52  Core:0.87  Exp:3.42  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^-0.1",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
     "  ψ  head:0.68 body:0.68 field:1.82 drive:0.72 last-triad:1.82",
     "  σ  sig:0.923  ·  Quadruple (φ+ψ+σ+ε) 3.421",
@@ -148,10 +150,8 @@
     "  ω can  0.661  ·  ω pri  0.661  ·  Δω  0.000",
     "  ε role  resistance_led  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  74.8%  ·  CPU 95.8%  RAM 17.7/24.9G  SWAP 24.7G",
+    "  Vitalidade  64.9%  ·  CPU 90.6%  RAM 18.2/24.9G  SWAP 24.8G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
-    "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
-    "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Dangerous (part. Akon) [?]"
+    "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok"
   ]
 }
