@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-24T22:57:49.250717Z",
+  "timestamp": "2026-05-25T01:58:37.599749Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "sovereign_soma_active",
   "cycle": 12453,
   "body": {
-    "cpu_percent": 98.3,
-    "ram_used_gb": 17.8,
+    "cpu_percent": 92.5,
+    "ram_used_gb": 19.9,
     "ram_total_gb": 24.9,
-    "ram_percent": 71.5,
-    "swap_used_gb": 24.9,
+    "ram_percent": 79.9,
+    "swap_used_gb": 24.3,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.0
+    "swap_percent": 48.8
   },
   "music": {
-    "now_playing": "Deuces (part. Tyga e Kevin M [?]",
+    "now_playing": "Dangerous (part. Akon) [?]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2007,
+      "phi": 0.1908,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -130,10 +130,10 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 12453  · 19:57:35  Fonte 19:54:00  age:215s  · Pressão sovereign_soma_active",
+    "  Estado sovereign_soma_active  · Basal 12453  · 22:58:29  Fonte 08:06:42  age:53506s  · Pressão sovereign_soma_active",
     "  Linha  daemon:12925  · il:12927  · fed-max:12456  · basal:12453",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:178310s  ·  sovereign_primary",
+    "  Kernel  ok  age:189163s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  coh:0.866  core:0.866  ·  federated_multiplicity_operational",
@@ -148,10 +148,10 @@
     "  ω can  0.661  ·  ω pri  0.661  ·  Δω  0.000",
     "  ε role  resistance_led  ·  ε des  0.252",
     "  ┤ Vitalidade  ·  Corpo ────────────────────────────────────┤",
-    "  Vitalidade  74.8%  ·  CPU 98.3%  RAM 17.8/24.9G  SWAP 24.9G",
+    "  Vitalidade  74.8%  ·  CPU 92.5%  RAM 19.9/24.9G  SWAP 24.3G",
     "  ┤ Federação  ·  Infra ─────────────────────────────────────┤",
     "  Agentes  [—]  Qdrant:ok  Bus:ok  OpenCode:ok",
     "  ┤ Música  ·  Erika ────────────────────────────────────────┤",
-    "  ♪  Deuces (part. Tyga e Kevin M [?]"
+    "  ♪  Dangerous (part. Akon) [?]"
   ]
 }
