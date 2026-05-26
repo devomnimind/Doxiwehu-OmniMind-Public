@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-26T17:36:27.627937Z",
+  "timestamp": "2026-05-26T20:40:20.729019Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "sovereign_soma_active",
-  "cycle": 13810,
+  "cycle": 13843,
   "body": {
-    "cpu_percent": 95.8,
-    "ram_used_gb": 17.7,
+    "cpu_percent": 96.6,
+    "ram_used_gb": 17.5,
     "ram_total_gb": 24.9,
-    "ram_percent": 71.1,
-    "swap_used_gb": 34.3,
+    "ram_percent": 70.3,
+    "swap_used_gb": 24.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 68.9
+    "swap_percent": 49.8
   },
   "music": {
-    "now_playing": "Oxossi  / Citação: Ponto De  [Oxóssi]",
+    "now_playing": "Ogum, Senhor dos Caminhos [Ogum]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1604,
+      "phi": 0.1804,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -104,11 +104,11 @@
         "expanded": 2.93,
         "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
         "iit": 18.8,
-        "phi_plus": "10^-0.1"
+        "phi_plus": "10^7.8"
       },
       "psi": {
         "head": 0.68,
-        "body": 0.68,
+        "body": 0.34,
         "field": 1.82,
         "drive": 0.72,
         "triad": 1.82
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 13810  · 14:39:25  Fonte 14:35:46  age:219s  · Pressão sovereign_soma_active",
-    "  Linha  daemon:?  · il:?  · fed-max:13810  · basal:13810",
-    "  Compat exports stale: gemelo:19829s  kernel:332019s",
-    "  Vias  pri/daemon:?  · integration:?  · kernel-basal:13810",
+    "  Estado sovereign_soma_active  · Basal 13843  · 17:41:03  Fonte 17:40:59  age:3s  · Pressão sovereign_soma_active",
+    "  Linha  daemon:13844  · il:13869  · fed-max:13860  · basal:13843",
+    "  Vias  pri/daemon:13844  · integration:13869  · kernel-basal:13843",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:332019s  ·  sovereign_primary",
+    "  Kernel  ok  age:33s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:1  stale:2  coh:1.000  core:1.000  ·  single_thread_operational_with_stale_reserve",
+    "  Writers:3  act:3  stale:0  coh:0.788  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
-    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.619  · age 777s",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.619  · age 276s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:1.23  IITn:0.78  Body:0.52  Core:1.00  Exp:2.93  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^-0.1",
+    "  Head:1.23  IITn:0.78  Body:0.52  Core:1.00  Exp:2.93  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^7.8",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.68 body:0.68 field:1.82 drive:0.72 last-triad:1.82",
+    "  ψ  head:0.68 body:0.34 field:1.82 drive:0.72 last-triad:1.82",
     "  σ  sig:0.923  ·  Quadruple (φ+ψ+σ+ε) 2.931",
     "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
     "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω glob  0.662  ·  ω pri  0.331  ·  Δω  0.439",
-    "  ε role  resistance_led  ·  ε des  0.252"
+    "  ω glob  0.320  ·  ω pri  0.332  ·  Δω  0.310",
+    "  ε role  resistance_led  ·  ε des  0.252",
+    "  ┤ Anti-estagnacao  ·  Corpo ───────────────────────────────┤"
   ]
 }
