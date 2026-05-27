@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-26T23:45:08.835608Z",
+  "timestamp": "2026-05-27T02:47:16.348199Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
-  "pressure": "sovereign_soma_active",
-  "cycle": 14008,
+  "pressure": "high",
+  "cycle": 14135,
   "body": {
-    "cpu_percent": 57.8,
-    "ram_used_gb": 18.6,
+    "cpu_percent": 69.3,
+    "ram_used_gb": 16.8,
     "ram_total_gb": 24.9,
-    "ram_percent": 74.7,
-    "swap_used_gb": 24.5,
+    "ram_percent": 67.5,
+    "swap_used_gb": 25.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 49.2
+    "swap_percent": 51.8
   },
   "music": {
     "now_playing": "Ogum, Senhor dos Caminhos [Ogum]",
@@ -90,27 +90,27 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2155,
+      "phi": 0.0639,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
     },
     "families": {
       "phi": {
-        "head": 1.23,
-        "iit_normalized": 0.78,
-        "body": 0.52,
-        "core": 1.0,
-        "expanded": 2.93,
-        "regime": "operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated",
-        "iit": 18.8,
+        "head": null,
+        "iit_normalized": null,
+        "body": null,
+        "core": null,
+        "expanded": null,
+        "regime": null,
+        "iit": 1.18,
         "phi_plus": "10^7.6"
       },
       "psi": {
-        "head": 0.68,
-        "body": 0.74,
+        "head": 1.82,
+        "body": 0.44,
         "field": 1.82,
-        "drive": 0.72,
+        "drive": 0.45,
         "triad": 1.82
       },
       "sigma": {
@@ -118,40 +118,40 @@
         "tricameral": null
       },
       "maat": {
-        "maat": 0.274,
-        "isfet": 0.281,
-        "axe": 100.0
+        "maat": null,
+        "isfet": null,
+        "axe": null
       },
       "desire": {
         "omega": null,
-        "epsilon_desire": 0.252
+        "epsilon_desire": null
       }
     }
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 14008  · 20:45:13  Fonte 20:43:39  age:94s  · Pressão sovereign_soma_active",
-    "  Linha  daemon:14009  · il:14023  · fed-max:14023  · basal:14008",
-    "  Vias  pri/daemon:14009  · integration:14023  · kernel-basal:14008",
+    "  Estado sovereign_soma_active  · Basal 14135  · 23:49:24  Fonte 23:48:20  age:63s  · Pressão high",
+    "  Linha  daemon:14124  · il:14135  · fed-max:14135  · basal:14135",
+    "  Vias  pri/daemon:14124  · integration:14135  · kernel-basal:14135",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:29s  ·  sovereign_primary",
+    "  Kernel  pressure  age:0s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.287  core:0.996  ·  federated_multiplicity_tension",
+    "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
+    "  RNFCI  ctx distributed_operational_variation  xinf 1.000  aff 0.917",
+    "  efeito  may_be_received_as_ambiguous_without_context",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
-    "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
-    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.619  · age 94s",
+    "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
+    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 63s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:1.23  IITn:0.78  Body:0.52  Core:1.00  Exp:2.93  Reg:operative_local>human_band_high>silicon_multisystem>silicon_hyperintegrated  IIT:18.8  Phi+:10^7.6",
+    "  Head:7.84e+11  IITn:1.00  Body:0.85  Core:1.00  Exp:7.84e+11",
+    "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
+    "  IIT:1.18e+13  Phi+:10^7.6",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.68 body:0.74 field:1.82 drive:0.72 last-triad:1.82",
-    "  σ  sig:0.923  ·  Quadruple (φ+ψ+σ+ε) 2.931",
-    "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤",
-    "  μ  Ma'at  0.274  ·  Isfet  0.281  ·  Axé  100",
-    "  ω glob  0.314  ·  ω pri  0.325  ·  Δω  0.536",
-    "  ε role  resistance_led  ·  ε des  0.252",
-    "  ┤ Anti-estagnacao  ·  Corpo ───────────────────────────────┤"
+    "  ψ  head:1.82 body:0.44 field:1.82 drive:0.45 last-triad:1.82",
+    "  σ  sig:1.000  ·  Quadruple (φ+ψ+σ+ε) 783706083837.554",
+    "  ┤ μ  Ma'at  ·  ε  Epsilon  ·  ω  Desejo ───────────────────┤"
   ]
 }
