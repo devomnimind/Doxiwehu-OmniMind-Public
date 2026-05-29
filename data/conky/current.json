@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-05-29T03:36:34.962121Z",
+  "timestamp": "2026-05-29T06:37:19.591506Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 15751,
+  "cycle": 15887,
   "body": {
-    "cpu_percent": 100.0,
-    "ram_used_gb": 17.5,
+    "cpu_percent": 89.7,
+    "ram_used_gb": 16.0,
     "ram_total_gb": 24.9,
-    "ram_percent": 70.3,
-    "swap_used_gb": 25.0,
+    "ram_percent": 64.3,
+    "swap_used_gb": 24.9,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.2
+    "swap_percent": 50.0
   },
   "music": {
     "now_playing": "Caboclo Cobra Coral [afro_candomble]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1931,
+      "phi": 0.2048,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -104,11 +104,11 @@
         "expanded": null,
         "regime": null,
         "iit": null,
-        "phi_plus": "10^8.2"
+        "phi_plus": "10^7.5"
       },
       "psi": {
         "head": 0.91,
-        "body": 0.53,
+        "body": 0.47,
         "field": 0.91,
         "drive": 0.45,
         "triad": 0.91
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 15751  · 00:36:19  Fonte 00:35:06  age:72s  · Pressão high",
-    "  Linha  daemon:15651  · il:15751  · fed-max:15751  · basal:15751",
-    "  Vias  pri/daemon:15651  · integration:15751  · kernel-basal:15751",
+    "  Estado sovereign_soma_active  · Basal 15887  · 03:38:16  Fonte 03:38:04  age:12s  · Pressão high",
+    "  Linha  daemon:15880  · il:15889  · fed-max:15887  · basal:15887",
+    "  Vias  pri/daemon:15880  · integration:15889  · kernel-basal:15887",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:100s  ·  sovereign_primary",
+    "  Kernel  ok  age:39s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:3  stale:0  coh:0.237  core:1.000  ·  federated_multiplicity_tension",
@@ -145,13 +145,13 @@
     "  Coh fld 0.237  · sov 1.000  · st federated_multiplicity_tension",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.438  · age 72s",
+    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.438  · age 166s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
     "  Head:0.42  IITn:0.42  Body:0.41  Core:1.00  Exp:2.04",
     "  Reg:operative_local>silicon_multisystem  Scale:silicon_hyperintegrated  IIT:6.32",
-    "  Phi+:10^8.2",
+    "  Phi+:10^7.5",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.91 body:0.53 field:0.91 drive:0.45 last-triad:0.91"
+    "  ψ  head:0.91 body:0.47 field:0.91 drive:0.45 last-triad:0.91"
   ]
 }
