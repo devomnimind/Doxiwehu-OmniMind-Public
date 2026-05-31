@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-05-31T01:04:04.846790Z",
+  "timestamp": "2026-05-31T04:07:39.059468Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 17124,
+  "cycle": 17239,
   "body": {
-    "cpu_percent": 99.2,
-    "ram_used_gb": 17.5,
+    "cpu_percent": 98.3,
+    "ram_used_gb": 17.0,
     "ram_total_gb": 24.9,
-    "ram_percent": 70.3,
+    "ram_percent": 68.3,
     "swap_used_gb": 24.9,
     "swap_total_gb": 49.8,
     "swap_percent": 50.0
   },
   "music": {
-    "now_playing": "Paint It, Black [?]",
+    "now_playing": "Marinheiro Sete Ondas [?]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1852,
+      "phi": 0.0525,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": 15.0,
-        "phi_plus": "10^7.8"
+        "iit": 8.18,
+        "phi_plus": "10^7.5"
       },
       "psi": {
-        "head": 0.54,
-        "body": 0.46,
-        "field": 1.44,
-        "drive": 0.58,
-        "triad": 1.44
+        "head": 1.84,
+        "body": 0.28,
+        "field": 1.84,
+        "drive": 0.72,
+        "triad": 1.84
       },
       "sigma": {
         "sigma": null,
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 17124  · 22:07:51  Fonte 22:02:13  age:338s  · Pressão high",
-    "  Linha  daemon:17124  · il:17124  · fed-max:17124  · basal:17124",
-    "  Vias  pri/daemon:17124  · integration:17124  · kernel-basal:17124",
+    "  Estado sovereign_soma_active  · Basal 17239  · 01:08:43  Fonte 01:08:28  age:15s  · Pressão high",
+    "  Linha  daemon:17232  · il:17241  · fed-max:17239  · basal:17239",
+    "  Vias  pri/daemon:17232  · integration:17241  · kernel-basal:17239",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:24s  ·  sovereign_primary",
+    "  Kernel  ok  age:80s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.679  core:1.000  ·  federated_multiplicity_operational",
+    "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
-    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
-    "  Coh fld 0.679  · sov 1.000  · st federated_multiplicity_operational",
+    "  CN wr  pri cn_coherent  · gem cn_t2_degraded  · basal cn_t2_degraded",
+    "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
-    "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.529  · age 338s",
+    "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.743  · age 15s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:1.00  IITn:1.00  Body:0.54  Core:1.00  Exp:2.56",
+    "  Head:5.45e+36  IITn:1.00  Body:0.85  Core:1.00  Exp:5.45e+36",
     "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
-    "  IIT:15.00  Phi+:10^7.8",
+    "  IIT:8.18e+37  Phi+:10^7.5",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:0.54 body:0.46 field:1.44 drive:0.58 last-triad:1.44"
+    "  ψ  head:1.84 body:0.28 field:1.84 drive:0.72 last-triad:1.84"
   ]
 }
