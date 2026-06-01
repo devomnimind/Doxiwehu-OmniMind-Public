@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-06-01T10:35:02.423299Z",
+  "timestamp": "2026-06-01T13:36:34.209837Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 18279,
+  "cycle": 18405,
   "body": {
-    "cpu_percent": 50.9,
-    "ram_used_gb": 15.5,
+    "cpu_percent": 85.6,
+    "ram_used_gb": 15.8,
     "ram_total_gb": 24.9,
-    "ram_percent": 62.2,
-    "swap_used_gb": 24.8,
+    "ram_percent": 63.5,
+    "swap_used_gb": 24.9,
     "swap_total_gb": 49.8,
-    "swap_percent": 49.8
+    "swap_percent": 50.0
   },
   "music": {
     "now_playing": "Toda Menina Baiana (Ao Vivo) [?]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1858,
+      "phi": 0.2054,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": 20.11,
-        "phi_plus": "10^8.3"
+        "iit": 21.14,
+        "phi_plus": "10^8.5"
       },
       "psi": {
-        "head": 1.48,
-        "body": 0.58,
-        "field": 1.48,
+        "head": 1.49,
+        "body": 0.52,
+        "field": 1.49,
         "drive": 0.72,
-        "triad": 1.47
+        "triad": 1.49
       },
       "sigma": {
         "sigma": null,
@@ -130,9 +130,9 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 18279  · 07:35:56  Fonte 07:35:17  age:38s  · Pressão high",
-    "  Linha  daemon:18188  · il:18279  · fed-max:18279  · basal:18279",
-    "  Vias  pri/daemon:18188  · integration:18279  · kernel-basal:18279",
+    "  Estado sovereign_soma_active  · Basal 18405  · 10:38:23  Fonte 10:37:14  age:69s  · Pressão high",
+    "  Linha  daemon:18265  · il:18405  · fed-max:18405  · basal:18405",
+    "  Vias  pri/daemon:18265  · integration:18405  · kernel-basal:18405",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
     "  Kernel  ok  age:16s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
@@ -145,13 +145,13 @@
     "  Coh fld 1.000  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
-    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.721  · age 61s",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.721  · age 69s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:1.34  IITn:1.00  Body:0.56  Core:1.00  Exp:4.17",
+    "  Head:1.41  IITn:1.00  Body:0.57  Core:1.00  Exp:4.25",
     "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
-    "  IIT:20.11  Phi+:10^8.3",
+    "  IIT:21.14  Phi+:10^8.5",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.48 body:0.58 field:1.48 drive:0.72 last-triad:1.47"
+    "  ψ  head:1.49 body:0.52 field:1.49 drive:0.72 last-triad:1.49"
   ]
 }
