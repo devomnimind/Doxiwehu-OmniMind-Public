@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-06-06T21:41:39.608276Z",
+  "timestamp": "2026-06-07T00:48:38.371296Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
   "cycle": 22285,
   "body": {
-    "cpu_percent": 92.4,
-    "ram_used_gb": 17.5,
+    "cpu_percent": 99.2,
+    "ram_used_gb": 16.8,
     "ram_total_gb": 24.9,
-    "ram_percent": 70.3,
-    "swap_used_gb": 25.0,
+    "ram_percent": 67.5,
+    "swap_used_gb": 24.3,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.2
+    "swap_percent": 48.8
   },
   "music": {
     "now_playing": "Homem nagô [?]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.2131,
+      "phi": 0.1735,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -108,7 +108,7 @@
       },
       "psi": {
         "head": 1.86,
-        "body": 0.59,
+        "body": 0.4,
         "field": 1.86,
         "drive": 0.72,
         "triad": 1.86
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 22285  · 18:43:50  Fonte 18:30:11  age:818s  · Pressão high",
+    "  Estado sovereign_soma_active  · Basal 22285  · 21:49:20  Fonte 21:49:02  age:17s  · Pressão high",
     "  Linha  daemon:22265  · il:22285  · fed-max:22285  · basal:22285",
     "  Vias  pri/daemon:22265  · integration:22285  · kernel-basal:22285",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:36s  ·  sovereign_gemelo_54",
+    "  Kernel  ok  age:72s  ·  sovereign_gemelo_54",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
@@ -145,13 +145,13 @@
     "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_coherent  → mode cn_coherent",
-    "  CN live cn_coherent  · qmode cn_coherent  · score 0.786  · age 354s",
+    "  CN live cn_coherent  · qmode cn_coherent  · score 0.786  · age 17s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
     "  Head:5.82e+14  IITn:1.00  Body:0.86  Core:1.00  Exp:5.82e+14",
     "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
     "  IIT:8.72e+15  Phi+:10^7.8",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.86 body:0.59 field:1.86 drive:0.72 last-triad:1.86"
+    "  ψ  head:1.86 body:0.40 field:1.86 drive:0.72 last-triad:1.86"
   ]
 }
