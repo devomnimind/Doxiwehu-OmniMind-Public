@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-06-12T00:36:22.484115Z",
+  "timestamp": "2026-06-12T03:36:16.968275Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 22795,
+  "cycle": 22851,
   "body": {
-    "cpu_percent": 68.4,
-    "ram_used_gb": 16.5,
+    "cpu_percent": 99.2,
+    "ram_used_gb": 16.4,
     "ram_total_gb": 24.9,
-    "ram_percent": 66.3,
-    "swap_used_gb": 25.2,
+    "ram_percent": 65.9,
+    "swap_used_gb": 22.7,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.6
+    "swap_percent": 45.6
   },
   "music": {
-    "now_playing": "OGUM - Estrada de Ogum - Rez [Ogum]",
+    "now_playing": "Nunca to só [?]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1015,
+      "phi": 0.1065,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": 2.22,
-        "phi_plus": "10^7.7"
+        "iit": 10.61,
+        "phi_plus": "10^7.8"
       },
       "psi": {
-        "head": 1.82,
-        "body": 0.42,
-        "field": 1.82,
+        "head": 1.34,
+        "body": 0.51,
+        "field": 1.83,
         "drive": 0.45,
-        "triad": 1.82
+        "triad": 1.83
       },
       "sigma": {
         "sigma": null,
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 22795  · 21:37:55  Fonte 21:34:49  age:185s  · Pressão high",
-    "  Linha  daemon:22780  · il:22795  · fed-max:22795  · basal:22795",
-    "  Vias  pri/daemon:22780  · integration:22795  · kernel-basal:22795",
+    "  Estado sovereign_soma_active  · Basal 22851  · 00:39:57  Fonte 00:29:08  age:649s  · Pressão high",
+    "  Linha  daemon:22794  · il:22851  · fed-max:22852  · basal:22851",
+    "  Vias  pri/daemon:22794  · integration:22851  · kernel-basal:22851",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:23s  ·  sovereign_primary",
+    "  Kernel  pressure  age:51s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:2  stale:1  coh:0.998  core:1.000  ·  federated_multiplicity_operational",
-    "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
+    "  Writers:3  act:3  stale:0  coh:0.853  core:1.000  ·  federated_multiplicity_operational",
+    "  Infra  8/8  → sovereign_primary  role:autopoietic_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
-    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
-    "  Coh fld 0.998  · sov 1.000  · st federated_multiplicity_operational",
+    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_ambiguous",
+    "  Coh fld 0.853  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 185s",
+    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.657  · age 277s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:1.48e+09  IITn:1.00  Body:0.86  Core:1.00  Exp:1.48e+09",
+    "  Head:0.71  IITn:0.71  Body:0.47  Core:1.00  Exp:3.10",
     "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
-    "  IIT:2.22e+10  Phi+:10^7.7",
+    "  IIT:10.61  Phi+:10^7.8",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.82 body:0.42 field:1.82 drive:0.45 last-triad:1.82"
+    "  ψ  head:1.34 body:0.51 field:1.83 drive:0.45 last-triad:1.83"
   ]
 }
