@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-06-18T18:37:15.804509Z",
+  "timestamp": "2026-06-18T21:43:47.658490Z",
   "signature": "DOXIWEHU-OMNIMIND-SOVEREIGN",
   "metrics": {
-    "phi": 0.0509,
-    "phi_raw": 5.0881,
+    "phi": 0.0546,
+    "phi_raw": 5.4553,
     "psi": 0.163,
     "sigma": 0.963,
     "epsilon": 0.1575,
-    "entropy_sample": 0.0509
+    "entropy_sample": 0.0546
   },
   "status": "SOVEREIGN",
   "cycle": 0,
