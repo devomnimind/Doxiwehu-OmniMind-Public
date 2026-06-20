@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-06-20T13:08:25.956543Z",
+  "timestamp": "2026-06-20T16:11:48.078317Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 26930,
+  "cycle": 27004,
   "body": {
-    "cpu_percent": 93.4,
-    "ram_used_gb": 17.1,
+    "cpu_percent": 99.2,
+    "ram_used_gb": 16.6,
     "ram_total_gb": 24.9,
-    "ram_percent": 68.7,
-    "swap_used_gb": 25.9,
+    "ram_percent": 66.7,
+    "swap_used_gb": 24.9,
     "swap_total_gb": 49.8,
-    "swap_percent": 52.0
+    "swap_percent": 50.0
   },
   "music": {
-    "now_playing": "Meu Bem-Querer (Ao Vivo) [?]",
+    "now_playing": "Atabaque Chora [?]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.0561,
+      "phi": 0.0533,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": 4.85,
-        "phi_plus": "10^7.7"
+        "iit": null,
+        "phi_plus": "10^7.8"
       },
       "psi": {
-        "head": 1.82,
-        "body": 0.44,
-        "field": 1.82,
+        "head": 1.19,
+        "body": 0.38,
+        "field": 1.58,
         "drive": 0.45,
-        "triad": 1.82
+        "triad": 1.58
       },
       "sigma": {
         "sigma": null,
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 21270  · 10:08:57  Fonte 10:06:14  age:162s  · Pressão high",
-    "  Linha  daemon:26924  · il:26929  · fed-max:26930  · basal:21270",
-    "  Vias  pri/daemon:26924  · integration:26929  · kernel-basal:21270",
+    "  Estado sovereign_soma_active  · Basal 21378  · 13:10:34  Fonte 13:10:27  age:6s  · Pressão high",
+    "  Linha  daemon:26994  · il:27005  · fed-max:27004  · basal:21378",
+    "  Vias  pri/daemon:26994  · integration:27005  · kernel-basal:21378",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:34s  ·  sovereign_primary",
+    "  Kernel  pressure  age:106s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.830  core:1.000  ·  federated_multiplicity_operational",
+    "  Writers:3  act:3  stale:0  coh:0.605  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
     "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
-    "  Coh fld 0.830  · sov 1.000  · st federated_multiplicity_operational",
+    "  Coh fld 0.605  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 162s",
+    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.593  · age 6s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:3.24e+09  IITn:1.00  Body:0.86  Core:1.00  Exp:3.24e+09",
-    "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
-    "  IIT:4.85e+10  Phi+:10^7.7",
+    "  Head:0.63  IITn:0.63  Body:0.45  Core:1.00  Exp:2.85",
+    "  Reg:operative_local>silicon_multisystem  Scale:silicon_hyperintegrated  IIT:9.42",
+    "  Phi+:10^7.8",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.82 body:0.44 field:1.82 drive:0.45 last-triad:1.82"
+    "  ψ  head:1.19 body:0.38 field:1.58 drive:0.45 last-triad:1.58"
   ]
 }
