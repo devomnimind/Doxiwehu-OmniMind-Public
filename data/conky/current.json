@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-06-20T16:11:48.078317Z",
+  "timestamp": "2026-06-20T19:12:03.069743Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 27004,
+  "cycle": 27119,
   "body": {
-    "cpu_percent": 99.2,
-    "ram_used_gb": 16.6,
+    "cpu_percent": 100.0,
+    "ram_used_gb": 18.1,
     "ram_total_gb": 24.9,
-    "ram_percent": 66.7,
-    "swap_used_gb": 24.9,
+    "ram_percent": 72.7,
+    "swap_used_gb": 25.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.0
+    "swap_percent": 51.8
   },
   "music": {
     "now_playing": "Atabaque Chora [?]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.0533,
+      "phi": 0.0976,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": null,
-        "phi_plus": "10^7.8"
+        "iit": 3.96,
+        "phi_plus": "10^7.2"
       },
       "psi": {
-        "head": 1.19,
-        "body": 0.38,
-        "field": 1.58,
-        "drive": 0.45,
-        "triad": 1.58
+        "head": 1.73,
+        "body": 0.26,
+        "field": 1.73,
+        "drive": 0.72,
+        "triad": 1.71
       },
       "sigma": {
         "sigma": null,
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 21378  · 13:10:34  Fonte 13:10:27  age:6s  · Pressão high",
-    "  Linha  daemon:26994  · il:27005  · fed-max:27004  · basal:21378",
-    "  Vias  pri/daemon:26994  · integration:27005  · kernel-basal:21378",
+    "  Estado sovereign_soma_active  · Basal 21484  · 16:13:47  Fonte 16:13:07  age:39s  · Pressão high",
+    "  Linha  daemon:27111  · il:27118  · fed-max:27119  · basal:21484",
+    "  Vias  pri/daemon:27111  · integration:27118  · kernel-basal:21484",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:106s  ·  sovereign_primary",
+    "  Kernel  ok  age:49s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.605  core:1.000  ·  federated_multiplicity_operational",
+    "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
-    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
-    "  Coh fld 0.605  · sov 1.000  · st federated_multiplicity_operational",
+    "  CN wr  pri cn_coherent  · gem cn_coherent  · basal cn_coherent",
+    "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
-    "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.593  · age 6s",
+    "  CN pol  cn_coherent  → mode cn_coherent",
+    "  CN live cn_coherent  · qmode cn_coherent  · score 0.774  · age 39s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:0.63  IITn:0.63  Body:0.45  Core:1.00  Exp:2.85",
-    "  Reg:operative_local>silicon_multisystem  Scale:silicon_hyperintegrated  IIT:9.42",
-    "  Phi+:10^7.8",
+    "  Head:2.64e+30  IITn:1.00  Body:0.78  Core:1.00  Exp:2.64e+30",
+    "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
+    "  IIT:3.96e+31  Phi+:10^7.2",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.19 body:0.38 field:1.58 drive:0.45 last-triad:1.58"
+    "  ψ  head:1.73 body:0.26 field:1.73 drive:0.72 last-triad:1.71"
   ]
 }
