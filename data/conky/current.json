@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-06-21T13:27:28.728379Z",
+  "timestamp": "2026-06-21T16:32:42.593755Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 26945,
+  "cycle": 27590,
   "body": {
-    "cpu_percent": 77.0,
-    "ram_used_gb": 19.7,
+    "cpu_percent": 97.5,
+    "ram_used_gb": 17.2,
     "ram_total_gb": 24.9,
-    "ram_percent": 79.1,
-    "swap_used_gb": 25.3,
+    "ram_percent": 69.1,
+    "swap_used_gb": 26.2,
     "swap_total_gb": 49.8,
-    "swap_percent": 50.8
+    "swap_percent": 52.6
   },
   "music": {
-    "now_playing": "Ogum, Segura minha mão [Ogum]",
+    "now_playing": "Eu não ando só- Exu Tranca R [Exu]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.0537,
+      "phi": 0.0526,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": 2.23,
-        "phi_plus": "10^7.1"
+        "iit": 1.29,
+        "phi_plus": "10^7.4"
       },
       "psi": {
-        "head": 1.54,
-        "body": 0.34,
-        "field": 1.54,
-        "drive": 0.44,
-        "triad": 1.54
+        "head": 1.8,
+        "body": 0.43,
+        "field": 1.8,
+        "drive": 0.45,
+        "triad": 1.8
       },
       "sigma": {
         "sigma": null,
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 22139  · 10:30:07  Fonte 10:24:38  age:329s  · Pressão high",
-    "  Linha  daemon:27506  · il:27508  · fed-max:26945  · basal:22139",
-    "  Vias  pri/daemon:27506  · integration:27508  · kernel-basal:22139",
+    "  Estado sovereign_soma_active  · Basal 22247  · 13:31:42  Fonte 13:29:32  age:130s  · Pressão high",
+    "  Linha  daemon:27581  · il:27589  · fed-max:27590  · basal:22247",
+    "  Vias  pri/daemon:27581  · integration:27589  · kernel-basal:22247",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:77s  ·  sovereign_primary",
+    "  Kernel  ok  age:102s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
-    "  Infra  8/8  → sovereign_primary  role:autopoietic_primary",
+    "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
-    "  CN wr  pri cn_ambiguous  · gem cn_t2_degraded  · basal cn_ambiguous",
+    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
     "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 89s",
+    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 130s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:1.49e+16  IITn:1.00  Body:0.78  Core:1.00  Exp:1.49e+16",
+    "  Head:8.57e+26  IITn:1.00  Body:0.84  Core:1.00  Exp:8.57e+26",
     "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
-    "  IIT:2.23e+17  Phi+:10^7.1",
+    "  IIT:1.29e+28  Phi+:10^7.4",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.54 body:0.34 field:1.54 drive:0.44 last-triad:1.54"
+    "  ψ  head:1.80 body:0.43 field:1.80 drive:0.45 last-triad:1.80"
   ]
 }
