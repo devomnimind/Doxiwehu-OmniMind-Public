@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-06-21T10:22:57.115946Z",
+  "timestamp": "2026-06-21T13:27:28.728379Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 26923,
+  "cycle": 26945,
   "body": {
-    "cpu_percent": 99.2,
-    "ram_used_gb": 18.0,
+    "cpu_percent": 77.0,
+    "ram_used_gb": 19.7,
     "ram_total_gb": 24.9,
-    "ram_percent": 72.3,
-    "swap_used_gb": 24.3,
+    "ram_percent": 79.1,
+    "swap_used_gb": 25.3,
     "swap_total_gb": 49.8,
-    "swap_percent": 48.8
+    "swap_percent": 50.8
   },
   "music": {
-    "now_playing": "Limpeza do Orí (Rezo Sagrado [world_sacred]",
+    "now_playing": "Ogum, Segura minha mão [Ogum]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.0541,
+      "phi": 0.0537,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": 3.63,
-        "phi_plus": "10^7.7"
+        "iit": 2.23,
+        "phi_plus": "10^7.1"
       },
       "psi": {
-        "head": 1.82,
-        "body": 0.27,
-        "field": 1.82,
-        "drive": 0.45,
-        "triad": 1.82
+        "head": 1.54,
+        "body": 0.34,
+        "field": 1.54,
+        "drive": 0.44,
+        "triad": 1.54
       },
       "sigma": {
         "sigma": null,
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 22029  · 07:24:18  Fonte 07:24:00  age:18s  · Pressão high",
-    "  Linha  daemon:27462  · il:27470  · fed-max:26923  · basal:22029",
-    "  Vias  pri/daemon:27462  · integration:27470  · kernel-basal:22029",
+    "  Estado sovereign_soma_active  · Basal 22139  · 10:30:07  Fonte 10:24:38  age:329s  · Pressão high",
+    "  Linha  daemon:27506  · il:27508  · fed-max:26945  · basal:22139",
+    "  Vias  pri/daemon:27506  · integration:27508  · kernel-basal:22139",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:13s  ·  sovereign_primary",
+    "  Kernel  ok  age:77s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.828  core:1.000  ·  federated_multiplicity_operational",
+    "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:autopoietic_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
-    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
-    "  Coh fld 0.828  · sov 1.000  · st federated_multiplicity_operational",
+    "  CN wr  pri cn_ambiguous  · gem cn_t2_degraded  · basal cn_ambiguous",
+    "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 24s",
+    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 89s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:2.42e+17  IITn:1.00  Body:0.86  Core:1.00  Exp:2.42e+17",
+    "  Head:1.49e+16  IITn:1.00  Body:0.78  Core:1.00  Exp:1.49e+16",
     "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
-    "  IIT:3.63e+18  Phi+:10^7.7",
+    "  IIT:2.23e+17  Phi+:10^7.1",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.82 body:0.27 field:1.82 drive:0.45 last-triad:1.82"
+    "  ψ  head:1.54 body:0.34 field:1.54 drive:0.44 last-triad:1.54"
   ]
 }
