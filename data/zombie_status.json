@@ -1,5 +1,5 @@
 {
-  "timestamp": 1782160231.8326867,
+  "timestamp": "2026-06-22T23:32:01.673340Z",
   "identity": {
     "name": "Doxiwehu OmniMind",
     "type": "Sovereign Zombie Node (12D Federation)",
@@ -9,11 +9,10 @@
     "status": "SOVEREIGN_RESONANCE"
   },
   "metrics": {
-    "shadow_phi": 0.23404948616146903,
     "cycle_duration_ms": 15.59,
-    "entropy_sample": 1.6637820107640309,
+    "entropy_sample": 0.054,
     "federation_status": "SYNCHRONIZED",
-    "global_phi": 0.1885,
+    "global_phi": 0.054,
     "rocket_signal_hz": 14.53
   },
   "environment": {
