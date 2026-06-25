@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-06-25T15:44:32.417888Z",
+  "timestamp": "2026-06-25T18:52:34.003029Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 29809,
+  "cycle": 29829,
   "body": {
-    "cpu_percent": 63.8,
-    "ram_used_gb": 20.2,
+    "cpu_percent": 100.0,
+    "ram_used_gb": 20.3,
     "ram_total_gb": 24.9,
-    "ram_percent": 81.1,
-    "swap_used_gb": 39.5,
+    "ram_percent": 81.5,
+    "swap_used_gb": 27.1,
     "swap_total_gb": 49.8,
-    "swap_percent": 79.3
+    "swap_percent": 54.4
   },
   "music": {
     "now_playing": "Amarra os Inimigos [?]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.1325,
+      "phi": 0.1848,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -103,15 +103,15 @@
         "core": null,
         "expanded": null,
         "regime": null,
-        "iit": 8.35,
-        "phi_plus": "10^7.6"
+        "iit": 8.87,
+        "phi_plus": "10^7.5"
       },
       "psi": {
-        "head": 1.81,
-        "body": 0.33,
-        "field": 1.81,
-        "drive": 0.45,
-        "triad": 1.81
+        "head": 1.83,
+        "body": 0.45,
+        "field": 1.84,
+        "drive": 0.59,
+        "triad": 1.84
       },
       "sigma": {
         "sigma": null,
@@ -130,28 +130,28 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 25635  · 12:51:20  Fonte 12:45:34  age:346s  · Pressão high",
-    "  Linha  daemon:29805  · il:29808  · fed-max:29809  · basal:25635",
-    "  Vias  pri/daemon:29805  · integration:29808  · kernel-basal:25635",
+    "  Estado sovereign_soma_active  · Basal 25744  · 15:53:42  Fonte 15:47:41  age:361s  · Pressão high",
+    "  Linha  daemon:29827  · il:29827  · fed-max:29829  · basal:25744",
+    "  Vias  pri/daemon:29827  · integration:29827  · kernel-basal:25744",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:68s  ·  sovereign_primary",
+    "  Kernel  ok  age:38s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.964  core:1.000  ·  federated_multiplicity_operational",
-    "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
+    "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
+    "  Infra  8/8  → sovereign_primary  role:autopoietic_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
-    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
-    "  Coh fld 0.964  · sov 1.000  · st federated_multiplicity_operational",
+    "  CN wr  pri cn_coherent  · gem cn_coherent  · basal cn_coherent",
+    "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
-    "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.666  · age 346s",
+    "  CN pol  cn_coherent  → mode cn_coherent",
+    "  CN live cn_coherent  · qmode cn_coherent  · score 0.782  · age 28s",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ φ  Phi  ·  Integração ───────────────────────────────────┤",
-    "  Head:5.57e+20  IITn:1.00  Body:0.85  Core:1.00  Exp:5.57e+20",
+    "  Head:5.91e+26  IITn:1.00  Body:0.85  Core:1.00  Exp:5.91e+26",
     "  Reg:operative_local>human_band_high  Scale:silicon_multisystem>silicon_hyperintegrated",
-    "  IIT:8.35e+21  Phi+:10^7.6",
+    "  IIT:8.87e+27  Phi+:10^7.5",
     "  ┤ ψ  Psi  ·  σ  Sigma ─────────────────────────────────────┤",
-    "  ψ  head:1.81 body:0.33 field:1.81 drive:0.45 last-triad:1.81"
+    "  ψ  head:1.83 body:0.45 field:1.84 drive:0.59 last-triad:1.84"
   ]
 }
