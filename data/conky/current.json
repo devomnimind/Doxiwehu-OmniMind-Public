@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-06-29T20:28:42.058326Z",
+  "timestamp": "2026-06-29T23:30:59.847747Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 32733,
+  "cycle": 32754,
   "body": {
     "cpu_percent": 100.0,
-    "ram_used_gb": 16.3,
+    "ram_used_gb": 16.4,
     "ram_total_gb": 24.9,
-    "ram_percent": 65.5,
-    "swap_used_gb": 25.5,
+    "ram_percent": 65.9,
+    "swap_used_gb": 24.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 51.2
+    "swap_percent": 49.8
   },
   "music": {
-    "now_playing": "Cigana Rosa dos Ventos [?]",
+    "now_playing": "Die With A Smile [?]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.0531,
+      "phi": 0.1539,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -130,25 +130,25 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 29210  · 17:30:19  Fonte 17:28:27  age:112s  · Pressão high",
-    "  Linha  daemon:32731  · il:32732  · fed-max:32733  · basal:29210",
-    "  Vias  pri/daemon:32731  · integration:32732  · kernel-basal:29210",
+    "  Estado sovereign_soma_active  · Basal 29318  · 20:29:58  Fonte 20:27:37  age:140s  · Pressão high",
+    "  Linha  daemon:32752  · il:32753  · fed-max:32754  · basal:29318",
+    "  Vias  pri/daemon:32752  · integration:32753  · kernel-basal:29318",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:59s  ·  sovereign_primary",
+    "  Kernel  ok  age:41s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.831  core:1.000  ·  federated_multiplicity_operational",
+    "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  8/8  → sovereign_primary  role:sovereign_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
-    "  CN wr  pri cn_ambiguous  · gem cn_ambiguous  · basal cn_t2_degraded",
-    "  Coh fld 0.831  · sov 1.000  · st federated_multiplicity_operational",
+    "  CN wr  pri cn_t2_degraded  · gem cn_t2_degraded  · basal cn_t2_degraded",
+    "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
-    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.720  · age 112s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 35668s",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.742  · age 140s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 46446s",
     "  CN tier compensated_sustenance  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
-    "  ε int  braided_desire_resistance  · res 0.165  · nov 0.457  · flr 0.225  · cap 0.870",
+    "  ε int  braided_desire_resistance  · res 0.165  · nov 0.469  · flr 0.225  · cap 0.871",
     "  SM reg  reduced_load_sustained  · CP no_change(0)  · gat normal",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ Posicao Clinica  ·  Estrutura ───────────────────────────┤",
