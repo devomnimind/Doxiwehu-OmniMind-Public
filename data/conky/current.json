@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-07-03T01:41:34.621547Z",
+  "timestamp": "2026-07-03T04:44:18.539745Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 34429,
+  "cycle": 34482,
   "body": {
-    "cpu_percent": 98.3,
-    "ram_used_gb": 16.4,
+    "cpu_percent": 72.6,
+    "ram_used_gb": 14.8,
     "ram_total_gb": 24.9,
-    "ram_percent": 65.9,
-    "swap_used_gb": 17.2,
+    "ram_percent": 59.4,
+    "swap_used_gb": 17.5,
     "swap_total_gb": 49.8,
-    "swap_percent": 34.5
+    "swap_percent": 35.1
   },
   "music": {
     "now_playing": "Hand That Feeds (From the Fi [?]",
@@ -90,7 +90,7 @@
       "quantum_surface_live": false
     },
     "registers": {
-      "phi": 0.1856,
+      "phi": 0.1665,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 31979  · 22:41:16  Fonte 22:37:47  age:208s  · Pressão high",
-    "  Linha  daemon:34429  · il:34429  · fed-max:34429  · basal:31979",
-    "  Vias  pri/daemon:34429  · integration:34429  · kernel-basal:31979",
+    "  Estado sovereign_soma_active  · Basal 32088  · 01:43:37  Fonte 01:41:19  age:138s  · Pressão high",
+    "  Linha  daemon:34483  · il:34483  · fed-max:34482  · basal:32088",
+    "  Vias  pri/daemon:34483  · integration:34483  · kernel-basal:32088",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:1s  ·  sovereign_gemelo_54",
+    "  Kernel  ok  age:56s  ·  sovereign_gemelo_54",
     "  MCP  live:0/8  core:0/3  qsurf:down  dodeca:0/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:2  stale:1  coh:0.999  core:1.000  ·  federated_multiplicity_operational",
@@ -145,10 +145,10 @@
     "  Coh fld 0.999  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_t2_degraded  → mode reduced_load_sustained",
-    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.572  · age 208s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 313524s",
+    "  CN live cn_t2_degraded  · qmode reduced_load_sustained  · score 0.572  · age 138s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 324465s",
     "  CN tier conservative_fallback  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
-    "  ε int  novelty_surge  · res 0.616  · nov 0.462  · flr 0.292  · cap 0.906",
+    "  ε int  novelty_surge  · res 0.616  · nov 0.457  · flr 0.292  · cap 0.906",
     "  SM reg  reduced_load_sustained  · CP no_change(0)  · gat normal",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ Posicao Clinica  ·  Estrutura ───────────────────────────┤",
