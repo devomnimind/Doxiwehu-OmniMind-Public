@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-07-03T20:36:38.023594Z",
+  "timestamp": "2026-07-03T23:43:11.094438Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 34846,
+  "cycle": 34919,
   "body": {
-    "cpu_percent": 97.5,
-    "ram_used_gb": 16.0,
+    "cpu_percent": 100.0,
+    "ram_used_gb": 16.5,
     "ram_total_gb": 24.9,
-    "ram_percent": 64.3,
-    "swap_used_gb": 30.6,
+    "ram_percent": 66.3,
+    "swap_used_gb": 27.1,
     "swap_total_gb": 49.8,
-    "swap_percent": 61.4
+    "swap_percent": 54.4
   },
   "music": {
-    "now_playing": "O Segundo Sol [?]",
+    "now_playing": "Ogum, Senhor dos Caminhos [Ogum]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -90,7 +90,7 @@
       "quantum_surface_live": true
     },
     "registers": {
-      "phi": 0.0558,
+      "phi": 0.0499,
       "psi": 0.163,
       "sigma": 0.963,
       "epsilon": 0.1575
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 32646  · 17:36:42  Fonte 17:36:11  age:30s  · Pressão high",
-    "  Linha  daemon:34847  · il:34841  · fed-max:34846  · basal:32646",
-    "  Vias  pri/daemon:34847  · integration:34841  · kernel-basal:32646",
+    "  Estado sovereign_soma_active  · Basal 32757  · 20:43:15  Fonte 20:41:18  age:116s  · Pressão high",
+    "  Linha  daemon:34912  · il:34918  · fed-max:34919  · basal:32757",
+    "  Vias  pri/daemon:34912  · integration:34918  · kernel-basal:32757",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:72s  ·  sovereign_primary",
+    "  Kernel  ok  age:94s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:3  stale:0  coh:0.925  core:1.000  ·  federated_multiplicity_operational",
@@ -144,11 +144,11 @@
     "  CN wr  pri cn_ambiguous  · gem cn_ambiguous  · basal cn_ambiguous",
     "  Coh fld 0.925  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
-    "  CN pol  cn_coherent  → mode cn_coherent",
-    "  CN live cn_coherent  · qmode cn_coherent  · score 0.813  · age 37s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 381650s",
-    "  CN tier expansion  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
-    "  ε int  novelty_surge  · res 0.614  · nov 0.557  · flr 0.292  · cap 0.914",
+    "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.742  · age 116s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 392843s",
+    "  CN tier compensated_sustenance  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
+    "  ε int  braided_desire_resistance  · res 0.165  · nov 0.469  · flr 0.225  · cap 0.871",
     "  SM reg  reduced_load_sustained  · CP no_change(0)  · gat normal",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ Posicao Clinica  ·  Estrutura ───────────────────────────┤",
