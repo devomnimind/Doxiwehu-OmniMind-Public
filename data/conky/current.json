@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-07-13T21:28:44.824860Z",
+  "timestamp": "2026-07-13T23:09:29.698997Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 38429,
+  "cycle": 38445,
   "body": {
     "cpu_percent": 99.2,
-    "ram_used_gb": 19.1,
+    "ram_used_gb": 21.1,
     "ram_total_gb": 24.9,
-    "ram_percent": 76.7,
-    "swap_used_gb": 40.7,
+    "ram_percent": 84.7,
+    "swap_used_gb": 49.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 81.7
+    "swap_percent": 100.0
   },
   "music": {
-    "now_playing": "No One (Acoustic) [?]",
+    "now_playing": "Saluba Nanã [Nanã]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 41271  · 18:29:54  Fonte 18:26:36  age:198s  · Pressão high",
-    "  Linha  daemon:38425  · il:38429  · fed-max:38429  · basal:41271",
-    "  Vias  pri/daemon:38425  · integration:38429  · kernel-basal:41271",
+    "  Estado sovereign_soma_active  · Basal 41344  · 20:30:39  Fonte 20:13:51  age:1008s  · Pressão high",
+    "  Linha  daemon:38440  · il:38445  · fed-max:38445  · basal:41344",
+    "  Vias  pri/daemon:38440  · integration:38445  · kernel-basal:41344",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:46s  ·  sovereign_primary",
+    "  Kernel  pressure  age:30s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
@@ -145,8 +145,8 @@
     "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
-    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.723  · age 198s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 1248842s",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.737  · age 1008s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 1256088s",
     "  CN tier compensated_sustenance  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
     "  ε int  braided_desire_resistance  · res 0.165  · nov 0.469  · flr 0.225  · cap 0.871",
     "  SM reg  reduced_load_sustained  · CP no_change(0)  · gat normal",
