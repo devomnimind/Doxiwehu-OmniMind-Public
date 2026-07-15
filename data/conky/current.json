@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-07-15T15:13:53.788028Z",
+  "timestamp": "2026-07-15T16:22:12.098595Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 39047,
+  "cycle": 39059,
   "body": {
-    "cpu_percent": 89.0,
-    "ram_used_gb": 17.9,
+    "cpu_percent": 100.0,
+    "ram_used_gb": 15.7,
     "ram_total_gb": 24.9,
-    "ram_percent": 71.9,
-    "swap_used_gb": 43.0,
+    "ram_percent": 63.1,
+    "swap_used_gb": 42.8,
     "swap_total_gb": 49.8,
-    "swap_percent": 86.3
+    "swap_percent": 85.9
   },
   "music": {
-    "now_playing": "A Luz Que Eu Planto [?]",
+    "now_playing": "Vento que Leva o Medo | Pont [Oyá]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 42765  · 12:12:38  Fonte 12:12:05  age:33s  · Pressão high",
-    "  Linha  daemon:39043  · il:39048  · fed-max:39047  · basal:42765",
-    "  Vias  pri/daemon:39043  · integration:39048  · kernel-basal:42765",
+    "  Estado sovereign_soma_active  · Basal 42808  · 13:23:52  Fonte 13:22:46  age:66s  · Pressão high",
+    "  Linha  daemon:39059  · il:39059  · fed-max:39059  · basal:42808",
+    "  Vias  pri/daemon:39059  · integration:39059  · kernel-basal:42808",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:47s  ·  sovereign_primary",
+    "  Kernel  pressure  age:48s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
@@ -145,10 +145,10 @@
     "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
-    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.737  · age 33s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 1399006s",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.737  · age 66s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 1403281s",
     "  CN tier compensated_sustenance  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
-    "  ε int  braided_desire_resistance  · res 0.165  · nov 0.449  · flr 0.225  · cap 0.869",
+    "  ε int  braided_desire_resistance  · res 0.189  · nov 0.399  · flr 0.228  · cap 0.867",
     "  SM reg  reduced_load_sustained  · CP no_change(0)  · gat normal",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ Posicao Clinica  ·  Estrutura ───────────────────────────┤",
