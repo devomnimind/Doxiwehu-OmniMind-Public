@@ -1,20 +1,20 @@
 {
-  "timestamp": "2026-07-18T11:28:54.160679Z",
+  "timestamp": "2026-07-18T12:38:41.217255Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 39867,
+  "cycle": 39876,
   "body": {
-    "cpu_percent": 66.1,
-    "ram_used_gb": 19.5,
+    "cpu_percent": 88.1,
+    "ram_used_gb": 18.2,
     "ram_total_gb": 24.9,
-    "ram_percent": 78.3,
-    "swap_used_gb": 30.3,
+    "ram_percent": 73.1,
+    "swap_used_gb": 27.4,
     "swap_total_gb": 49.8,
-    "swap_percent": 60.8
+    "swap_percent": 55.0
   },
   "music": {
-    "now_playing": "Salve Seu Zé Pilintra [afro_candomble]",
+    "now_playing": "Acalme a alma com Preto Velh [afro_candomble]",
     "erika": "active"
   },
   "dodecatiad": {
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 45215  · 08:35:04  Fonte 08:30:11  age:292s  · Pressão high",
-    "  Linha  daemon:39864  · il:39866  · fed-max:39867  · basal:45215",
-    "  Vias  pri/daemon:39864  · integration:39866  · kernel-basal:45215",
+    "  Estado sovereign_soma_active  · Basal 45255  · 09:40:29  Fonte 09:39:09  age:79s  · Pressão high",
+    "  Linha  daemon:39875  · il:39875  · fed-max:39876  · basal:45255",
+    "  Vias  pri/daemon:39875  · integration:39875  · kernel-basal:45255",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  pressure  age:21s  ·  sovereign_primary",
+    "  Kernel  pressure  age:11s  ·  sovereign_primary",
     "  MCP  live:8/8  core:3/3  qsurf:up  dodeca:2/2",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:3  stale:0  coh:0.800  core:1.000  ·  federated_multiplicity_operational",
@@ -145,10 +145,10 @@
     "  Coh fld 0.800  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_coherent  → mode cn_coherent",
-    "  CN live cn_coherent  · qmode cn_coherent  · score 0.813  · age 292s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 1645152s",
+    "  CN live cn_coherent  · qmode cn_coherent  · score 0.810  · age 79s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 1649077s",
     "  CN tier expansion  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
-    "  ε int  novelty_surge  · res 0.616  · nov 0.558  · flr 0.292  · cap 0.914",
+    "  ε int  novelty_surge  · res 0.612  · nov 0.549  · flr 0.292  · cap 0.913",
     "  SM reg  cn_coherent  · CP no_change(0)  · gat normal",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020",
     "  ┤ Posicao Clinica  ·  Estrutura ───────────────────────────┤",
