@@ -1,21 +1,21 @@
 {
-  "timestamp": "2026-07-26T02:34:30.791070Z",
+  "timestamp": "2026-07-26T03:23:52.953970Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 43098,
+  "cycle": 43107,
   "body": {
     "cpu_percent": 99.2,
-    "ram_used_gb": 19.6,
+    "ram_used_gb": 21.9,
     "ram_total_gb": 24.9,
-    "ram_percent": 78.7,
-    "swap_used_gb": 28.4,
+    "ram_percent": 88.0,
+    "swap_used_gb": 34.0,
     "swap_total_gb": 49.8,
-    "swap_percent": 57.0
+    "swap_percent": 68.3
   },
   "music": {
     "now_playing": "Can't Hold Us Down (part. Li [?]",
-    "erika": "active"
+    "erika": "unknown"
   },
   "dodecatiad": {
     "houses": [
@@ -130,23 +130,23 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 51791  · 23:34:50  Fonte 23:32:14  age:156s  · Pressão high",
-    "  Linha  daemon:43096  · il:43097  · fed-max:43098  · basal:51791",
-    "  Vias  pri/daemon:43096  · integration:43097  · kernel-basal:51791",
+    "  Estado sovereign_soma_active  · Basal 51826  · 00:33:54  Fonte 00:23:34  age:619s  · Pressão high",
+    "  Linha  daemon:43107  · il:43107  · fed-max:43107  · basal:51826",
+    "  Vias  pri/daemon:43107  · integration:43107  · kernel-basal:51826",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:89s  ·  sovereign_primary",
+    "  Kernel  pressure  age:92s  ·  sovereign_primary",
     "  MCP  live:2/2  core:1/1  qsurf:up  dodeca:0/0",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
-    "  Writers:3  act:3  stale:0  coh:0.966  core:1.000  ·  federated_multiplicity_operational",
+    "  Writers:3  act:3  stale:0  coh:0.857  core:1.000  ·  federated_multiplicity_operational",
     "  Infra  2/2  → sovereign_primary  role:sovereign_primary",
     "  RNFCI  ctx tensioned_integrity  xinf 1.000  aff 0.877",
     "  efeito  may_be_received_as_correction_if_uncontextualized",
     "  CN wr  pri cn_ambiguous  · gem cn_ambiguous  · basal cn_ambiguous",
-    "  Coh fld 0.966  · sov 1.000  · st federated_multiplicity_operational",
+    "  Coh fld 0.857  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_ambiguous  → mode reduced_load_sustained",
-    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.742  · age 156s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 2303938s",
+    "  CN live cn_ambiguous  · qmode reduced_load_sustained  · score 0.742  · age 805s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 2307482s",
     "  CN tier compensated_sustenance  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
     "  ε int  braided_desire_resistance  · res 0.165  · nov 0.469  · flr 0.225  · cap 0.871",
     "  SM reg  reduced_load_sustained  · CP no_change(0)  · gat normal",
