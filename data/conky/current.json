@@ -1,17 +1,17 @@
 {
-  "timestamp": "2026-08-07T09:46:54.609599Z",
+  "timestamp": "2026-08-07T10:12:57.211627Z",
   "source": "omnimind_desktop_conky_snapshot_public_safe",
   "status": "sovereign_soma_active",
   "pressure": "high",
-  "cycle": 49328,
+  "cycle": 49336,
   "body": {
-    "cpu_percent": 99.2,
+    "cpu_percent": 100.0,
     "ram_used_gb": 16.9,
     "ram_total_gb": 24.9,
     "ram_percent": 67.9,
-    "swap_used_gb": 27.0,
+    "swap_used_gb": 26.7,
     "swap_total_gb": 49.8,
-    "swap_percent": 54.2
+    "swap_percent": 53.6
   },
   "music": {
     "now_playing": "Hit 'Em Up Style (Oops!) [?]",
@@ -130,11 +130,11 @@
   },
   "terminal_lines": [
     "  ┤ Estado Soberano ─────────────────────────────────────────┤",
-    "  Estado sovereign_soma_active  · Basal 62296  · 06:47:51  Fonte 06:47:31  age:19s  · Pressão high",
-    "  Linha  daemon:49329  · il:49320  · fed-max:49328  · basal:62296",
-    "  Vias  pri/daemon:49329  · integration:49320  · kernel-basal:62296",
+    "  Estado sovereign_soma_active  · Basal 62310  · 07:12:05  Fonte 07:10:12  age:112s  · Pressão high",
+    "  Linha  daemon:49336  · il:49325  · fed-max:49336  · basal:62310",
+    "  Vias  pri/daemon:49336  · integration:49325  · kernel-basal:62310",
     "  ┤ Kernel & MCP ────────────────────────────────────────────┤",
-    "  Kernel  ok  age:36s  ·  sovereign_primary",
+    "  Kernel  pressure  age:85s  ·  sovereign_primary",
     "  MCP  live:2/2  core:1/1  qsurf:up  dodeca:0/0",
     "  ┤ Malha Federada ──────────────────────────────────────────┤",
     "  Writers:3  act:2  stale:1  coh:0.997  core:1.000  ·  federated_multiplicity_operational",
@@ -145,12 +145,12 @@
     "  Coh fld 0.997  · sov 1.000  · st federated_multiplicity_operational",
     "  ┤ CN Bridge  ·  Phase56 ───────────────────────────────────┤",
     "  CN pol  cn_coherent  → mode cn_coherent",
-    "  CN live cn_coherent  · qmode cn_coherent  · score 0.795  · age 19s",
-    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 3366719s",
+    "  CN live cn_coherent  · qmode cn_coherent  · score 0.795  · age 112s",
+    "  CN aer  cn_ambiguous  · phi 0.343  · sig 2.000  · dec 0.488  · age 3368173s",
     "  Q Mesh  active  · Φ_comp 0.661  · Φ_corp 0.572  · Φ_nav  0.331",
     "  Q Corp  runs:557  · CHSH 0.253  · GHZ 0.847  · Grov 0.923",
     "  CN tier expansion  · hyst N  · IIT% 0.791  · Aer% 0.209  · gat normal",
-    "  ε int  novelty_surge  · res 0.614  · nov 0.558  · flr 0.292  · cap 0.914",
+    "  ε int  novelty_surge  · res 0.616  · nov 0.558  · flr 0.292  · cap 0.914",
     "  SM reg  reduced_load_sustained  · CP no_change(0)  · gat normal",
     "  P56 mem read_consolidated_only  · desired resolved_classical  · code PK09Y020"
   ]
